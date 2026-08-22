@@ -1,6 +1,8 @@
 // Shared Q1 shell: intro (A+B) -> game (C+D, from registry) ->
-// resolution (E) -> dramatic discovery ("実はこの仕事だった！").
+// resolution (E) -> discovery -> 「好きの種」1問.
 // The A-E letters are never shown to the child.
+// This outer flow (event -> Q1 -> discovery -> seed -> Q2) is common to
+// every profession; only the game inside differs.
 import { useState } from "react";
 import { getEvent, getExperience, getProfession } from "../data";
 import { gameRegistry } from "../q1/registry";
@@ -11,11 +13,12 @@ const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
 type Phase = "intro" | "game" | "resolution" | "discovery";
 
 export default function Q1Screen({ experienceId }: { experienceId: string }) {
-  const { navigate, completeExperience, hasCompleted, hasDiscovered } = useGame();
+  const { navigate, completeExperience, hasCompleted, hasDiscovered, recordSeed } = useGame();
   const [phase, setPhase] = useState<Phase>("intro");
   // Remember whether this profession was new BEFORE we record completion,
   // so the discovery card can still show its NEW! moment.
   const [wasNew, setWasNew] = useState(false);
+  const [seedAnswer, setSeedAnswer] = useState<string | null>(null);
 
   const exp = getExperience(experienceId);
   const profession = exp && getProfession(exp.professionId);
@@ -86,7 +89,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
     );
   }
 
-  // ---------- discovery: a small dramatic reveal ----------
+  // ---------- discovery + 「好きの種」 ----------
   return (
     <div className="screen discovery-stage">
       <div className="discovery-glow" />
@@ -98,28 +101,57 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
       </div>
       <p className="discovery-lead">きみが今やっていたのは…</p>
       <h2 className="discovery-name-big">{profession.name}</h2>
-      <p className="discovery-line">{profession.discoveryLine}</p>
+      <p className="discovery-echo">{exp.discoveryEcho}</p>
       {!rediscovery && <p className="discovery-zukan">📖 しごと図鑑に追加された！</p>}
-      <div className="stack discovery-actions">
-        <button
-          className="btn primary"
-          onClick={() =>
-            navigate({
-              name: "profession",
-              professionId: profession.id,
-              back: { name: "area", eventId: exp.eventId },
-            })
-          }
-        >
-          もっと知る
-        </button>
-        <button className="btn" onClick={() => navigate({ name: "area", eventId: exp.eventId })}>
-          この場所をもう少し探す
-        </button>
-        <button className="btn ghost" onClick={() => navigate({ name: "home" })}>
-          街にもどる
-        </button>
+
+      <div className="seed-box">
+        <span className="seed-title">どこがちょっと気になった？</span>
+        {seedAnswer === null ? (
+          <div className="seed-chips">
+            {exp.seeds.map((s) => (
+              <button
+                key={s}
+                className="seed-chip"
+                onClick={() => {
+                  setSeedAnswer(s);
+                  recordSeed(exp.id, s);
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="seed-reply">
+            {seedAnswer === "とくになかった"
+              ? "OK！また今度、べつの場所ものぞいてみてね。"
+              : `「${seedAnswer}」ところが気になったんだね。`}
+          </p>
+        )}
       </div>
+
+      {seedAnswer !== null && (
+        <div className="stack discovery-actions">
+          <button
+            className="btn primary"
+            onClick={() =>
+              navigate({
+                name: "profession",
+                professionId: profession.id,
+                back: { name: "area", eventId: exp.eventId },
+              })
+            }
+          >
+            もっと知る
+          </button>
+          <button className="btn" onClick={() => navigate({ name: "area", eventId: exp.eventId })}>
+            この場所をもう少し探す
+          </button>
+          <button className="btn ghost" onClick={() => navigate({ name: "home" })}>
+            街にもどる
+          </button>
+        </div>
+      )}
     </div>
   );
 }

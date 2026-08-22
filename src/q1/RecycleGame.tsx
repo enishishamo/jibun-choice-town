@@ -1,102 +1,139 @@
-// Q1 game: 食品リサイクル — leftovers are not the end of the story.
-// C: sorting/processing knowledge in the dock. Mid-game a contaminated
-// batch (spoon mixed in) forces re-sorting before processing.
-// If the child already did the farm experience, the ending connects back
-// to "that field" (社会のつながり演出).
+// Q1: 食べ残しを資源に変える工場の仕事
+// B: 学校からの食べ残しに異物がまざっていて、このままでは処理できない。
+// C: 受入ルール／磁選機（鉄だけ）／風力選別（軽いものだけ）／手選別。
+// D: 異物ごとに「どの道具なら取れるか」を性質で考える。道具の性質を
+//    知らないと解けない（プラに磁石は効かない、重い物は風で飛ばない）。
+// E: 発酵→肥料→畑へ。「あ！さっきのにんじん畑につながった！」
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoDock from "./InfoDock";
+import InfoCards from "./InfoCards";
 
 const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
 
-interface Item { id: string; name: string; image?: string; emoji?: string; answer: string }
+interface Foreign {
+  id: string;
+  name: string;
+  emoji: string;
+  tool: string; // the tool that works
+  rejects: Record<string, string>; // toolId -> why it fails (from C)
+}
 
-const ITEMS: Item[] = [
-  { id: "veg", name: "野菜の食べ残し", image: A("item-leftover"), answer: "compost" },
-  { id: "bread", name: "パンの残り", emoji: "🍞", answer: "feed" },
-  { id: "oil", name: "使い終わった油", emoji: "🫗", answer: "energy" },
+const FOREIGNS: Foreign[] = [
+  {
+    id: "spoon",
+    name: "金属のスプーン",
+    emoji: "🥄",
+    tool: "magnet",
+    rejects: {
+      wind: "スプーンは重くて、風では飛ばない…。🧲べつの機械の性質を見てみよう。",
+      hand: "取れた！…でも量が多いと見落としそう。🧲金属をまとめて取れる機械があったはず。",
+    },
+  },
+  {
+    id: "vinyl",
+    name: "ビニールの切れはし",
+    emoji: "🛍",
+    tool: "wind",
+    rejects: {
+      magnet: "磁石にくっつかない！🧲磁選機のカードを見ると…取れるのは「鉄」だけ。",
+      hand: "小さくてバラバラで、手では取りきれない…。💨軽さをいかせる機械は？",
+    },
+  },
+  {
+    id: "cup",
+    name: "大きなプラスチックのカップ",
+    emoji: "🥤",
+    tool: "hand",
+    rejects: {
+      magnet: "プラスチックは磁石にくっつかない。🧲磁選機は「鉄」専用。",
+      wind: "大きくて重さがあるから、風では飛ばない。👀目で見てわかる大きさなら…？",
+    },
+  },
 ];
 
-const BINS = [
-  { id: "compost", name: "肥料にする", image: A("item-compost") },
-  { id: "feed", name: "動物のえさにする", emoji: "🐖" },
-  { id: "energy", name: "燃料にする", emoji: "⚡" },
+const TOOLS = [
+  { id: "magnet", name: "磁選機", emoji: "🧲" },
+  { id: "wind", name: "風力選別", emoji: "💨" },
+  { id: "hand", name: "手選別", emoji: "🫲" },
 ];
 
-type Step = "sort" | "contaminated" | "finale";
+type Phase = "brief" | "sort" | "finale";
 
-export default function RecycleGame({ experience, onComplete, hasCompleted }: Q1GameProps) {
-  const [step, setStep] = useState<Step>("sort");
-  const [current, setCurrent] = useState(0);
+export default function RecycleGame({ onComplete, hasCompleted }: Q1GameProps) {
+  const [phase, setPhase] = useState<Phase>("brief");
+  const [removed, setRemoved] = useState<string[]>([]);
+  const [target, setTarget] = useState<Foreign | null>(null);
   const [note, setNote] = useState<string | null>(null);
 
-  const item = ITEMS[current];
   const farmDone = hasCompleted("farmer-lunch");
 
-  const dockExtra = (toolId: string) => {
-    if (toolId === "sort") {
-      return <p className="soft-note">スプーンやビニールがまざると、肥料にできなくなってしまう。</p>;
-    }
-    if (toolId === "compost") {
-      return <p className="soft-note">野菜くずは発酵させて約2か月で肥料に。畑で次の野菜を育てる。</p>;
-    }
-    if (toolId === "feed") {
-      return <p className="soft-note">パンやごはんは加熱・乾燥させて、豚などのえさになることも。</p>;
-    }
-    return null;
-  };
+  const docs = [
+    {
+      id: "rule",
+      icon: "📋",
+      title: "この工場の受入ルール",
+      body: (
+        <>
+          <p>この工場は、食べ残しを<strong>発酵させて肥料に変える</strong>工場（そういう契約・しくみ）。</p>
+          <p>受け入れられるのは<strong>食品だけ</strong>。金属・プラスチック・ビニールは、機械の故障や肥料の品質低下のもとになるので、先に取りのぞく。</p>
+        </>
+      ),
+    },
+    {
+      id: "magnet",
+      icon: "🧲",
+      title: "磁選機",
+      body: (
+        <>
+          <p>強力な磁石で、流れてくる<strong>鉄（金属）</strong>を吸いつけて取りのぞく。</p>
+          <p>磁石にくっつかないもの（プラスチック・ビニールなど）は取れない。</p>
+        </>
+      ),
+    },
+    {
+      id: "wind",
+      icon: "💨",
+      title: "風力選別",
+      body: (
+        <>
+          <p>風の力で、<strong>軽いもの</strong>（ビニールやうすいプラの切れはし）を飛ばして分ける。</p>
+          <p>重いものは飛ばないので取れない。</p>
+        </>
+      ),
+    },
+    {
+      id: "hand",
+      icon: "🫲",
+      title: "手選別",
+      body: (
+        <>
+          <p>人の<strong>目で見て</strong>、大きな異物を取りのぞく。</p>
+          <p>機械が苦手なもの（大きなプラ容器など）を見つけられる。</p>
+        </>
+      ),
+    },
+  ];
 
-  const pick = (binId: string) => {
-    if (binId !== item.answer) {
-      setNote("それもいいアイデア！でも、これはもっとぴったりの変身先がありそう…🗂分別の情報を見てみよう。");
-      return;
-    }
-    setNote(null);
-    if (current + 1 < ITEMS.length) {
-      // A real-world hiccup: something un-processable is mixed in.
-      if (current === 0) {
-        setStep("contaminated");
-        return;
-      }
-      setCurrent((c) => c + 1);
-    } else {
-      setStep("finale");
-    }
-  };
-
-  if (step === "contaminated") {
+  if (phase === "brief") {
     return (
       <div className="game board-game">
-        <div className="alert-box">
-          <span className="big-emoji">🥄</span>
-          <p>待って！食べ残しの中にスプーンがまざってる！</p>
+        <div className="trouble-card">
+          <span className="trouble-flash">🏭 リサイクル工場</span>
+          <p className="trouble-title">
+            学校から食べ残しが届いた。<br />でも…異物がまざってる！
+          </p>
+          <p className="trouble-line">
+            このままでは肥料にできない。<br />機械と道具の性質を使い分けて、取りのぞこう。
+          </p>
         </div>
-        <p className="game-line">このままだと肥料にできない。どうする？</p>
-        {note && <p className="game-note">{note}</p>}
-        <div className="stack">
-          <button
-            className="btn ghost"
-            onClick={() => setNote("🗂分別の情報を見てみよう。まざりものがあると、資源に変えられなくなってしまう！")}
-          >
-            気にせずそのまま処理する
-          </button>
-          <button
-            className="btn primary"
-            onClick={() => {
-              setNote(null);
-              setCurrent(1);
-              setStep("sort");
-            }}
-          >
-            取りのぞいて、分別からやり直す
-          </button>
-        </div>
-        <InfoDock tools={experience.tools} extra={dockExtra} />
+        <button className="btn primary big" onClick={() => setPhase("sort")}>
+          ラインをスタートする
+        </button>
       </div>
     );
   }
 
-  if (step === "finale") {
+  if (phase === "finale") {
     return (
       <div className="game board-game">
         <div className="recycle-flow">
@@ -106,8 +143,10 @@ export default function RecycleGame({ experience, onComplete, hasCompleted }: Q1
           <span className="flow-arrow">→</span>
           <img src={A("bg-farm")} alt="畑" />
         </div>
-        <p className="game-line">
-          食べ残しが肥料になって、畑へ運ばれていく…
+        <p className="game-line center-line">
+          異物のなくなった食べ残しは、発酵させて約2か月で肥料に。
+          <br />
+          できた肥料は、畑へ運ばれていく…
           {farmDone && (
             <>
               <br />
@@ -115,42 +154,85 @@ export default function RecycleGame({ experience, onComplete, hasCompleted }: Q1
             </>
           )}
         </p>
-        <button className="btn primary" onClick={onComplete}>
+        <button className="btn primary big" onClick={onComplete}>
           つながりを見届ける
         </button>
       </div>
     );
   }
 
+  const remaining = FOREIGNS.filter((f) => !removed.includes(f.id));
+
   return (
     <div className="game board-game">
       <div className="mission-bar">
-        <span className="mission-bar-title">これ、全部ごみになるの…？</span>
+        <span className="mission-bar-title">異物を取りのぞこう</span>
         <div className="mission-chips">
-          {ITEMS.map((it, i) => (
-            <span key={it.id} className={`mchip ${i < current ? "ok" : ""}`}>
-              {i < current ? "✓" : "・"} {it.name}
+          {FOREIGNS.map((f) => (
+            <span key={f.id} className={`mchip ${removed.includes(f.id) ? "ok" : ""}`}>
+              {removed.includes(f.id) ? "✓" : "・"} {f.emoji}
             </span>
           ))}
         </div>
       </div>
-      <p className="game-line">
-        分別と処理の知識を使って考えよう。これ、どう変身できる？
-      </p>
-      <div className="recycle-item">
-        {item.image ? <img src={item.image} alt="" /> : <span className="big-emoji">{item.emoji}</span>}
-        <span>{item.name}</span>
+
+      <InfoCards cards={docs} label="工場の資料と機械" />
+
+      <div className="conveyor">
+        <span className="doc-label">🏭 ライン上の食べ残し</span>
+        <div className="conveyor-belt">
+          <span className="conveyor-food">🍚🥬🍞</span>
+          {remaining.map((f) => (
+            <button
+              key={f.id}
+              className={`foreign-item ${target?.id === f.id ? "selected" : ""}`}
+              onClick={() => {
+                setTarget(target?.id === f.id ? null : f);
+                setNote(null);
+              }}
+            >
+              <span className="foreign-emoji">{f.emoji}</span>
+              <small>{f.name}</small>
+            </button>
+          ))}
+          {remaining.length === 0 && <span className="task-queue-empty">異物ゼロ！食品だけになった</span>}
+        </div>
       </div>
+
+      {target && (
+        <>
+          <p className="game-line soft">「{target.name}」— どの方法で取りのぞく？</p>
+          <div className="choice-row">
+            {TOOLS.map((t) => (
+              <button
+                key={t.id}
+                className="choice-card"
+                onClick={() => {
+                  if (t.id !== target.tool) {
+                    setNote(target.rejects[t.id]);
+                    return;
+                  }
+                  setNote(null);
+                  setRemoved((r) => [...r, target.id]);
+                  setTarget(null);
+                }}
+              >
+                <span className="choice-name">{t.emoji} {t.name}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      {!target && remaining.length > 0 && (
+        <p className="game-line soft">気になる異物をタップしてえらぼう。</p>
+      )}
       {note && <p className="game-note">{note}</p>}
-      <div className="stack">
-        {BINS.map((b) => (
-          <button key={b.id} className="btn choice" onClick={() => pick(b.id)}>
-            {b.image ? <img className="btn-icon" src={b.image} alt="" /> : <span className="btn-icon-emoji">{b.emoji}</span>}
-            {b.name}
-          </button>
-        ))}
-      </div>
-      <InfoDock tools={experience.tools} extra={dockExtra} />
+
+      {remaining.length === 0 && (
+        <button className="btn primary big" onClick={() => setPhase("finale")}>
+          発酵タンクへ送る！
+        </button>
+      )}
     </div>
   );
 }

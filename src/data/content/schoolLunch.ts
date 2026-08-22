@@ -1,6 +1,8 @@
 // Theme module: 学校／給食
 // Adding a future theme (hospital, weather, prices...) = add a file like
 // this one and register it in data/index.ts. No screen changes needed.
+// The event is one entry point; its incidents explore the whole "backstage"
+// of school lunch (畑→物流→給食室→教室→食べたあと→リサイクル→畑).
 import type { ContentModule } from "../types";
 
 const A = (name: string) => `${import.meta.env.BASE_URL}assets/${name}.png`;
@@ -14,10 +16,10 @@ export const schoolLunch: ContentModule = {
       mapPos: { left: "45%", top: "34%" },
     },
     // Visible in the world but quiet today — hints that the world is bigger.
-    { id: "hospital", name: "病院", mapPos: { left: "12%", top: "40%" } },
-    { id: "station", name: "駅", mapPos: { left: "88%", top: "46%" } },
-    { id: "shop", name: "お店", mapPos: { left: "22%", top: "72%" } },
-    { id: "park", name: "公園", mapPos: { left: "82%", top: "76%" } },
+    { id: "hospital", name: "病院", mapPos: { left: "15%", top: "44%" } },
+    { id: "station", name: "駅", mapPos: { left: "85%", top: "50%" } },
+    { id: "shop", name: "お店", mapPos: { left: "24%", top: "78%" } },
+    { id: "park", name: "公園", mapPos: { left: "78%", top: "82%" } },
   ],
 
   events: [
@@ -26,12 +28,12 @@ export const schoolLunch: ContentModule = {
       placeId: "school",
       title: "大変！\n今日の給食が間に合わない！",
       areaName: "給食のうらがわ",
-      areaLead: "どうしてだろう？\n気になるところをのぞいてみよう。",
+      areaLead: "給食のうらがわでは、いろんな仕事が動いてる。\n気になるところをのぞいてみよう。",
       incidents: [
         {
           id: "menu-mystery",
           image: A("item-veggies"),
-          title: "今日の献立、どうやって決まった？",
+          title: "来月の野菜が足りなくなりそう！",
           experienceId: "nutrition-lunch",
           scenePos: { left: "24%", top: "18%" },
         },
@@ -45,14 +47,14 @@ export const schoolLunch: ContentModule = {
         {
           id: "no-carrot",
           image: A("item-carrot"),
-          title: "にんじんが足りない！",
+          title: "このにんじん、どうやって育てた？",
           experienceId: "farmer-lunch",
           scenePos: { left: "20%", top: "56%" },
         },
         {
           id: "not-delivered",
           image: A("item-truck"),
-          title: "食材がまだ届いてない！",
+          title: "食材は今朝、どうやって届いた？",
           experienceId: "logistics-lunch",
           scenePos: { left: "74%", top: "62%" },
         },
@@ -71,9 +73,9 @@ export const schoolLunch: ContentModule = {
     {
       id: "cook",
       name: "給食調理員",
-      catch: "数百〜数千人分の料理を作るプロ！",
+      catch: "数百〜数千人分の料理を、安全に作るプロ！",
       image: A("char-cook"),
-      discoveryLine: "たくさんの給食を、\n安全に、同じ時間までに完成させるプロ！",
+      discoveryLine: "たくさんの給食を、\n安全をたしかめながら完成させるプロ！",
       q2: [
         {
           id: "what",
@@ -81,7 +83,7 @@ export const schoolLunch: ContentModule = {
           icon: "🍳",
           body: [
             "野菜を洗う、切る、煮る、焼く。でも、それだけではありません。",
-            "たくさんの給食を、決められた時間までに安全に完成させる仕事です。",
+            "工程表にそって、たくさんの給食を安全に完成させる仕事です。温度の確認や記録も大事な仕事です。",
           ],
         },
         {
@@ -90,10 +92,10 @@ export const schoolLunch: ContentModule = {
           icon: "🕐",
           body: [],
           flow: [
-            "朝｜食材を受け取る・準備する",
-            "午前｜食材を洗う・切る、大量調理",
+            "朝｜食材を受け取る・下処理",
+            "午前｜大量調理・中心温度の確認と記録",
             "お昼前｜クラスごとに分けて給食へ！",
-            "午後｜戻ってきた食器や食缶を洗って消毒",
+            "午後｜食器や食缶を洗って消毒",
           ],
         },
         {
@@ -110,8 +112,8 @@ export const schoolLunch: ContentModule = {
           title: "実は！",
           icon: "💡",
           body: [
-            "給食センターでは、一日に何千食もの給食を作ることもあります。",
-            "「料理ができる」だけではなく、大量の料理を、安全に、同じ時間までに完成させることが専門性です。",
+            "給食センターでは、一日に何千食も作ることがあります。",
+            "「料理ができる」だけでなく、安全のルールを守りながら大量の料理を同じ時間までに完成させることが専門性です。",
           ],
         },
       ],
@@ -119,17 +121,18 @@ export const schoolLunch: ContentModule = {
     },
     {
       id: "nutrition",
-      name: "栄養教諭",
+      name: "栄養教諭・学校栄養職員",
       catch: "給食と「食べること」の先生！",
       image: A("char-nutrition"),
-      discoveryLine: "みんなの体に合った献立を考え、\n学校で「食べること」を教える先生！",
+      discoveryLine: "栄養・お金・季節をまとめて考えて、\nみんなの給食を成り立たせる仕事！",
       q2: [
         {
           id: "what",
           title: "どんな仕事？",
           icon: "📋",
           body: [
-            "給食を考えるだけではなく、学校で「食べること」について教える先生です。",
+            "献立を計画し、食材を選び、学校で「食べること」について教える仕事です。",
+            "天候や価格で食材が変わっても、栄養の基準を満たすように調整します。",
           ],
         },
         {
@@ -139,7 +142,7 @@ export const schoolLunch: ContentModule = {
           body: [],
           flow: [
             "給食の確認",
-            "給食管理・食育",
+            "献立・食材の管理、食育",
             "子どもの様子を見る",
             "これからの給食や食育を考える",
           ],
@@ -148,13 +151,16 @@ export const schoolLunch: ContentModule = {
           id: "become",
           title: "どうやったらなれる？",
           icon: "🎓",
-          body: ["栄養士・管理栄養士に関する学び ＋ 栄養教諭免許。"],
+          body: ["栄養士・管理栄養士に関する学び ＋ 栄養教諭免許（栄養教諭の場合）。"],
         },
         {
           id: "himitsu",
           title: "実は！",
           icon: "💡",
-          body: ["「栄養の専門家」であり「先生」でもある仕事です。"],
+          body: [
+            "「栄養の専門家」であり「先生」でもある仕事です。",
+            "アレルギーのある子には、みんなの献立とは別に、その子が安全に食べられる方法を個別に考えます。",
+          ],
         },
       ],
       related: ["管理栄養士", "栄養士", "食品開発", "調理"],
@@ -164,7 +170,7 @@ export const schoolLunch: ContentModule = {
       name: "農家・生産者",
       catch: "何か月も先を考えて、食べ物を育てるプロ！",
       image: A("char-farmer"),
-      discoveryLine: "天候や季節を読みながら、\n何か月も前から食べ物を育てて届けるプロ！",
+      discoveryLine: "品種・気温・カレンダーを読んで、\n何か月も前から育てる計画を立てるプロ！",
       q2: [
         {
           id: "what",
@@ -172,7 +178,7 @@ export const schoolLunch: ContentModule = {
           icon: "🌱",
           body: [
             "野菜、米、果物などを育てて届けます。",
-            "天候や季節を見ながら、何か月も先を考えて仕事をします。",
+            "品種の性質や天候を見ながら、何か月も先を考えて計画を立てます。",
           ],
         },
         {
@@ -201,33 +207,40 @@ export const schoolLunch: ContentModule = {
     },
     {
       id: "logistics",
-      name: "物流の仕事",
-      catch: "必要なものを、必要な場所へ届けるプロ！",
+      name: "給食の食材を届ける仕事",
+      catch: "温度と時間を守って、食べ物の安全をつなぐ！",
       image: A("char-logistics"),
-      discoveryLine: "食材や荷物を、決められた時間どおりに\n必要な場所へ届けるプロ！",
+      discoveryLine: "食材ごとの温度と納品時刻を守って、\n朝の学校へ安全に届ける仕事！",
       q2: [
         {
           id: "what",
           title: "どんな仕事？",
           icon: "🚚",
           body: [
-            "必要なものを、必要な場所へ届ける仕組みを支えています。",
+            "給食の食材を、決められた温度と時刻で学校へ届ける仕事です。",
+            "調理が始まる前の朝に届ける必要があります。",
           ],
         },
         {
           id: "kinds",
-          title: "実は一つの仕事ではない",
+          title: "実はひとつの仕事ではない",
           icon: "🧩",
-          body: [],
-          list: ["ドライバー", "倉庫", "配車・運行管理", "物流企画・管理", "…など"],
+          body: ["「届ける」の中には、いろんな役割の人がいます。"],
+          list: [
+            "配送の計画を考える人",
+            "トラックのドライバー",
+            "倉庫で商品を管理する人",
+            "学校側で受け取りを確認する人（検収）",
+            "…など",
+          ],
         },
         {
           id: "himitsu",
           title: "実は！",
           icon: "💡",
           body: [
-            "物流＝トラック運転手だけではありません。",
-            "食品では、温度や届ける時間もとても重要です。",
+            "食べ物によって「運ぶ温度」がちがいます。",
+            "学校に着いたら、学校側の担当者が温度などを確認してから受け取ります（検収）。",
           ],
         },
       ],
@@ -235,25 +248,32 @@ export const schoolLunch: ContentModule = {
     },
     {
       id: "recycle",
-      name: "食品リサイクルの世界",
-      catch: "食べ物の「その後」を資源に変える！",
+      name: "食べ残しを資源に変える工場の仕事",
+      catch: "食べ物の「その後」を、肥料などの資源に！",
       image: A("char-recycle"),
-      discoveryLine: "食べ残しや調理くずを、\n肥料などの資源に変えてつなぐ仕事！",
+      discoveryLine: "道具の性質を使い分けて異物を取りのぞき、\n食べ残しを安全な資源に変える仕事！",
       q2: [
         {
           id: "what",
-          title: "どんな世界？",
+          title: "どんな仕事？",
           icon: "♻️",
           body: [
-            "食べ残しや調理くずなどを処理したり、別の資源として活用したりします。",
+            "学校や店から届いた食べ残しを、肥料などの資源に変える工場の仕事です。",
+            "まざった異物を取りのぞくことが、安全な資源づくりの第一歩です。",
           ],
         },
         {
           id: "kinds",
-          title: "どんな仕事がある？",
+          title: "実はひとつの仕事ではない",
           icon: "🧩",
-          body: [],
-          list: ["収集・運搬", "リサイクル施設", "肥料化", "飼料化", "エネルギー利用", "…など"],
+          body: ["工場のまわりにも、いろんな役割の人がいます。"],
+          list: [
+            "食べ残しを集めて運ぶ人",
+            "工場の機械を動かす人",
+            "選別する人",
+            "できた肥料の品質を管理する人",
+            "…など",
+          ],
         },
         {
           id: "himitsu",
@@ -268,7 +288,7 @@ export const schoolLunch: ContentModule = {
   ],
 
   experiences: [
-    // ============ 給食調理員（メインQ1） ============
+    // ============ 給食調理員 ============
     {
       id: "cook-lunch",
       professionId: "cook",
@@ -276,74 +296,60 @@ export const schoolLunch: ContentModule = {
       gameType: "cook",
       place: { name: "給食室", image: A("bg-kitchen") },
       mission: {
-        title: "大変！\n今日の給食が間に合わない！",
-        lines: ["12:15まで、あと60分！", "500人分の給食を完成させよう！"],
-        deadline: "12:15",
+        title: "500人分の給食を、\n安全に完成させよう！",
+        lines: ["工程表と道具をたしかめながら進めよう。"],
       },
       tools: [
-        {
-          id: "kama",
-          name: "回転釜",
-          image: A("tool-kama"),
-          desc: "何百人分ものスープや煮物を一度に作れる大きな釜。ただし一度に作れるのは1品だけ！",
-        },
-        {
-          id: "oven",
-          name: "スチームオーブン",
-          image: A("tool-oven"),
-          desc: "蒸気と熱で、500切れの魚をいっぺんに焼ける調理機。",
-        },
-        {
-          id: "thermo",
-          name: "中心温度計",
-          image: A("tool-thermo"),
-          desc: "食べ物の中心の温度を測って、安全をたしかめる大事な道具。",
-        },
-        {
-          id: "plan",
-          name: "調理工程表",
-          emoji: "📋",
-          desc: "何を・いつ・どの設備で進めるかを組み立てる、段取りの設計図。",
-        },
-        {
-          id: "clock",
-          name: "時計",
-          emoji: "🕐",
-          desc: "給食の時間は待ってくれない。残り時間からいつも逆算する。",
-        },
+        { id: "chart", name: "作業工程表", emoji: "📋", desc: "チーフが事前に作った、今日の作業の設計図。" },
+        { id: "thermo", name: "中心温度計", image: A("tool-thermo"), desc: "食べ物の中心の温度をはかる。" },
+        { id: "rule", name: "衛生ルール", emoji: "🧼", desc: "安全のための決まり。温度や測り方も書いてある。" },
+        { id: "record", name: "記録票", emoji: "✍️", desc: "確認した温度と時刻を記録に残す。" },
       ],
       resolution: {
-        clock: "12:13",
-        title: "500人分、完成！",
-        lines: ["みんなのお昼に間に合った！", "給食がクラスへ運ばれていく…"],
+        title: "安全確認、完了！",
+        lines: [
+          "配缶して、検食もすませて、教室へ。",
+          "「いただきます！」の声が聞こえてきた。",
+        ],
       },
+      discoveryEcho:
+        "さっき、温度をはかって「まだ出せない」と気づいたよね。給食調理員は、こうやってたくさんの人が安全に食べられるかを確かめながら料理しています。",
+      seeds: ["はかって確かめる", "基準とくらべる", "大量に作るしくみ", "記録を残す", "とくになかった"],
     },
-    // ============ 栄養教諭 ============
+    // ============ 栄養教諭・学校栄養職員 ============
     {
       id: "nutrition-lunch",
       professionId: "nutrition",
       eventId: "lunch-late",
       gameType: "menu",
-      place: { name: "学校", image: A("bg-school") },
+      place: { name: "学校（給食を考える部屋）", image: A("bg-school") },
       mission: {
-        title: "明日の給食、何にする？",
-        lines: ["500人分の献立を考えよう！"],
+        title: "来月使う予定の野菜が、\n少なくなりそう！",
+        lines: ["資料を見ながら、献立と食材を調整しよう。"],
       },
       tools: [
-        { id: "nutri", name: "栄養チェック", emoji: "🥗", desc: "エネルギー・たんぱく質・野菜…500人の体をつくる組み合わせを見る。" },
-        { id: "budget", name: "予算表", emoji: "💴", desc: "500人分を、1人250円の予算に収める。" },
-        { id: "allergy", name: "アレルギー表", emoji: "⚠️", desc: "安全に食べられるか、全員分を確認する。" },
-        { id: "season", name: "旬カレンダー", emoji: "🌸", desc: "今の季節に合う食材がわかる。旬はおいしくて安い。" },
-        { id: "record", name: "食べ残し記録", emoji: "🍽️", desc: "前にどんな料理が残ったかの記録。" },
-        { id: "rule", name: "給食の基準", emoji: "📋", desc: "学校給食として必要な条件が決められている。" },
+        { id: "menu", name: "来月の献立", emoji: "📋", desc: "事前に計画してある献立表。" },
+        { id: "nutri", name: "栄養の基準", emoji: "🥗", desc: "給食1食に必要な栄養の目安。" },
+        { id: "price", name: "食材と価格", emoji: "💴", desc: "食材ごとの、今の値段の情報。" },
+        { id: "season", name: "旬・地場の情報", emoji: "🌸", desc: "今の季節に合う食材、この町でとれる食材。" },
+        { id: "kitchen", name: "調理場の情報", emoji: "🍳", desc: "給食室で作れる料理・作業の情報。" },
       ],
       resolution: {
-        title: "500人分の献立、完成！",
+        title: "来月の献立、調整できた！",
         lines: [
-          "栄養も、安全も、予算も、季節も。",
-          "いろんなことを考えて、明日の給食ができた！",
+          "使う食材が決まった。",
+          "注文が、農家や納入業者さんへ伝わっていく…",
         ],
       },
+      discoveryEcho:
+        "さっき、資料を見比べて「どの案でいくか」を決めたよね。栄養教諭・学校栄養職員は、こうやって栄養・お金・季節をまとめて考えて、みんなの給食を成り立たせています。",
+      seeds: [
+        "いろんな条件をくらべる",
+        "代わりの方法を考える",
+        "みんなが食べられる方法を考える",
+        "数字を見ながら決める",
+        "とくになかった",
+      ],
     },
     // ============ 農家・生産者 ============
     {
@@ -351,64 +357,81 @@ export const schoolLunch: ContentModule = {
       professionId: "farmer",
       eventId: "lunch-late",
       gameType: "farm",
-      place: { name: "畑（3か月前）", image: A("bg-farm") },
+      place: { name: "にんじん畑", image: A("bg-farm") },
       mission: {
-        title: "給食に使うにんじんが足りない！",
-        lines: ["でも、にんじんは今日作れない。", "…時をさかのぼって、3か月前の畑へ！"],
+        title: "給食で使うにんじんを\n育てたい！",
+        lines: ["でも、いつでも同じように作れるわけじゃない。", "資料を見て、育てる計画を立てよう。"],
       },
       tools: [
-        { id: "seed", name: "種・苗", image: A("item-seedling"), desc: "いつまくかで、収穫の時期が決まる。" },
-        { id: "weather", name: "天候", emoji: "🌦", desc: "太陽と雨。思いどおりにはならない相手。" },
-        { id: "water", name: "水やり", emoji: "🚿", desc: "暑い日ほど水の管理が大事。" },
-        { id: "machine", name: "農機具", emoji: "🚜", desc: "広い畑を耕し、収穫を助ける機械。" },
+        { id: "variety", name: "品種と栽培ごよみ", emoji: "🥕", desc: "品種ごとの、まきどき・日数・性質。" },
+        { id: "weather", name: "気温の情報", emoji: "🌡", desc: "今年の気温の予報と、発芽に良い温度。" },
+        { id: "order", name: "必要な時期", emoji: "📅", desc: "給食室からの注文。いつ・どれだけ必要か。" },
+        { id: "soil", name: "畑の土", emoji: "🟤", desc: "土の状態の情報。" },
       ],
       resolution: {
         title: "にんじん300kg、収穫！",
-        lines: ["トラックにのせて給食室へ。", "今日の給食は、何か月も前から始まっていた。"],
+        lines: [
+          "給食用の箱につめて、トラックへ。",
+          "今日の給食は、何か月も前から始まっていた。",
+        ],
       },
+      discoveryEcho:
+        "さっき、品種と気温とカレンダーを見比べて「いつ・何を育てるか」を決めたよね。農家・生産者は、こうやって何か月も先を考えて育てる計画を立てています。",
+      seeds: ["情報を見比べて計画する", "生きものを育てる", "天気を読む", "先のことを考える", "とくになかった"],
     },
-    // ============ 物流 ============
+    // ============ 給食の食材を届ける仕事 ============
     {
       id: "logistics-lunch",
       professionId: "logistics",
       eventId: "lunch-late",
       gameType: "logistics",
-      place: { name: "物流センター", image: A("bg-warehouse") },
+      place: { name: "食材を届ける会社（朝6:30）", image: A("bg-warehouse") },
       mission: {
-        title: "給食の食材がまだ届いてない！",
-        lines: ["11:00までに学校へ届けよう！"],
+        title: "給食の食材を、調理が始まる前に\n学校へ届けたい！",
+        lines: ["食材ごとの温度に気をつけて積みこもう。"],
       },
       tools: [
-        { id: "truck", name: "配送トラック", image: A("item-truck"), desc: "ふつうの荷台と、冷やして運べる冷蔵車がある。" },
-        { id: "map", name: "地図・道路情報", image: A("item-map"), desc: "どの道をどの順番で走るか。渋滞や工事もチェック。" },
-        { id: "time", name: "締切時刻", emoji: "⏰", desc: "給食は待ってくれない。時間から逆算する。" },
+        { id: "order", name: "学校からの注文書", emoji: "📄", desc: "今日届ける食材のリスト。" },
+        { id: "temp", name: "保存温度の資料", emoji: "🌡", desc: "食材ごとの、運ぶときの温度の決まり。" },
+        { id: "truck", name: "トラックの情報", image: A("item-truck"), desc: "冷蔵室と常温室がある配送車。" },
+        { id: "time", name: "納品時刻", emoji: "⏰", desc: "学校に届ける締め切りの時刻。" },
       ],
       resolution: {
-        clock: "11:00",
+        clock: "8:25",
         title: "食材、学校に到着！",
-        lines: ["これで給食が作れる！"],
+        lines: [
+          "学校の担当の人が温度をチェック。「OKです！」",
+          "食材が給食室へ運ばれていく。",
+        ],
       },
+      discoveryEcho:
+        "さっき、食材ごとに「どの温度で運ぶか」を分けたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。",
+      seeds: ["温度や条件を合わせる", "荷物をきちんと分ける", "時間から逆算する", "とくになかった"],
     },
-    // ============ 食品リサイクル ============
+    // ============ 食べ残しを資源に変える工場 ============
     {
       id: "recycle-lunch",
       professionId: "recycle",
       eventId: "lunch-late",
       gameType: "recycle",
-      place: { name: "給食のあとで", image: A("bg-recycle") },
+      place: { name: "リサイクル工場", image: A("bg-recycle") },
       mission: {
-        title: "こんなに食べ残しが！\nこれ、全部ごみになるの？",
-        lines: ["食べ物の「その後」を追いかけてみよう。"],
+        title: "食べ残しが工場に届いた。\nでも、このままではリサイクルできない！",
+        lines: ["まざっている異物を、道具を使い分けて取りのぞこう。"],
       },
       tools: [
-        { id: "sort", name: "分別", emoji: "🗂", desc: "何がまざっているかで、次の使い道が変わる。" },
-        { id: "compost", name: "肥料化", image: A("item-compost"), desc: "食べ残しを発酵させて、畑の肥料に変える。" },
-        { id: "feed", name: "飼料化", emoji: "🐖", desc: "動物のえさとして生かす方法もある。" },
+        { id: "rule", name: "受入ルール", emoji: "📋", desc: "この工場が受け入れられるもの・ダメなもの。" },
+        { id: "magnet", name: "磁選機", emoji: "🧲", desc: "強い磁石で異物を取りのぞく機械。" },
+        { id: "wind", name: "風力選別", emoji: "💨", desc: "風の力で異物を分ける機械。" },
+        { id: "hand", name: "手選別", emoji: "🫲", desc: "人の目で見て、異物を取りのぞく。" },
       ],
       resolution: {
-        title: "ごみじゃなくて、資源だった！",
-        lines: ["食べ残しが肥料になって、畑へ運ばれていく…"],
+        title: "きれいになった食べ残しが、\n資源に変わっていく！",
+        lines: ["発酵させて、約2か月。肥料のできあがり。"],
       },
+      discoveryEcho:
+        "さっき、磁石や風の性質を使い分けて異物を取りのぞいたよね。工場では、こうやって道具の性質をいかして、食べ残しを安全な肥料に変えています。",
+      seeds: ["道具の性質を使い分ける", "まざったものを分ける", "ごみが資源に変わる", "とくになかった"],
     },
   ],
 };

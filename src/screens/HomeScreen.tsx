@@ -18,7 +18,7 @@ export default function HomeScreen() {
         <header className="world-header">
           <div>
             <h1 className="logo">JIBUN CHOICE</h1>
-            <p className="tagline">バーチャル社会を冒険しよう</p>
+            <p className="tagline">この街、なにか起きてる。</p>
           </div>
           <button className="zukan-btn" onClick={() => navigate({ name: "zukan" })}>
             📖 しごと図鑑
@@ -29,7 +29,7 @@ export default function HomeScreen() {
         </header>
 
         <div className="town-stage">
-          {/* quiet places: faintly part of the world, not a menu */}
+          {/* quiet places: clearly marked as not-yet-open, but not dead */}
           {quietPlaces.map((p) => (
             <button
               key={p.id}
@@ -37,8 +37,9 @@ export default function HomeScreen() {
               style={{ left: p.mapPos!.left, top: p.mapPos!.top }}
               onClick={() => setPeek(peek === p.id ? null : p.id)}
             >
-              {p.name}
-              {peek === p.id && <small>きょうは静かみたい…</small>}
+              <span className="quiet-name">{p.name}</span>
+              <small>じゅんびちゅう</small>
+              {peek === p.id && <small className="quiet-peek">もうすぐ遊べるよ！</small>}
             </button>
           ))}
 
@@ -67,7 +68,7 @@ export default function HomeScreen() {
 
         <div className="world-ground">
           <img className="world-kids" src={A("kids-walking")} alt="" />
-          <p className="world-hint">🔥がついている場所で、なにかが起きているみたい。</p>
+          <p className="world-hint">🔥がついている場所で、なにかが起きているみたい。タップ！</p>
         </div>
       </div>
     </div>

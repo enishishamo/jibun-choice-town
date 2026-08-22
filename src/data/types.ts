@@ -68,6 +68,17 @@ export interface Q1Experience {
   tools: ToolInfo[];
   /** E: default resolution screen (games may add flourishes). */
   resolution: { clock?: string; title: string; lines: string[] };
+  /**
+   * One sentence connecting "what the child just did" to the real job,
+   * shown on the discovery screen (きみがさっき〜したよね。〜).
+   */
+  discoveryEcho: string;
+  /**
+   * 「好きの種」: choices for the one-question "どこがちょっと気になった？"
+   * asked after discovery. Derived from the actions in this Q1.
+   * NOT used for any aptitude diagnosis — just gently recorded.
+   */
+  seeds: string[];
 }
 
 /** One openable card in the Q2 "know the job" view. */

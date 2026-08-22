@@ -17,6 +17,12 @@ interface Progress {
   completed: string[];
   /** Professions revealed on a discovery card (unlocked in the zukan). */
   discovered: string[];
+  /**
+   * 「好きの種」: which action the child said felt interesting, per
+   * experience. Accumulated quietly for the future — never used to
+   * label or diagnose the child.
+   */
+  seeds: Record<string, string>;
 }
 
 interface GameStateValue {
@@ -27,6 +33,8 @@ interface GameStateValue {
   completeExperience: (experienceId: string, professionId: string) => void;
   hasCompleted: (experienceId: string) => boolean;
   hasDiscovered: (professionId: string) => boolean;
+  /** Record the child's 「好きの種」 answer for an experience. */
+  recordSeed: (experienceId: string, seed: string) => void;
   resetProgress: () => void;
 }
 
@@ -37,12 +45,14 @@ const load = (): Progress => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const p = JSON.parse(raw);
-      if (Array.isArray(p.completed) && Array.isArray(p.discovered)) return p;
+      if (Array.isArray(p.completed) && Array.isArray(p.discovered)) {
+        return { seeds: {}, ...p };
+      }
     }
   } catch {
     /* corrupted storage -> start fresh */
   }
-  return { completed: [], discovered: [] };
+  return { completed: [], discovered: [], seeds: {} };
 };
 
 const Ctx = createContext<GameStateValue | null>(null);
@@ -69,6 +79,7 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
       progress,
       completeExperience: (experienceId, professionId) =>
         setProgress((p) => ({
+          ...p,
           completed: p.completed.includes(experienceId)
             ? p.completed
             : [...p.completed, experienceId],
@@ -78,7 +89,9 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
         })),
       hasCompleted: (id) => progress.completed.includes(id),
       hasDiscovered: (id) => progress.discovered.includes(id),
-      resetProgress: () => setProgress({ completed: [], discovered: [] }),
+      recordSeed: (experienceId, seed) =>
+        setProgress((p) => ({ ...p, seeds: { ...p.seeds, [experienceId]: seed } })),
+      resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {} }),
     }),
     [screen, progress],
   );
