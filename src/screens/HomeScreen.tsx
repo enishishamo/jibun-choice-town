@@ -57,9 +57,7 @@ export default function HomeScreen() {
               >
                 <img src={A("ui-fire")} alt="" />
                 <span className="balloon-text">
-                  {ev.title.split("\n").map((l) => (
-                    <span key={l}>{l}<br /></span>
-                  ))}
+                  {ev.shortLabel ?? ev.title.split("\n").join("")}
                 </span>
               </button>
             );

@@ -14,6 +14,10 @@ import PowerGame from "./PowerGame";
 import SiteHeatGame from "./SiteHeatGame";
 import WaterGame from "./WaterGame";
 import UrbanHeatGame from "./UrbanHeatGame";
+import SourcingGame from "./SourcingGame";
+import RecipeGame from "./RecipeGame";
+import PackageGame from "./PackageGame";
+import FactoryLineGame from "./FactoryLineGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -28,4 +32,9 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   schedule_and_protect: SiteHeatGame, // 安全と進捗の両立を工程で調整
   allocate_and_forecast: WaterGame, // 限られた資源の配分＋先の予測
   layer_and_compare: UrbanHeatGame, // データを重ねて原因を探し、試す
+  // 物価高編
+  sourcing_mix: SourcingGame, // 条件を見比べて仕入れを組み立てる
+  recipe_balance: RecipeGame, // 配合を動かしてトレードオフを見る
+  package_design: PackageGame, // 素材×形×サイズを組み立ててテスト
+  line_debug: FactoryLineGame, // データで原因を探し、調整して再実行
 };

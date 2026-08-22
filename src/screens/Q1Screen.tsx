@@ -38,7 +38,15 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
           </button>
           {exp.place.image && (
             <div className="q1-place-stage">
-              <img className="q1-place-img" src={exp.place.image} alt={exp.place.name} />
+              <img
+                className="q1-place-img"
+                src={exp.place.image}
+                alt={exp.place.name}
+                style={{
+                  objectFit: exp.place.fit ?? "cover",
+                  objectPosition: exp.place.focus ?? "center",
+                }}
+              />
               <span className="place-tag">{exp.place.name}</span>
             </div>
           )}

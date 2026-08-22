@@ -20,11 +20,18 @@ export interface AreaEvent {
   id: string;
   placeId: string;
   title: string; // 大変！今日の給食が間に合わない！
+  /** Compact one-line label for the balloon on the town map. */
+  shortLabel?: string;
   areaName: string; // 給食のうらがわ
   areaLead: string; // prompt shown above the incident list
   incidents: Incident[];
   /** Center image of the exploration scene (default: the school). */
   sceneImage?: string;
+  /**
+   * If set, the area is drawn as ONE wide illustration with hotspots
+   * placed on it (instead of icons floating on a coloured backdrop).
+   */
+  sceneMap?: { image: string; opening?: { image: string; lines: string[] } };
   /** Visual mood of the scene ("heat" = orange sky etc.). */
   mood?: string;
   /**
@@ -35,6 +42,8 @@ export interface AreaEvent {
     intro: string;
     rows: { icon: string; label: string; view: string }[];
   };
+  /** Shown once every incident of this event has been experienced. */
+  wrapUp?: { image?: string; title: string; lines: string[] };
 }
 
 /**
@@ -78,7 +87,14 @@ export interface Q1Experience {
   eventId: string;
   gameType: string; // key into q1/registry
   /** A: where the child is taken. */
-  place: { name: string; image?: string };
+  place: {
+    name: string;
+    image?: string;
+    /** How the scene image is framed on the intro/game header. */
+    fit?: "cover" | "contain";
+    /** CSS object-position for the scene image (e.g. "center top"). */
+    focus?: string;
+  };
   /** B: the mission framing shown on the intro screen. */
   mission: { title: string; lines: string[]; deadline?: string };
   /** C: tools/expertise available during play. */

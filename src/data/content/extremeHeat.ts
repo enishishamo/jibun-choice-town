@@ -19,7 +19,7 @@ export const extremeHeat: ContentModule = {
       id: "town-heat",
       name: "街（猛暑）",
       eventId: "heat-wave",
-      mapPos: { left: "72%", top: "88%" },
+      mapPos: { left: "50%", top: "126%" },
     },
   ],
 
@@ -28,6 +28,7 @@ export const extremeHeat: ContentModule = {
       id: "heat-wave",
       placeId: "town-heat",
       title: "暑すぎる！\n街のあちこちで大変！",
+      shortLabel: "街が暑すぎる！",
       areaName: "猛暑の街",
       areaLead: "きょうは39℃。街のあちこちで、ちがう「こまった」が起きてる。\n気になるところをのぞいてみよう。",
       sceneImage: H("place-city"),

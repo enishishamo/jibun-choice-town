@@ -13,13 +13,12 @@ export const schoolLunch: ContentModule = {
       id: "school",
       name: "学校",
       eventId: "lunch-late",
-      mapPos: { left: "34%", top: "22%" },
+      mapPos: { left: "32%", top: "18%" },
     },
     // Visible in the world but quiet today — hints that the world is bigger.
-    { id: "hospital", name: "病院", mapPos: { left: "15%", top: "44%" } },
-    { id: "station", name: "駅", mapPos: { left: "85%", top: "50%" } },
-    { id: "shop", name: "お店", mapPos: { left: "24%", top: "78%" } },
-    { id: "park", name: "公園", mapPos: { left: "78%", top: "82%" } },
+    { id: "hospital", name: "病院", mapPos: { left: "10%", top: "70%" } },
+    { id: "station", name: "駅", mapPos: { left: "92%", top: "72%" } },
+    { id: "park", name: "公園", mapPos: { left: "88%", top: "26%" } },
   ],
 
   events: [
@@ -27,6 +26,7 @@ export const schoolLunch: ContentModule = {
       id: "lunch-late",
       placeId: "school",
       title: "大変！\n今日の給食が間に合わない！",
+      shortLabel: "給食が間に合わない！",
       areaName: "給食のうらがわ",
       areaLead: "給食のうらがわでは、いろんな仕事が動いてる。\n気になるところをのぞいてみよう。",
       incidents: [
