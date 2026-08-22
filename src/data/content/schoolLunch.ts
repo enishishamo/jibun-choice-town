@@ -293,7 +293,7 @@ export const schoolLunch: ContentModule = {
       id: "cook-lunch",
       professionId: "cook",
       eventId: "lunch-late",
-      gameType: "cook",
+      gameType: "inspect_and_measure",
       place: { name: "給食室", image: A("bg-kitchen") },
       mission: {
         title: "500人分の給食を、\n安全に完成させよう！",
@@ -313,15 +313,15 @@ export const schoolLunch: ContentModule = {
         ],
       },
       discoveryEcho:
-        "さっき、温度をはかって「まだ出せない」と気づいたよね。給食調理員は、こうやってたくさんの人が安全に食べられるかを確かめながら料理しています。",
-      seeds: ["はかって確かめる", "基準とくらべる", "大量に作るしくみ", "記録を残す", "とくになかった"],
+        "さっき、魚の温度を測って、基準に届いているか確かめたよね。500人が安全に食べられるように、こうやって一つずつ確かめながら作る。",
+      seeds: ["道具を使って測る", "数字を見て判断する", "たくさんの人の安全を守る", "うまくいくまで試す", "とくにない"],
     },
     // ============ 栄養教諭・学校栄養職員 ============
     {
       id: "nutrition-lunch",
       professionId: "nutrition",
       eventId: "lunch-late",
-      gameType: "menu",
+      gameType: "drag_and_drop",
       place: { name: "学校（給食を考える部屋）", image: A("bg-school") },
       mission: {
         title: "来月使う予定の野菜が、\n少なくなりそう！",
@@ -342,13 +342,13 @@ export const schoolLunch: ContentModule = {
         ],
       },
       discoveryEcho:
-        "さっき、資料を見比べて「どの案でいくか」を決めたよね。栄養教諭・学校栄養職員は、こうやって栄養・お金・季節をまとめて考えて、みんなの給食を成り立たせています。",
+        "さっき、トレーの料理を入れかえながら、栄養・お金・調達のバランスが合う組み合わせを探したよね。栄養教諭・学校栄養職員は、こうやってみんなの給食を成り立たせています。",
       seeds: [
-        "いろんな条件をくらべる",
-        "代わりの方法を考える",
-        "みんなが食べられる方法を考える",
-        "数字を見ながら決める",
-        "とくになかった",
+        "条件を見ながら入れかえる",
+        "代わりを考える",
+        "数字を見て決める",
+        "みんなの食事を考える",
+        "とくにない",
       ],
     },
     // ============ 農家・生産者 ============
@@ -356,7 +356,7 @@ export const schoolLunch: ContentModule = {
       id: "farmer-lunch",
       professionId: "farmer",
       eventId: "lunch-late",
-      gameType: "farm",
+      gameType: "sow_and_grow",
       place: { name: "にんじん畑", image: A("bg-farm") },
       mission: {
         title: "給食で使うにんじんを\n育てたい！",
@@ -376,19 +376,19 @@ export const schoolLunch: ContentModule = {
         ],
       },
       discoveryEcho:
-        "さっき、品種と気温とカレンダーを見比べて「いつ・何を育てるか」を決めたよね。農家・生産者は、こうやって何か月も先を考えて育てる計画を立てています。",
-      seeds: ["情報を見比べて計画する", "生きものを育てる", "天気を読む", "先のことを考える", "とくになかった"],
+        "さっき、種をえらんで畑にまいて、うまく育つまで試したよね。農家・生産者は、品種や天候を読みながら、何か月も先の「必要な時期」から逆算して育てています。",
+      seeds: ["試してうまくいく方法を探す", "先のことから逆算する", "生きものを育てる", "天気や自然を読む", "とくにない"],
     },
     // ============ 給食の食材を届ける仕事 ============
     {
       id: "logistics-lunch",
       professionId: "logistics",
       eventId: "lunch-late",
-      gameType: "logistics",
-      place: { name: "食材を届ける会社（朝6:30）", image: A("bg-warehouse") },
+      gameType: "load_and_route",
+      place: { name: "食材を届ける会社（朝7:00）", image: A("bg-warehouse") },
       mission: {
-        title: "給食の食材を、調理が始まる前に\n学校へ届けたい！",
-        lines: ["食材ごとの温度に気をつけて積みこもう。"],
+        title: "2つの学校に、調理が始まる前に\n食材を届けたい！",
+        lines: ["温度と、回る順番。どっちも考えて出発しよう。"],
       },
       tools: [
         { id: "order", name: "学校からの注文書", emoji: "📄", desc: "今日届ける食材のリスト。" },
@@ -397,23 +397,20 @@ export const schoolLunch: ContentModule = {
         { id: "time", name: "納品時刻", emoji: "⏰", desc: "学校に届ける締め切りの時刻。" },
       ],
       resolution: {
-        clock: "8:25",
-        title: "食材、学校に到着！",
-        lines: [
-          "学校の担当の人が温度をチェック。「OKです！」",
-          "食材が給食室へ運ばれていく。",
-        ],
+        clock: "8:20",
+        title: "2校とも、安全な状態で時間までに届いた！",
+        lines: [],
       },
       discoveryEcho:
-        "さっき、食材ごとに「どの温度で運ぶか」を分けたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。",
-      seeds: ["温度や条件を合わせる", "荷物をきちんと分ける", "時間から逆算する", "とくになかった"],
+        "さっき、食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。",
+      seeds: ["温度や時間の条件を守る", "順番ややり方を組み立てる", "うまくいくまで積み直す", "とくにない"],
     },
     // ============ 食べ残しを資源に変える工場 ============
     {
       id: "recycle-lunch",
       professionId: "recycle",
       eventId: "lunch-late",
-      gameType: "recycle",
+      gameType: "sort_out",
       place: { name: "リサイクル工場", image: A("bg-recycle") },
       mission: {
         title: "食べ残しが工場に届いた。\nでも、このままではリサイクルできない！",
@@ -430,8 +427,8 @@ export const schoolLunch: ContentModule = {
         lines: ["発酵させて、約2か月。肥料のできあがり。"],
       },
       discoveryEcho:
-        "さっき、磁石や風の性質を使い分けて異物を取りのぞいたよね。工場では、こうやって道具の性質をいかして、食べ残しを安全な肥料に変えています。",
-      seeds: ["道具の性質を使い分ける", "まざったものを分ける", "ごみが資源に変わる", "とくになかった"],
+        "さっき、磁石や網を使い分けて異物を取りのぞいたよね。工場では、こうやって道具の性質をいかして、食べ残しを安全な肥料に変えています。",
+      seeds: ["道具を使い分ける", "まざった物を仕分ける", "ごみが資源に変わる", "とくにない"],
     },
   ],
 };

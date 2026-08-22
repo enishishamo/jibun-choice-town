@@ -1,89 +1,74 @@
-// Q1: 栄養教諭・学校栄養職員
-// B: 来月使う予定のほうれん草が天候の影響で不足しそう。
-// C: 献立表・栄養基準・価格・旬地場・調理場の資料（中身が判断材料）。
-// D: 資料を読むと対応案が思い浮かぶ（=C閲覧で案が解放）。案ごとに
-//    栄養・予算・地場・調理のバランスが違い、成立する解は複数ある。
-// E: 食材が決まり、注文が農家・納入業者へつながる。
+// Q1: 栄養教諭・学校栄養職員 (gameType: drag_and_drop)
+// B: 来月の献立の副菜「ほうれん草のごまあえ」が長雨で調達できない。
+// D: 候補の料理をトレーへドラッグして入れかえると、栄養・予算・調達・
+//    調理の状態がリアルタイムに変わる。成立する組み合わせは複数ある。
+// C: 栄養基準・予算・旬調達・残食記録は「必要になったら開く」資料。
+//    ×や△の理由は資料の中にしか書かれていない。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import { useDragDrop } from "./useDragDrop";
 
-interface Plan {
+// 0=×, 1=△, 2=○, 3=◎
+const G = ["×", "△", "○", "◎"];
+
+interface SideDish {
   id: string;
-  fromDoc: string; // which document sparks this idea
-  title: string;
-  detail: string;
-  evals: { label: string; grade: "◎" | "○" | "△" }[];
-  followUp: string; // what happens next if chosen
+  name: string;
+  emoji: string;
+  nutri: number;
+  budget: number;
+  supply: number;
+  cook: number;
 }
 
-const PLANS: Plan[] = [
-  {
-    id: "same-veg",
-    fromDoc: "price",
-    title: "案：別の産地からほうれん草を確保する",
-    detail: "献立はそのまま。ただし今は値段が上がっている。",
-    evals: [
-      { label: "献立どおり", grade: "◎" },
-      { label: "栄養", grade: "◎" },
-      { label: "予算", grade: "△" },
-      { label: "地場", grade: "△" },
-    ],
-    followUp: "納入業者さんに、別の産地のほうれん草をさがしてもらう。",
-  },
-  {
-    id: "swap-veg",
-    fromDoc: "season",
-    title: "案：地場の小松菜に変更する",
-    detail: "同じ青菜のなかま。ごまあえも同じ作り方でOK。",
-    evals: [
-      { label: "栄養", grade: "◎" },
-      { label: "予算", grade: "◎" },
-      { label: "地場", grade: "◎" },
-      { label: "調理", grade: "◎" },
-    ],
-    followUp: "この町の農家さんに、小松菜を注文する。",
-  },
-  {
-    id: "swap-dish",
-    fromDoc: "kitchen",
-    title: "案：料理ごと、旬のキャベツの料理に変更する",
-    detail: "安くて旬。ただし作業が変わるので調理場と相談が必要。",
-    evals: [
-      { label: "予算", grade: "◎" },
-      { label: "旬", grade: "◎" },
-      { label: "栄養", grade: "○" },
-      { label: "調理", grade: "△" },
-    ],
-    followUp: "調理場のチーフと作業を確認して、キャベツを注文する。",
-  },
+const ORIGINAL: SideDish = {
+  id: "hourensou",
+  name: "ほうれん草のごまあえ",
+  emoji: "🥬",
+  nutri: 3,
+  budget: 2,
+  supply: 0, // 長雨で調達できない
+  cook: 3,
+};
+
+const CANDIDATES: SideDish[] = [
+  { id: "betsusanchi", name: "ほうれん草（別の産地）", emoji: "🥬", nutri: 3, budget: 1, supply: 2, cook: 3 },
+  { id: "komatsuna", name: "小松菜のごまあえ", emoji: "🥗", nutri: 3, budget: 3, supply: 3, cook: 3 },
+  { id: "cabbage", name: "キャベツのおかかあえ", emoji: "🥦", nutri: 2, budget: 3, supply: 3, cook: 2 },
+  { id: "potato", name: "フライドポテト", emoji: "🍟", nutri: 0, budget: 3, supply: 3, cook: 3 },
 ];
 
-type Phase = "brief" | "board" | "confirm";
+const ALL = [ORIGINAL, ...CANDIDATES];
 
 export default function MenuGame({ onComplete }: Q1GameProps) {
-  const [phase, setPhase] = useState<Phase>("brief");
-  const [opened, setOpened] = useState<string[]>([]);
-  const [picked, setPicked] = useState<Plan | null>(null);
+  const [sideId, setSideId] = useState(ORIGINAL.id);
+  const [note, setNote] = useState<string | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null); // tap fallback
 
-  const markOpened = (id: string) =>
-    setOpened((o) => (o.includes(id) ? o : [...o, id]));
+  const side = ALL.find((d) => d.id === sideId)!;
 
-  const unlockedPlans = PLANS.filter((p) => opened.includes(p.fromDoc));
+  const swap = (itemId: string, zoneId: string) => {
+    if (zoneId !== "side") return;
+    setSideId(itemId);
+    setSelected(null);
+    setNote(null);
+  };
+
+  const { drag, startDrag, surfaceProps } = useDragDrop(swap, (id) => {
+    setSelected(selected === id ? null : id);
+    setNote(null);
+  });
+
+  const statuses = [
+    { icon: "🥗", label: "栄養", v: side.nutri },
+    { icon: "💴", label: "予算", v: side.budget },
+    { icon: "🚚", label: "調達", v: side.supply },
+    { icon: "🍳", label: "調理", v: side.cook },
+  ];
 
   const docs = [
-    {
-      id: "menu",
-      icon: "📋",
-      title: "来月の献立（計画ずみ）",
-      body: (
-        <>
-          <p>11月の献立（ある日）：</p>
-          <p>🍚 ごはん ／ 🐟 さばの塩焼き ／ 🥬 <strong>ほうれん草のごまあえ</strong> ／ 🥣 具だくさんみそ汁</p>
-          <p className="soft-note">献立は1か月以上前に計画してある。</p>
-        </>
-      ),
-    },
     {
       id: "nutri",
       icon: "🥗",
@@ -91,134 +76,149 @@ export default function MenuGame({ onComplete }: Q1GameProps) {
       body: (
         <>
           <p>給食1食で、エネルギーや鉄・カルシウムなどの目安が決められている。</p>
-          <p>ほうれん草や小松菜などの<strong>青菜は、鉄やカルシウムの大事なもと</strong>。減らすなら代わりが必要。</p>
+          <p>ほうれん草・小松菜などの<strong>青菜は鉄やカルシウムの大事なもと</strong>。ポテトに変えると、この日は基準に届かない。</p>
         </>
       ),
     },
     {
-      id: "price",
+      id: "budget",
       icon: "💴",
-      title: "食材と価格",
+      title: "予算",
       body: (
         <>
-          <p>ほうれん草：いつもの約1.5倍に値上がり中（長雨で不作）</p>
-          <p>小松菜（地場）：値段は安定。手に入りやすい</p>
-          <p>キャベツ：今は安い</p>
-          <p className="soft-note">※価格は市場の状況で毎週変わる。</p>
+          <p>給食は1食ごとの材料費が決まっている。</p>
+          <p>別の産地のほうれん草は、今は<strong>いつもの約1.5倍の値段</strong>（だから予算△）。小松菜・キャベツは安定。</p>
         </>
       ),
     },
     {
-      id: "season",
+      id: "supply",
       icon: "🌸",
-      title: "旬・地場の情報",
+      title: "旬・調達の情報",
       body: (
         <>
-          <p>11月においしい野菜：<strong>小松菜・キャベツ・だいこん</strong> など。</p>
-          <p>小松菜は<strong>この町の農家さんも育てている</strong>（地場食材）。</p>
-          <p>ほうれん草も冬が旬だが、今年は長雨のえいきょうで少ない。</p>
+          <p>いつものほうれん草は<strong>長雨で調達×</strong>。</p>
+          <p>11月は<strong>小松菜（この町の地場野菜）・キャベツ</strong>がおいしくて手に入りやすい。</p>
         </>
       ),
     },
     {
-      id: "kitchen",
-      icon: "🍳",
-      title: "調理場の情報",
+      id: "record",
+      icon: "🍽️",
+      title: "残食記録",
       body: (
         <>
-          <p>「ごまあえ」は青菜をゆでてあえる料理。<strong>小松菜でも同じ作り方でOK</strong>。</p>
-          <p>料理そのものを変えるときは、作業の流れや設備を調理場と確認する必要がある。</p>
+          <p>ポテト：人気でいつも完食。でも青菜がなくなる…</p>
+          <p>キャベツのおかかあえ：前回けっこう好評。</p>
+          <p>ごまあえ：少し残る日もあるが、大事な鉄のもと。</p>
         </>
       ),
     },
   ];
 
-  if (phase === "brief") {
+  if (confirmed) {
     return (
       <div className="game board-game">
-        <div className="trouble-card">
-          <span className="trouble-flash">📞 産地から連絡</span>
-          <p className="trouble-title">
-            「長雨のえいきょうで、来月分の<br />ほうれん草が少なくなりそうです。<br />値段も上がりそうです…」
-          </p>
-          <p className="trouble-line">
-            来月の献立には「ほうれん草のごまあえ」がある。<br />どう調整する？
-          </p>
+        <div className="tray2 done">
+          <span className="tray2-slot fixed">🍚 ごはん</span>
+          <span className="tray2-slot fixed">🐟 さばの塩焼き</span>
+          <span className="tray2-slot ok">{side.emoji} {side.name}</span>
+          <span className="tray2-slot fixed">🥣 みそ汁</span>
         </div>
-        <button className="btn primary big" onClick={() => setPhase("board")}>
-          資料を見て考える
+        <p className="game-line center-line">
+          来月の献立、調整できた！<br />
+          変わった注文が、農家さんや納入業者さんへ伝わっていく…
+        </p>
+        <button className="btn primary big" onClick={onComplete}>
+          この献立でいく！
         </button>
       </div>
     );
   }
 
-  if (phase === "confirm" && picked) {
-    return (
-      <div className="game board-game">
-        <div className="plan-card chosen">
-          <span className="plan-title">{picked.title}</span>
-          <div className="plan-evals">
-            {picked.evals.map((e) => (
-              <span key={e.label} className={`eval-chip g${e.grade === "◎" ? 2 : e.grade === "○" ? 1 : 0}`}>
-                {e.label} {e.grade}
-              </span>
-            ))}
-          </div>
-          <p className="plan-follow">{picked.followUp}</p>
-        </div>
-        <p className="game-line soft">
-          どの案も「まちがい」じゃない。何を大事にするかで答えが変わるのが、この仕事。
-        </p>
-        <div className="stack">
-          <button className="btn primary big" onClick={onComplete}>
-            この案でいく！
-          </button>
-          <button className="btn ghost" onClick={() => { setPicked(null); setPhase("board"); }}>
-            やっぱり考え直す
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const acceptable = side.supply >= 1 && side.nutri >= 1;
 
   return (
-    <div className="game board-game">
+    <div className="game board-game" {...surfaceProps}>
       <div className="mission-bar">
-        <span className="mission-bar-title">ほうれん草が足りない！どう調整する？</span>
+        <span className="mission-bar-title">
+          ⚠️ 副菜のほうれん草が調達できない！トレーの料理を入れかえよう
+        </span>
         <div className="mission-chips">
-          <span className={`mchip ${opened.length >= 2 ? "ok" : ""}`}>
-            {opened.length >= 2 ? "✓" : "・"} 資料を読む（{Math.min(opened.length, 2)}/2）
-          </span>
-          <span className={`mchip ${picked ? "ok" : ""}`}>・ 案を決める</span>
+          {statuses.map((s) => (
+            <span key={s.label} className={`mchip ${s.v >= 2 ? "ok" : s.v === 1 ? "soft" : "bad"}`}>
+              {s.icon} {s.label} {G[s.v]}
+            </span>
+          ))}
         </div>
       </div>
 
-      <InfoCards cards={docs} onOpen={markOpened} />
-
-      <div className="plan-zone">
-        <span className="doc-label">💡 思いついた案</span>
-        {unlockedPlans.length === 0 && (
-          <p className="plan-hint">
-            まだ案が思いつかない…。まずは資料をひらいて、状況をつかもう。
-          </p>
-        )}
-        {unlockedPlans.map((p) => (
-          <button
-            key={p.id}
-            className="plan-card"
-            onClick={() => {
-              setPicked(p);
-              setPhase("confirm");
-            }}
-          >
-            <span className="plan-title">{p.title}</span>
-            <span className="plan-detail">{p.detail}</span>
-          </button>
-        ))}
-        {unlockedPlans.length > 0 && unlockedPlans.length < PLANS.length && (
-          <p className="plan-hint">ほかの資料を読むと、べつの案も思いつくかも。</p>
-        )}
+      <div className="tray2" data-drop-zone>
+        <span className="tray2-slot fixed">🍚 ごはん</span>
+        <span className="tray2-slot fixed">🐟 さばの塩焼き</span>
+        <button
+          className={`tray2-slot swap ${side.supply === 0 ? "trouble" : "ok"} ${drag || selected ? "ready" : ""}`}
+          data-drop="side"
+          onClick={() => {
+            if (selected) swap(selected, "side");
+          }}
+        >
+          <small>副菜（ここに入れかえ）</small>
+          {side.emoji} {side.name}
+          {side.supply === 0 && <small className="slot-warn">⚠ 調達できない！</small>}
+        </button>
+        <span className="tray2-slot fixed">🥣 みそ汁</span>
       </div>
+
+      <div className="candidate-zone">
+        <span className="doc-label">🍲 かわりの候補（トレーへドラッグ）</span>
+        <div className="choice-row wrap">
+          {CANDIDATES.filter((c) => c.id !== sideId).map((c) => (
+            <button
+              key={c.id}
+              className={`choice-card drag-item ${selected === c.id ? "selected" : ""}`}
+              onPointerDown={startDrag(c.id)}
+            >
+              <span className="choice-emoji">{c.emoji}</span>
+              <span className="choice-name">{c.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {note && <p className="game-note">{note}</p>}
+
+      <InfoCards cards={docs} label="こまったら見る資料" />
+
+      <button
+        className="btn primary big"
+        onClick={() => {
+          if (side.supply === 0) {
+            setNote("まだ副菜が調達できないまま…。候補の料理をトレーにドラッグして入れかえよう。");
+            return;
+          }
+          if (side.nutri === 0) {
+            setNote("おいしそうだけど、なにか引っかかる…。🥗栄養の基準をひらいて確かめてみよう。");
+            return;
+          }
+          setNote(null);
+          setConfirmed(true);
+        }}
+      >
+        これでいけるか確認する
+      </button>
+
+      {acceptable && (
+        <p className="game-line soft">
+          ちなみに、成立する組み合わせはひとつじゃない。何を大事にするかで変わるよ。
+        </p>
+      )}
+
+      {drag && (
+        <div className="drag-ghost" style={{ left: drag.x, top: drag.y }}>
+          {ALL.find((d) => d.id === drag.id)?.emoji}
+        </div>
+      )}
     </div>
   );
 }

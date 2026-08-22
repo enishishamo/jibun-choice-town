@@ -1,29 +1,39 @@
-// Q1: 給食調理員
-// B: 500人分を安全に完成させる（工程表はチーフが事前に作成済み）。
-// C: 作業工程表・衛生ルール・中心温度計・記録票。
-// D: 「測る→基準と比べる→対応する→再確認する→記録する」。
-//    どこを測るかは衛生ルールを読まないと選べない。
-//    温度基準は「中心75℃以上・1分以上」に統一。
-// E: 配缶→検食→教室→いただきます。
+// Q1: 給食調理員 (gameType: inspect_and_measure)
+// B: 工程表（事前作成ずみ）にそって、500人分を安全に完成させる。
+// D: 道具主導。子どもが自分で温度計を手に取り、魚のどこを測るか選び、
+//    基準（中心75℃以上・1分以上）と見比べ、オーブンを操作して加熱を
+//    続け、もう一度測って、記録票に残す。
+//    「次へ」ではなく道具の操作でしか進まない。
+//    途中、温度計の器具衛生（二次汚染への気づき）を1つ入れる。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 
-const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
-
-type Phase = "brief" | "chart" | "where" | "measure1" | "compare" | "measure2" | "record";
-
-const SPOTS = [
-  { id: "thin", label: "手前のうすい切り身", ok: false },
-  { id: "middle", label: "まんなかの切り身", ok: false },
-  { id: "thick", label: "いちばん厚い切り身", ok: true },
+type SpotId = "thin" | "middle" | "thick";
+const SPOTS: { id: SpotId; label: string }[] = [
+  { id: "thin", label: "うすい切り身" },
+  { id: "middle", label: "ふつうの切り身" },
+  { id: "thick", label: "いちばん厚い切り身" },
 ];
+// round1: 厚いところがまだ低い / round2: 追加加熱後
+const TEMPS: Record<1 | 2, Record<SpotId, number>> = {
+  1: { thin: 76, middle: 68, thick: 62 },
+  2: { thin: 82, middle: 78, thick: 76 },
+};
 
-export default function CookGame({ experience, onComplete }: Q1GameProps) {
-  const [phase, setPhase] = useState<Phase>("brief");
+export default function CookGame({ onComplete }: Q1GameProps) {
+  const [holdThermo, setHoldThermo] = useState(false);
+  const [round, setRound] = useState<1 | 2>(1);
+  const [measured, setMeasured] = useState<Record<SpotId, number | null>>({
+    thin: null,
+    middle: null,
+    thick: null,
+  });
   const [note, setNote] = useState<string | null>(null);
-  const [stuck, setStuck] = useState(false); // thermometer inserted (1st round)
-  const [temps2, setTemps2] = useState<number[]>([]); // 2nd round: 3 points
+  const [heated, setHeated] = useState(false);
+  const [sanitizeAsk, setSanitizeAsk] = useState(false);
+  const [sanitized, setSanitized] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [recorded, setRecorded] = useState(false);
 
   const docs = [
@@ -33,8 +43,8 @@ export default function CookGame({ experience, onComplete }: Q1GameProps) {
       title: "作業工程表（チーフ作成）",
       body: (
         <>
-          <p>9:00 下処理 → 10:15 加熱調理 → <strong>11:20 中心温度の確認</strong> → 11:40 配缶 → 11:50 検食 → 12:15 給食</p>
-          <p className="soft-note">工程表は事前に作られている。これを確認しながら動く。</p>
+          <p>9:00 下処理 → 10:15 加熱調理 → <strong>11:20 中心温度の確認</strong> → 11:40 配缶 → 11:50 検食</p>
+          <p className="soft-note">工程表は事前に作られている。確認しながら動く。</p>
         </>
       ),
     },
@@ -44,213 +54,189 @@ export default function CookGame({ experience, onComplete }: Q1GameProps) {
       title: "衛生ルール",
       body: (
         <>
-          <p>加熱は<strong>中心75℃以上になってから、1分以上</strong>続けて確認する。</p>
-          <p>温度は<strong>いちばん火が通りにくいところ</strong>（厚い切り身など）をえらんで、<strong>3か所以上</strong>はかる。</p>
-          <p>確認した温度と時刻は記録票に残す。</p>
-        </>
-      ),
-    },
-    {
-      id: "record",
-      icon: "✍️",
-      title: "記録票",
-      body: (
-        <>
-          <p>中心温度の記録：（まだ記入なし）</p>
-          <p className="soft-note">確認がすんだら、ここに記入する。</p>
+          <p>加熱は<strong>中心75℃以上になってから、1分以上</strong>。</p>
+          <p><strong>いちばん火が通りにくいところ</strong>（厚い切り身など）をふくめて<strong>3か所以上</strong>はかる。</p>
+          <p>温度計などの器具は、使うたびに<strong>アルコールで消毒</strong>する。</p>
+          <p>確認した温度と時刻は記録票へ。</p>
         </>
       ),
     },
   ];
 
-  if (phase === "brief") {
+  const measure = (spot: SpotId) => {
+    if (!holdThermo) {
+      setNote("それには道具がいる。下の道具から、どれを使う？");
+      return;
+    }
+    if (round === 2 && !sanitized && !sanitizeAsk) {
+      // one hygiene beat before re-measuring (二次汚染への気づき)
+      setSanitizeAsk(true);
+      setNote(null);
+      return;
+    }
+    setMeasured((m) => ({ ...m, [spot]: TEMPS[round][spot] }));
+    setNote(null);
+  };
+
+  const allMeasured = SPOTS.every((s) => measured[s.id] !== null);
+  const minTemp = Math.min(...SPOTS.map((s) => measured[s.id] ?? 999));
+  const anyMeasured = SPOTS.some((s) => measured[s.id] !== null);
+  const thickLow = measured.thick !== null && measured.thick < 75;
+  const round2ok = round === 2 && allMeasured && minTemp >= 75;
+
+  const openSheet = () => {
+    if (round === 1 || !allMeasured) {
+      setNote(
+        "記録の前に…🧼衛生ルールを見てみよう。「厚いところをふくめて3か所以上」「75℃以上・1分以上」。まだそろってる？",
+      );
+      return;
+    }
+    if (!round2ok) return;
+    setSheetOpen(true);
+    setNote(null);
+  };
+
+  if (sheetOpen) {
     return (
       <div className="game board-game">
-        <img className="game-scene" src={experience.place.image} alt="給食室" />
-        <div className="intro-monologue">
-          <img src={A("char-cook")} alt="" />
-          <div>
-            <p>今日は500人分。オーブンでは焼き魚500切れを加熱中。</p>
-            <p className="intro-q">安全に出せるかどうか、どうやって確かめるんだろう？</p>
-          </div>
+        <div className="clock-bar">
+          <span className="clock-emoji">🕐</span>
+          <span className="clock-now">11:36</span>
+          <span className="clock-goal">工程表どおり、あとは配缶へ</span>
         </div>
-        <button className="btn primary big" onClick={() => setPhase("chart")}>
-          工程表をたしかめる
-        </button>
-      </div>
-    );
-  }
-
-  const header = (
-    <div className="clock-bar">
-      <span className="clock-emoji">🕐</span>
-      <span className="clock-now">{phase === "record" ? "11:35" : "11:20"}</span>
-      <span className="clock-goal">工程表：中心温度の確認の時間</span>
-    </div>
-  );
-
-  if (phase === "chart") {
-    return (
-      <div className="game board-game">
-        {header}
-        <InfoCards cards={docs} label="給食室の資料" />
-        <p className="game-line">
-          工程表によると、いまは<strong>中心温度の確認</strong>の時間。
-          オーブンから焼き魚の天板が出てきた！
-        </p>
-        <button className="btn primary big" onClick={() => setPhase("where")}>
-          🌡 中心温度計を手に取る
-        </button>
-      </div>
-    );
-  }
-
-  if (phase === "where") {
-    return (
-      <div className="game board-game">
-        {header}
-        <InfoCards cards={docs} label="給食室の資料" />
-        <p className="game-line">
-          500切れぜんぶは、はかれない。<strong>どの魚をはかる？</strong>
-        </p>
-        {note && <p className="game-note">{note}</p>}
-        <div className="stack">
-          {SPOTS.map((s) => (
-            <button
-              key={s.id}
-              className="btn choice"
-              onClick={() => {
-                if (!s.ok) {
-                  setNote(
-                    "うすいところが75℃でも、厚いところはまだかもしれない…。🧼衛生ルールに「どこをはかるか」が書いてあるよ。",
-                  );
-                  return;
-                }
-                setNote(null);
-                setPhase("measure1");
-              }}
-            >
-              🐟 {s.label}
-            </button>
-          ))}
+        <div className="record-sheet">
+          <span className="doc-label">✍️ 中心温度 記録票</span>
+          <div className="record-row"><span>料理</span><span>焼き魚（さば）</span></div>
+          <div className="record-row"><span>時刻</span><span>11:35</span></div>
+          <div className="record-row"><span>中心温度（3か所）</span><span>82℃・78℃・76℃</span></div>
+          <div className="record-row"><span>75℃以上・1分以上</span><span>{recorded ? "✓ 確認ずみ" : "─"}</span></div>
         </div>
-      </div>
-    );
-  }
-
-  if (phase === "measure1") {
-    return (
-      <div className="game board-game">
-        {header}
-        <div className="measure-box">
-          {!stuck ? (
-            <>
-              <img src={A("tool-thermo")} alt="中心温度計" />
-              <p className="game-line">いちばん厚い切り身の、まんなかへ…</p>
-              <button className="btn primary big" onClick={() => setStuck(true)}>
-                🌡 温度計をさす
-              </button>
-            </>
-          ) : (
-            <>
-              <img src={A("tool-thermo")} alt="中心温度計" />
-              <p className="temp bad">中心温度 62℃</p>
-              <p className="game-line">…この温度って、出していいの？</p>
-              <button className="btn primary big" onClick={() => setPhase("compare")}>
-                🧼 衛生ルールの基準とくらべる
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  if (phase === "compare") {
-    return (
-      <div className="game board-game">
-        {header}
-        <div className="compare-box">
-          <div className="compare-row">
-            <span className="compare-label">いまの温度</span>
-            <span className="compare-val bad">62℃</span>
-          </div>
-          <div className="compare-row">
-            <span className="compare-label">基準（衛生ルール）</span>
-            <span className="compare-val">中心75℃以上・1分以上</span>
-          </div>
-          <p className="game-line"><strong>まだ足りない！</strong>このままでは出せない。</p>
-        </div>
-        <button className="btn primary big" onClick={() => setPhase("measure2")}>
-          オーブンで加熱を続ける
-        </button>
-      </div>
-    );
-  }
-
-  if (phase === "measure2") {
-    const RESULTS = [76, 77, 76];
-    const done = temps2.length >= 3;
-    return (
-      <div className="game board-game">
-        {header}
-        <div className="measure-box">
-          <p className="game-line">
-            数分後。こんどはルールどおり、<strong>3か所</strong>はかろう。
-          </p>
-          <div className="spot-row">
-            {RESULTS.map((t, i) => (
-              <button
-                key={i}
-                className={`spot-fish ${temps2.length > i ? "measured" : ""}`}
-                disabled={temps2.length !== i}
-                onClick={() => setTemps2((arr) => [...arr, t])}
-              >
-                🐟
-                <span className="spot-temp">{temps2.length > i ? `${t}℃` : "はかる"}</span>
-              </button>
-            ))}
-          </div>
-          {done && (
-            <>
-              <p className="temp good">3か所とも 75℃以上 ✓</p>
-              <p className="game-line">このまま<strong>1分以上</strong>加熱を続けて…よし、基準クリア！</p>
-            </>
-          )}
-        </div>
-        {done && (
-          <button className="btn primary big" onClick={() => setPhase("record")}>
-            ✍️ 記録票に記入する
+        {!recorded ? (
+          <button className="btn primary big" onClick={() => setRecorded(true)}>
+            記入する
           </button>
+        ) : (
+          <>
+            <p className="game-line center-line">
+              「ちゃんと確認したよ」をあとで示せる、大事な記録。
+            </p>
+            <button className="btn primary big" onClick={onComplete}>
+              配缶して、検食して、教室へ！
+            </button>
+          </>
         )}
       </div>
     );
   }
 
-  // record
   return (
     <div className="game board-game">
-      {header}
-      <div className="record-sheet">
-        <span className="doc-label">✍️ 中心温度 記録票</span>
-        <div className="record-row"><span>料理</span><span>焼き魚（さば）</span></div>
-        <div className="record-row"><span>時刻</span><span>11:35</span></div>
-        <div className="record-row"><span>中心温度</span><span>76℃・77℃・76℃</span></div>
-        <div className="record-row"><span>75℃以上で1分以上</span><span>{recorded ? "✓ 確認ずみ" : "─"}</span></div>
+      <div className="clock-bar">
+        <span className="clock-emoji">🕐</span>
+        <span className="clock-now">{round === 1 ? "11:20" : "11:32"}</span>
+        <span className="clock-goal">工程表：中心温度の確認の時間</span>
       </div>
-      {!recorded ? (
-        <button className="btn primary big" onClick={() => setRecorded(true)}>
-          記入する
-        </button>
-      ) : (
-        <>
-          <p className="game-line center-line">
-            記録もばっちり。あとで「ちゃんと確認したよ」と示せる大事な仕事。
+
+      {/* the oven with fish — the game board */}
+      <div className="oven-panel">
+        <span className="doc-label">
+          🔥 オーブンから焼き魚500切れの天板が出てきた
+          {round === 2 && "（追加加熱ずみ）"}
+        </span>
+        <div className="spot-row">
+          {SPOTS.map((s) => (
+            <button
+              key={s.id}
+              className={`spot-fish ${measured[s.id] !== null ? (measured[s.id]! >= 75 ? "measured" : "lowtemp") : ""} ${holdThermo ? "aim" : ""}`}
+              onClick={() => measure(s.id)}
+            >
+              🐟
+              <span className="spot-temp">
+                {measured[s.id] !== null ? `${measured[s.id]}℃` : s.label}
+              </span>
+            </button>
+          ))}
+        </div>
+        {thickLow && round === 1 && (
+          <p className="game-line">
+            62℃…この数字、出していいのかな？🧼衛生ルールとくらべてみよう。
           </p>
-          <button className="btn primary big" onClick={onComplete}>
-            配缶して、教室へ！
+        )}
+        {round2ok && (
+          <p className="temp good">3か所とも75℃以上 ✓ このまま1分以上加熱を続けて…クリア！</p>
+        )}
+      </div>
+
+      {sanitizeAsk && !sanitized && (
+        <div className="alert-box slim">
+          <span className="big-emoji">🌡</span>
+          <p>もう一度はかる前に…さっき生っぽい魚にふれた温度計、そのまま使う？</p>
+        </div>
+      )}
+      {sanitizeAsk && !sanitized && (
+        <div className="choice-row">
+          <button
+            className="choice-card"
+            onClick={() => setNote("ちょっと待って！🧼衛生ルールには「器具は使うたびにアルコールで消毒」とある。菌をつけないためだ。")}
+          >
+            <span className="choice-name">そのまま使う</span>
           </button>
-        </>
+          <button
+            className="choice-card"
+            onClick={() => {
+              setSanitized(true);
+              setSanitizeAsk(false);
+              setNote(null);
+            }}
+          >
+            <span className="choice-name">🧴 アルコールでふいてから</span>
+          </button>
+        </div>
+      )}
+
+      {note && <p className="game-note">{note}</p>}
+
+      {/* tools — the child chooses what to use */}
+      <div className="tool-dock">
+        <button
+          className={`dock-btn big-dock ${holdThermo ? "active" : ""}`}
+          onClick={() => {
+            setHoldThermo(!holdThermo);
+            setNote(holdThermo ? null : "🌡温度計を持った。魚のどこをはかる？");
+          }}
+        >
+          <span>🌡</span>
+          <small>中心温度計</small>
+        </button>
+        <button
+          className="dock-btn big-dock"
+          onClick={() => {
+            if (!anyMeasured) {
+              setNote("まずは今の温度をたしかめてから。");
+              return;
+            }
+            if (round === 2) {
+              setNote("もう追加加熱ずみ。もう一度はかって確認しよう。");
+              return;
+            }
+            setHeated(true);
+            setRound(2);
+            setMeasured({ thin: null, middle: null, thick: null });
+            setNote("⏱ 6分追加加熱した。ルールどおり、もう一度たしかめよう。");
+          }}
+        >
+          <span>🔥</span>
+          <small>オーブン：加熱を続ける</small>
+        </button>
+        <button className={`dock-btn big-dock ${round2ok ? "pulse" : ""}`} onClick={openSheet}>
+          <span>✍️</span>
+          <small>記録票</small>
+        </button>
+      </div>
+
+      <InfoCards cards={docs} label="こまったら見る資料" />
+      {heated && round === 2 && !allMeasured && (
+        <p className="game-line soft">🌡でもう一度、3か所ぜんぶはかろう。</p>
       )}
     </div>
   );

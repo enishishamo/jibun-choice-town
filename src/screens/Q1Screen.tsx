@@ -1,5 +1,5 @@
 // Shared Q1 shell: intro (A+B) -> game (C+D, from registry) ->
-// resolution (E) -> discovery -> 「好きの種」1問.
+// discovery (E + 行為→仕事の接続 + 「好きの種」1問).
 // The A-E letters are never shown to the child.
 // This outer flow (event -> Q1 -> discovery -> seed -> Q2) is common to
 // every profession; only the game inside differs.
@@ -10,7 +10,7 @@ import { useGame } from "../state/GameState";
 
 const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
 
-type Phase = "intro" | "game" | "resolution" | "discovery";
+type Phase = "intro" | "game" | "discovery";
 
 export default function Q1Screen({ experienceId }: { experienceId: string }) {
   const { navigate, completeExperience, hasCompleted, hasDiscovered, recordSeed } = useGame();
@@ -66,46 +66,37 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
           onComplete={() => {
             setWasNew(!hasDiscovered(profession.id));
             completeExperience(exp.id, profession.id);
-            setPhase("resolution");
+            setPhase("discovery");
           }}
         />
       </div>
     );
   }
 
-  if (phase === "resolution") {
-    return (
-      <div className="screen q1 center">
-        <img className="sparkle" src={A("ui-sparkle")} alt="" />
-        {exp.resolution.clock && <span className="resolution-clock">{exp.resolution.clock}</span>}
-        <h2 className="resolution-title">🎉 {exp.resolution.title}</h2>
-        {exp.resolution.lines.map((l) => (
-          <p key={l} className="resolution-line">{l}</p>
-        ))}
-        <button className="btn primary big" onClick={() => setPhase("discovery")}>
-          つぎへ
-        </button>
-      </div>
-    );
-  }
-
-  // ---------- discovery + 「好きの種」 ----------
+  // ---------- discovery: E → きみがやったこと → 職業名 → 好きの種 ----------
   return (
     <div className="screen discovery-stage">
       <div className="discovery-glow" />
       <img className="discovery-sparkle s1" src={A("ui-sparkle")} alt="" />
       <img className="discovery-sparkle s2" src={A("ui-sparkle")} alt="" />
+
+      <span className="e-chip">
+        🎉 {exp.resolution.clock && `${exp.resolution.clock}　`}
+        {exp.resolution.title}
+      </span>
+
       <div className="discovery-hero-wrap">
         {!rediscovery && <img className="discovery-new" src={A("ui-new")} alt="NEW!" />}
         <img className="discovery-hero" src={profession.image} alt="" />
       </div>
-      <p className="discovery-lead">きみが今やっていたのは…</p>
-      <h2 className="discovery-name-big">{profession.name}</h2>
+
       <p className="discovery-echo">{exp.discoveryEcho}</p>
+      <p className="discovery-lead">きみが今やっていたのは……</p>
+      <h2 className="discovery-name-big">{profession.name}</h2>
       {!rediscovery && <p className="discovery-zukan">📖 しごと図鑑に追加された！</p>}
 
       <div className="seed-box">
-        <span className="seed-title">どこがちょっと気になった？</span>
+        <span className="seed-title">どこがちょっと面白かった？</span>
         {seedAnswer === null ? (
           <div className="seed-chips">
             {exp.seeds.map((s) => (
@@ -123,9 +114,9 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
           </div>
         ) : (
           <p className="seed-reply">
-            {seedAnswer === "とくになかった"
+            {seedAnswer === "とくにない"
               ? "OK！また今度、べつの場所ものぞいてみてね。"
-              : `「${seedAnswer}」ところが気になったんだね。`}
+              : `「${seedAnswer}」が気になったんだね。おぼえておくね。`}
           </p>
         )}
       </div>

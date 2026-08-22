@@ -1079,7 +1079,7 @@ img {
    balloon instead of pushing the town to the bottom of the viewport. */
 .town-stage {
   position: relative;
-  margin-top: 86px;
+  margin-top: 72px;
   width: 100%;
 }
 .town-stage .town-img {
@@ -2509,4 +2509,269 @@ img {
   color: var(--green);
   font-weight: bold;
   animation: fadein 0.3s ease;
+}
+
+/* ============================================================
+   ACTIVE Q1 — drag & drop, boards, tools
+   ============================================================ */
+.drag-item {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.drag-ghost {
+  position: fixed;
+  z-index: 99;
+  transform: translate(-50%, -60%);
+  font-size: 40px;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(110, 90, 55, 0.35));
+}
+
+/* E chip on the discovery screen */
+.e-chip {
+  background: var(--green-soft);
+  color: var(--green);
+  border: 2px solid var(--green);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  animation: fadein 0.4s ease backwards;
+  max-width: 100%;
+}
+
+/* nutrition: swap tray */
+.tray2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  background: #e9d9ba;
+  border: 2px solid #d8c398;
+  border-radius: 22px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+.tray2-slot {
+  min-height: 72px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  padding: 8px;
+  line-height: 1.35;
+}
+.tray2-slot.fixed {
+  background: rgba(255, 253, 246, 0.75);
+  border: 1.5px solid #d8c398;
+  color: var(--text);
+}
+.tray2-slot small {
+  font-size: 9.5px;
+  color: var(--text-soft);
+  font-weight: bold;
+}
+.tray2-slot.swap {
+  border: 2.5px dashed var(--orange);
+  background: var(--orange-soft);
+}
+.tray2-slot.swap.trouble {
+  border-color: var(--red);
+  background: #fdeae4;
+  animation: conflictblink 1.2s ease-in-out infinite;
+}
+.tray2-slot.swap.ready {
+  border-style: solid;
+  transform: scale(1.03);
+}
+.slot-warn {
+  color: var(--red) !important;
+}
+.tray2.done .tray2-slot.ok {
+  border: 2px solid var(--green);
+  background: var(--green-soft);
+}
+.candidate-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.choice-emoji {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+/* farm: field */
+.field-plot {
+  position: relative;
+  min-height: 150px;
+  border-radius: var(--radius);
+  border: 3px dashed #b99a6a;
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.field-plot.ready {
+  border-style: solid;
+  border-color: var(--orange);
+}
+.field-hint {
+  background: rgba(255, 253, 246, 0.9);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.field-state {
+  background: rgba(255, 253, 246, 0.92);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+}
+.field-month {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--orange);
+}
+.field-text {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+.seed-card {
+  flex: 1;
+  min-height: 96px;
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 9px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  box-shadow: var(--shadow);
+}
+.seed-card.selected {
+  border-color: var(--orange);
+  background: var(--orange-soft);
+}
+.seed-card small {
+  font-size: 9.5px;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+/* logistics: 3 temperature zones + schools */
+.zone3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 7px;
+}
+.zone3 .truck-room {
+  min-height: 118px;
+  padding: 8px 6px;
+}
+.zone3 .truck-room-label {
+  font-size: 11px;
+}
+.zone3 .cargo-chip {
+  font-size: 11px;
+  padding: 6px 7px;
+}
+.school-card {
+  position: relative;
+  flex: 1;
+  min-height: 92px;
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: var(--shadow);
+}
+.school-card.picked {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+.school-card small {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+.order-badge {
+  position: absolute;
+  top: -10px;
+  left: -6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+
+/* cook: oven board + big tools */
+.oven-panel {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.spot-fish.aim {
+  border-color: var(--blue);
+  animation: bob2 1.2s ease-in-out infinite;
+}
+.spot-fish.lowtemp {
+  border-color: var(--red);
+  background: #fdeae4;
+  opacity: 1;
+}
+.spot-fish:disabled {
+  opacity: 1;
+}
+.big-dock {
+  min-height: 74px;
+  min-width: 30%;
+  flex: 1;
+}
+.big-dock span {
+  font-size: 26px;
+}
+.big-dock small {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.3;
+}
+.dock-desc {
+  color: #b3a184 !important;
+  font-weight: normal !important;
+}
+.foreign-item.aimable {
+  border-color: var(--blue);
+  animation: bob2 1.1s ease-in-out infinite;
 }
