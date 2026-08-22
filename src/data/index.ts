@@ -4,8 +4,9 @@
 // Home, area, Q1 shell, discovery, zukan and Q2 all render from this data.
 import type { AreaEvent, ContentModule, Place, Profession, Q1Experience } from "./types";
 import { schoolLunch } from "./content/schoolLunch";
+import { extremeHeat } from "./content/extremeHeat";
 
-const MODULES: ContentModule[] = [schoolLunch];
+const MODULES: ContentModule[] = [schoolLunch, extremeHeat];
 
 export const places: Place[] = MODULES.flatMap((m) => m.places);
 export const events: AreaEvent[] = MODULES.flatMap((m) => m.events);

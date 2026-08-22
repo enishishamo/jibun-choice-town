@@ -18,7 +18,8 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
   // Remember whether this profession was new BEFORE we record completion,
   // so the discovery card can still show its NEW! moment.
   const [wasNew, setWasNew] = useState(false);
-  const [seedAnswer, setSeedAnswer] = useState<string | null>(null);
+  const [picked, setPicked] = useState<string[]>([]);
+  const [seedDone, setSeedDone] = useState(false);
 
   const exp = getExperience(experienceId);
   const profession = exp && getProfession(exp.professionId);
@@ -96,32 +97,47 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
       {!rediscovery && <p className="discovery-zukan">📖 しごと図鑑に追加された！</p>}
 
       <div className="seed-box">
-        <span className="seed-title">どこがちょっと面白かった？</span>
-        {seedAnswer === null ? (
-          <div className="seed-chips">
-            {exp.seeds.map((s) => (
-              <button
-                key={s}
-                className="seed-chip"
-                onClick={() => {
-                  setSeedAnswer(s);
-                  recordSeed(exp.id, s);
-                }}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+        <span className="seed-title">どこが、ちょっと面白かった？</span>
+        {!seedDone ? (
+          <>
+            <span className="seed-sub">いくつでもえらべるよ</span>
+            <div className="seed-chips">
+              {exp.seeds.map((s) => (
+                <button
+                  key={s}
+                  className={`seed-chip ${picked.includes(s) ? "on" : ""}`}
+                  onClick={() =>
+                    setPicked((p) =>
+                      p.includes(s) ? p.filter((x) => x !== s) : [...p, s],
+                    )
+                  }
+                >
+                  {picked.includes(s) ? "✓ " : ""}
+                  {s}
+                </button>
+              ))}
+            </div>
+            <button
+              className="btn primary seed-done"
+              disabled={picked.length === 0}
+              onClick={() => {
+                recordSeed(exp.id, picked);
+                setSeedDone(true);
+              }}
+            >
+              えらんだ
+            </button>
+          </>
         ) : (
           <p className="seed-reply">
-            {seedAnswer === "とくにない"
+            {picked.length === 1 && picked[0] === "特にない"
               ? "OK！また今度、べつの場所ものぞいてみてね。"
-              : `「${seedAnswer}」が気になったんだね。おぼえておくね。`}
+              : `「${picked.filter((p) => p !== "特にない").join("」「")}」が気になったんだね。おぼえておくね。`}
           </p>
         )}
       </div>
 
-      {seedAnswer !== null && (
+      {seedDone && (
         <div className="stack discovery-actions">
           <button
             className="btn primary"

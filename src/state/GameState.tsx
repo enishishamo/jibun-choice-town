@@ -18,11 +18,11 @@ interface Progress {
   /** Professions revealed on a discovery card (unlocked in the zukan). */
   discovered: string[];
   /**
-   * 「好きの種」: which action the child said felt interesting, per
-   * experience. Accumulated quietly for the future — never used to
-   * label or diagnose the child.
+   * 「好きの種」: which actions the child said felt interesting, per
+   * experience (multiple choice). Accumulated quietly for the future —
+   * never used to label or diagnose the child.
    */
-  seeds: Record<string, string>;
+  seeds: Record<string, string[]>;
 }
 
 interface GameStateValue {
@@ -33,8 +33,8 @@ interface GameStateValue {
   completeExperience: (experienceId: string, professionId: string) => void;
   hasCompleted: (experienceId: string) => boolean;
   hasDiscovered: (professionId: string) => boolean;
-  /** Record the child's 「好きの種」 answer for an experience. */
-  recordSeed: (experienceId: string, seed: string) => void;
+  /** Record the child's 「好きの種」 answers (multiple) for an experience. */
+  recordSeed: (experienceId: string, seeds: string[]) => void;
   resetProgress: () => void;
 }
 
@@ -89,8 +89,8 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
         })),
       hasCompleted: (id) => progress.completed.includes(id),
       hasDiscovered: (id) => progress.discovered.includes(id),
-      recordSeed: (experienceId, seed) =>
-        setProgress((p) => ({ ...p, seeds: { ...p.seeds, [experienceId]: seed } })),
+      recordSeed: (experienceId, seeds) =>
+        setProgress((p) => ({ ...p, seeds: { ...p.seeds, [experienceId]: seeds } })),
       resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {} }),
     }),
     [screen, progress],

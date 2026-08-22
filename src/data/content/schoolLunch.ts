@@ -13,7 +13,7 @@ export const schoolLunch: ContentModule = {
       id: "school",
       name: "学校",
       eventId: "lunch-late",
-      mapPos: { left: "45%", top: "34%" },
+      mapPos: { left: "34%", top: "22%" },
     },
     // Visible in the world but quiet today — hints that the world is bigger.
     { id: "hospital", name: "病院", mapPos: { left: "15%", top: "44%" } },

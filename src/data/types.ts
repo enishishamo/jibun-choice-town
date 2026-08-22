@@ -23,6 +23,18 @@ export interface AreaEvent {
   areaName: string; // 給食のうらがわ
   areaLead: string; // prompt shown above the incident list
   incidents: Incident[];
+  /** Center image of the exploration scene (default: the school). */
+  sceneImage?: string;
+  /** Visual mood of the scene ("heat" = orange sky etc.). */
+  mood?: string;
+  /**
+   * Shown in the area once 2+ incidents are experienced:
+   * "同じ出来事を、違う仕事はまったく違う情報で見ていた".
+   */
+  lensSummary?: {
+    intro: string;
+    rows: { icon: string; label: string; view: string }[];
+  };
 }
 
 /**
