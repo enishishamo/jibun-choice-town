@@ -11,7 +11,7 @@
 // このため職業名は「〜に関わる仕事」という仮置き表現にしている。
 import type { ContentModule } from "../types";
 
-const A = (name: string) => `${import.meta.env.BASE_URL}assets/${name}.png`;
+const H = (name: string) => `${import.meta.env.BASE_URL}assets/heat/${name}.png`;
 
 export const extremeHeat: ContentModule = {
   places: [
@@ -30,7 +30,7 @@ export const extremeHeat: ContentModule = {
       title: "暑すぎる！\n街のあちこちで大変！",
       areaName: "猛暑の街",
       areaLead: "きょうは39℃。街のあちこちで、ちがう「こまった」が起きてる。\n気になるところをのぞいてみよう。",
-      sceneImage: A("town-hero"),
+      sceneImage: H("place-city"),
       mood: "heat",
       lensSummary: {
         intro: "同じ「暑い！」を見ていたのに、みんな見ていたものが全然ちがった。",
@@ -45,35 +45,40 @@ export const extremeHeat: ContentModule = {
       incidents: [
         {
           id: "hot-park",
-          emoji: "🌳",
+          image: H("place-park"),
+          imageFit: "scene",
           title: "この公園、暑すぎる！",
           experienceId: "park-heat",
           scenePos: { left: "22%", top: "20%" },
         },
         {
           id: "power-peak",
-          emoji: "⚡",
+          image: H("place-town"),
+          imageFit: "scene",
           title: "電気を使う量が、どんどん増えてる！",
           experienceId: "power-heat",
           scenePos: { left: "74%", top: "24%" },
         },
         {
           id: "site-39",
-          emoji: "🏗",
+          image: H("place-site"),
+          imageFit: "scene",
           title: "今日は39℃。でも工事の予定がある",
           experienceId: "site-heat",
           scenePos: { left: "18%", top: "58%" },
         },
         {
           id: "dam-low",
-          emoji: "💧",
+          image: H("place-dam"),
+          imageFit: "scene",
           title: "ダムの水が減っている…",
           experienceId: "water-heat",
           scenePos: { left: "78%", top: "60%" },
         },
         {
           id: "hot-street",
-          emoji: "🏙",
+          image: H("place-city"),
+          imageFit: "scene",
           title: "同じ街なのに、ここだけ暑い？",
           experienceId: "urban-heat",
           scenePos: { left: "48%", top: "82%" },
@@ -87,7 +92,7 @@ export const extremeHeat: ContentModule = {
       id: "park-design",
       name: "公園の暑さ対策を考える仕事",
       catch: "日陰・風・地面から、居られる場所をつくる",
-      image: A("char-recycle"),
+      image: H("char-park"),
       discoveryLine: "日射や地面の温度を調べて、\n人がまた集まれる場所をつくる仕事！",
       q2: [
         {
@@ -127,7 +132,7 @@ export const extremeHeat: ContentModule = {
       id: "power-ops",
       name: "電力の需給や系統運用に関わる仕事",
       catch: "街の電気を、途切れさせない",
-      image: A("char-logistics"),
+      image: H("char-power"),
       discoveryLine: "先の需要を予測しながら、\n電気の量を合わせつづける仕事！",
       q2: [
         {
@@ -167,7 +172,7 @@ export const extremeHeat: ContentModule = {
       id: "site-safety",
       name: "工事現場の安全と工程を守る仕事",
       catch: "働く人を守りながら、必要な工事を進める",
-      image: A("char-cook"),
+      image: H("char-site"),
       discoveryLine: "暑さ指数と作業の重さを見て、\n人を守りながら工事を進める仕事！",
       q2: [
         {
@@ -214,7 +219,7 @@ export const extremeHeat: ContentModule = {
       id: "water-ops",
       name: "水資源の管理・調整に関わる仕事",
       catch: "限られた水を、みんなが使えるように",
-      image: A("char-nutrition"),
+      image: H("char-water"),
       discoveryLine: "先の雨を予測しながら、\n限られた水の使い方を調整する仕事！",
       q2: [
         {
@@ -255,7 +260,7 @@ export const extremeHeat: ContentModule = {
       id: "urban-heat",
       name: "都市の暑さを分析し、街づくりを考える仕事",
       catch: "データを重ねて、暑さの理由を見つける",
-      image: A("char-farmer"),
+      image: H("char-urban"),
       discoveryLine: "日射・風・建物のデータを重ねて、\n街の暑さの理由をさがす仕事！",
       q2: [
         {
@@ -301,7 +306,7 @@ export const extremeHeat: ContentModule = {
       professionId: "park-design",
       eventId: "heat-wave",
       gameType: "place_and_test",
-      place: { name: "猛暑の公園", image: A("bg-school") },
+      place: { name: "猛暑の公園", image: H("place-park") },
       mission: {
         title: "この公園、暑すぎる！",
         lines: ["遊具もベンチも熱くて、だれも遊べない…。"],
@@ -312,8 +317,15 @@ export const extremeHeat: ContentModule = {
         lines: ["暑くてだれもいなかった場所に、また子どもや家族が集まりはじめた。"],
       },
       discoveryEcho:
-        "さっき、日射や地面の温度を調べて、暑さ対策をどこに置くか決めたよね。実際にも、こうやって公園の暑さを調べて、人がまた集まれる場所をつくる人たちがいます。",
-      seeds: ["地図を見る", "暑い原因を探す", "ものを配置する", "変化を比べる", "特にない"],
+        "日差しや地面の温度、風を調べて、どこに木や日よけを置けば公園が過ごしやすくなるか考えたよね。こうやって、人が過ごす場所を考えて、まちや公園をつくる仕事があります。",
+      seeds: [
+        "地図を見る",
+        "暑い場所を探す",
+        "どこに置くか考える",
+        "組み合わせを試す",
+        "変化を見る",
+        "特にない",
+      ],
     },
     // ============ ② 電気が足りる？ ============
     {
@@ -321,7 +333,7 @@ export const extremeHeat: ContentModule = {
       professionId: "power-ops",
       eventId: "heat-wave",
       gameType: "forecast_and_balance",
-      place: { name: "電気を見はる部屋", image: A("bg-warehouse") },
+      place: { name: "街の電気", image: H("place-town") },
       mission: {
         title: "電気を使う量が、\nどんどん増えてる！",
         lines: ["みんなが一斉に冷房を使いはじめた。"],
@@ -341,7 +353,7 @@ export const extremeHeat: ContentModule = {
       professionId: "site-safety",
       eventId: "heat-wave",
       gameType: "schedule_and_protect",
-      place: { name: "工事現場", image: A("bg-warehouse") },
+      place: { name: "工事現場", image: H("place-site") },
       mission: {
         title: "今日は39℃。\nでも今日やる予定の工事がある。",
         lines: ["働く人を守りながら、必要なところまで進めよう。"],
@@ -361,7 +373,7 @@ export const extremeHeat: ContentModule = {
       professionId: "water-ops",
       eventId: "heat-wave",
       gameType: "allocate_and_forecast",
-      place: { name: "ダム", image: A("bg-farm") },
+      place: { name: "ダム・水の施設", image: H("place-dam") },
       mission: {
         title: "ダムの水が減っている…",
         lines: ["家庭にも、農業にも、工場にも水が必要。この先も雨は少ないかもしれない。"],
@@ -381,7 +393,7 @@ export const extremeHeat: ContentModule = {
       professionId: "urban-heat",
       eventId: "heat-wave",
       gameType: "layer_and_compare",
-      place: { name: "街のなか", image: A("town-hero") },
+      place: { name: "暑い市街地", image: H("place-city") },
       mission: {
         title: "同じ街なのに、\nここだけ暑い？",
         lines: ["同じ39℃の日。でも、道によって暑さがちがう。なんで？"],

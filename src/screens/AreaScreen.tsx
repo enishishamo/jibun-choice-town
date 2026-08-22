@@ -55,7 +55,11 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                 onClick={() => navigate({ name: "q1", experienceId: inc.experienceId })}
               >
                 <span className="hotspot-icon" style={{ animationDelay: `${i * 0.35}s` }}>
-                  {inc.image ? <img src={inc.image} alt="" /> : <span>{inc.emoji}</span>}
+                  {inc.image ? (
+                    <img className={inc.imageFit === "scene" ? "fit-scene" : ""} src={inc.image} alt="" />
+                  ) : (
+                    <span>{inc.emoji}</span>
+                  )}
                   {done && <span className="hotspot-check">✓</span>}
                 </span>
                 <span className="hotspot-label">{inc.title}</span>

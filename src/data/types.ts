@@ -49,6 +49,11 @@ export interface Incident {
   experienceId: string;
   /** Position of this hotspot inside the area exploration scene (percent). */
   scenePos?: { left: string; top: string };
+  /**
+   * "icon" (default) = cut-out object shown whole;
+   * "scene" = a place photo, cropped to fill the round hotspot.
+   */
+  imageFit?: "icon" | "scene";
 }
 
 /** A tool / expertise item used inside a Q1 experience (the C layer). */
