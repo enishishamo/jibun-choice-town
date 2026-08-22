@@ -18,6 +18,12 @@ import SourcingGame from "./SourcingGame";
 import RecipeGame from "./RecipeGame";
 import PackageGame from "./PackageGame";
 import FactoryLineGame from "./FactoryLineGame";
+import PlanEventGame from "./PlanEventGame";
+import PromoGame from "./PromoGame";
+import TimetableGame from "./TimetableGame";
+import VenueLayoutGame from "./VenueLayoutGame";
+import SoundCheckGame from "./SoundCheckGame";
+import CrowdFlowGame from "./CrowdFlowGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -37,4 +43,11 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   recipe_balance: RecipeGame, // 配合を動かしてトレードオフを見る
   package_design: PackageGame, // 素材×形×サイズを組み立ててテスト
   line_debug: FactoryLineGame, // データで原因を探し、調整して再実行
+  // イベント編
+  plan_mix: PlanEventGame, // 条件の中で企画を組み合わせる
+  reach_mix: PromoGame, // 届けたい相手ごとの到達を組み立てる
+  timetable: TimetableGame, // 演目＋転換を並べて終演に合わせる
+  venue_layout: VenueLayoutGame, // 会場に配置して見やすさ・通りやすさを試す
+  sound_check: SoundCheckGame, // 機材を操作して席ごとの聞こえ方を合わせる
+  crowd_flow: CrowdFlowGame, // 詰まりを読んで道具で流れを分ける
 };
