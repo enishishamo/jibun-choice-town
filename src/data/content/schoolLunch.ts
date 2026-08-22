@@ -6,6 +6,7 @@
 import type { ContentModule } from "../types";
 
 const A = (name: string) => `${import.meta.env.BASE_URL}assets/${name}.png`;
+const K = (name: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${name}.jpg`;
 
 export const schoolLunch: ContentModule = {
   places: [
@@ -169,7 +170,7 @@ export const schoolLunch: ContentModule = {
       id: "farmer",
       name: "農家・生産者",
       catch: "何か月も先を考えて、食べ物を育てるプロ！",
-      image: A("char-farmer"),
+      image: `${import.meta.env.BASE_URL}assets/kyushoku/farmer_char.png`,
       discoveryLine: "品種・気温・カレンダーを読んで、\n何か月も前から育てる計画を立てるプロ！",
       q2: [
         {
@@ -294,7 +295,7 @@ export const schoolLunch: ContentModule = {
       professionId: "cook",
       eventId: "lunch-late",
       gameType: "inspect_and_measure",
-      place: { name: "給食室", image: A("bg-kitchen") },
+      place: { name: "給食室", image: K("school_kitchen"), fit: "cover", focus: "center 34%" },
       mission: {
         title: "500人分の給食を、\n安全に完成させよう！",
         lines: ["工程表と道具をたしかめながら進めよう。"],
@@ -357,7 +358,7 @@ export const schoolLunch: ContentModule = {
       professionId: "farmer",
       eventId: "lunch-late",
       gameType: "sow_and_grow",
-      place: { name: "にんじん畑", image: A("bg-farm") },
+      place: { name: "にんじん畑", image: K("farm_field"), fit: "cover", focus: "center 62%" },
       mission: {
         title: "給食で使うにんじんを\n育てたい！",
         lines: ["でも、いつでも同じように作れるわけじゃない。", "資料を見て、育てる計画を立てよう。"],
@@ -385,7 +386,7 @@ export const schoolLunch: ContentModule = {
       professionId: "logistics",
       eventId: "lunch-late",
       gameType: "load_and_route",
-      place: { name: "食材を届ける会社（朝7:00）", image: A("bg-warehouse") },
+      place: { name: "食材を届ける会社（朝7:00）", image: K("delivery_center"), fit: "cover", focus: "center 45%" },
       mission: {
         title: "2つの学校に、調理が始まる前に\n食材を届けたい！",
         lines: ["温度と、回る順番。どっちも考えて出発しよう。"],
@@ -411,7 +412,7 @@ export const schoolLunch: ContentModule = {
       professionId: "recycle",
       eventId: "lunch-late",
       gameType: "sort_out",
-      place: { name: "リサイクル工場", image: A("bg-recycle") },
+      place: { name: "リサイクル工場", image: K("recycle_sorting"), fit: "cover", focus: "center 55%" },
       mission: {
         title: "食べ残しが工場に届いた。\nでも、このままではリサイクルできない！",
         lines: ["まざっている異物を、道具を使い分けて取りのぞこう。"],

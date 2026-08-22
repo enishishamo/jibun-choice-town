@@ -10,7 +10,7 @@ import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
 
-const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
+const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
 
 // ※品種名は架空。性質は一般的な「夏まき秋冬どり」にんじん栽培に沿わせた設定。
 interface Seed {
@@ -123,7 +123,7 @@ export default function FarmGame({ onComplete }: Q1GameProps) {
         onClick={() => {
           if (selected && !planted) sow(selected, "field");
         }}
-        style={{ backgroundImage: `url(${A("bg-farm")})` }}
+        style={{ backgroundImage: `url(${K("farm_field")})` }}
       >
         {!planted ? (
           <span className="field-hint">🥕 ここに種袋をドラッグ</span>

@@ -9,6 +9,8 @@ import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 
+const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
+
 type SpotId = "thin" | "middle" | "thick";
 const SPOTS: { id: SpotId; label: string }[] = [
   { id: "thin", label: "うすい切り身" },
@@ -106,7 +108,7 @@ export default function CookGame({ onComplete }: Q1GameProps) {
         </div>
         <div className="record-sheet">
           <span className="doc-label">✍️ 中心温度 記録票</span>
-          <div className="record-row"><span>料理</span><span>焼き魚（さば）</span></div>
+          <div className="record-row"><span>料理</span><span>焼き魚</span></div>
           <div className="record-row"><span>時刻</span><span>11:35</span></div>
           <div className="record-row"><span>中心温度（3か所）</span><span>82℃・78℃・76℃</span></div>
           <div className="record-row"><span>75℃以上・1分以上</span><span>{recorded ? "✓ 確認ずみ" : "─"}</span></div>
@@ -117,6 +119,10 @@ export default function CookGame({ onComplete }: Q1GameProps) {
           </button>
         ) : (
           <>
+            <div className="scene-shot">
+              <img src={K("classroom_lunch")} alt="教室にとどいた給食" />
+              <span className="scene-shot-cap">きみが確かめた給食が、教室にとどいた</span>
+            </div>
             <p className="game-line center-line">
               「ちゃんと確認したよ」をあとで示せる、大事な記録。
             </p>
@@ -135,6 +141,11 @@ export default function CookGame({ onComplete }: Q1GameProps) {
         <span className="clock-emoji">🕐</span>
         <span className="clock-now">{round === 1 ? "11:20" : "11:32"}</span>
         <span className="clock-goal">工程表：中心温度の確認の時間</span>
+      </div>
+
+      <div className="scene-strip">
+        <img src={K("school_kitchen")} alt="給食室" />
+        <span className="strip-cap">給食室・500人分の調理中</span>
       </div>
 
       {/* the oven with fish — the game board */}

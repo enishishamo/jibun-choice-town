@@ -9,6 +9,8 @@ import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
 
+const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
+
 type ZoneId = "frozen" | "cold" | "ambient";
 
 interface Cargo {
@@ -159,8 +161,11 @@ export default function LogisticsGame({ onComplete }: Q1GameProps) {
           </>
         ) : runStep === 0 ? (
           <>
+            <div className="scene-shot">
+              <img src={K("delivery_check")} alt="学校で温度をチェック" />
+              <span className="scene-shot-cap">検収の人が温度をチェック</span>
+            </div>
             <div className="measure-box">
-              <p className="game-line">検収の人が温度をチェック。</p>
               <p className="temp good">
                 {CARGO.filter((c) => c.school === cur.s.id).map((c) => `${c.emoji} OK`).join("　")}
               </p>
@@ -256,6 +261,10 @@ export default function LogisticsGame({ onComplete }: Q1GameProps) {
             </span>
           ))}
         </div>
+      </div>
+
+      <div className="scene-strip">
+        <img src={K("delivery_center")} alt="配送センター" />
       </div>
 
       <div className="zone3">

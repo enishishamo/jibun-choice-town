@@ -9,7 +9,7 @@ import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 
-const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
+const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
 
 type ToolId = "magnet" | "net" | "hand";
 
@@ -88,12 +88,9 @@ export default function RecycleGame({ onComplete, hasCompleted }: Q1GameProps) {
   if (finale) {
     return (
       <div className="game board-game">
-        <div className="recycle-flow">
-          <img src={A("item-leftover")} alt="食べ残し" />
-          <span className="flow-arrow">→</span>
-          <img src={A("item-compost")} alt="肥料" />
-          <span className="flow-arrow">→</span>
-          <img src={A("bg-farm")} alt="畑" />
+        <div className="scene-shot">
+          <img src={K("compost_to_farm")} alt="発酵させて肥料になり、畑へ" />
+          <span className="scene-shot-cap">食べ残し → 発酵 → たい肥 → 畑へ</span>
         </div>
         <p className="game-line center-line">
           きれいになった食べ残しは、発酵させて約2か月で肥料に。
@@ -129,6 +126,11 @@ export default function RecycleGame({ onComplete, hasCompleted }: Q1GameProps) {
             </span>
           ))}
         </div>
+      </div>
+
+      <div className="scene-strip">
+        <img src={K("food_waste")} alt="学校から届いた食べ残し" />
+        <span className="strip-cap">きょうの給食のあと、学校から届いた</span>
       </div>
 
       <div className="conveyor">
