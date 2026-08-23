@@ -25,6 +25,12 @@ export interface AreaEvent {
   areaName: string; // 給食のうらがわ
   areaLead: string; // prompt shown above the incident list
   incidents: Incident[];
+  /**
+   * 出来事を時間の流れで大きく分ける（医療編：前半＝診断まで／後半＝生活へ戻るまで）。
+   * 章がある場合、次の章は前の章をやり終えるまで開かない（＝患者さんの時間軸を守る）。
+   * 一度やり終えれば、どの章にも自由に戻れる。
+   */
+  chapters?: EventChapter[];
   /** Center image of the exploration scene (default: the school). */
   sceneImage?: string;
   /**
@@ -55,6 +61,22 @@ export interface AreaEvent {
   };
 }
 
+/** One time-block of an event (前半／後半). */
+export interface EventChapter {
+  id: string;
+  /** タブに出す短い名前（前半／後半） */
+  tab: string;
+  title: string;
+  lead: string;
+  /** この章のマップ画像 */
+  image: string;
+  incidentIds: string[];
+  /** 章を終えたときの区切り */
+  clear?: { title: string; lines: string[]; cta?: string };
+  /** まだ開いていないときに出す一言 */
+  lockedHint?: string;
+}
+
 /**
  * A concrete "thing going on" the child can poke at.
  * Shown WITHOUT profession names — curiosity first, job reveal later.
@@ -72,6 +94,13 @@ export interface Incident {
    * "scene" = a place photo, cropped to fill the round hotspot.
    */
   imageFit?: "icon" | "scene";
+  /**
+   * これができるようになる前に終えておく体験（医療編の時間軸用）。
+   * 満たしていないあいだは鍵つきで表示される。
+   */
+  requires?: string[];
+  /** 鍵つきのときに出す一言 */
+  requiresHint?: string;
 }
 
 /** A tool / expertise item used inside a Q1 experience (the C layer). */

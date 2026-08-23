@@ -25,12 +25,21 @@ def jpg(im, name, maxw, q=88):
 jpg(S(4), "er_arrival", 1000)     # 来院（車いす・咳）
 jpg(S(3), "er_bed", 1000)         # 救急外来のベッド
 jpg(S(5), "er_exam", 1000)        # 診察の場面
-jpg(S(10), "lab", 1000)           # 検査室
-jpg(S(6), "xray_room", 1000)      # X線撮影室
-jpg(S(11), "pharmacy", 1000)      # 薬剤部
-jpg(S(9), "ward", 1000)           # 病室
-jpg(S(8), "rehab", 1000)          # リハビリ
-jpg(S(1), "msw_room", 1000)       # 退院前の面談
+# m1・m6・m8・m9・m10・m11 は「実装ガイドのシート」なので、
+# パネルや文字を含む全体ではなく、クレイの絵の部分だけを切り出して使う。
+# （医療編だけ資料っぽくならないように）
+def scene(n, name, box, w=900):
+    im = S(n)
+    k = im.width / 1000
+    jpg(im.crop(tuple(round(v * k) for v in box)), name, w)
+
+
+scene(10, "lab", (150, 95, 620, 470))        # 検査技師と分析装置
+scene(6, "xray_room", (280, 30, 700, 480))   # 撮影台の患者と装置
+scene(11, "pharmacy", (300, 100, 672, 515))  # 薬剤師
+scene(9, "ward", (250, 25, 622, 470))        # ベッドサイドの看護師
+scene(8, "rehab", (245, 15, 712, 295))       # 歩行練習
+scene(1, "msw_room", (255, 130, 700, 480))   # 退院前の面談
 jpg(S(12), "back_home", 1100)     # 最終：生活へ戻る（まとめ用の元画像）
 
 # まとめ画面は文字の読めない1枚絵ではなく、
@@ -53,21 +62,11 @@ for i, name in enumerate(PORTRAITS):
     tile = b12.crop((left, 733, left + 168, 838))
     jpg(tile, f"who_{name}", 260, 90)
 
-# ---------- 4 X-ray frames from the radiography sheet ----------
-# three not-good-enough shots and one usable one
-XRAYS = {
-    # crop below the ✕ badge so no judgement mark is baked into the frame
-    "xray_a": (343, 858, 480, 975),
-    "xray_b": (535, 858, 668, 975),
-    "xray_c": (730, 858, 862, 975),
-    "xray_ok": (944, 850, 1075, 975),
-}
-b6 = S(6)
-for name, box in XRAYS.items():
-    jpg(b6.crop(box), name, 300, 90)
+# ※リアルな胸部X線写真は使わない。
+#   「からだの中が見える」ことはクレイ調のイラスト（React側のSVG）で表す。
 
 # contact sheet
-names = [f"who_{p}" for p in PORTRAITS] + list(XRAYS)
+names = [f"who_{p}" for p in PORTRAITS]
 cols, cell = 6, 170
 rows = (len(names) + cols - 1) // cols
 sheet = Image.new("RGB", (cols * cell, rows * (cell + 20)), (210, 224, 236))

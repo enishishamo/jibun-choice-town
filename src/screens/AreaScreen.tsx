@@ -23,6 +23,29 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
   if (!event) return null;
 
   const doneCount = event.incidents.filter((i) => hasCompleted(i.experienceId)).length;
+
+  // ---- 章（前半／後半）----
+  const chapters = event.chapters;
+  const chapterDone = (idx: number) =>
+    !!chapters &&
+    chapters[idx].incidentIds.every((id) => {
+      const inc = event.incidents.find((x) => x.id === id);
+      return inc ? hasCompleted(inc.experienceId) : true;
+    });
+  const chapterOpen = (idx: number) => idx === 0 || chapterDone(idx - 1);
+  // 最初はまだ終わっていない章を開く（全部おわっていれば最後の章）
+  const defaultChapter = chapters
+    ? Math.max(0, chapters.findIndex((_, i) => !chapterDone(i)))
+    : 0;
+  const [chapterPick, setChapterPick] = useState<number | null>(null);
+  const chapterIdx = chapterPick ?? defaultChapter;
+  const chapter = chapters?.[chapterIdx];
+  const [lockNote, setLockNote] = useState<string | null>(null);
+  const spots = chapter
+    ? chapter.incidentIds
+        .map((id) => event.incidents.find((x) => x.id === id))
+        .filter((x): x is NonNullable<typeof x> => !!x)
+    : event.incidents;
   const showLenses = !!event.lensSummary && doneCount >= 2;
   const allDone = doneCount === event.incidents.length;
   const wrapUp =
@@ -103,26 +126,52 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             </div>
           </div>
 
+          {chapters && (
+            <div className="chapter-tabs">
+              {chapters.map((c, i) => {
+                const open = chapterOpen(i);
+                return (
+                  <button
+                    key={c.id}
+                    className={`chapter-tab ${i === chapterIdx ? "on" : ""} ${open ? "" : "locked"}`}
+                    onClick={() => {
+                      if (!open) { setLockNote(c.lockedHint ?? "まだ、ここまで進んでいない。"); return; }
+                      setLockNote(null);
+                      setChapterPick(i);
+                    }}
+                  >
+                    {open ? "" : "🔒 "}{c.tab}
+                    {chapterDone(i) && " ✓"}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <p className="map-lead">
-            {event.areaLead.split("\n").map((l) => (
+            {(chapter ? `${chapter.title}\n${chapter.lead}` : event.areaLead).split("\n").map((l) => (
               <span key={l}>{l}<br /></span>
             ))}
           </p>
 
           <div className="map-scroller">
             <div className="map-inner">
-              <img className="map-img" src={event.sceneMap.image} alt={event.areaName} />
-              {event.incidents.map((inc) => {
+              <img className="map-img" src={chapter?.image ?? event.sceneMap.image} alt={event.areaName} />
+              {spots.map((inc) => {
                 const done = hasCompleted(inc.experienceId);
+                const locked = !!inc.requires?.some((r) => !hasCompleted(r));
                 return (
                   <button
                     key={inc.id}
-                    className={`map-spot ${done ? "done" : ""}`}
+                    className={`map-spot ${done ? "done" : ""} ${locked ? "locked" : ""}`}
                     style={inc.scenePos ? { left: inc.scenePos.left, top: inc.scenePos.top } : undefined}
-                    onClick={() => navigate({ name: "q1", experienceId: inc.experienceId })}
+                    onClick={() => {
+                      if (locked) { setLockNote(inc.requiresHint ?? "これは、もう少しあとみたい。"); return; }
+                      navigate({ name: "q1", experienceId: inc.experienceId });
+                    }}
                   >
                     <span className="map-spot-ring">
-                      <span className="map-spot-emoji">{inc.emoji}</span>
+                      <span className="map-spot-emoji">{locked ? "🔒" : inc.emoji}</span>
                       {done && <span className="hotspot-check">✓</span>}
                     </span>
                     <span className="map-spot-label">{inc.title}</span>
@@ -132,6 +181,24 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             </div>
           </div>
           <p className="scroll-hint">← 横にスワイプして見てみよう →</p>
+          {lockNote && <p className="game-note map-note">{lockNote}</p>}
+
+          {chapter?.clear && chapterDone(chapterIdx) && (
+            <div className="chapter-clear">
+              <p className="chapter-clear-title">{chapter.clear.title}</p>
+              {chapter.clear.lines.map((l) => (
+                <p key={l} className="chapter-clear-line">{l}</p>
+              ))}
+              {chapters && chapterIdx + 1 < chapters.length && (
+                <button
+                  className="btn primary big"
+                  onClick={() => { setLockNote(null); setChapterPick(chapterIdx + 1); }}
+                >
+                  {chapter.clear.cta ?? "つづきへ"}
+                </button>
+              )}
+            </div>
+          )}
 
           {wrapUp}
           {showLenses && event.lensSummary && (
@@ -150,7 +217,11 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             </div>
           )}
 
-          <p className="world-hint">気になるところに入ってみよう。ぜんぶやらなくてもOK！</p>
+          <p className="world-hint">
+            {chapters
+              ? "この人の時間の流れにそって、順番に追いかけてみよう。"
+              : "気になるところに入ってみよう。ぜんぶやらなくてもOK！"}
+          </p>
         </div>
       </div>
     );

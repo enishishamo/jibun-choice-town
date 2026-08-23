@@ -1,172 +1,185 @@
 // Q1: 臨床検査技師 (gameType: lab_check)
-// B: 届いた血液から、からだの中を知る情報をつくる。
-// C: 検体ラベル・検体の状態・基準範囲。ラベルを確認しないと取り違えに
-//    気づけず、状態を見ないと「その結果を報告してよいか」が分からない。
-// D: 受け取り確認 → 測定 → 結果を基準と見比べ → 疑わしい値は測り直す →
-//    確認できたものだけ報告する。
+// この仕事の核はひとつだけ：
+//   「からだから採ったものを調べると、外から見えないからだの中が
+//     数字や情報になって見えるようになる」
+// 精度管理・再検査・測り直しの判断はここでは扱わない（小学生には細かすぎる）。
+// 検査技師に診断もさせない。作った情報は医師へ返す。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoCards from "./InfoCards";
 
-// ※検査値はプロトタイプ用の設定。基準範囲は子ども向けに簡略化。
-interface Row { id: string; name: string; value: string; ref: string; high?: boolean; suspect?: boolean }
-const RESULT: Row[] = [
-  { id: "wbc", name: "白血球（WBC）", value: "13,200 /μL", ref: "3,300〜8,600", high: true },
-  { id: "crp", name: "CRP（炎症のめやす）", value: "12.4 mg/dL", ref: "0.3以下", high: true },
-  { id: "hb", name: "ヘモグロビン", value: "13.2 g/dL", ref: "13.0〜17.0" },
-  { id: "k", name: "カリウム", value: "6.8 mEq/L", ref: "3.5〜5.0", high: true, suspect: true },
+interface Test {
+  id: string;
+  icon: string;
+  name: string;
+  hint: string;
+  /** 分かること（＝見えなかったものが情報になる） */
+  found: { label: string; value: string; means: string; off: boolean }[];
+}
+
+// ※数値はプロトタイプ用の簡略モデル。基準値の暗記はさせない。
+const TESTS: Test[] = [
+  {
+    id: "cells", icon: "🔬", name: "血のつぶを数える", hint: "ばい菌とたたかう係が、どれくらいいる？",
+    found: [{ label: "たたかう係（白血球）", value: "13,200", means: "ふだんよりずっと多い。からだが何かとたたかっている", off: true }],
+  },
+  {
+    id: "fire", icon: "🔥", name: "炎症のしるしを調べる", hint: "からだのどこかが「もえている」ときに増えるもの",
+    found: [{ label: "炎症のしるし（CRP）", value: "12.4", means: "強い炎症が起きているときの数字", off: true }],
+  },
+  {
+    id: "oxy", icon: "🫁", name: "酸素のはこび役を調べる", hint: "血が酸素をはこべているか",
+    found: [{ label: "はこび役（ヘモグロビン）", value: "13.2", means: "こちらは、ふだんどおり", off: false }],
+  },
 ];
 
-type Step = "receive" | "run" | "review" | "recheck" | "report";
+type Step = "intro" | "run" | "result" | "done";
 
 export default function LabCheckGame({ onComplete }: Q1GameProps) {
-  const [step, setStep] = useState<Step>("receive");
-  const [labelOk, setLabelOk] = useState(false);
-  const [stateSeen, setStateSeen] = useState(false);
+  const [step, setStep] = useState<Step>("intro");
+  const [picked, setPicked] = useState<string[]>([]);
+  const [running, setRunning] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
-  const [rechecked, setRechecked] = useState(false);
-  const [flagged, setFlagged] = useState<string[]>([]);
 
-  const docs = [
-    { id: "ref", icon: "📏", title: "基準範囲とは",
-      body: <p>「だいたいこのくらいなら、ふつう」という目安。ここから外れていたら、からだで何か起きているサインかもしれない。</p> },
-    { id: "quality", icon: "🧪", title: "検体の状態でも数字は変わる",
-      body: (<>
-        <p>血液の採り方や運び方によっては、じっさいの体の中とちがう数字になることがある。</p>
-        <p>たとえば<strong>採血のときに血球がこわれる（溶血）</strong>と、カリウムの値が実際より高く出ることがある。</p>
-      </>) },
-  ];
+  const rows = TESTS.filter((t) => picked.includes(t.id)).flatMap((t) => t.found);
 
-  if (step === "receive") {
+  // ---------- Before：ただの血液 ----------
+  if (step === "intro") {
     return (
       <div className="game board-game">
         <div className="task-bar">
-          <span className="task-now">とどいた検体を、まず確かめよう</span>
-          <span className="task-sub">名前・検査の種類・検体の状態</span>
+          <span className="task-now">とどいた血液から、からだの中を調べよう</span>
+          <span className="task-sub">見ただけでは、中で何が起きているか分からない</span>
         </div>
-        <div className="tube-card">
-          <span className="tube-emoji">🩸</span>
-          <div className="tube-info">
-            <p><b>ラベル</b>：田中さん（70代・男性）／血液検査</p>
-            <p><b>依頼</b>：救急外来より</p>
-            {stateSeen && <p className="soft-note">見た目：うすく赤みがかっている（溶血のうたがい）</p>}
-          </div>
+        <div className="blood-before">
+          <span className="blood-tube">🩸</span>
+          <p>ぱっと見は、ただの赤い液体。<br />ここから、からだの中が分かるの？</p>
         </div>
-        <div className="stack">
-          <button className={`btn choice ${labelOk ? "on" : ""}`} onClick={() => setLabelOk(true)}>
-            <span className="tweak-check">{labelOk ? "✓" : "＋"}</span>
-            <span className="tweak-body"><b>ラベルと依頼を照合する</b><small>ちがう人の検体だと、結果は意味をなさない</small></span>
-          </button>
-          <button className={`btn choice ${stateSeen ? "on" : ""}`} onClick={() => setStateSeen(true)}>
-            <span className="tweak-check">{stateSeen ? "✓" : "＋"}</span>
-            <span className="tweak-body"><b>検体の状態を見る</b><small>色や量に問題がないか</small></span>
-          </button>
-        </div>
-        {note && <p className="game-note">{note}</p>}
-        <InfoCards cards={docs} label="こまったら見る資料" />
-        <button
-          className="btn primary big"
-          onClick={() => {
-            if (!labelOk) { setNote("測る前に、これがだれの検体か確かめよう。"); return; }
-            setNote(null); setStep("run");
-          }}
-        >
-          ▶ 検査をはじめる
+        <button className="btn primary big" onClick={() => setStep("run")}>
+          ▶ 調べてみる
         </button>
       </div>
     );
   }
 
+  // ---------- 何を調べるか選ぶ → 装置が動く ----------
   if (step === "run") {
     return (
       <div className="game board-game">
-        <div className="analyzer">
-          <span className="analyzer-emoji">🔬</span>
-          <p className="game-line center-line">分析装置が動いている…</p>
+        <div className="task-bar">
+          <span className="task-now">何を調べる？</span>
+          <span className="task-sub">えらぶと、装置が血液を調べてくれる</span>
         </div>
-        <button className="btn primary big" onClick={() => setStep("review")}>
-          結果を見る
+
+        <div className="stack">
+          {TESTS.map((t) => {
+            const on = picked.includes(t.id);
+            return (
+              <button
+                key={t.id}
+                className={`btn choice ${on ? "on" : ""}`}
+                disabled={!!running}
+                onClick={() => {
+                  if (on) return;
+                  setRunning(t.id);
+                  setNote(null);
+                  window.setTimeout(() => {
+                    setPicked((p) => (p.includes(t.id) ? p : [...p, t.id]));
+                    setRunning(null);
+                  }, 700);
+                }}
+              >
+                <span className="tweak-check">{on ? "✓" : running === t.id ? "…" : "＋"}</span>
+                <span className="tweak-body">
+                  <b>{t.icon} {t.name}</b>
+                  <small>{running === t.id ? "装置が動いている…" : on ? "調べた" : t.hint}</small>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {picked.length > 0 && (
+          <div className="lab-screen">
+            <span className="lab-screen-title">画面に出てきた情報</span>
+            {rows.map((r) => (
+              <span key={r.label} className={`lab-line ${r.off ? "off" : ""}`}>
+                <b>{r.label}</b>
+                <span className="lab-num">{r.value}</span>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {note && <p className="game-note">{note}</p>}
+
+        <button
+          className="btn primary big"
+          onClick={() => {
+            if (picked.length < TESTS.length) {
+              setNote(`まだ ${picked.length}つ。3つとも調べると、からだの中のようすがそろうよ。`);
+              return;
+            }
+            setNote(null);
+            setStep("result");
+          }}
+        >
+          ▶ 結果をまとめる
         </button>
       </div>
     );
   }
 
-  const suspectRow = RESULT.find((r) => r.suspect)!;
-  const canReport = rechecked || flagged.includes(suspectRow.id);
-
-  if (step === "review" || step === "recheck") {
+  // ---------- After：情報になった ----------
+  if (step === "result") {
     return (
       <div className="game board-game">
         <div className="task-bar">
-          <span className="task-now">この結果、そのまま報告していい？</span>
-          <span className="task-sub">気になる数字はタップして確かめよう</span>
+          <span className="task-now">見えなかったからだの中が、情報になった</span>
+          <span className="task-sub">数字をタップすると、何を意味するか見られる</span>
         </div>
-        <div className="lab-table">
-          {RESULT.map((r) => (
+        <div className="lab-result">
+          {rows.map((r) => (
             <button
-              key={r.id}
-              className={`lab-row ${r.high ? "high" : ""} ${flagged.includes(r.id) ? "flagged" : ""}`}
-              onClick={() => {
-                setFlagged((f) => (f.includes(r.id) ? f : [...f, r.id]));
-                if (r.suspect) {
-                  setNote("この値だけ、ほかの結果と合わない…。🧪検体の状態の資料を見てみよう。");
-                } else if (r.high) {
-                  setNote(`${r.name} は基準より高い。からだで炎症が起きているサインかもしれない。`);
-                } else {
-                  setNote(`${r.name} は基準の中。`);
-                }
-              }}
+              key={r.label}
+              className={`lab-res-row ${r.off ? "off" : ""}`}
+              onClick={() => setNote(`${r.label}：${r.means}`)}
             >
-              <span className="lab-name">{r.name}</span>
+              <span className="lab-name">{r.label}</span>
               <span className="lab-value">{r.value}</span>
-              <span className="lab-ref">基準 {r.ref}</span>
-              {rechecked && r.suspect && <span className="lab-fix">→ 採り直して 4.2（基準内）</span>}
+              <span className="lab-tap">？</span>
             </button>
           ))}
         </div>
         {note && <p className="game-note">{note}</p>}
-        <InfoCards cards={docs} label="こまったら見る資料" />
-        {!rechecked && (
-          <button
-            className="btn"
-            onClick={() => {
-              if (!flagged.includes(suspectRow.id)) {
-                setNote("どれか気になる数字はある？タップして確かめてみよう。");
-                return;
-              }
-              setRechecked(true);
-              setNote("採り直した血液で測り直したら、ちがう数字になった。さっきの値は検体のせいだった。");
-            }}
-          >
-            🔁 気になる値を、採り直して測り直す
-          </button>
-        )}
-        <button
-          className="btn primary big"
-          onClick={() => {
-            if (!canReport) { setNote("報告する前に、気になる数字がないか確かめよう。"); return; }
-            if (!rechecked) { setNote("その値、ほかと合わないまま報告していい？測り直せるよ。"); return; }
-            setStep("report");
-          }}
-        >
-          ▶ 医師へ報告する
+        <p className="game-line soft center-line">
+          どこで何が起きているかを決めるのは医師。検査技師は、<strong>たしかな情報</strong>を届ける。
+        </p>
+        <button className="btn primary big" onClick={() => setStep("done")}>
+          ▶ 医師へ結果を届ける
         </button>
       </div>
     );
   }
 
+  // ---------- E: Before → After ----------
   return (
     <div className="game board-game">
       <div className="result-card good">
-        <span className="result-title">確かめた結果を、医師へ届けた</span>
-        <div className="result-rows">
-          <span className="rrow"><b>白血球</b><span className="bad">13,200（高い）</span></span>
-          <span className="rrow"><b>CRP</b><span className="bad">12.4（高い）</span></span>
-          <span className="rrow"><b>カリウム</b><span className="good">4.2（測り直して基準内）</span></span>
+        <span className="result-title">からだの中が、数字で見えるようになった</span>
+        <div className="ba-mini">
+          <span className="ba-mini-item">
+            <span className="ba-mini-emoji">🩸</span>
+            <small>見ただけでは<br />分からなかった</small>
+          </span>
+          <span className="ba-mini-arrow">→</span>
+          <span className="ba-mini-item">
+            <span className="ba-mini-emoji">📊</span>
+            <small>たたかう係が多い<br />炎症のしるしも高い</small>
+          </span>
         </div>
       </div>
-      <p className="game-line center-line">
-        ただの血液が、からだの中を知るための<strong>信じられる情報</strong>になった。
+      <p className="game-line soft center-line">
+        からだを開かなくても、採った血液から中のようすが分かる。
       </p>
       <button className="btn primary big" onClick={onComplete}>
         結果を送る

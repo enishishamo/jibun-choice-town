@@ -1,128 +1,163 @@
 // Q1: 診療放射線技師 (gameType: xray_shoot)
-// B: 外から見えない肺の中を、診断に使える画像にしたい。
-// C: 向き・撮影範囲・息のタイミング。何が「診断に使える画像」かは
-//    チェックリストを開かないと分からない。
-// D: 3つを決めて撮影 → 出来た画像を見る → 足りなければ条件を変えて
-//    撮り直す。正解は教えず、写り方で気づく。
+// この仕事の核はひとつだけ：
+//   「外からは見えないからだの中を、画像にして見えるようにする」
+// ポジショニング・撮影条件・撮り直しはゲームの中心にしない（細かすぎる）。
+// 体験するのは「見えなかったものが見える」という変化そのもの。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoCards from "./InfoCards";
+import BodyInsideView from "./BodyInsideView";
 
-const M = (n: string) => `${import.meta.env.BASE_URL}assets/medical/${n}.jpg`;
+type Where = "chest" | "belly" | "head";
+const WHERE: { id: Where; icon: string; label: string }[] = [
+  { id: "head", icon: "🧠", label: "あたま" },
+  { id: "chest", icon: "🫁", label: "むね（肺）" },
+  { id: "belly", icon: "🫄", label: "おなか" },
+];
 
-type Facing = "front" | "side";
-type Range = "narrow" | "chest" | "belly";
-type Breath = "hold" | "normal";
+type Step = "before" | "shot" | "look" | "done";
 
 export default function XrayGame({ onComplete }: Q1GameProps) {
-  const [facing, setFacing] = useState<Facing | null>(null);
-  const [range, setRange] = useState<Range | null>(null);
-  const [breath, setBreath] = useState<Breath | null>(null);
-  const [shot, setShot] = useState<null | { img: string; problems: string[] }>(null);
-  const [tries, setTries] = useState(0);
+  const [step, setStep] = useState<Step>("before");
+  const [where, setWhere] = useState<Where | null>(null);
+  const [seen, setSeen] = useState<string[]>([]);
+  const [note, setNote] = useState<string | null>(null);
 
-  const ready = facing && range && breath;
-
-  const docs = [
-    { id: "check", icon: "✅", title: "どこまで写っていればいい？",
-      body: (<>
-        <p>・肺の<strong>上のはしから下のはし</strong>まで入っている</p>
-        <p>・<strong>左右の肺が両方</strong>写っている</p>
-        <p>・<strong>背骨が中央</strong>にきている（からだがねじれていない）</p>
-        <p>・息を止めて撮れていて、ぶれていない</p>
-      </>) },
-    { id: "how", icon: "🫁", title: "どうして息を止めるの？",
-      body: <p>息を吸って止めると肺がふくらんで、中のようすが見えやすくなる。動くとぶれてしまう。</p> },
-  ];
-
-  const shoot = () => {
-    const problems: string[] = [];
-    if (facing === "side") problems.push("横向きだと、左右の肺が重なって見くらべにくい");
-    if (range === "narrow") problems.push("範囲がせまくて、肺の下のほうが切れている");
-    if (range === "belly") problems.push("おなかまで入っていて、肺が小さくしか写っていない");
-    if (breath === "normal") problems.push("息を止めていないので、ぼんやりしている");
-    const img =
-      problems.length === 0 ? "xray_ok" : range === "narrow" ? "xray_a" : facing === "side" ? "xray_b" : "xray_c";
-    setShot({ img: M(img), problems });
-    setTries((t) => t + 1);
-  };
-
-  if (shot && shot.problems.length === 0) {
+  // ---------- Before：外から見ても分からない ----------
+  if (step === "before") {
     return (
       <div className="game board-game">
-        <div className="xray-view good">
-          <img src={shot.img} alt="撮影した画像" />
-          <span className="xray-cap">肺全体が、はっきり写った</span>
+        <div className="task-bar">
+          <span className="task-now">医師「肺の中で、何が起きているんだろう？」</span>
+          <span className="task-sub">外から見ても、からだの中は分からない</span>
         </div>
-        <p className="game-line center-line">
-          外から見えなかった肺の中が、<strong>診断に使える画像</strong>になった。
-          {tries > 1 && <><br />（{tries}回目でうまくいった）</>}
-        </p>
-        <button className="btn primary big" onClick={onComplete}>
-          画像を医師へ送る
+
+        <div className="body-stage">
+          <BodyInsideView inside={false} />
+          <span className="body-cap">外から見えるのは、ここまで</span>
+        </div>
+
+        <p className="pick-title">どこを見えるようにする？</p>
+        <div className="choice-row wrap">
+          {WHERE.map((w) => (
+            <button
+              key={w.id}
+              className={`choice-card ${where === w.id ? "selected" : ""}`}
+              onClick={() => {
+                setWhere(w.id);
+                setNote(
+                  w.id === "chest"
+                    ? null
+                    : "医師が知りたいのは「肺の中」。むねを見えるようにしてみよう。",
+                );
+              }}
+            >
+              <span className="choice-emoji">{w.icon}</span>
+              <span className="choice-name">{w.label}</span>
+            </button>
+          ))}
+        </div>
+        {note && <p className="game-note">{note}</p>}
+
+        <button
+          className="btn primary big"
+          onClick={() => {
+            if (where !== "chest") {
+              setNote("まず、どこを見えるようにするか決めよう。今回みたいのは肺だったね。");
+              return;
+            }
+            setNote(null);
+            setStep("shot");
+          }}
+        >
+          📷 装置を動かす
         </button>
       </div>
     );
   }
 
-  const Row = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="pick-block">
-      <span className="pick-title">{title}</span>
-      <div className="pick-cards">{children}</div>
-    </div>
-  );
+  // ---------- 変化：からだが透けて、中が見える ----------
+  if (step === "shot") {
+    return (
+      <div className="game board-game">
+        <div className="task-bar">
+          <span className="task-now">むねの中を、うつしている…</span>
+          <span className="task-sub">からだの外側が、すーっと透けていく</span>
+        </div>
+        <div className="body-stage revealing">
+          <BodyInsideView inside />
+          <span className="body-cap">見えなかった中が、見えてきた</span>
+        </div>
+        <button className="btn primary big" onClick={() => setStep("look")}>
+          ▶ うつった画像を見る
+        </button>
+      </div>
+    );
+  }
 
+  // ---------- 見えたものを、自分で見くらべる ----------
+  if (step === "look") {
+    const both = seen.length === 2;
+    return (
+      <div className="game board-game">
+        <div className="task-bar">
+          <span className="task-now">左右の肺を、見くらべてみよう</span>
+          <span className="task-sub">肺をタップすると、よく見られる</span>
+        </div>
+        <div className="body-stage">
+          <BodyInsideView
+            inside
+            focus={seen.includes("right") && !seen.includes("left") ? "right" : null}
+            onPickLung={(side) => {
+              setSeen((s) => (s.includes(side) ? s : [...s, side]));
+              setNote(
+                side === "right"
+                  ? "右の肺に、白いモヤモヤしたところがある。何かたまっているみたい。"
+                  : "左の肺は、きれいにすけて見える。",
+              );
+            }}
+          />
+          <span className="body-cap">タップ：右の肺 / 左の肺</span>
+        </div>
+        {note && <p className="game-note">{note}</p>}
+        <button
+          className="btn primary big"
+          onClick={() => {
+            if (!both) {
+              setNote("かたっぽだけだと、それがふつうかどうか分からない。もう片方も見てみよう。");
+              return;
+            }
+            setNote(null);
+            setStep("done");
+          }}
+        >
+          ▶ この画像を医師へ届ける
+        </button>
+      </div>
+    );
+  }
+
+  // ---------- E: Before → After ----------
   return (
     <div className="game board-game">
-      <div className="task-bar">
-        <span className="task-now">条件を決めて、撮ってみよう</span>
-        <span className="task-sub">出来た画像を見て、足りなければ撮り直せる</span>
+      <div className="result-card good">
+        <span className="result-title">見えなかった中が、画像になった</span>
+        <div className="ba-mini">
+          <span className="ba-mini-item">
+            <span className="ba-mini-emoji">🧍</span>
+            <small>外からでは<br />分からない</small>
+          </span>
+          <span className="ba-mini-arrow">→</span>
+          <span className="ba-mini-item">
+            <span className="ba-mini-emoji">🫁</span>
+            <small>右の肺に<br />白いモヤがある</small>
+          </span>
+        </div>
       </div>
-
-      {shot && (
-        <>
-          <div className="xray-view">
-            <img src={shot.img} alt="撮影した画像" />
-            <span className="xray-cap">撮った画像</span>
-          </div>
-          <div className="sched-issues">
-            {shot.problems.map((p) => <p key={p}>{p}</p>)}
-          </div>
-        </>
-      )}
-
-      <Row title="① からだの向き">
-        <button className={`pick-choice ${facing === "front" ? "selected" : ""}`} onClick={() => { setFacing("front"); setShot(null); }}>
-          <span className="pc-emoji">🧍</span><span className="pc-name">正面</span>
-        </button>
-        <button className={`pick-choice ${facing === "side" ? "selected" : ""}`} onClick={() => { setFacing("side"); setShot(null); }}>
-          <span className="pc-emoji">🚶</span><span className="pc-name">横向き</span>
-        </button>
-      </Row>
-      <Row title="② 撮影する範囲">
-        <button className={`pick-choice ${range === "narrow" ? "selected" : ""}`} onClick={() => { setRange("narrow"); setShot(null); }}>
-          <span className="pc-name">せまく</span><small>胸の上だけ</small>
-        </button>
-        <button className={`pick-choice ${range === "chest" ? "selected" : ""}`} onClick={() => { setRange("chest"); setShot(null); }}>
-          <span className="pc-name">胸ぜんぶ</span><small>肺の上から下まで</small>
-        </button>
-        <button className={`pick-choice ${range === "belly" ? "selected" : ""}`} onClick={() => { setRange("belly"); setShot(null); }}>
-          <span className="pc-name">広く</span><small>おなかまで</small>
-        </button>
-      </Row>
-      <Row title="③ 息のタイミング">
-        <button className={`pick-choice ${breath === "hold" ? "selected" : ""}`} onClick={() => { setBreath("hold"); setShot(null); }}>
-          <span className="pc-emoji">🫁</span><span className="pc-name">吸って止める</span>
-        </button>
-        <button className={`pick-choice ${breath === "normal" ? "selected" : ""}`} onClick={() => { setBreath("normal"); setShot(null); }}>
-          <span className="pc-emoji">💨</span><span className="pc-name">ふつうに呼吸</span>
-        </button>
-      </Row>
-
-      <InfoCards cards={docs} label="こまったら見る資料" />
-
-      <button className="btn primary big" disabled={!ready} onClick={shoot}>
-        {ready ? (shot ? "▶ もう一度 撮影する" : "📷 撮影する") : "3つとも決めよう"}
+      <p className="game-line soft center-line">
+        画像は、医師にとって<strong>新しい手がかり</strong>になる。
+      </p>
+      <button className="btn primary big" onClick={onComplete}>
+        画像を送る
       </button>
     </div>
   );
