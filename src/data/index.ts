@@ -7,8 +7,9 @@ import { schoolLunch } from "./content/schoolLunch";
 import { extremeHeat } from "./content/extremeHeat";
 import { priceHike } from "./content/priceHike";
 import { townEvent } from "./content/townEvent";
+import { medical } from "./content/medical";
 
-const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent];
+const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical];
 
 export const places: Place[] = MODULES.flatMap((m) => m.places);
 export const events: AreaEvent[] = MODULES.flatMap((m) => m.events);

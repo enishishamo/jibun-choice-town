@@ -17,7 +17,6 @@ export const schoolLunch: ContentModule = {
       mapPos: { left: "32%", top: "18%" },
     },
     // Visible in the world but quiet today — hints that the world is bigger.
-    { id: "hospital", name: "病院", mapPos: { left: "10%", top: "70%" } },
     { id: "station", name: "駅", mapPos: { left: "92%", top: "72%" } },
     { id: "park", name: "公園", mapPos: { left: "88%", top: "26%" } },
   ],

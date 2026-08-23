@@ -27,8 +27,21 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
   const allDone = doneCount === event.incidents.length;
   const wrapUp =
     allDone && event.wrapUp ? (
-      <div className="wrapup">
-        {event.wrapUp.image && <img src={event.wrapUp.image} alt="" />}
+      <div className={`wrapup ${event.wrapUp.beforeAfter ? "wrapup-ba" : ""}`}>
+        {event.wrapUp.beforeAfter && (
+          <div className="ba-row">
+            <figure className="ba-item">
+              <img src={event.wrapUp.beforeAfter.before} alt="" />
+              <figcaption>{event.wrapUp.beforeAfter.beforeLabel}</figcaption>
+            </figure>
+            <span className="ba-arrow">→</span>
+            <figure className="ba-item">
+              <img src={event.wrapUp.beforeAfter.after} alt="" />
+              <figcaption>{event.wrapUp.beforeAfter.afterLabel}</figcaption>
+            </figure>
+          </div>
+        )}
+        {!event.wrapUp.beforeAfter && event.wrapUp.image && <img src={event.wrapUp.image} alt="" />}
         <div className="wrapup-body">
           <p className="wrapup-title">{event.wrapUp.title}</p>
           {event.wrapUp.lines.map((l) => (
@@ -63,7 +76,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
           </div>
           <div className="opening-action">
             <button className="btn primary big" onClick={() => setShowOpening(false)}>
-              うら側を見てみる
+              {opening.cta ?? "うら側を見てみる"}
             </button>
           </div>
         </div>

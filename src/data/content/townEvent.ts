@@ -17,7 +17,7 @@ export const townEvent: ContentModule = {
       id: "plaza",
       name: "広場",
       eventId: "town-festival",
-      mapPos: { left: "30%", top: "112%" },
+      mapPos: { left: "24%", top: "112%" },
     },
   ],
 

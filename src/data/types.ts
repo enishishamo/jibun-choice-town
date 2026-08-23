@@ -31,7 +31,7 @@ export interface AreaEvent {
    * If set, the area is drawn as ONE wide illustration with hotspots
    * placed on it (instead of icons floating on a coloured backdrop).
    */
-  sceneMap?: { image: string; opening?: { image: string; lines: string[] } };
+  sceneMap?: { image: string; opening?: { image: string; lines: string[]; cta?: string } };
   /** Visual mood of the scene ("heat" = orange sky etc.). */
   mood?: string;
   /**
@@ -42,8 +42,17 @@ export interface AreaEvent {
     intro: string;
     rows: { icon: string; label: string; view: string }[];
   };
-  /** Shown once every incident of this event has been experienced. */
-  wrapUp?: { image?: string; title: string; lines: string[] };
+  /**
+   * Shown once every incident of this event has been experienced.
+   * beforeAfter は「はじまり → いま」を2枚の絵で見せたいとき用
+   * （医療編：救急外来に来たとき → 自分の家で過ごしている）。
+   */
+  wrapUp?: {
+    image?: string;
+    beforeAfter?: { before: string; after: string; beforeLabel: string; afterLabel: string };
+    title: string;
+    lines: string[];
+  };
 }
 
 /**

@@ -24,6 +24,15 @@ import TimetableGame from "./TimetableGame";
 import VenueLayoutGame from "./VenueLayoutGame";
 import SoundCheckGame from "./SoundCheckGame";
 import CrowdFlowGame from "./CrowdFlowGame";
+import ClueBoardGame from "./ClueBoardGame";
+import LabCheckGame from "./LabCheckGame";
+import XrayGame from "./XrayGame";
+import DiagnoseGame from "./DiagnoseGame";
+import RxCheckGame from "./RxCheckGame";
+import NurseObserveGame from "./NurseObserveGame";
+import MealFitGame from "./MealFitGame";
+import MoveTryGame from "./MoveTryGame";
+import LifePlanGame from "./LifePlanGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -50,4 +59,14 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   venue_layout: VenueLayoutGame, // 会場に配置して見やすさ・通りやすさを試す
   sound_check: SoundCheckGame, // 機材を操作して席ごとの聞こえ方を合わせる
   crowd_flow: CrowdFlowGame, // 詰まりを読んで道具で流れを分ける
+  // 医療編（1人の患者を9章で追う）
+  clue_board: ClueBoardGame, // 調べ方を選んで手がかりを集める
+  lab_check: LabCheckGame, // 検体を確かめ、疑わしい値を測り直す
+  xray_shoot: XrayGame, // 条件を決めて撮る→写りを見て撮り直す
+  clue_join: DiagnoseGame, // 集まった手がかりをつないで見立てる
+  rx_check: RxCheckGame, // 薬×患者情報を照らして安全を確かめる
+  observe_care: NurseObserveGame, // 気づく→観察→見立て→ケア
+  meal_fit: MealFitGame, // 必要な栄養と食べられる形を近づける
+  move_try: MoveTryGame, // 動作を試す→工夫→再評価
+  life_plan: LifePlanGame, // 本人の希望から支援を組み立てる
 };

@@ -19,7 +19,7 @@ export const extremeHeat: ContentModule = {
       id: "town-heat",
       name: "街（猛暑）",
       eventId: "heat-wave",
-      mapPos: { left: "72%", top: "138%" },
+      mapPos: { left: "48%", top: "140%" },
     },
   ],
 
