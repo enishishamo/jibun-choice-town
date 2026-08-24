@@ -4731,3 +4731,92 @@ img {
   font-size: 11.5px;
   font-weight: bold;
 }
+
+/* ============================================================
+   SCHOOL TRIP THEME
+   ============================================================ */
+.scene.mood-trip {
+  background: linear-gradient(180deg, #d8ebf7 0%, #eaf2e6 40%, #f8f0dd 74%, #f3e9d2 100%);
+}
+
+/* 汎用ボード：venue-grid/venue-cell/venue-item をそのまま流用する外枠 */
+.trip-board {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+.venue-cell.over { border-color: var(--red); background: #fdeae4; }
+
+/* 旅程パズル：1〜3日目のカラム */
+.trip-daycols {
+  display: flex;
+  gap: 8px;
+}
+.trip-daycol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--ivory);
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 8px 6px;
+}
+.trip-daycol.ready { border-color: var(--orange); background: var(--orange-soft); }
+.trip-daycol.over { border-color: var(--red); }
+.trip-day-label { font-size: 12.5px; font-weight: bold; }
+.trip-day-time { font-size: 10.5px; color: var(--text-soft); }
+.trip-daycol.over .trip-day-time { color: var(--red); font-weight: bold; }
+.trip-day-cards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 40px;
+}
+.trip-card {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 5px 6px;
+  font-size: 10.5px;
+  text-align: left;
+  touch-action: none;
+}
+.trip-card.selected { border-color: var(--orange); background: var(--orange-soft); }
+.trip-day-empty {
+  font-size: 10.5px;
+  color: var(--text-faint, var(--text-soft));
+  text-align: center;
+  padding: 10px 2px;
+}
+
+/* 役割・経路・入浴時間などの1行選択パターン（安全計画・バス運行・宿） */
+.trip-role-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.trip-role-label { font-size: 12.5px; font-weight: bold; }
+
+/* 添乗員：状況確認の影響一覧 */
+.trip-impact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 13px;
+  padding: 9px 12px;
+}
+.trip-impact-icon { font-size: 24px; }
+.trip-impact-body { display: flex; flex-direction: column; gap: 2px; }
+.trip-impact-body b { font-size: 13px; }
+.trip-impact-body small { font-size: 11.5px; color: var(--red); }

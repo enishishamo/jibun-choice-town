@@ -20,6 +20,10 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
   const doneAny = event?.incidents.some((i) => hasCompleted(i.experienceId));
   // The opening picture is shown the first time only.
   const [showOpening, setShowOpening] = useState(!!opening && !doneAny);
+  // Hooks must run unconditionally, so these are declared before the
+  // `!event` early return even though they only matter when it exists.
+  const [chapterPick, setChapterPick] = useState<number | null>(null);
+  const [lockNote, setLockNote] = useState<string | null>(null);
   if (!event) return null;
 
   const doneCount = event.incidents.filter((i) => hasCompleted(i.experienceId)).length;
@@ -37,10 +41,8 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
   const defaultChapter = chapters
     ? Math.max(0, chapters.findIndex((_, i) => !chapterDone(i)))
     : 0;
-  const [chapterPick, setChapterPick] = useState<number | null>(null);
   const chapterIdx = chapterPick ?? defaultChapter;
   const chapter = chapters?.[chapterIdx];
-  const [lockNote, setLockNote] = useState<string | null>(null);
   const spots = chapter
     ? chapter.incidentIds
         .map((id) => event.incidents.find((x) => x.id === id))

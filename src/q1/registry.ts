@@ -33,6 +33,11 @@ import NurseObserveGame from "./NurseObserveGame";
 import MealFitGame from "./MealFitGame";
 import MoveTryGame from "./MoveTryGame";
 import LifePlanGame from "./LifePlanGame";
+import TripPlanGame from "./TripPlanGame";
+import SafetyPlanGame from "./SafetyPlanGame";
+import BusOpsGame from "./BusOpsGame";
+import DelayRecoverGame from "./DelayRecoverGame";
+import HotelReceiveGame from "./HotelReceiveGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -69,4 +74,10 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   meal_fit: MealFitGame, // 必要な栄養と食べられる形を近づける
   move_try: MoveTryGame, // 動作を試す→工夫→再評価
   life_plan: LifePlanGame, // 本人の希望から支援を組み立てる
+  // 修学旅行編（5つの役割を自由な順番で体験する）
+  trip_plan: TripPlanGame, // 予定カードを3日間へ組み立てる
+  safety_plan: SafetyPlanGame, // 班へ引率を割りあて、役割を決める
+  bus_ops: BusOpsGame, // 班・運転士・経路をバスへそろえる
+  delay_recover: DelayRecoverGame, // 状況確認→連絡→承認→共有の順で立て直す
+  hotel_receive: HotelReceiveGame, // 部屋→食事→入浴の3段階で受け入れる
 };
