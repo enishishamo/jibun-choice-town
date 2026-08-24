@@ -260,6 +260,17 @@ img {
   height: 26px;
   object-fit: contain;
 }
+/* Reuses the existing ui-new.png / .discovery-new treatment from the
+   Q1 discovery card, just repositioned for a balloon corner. */
+.balloon-new-badge {
+  position: absolute;
+  top: -12px;
+  left: -10px;
+  width: 40px;
+  height: auto;
+  transform: rotate(-10deg);
+  z-index: 1;
+}
 .balloon-text {
   font-size: 12px;
   font-weight: bold;
@@ -1083,7 +1094,27 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 10px;
   padding: 16px 16px 0;
+  position: relative;
+  z-index: 4;
+}
+.world-header-text {
+  flex: 1;
+  min-width: 0;
+}
+.world-header .zukan-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.world-lead {
+  margin: 8px 16px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.5;
   position: relative;
   z-index: 4;
 }
@@ -1092,7 +1123,7 @@ img {
    balloon instead of pushing the town to the bottom of the viewport. */
 .town-stage {
   position: relative;
-  margin-top: 72px;
+  margin-top: 20px; /* .world-lead now sits between the header and the town */
   margin-bottom: 150px; /* room for the balloons under the town */
   width: 100%;
 }
@@ -1136,15 +1167,14 @@ img {
 }
 
 .world-ground {
+  /* Used to hold the kids illustration + a hint line; both moved out
+     (illustration dropped for now, hint merged into .world-lead). Kept
+     as a thin closing band so the town image doesn't end abruptly. */
   position: relative;
   z-index: 2;
-  padding: 6px 16px 22px;
+  padding: 18px 16px;
   margin-top: -6px;
   background: #f3e9d2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
 }
 .world-kids {
   width: 40%;

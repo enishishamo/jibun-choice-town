@@ -16,9 +16,9 @@ export default function HomeScreen() {
     <div className="screen world-screen">
       <div className="world">
         <header className="world-header">
-          <div>
+          <div className="world-header-text">
             <h1 className="logo">JIBUN CHOICE</h1>
-            <p className="tagline">この街、なにか起きてる。</p>
+            <p className="tagline">知らない社会を、ちょっとのぞいてみよう。</p>
           </div>
           <button className="zukan-btn" onClick={() => navigate({ name: "zukan" })}>
             📖 しごと図鑑
@@ -27,6 +27,12 @@ export default function HomeScreen() {
             )}
           </button>
         </header>
+
+        <p className="world-lead">
+          いま、どこかで何かが起きてる！
+          <br />
+          気になる場所をタップしてみよう
+        </p>
 
         <div className="town-stage">
           {/* quiet places: clearly marked as not-yet-open, but not dead */}
@@ -55,6 +61,11 @@ export default function HomeScreen() {
                 style={p.mapPos ? { left: p.mapPos.left, top: p.mapPos.top } : undefined}
                 onClick={() => navigate({ name: "area", eventId: ev.id })}
               >
+                {/* Manual flag for the newest event only — not a general
+                    "isNew" data field yet, on purpose (see PR notes). */}
+                {ev.id === "school-trip" && (
+                  <img className="balloon-new-badge" src={A("ui-new")} alt="NEW" />
+                )}
                 <img src={A("ui-fire")} alt="" />
                 <span className="balloon-text">
                   {ev.shortLabel ?? ev.title.split("\n").join("")}
@@ -64,10 +75,7 @@ export default function HomeScreen() {
           })}
         </div>
 
-        <div className="world-ground">
-          <img className="world-kids" src={A("kids-walking")} alt="" />
-          <p className="world-hint">🔥がついている場所で、なにかが起きているみたい。タップ！</p>
-        </div>
+        <div className="world-ground" />
       </div>
     </div>
   );
