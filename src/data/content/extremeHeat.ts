@@ -19,7 +19,7 @@ export const extremeHeat: ContentModule = {
       id: "town-heat",
       name: "街（猛暑）",
       eventId: "heat-wave",
-      mapPos: { left: "48%", top: "140%" },
+      mapPos: { left: "20%", top: "67.5%" },
     },
   ],
 
@@ -307,7 +307,7 @@ export const extremeHeat: ContentModule = {
       professionId: "park-design",
       eventId: "heat-wave",
       gameType: "place_and_test",
-      place: { name: "猛暑の公園", image: H("place-park") },
+      place: { name: "猛暑の公園", image: H("place-park"), fit: "contain" },
       mission: {
         title: "この公園、暑すぎる！",
         lines: ["遊具もベンチも熱くて、だれも遊べない…。"],
@@ -334,7 +334,7 @@ export const extremeHeat: ContentModule = {
       professionId: "power-ops",
       eventId: "heat-wave",
       gameType: "forecast_and_balance",
-      place: { name: "街の電気", image: H("place-town") },
+      place: { name: "街の電気", image: H("place-town"), fit: "contain" },
       mission: {
         title: "電気を使う量が、\nどんどん増えてる！",
         lines: ["みんなが一斉に冷房を使いはじめた。"],
@@ -354,7 +354,7 @@ export const extremeHeat: ContentModule = {
       professionId: "site-safety",
       eventId: "heat-wave",
       gameType: "schedule_and_protect",
-      place: { name: "工事現場", image: H("place-site") },
+      place: { name: "工事現場", image: H("place-site"), fit: "contain" },
       mission: {
         title: "今日は39℃。\nでも今日やる予定の工事がある。",
         lines: ["働く人を守りながら、必要なところまで進めよう。"],
@@ -374,7 +374,7 @@ export const extremeHeat: ContentModule = {
       professionId: "water-ops",
       eventId: "heat-wave",
       gameType: "allocate_and_forecast",
-      place: { name: "ダム・水の施設", image: H("place-dam") },
+      place: { name: "ダム・水の施設", image: H("place-dam"), fit: "contain" },
       mission: {
         title: "ダムの水が減っている…",
         lines: ["家庭にも、農業にも、工場にも水が必要。この先も雨は少ないかもしれない。"],
@@ -394,7 +394,7 @@ export const extremeHeat: ContentModule = {
       professionId: "urban-heat",
       eventId: "heat-wave",
       gameType: "layer_and_compare",
-      place: { name: "暑い市街地", image: H("place-city") },
+      place: { name: "暑い市街地", image: H("place-city"), fit: "contain" },
       mission: {
         title: "同じ街なのに、\nここだけ暑い？",
         lines: ["同じ39℃の日。でも、道によって暑さがちがう。なんで？"],

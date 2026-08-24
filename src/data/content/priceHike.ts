@@ -17,7 +17,7 @@ export const priceHike: ContentModule = {
       id: "shop",
       name: "お店",
       eventId: "ice-price",
-      mapPos: { left: "68%", top: "50%" },
+      mapPos: { left: "68%", top: "63%" },
     },
   ],
 

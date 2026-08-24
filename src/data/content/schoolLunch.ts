@@ -14,11 +14,11 @@ export const schoolLunch: ContentModule = {
       id: "school",
       name: "学校",
       eventId: "lunch-late",
-      mapPos: { left: "32%", top: "18%" },
+      mapPos: { left: "38%", top: "47%" },
     },
     // Visible in the world but quiet today — hints that the world is bigger.
-    { id: "station", name: "駅", mapPos: { left: "92%", top: "72%" } },
-    { id: "park", name: "公園", mapPos: { left: "88%", top: "26%" } },
+    { id: "station", name: "工場", mapPos: { left: "24%", top: "24%" } },
+    { id: "park", name: "公園", mapPos: { left: "35.5%", top: "106%" } },
   ],
 
   events: [
@@ -322,7 +322,7 @@ export const schoolLunch: ContentModule = {
       professionId: "nutrition",
       eventId: "lunch-late",
       gameType: "drag_and_drop",
-      place: { name: "学校（給食を考える部屋）", image: A("bg-school") },
+      place: { name: "学校（給食を考える部屋）", image: A("bg-school"), fit: "contain" },
       mission: {
         title: "来月使う予定の野菜が、\n少なくなりそう！",
         lines: ["資料を見ながら、献立と食材を調整しよう。"],

@@ -28,7 +28,7 @@ export const medical: ContentModule = {
       id: "hospital",
       name: "病院",
       eventId: "er-patient",
-      mapPos: { left: "74%", top: "112%" },
+      mapPos: { left: "80.5%", top: "31%" },
     },
   ],
 

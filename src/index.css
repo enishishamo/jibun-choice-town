@@ -85,16 +85,20 @@ img {
 }
 
 /* ---------- shared ---------- */
+/* 「戻る」系ボタンの見た目を .back-chip と統一（文言・遷移先はそのまま） */
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  background: rgba(255, 253, 246, 0.9);
+  border: 2px solid var(--line);
   color: var(--text-soft);
-  font-size: 14px;
-  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 7px 13px;
   margin-bottom: 8px;
-  border-radius: 12px;
-}
-.back-link:active {
-  background: var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
 }
 
 .btn {
@@ -1175,6 +1179,9 @@ img {
   z-index: 4;
 }
 .back-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
   background: rgba(255, 253, 246, 0.9);
   border: 2px solid var(--line);
   border-radius: 999px;
@@ -1184,6 +1191,14 @@ img {
   color: var(--text-soft);
   box-shadow: var(--shadow);
   flex-shrink: 0;
+}
+.back-chip:hover,
+.back-link:hover {
+  border-color: var(--orange);
+}
+.back-chip:active,
+.back-link:active {
+  background: var(--line);
 }
 .scene-banner {
   flex: 1;
@@ -1339,7 +1354,9 @@ img {
   margin-bottom: 18px;
 }
 .q1-intro-scene .btn {
-  margin-top: auto;
+  /* was margin-top:auto, which pinned the button to the bottom of a
+     min-height:100dvh column and left a huge gap under short missions */
+  margin-top: 28px;
 }
 
 /* ============================================================
