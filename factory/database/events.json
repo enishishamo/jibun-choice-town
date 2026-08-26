@@ -1,0 +1,239 @@
+[
+  {
+    "id": "heat-wave",
+    "title": "暑すぎる！\n街のあちこちで大変！",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "park-heat",
+      "power-heat",
+      "site-heat",
+      "water-heat",
+      "urban-heat"
+    ],
+    "jobIds": [
+      "park-design",
+      "power-ops",
+      "site-safety",
+      "water-ops",
+      "urban-heat"
+    ],
+    "mechanics": [
+      "place_and_test",
+      "forecast_and_balance",
+      "schedule_and_protect",
+      "allocate_and_forecast",
+      "layer_and_compare"
+    ],
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "spatial_placement",
+      "resource_allocation",
+      "sequencing",
+      "data_layer_compare"
+    ]
+  },
+  {
+    "id": "er-patient",
+    "title": "救急外来に、\n息苦しそうな人が来た",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "med-doctor",
+      "med-lab",
+      "med-radio",
+      "med-diagnose",
+      "med-pharm",
+      "med-nurse",
+      "med-diet",
+      "med-pt",
+      "med-msw"
+    ],
+    "jobIds": [
+      "doctor",
+      "labtech",
+      "radtech",
+      "pharmacist",
+      "nurse",
+      "dietitian",
+      "pt",
+      "msw"
+    ],
+    "mechanics": [
+      "clue_board",
+      "lab_check",
+      "xray_shoot",
+      "clue_join",
+      "rx_check",
+      "observe_care",
+      "meal_fit",
+      "move_try",
+      "life_plan"
+    ],
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "search_discovery",
+      "measurement_inspection",
+      "simulation_run",
+      "matching",
+      "parameter_adjust",
+      "trial_and_error_experiment",
+      "composition_design"
+    ]
+  },
+  {
+    "id": "ice-price",
+    "title": "えっ！？\nいつものアイスが高くなってる！",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "sourcing-ice",
+      "recipe-ice",
+      "package-ice",
+      "factory-ice"
+    ],
+    "jobIds": [
+      "sourcing",
+      "product-dev",
+      "packaging",
+      "line-eng"
+    ],
+    "mechanics": [
+      "sourcing_mix",
+      "recipe_balance",
+      "package_design",
+      "line_debug"
+    ],
+    "sourceFiles": [
+      "src/data/content/priceHike.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "resource_allocation",
+      "parameter_adjust",
+      "composition_design",
+      "data_layer_compare"
+    ]
+  },
+  {
+    "id": "lunch-late",
+    "title": "大変！\n今日の給食が間に合わない！",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "cook-lunch",
+      "nutrition-lunch",
+      "farmer-lunch",
+      "logistics-lunch",
+      "recycle-lunch"
+    ],
+    "jobIds": [
+      "cook",
+      "nutrition",
+      "farmer",
+      "logistics",
+      "recycle"
+    ],
+    "mechanics": [
+      "inspect_and_measure",
+      "drag_and_drop",
+      "sow_and_grow",
+      "load_and_route",
+      "sort_out"
+    ],
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "measurement_inspection",
+      "drag_drop_assign",
+      "trial_and_error_experiment",
+      "matching"
+    ]
+  },
+  {
+    "id": "school-trip",
+    "title": "修学旅行、\nどうやって100人を運ぶ？",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "plan-trip",
+      "safety-trip",
+      "bus-trip",
+      "delay-trip",
+      "hotel-trip"
+    ],
+    "jobIds": [
+      "trip-planner",
+      "trip-teacher",
+      "trip-busmanager",
+      "trip-conductor",
+      "trip-hotel"
+    ],
+    "mechanics": [
+      "trip_plan",
+      "safety_plan",
+      "bus_ops",
+      "delay_recover",
+      "hotel_receive"
+    ],
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "composition_design",
+      "drag_drop_assign",
+      "sequencing"
+    ]
+  },
+  {
+    "id": "town-festival",
+    "title": "なんかイベントを\nやることになった！",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "plan-event",
+      "promo-event",
+      "run-event",
+      "venue-event",
+      "sound-event",
+      "crowd-event"
+    ],
+    "jobIds": [
+      "planner",
+      "promoter",
+      "stage-manager",
+      "venue-designer",
+      "sound-tech",
+      "crowd-safety"
+    ],
+    "mechanics": [
+      "plan_mix",
+      "reach_mix",
+      "timetable",
+      "venue_layout",
+      "sound_check",
+      "crowd_flow"
+    ],
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ],
+    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "mechanicCategories": [
+      "composition_design",
+      "resource_allocation",
+      "sequencing",
+      "spatial_placement",
+      "parameter_adjust",
+      "matching"
+    ]
+  }
+]

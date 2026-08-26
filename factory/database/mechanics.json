@@ -1,0 +1,1191 @@
+[
+  {
+    "componentHash": "d9488e684c78",
+    "reviewStale": false,
+    "id": "drag_and_drop",
+    "label": "MenuGame",
+    "componentPath": "src/q1/MenuGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "lunch-late"
+    ],
+    "recentGames": [
+      "nutrition-lunch"
+    ],
+    "description": "制約を見ながら入れかえる",
+    "section": "給食編",
+    "primaryMechanic": "drag_drop_assign",
+    "secondaryMechanics": [
+      "tap_select",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "調達不能になった副菜スロットへ4つの候補料理カードをドラッグで入れかえる。入れかえるたびに栄養・予算・調達・調理の4チップが即時更新され、確認ボタンで成立判定。",
+    "semantic": {
+      "C_in_component": "栄養基準・予算・旬/調達・残食記録の4資料（InfoCards）と栄養/予算/調達/調理のライブ状態チップ",
+      "C_required": "partial — supply=0/nutri=0は確認時にブロックされ資料へ誘導されるが、チップの◎△×表示だけでも総当たりで解ける",
+      "action_changes_result": "yes — sideId によりチップと合否分岐が変化",
+      "retry": "yes — 確認ボタンが失敗理由noteを出して差し戻し、何度でも入れかえ直せる",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 4候補中3つが成立し得る複数解設計",
+      "evidence": [
+        "src/q1/MenuGame.tsx:52-62",
+        "src/q1/MenuGame.tsx:139",
+        "src/q1/MenuGame.tsx:193-206"
+      ]
+    }
+  },
+  {
+    "componentHash": "2727ee4daf09",
+    "reviewStale": false,
+    "id": "inspect_and_measure",
+    "label": "CookGame",
+    "componentPath": "src/q1/CookGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "lunch-late"
+    ],
+    "recentGames": [
+      "cook-lunch"
+    ],
+    "description": "測る→基準→対応→再確認→記録",
+    "section": "給食編",
+    "primaryMechanic": "measurement_inspection",
+    "secondaryMechanics": [
+      "simulation_run",
+      "tap_select"
+    ],
+    "interactionNotes": "温度計を持って魚3か所を測温し、基準未達なら追加加熱→再測定→記録票へ記入。道具操作でしか進まない構造。",
+    "semantic": {
+      "C_in_component": "中心温度計・オーブン・記録票のツールドック、作業工程表・衛生ルール資料、中心温度記録票",
+      "C_required": "partial — 75℃/3か所の基準は資料にあるが、記録票ゲートのnoteと合格文が基準値を本文中に漏らしており、誘導文だけでクリア可能。測定・再測定の手順自体は省略不能",
+      "action_changes_result": "yes — 測った部位ごとに記録され、minTemp>=75かつ全点測定で記録票が解錠。round1のまま記録しようとすると拒否",
+      "retry": "yes — round1で62℃→追加加熱→再測定の必須リトライループ。消毒の誤選択もnoteで差し戻し",
+      "fixed_progression": "no — ボタン送りでなく道具操作の順序で進む",
+      "obvious_binary_choice": "no — 主課題は測定と基準照合。ただし途中の器具消毒だけは正解が明白な2択",
+      "evidence": [
+        "src/q1/CookGame.tsx:68-97",
+        "src/q1/CookGame.tsx:187-206",
+        "src/q1/CookGame.tsx:211-241"
+      ]
+    }
+  },
+  {
+    "componentHash": "665154371a07",
+    "reviewStale": false,
+    "id": "sow_and_grow",
+    "label": "FarmGame",
+    "componentPath": "src/q1/FarmGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "lunch-late"
+    ],
+    "recentGames": [
+      "farmer-lunch"
+    ],
+    "description": "試す→時間経過→結果→やり直す",
+    "section": "給食編",
+    "primaryMechanic": "trial_and_error_experiment",
+    "secondaryMechanics": [
+      "drag_drop_assign",
+      "simulation_run"
+    ],
+    "interactionNotes": "種袋を畑へドラッグしてまき、月を進めると品種ごとのタイムラインが再生。合わない品種は発芽失敗・生育不足で終わり、畑リセットで別品種を再試行。",
+    "semantic": {
+      "C_in_component": "種袋カードのまきどき・収穫日数・耐暑性表示、注文時期・気象情報・土壌診断の3資料、かん水設備",
+      "C_required": "no — 品種3つの総当たりで資料を読まずにクリア可能。ただし種カード自体にC情報が常時表示され、fail文が資料参照を促す",
+      "action_changes_result": "yes — 選んだ品種ごとに月次結果が分岐し、2品種はfailで終わる",
+      "retry": "yes — fail時に「畑をリセットして別の種を試す」で再試行",
+      "fixed_progression": "no — ただし正解品種選択後は時間送り連打＋強制かん水1回でほぼ一本道",
+      "obvious_binary_choice": "no — 3択で、正解には まきどき・収穫日数・耐暑 の3条件照合が要る",
+      "evidence": [
+        "src/q1/FarmGame.tsx:30-54",
+        "src/q1/FarmGame.tsx:101-105",
+        "src/q1/FarmGame.tsx:159-185"
+      ]
+    }
+  },
+  {
+    "componentHash": "cb02d5792fa0",
+    "reviewStale": false,
+    "id": "load_and_route",
+    "label": "LogisticsGame",
+    "componentPath": "src/q1/LogisticsGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "lunch-late"
+    ],
+    "recentGames": [
+      "logistics-lunch"
+    ],
+    "description": "積み分け＋順路計画→検収",
+    "section": "給食編",
+    "primaryMechanic": "drag_drop_assign",
+    "secondaryMechanics": [
+      "sequencing",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "4食材を冷凍/冷蔵/常温の荷室へドラッグし、2校を回る順を決めて出発。検収で温度ミス・順序ミスが失敗として返り、該当フェーズへ差し戻される。",
+    "semantic": {
+      "C_in_component": "注文書・保存温度資料・配送メモ、荷室ラベルの温度表示、学校カードの所要時間・納品しめきり",
+      "C_required": "partial — 荷室ラベルとしめきり表示が画面上にあり、失敗→積み直しの総当たりで資料なしでもクリア可能",
+      "action_changes_result": "yes — 積んだ荷室と回る順で検収結果が分岐",
+      "retry": "yes — 温度ミスは積込へ、遅刻はルートへ、明示的に差し戻し",
+      "fixed_progression": "no — 積み方とルートの2つの意思決定が結果を分岐させる3フェーズ構造",
+      "obvious_binary_choice": "no — 積込は4×3。ただしルートは2校の順列で実質2択",
+      "evidence": [
+        "src/q1/LogisticsGame.tsx:107",
+        "src/q1/LogisticsGame.tsx:113-116",
+        "src/q1/LogisticsGame.tsx:132-160"
+      ]
+    }
+  },
+  {
+    "componentHash": "b0c4ff93c86c",
+    "reviewStale": false,
+    "id": "sort_out",
+    "label": "RecycleGame",
+    "componentPath": "src/q1/RecycleGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "lunch-late"
+    ],
+    "recentGames": [
+      "recycle-lunch"
+    ],
+    "description": "道具の性質で仕分ける",
+    "section": "給食編",
+    "primaryMechanic": "matching",
+    "secondaryMechanics": [
+      "tap_select",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "磁石・網・手選別の3ツールを持ちかえ、ライン上の3異物を除去する。異物ごとに正解ツールが決まっており、不正解は理由つきreject文が返る。",
+    "semantic": {
+      "C_in_component": "3ツールの名称と性質説明（鉄を吸い付ける等）、工場の受入ルール資料",
+      "C_required": "partial — ツール説明が対応関係のヒントを常時表示し、3×3の総当たり＋reject文の誘導で資料なしでもクリア可能",
+      "action_changes_result": "yes — 持っているツールと異物の一致判定で除去可否が決まる",
+      "retry": "yes — 不正解はnoteのみでペナルティなく持ちかえて再試行",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 3ツール×3異物で性質の理解が要る",
+      "evidence": [
+        "src/q1/RecycleGame.tsx:26-57",
+        "src/q1/RecycleGame.tsx:142-160"
+      ]
+    }
+  },
+  {
+    "componentHash": "e796c6e3c56d",
+    "reviewStale": false,
+    "id": "place_and_test",
+    "label": "ParkHeatGame",
+    "componentPath": "src/q1/ParkHeatGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "heat-wave"
+    ],
+    "recentGames": [
+      "park-heat"
+    ],
+    "description": "配置→シミュレーション→再配置",
+    "section": "猛暑編",
+    "primaryMechanic": "spatial_placement",
+    "secondaryMechanics": [
+      "simulation_run",
+      "data_layer_compare"
+    ],
+    "interactionNotes": "4対策パーツを公園の4スポットへドラッグ/タップ配置し、「ためす」でスポットごとの冷却判定。日射・地面温度・風の3レイヤーを重ねて根拠を確認できる。",
+    "semantic": {
+      "C_in_component": "日射マップ・地面の温度・風の3データレイヤー（スポット別の値表示）と失敗時のweak理由テキスト",
+      "C_required": "partial — レイヤーを見なくても「ためす」→スポット別✓✗とweak理由で試行錯誤突破可能（4スポット×4パーツ）。weak文は答えを直接教えず理由を示す",
+      "action_changes_result": "yes — 冷却判定は配置内容から計算され、成功後のafter画像も配置由来",
+      "retry": "yes — ためす→結果→再配置ループ、「ぜんぶ置き直す」ボタン",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no",
+      "evidence": [
+        "src/q1/ParkHeatGame.tsx:33-93",
+        "src/q1/ParkHeatGame.tsx:119-143",
+        "src/q1/ParkHeatGame.tsx:246-257",
+        "src/q1/ParkHeatGame.tsx:283-293"
+      ]
+    }
+  },
+  {
+    "componentHash": "266613ca8b9a",
+    "reviewStale": false,
+    "id": "forecast_and_balance",
+    "label": "PowerGame",
+    "componentPath": "src/q1/PowerGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "heat-wave"
+    ],
+    "recentGames": [
+      "power-heat"
+    ],
+    "description": "予測を見て供給を合わせ、時間を進める",
+    "section": "猛暑編",
+    "primaryMechanic": "resource_allocation",
+    "secondaryMechanics": [
+      "simulation_run",
+      "tap_select"
+    ],
+    "interactionNotes": "気温予報・需要予測を見ながら3つの供給カードをON/OFFし、1時間ずつ時間を進めて需給バランスを保つ。",
+    "semantic": {
+      "C_in_component": "気温予報パネル・需要予測グラフ・需給バランスゲージ",
+      "C_required": "no — Cを開かず供給カードを1枚も入れずに「進める」を5回押すだけで成功エンディングに到達する（advanceは失敗で止まらない）",
+      "action_changes_result": "no（最終結果） — 途中の需給ゲージと警告文は操作を反映するが、最終E画面は需給不足の履歴と無関係に固定の成功文言「一度も途切れなかった」",
+      "retry": "no — 失敗状態が存在せず、時間を戻す手段もない",
+      "fixed_progression": "no — 操作UI自体はあるが、進行が操作内容と無関係に完走する",
+      "obvious_binary_choice": "no",
+      "evidence": [
+        "src/q1/PowerGame.tsx:53-63",
+        "src/q1/PowerGame.tsx:65-79",
+        "src/q1/PowerGame.tsx:112-116",
+        "src/q1/PowerGame.tsx:152-166"
+      ]
+    }
+  },
+  {
+    "componentHash": "6f6724c4ace6",
+    "reviewStale": false,
+    "id": "schedule_and_protect",
+    "label": "SiteHeatGame",
+    "componentPath": "src/q1/SiteHeatGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "heat-wave"
+    ],
+    "recentGames": [
+      "site-heat"
+    ],
+    "description": "安全と進捗の両立を工程で調整",
+    "section": "猛暑編",
+    "primaryMechanic": "sequencing",
+    "secondaryMechanics": [
+      "drag_drop_assign",
+      "simulation_run"
+    ],
+    "interactionNotes": "作業カードを朝〜夕の5枠タイムラインへドラッグし、「この工程でやる」で時間帯別の暑熱リスクと工事進捗が同時に評価される。安全と進捗の両立を組み直しで探る。",
+    "semantic": {
+      "C_in_component": "時間帯別WBGTパネル（危険目安31の注記つき）、作業カードの負荷表示",
+      "C_required": "partial — WBGTを見なくても実行→時間帯別リスク表示と理由文で組み直し可能。ただしWBGT基準の目安はCでのみ提示",
+      "action_changes_result": "yes — 進捗とリスクはプラン内容から計算され、成功条件は maxRisk<2 かつ progress>=75",
+      "retry": "yes — 「工程表を組み直す」で再試行",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 全休憩=安全だが進まない等、単一正解にしない設計",
+      "evidence": [
+        "src/q1/SiteHeatGame.tsx:41-47",
+        "src/q1/SiteHeatGame.tsx:64-74",
+        "src/q1/SiteHeatGame.tsx:110-123",
+        "src/q1/SiteHeatGame.tsx:149-156"
+      ]
+    }
+  },
+  {
+    "componentHash": "f8624912f1e6",
+    "reviewStale": false,
+    "id": "allocate_and_forecast",
+    "label": "WaterGame",
+    "componentPath": "src/q1/WaterGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "heat-wave"
+    ],
+    "recentGames": [
+      "water-heat"
+    ],
+    "description": "限られた資源の配分＋先の予測",
+    "section": "猛暑編",
+    "primaryMechanic": "resource_allocation",
+    "secondaryMechanics": [
+      "parameter_adjust",
+      "simulation_run"
+    ],
+    "interactionNotes": "家庭・農業・工業の利用量を段階スライダーで調整し「7日進める」。大雨が来る3週間後まで貯水率をもたせる。絞りすぎると各分野に影響テキストが出る。",
+    "semantic": {
+      "C_in_component": "雨予測カード（3週間後に大雨）、貯水率ビジュアル、「このまま7日後：約X%」予測チップ、分野別影響テキスト",
+      "C_required": "partial — 雨予測を見ないと「いつまでもたせるか」の目標が分からないが、予測チップと失敗→やり直しで収束可能",
+      "action_changes_result": "yes — 週間消費はスライダー依存で、一度でも危険水準に落ちるとhitCriticalで成功が消える",
+      "retry": "yes — 「今日からやり直す」で初期状態から再試行",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 3分野×10段階の配分でトレードオフあり",
+      "evidence": [
+        "src/q1/WaterGame.tsx:57-84",
+        "src/q1/WaterGame.tsx:139-149",
+        "src/q1/WaterGame.tsx:152-177",
+        "src/q1/WaterGame.tsx:182-194"
+      ]
+    }
+  },
+  {
+    "componentHash": "1ef99d8a36eb",
+    "reviewStale": false,
+    "id": "layer_and_compare",
+    "label": "UrbanHeatGame",
+    "componentPath": "src/q1/UrbanHeatGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "heat-wave"
+    ],
+    "recentGames": [
+      "urban-heat"
+    ],
+    "description": "データを重ねて原因を探し、試す",
+    "section": "猛暑編",
+    "primaryMechanic": "data_layer_compare",
+    "secondaryMechanics": [
+      "search_discovery",
+      "simulation_run"
+    ],
+    "interactionNotes": "4データレイヤーをON/OFFし2地点を比較して暑さの原因を探り、対策を1か所に置いて再シミュレーション。効かない場所ではヒートマップが変わらない。",
+    "semantic": {
+      "C_in_component": "日射・風・建物・樹木の4レイヤーと2地点比較パネル（レイヤーONのときだけ中身が見える）",
+      "C_required": "partial — レイヤー・比較を一切使わなくても対策設置は可能（simulateの条件はfixAtのみ）で、3地点中2つがfixableのため当てずっぽう＋置き直しで到達可能。mission-barのチェックリストは表示のみで進行条件ではない",
+      "action_changes_result": "yes — fixableな地点のみヒートマップが変化し、非fixableは変化なしと理由が返る",
+      "retry": "yes — 「別の場所に置きなおす」で再試行",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — ただし対策の設置先は実質3択で当てずっぽう耐性が低い",
+      "evidence": [
+        "src/q1/UrbanHeatGame.tsx:75-101",
+        "src/q1/UrbanHeatGame.tsx:143-150",
+        "src/q1/UrbanHeatGame.tsx:186-201",
+        "src/q1/UrbanHeatGame.tsx:225-239"
+      ]
+    }
+  },
+  {
+    "componentHash": "55e33e3b2a92",
+    "reviewStale": false,
+    "id": "sourcing_mix",
+    "label": "SourcingGame",
+    "componentPath": "src/q1/SourcingGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "ice-price"
+    ],
+    "recentGames": [
+      "sourcing-ice"
+    ],
+    "description": "条件を見比べて仕入れを組み立てる",
+    "section": "物価高編",
+    "primaryMechanic": "resource_allocation",
+    "secondaryMechanics": [
+      "parameter_adjust",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "3社それぞれの仕入量を20kg刻みで組み立て、「仕入れてみる」で量・コスト・納期・集中リスクの結果が返る。量不足や納期遅れは失敗文で差し戻し。",
+    "semantic": {
+      "C_in_component": "仕入先カードの「くわしく」パネル（品質・納期・上限・安定性）と、そろった量・材料費のライブメーター",
+      "C_required": "partial — 上限は+ボタンのdisabledと表示で漏れ、納期遅れも失敗結果から学べるため、詳細を開かなくても試行錯誤でクリア可能",
+      "action_changes_result": "yes — 配分から量・コスト・遅延・集中リスクを計算して合否と結果画面が変わる",
+      "retry": "yes — 失敗理由表示のまま再調整でき、リセットもある",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 連続的な配分問題で複数解が成立",
+      "evidence": [
+        "src/q1/SourcingGame.tsx:48-60",
+        "src/q1/SourcingGame.tsx:150-175",
+        "src/q1/SourcingGame.tsx:183-208"
+      ]
+    }
+  },
+  {
+    "componentHash": "d54202453800",
+    "reviewStale": false,
+    "id": "recipe_balance",
+    "label": "RecipeGame",
+    "componentPath": "src/q1/RecipeGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "ice-price"
+    ],
+    "recentGames": [
+      "recipe-ice"
+    ],
+    "description": "配合を動かしてトレードオフを見る",
+    "section": "物価高編",
+    "primaryMechanic": "parameter_adjust",
+    "secondaryMechanics": [
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "5原料の配合量を増減するとコストと味4指標がリアルタイム更新され、「試作する」でコスト上限かつ味維持を判定する。",
+    "semantic": {
+      "C_in_component": "原料の単価表示とライブの味・コストパネル（CがUI計器として常時埋め込み）",
+      "C_required": "yes — 合格条件はパネルの表示でしか知覚できず、5変数の探索空間をこれを見ずに当てるのは非現実的。Cは任意資料ではなく不可避の計器",
+      "action_changes_result": "yes — 配合量×係数でコストと4指標を算出し合否分岐",
+      "retry": "yes — 理由別noteを出して調整継続、リセットあり",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 複数解を明示",
+      "evidence": [
+        "src/q1/RecipeGame.tsx:41-50",
+        "src/q1/RecipeGame.tsx:63-77",
+        "src/q1/RecipeGame.tsx:117-135"
+      ]
+    }
+  },
+  {
+    "componentHash": "1a51ecf7ca83",
+    "reviewStale": false,
+    "id": "package_design",
+    "label": "PackageGame",
+    "componentPath": "src/q1/PackageGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "ice-price"
+    ],
+    "recentGames": [
+      "package-ice"
+    ],
+    "description": "素材×形×サイズを組み立ててテスト",
+    "section": "物価高編",
+    "primaryMechanic": "composition_design",
+    "secondaryMechanics": [
+      "tap_select",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "素材×形×サイズをタップで組み合わせ、「テストする」で冷凍・運搬・表示・コストの4判定。不合格項目は理由文で表示され、選び直して再テスト。",
+    "semantic": {
+      "C_in_component": "各カードの名称・価格と選択時に自動表示される特徴説明、テスト結果の4指標",
+      "C_required": "partial — 説明は読み飛ばせるが、失敗理由文が原因を特定するため36通り以下の試行錯誤でクリア可能",
+      "action_changes_result": "yes — 選択3要素から4指標を計算して合否",
+      "retry": "yes — 不合格理由を列挙して選び直し→再テスト",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — コストと保護のトレードオフ判断",
+      "evidence": [
+        "src/q1/PackageGame.tsx:66-72",
+        "src/q1/PackageGame.tsx:113-127",
+        "src/q1/PackageGame.tsx:178-195"
+      ]
+    }
+  },
+  {
+    "componentHash": "9786c05f0f00",
+    "reviewStale": false,
+    "id": "line_debug",
+    "label": "FactoryLineGame",
+    "componentPath": "src/q1/FactoryLineGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "ice-price"
+    ],
+    "recentGames": [
+      "factory-ice"
+    ],
+    "description": "データで原因を探し、調整して再実行",
+    "section": "物価高編",
+    "primaryMechanic": "data_layer_compare",
+    "secondaryMechanics": [
+      "simulation_run",
+      "tap_select"
+    ],
+    "interactionNotes": "ラインを動かして詰まりを観察→工程ごとのデータを開いて見比べ、ボトルネック工程を特定→調整して再稼働し、Before/Afterを比較する。",
+    "semantic": {
+      "C_in_component": "工程ごとのデータパネル（処理数/停止/たまり/ロス）、生産合計、Before/After結果カード",
+      "C_required": "partial — 原因選択UIは最低1工程のデータを開くまで出現しないためC完全無視は不可。ただし正解工程の特定は誤答ヒントを頼りに総当たり可能",
+      "action_changes_result": "yes — 誤った原因は拒否され進めない。ただし調整フェーズはどの調整を選んでも同一の改善結果になり、選択内容は結果に影響しない",
+      "retry": "yes — 原因の誤選択はヒントつきで再選択可能。再稼働フェーズは失敗分岐がなく必ず成功する",
+      "fixed_progression": "no — ただし後半（調整以降）は実質成功一本道",
+      "obvious_binary_choice": "no — 6工程からのデータ比較による特定",
+      "evidence": [
+        "src/q1/FactoryLineGame.tsx:110-127",
+        "src/q1/FactoryLineGame.tsx:166-196",
+        "src/q1/FactoryLineGame.tsx:227-237"
+      ]
+    }
+  },
+  {
+    "componentHash": "00a891cf93a5",
+    "reviewStale": false,
+    "id": "plan_mix",
+    "label": "PlanEventGame",
+    "componentPath": "src/q1/PlanEventGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "plan-event"
+    ],
+    "description": "条件の中で企画を組み合わせる",
+    "section": "イベント編",
+    "primaryMechanic": "composition_design",
+    "secondaryMechanics": [
+      "resource_allocation",
+      "tap_select"
+    ],
+    "interactionNotes": "7枚の企画カードを選択・解除して組み合わせを作り、時間上限150分・子ども向け度・常設有無の3条件を検証する。",
+    "semantic": {
+      "C_in_component": "資料3枚（来てほしい人／会場の条件＝火気禁止／使える時間150分）と火気禁止に引っかかる企画のblocked理由",
+      "C_required": "partial — 検証失敗時のnoteが不足条件をほぼ明示するため、資料を開かずフィードバック駆動の試行でもクリア可能",
+      "action_changes_result": "yes — 選択から時間・対象カバーが導出され、合格判定と結果画面に直結",
+      "retry": "yes — 検証が失敗理由をnote表示して選択画面に留まり、何度でも再検証できる",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 複数の合格組み合わせが存在",
+      "evidence": [
+        "src/q1/PlanEventGame.tsx:57-92",
+        "src/q1/PlanEventGame.tsx:154-164",
+        "src/q1/PlanEventGame.tsx:183-196"
+      ]
+    }
+  },
+  {
+    "componentHash": "27f65cad97c7",
+    "reviewStale": false,
+    "id": "reach_mix",
+    "label": "PromoGame",
+    "componentPath": "src/q1/PromoGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "promo-event"
+    ],
+    "description": "届けたい相手ごとの到達を組み立てる",
+    "section": "イベント編",
+    "primaryMechanic": "resource_allocation",
+    "secondaryMechanics": [
+      "matching",
+      "tap_select"
+    ],
+    "interactionNotes": "媒体カードを選択し、手間コスト合計5以内で3つの相手グループのリーチしきい値を同時に満たす組み合わせを作る。",
+    "semantic": {
+      "C_in_component": "媒体6種の特性（届き方の説明）、ターゲット定義・手間上限の資料、ライブのリーチメーター",
+      "C_required": "partial — リーチメーターと失敗noteで、カードを開かなくても試行錯誤で到達可能。どの媒体がどの層に強いかはカード展開が実質の近道",
+      "action_changes_result": "yes — 選択がコストとリーチ集計・合格判定・結果画面を決める",
+      "retry": "yes — 検証失敗でnoteを出して選び直し再検証",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 組み合わせ最適化で合格解は複数",
+      "evidence": [
+        "src/q1/PromoGame.tsx:30-51",
+        "src/q1/PromoGame.tsx:161-170",
+        "src/q1/PromoGame.tsx:183-195"
+      ]
+    }
+  },
+  {
+    "componentHash": "97562f2a1c88",
+    "reviewStale": false,
+    "id": "timetable",
+    "label": "TimetableGame",
+    "componentPath": "src/q1/TimetableGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "run-event"
+    ],
+    "description": "演目＋転換を並べて終演に合わせる",
+    "section": "イベント編",
+    "primaryMechanic": "sequencing",
+    "secondaryMechanics": [
+      "resource_allocation",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "演目カードをタイムラインへ追加・削除・並べ替え。並び順に応じて転換時間込みの終演時刻がリアルタイム計算され、15:00以内に収める。",
+    "semantic": {
+      "C_in_component": "転換時間ルールの資料、タイムライン上の転換チップ表示、演目のセットアップ属性",
+      "C_required": "partial — 終演時刻と転換分数が常時表示されるため資料なしでも試行で解けるが、「同じ作りを続けると転換が減る」原理は資料と失敗noteが示す",
+      "action_changes_result": "yes — 並び順から転換込みの終演時刻が逐次計算されオーバー判定を決める",
+      "retry": "yes — オーバー時は理由noteを出して編集に戻り再挑戦",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 出し入れ×順列で複数の合格進行",
+      "evidence": [
+        "src/q1/TimetableGame.tsx:45-56",
+        "src/q1/TimetableGame.tsx:58-77",
+        "src/q1/TimetableGame.tsx:190-201"
+      ]
+    }
+  },
+  {
+    "componentHash": "7318113ba854",
+    "reviewStale": false,
+    "id": "venue_layout",
+    "label": "VenueLayoutGame",
+    "componentPath": "src/q1/VenueLayoutGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "venue-event"
+    ],
+    "description": "会場に配置して見やすさ・通りやすさを試す",
+    "section": "イベント編",
+    "primaryMechanic": "spatial_placement",
+    "secondaryMechanics": [
+      "drag_drop_assign",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "4つの設備を3x3マスへドラッグ配置し、「ためす」で見やすさ・通りやすさ・休憩しやすさを評価。位置関係そのものが評価対象。",
+    "semantic": {
+      "C_in_component": "会場のきまり資料（入口正面をあける・ステージは奥・休憩は離す）と設備ごとのヒント",
+      "C_required": "partial — 「ためす」後のissues文が失敗理由を具体的に説明するため、資料なしでも置き直しで到達可能。事前にルールを知る手段は資料のみ",
+      "action_changes_result": "yes — 配置セルの位置から3判定が変わる",
+      "retry": "yes — issues表示→置き直し→再テスト",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 制約を満たす配置は複数",
+      "evidence": [
+        "src/q1/VenueLayoutGame.tsx:59-71",
+        "src/q1/VenueLayoutGame.tsx:73-97",
+        "src/q1/VenueLayoutGame.tsx:200-215"
+      ]
+    }
+  },
+  {
+    "componentHash": "c6aad16c1a37",
+    "reviewStale": false,
+    "id": "sound_check",
+    "label": "SoundCheckGame",
+    "componentPath": "src/q1/SoundCheckGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "sound-event"
+    ],
+    "description": "機材を操作して席ごとの聞こえ方を合わせる",
+    "section": "イベント編",
+    "primaryMechanic": "parameter_adjust",
+    "secondaryMechanics": [
+      "simulation_run",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "音量・スピーカー向き・リアスピーカー追加を調整し、「リハーサルする」で3席の聞こえ方を観測して全席「ちょうどいい」を目指す。",
+    "semantic": {
+      "C_in_component": "音響機材の資料（メイン/リア/指向性の性質）、調整卓UI、席別メーター",
+      "C_required": "partial — リハーサル後に席ごとの状態が出るため総当たり（探索空間24通り）でも解けるが、因果は資料が説明",
+      "action_changes_result": "yes — 3パラメータが減衰モデルに入り席別判定を決める",
+      "retry": "yes — 設定変更で再リハーサル、失敗時noteつき",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — トレードオフのあるパラメータ探索",
+      "evidence": [
+        "src/q1/SoundCheckGame.tsx:37-48",
+        "src/q1/SoundCheckGame.tsx:144-186",
+        "src/q1/SoundCheckGame.tsx:200-209"
+      ]
+    }
+  },
+  {
+    "componentHash": "0dae254a2e0b",
+    "reviewStale": false,
+    "id": "crowd_flow",
+    "label": "CrowdFlowGame",
+    "componentPath": "src/q1/CrowdFlowGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "town-festival"
+    ],
+    "recentGames": [
+      "crowd-event"
+    ],
+    "description": "詰まりを読んで道具で流れを分ける",
+    "section": "イベント編",
+    "primaryMechanic": "matching",
+    "secondaryMechanics": [
+      "search_discovery",
+      "trial_and_error_experiment"
+    ],
+    "interactionNotes": "混雑ポイントをタップして詰まりの理由を調べ、道具4種から選んで3か所に配置。「ようすを見る」で正しい道具なら混雑が解消される突き合わせ。",
+    "semantic": {
+      "C_in_component": "道具4種の性質説明、スポットごとの詰まり理由、混雑の見かた資料",
+      "C_required": "partial — 誤配置時のメッセージが理由を説明するため試行錯誤でも解けるが、未観察のままだと促しnoteも出る",
+      "action_changes_result": "yes — 置いた道具が正解集合に含まれるかで混雑値が変わる",
+      "retry": "yes — 「ぜんぶ置き直す」と失敗理由→再配置→再検証のループ",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — スポットごとに正解集合が異なる",
+      "evidence": [
+        "src/q1/CrowdFlowGame.tsx:31-69",
+        "src/q1/CrowdFlowGame.tsx:86-91",
+        "src/q1/CrowdFlowGame.tsx:190-201"
+      ]
+    }
+  },
+  {
+    "componentHash": "afb1bd97974b",
+    "reviewStale": false,
+    "id": "clue_board",
+    "label": "ClueBoardGame",
+    "componentPath": "src/q1/ClueBoardGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-doctor"
+    ],
+    "description": "調べ方を選んで手がかりを集める",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "search_discovery",
+    "secondaryMechanics": [
+      "tap_select",
+      "measurement_inspection"
+    ],
+    "interactionNotes": "「話を聞く／からだを診る／バイタルを見る」の3手段を自分で選び、項目をタップして手がかりをメモに集める。手がかり5個以上で次へ進める。",
+    "semantic": {
+      "C_in_component": "問診項目、聴診所見、バイタル実測値と基準値表示",
+      "C_required": "partial — 手がかりは話4+診察2で5個に達するため、バイタルの基準値を開かずにクリア可能。ただし集める行為自体が問診・診察というC",
+      "action_changes_result": "yes — タップした項目に応じてメモの手がかりが変わり、5個未満なら進行がブロックされる",
+      "retry": "yes — 不足時に「手がかりがまだXこ」で進行を止め再収集させる不足ガード方式。誤答→失敗の判定はない",
+      "fixed_progression": "no — どの順で調べるかは自由",
+      "obvious_binary_choice": "no — 手がかりにならない項目も混在",
+      "evidence": [
+        "src/q1/ClueBoardGame.tsx:12-33",
+        "src/q1/ClueBoardGame.tsx:45-50",
+        "src/q1/ClueBoardGame.tsx:148-156"
+      ]
+    }
+  },
+  {
+    "componentHash": "68bdd9eec886",
+    "reviewStale": false,
+    "id": "lab_check",
+    "label": "LabCheckGame",
+    "componentPath": "src/q1/LabCheckGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-lab"
+    ],
+    "description": "検体を確かめ、疑わしい値を測り直す",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "measurement_inspection",
+    "secondaryMechanics": [
+      "simulation_run",
+      "tap_select"
+    ],
+    "interactionNotes": "血液から調べる検査3種を選ぶと装置が動き数値が出る。3つ全部調べると結果画面へ進み、数値をタップすると意味が読める。",
+    "semantic": {
+      "C_in_component": "検査装置演出、白血球・CRP・ヘモグロビンの検査値と各値の意味",
+      "C_required": "partial — 3検査すべての実行が必須で検査値は必ず目にするが、数値の意味の閲覧は任意で理解不要",
+      "action_changes_result": "no — どの順で選んでも最終的に3検査全部が必須で、検査結果データは固定。選択が結果を変える分岐はない",
+      "retry": "no — 失敗判定が存在しない。未完了時の「まだXつ」ガードのみ",
+      "fixed_progression": "no — ただし選択の自由度は順序のみで一本道に近い",
+      "obvious_binary_choice": "no — ただし全選択必須のため実質的な判断はない",
+      "evidence": [
+        "src/q1/LabCheckGame.tsx:20-33",
+        "src/q1/LabCheckGame.tsx:115-124",
+        "src/q1/LabCheckGame.tsx:141-151"
+      ]
+    }
+  },
+  {
+    "componentHash": "429da89e7491",
+    "reviewStale": false,
+    "id": "xray_shoot",
+    "label": "XrayGame",
+    "componentPath": "src/q1/XrayGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-radio"
+    ],
+    "description": "条件を決めて撮る→写りを見て撮り直す",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "simulation_run",
+    "secondaryMechanics": [
+      "data_layer_compare",
+      "tap_select"
+    ],
+    "interactionNotes": "撮影部位（頭・胸・腹）を選んで装置を動かすと体が透けて中が見え、左右の肺をタップして見くらべる。両方見ると医師へ画像を届けられる。",
+    "semantic": {
+      "C_in_component": "撮影装置、部位選択、体内画像、右肺の影 vs 左肺の正常所見という読影的比較",
+      "C_required": "yes — 部位は「むね」以外を選ぶと進めず、左右両肺のタップも必須。画像というCを見る行為がクリア条件そのもの",
+      "action_changes_result": "yes — ただし限定的。タップした肺に応じて所見が変わり部位誤選択で進行ブロック。結果自体は固定で分岐はない",
+      "retry": "yes — 胸以外を選ぶと即ヒントが出て選び直し",
+      "fixed_progression": "yes — 正解部位が1つに固定され誤選択は即時矯正、以降は一本道。演出主体で判断要素はほぼない",
+      "obvious_binary_choice": "yes — 実質3択だが非正解へ誘導ノートが出るため、明らかな正解1つの形式的選択に近い",
+      "evidence": [
+        "src/q1/XrayGame.tsx:44-58",
+        "src/q1/XrayGame.tsx:63-70",
+        "src/q1/XrayGame.tsx:107-128"
+      ]
+    }
+  },
+  {
+    "componentHash": "6de2c08a445a",
+    "reviewStale": false,
+    "id": "clue_join",
+    "label": "DiagnoseGame",
+    "componentPath": "src/q1/DiagnoseGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-diagnose"
+    ],
+    "description": "集まった手がかりをつないで見立てる",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "matching",
+    "secondaryMechanics": [
+      "tap_select"
+    ],
+    "interactionNotes": "6枚の手がかりカードから「同じ場所を指していそうなもの」を選んでまとめる。肺を指す手がかり3枚以上かつ無関係カードを含まないと見立てに到達。",
+    "semantic": {
+      "C_in_component": "手がかりカード6枚（SpO2・炎症値・X線陰影・聴診音など）と各カードの解説",
+      "C_required": "partial — 判定は意味的選別で内容を読まないと通りにくいが、6枚中の組み合わせ試行錯誤でも通過は可能",
+      "action_changes_result": "yes — 選んだカードが結論画面に列挙され、選択の質で進行可否が分かれる",
+      "retry": "yes — 不足・混入をnoteで指摘して選び直させる",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — ノイズカードが意図的に混在する多肢選択",
+      "evidence": [
+        "src/q1/DiagnoseGame.tsx:18-25",
+        "src/q1/DiagnoseGame.tsx:33-35",
+        "src/q1/DiagnoseGame.tsx:94-104"
+      ]
+    }
+  },
+  {
+    "componentHash": "2ff549c9ad0f",
+    "reviewStale": false,
+    "id": "rx_check",
+    "label": "RxCheckGame",
+    "componentPath": "src/q1/RxCheckGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-pharm"
+    ],
+    "description": "薬×患者情報を照らして安全を確かめる",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "measurement_inspection",
+    "secondaryMechanics": [
+      "search_discovery",
+      "tap_select"
+    ],
+    "interactionNotes": "処方せん・患者情報・検査結果・薬歴の4カードを開いて照合し、「気になる点」→「どうするか」を選ぶ。腎機能低下に気づき医師へ問い合わせると完了。",
+    "semantic": {
+      "C_in_component": "処方せん・患者情報（体重・年齢）・検査値（腎機能）・薬歴・アレルギー情報",
+      "C_required": "partial — カードは4枚中3枚開けばよく、鍵となる検査カードを開かずに進める組み合わせが可能。各段階も誤答フィードバック付きの総当たりで通過できる",
+      "action_changes_result": "yes — 選んだ懸念・行動ごとに異なる帰結テキストが出て、正解のみ遷移する",
+      "retry": "yes — 誤答は理由つきで却下され、その場で選び直せる",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 誤答肢はカード内容を確認しないと排除できない設計",
+      "evidence": [
+        "src/q1/RxCheckGame.tsx:31-47",
+        "src/q1/RxCheckGame.tsx:115-147",
+        "src/q1/RxCheckGame.tsx:151-165"
+      ]
+    }
+  },
+  {
+    "componentHash": "4d256ca58033",
+    "reviewStale": false,
+    "id": "observe_care",
+    "label": "NurseObserveGame",
+    "componentPath": "src/q1/NurseObserveGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-nurse"
+    ],
+    "description": "気づく→観察→見立て→ケア",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "search_discovery",
+    "secondaryMechanics": [
+      "conversation_observation",
+      "tap_select"
+    ],
+    "interactionNotes": "「だるい」という訴えに対し観察項目7つから選んで見る→見立て3択→ケアを複数選択する。脱水系フラグ3つ以上の観察が見立てに進む条件。",
+    "semantic": {
+      "C_in_component": "看護観察項目一式（食事量・水分量・尿量・SpO2・体温など）とケア選択肢",
+      "C_required": "partial — フラグ付き観察のうち3つを見ないと進めず観察行為は必須だが、全項目を無思考でタップしても満たせる。見立て・ケアも総当たり可能",
+      "action_changes_result": "yes — 見た項目だけがメモに載り、選んだケアが結果画面に反映され、不適切選択は進行がブロックされる",
+      "retry": "yes — 誤った見立て・ケアはnoteで却下して選び直し",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 観察7択・見立て3択・ケア複数選択",
+      "evidence": [
+        "src/q1/NurseObserveGame.tsx:12-37",
+        "src/q1/NurseObserveGame.tsx:130-141",
+        "src/q1/NurseObserveGame.tsx:164-191"
+      ]
+    }
+  },
+  {
+    "componentHash": "8fb8b978d1d1",
+    "reviewStale": false,
+    "id": "meal_fit",
+    "label": "MealFitGame",
+    "componentPath": "src/q1/MealFitGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-diet"
+    ],
+    "description": "必要な栄養と食べられる形を近づける",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "parameter_adjust",
+    "secondaryMechanics": [
+      "trial_and_error_experiment",
+      "simulation_run"
+    ],
+    "interactionNotes": "本人に理由を聞いてから「1回の量×回数×食べやすさ」を調整して「出してみる」と、摂取率モデルで食べられたkcalが計算される。目標8割以上かつ出しすぎでなければ合格。",
+    "semantic": {
+      "C_in_component": "必要エネルギー目安、摂取率モデル（量が多いほど食べ残す）、食形態の効果、資料カード",
+      "C_required": "partial — 聞き取りが調整パネル表示の必須条件で目標値は常時表示。資料閲覧は任意で、数値フィードバックだけでも試行錯誤で解ける",
+      "action_changes_result": "yes — 提供量と摂取量が選択パラメータから計算され、合否と失敗メッセージが分岐",
+      "retry": "yes — 不合格時に理由つきメッセージ、パラメータを変えて何度でも出し直せる",
+      "fixed_progression": "no — 18通りの組み合わせを自分で探索",
+      "obvious_binary_choice": "no — 連続的なトレードオフを持つパラメータ探索",
+      "evidence": [
+        "src/q1/MealFitGame.tsx:37-43",
+        "src/q1/MealFitGame.tsx:86-94",
+        "src/q1/MealFitGame.tsx:147-153"
+      ]
+    }
+  },
+  {
+    "componentHash": "ff818339c20a",
+    "reviewStale": false,
+    "id": "move_try",
+    "label": "MoveTryGame",
+    "componentPath": "src/q1/MoveTryGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-pt"
+    ],
+    "description": "動作を試す→工夫→再評価",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "trial_and_error_experiment",
+    "secondaryMechanics": [
+      "matching",
+      "tap_select"
+    ],
+    "interactionNotes": "起き上がる・立つ・歩くの3動作を順に「やってみる」→問題が出る→5つの工夫から選ぶ→合う工夫なら「できた」になり次の動作へ。",
+    "semantic": {
+      "C_in_component": "動作ごとの問題（ふらつき・膝の力・息切れ）と福祉用具・環境調整の知識カード",
+      "C_required": "partial — 工夫と動作の対応理解が必要だが、誤答が理由つきで却下されるだけなので5択総当たりでも通過可能",
+      "action_changes_result": "yes — 正しい工夫なら動作が「できた」になり結果画面に解決手段が表示。誤りは個別の理由テキスト",
+      "retry": "yes — 合わない工夫はnoteが出てその場で選び直し",
+      "fixed_progression": "no — 動作順は固定だが各動作で試行ループがある",
+      "obvious_binary_choice": "no — 各動作5択で誤答肢にも納得できる却下理由",
+      "evidence": [
+        "src/q1/MoveTryGame.tsx:23-44",
+        "src/q1/MoveTryGame.tsx:107-133"
+      ]
+    }
+  },
+  {
+    "componentHash": "5485be0d03ab",
+    "reviewStale": false,
+    "id": "life_plan",
+    "label": "LifePlanGame",
+    "componentPath": "src/q1/LifePlanGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "er-patient"
+    ],
+    "recentGames": [
+      "med-msw"
+    ],
+    "description": "本人の希望から支援を組み立てる",
+    "section": "医療編（1人の患者を9章で追う）",
+    "primaryMechanic": "composition_design",
+    "secondaryMechanics": [
+      "matching",
+      "conversation_observation"
+    ],
+    "interactionNotes": "本人の希望を聞く→家で困りそうな場面を全部のぞく→8種の助けから組み合わせて提案。全困りごとカバーかつ「やりすぎ」「家族だけ」だと本人が難色を示し組み直し。",
+    "semantic": {
+      "C_in_component": "生活場面の困りごと6種、社会資源8種、本人の希望3項目の常時表示",
+      "C_required": "yes — カバレッジ判定＋過剰判定＋家族依存判定で、「全部選ぶ」も失敗するため総当たりが効きにくい。本人の反応を読まないと収束しにくい",
+      "action_changes_result": "yes — 組み合わせに応じて本人のセリフが4通りに分岐し、結果画面に選んだ助けが列挙",
+      "retry": "yes — 失敗理由の説明とともに「組み合わせを考えなおす」で再考ループ",
+      "fixed_progression": "no — 最初の一手のみやや固定的",
+      "obvious_binary_choice": "no — 8択の複数選択で「多く選べば正解」ではない",
+      "evidence": [
+        "src/q1/LifePlanGame.tsx:60-64",
+        "src/q1/LifePlanGame.tsx:186-201",
+        "src/q1/LifePlanGame.tsx:221-238"
+      ]
+    }
+  },
+  {
+    "componentHash": "2c157b51793c",
+    "reviewStale": false,
+    "id": "trip_plan",
+    "label": "TripPlanGame",
+    "componentPath": "src/q1/TripPlanGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "school-trip"
+    ],
+    "recentGames": [
+      "plan-trip"
+    ],
+    "description": "予定カードを3日間へ組み立てる",
+    "section": "修学旅行編（5つの役割を自由な順番で体験する）",
+    "primaryMechanic": "composition_design",
+    "secondaryMechanics": [
+      "drag_drop_assign",
+      "resource_allocation"
+    ],
+    "interactionNotes": "14枚の予定カードを1〜3日目の列へ入れ、時間枠・予算・学び・疲労・宿泊/帰路必須の複合制約を満たす旅程を組む。",
+    "semantic": {
+      "C_in_component": "各カードの時間/費用/学び/疲労メタデータ、旅程の決まり資料、日ごとの残時間表示",
+      "C_required": "partial — 「たしかめる」後のissuesが違反項目を全部列挙するため資料なしでも収束可能。予算・時間枠の根拠は資料とカード表記",
+      "action_changes_result": "yes — 配置から統計が導出され、issues判定と完了時の方針タグまで変わる",
+      "retry": "yes — issues表示→カード入れ替え→再検証。日をまたいで移動可能",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 複数の合格旅程と方針別タグ",
+      "evidence": [
+        "src/q1/TripPlanGame.tsx:74-102",
+        "src/q1/TripPlanGame.tsx:104-110",
+        "src/q1/TripPlanGame.tsx:200-216"
+      ]
+    }
+  },
+  {
+    "componentHash": "9fae5470e750",
+    "reviewStale": false,
+    "id": "safety_plan",
+    "label": "SafetyPlanGame",
+    "componentPath": "src/q1/SafetyPlanGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "school-trip"
+    ],
+    "recentGames": [
+      "safety-trip"
+    ],
+    "description": "班へ引率を割りあて、役割を決める",
+    "section": "修学旅行編（5つの役割を自由な順番で体験する）",
+    "primaryMechanic": "drag_drop_assign",
+    "secondaryMechanics": [
+      "tap_select",
+      "document_check"
+    ],
+    "interactionNotes": "5人の大人を5班へ割り当てた後、先頭・最後尾・救急・連絡先の4役割を選ぶ2段階。安全チェックは役割充足に加え、アレルギー・乗り物酔いの資料を開いたかどうか自体を検査する。",
+    "semantic": {
+      "C_in_component": "班ごとの配慮情報資料（アレルギー・車酔い）とダミー資料（天気）",
+      "C_required": "yes — 該当資料を開かないとissuesが残り合格できない。資料を開くこと自体がクリア条件",
+      "action_changes_result": "yes — ただし部分的: 役割選択と資料開封は判定に反映されるが、どの大人をどの班に置くかの中身は評価されない",
+      "retry": "yes — 「安全チェックをする」で不足項目を列挙し、直して再チェック",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — ただし大人と班の対応に正誤がない点は自由度というより未評価",
+      "evidence": [
+        "src/q1/SafetyPlanGame.tsx:54-74",
+        "src/q1/SafetyPlanGame.tsx:188-198"
+      ]
+    }
+  },
+  {
+    "componentHash": "53a37f36af08",
+    "reviewStale": false,
+    "id": "bus_ops",
+    "label": "BusOpsGame",
+    "componentPath": "src/q1/BusOpsGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "school-trip"
+    ],
+    "recentGames": [
+      "bus-trip"
+    ],
+    "description": "班・運転士・経路をバスへそろえる",
+    "section": "修学旅行編（5つの役割を自由な順番で体験する）",
+    "primaryMechanic": "drag_drop_assign",
+    "secondaryMechanics": [
+      "simulation_run",
+      "tap_select"
+    ],
+    "interactionNotes": "班と運転士を3台のバスへ割り当て（定員制約）、バスごとに経路と休憩を選び出発。山道ルート選択車は通行止めイベントに当たり経路選択へ差し戻される。",
+    "semantic": {
+      "C_in_component": "定員・道路情報（山道は本日通行止め）・休憩の資料と、走行中の通行止め看板イベント",
+      "C_required": "partial — 資料を見なくても出発シミュレーションが通行止めを教えて差し戻すため必ず回復できる。資料を読めば初回から回避できる",
+      "action_changes_result": "yes — 定員超過・休憩未設定が進行をブロックし、経路選択が失敗分岐と結果画面を決める",
+      "retry": "yes — 通行止めに当たると「経路を選びなおす」で明示的な失敗→再試行",
+      "fixed_progression": "no — 段階制だが実行に失敗分岐がある",
+      "obvious_binary_choice": "no — ただし経路は2択で山道が常に失敗するため、合格経路は実質1通りの2択性が強い",
+      "evidence": [
+        "src/q1/BusOpsGame.tsx:56-58",
+        "src/q1/BusOpsGame.tsx:69-87",
+        "src/q1/BusOpsGame.tsx:161-177"
+      ]
+    }
+  },
+  {
+    "componentHash": "b8412bd4a125",
+    "reviewStale": false,
+    "id": "delay_recover",
+    "label": "DelayRecoverGame",
+    "componentPath": "src/q1/DelayRecoverGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "school-trip"
+    ],
+    "recentGames": [
+      "delay-trip"
+    ],
+    "description": "状況確認→連絡→承認→共有の順で立て直す",
+    "section": "修学旅行編（5つの役割を自由な順番で体験する）",
+    "primaryMechanic": "sequencing",
+    "secondaryMechanics": [
+      "composition_design",
+      "prioritization"
+    ],
+    "interactionNotes": "遅延の影響マップを確認後、10枚の行動カードから必要なものを選んで並べ替え、「状況確認が先頭・連絡2件以上・変更案の後に承認・共有が最後」の順序制約を満たす対応手順を組む。",
+    "semantic": {
+      "C_in_component": "影響マップ（見学先/バス/宿への波及）。順序ルールは検証noteの中に埋め込み",
+      "C_required": "partial — 冒頭の影響マップ確認は必須動線だが、以降の順序ルールは失敗noteが1つずつ教えるため、note追従の試行で到達できる",
+      "action_changes_result": "yes — カードの内容と順序が8段階の検証を決め、採用した変更案が結果文にも反映",
+      "retry": "yes — 検証が失敗理由をnoteで返し、追加・削除・並べ替えで再試行",
+      "fixed_progression": "no — 冒頭のみ固定進行で、本体は編集ループ",
+      "obvious_binary_choice": "no — 部分集合＋順列に自由度がある",
+      "evidence": [
+        "src/q1/DelayRecoverGame.tsx:53-78",
+        "src/q1/DelayRecoverGame.tsx:160-172"
+      ]
+    }
+  },
+  {
+    "componentHash": "694ee6e1a8d3",
+    "reviewStale": false,
+    "id": "hotel_receive",
+    "label": "HotelReceiveGame",
+    "componentPath": "src/q1/HotelReceiveGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "school-trip"
+    ],
+    "recentGames": [
+      "hotel-trip"
+    ],
+    "description": "部屋→食事→入浴の3段階で受け入れる",
+    "section": "修学旅行編（5つの役割を自由な順番で体験する）",
+    "primaryMechanic": "drag_drop_assign",
+    "secondaryMechanics": [
+      "spatial_placement",
+      "document_check"
+    ],
+    "interactionNotes": "部屋（3x3マス配置＋引率者を配慮班の隣接に）→食事（班ごとに通常食/アレルギー食）→入浴（3枠×定員）の3段階を順に満たす。",
+    "semantic": {
+      "C_in_component": "学校から届いた班情報の資料（別トレー対応食・車酔い）と宿の部屋資料",
+      "C_required": "yes — 部屋ステージは資料を開かないと合格できず、隣接判定も資料の趣旨に基づく。ただし食事ステージはUI文言が答えを明示しており段階により濃淡あり",
+      "action_changes_result": "yes — 部屋配置の隣接判定、食事の正誤、入浴枠の定員超過がそれぞれ次段階への進行を制御",
+      "retry": "yes — 各段階に「たしかめる」→issues表示→修正のループ",
+      "fixed_progression": "no — 3段階制だが各段階が検証ループを持つ",
+      "obvious_binary_choice": "no（全体） — ただし食事ステージ単体は正解明示の2択",
+      "evidence": [
+        "src/q1/HotelReceiveGame.tsx:61-77",
+        "src/q1/HotelReceiveGame.tsx:79-87",
+        "src/q1/HotelReceiveGame.tsx:181-197"
+      ]
+    }
+  }
+]

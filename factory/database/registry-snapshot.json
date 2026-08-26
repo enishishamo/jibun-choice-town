@@ -1,0 +1,2289 @@
+{
+  "scannedAt": "2026-08-26T23:14:09.300Z",
+  "sourceOfTruth": {
+    "registry": "src/q1/registry.ts",
+    "contentIndex": "src/data/index.ts",
+    "note": "The app code is the Source of Truth. This DB is an index only."
+  },
+  "registry": [
+    {
+      "id": "drag_and_drop",
+      "component": "MenuGame",
+      "componentPath": "src/q1/MenuGame.tsx",
+      "componentExists": true,
+      "description": "制約を見ながら入れかえる",
+      "section": "給食編"
+    },
+    {
+      "id": "inspect_and_measure",
+      "component": "CookGame",
+      "componentPath": "src/q1/CookGame.tsx",
+      "componentExists": true,
+      "description": "測る→基準→対応→再確認→記録",
+      "section": "給食編"
+    },
+    {
+      "id": "sow_and_grow",
+      "component": "FarmGame",
+      "componentPath": "src/q1/FarmGame.tsx",
+      "componentExists": true,
+      "description": "試す→時間経過→結果→やり直す",
+      "section": "給食編"
+    },
+    {
+      "id": "load_and_route",
+      "component": "LogisticsGame",
+      "componentPath": "src/q1/LogisticsGame.tsx",
+      "componentExists": true,
+      "description": "積み分け＋順路計画→検収",
+      "section": "給食編"
+    },
+    {
+      "id": "sort_out",
+      "component": "RecycleGame",
+      "componentPath": "src/q1/RecycleGame.tsx",
+      "componentExists": true,
+      "description": "道具の性質で仕分ける",
+      "section": "給食編"
+    },
+    {
+      "id": "place_and_test",
+      "component": "ParkHeatGame",
+      "componentPath": "src/q1/ParkHeatGame.tsx",
+      "componentExists": true,
+      "description": "配置→シミュレーション→再配置",
+      "section": "猛暑編"
+    },
+    {
+      "id": "forecast_and_balance",
+      "component": "PowerGame",
+      "componentPath": "src/q1/PowerGame.tsx",
+      "componentExists": true,
+      "description": "予測を見て供給を合わせ、時間を進める",
+      "section": "猛暑編"
+    },
+    {
+      "id": "schedule_and_protect",
+      "component": "SiteHeatGame",
+      "componentPath": "src/q1/SiteHeatGame.tsx",
+      "componentExists": true,
+      "description": "安全と進捗の両立を工程で調整",
+      "section": "猛暑編"
+    },
+    {
+      "id": "allocate_and_forecast",
+      "component": "WaterGame",
+      "componentPath": "src/q1/WaterGame.tsx",
+      "componentExists": true,
+      "description": "限られた資源の配分＋先の予測",
+      "section": "猛暑編"
+    },
+    {
+      "id": "layer_and_compare",
+      "component": "UrbanHeatGame",
+      "componentPath": "src/q1/UrbanHeatGame.tsx",
+      "componentExists": true,
+      "description": "データを重ねて原因を探し、試す",
+      "section": "猛暑編"
+    },
+    {
+      "id": "sourcing_mix",
+      "component": "SourcingGame",
+      "componentPath": "src/q1/SourcingGame.tsx",
+      "componentExists": true,
+      "description": "条件を見比べて仕入れを組み立てる",
+      "section": "物価高編"
+    },
+    {
+      "id": "recipe_balance",
+      "component": "RecipeGame",
+      "componentPath": "src/q1/RecipeGame.tsx",
+      "componentExists": true,
+      "description": "配合を動かしてトレードオフを見る",
+      "section": "物価高編"
+    },
+    {
+      "id": "package_design",
+      "component": "PackageGame",
+      "componentPath": "src/q1/PackageGame.tsx",
+      "componentExists": true,
+      "description": "素材×形×サイズを組み立ててテスト",
+      "section": "物価高編"
+    },
+    {
+      "id": "line_debug",
+      "component": "FactoryLineGame",
+      "componentPath": "src/q1/FactoryLineGame.tsx",
+      "componentExists": true,
+      "description": "データで原因を探し、調整して再実行",
+      "section": "物価高編"
+    },
+    {
+      "id": "plan_mix",
+      "component": "PlanEventGame",
+      "componentPath": "src/q1/PlanEventGame.tsx",
+      "componentExists": true,
+      "description": "条件の中で企画を組み合わせる",
+      "section": "イベント編"
+    },
+    {
+      "id": "reach_mix",
+      "component": "PromoGame",
+      "componentPath": "src/q1/PromoGame.tsx",
+      "componentExists": true,
+      "description": "届けたい相手ごとの到達を組み立てる",
+      "section": "イベント編"
+    },
+    {
+      "id": "timetable",
+      "component": "TimetableGame",
+      "componentPath": "src/q1/TimetableGame.tsx",
+      "componentExists": true,
+      "description": "演目＋転換を並べて終演に合わせる",
+      "section": "イベント編"
+    },
+    {
+      "id": "venue_layout",
+      "component": "VenueLayoutGame",
+      "componentPath": "src/q1/VenueLayoutGame.tsx",
+      "componentExists": true,
+      "description": "会場に配置して見やすさ・通りやすさを試す",
+      "section": "イベント編"
+    },
+    {
+      "id": "sound_check",
+      "component": "SoundCheckGame",
+      "componentPath": "src/q1/SoundCheckGame.tsx",
+      "componentExists": true,
+      "description": "機材を操作して席ごとの聞こえ方を合わせる",
+      "section": "イベント編"
+    },
+    {
+      "id": "crowd_flow",
+      "component": "CrowdFlowGame",
+      "componentPath": "src/q1/CrowdFlowGame.tsx",
+      "componentExists": true,
+      "description": "詰まりを読んで道具で流れを分ける",
+      "section": "イベント編"
+    },
+    {
+      "id": "clue_board",
+      "component": "ClueBoardGame",
+      "componentPath": "src/q1/ClueBoardGame.tsx",
+      "componentExists": true,
+      "description": "調べ方を選んで手がかりを集める",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "lab_check",
+      "component": "LabCheckGame",
+      "componentPath": "src/q1/LabCheckGame.tsx",
+      "componentExists": true,
+      "description": "検体を確かめ、疑わしい値を測り直す",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "xray_shoot",
+      "component": "XrayGame",
+      "componentPath": "src/q1/XrayGame.tsx",
+      "componentExists": true,
+      "description": "条件を決めて撮る→写りを見て撮り直す",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "clue_join",
+      "component": "DiagnoseGame",
+      "componentPath": "src/q1/DiagnoseGame.tsx",
+      "componentExists": true,
+      "description": "集まった手がかりをつないで見立てる",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "rx_check",
+      "component": "RxCheckGame",
+      "componentPath": "src/q1/RxCheckGame.tsx",
+      "componentExists": true,
+      "description": "薬×患者情報を照らして安全を確かめる",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "observe_care",
+      "component": "NurseObserveGame",
+      "componentPath": "src/q1/NurseObserveGame.tsx",
+      "componentExists": true,
+      "description": "気づく→観察→見立て→ケア",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "meal_fit",
+      "component": "MealFitGame",
+      "componentPath": "src/q1/MealFitGame.tsx",
+      "componentExists": true,
+      "description": "必要な栄養と食べられる形を近づける",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "move_try",
+      "component": "MoveTryGame",
+      "componentPath": "src/q1/MoveTryGame.tsx",
+      "componentExists": true,
+      "description": "動作を試す→工夫→再評価",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "life_plan",
+      "component": "LifePlanGame",
+      "componentPath": "src/q1/LifePlanGame.tsx",
+      "componentExists": true,
+      "description": "本人の希望から支援を組み立てる",
+      "section": "医療編（1人の患者を9章で追う）"
+    },
+    {
+      "id": "trip_plan",
+      "component": "TripPlanGame",
+      "componentPath": "src/q1/TripPlanGame.tsx",
+      "componentExists": true,
+      "description": "予定カードを3日間へ組み立てる",
+      "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    },
+    {
+      "id": "safety_plan",
+      "component": "SafetyPlanGame",
+      "componentPath": "src/q1/SafetyPlanGame.tsx",
+      "componentExists": true,
+      "description": "班へ引率を割りあて、役割を決める",
+      "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    },
+    {
+      "id": "bus_ops",
+      "component": "BusOpsGame",
+      "componentPath": "src/q1/BusOpsGame.tsx",
+      "componentExists": true,
+      "description": "班・運転士・経路をバスへそろえる",
+      "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    },
+    {
+      "id": "delay_recover",
+      "component": "DelayRecoverGame",
+      "componentPath": "src/q1/DelayRecoverGame.tsx",
+      "componentExists": true,
+      "description": "状況確認→連絡→承認→共有の順で立て直す",
+      "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    },
+    {
+      "id": "hotel_receive",
+      "component": "HotelReceiveGame",
+      "componentPath": "src/q1/HotelReceiveGame.tsx",
+      "componentExists": true,
+      "description": "部屋→食事→入浴の3段階で受け入れる",
+      "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/data/content/extremeHeat.ts",
+      "exportName": "extremeHeat",
+      "factCheckNotes": [
+        "TODO: FACT CHECK — 以下は「どの職種の意思決定か」をさらに確認したい:\n - 電力需給の調整を、実務上どの主体がどの操作で行うか\n - 渇水時の水利用調整で、各主体がどこまで判断するか\n - 公園の暑熱対策設計／都市暑熱解析を、どの職業名で子どもに示すのが\n   最も適切か（複数の専門職・行政・研究者・企業が関与しうる）\nこのため職業名は「〜に関わる仕事」という仮置き表現にしている。"
+      ],
+      "places": [
+        {
+          "id": "town-heat",
+          "name": "街（猛暑）",
+          "eventId": "heat-wave"
+        }
+      ],
+      "events": [
+        {
+          "id": "heat-wave",
+          "title": "暑すぎる！\n街のあちこちで大変！",
+          "areaName": "猛暑の街",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "hot-park",
+              "title": "この公園、暑すぎる！",
+              "experienceId": "park-heat",
+              "requires": null
+            },
+            {
+              "id": "power-peak",
+              "title": "電気を使う量が、どんどん増えてる！",
+              "experienceId": "power-heat",
+              "requires": null
+            },
+            {
+              "id": "site-39",
+              "title": "今日は39℃。でも工事の予定がある",
+              "experienceId": "site-heat",
+              "requires": null
+            },
+            {
+              "id": "dam-low",
+              "title": "ダムの水が減っている…",
+              "experienceId": "water-heat",
+              "requires": null
+            },
+            {
+              "id": "hot-street",
+              "title": "同じ街なのに、ここだけ暑い？",
+              "experienceId": "urban-heat",
+              "requires": null
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": false
+        }
+      ],
+      "professions": [
+        {
+          "id": "park-design",
+          "name": "公園の暑さ対策を考える仕事",
+          "catch": "日陰・風・地面から、居られる場所をつくる",
+          "discoveryLine": "日射や地面の温度を調べて、\n人がまた集まれる場所をつくる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "造園",
+            "ランドスケープデザイン",
+            "建築",
+            "都市計画",
+            "緑化"
+          ]
+        },
+        {
+          "id": "power-ops",
+          "name": "電力の需給や系統運用に関わる仕事",
+          "catch": "街の電気を、途切れさせない",
+          "discoveryLine": "先の需要を予測しながら、\n電気の量を合わせつづける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "電気工事",
+            "設備",
+            "エネルギー研究",
+            "気象データ",
+            "情報システム"
+          ]
+        },
+        {
+          "id": "site-safety",
+          "name": "工事現場の安全と工程を守る仕事",
+          "catch": "働く人を守りながら、必要な工事を進める",
+          "discoveryLine": "暑さ指数と作業の重さを見て、\n人を守りながら工事を進める仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "建築",
+            "土木",
+            "安全衛生",
+            "設備",
+            "現場監督"
+          ]
+        },
+        {
+          "id": "water-ops",
+          "name": "水資源の管理・調整に関わる仕事",
+          "catch": "限られた水を、みんなが使えるように",
+          "discoveryLine": "先の雨を予測しながら、\n限られた水の使い方を調整する仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "土木",
+            "気象",
+            "農業",
+            "上下水道",
+            "環境"
+          ]
+        },
+        {
+          "id": "urban-heat",
+          "name": "都市の暑さを分析し、街づくりを考える仕事",
+          "catch": "データを重ねて、暑さの理由を見つける",
+          "discoveryLine": "日射・風・建物のデータを重ねて、\n街の暑さの理由をさがす仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "都市計画",
+            "気象データ分析",
+            "建築",
+            "環境",
+            "GIS・地図データ"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "park-heat",
+          "professionId": "park-design",
+          "eventId": "heat-wave",
+          "gameType": "place_and_test",
+          "componentPath": "src/q1/ParkHeatGame.tsx",
+          "A_place": "猛暑の公園",
+          "B_mission": {
+            "title": "この公園、暑すぎる！",
+            "lines": [
+              "遊具もベンチも熱くて、だれも遊べない…。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "place_and_test",
+          "E_resolution": {
+            "title": "人が戻ってきた！",
+            "lines": [
+              "暑くてだれもいなかった場所に、また子どもや家族が集まりはじめた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "日差しや地面の温度、風を調べて、どこに木や日よけを置けば公園が過ごしやすくなるか考えたよね。こうやって、人が過ごす場所を考えて、まちや公園をつくる仕事があります。",
+          "interestSeeds": [
+            "地図を見る",
+            "暑い場所を探す",
+            "どこに置くか考える",
+            "組み合わせを試す",
+            "変化を見る",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "power-heat",
+          "professionId": "power-ops",
+          "eventId": "heat-wave",
+          "gameType": "forecast_and_balance",
+          "componentPath": "src/q1/PowerGame.tsx",
+          "A_place": "街の電気",
+          "B_mission": {
+            "title": "電気を使う量が、\nどんどん増えてる！",
+            "lines": [
+              "みんなが一斉に冷房を使いはじめた。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "forecast_and_balance",
+          "E_resolution": {
+            "title": "街の電気は、途切れなかった",
+            "lines": [
+              "病院も、電車も、家も、お店も。いつもどおりの夕方がきた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、気温の予報を見て「このあとどれくらい電気が使われるか」を予測して、前もって備えたよね。電気は貯めておくのがむずかしいので、こうして使う量と作る量を合わせ続ける人たちがいます。",
+          "interestSeeds": [
+            "グラフを見る",
+            "先を予測する",
+            "数字を合わせる",
+            "全体のバランスを考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "site-heat",
+          "professionId": "site-safety",
+          "eventId": "heat-wave",
+          "gameType": "schedule_and_protect",
+          "componentPath": "src/q1/SiteHeatGame.tsx",
+          "A_place": "工事現場",
+          "B_mission": {
+            "title": "今日は39℃。\nでも今日やる予定の工事がある。",
+            "lines": [
+              "働く人を守りながら、必要なところまで進めよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "schedule_and_protect",
+          "E_resolution": {
+            "title": "工事も進んで、全員ぶじに帰れた",
+            "lines": [
+              "働く人を守りながら、街に必要な工事を進めた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、WBGT（暑さ指数）と作業の重さを見ながら、工事の順番を組み直したよね。実際の工事現場でも、暑さや作業内容を見ながら、働く人を守れるように工程を調整する人がいます。",
+          "interestSeeds": [
+            "予定を組む",
+            "安全を守る",
+            "数字を見る",
+            "優先順位を考える",
+            "予定を組み直す",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "water-heat",
+          "professionId": "water-ops",
+          "eventId": "heat-wave",
+          "gameType": "allocate_and_forecast",
+          "componentPath": "src/q1/WaterGame.tsx",
+          "A_place": "ダム・水の施設",
+          "B_mission": {
+            "title": "ダムの水が減っている…",
+            "lines": [
+              "家庭にも、農業にも、工場にも水が必要。この先も雨は少ないかもしれない。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "allocate_and_forecast",
+          "E_resolution": {
+            "title": "大きな雨の日まで、水がもった！",
+            "lines": [
+              "限られた水を、いろいろな人が使えるように分けあってつないだ。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、雨の予測を見ながら、限られた水をどう分けるか調整したよね。実際には、こうした調整をひとりで決めるのではなく、関係する人たちが集まって、影響を見ながら話し合って決めていきます。",
+          "interestSeeds": [
+            "先のことを予測する",
+            "限られたものを分ける",
+            "数字を調整する",
+            "みんなへの影響を考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "urban-heat",
+          "professionId": "urban-heat",
+          "eventId": "heat-wave",
+          "gameType": "layer_and_compare",
+          "componentPath": "src/q1/UrbanHeatGame.tsx",
+          "A_place": "暑い市街地",
+          "B_mission": {
+            "title": "同じ街なのに、\nここだけ暑い？",
+            "lines": [
+              "同じ39℃の日。でも、道によって暑さがちがう。なんで？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "layer_and_compare",
+          "E_resolution": {
+            "title": "暑さの理由が見えた！",
+            "lines": [
+              "このデータは、新しい街づくりや暑さ対策を考えるときにも使われる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、日射と風と建物のデータを重ねて、暑い理由を探したよね。実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。",
+          "interestSeeds": [
+            "データを重ねる",
+            "違いを見つける",
+            "原因を探す",
+            "街を変えて試す",
+            "結果を比べる",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/medical.ts",
+      "exportName": "medical",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "hospital",
+          "name": "病院",
+          "eventId": "er-patient"
+        }
+      ],
+      "events": [
+        {
+          "id": "er-patient",
+          "title": "救急外来に、\n息苦しそうな人が来た",
+          "areaName": "病院",
+          "chapters": [
+            {
+              "id": "front",
+              "title": "病気の正体をつきとめて、治療を始めよう",
+              "incidentIds": [
+                "ch1",
+                "ch2",
+                "ch3",
+                "ch4",
+                "ch5"
+              ]
+            },
+            {
+              "id": "back",
+              "title": "元気になって、いつもの生活に戻ろう",
+              "incidentIds": [
+                "ch6",
+                "ch7",
+                "ch8",
+                "ch9"
+              ]
+            }
+          ],
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① 何が起きているんだろう？",
+              "experienceId": "med-doctor",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② この血液から何が分かる？",
+              "experienceId": "med-lab",
+              "requires": [
+                "med-doctor"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 肺の中を見たい",
+              "experienceId": "med-radio",
+              "requires": [
+                "med-doctor"
+              ]
+            },
+            {
+              "id": "ch4",
+              "title": "④ 集まった手がかりを、まとめる",
+              "experienceId": "med-diagnose",
+              "requires": [
+                "med-lab",
+                "med-radio"
+              ]
+            },
+            {
+              "id": "ch5",
+              "title": "⑤ この薬、この人に使って大丈夫？",
+              "experienceId": "med-pharm",
+              "requires": [
+                "med-diagnose"
+              ]
+            },
+            {
+              "id": "ch6",
+              "title": "⑥ なんか、いつもとちがう？",
+              "experienceId": "med-nurse",
+              "requires": null
+            },
+            {
+              "id": "ch7",
+              "title": "⑦ ごはんが進まない",
+              "experienceId": "med-diet",
+              "requires": [
+                "med-nurse"
+              ]
+            },
+            {
+              "id": "ch8",
+              "title": "⑧ 家で生活できる？",
+              "experienceId": "med-pt",
+              "requires": [
+                "med-diet"
+              ]
+            },
+            {
+              "id": "ch9",
+              "title": "⑨ 家に帰りたい",
+              "experienceId": "med-msw",
+              "requires": [
+                "med-pt"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "doctor",
+          "name": "医師",
+          "catch": "手がかりを集めて、何が起きているか考える",
+          "discoveryLine": "話・からだ・数字・検査・画像を集めて、\n何が起きているかを考える仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "看護師",
+            "薬剤師",
+            "臨床検査技師",
+            "研究",
+            "公衆衛生"
+          ]
+        },
+        {
+          "id": "labtech",
+          "name": "臨床検査技師",
+          "catch": "見えないからだの中を、数字や情報にする",
+          "discoveryLine": "血液や尿などを調べて、見えないからだの中を\n数字や情報にする仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "医師",
+            "看護師",
+            "研究",
+            "食品衛生",
+            "製薬"
+          ]
+        },
+        {
+          "id": "radtech",
+          "name": "診療放射線技師",
+          "catch": "外から見えないからだの中を、画像にする",
+          "discoveryLine": "X線などの装置を使って、\n見えないからだの中を画像にする仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "医師",
+            "臨床工学技士",
+            "医療機器メーカー",
+            "研究"
+          ]
+        },
+        {
+          "id": "pharmacist",
+          "name": "薬剤師",
+          "catch": "その薬が、この人に安全かを確かめる",
+          "discoveryLine": "薬だけでなく、検査値や今までの薬まで見て、\n安全に使えるかを確かめる仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "医師",
+            "看護師",
+            "研究",
+            "製薬",
+            "医薬品情報"
+          ]
+        },
+        {
+          "id": "nurse",
+          "name": "看護師",
+          "catch": "「いつもとちがう」に気づく",
+          "discoveryLine": "そばで見ているからこそ気づいて、\n今必要なケアを考える仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "医師",
+            "保健師",
+            "助産師",
+            "介護",
+            "リハビリ"
+          ]
+        },
+        {
+          "id": "dietitian",
+          "name": "管理栄養士",
+          "catch": "必要な栄養と、食べられる方法をつなぐ",
+          "discoveryLine": "からだに必要な栄養と、\nこの人が実際に食べられる形を近づける仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "栄養教諭",
+            "調理",
+            "食品開発",
+            "看護",
+            "リハビリ"
+          ]
+        },
+        {
+          "id": "pt",
+          "name": "理学療法士",
+          "catch": "「できる」を、生活の中に取り戻す",
+          "discoveryLine": "動きを見て、道具や方法を変えながら、\n生活でできることを増やす仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "作業療法士",
+            "言語聴覚士",
+            "看護",
+            "スポーツ",
+            "福祉用具"
+          ]
+        },
+        {
+          "id": "msw",
+          "name": "MSW（医療ソーシャルワーカー）",
+          "catch": "その人が望む暮らしへ、つなぐ",
+          "discoveryLine": "どんなふうに暮らしたいかを聞いて、\n生活の困りごとと助けをつなぐ仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "社会福祉士",
+            "ケアマネジャー",
+            "行政",
+            "地域包括支援センター",
+            "介護"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "med-doctor",
+          "professionId": "doctor",
+          "eventId": "er-patient",
+          "gameType": "clue_board",
+          "componentPath": "src/q1/ClueBoardGame.tsx",
+          "A_place": "救急外来",
+          "B_mission": {
+            "title": "「熱もあるし、咳も出る。\nなんだか息苦しくて……」",
+            "lines": [
+              "この人に、何が起きているんだろう？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "clue_board",
+          "E_resolution": {
+            "title": "からだの中を、もっと調べたい",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、患者さんの話や身体の様子、数字を集めて、何が起きているのか考えたよね。手がかりを集めて考えるのが、この仕事の中心です。",
+          "interestSeeds": [
+            "話を聞く",
+            "手がかりを集める",
+            "原因を考える",
+            "情報を組み合わせる",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-lab",
+          "professionId": "labtech",
+          "eventId": "er-patient",
+          "gameType": "lab_check",
+          "componentPath": "src/q1/LabCheckGame.tsx",
+          "A_place": "検査室",
+          "B_mission": {
+            "title": "この血液から、\n何が分かるだろう？",
+            "lines": [
+              "見えないからだの中を、情報にしよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "lab_check",
+          "E_resolution": {
+            "title": "結果を、医師へ報告した",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、血液を調べて、見えなかったからだの中を数字や情報にしたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "何を調べるか選ぶ",
+            "数字を見る",
+            "見えないものを調べる",
+            "情報を届ける",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-radio",
+          "professionId": "radtech",
+          "eventId": "er-patient",
+          "gameType": "xray_shoot",
+          "componentPath": "src/q1/XrayGame.tsx",
+          "A_place": "X線撮影室",
+          "B_mission": {
+            "title": "外からは見えない\n肺の中を見たい",
+            "lines": [
+              "からだの中を、画像にしよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "xray_shoot",
+          "E_resolution": {
+            "title": "見えなかった肺の中が、画像になった",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、外からは見えなかった肺の中を、画像にして見えるようにしたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "どこを見るか選ぶ",
+            "装置を使う",
+            "画像を見くらべる",
+            "変化におどろく",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-diagnose",
+          "professionId": "doctor",
+          "eventId": "er-patient",
+          "gameType": "clue_join",
+          "componentPath": "src/q1/DiagnoseGame.tsx",
+          "A_place": "救急外来（もどってきた）",
+          "B_mission": {
+            "title": "手がかりが、そろった",
+            "lines": [
+              "集まった情報を見比べて、まとめてみよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "clue_join",
+          "E_resolution": {
+            "title": "肺で炎症が起きている可能性が高い",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、話・からだ・検査・画像をつなげて、ばらばらの手がかりを1つの見立てにまとめたよね。これが診断につながる考え方です。",
+          "interestSeeds": [
+            "情報を組み合わせる",
+            "原因を考える",
+            "つながりを見つける",
+            "手がかりを集める",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-pharm",
+          "professionId": "pharmacist",
+          "eventId": "er-patient",
+          "gameType": "rx_check",
+          "componentPath": "src/q1/RxCheckGame.tsx",
+          "A_place": "薬剤部",
+          "B_mission": {
+            "title": "この薬、この人に\nこのまま使って大丈夫？",
+            "lines": []
+          },
+          "C_tools": [],
+          "D_mechanic": "rx_check",
+          "E_resolution": {
+            "title": "安全に治療をはじめられる",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、薬だけじゃなく患者さんの検査や今までの薬も見て、この人に安全に使えるか考えたよね。それがこの仕事の中心です。",
+          "interestSeeds": [
+            "情報を探す",
+            "薬を調べる",
+            "組み合わせを見る",
+            "安全か考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-nurse",
+          "professionId": "nurse",
+          "eventId": "er-patient",
+          "gameType": "observe_care",
+          "componentPath": "src/q1/NurseObserveGame.tsx",
+          "A_place": "病室（治療4日目）",
+          "B_mission": {
+            "title": "「なんか、だるくて……」",
+            "lines": [
+              "熱も呼吸も良くなってきたはずなのに…？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "observe_care",
+          "E_resolution": {
+            "title": "少し楽になった。でも…",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、“なんか違う”に気づいて、患者さんをよく見て、今必要なケアを考えたよね。それが看護の大事な仕事です。",
+          "interestSeeds": [
+            "変化に気づく",
+            "よく観察する",
+            "原因を考える",
+            "ケアする",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-diet",
+          "professionId": "dietitian",
+          "eventId": "er-patient",
+          "gameType": "meal_fit",
+          "componentPath": "src/q1/MealFitGame.tsx",
+          "A_place": "病室（食事の相談）",
+          "B_mission": {
+            "title": "病気は良くなってきた。\nでも、ごはんが進まない。",
+            "lines": []
+          },
+          "C_tools": [],
+          "D_mechanic": "meal_fit",
+          "E_resolution": {
+            "title": "無理なく食べられるようになった",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、栄養だけでなく、この人が実際に食べられる方法まで考えたよね。その2つを近づけるのが、この仕事です。",
+          "interestSeeds": [
+            "食べられない理由を探す",
+            "食事を工夫する",
+            "数字を見る",
+            "相手に合わせて考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-pt",
+          "professionId": "pt",
+          "eventId": "er-patient",
+          "gameType": "move_try",
+          "componentPath": "src/q1/MoveTryGame.tsx",
+          "A_place": "リハビリ室・病棟",
+          "B_mission": {
+            "title": "「そろそろ家に帰りたいな」\n…あれ、ちょっとふらつく",
+            "lines": [
+              "家で生活できるかな？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "move_try",
+          "E_resolution": {
+            "title": "自分でトイレまで行けた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、できない動きを見て、道具や方法を変えながら、生活の中でできることを増やしたよね。それがこの仕事です。",
+          "interestSeeds": [
+            "動きを観察する",
+            "できない理由を探す",
+            "道具を試す",
+            "方法を変えて試す",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "med-msw",
+          "professionId": "msw",
+          "eventId": "er-patient",
+          "gameType": "life_plan",
+          "componentPath": "src/q1/LifePlanGame.tsx",
+          "A_place": "退院前の面談",
+          "B_mission": {
+            "title": "「家に帰りたい。」",
+            "lines": [
+              "でも、ひとり暮らし。まず何から聞こう？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "life_plan",
+          "E_resolution": {
+            "title": "家に帰ってからの毎日が、つながった",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、この人がどんな暮らしをしたいか聞いて、家で困りそうなところに助けをつないだよね。それがMSWの仕事です。",
+          "interestSeeds": [
+            "人の話を聞く",
+            "生活を想像する",
+            "困りごとを整理する",
+            "人や助けをつなぐ",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/priceHike.ts",
+      "exportName": "priceHike",
+      "factCheckNotes": [
+        "TODO: FACT CHECK — 会社によって職種名・分担は異なる。ここでは\n 「調達」「商品開発」「包装・パッケージ」「生産技術など」という\n 一般的な呼び方にとどめ、断定を避けている。数量・価格・処理数は\n 子どもが操作して違いを感じるためのプロトタイプ用の値。"
+      ],
+      "places": [
+        {
+          "id": "shop",
+          "name": "お店",
+          "eventId": "ice-price"
+        }
+      ],
+      "events": [
+        {
+          "id": "ice-price",
+          "title": "えっ！？\nいつものアイスが高くなってる！",
+          "areaName": "アイスのうら側",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "material-up",
+              "title": "材料が高くなってる！",
+              "experienceId": "sourcing-ice",
+              "requires": null
+            },
+            {
+              "id": "taste-keep",
+              "title": "このおいしさ、どうやって守る？",
+              "experienceId": "recipe-ice",
+              "requires": null
+            },
+            {
+              "id": "package-up",
+              "title": "包む材料まで高くなった！",
+              "experienceId": "package-ice",
+              "requires": null
+            },
+            {
+              "id": "factory-waste",
+              "title": "工場にムダがあるみたい…",
+              "experienceId": "factory-ice",
+              "requires": null
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "sourcing",
+          "name": "食品メーカーの「調達」の仕事",
+          "catch": "必要な材料を、必要な時に、必要なだけ",
+          "discoveryLine": "値段だけでなく、品質・量・届く日を見ながら、\n材料をそろえる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "購買",
+            "品質保証",
+            "物流",
+            "貿易",
+            "商社"
+          ]
+        },
+        {
+          "id": "product-dev",
+          "name": "食品メーカーの「商品開発」の仕事",
+          "catch": "おいしさとコストのバランスを考える",
+          "discoveryLine": "材料の組み合わせを変えて、\n味とコストがどう変わるか試す仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "研究開発",
+            "品質保証",
+            "生産技術",
+            "マーケティング",
+            "栄養"
+          ]
+        },
+        {
+          "id": "packaging",
+          "name": "包装・パッケージを考える仕事",
+          "catch": "中身を守りながら、ムダをへらす",
+          "discoveryLine": "素材や形を選んで、商品を守れるか・\n使いやすいかを試す仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "パッケージデザイン",
+            "資材開発",
+            "印刷",
+            "環境・リサイクル",
+            "生産技術"
+          ]
+        },
+        {
+          "id": "line-eng",
+          "name": "工場のラインをよくする仕事",
+          "catch": "データを見て、止まる原因を見つける",
+          "discoveryLine": "ラインのデータを見て、止まっている原因をさがし、\n安定して作れるようにする仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "機械",
+            "電気・制御",
+            "設備保全",
+            "品質管理",
+            "ロボット"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "sourcing-ice",
+          "professionId": "sourcing",
+          "eventId": "ice-price",
+          "gameType": "sourcing_mix",
+          "componentPath": "src/q1/SourcingGame.tsx",
+          "A_place": "材料・倉庫",
+          "B_mission": {
+            "title": "材料が高くなってる！",
+            "lines": [
+              "いちご原料を、来週までに120kgそろえよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "sourcing_mix",
+          "E_resolution": {
+            "title": "材料、そろった！",
+            "lines": [
+              "これでアイスがつくれる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "値段だけじゃなく、品質・量・届く日などを見ながら、必要な材料をそろえていたよね。",
+          "interestSeeds": [
+            "いくつかの条件を比べる",
+            "数字を見る",
+            "組み合わせを考える",
+            "試して変化を見る",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "recipe-ice",
+          "professionId": "product-dev",
+          "eventId": "ice-price",
+          "gameType": "recipe_balance",
+          "componentPath": "src/q1/RecipeGame.tsx",
+          "A_place": "試作室",
+          "B_mission": {
+            "title": "このおいしさ、どうやって守る？",
+            "lines": [
+              "材料費が上がった。味をできるだけ守りながら、コストを下げよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "recipe_balance",
+          "E_resolution": {
+            "title": "新しい配合、できた！",
+            "lines": [
+              "いつものおいしさを守りながら、コストを下げられた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "材料の組み合わせを変えて、味やコストがどう変わるか試していたよね。",
+          "interestSeeds": [
+            "組み合わせを考える",
+            "試して変化を見る",
+            "数字を見る",
+            "もっといい方法を考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "package-ice",
+          "professionId": "packaging",
+          "eventId": "ice-price",
+          "gameType": "package_design",
+          "componentPath": "src/q1/PackageGame.tsx",
+          "A_place": "包装・パッケージ開発室",
+          "B_mission": {
+            "title": "包む材料まで高くなった！",
+            "lines": [
+              "中身を守りながら、ムダの少ない包み方を考えよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "package_design",
+          "E_resolution": {
+            "title": "この包み方でいこう！",
+            "lines": [
+              "商品を守れて、材料のムダも少ない。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "材料を選んで、商品を守れるか、使いやすいか、ムダがないかを試していたよね。",
+          "interestSeeds": [
+            "ものの形を考える",
+            "組み合わせを考える",
+            "試して変化を見る",
+            "ムダをへらす方法を考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "factory-ice",
+          "professionId": "line-eng",
+          "eventId": "ice-price",
+          "gameType": "line_debug",
+          "componentPath": "src/q1/FactoryLineGame.tsx",
+          "A_place": "アイス工場",
+          "B_mission": {
+            "title": "工場にムダがあるみたい…",
+            "lines": [
+              "ラインを動かして、止まっている場所をさがそう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "line_debug",
+          "E_resolution": {
+            "title": "ラインが流れるようになった！",
+            "lines": [
+              "止まっていた場所を、アイスが流れていく。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "ラインのデータを見て、止まっている原因を探して、もっと安定して作れるようにしていたよね。",
+          "interestSeeds": [
+            "ムダや原因を探す",
+            "機械の動きを見る",
+            "数字を見る",
+            "もっといい方法を考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/schoolLunch.ts",
+      "exportName": "schoolLunch",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "school",
+          "name": "学校",
+          "eventId": "lunch-late"
+        },
+        {
+          "id": "station",
+          "name": "工場",
+          "eventId": null
+        },
+        {
+          "id": "park",
+          "name": "公園",
+          "eventId": null
+        }
+      ],
+      "events": [
+        {
+          "id": "lunch-late",
+          "title": "大変！\n今日の給食が間に合わない！",
+          "areaName": "給食のうらがわ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "menu-mystery",
+              "title": "来月の野菜が足りなくなりそう！",
+              "experienceId": "nutrition-lunch",
+              "requires": null
+            },
+            {
+              "id": "kitchen-busy",
+              "title": "給食室が大忙し！",
+              "experienceId": "cook-lunch",
+              "requires": null
+            },
+            {
+              "id": "no-carrot",
+              "title": "このにんじん、どうやって育てた？",
+              "experienceId": "farmer-lunch",
+              "requires": null
+            },
+            {
+              "id": "not-delivered",
+              "title": "食材は今朝、どうやって届いた？",
+              "experienceId": "logistics-lunch",
+              "requires": null
+            },
+            {
+              "id": "after-lunch",
+              "title": "食べ終わったあとも何かあるみたい…",
+              "experienceId": "recycle-lunch",
+              "requires": null
+            }
+          ],
+          "hasLensSummary": false,
+          "hasWrapUp": false
+        }
+      ],
+      "professions": [
+        {
+          "id": "cook",
+          "name": "給食調理員",
+          "catch": "数百〜数千人分の料理を、安全に作るプロ！",
+          "discoveryLine": "たくさんの給食を、\n安全をたしかめながら完成させるプロ！",
+          "q2CardCount": 4,
+          "related": [
+            "調理師",
+            "栄養士",
+            "食品工場",
+            "ホテルやレストランの調理"
+          ]
+        },
+        {
+          "id": "nutrition",
+          "name": "栄養教諭・学校栄養職員",
+          "catch": "給食と「食べること」の先生！",
+          "discoveryLine": "栄養・お金・季節をまとめて考えて、\nみんなの給食を成り立たせる仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "管理栄養士",
+            "栄養士",
+            "食品開発",
+            "調理"
+          ]
+        },
+        {
+          "id": "farmer",
+          "name": "農家・生産者",
+          "catch": "何か月も先を考えて、食べ物を育てるプロ！",
+          "discoveryLine": "品種・気温・カレンダーを読んで、\n何か月も前から育てる計画を立てるプロ！",
+          "q2CardCount": 4,
+          "related": [
+            "JA",
+            "農業技術",
+            "食品メーカー",
+            "農業機械",
+            "研究",
+            "物流"
+          ]
+        },
+        {
+          "id": "logistics",
+          "name": "給食の食材を届ける仕事",
+          "catch": "温度と時間を守って、食べ物の安全をつなぐ！",
+          "discoveryLine": "食材ごとの温度と納品時刻を守って、\n朝の学校へ安全に届ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "鉄道貨物",
+            "船",
+            "航空貨物",
+            "倉庫",
+            "物流企画"
+          ]
+        },
+        {
+          "id": "recycle",
+          "name": "食べ残しを資源に変える工場の仕事",
+          "catch": "食べ物の「その後」を、肥料などの資源に！",
+          "discoveryLine": "道具の性質を使い分けて異物を取りのぞき、\n食べ残しを安全な資源に変える仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "環境",
+            "ごみ処理",
+            "農業",
+            "エネルギー"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "cook-lunch",
+          "professionId": "cook",
+          "eventId": "lunch-late",
+          "gameType": "inspect_and_measure",
+          "componentPath": "src/q1/CookGame.tsx",
+          "A_place": "給食室",
+          "B_mission": {
+            "title": "500人分の給食を、\n安全に完成させよう！",
+            "lines": [
+              "工程表と道具をたしかめながら進めよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "chart",
+              "name": "作業工程表",
+              "desc": "チーフが事前に作った、今日の作業の設計図。"
+            },
+            {
+              "id": "thermo",
+              "name": "中心温度計",
+              "desc": "食べ物の中心の温度をはかる。"
+            },
+            {
+              "id": "rule",
+              "name": "衛生ルール",
+              "desc": "安全のための決まり。温度や測り方も書いてある。"
+            },
+            {
+              "id": "record",
+              "name": "記録票",
+              "desc": "確認した温度と時刻を記録に残す。"
+            }
+          ],
+          "D_mechanic": "inspect_and_measure",
+          "E_resolution": {
+            "title": "安全確認、完了！",
+            "lines": [
+              "配缶して、検食もすませて、教室へ。",
+              "「いただきます！」の声が聞こえてきた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、魚の温度を測って、基準に届いているか確かめたよね。500人が安全に食べられるように、こうやって一つずつ確かめながら作る。",
+          "interestSeeds": [
+            "道具を使って測る",
+            "数字を見て判断する",
+            "たくさんの人の安全を守る",
+            "うまくいくまで試す",
+            "とくにない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "nutrition-lunch",
+          "professionId": "nutrition",
+          "eventId": "lunch-late",
+          "gameType": "drag_and_drop",
+          "componentPath": "src/q1/MenuGame.tsx",
+          "A_place": "学校（給食を考える部屋）",
+          "B_mission": {
+            "title": "来月使う予定の野菜が、\n少なくなりそう！",
+            "lines": [
+              "資料を見ながら、献立と食材を調整しよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "menu",
+              "name": "来月の献立",
+              "desc": "事前に計画してある献立表。"
+            },
+            {
+              "id": "nutri",
+              "name": "栄養の基準",
+              "desc": "給食1食に必要な栄養の目安。"
+            },
+            {
+              "id": "price",
+              "name": "食材と価格",
+              "desc": "食材ごとの、今の値段の情報。"
+            },
+            {
+              "id": "season",
+              "name": "旬・地場の情報",
+              "desc": "今の季節に合う食材、この町でとれる食材。"
+            },
+            {
+              "id": "kitchen",
+              "name": "調理場の情報",
+              "desc": "給食室で作れる料理・作業の情報。"
+            }
+          ],
+          "D_mechanic": "drag_and_drop",
+          "E_resolution": {
+            "title": "来月の献立、調整できた！",
+            "lines": [
+              "使う食材が決まった。",
+              "注文が、農家や納入業者さんへ伝わっていく…"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、トレーの料理を入れかえながら、栄養・お金・調達のバランスが合う組み合わせを探したよね。栄養教諭・学校栄養職員は、こうやってみんなの給食を成り立たせています。",
+          "interestSeeds": [
+            "条件を見ながら入れかえる",
+            "代わりを考える",
+            "数字を見て決める",
+            "みんなの食事を考える",
+            "とくにない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "farmer-lunch",
+          "professionId": "farmer",
+          "eventId": "lunch-late",
+          "gameType": "sow_and_grow",
+          "componentPath": "src/q1/FarmGame.tsx",
+          "A_place": "にんじん畑",
+          "B_mission": {
+            "title": "給食で使うにんじんを\n育てたい！",
+            "lines": [
+              "でも、いつでも同じように作れるわけじゃない。",
+              "資料を見て、育てる計画を立てよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "variety",
+              "name": "品種と栽培ごよみ",
+              "desc": "品種ごとの、まきどき・日数・性質。"
+            },
+            {
+              "id": "weather",
+              "name": "気温の情報",
+              "desc": "今年の気温の予報と、発芽に良い温度。"
+            },
+            {
+              "id": "order",
+              "name": "必要な時期",
+              "desc": "給食室からの注文。いつ・どれだけ必要か。"
+            },
+            {
+              "id": "soil",
+              "name": "畑の土",
+              "desc": "土の状態の情報。"
+            }
+          ],
+          "D_mechanic": "sow_and_grow",
+          "E_resolution": {
+            "title": "にんじん300kg、収穫！",
+            "lines": [
+              "給食用の箱につめて、トラックへ。",
+              "今日の給食は、何か月も前から始まっていた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、種をえらんで畑にまいて、うまく育つまで試したよね。農家・生産者は、品種や天候を読みながら、何か月も先の「必要な時期」から逆算して育てています。",
+          "interestSeeds": [
+            "試してうまくいく方法を探す",
+            "先のことから逆算する",
+            "生きものを育てる",
+            "天気や自然を読む",
+            "とくにない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "logistics-lunch",
+          "professionId": "logistics",
+          "eventId": "lunch-late",
+          "gameType": "load_and_route",
+          "componentPath": "src/q1/LogisticsGame.tsx",
+          "A_place": "食材を届ける会社（朝7:00）",
+          "B_mission": {
+            "title": "2つの学校に、調理が始まる前に\n食材を届けたい！",
+            "lines": [
+              "温度と、回る順番。どっちも考えて出発しよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "order",
+              "name": "学校からの注文書",
+              "desc": "今日届ける食材のリスト。"
+            },
+            {
+              "id": "temp",
+              "name": "保存温度の資料",
+              "desc": "食材ごとの、運ぶときの温度の決まり。"
+            },
+            {
+              "id": "truck",
+              "name": "トラックの情報",
+              "desc": "冷蔵室と常温室がある配送車。"
+            },
+            {
+              "id": "time",
+              "name": "納品時刻",
+              "desc": "学校に届ける締め切りの時刻。"
+            }
+          ],
+          "D_mechanic": "load_and_route",
+          "E_resolution": {
+            "title": "2校とも、安全な状態で時間までに届いた！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。",
+          "interestSeeds": [
+            "温度や時間の条件を守る",
+            "順番ややり方を組み立てる",
+            "うまくいくまで積み直す",
+            "とくにない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "recycle-lunch",
+          "professionId": "recycle",
+          "eventId": "lunch-late",
+          "gameType": "sort_out",
+          "componentPath": "src/q1/RecycleGame.tsx",
+          "A_place": "リサイクル工場",
+          "B_mission": {
+            "title": "食べ残しが工場に届いた。\nでも、このままではリサイクルできない！",
+            "lines": [
+              "まざっている異物を、道具を使い分けて取りのぞこう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "rule",
+              "name": "受入ルール",
+              "desc": "この工場が受け入れられるもの・ダメなもの。"
+            },
+            {
+              "id": "magnet",
+              "name": "磁選機",
+              "desc": "強い磁石で異物を取りのぞく機械。"
+            },
+            {
+              "id": "wind",
+              "name": "風力選別",
+              "desc": "風の力で異物を分ける機械。"
+            },
+            {
+              "id": "hand",
+              "name": "手選別",
+              "desc": "人の目で見て、異物を取りのぞく。"
+            }
+          ],
+          "D_mechanic": "sort_out",
+          "E_resolution": {
+            "title": "きれいになった食べ残しが、\n資源に変わっていく！",
+            "lines": [
+              "発酵させて、約2か月。肥料のできあがり。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "さっき、磁石や網を使い分けて異物を取りのぞいたよね。工場では、こうやって道具の性質をいかして、食べ残しを安全な肥料に変えています。",
+          "interestSeeds": [
+            "道具を使い分ける",
+            "まざった物を仕分ける",
+            "ごみが資源に変わる",
+            "とくにない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/schoolTrip.ts",
+      "exportName": "schoolTrip",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "school-trip",
+          "name": "修学旅行",
+          "eventId": "school-trip"
+        }
+      ],
+      "events": [
+        {
+          "id": "school-trip",
+          "title": "修学旅行、\nどうやって100人を運ぶ？",
+          "areaName": "修学旅行のうらがわ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "trip-plan-inc",
+              "title": "旅の組み立てを考える",
+              "experienceId": "plan-trip",
+              "requires": null
+            },
+            {
+              "id": "trip-safety-inc",
+              "title": "100人の安全を守る",
+              "experienceId": "safety-trip",
+              "requires": null
+            },
+            {
+              "id": "trip-bus-inc",
+              "title": "バスを安全に走らせる",
+              "experienceId": "bus-trip",
+              "requires": null
+            },
+            {
+              "id": "trip-delay-inc",
+              "title": "遅れた予定をつなぎ直す",
+              "experienceId": "delay-trip",
+              "requires": null
+            },
+            {
+              "id": "trip-hotel-inc",
+              "title": "宿で100人を受け入れる",
+              "experienceId": "hotel-trip",
+              "requires": null
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "trip-planner",
+          "name": "旅行会社の教育旅行担当",
+          "catch": "学び・時間・予算がそろう旅程をつくる",
+          "discoveryLine": "学校の希望を聞いて、交通・宿泊・見学先を\n組み合わせる仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "旅行会社",
+            "企画",
+            "観光",
+            "学校事務",
+            "地域観光"
+          ]
+        },
+        {
+          "id": "trip-teacher",
+          "name": "学校の引率責任者・教員",
+          "catch": "100人の安全体制を組む",
+          "discoveryLine": "班と引率の体制を整えて、\n100人の安全を守る仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "教員",
+            "養護教諭",
+            "学年主任",
+            "生徒指導",
+            "学校事務"
+          ]
+        },
+        {
+          "id": "trip-busmanager",
+          "name": "貸切バスの運行管理者",
+          "catch": "定員・運転士・経路をそろえて、安全に走らせる",
+          "discoveryLine": "車両・運転士・経路・休憩を組んで、\nバスを安全に走らせる仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "運行管理者",
+            "運転士",
+            "整備士",
+            "物流",
+            "交通計画"
+          ]
+        },
+        {
+          "id": "trip-conductor",
+          "name": "添乗員・旅程管理担当",
+          "catch": "崩れた予定を、関係先へつなぎ直す",
+          "discoveryLine": "遅れの影響を整理して、学校・見学先・バス・宿へ\nつなぎ直す仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "旅行会社",
+            "ツアーコンダクター",
+            "イベント運営",
+            "危機管理",
+            "接客"
+          ]
+        },
+        {
+          "id": "trip-hotel",
+          "name": "ホテル・旅館の団体受入担当",
+          "catch": "届いた班情報を、部屋・食事・入浴で受け止める",
+          "discoveryLine": "学校から届いた班の情報をもとに、部屋・食事・入浴を\n組み立てる仕事！",
+          "q2CardCount": 4,
+          "related": [
+            "ホテル",
+            "旅館",
+            "接客",
+            "調理",
+            "施設管理"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "plan-trip",
+          "professionId": "trip-planner",
+          "eventId": "school-trip",
+          "gameType": "trip_plan",
+          "componentPath": "src/q1/TripPlanGame.tsx",
+          "A_place": "旅行会社",
+          "B_mission": {
+            "title": "2泊3日の旅程を、\n組み立てよう",
+            "lines": [
+              "学び・時間・予算、ぜんぶ守れる形にしよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "trip_plan",
+          "E_resolution": {
+            "title": "2泊3日の旅程が組めた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、学び・時間・予算を見ながら旅程を組み立てたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "組み合わせを考える",
+            "条件を確かめる",
+            "何度も試す",
+            "バランスを考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "safety-trip",
+          "professionId": "trip-teacher",
+          "eventId": "school-trip",
+          "gameType": "safety_plan",
+          "componentPath": "src/q1/SafetyPlanGame.tsx",
+          "A_place": "学校・職員室",
+          "B_mission": {
+            "title": "100人が、安全に\n旅行へ行ける体制を組もう",
+            "lines": [
+              "班・引率・役割・配慮、ぜんぶ整えよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "safety_plan",
+          "E_resolution": {
+            "title": "100人の安全体制ができた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、班に引率をつけて、役割と配慮の情報をつなげたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "情報を確認する",
+            "役割を決める",
+            "配慮を考える",
+            "みんなで整える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "bus-trip",
+          "professionId": "trip-busmanager",
+          "eventId": "school-trip",
+          "gameType": "bus_ops",
+          "componentPath": "src/q1/BusOpsGame.tsx",
+          "A_place": "バス会社",
+          "B_mission": {
+            "title": "3台のバスを、\n安全に走らせよう",
+            "lines": [
+              "定員・運転士・経路・休憩をそろえよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "bus_ops",
+          "E_resolution": {
+            "title": "3台とも、無事に走らせられた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、定員・運転士・経路・休憩をそろえて、バスを安全に走らせたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "条件をそろえる",
+            "計画を立てる",
+            "うまくいかず直す",
+            "安全を確かめる",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "delay-trip",
+          "professionId": "trip-conductor",
+          "eventId": "school-trip",
+          "gameType": "delay_recover",
+          "componentPath": "src/q1/DelayRecoverGame.tsx",
+          "A_place": "新幹線の駅",
+          "B_mission": {
+            "title": "新幹線が遅れた。\n予定をつなぎ直そう",
+            "lines": [
+              "見学先・バス・宿へ、順番に連絡していこう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "delay_recover",
+          "E_resolution": {
+            "title": "予定を、つなぎ直せた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、状況を確認して、関係先へ連絡し、学校の承認を得てから変更を伝えたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "状況を確認する",
+            "関係先へ連絡する",
+            "変更案を考える",
+            "みんなに知らせる",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "hotel-trip",
+          "professionId": "trip-hotel",
+          "eventId": "school-trip",
+          "gameType": "hotel_receive",
+          "componentPath": "src/q1/HotelReceiveGame.tsx",
+          "A_place": "旅館のフロント",
+          "B_mission": {
+            "title": "100人を、\n宿で受け入れよう",
+            "lines": [
+              "部屋・食事・入浴、3つを組み立てよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "hotel_receive",
+          "E_resolution": {
+            "title": "100人を、受け入れる準備ができた",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、届いた班の情報をもとに、部屋・食事・入浴を組み立てたよね。それが、この仕事の中心です。",
+          "interestSeeds": [
+            "情報を確認する",
+            "配置を考える",
+            "配慮を反映する",
+            "混雑を防ぐ",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/townEvent.ts",
+      "exportName": "townEvent",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "plaza",
+          "name": "広場",
+          "eventId": "town-festival"
+        }
+      ],
+      "events": [
+        {
+          "id": "town-festival",
+          "title": "なんかイベントを\nやることになった！",
+          "areaName": "イベントのうら側",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "what-to-do",
+              "title": "何をやったら、みんな楽しめる？",
+              "experienceId": "plan-event",
+              "requires": null
+            },
+            {
+              "id": "nobody-knows",
+              "title": "まだ、だれも知らない！",
+              "experienceId": "promo-event",
+              "requires": null
+            },
+            {
+              "id": "too-many-acts",
+              "title": "このままだと時間どおり終わらない！",
+              "experienceId": "run-event",
+              "requires": null
+            },
+            {
+              "id": "where-to-put",
+              "title": "どこに何を置けばいい？",
+              "experienceId": "venue-event",
+              "requires": null
+            },
+            {
+              "id": "cant-hear",
+              "title": "うしろの席まで声がとどかない！",
+              "experienceId": "sound-event",
+              "requires": null
+            },
+            {
+              "id": "crowded",
+              "title": "入口の近くが混んできた！",
+              "experienceId": "crowd-event",
+              "requires": null
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "planner",
+          "name": "イベントを企画する仕事",
+          "catch": "だれのための、どんな1日にするかを決める",
+          "discoveryLine": "来る人・会場・時間をにらみながら、\nイベントの中身を組み立てる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "イベント会社",
+            "広告",
+            "観光",
+            "まちづくり",
+            "学校行事の運営"
+          ]
+        },
+        {
+          "id": "promoter",
+          "name": "広報・PRの仕事",
+          "catch": "必要な人に、ちゃんと届ける",
+          "discoveryLine": "だれに届けたいかを決めて、\n伝える方法を組み合わせる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "広告",
+            "デザイン",
+            "マーケティング",
+            "報道",
+            "SNS運用"
+          ]
+        },
+        {
+          "id": "stage-manager",
+          "name": "イベントの進行をつくる仕事",
+          "catch": "分単位で、当日を成り立たせる",
+          "discoveryLine": "演目と転換の時間を積み上げて、\n終わる時間に間に合わせる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "舞台制作",
+            "テレビ・配信",
+            "音響・照明",
+            "会場運営"
+          ]
+        },
+        {
+          "id": "venue-designer",
+          "name": "会場をつくる仕事",
+          "catch": "同じ広場を、過ごせる場所に変える",
+          "discoveryLine": "ステージやお店の位置を決めて、\n人が動ける会場をつくる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "舞台美術",
+            "施工",
+            "建築",
+            "空間デザイン",
+            "レンタル機材"
+          ]
+        },
+        {
+          "id": "sound-tech",
+          "name": "音響の仕事",
+          "catch": "会場のどこにいても、聞こえるように",
+          "discoveryLine": "スピーカーと音量を調整して、\n席ごとの聞こえ方をそろえる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "ライブハウス",
+            "放送",
+            "レコーディング",
+            "照明",
+            "映像"
+          ]
+        },
+        {
+          "id": "crowd-safety",
+          "name": "雑踏警備の仕事",
+          "catch": "人の流れを見て、安全にする",
+          "discoveryLine": "どこが詰まるかを読んで、\n人の流れをつくる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "警備",
+            "施設管理",
+            "防災",
+            "交通誘導",
+            "イベント運営"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "plan-event",
+          "professionId": "planner",
+          "eventId": "town-festival",
+          "gameType": "plan_mix",
+          "componentPath": "src/q1/PlanEventGame.tsx",
+          "A_place": "打ち合わせ（からっぽの広場）",
+          "B_mission": {
+            "title": "何をやったら、\nみんな楽しめる？",
+            "lines": [
+              "来る人と会場を見ながら、イベントの中身を決めよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "plan_mix",
+          "E_resolution": {
+            "title": "イベントの中身が決まった！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、来る人や会場や時間を見ながら、やることを組み合わせたよね。こうやってイベントの中身を決めるのが、企画の大事な仕事のひとつです。",
+          "interestSeeds": [
+            "アイデアを組み合わせる",
+            "だれのためか考える",
+            "条件を見て決める",
+            "結果を見てやり直す",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "promo-event",
+          "professionId": "promoter",
+          "eventId": "town-festival",
+          "gameType": "reach_mix",
+          "componentPath": "src/q1/PromoGame.tsx",
+          "A_place": "広報の作業テーブル",
+          "B_mission": {
+            "title": "まだ、だれも知らない！",
+            "lines": [
+              "届けたい人に届く方法を、組み合わせよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "reach_mix",
+          "E_resolution": {
+            "title": "イベントのことが、届きはじめた！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、だれに届けたいかを決めて、伝える方法を選んだよね。こうやって必要な人に届けるのが、広報・PRの大事な仕事のひとつです。",
+          "interestSeeds": [
+            "人にどう届くか考える",
+            "組み合わせを考える",
+            "結果を見てやり直す",
+            "だれのためか考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "run-event",
+          "professionId": "stage-manager",
+          "eventId": "town-festival",
+          "gameType": "timetable",
+          "componentPath": "src/q1/TimetableGame.tsx",
+          "A_place": "進行の打ち合わせ",
+          "B_mission": {
+            "title": "このままだと\n時間どおり終わらない！",
+            "lines": [
+              "演目と転換をならべて、終わりの時間に間に合わせよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "timetable",
+          "E_resolution": {
+            "title": "当日の進行、組めた！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、演目の長さと転換の時間を足しながら、終わる時間に間に合うように順番を組んだよね。これがイベントの進行をつくる仕事の中心です。",
+          "interestSeeds": [
+            "順番を組む",
+            "時間を計算する",
+            "入れかえて試す",
+            "結果を見てやり直す",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "venue-event",
+          "professionId": "venue-designer",
+          "eventId": "town-festival",
+          "gameType": "venue_layout",
+          "componentPath": "src/q1/VenueLayoutGame.tsx",
+          "A_place": "からっぽの広場",
+          "B_mission": {
+            "title": "どこに何を置けばいい？",
+            "lines": [
+              "会場に置いてみて、見やすさと通りやすさをたしかめよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "venue_layout",
+          "E_resolution": {
+            "title": "会場ができあがった！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、ステージやお店を置いて、見やすさや通り道がどう変わるかを試したよね。こうやって会場をつくるのが、設営の大事な仕事のひとつです。",
+          "interestSeeds": [
+            "空間を配置する",
+            "置き直して試す",
+            "人の動きを考える",
+            "全体を見る",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "sound-event",
+          "professionId": "sound-tech",
+          "eventId": "town-festival",
+          "gameType": "sound_check",
+          "componentPath": "src/q1/SoundCheckGame.tsx",
+          "A_place": "リハーサル中のステージ",
+          "B_mission": {
+            "title": "うしろの席まで\n声がとどかない！",
+            "lines": [
+              "スピーカーと音量を動かして、客席の聞こえ方をたしかめよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "sound_check",
+          "E_resolution": {
+            "title": "どの席にも、音がとどいた！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、スピーカーの置き方と音量を変えて、席ごとの聞こえ方を確かめたよね。これが音響の仕事の大事な部分のひとつです。",
+          "interestSeeds": [
+            "道具を調整する",
+            "場所ごとの違いを見る",
+            "やり直して合わせる",
+            "数字を見る",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "crowd-event",
+          "professionId": "crowd-safety",
+          "eventId": "town-festival",
+          "gameType": "crowd_flow",
+          "componentPath": "src/q1/CrowdFlowGame.tsx",
+          "A_place": "開場した会場",
+          "B_mission": {
+            "title": "入口の近くが\n混んできた！",
+            "lines": [
+              "どこが詰まっているかを見て、人の流れを変えよう。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "crowd_flow",
+          "E_resolution": {
+            "title": "混雑が落ちついた！",
+            "lines": []
+          },
+          "jobReveal_discoveryEcho": "さっき、どこが混んでいるかを見て、柵や案内で人の流れを変えたよね。こうやって安全をつくるのが、雑踏警備の大事な仕事のひとつです。",
+          "interestSeeds": [
+            "人の流れを見る",
+            "置き直して試す",
+            "混雑の原因を探す",
+            "安全を考える",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    }
+  ],
+  "issues": []
+}

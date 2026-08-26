@@ -1,0 +1,723 @@
+[
+  {
+    "id": "park-design",
+    "displayName": "公園の暑さ対策を考える仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "heat-wave"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "place_and_test"
+    ],
+    "mechanics": [
+      "place_and_test"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ]
+  },
+  {
+    "id": "power-ops",
+    "displayName": "電力の需給や系統運用に関わる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "heat-wave"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "forecast_and_balance"
+    ],
+    "mechanics": [
+      "forecast_and_balance"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ]
+  },
+  {
+    "id": "site-safety",
+    "displayName": "工事現場の安全と工程を守る仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "heat-wave"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "schedule_and_protect"
+    ],
+    "mechanics": [
+      "schedule_and_protect"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ]
+  },
+  {
+    "id": "water-ops",
+    "displayName": "水資源の管理・調整に関わる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "heat-wave"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "allocate_and_forecast"
+    ],
+    "mechanics": [
+      "allocate_and_forecast"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ]
+  },
+  {
+    "id": "urban-heat",
+    "displayName": "都市の暑さを分析し、街づくりを考える仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "heat-wave"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "layer_and_compare"
+    ],
+    "mechanics": [
+      "layer_and_compare"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/extremeHeat.ts"
+    ]
+  },
+  {
+    "id": "doctor",
+    "displayName": "医師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 2,
+    "cPatterns": [],
+    "dPatterns": [
+      "clue_board",
+      "clue_join"
+    ],
+    "mechanics": [
+      "clue_board",
+      "clue_join"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "labtech",
+    "displayName": "臨床検査技師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "lab_check"
+    ],
+    "mechanics": [
+      "lab_check"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "radtech",
+    "displayName": "診療放射線技師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "xray_shoot"
+    ],
+    "mechanics": [
+      "xray_shoot"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "pharmacist",
+    "displayName": "薬剤師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "rx_check"
+    ],
+    "mechanics": [
+      "rx_check"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "nurse",
+    "displayName": "看護師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "observe_care"
+    ],
+    "mechanics": [
+      "observe_care"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "dietitian",
+    "displayName": "管理栄養士",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "meal_fit"
+    ],
+    "mechanics": [
+      "meal_fit"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "pt",
+    "displayName": "理学療法士",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "move_try"
+    ],
+    "mechanics": [
+      "move_try"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "msw",
+    "displayName": "MSW（医療ソーシャルワーカー）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "er-patient"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "life_plan"
+    ],
+    "mechanics": [
+      "life_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/medical.ts"
+    ]
+  },
+  {
+    "id": "sourcing",
+    "displayName": "食品メーカーの「調達」の仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "ice-price"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "sourcing_mix"
+    ],
+    "mechanics": [
+      "sourcing_mix"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/priceHike.ts"
+    ]
+  },
+  {
+    "id": "product-dev",
+    "displayName": "食品メーカーの「商品開発」の仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "ice-price"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "recipe_balance"
+    ],
+    "mechanics": [
+      "recipe_balance"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/priceHike.ts"
+    ]
+  },
+  {
+    "id": "packaging",
+    "displayName": "包装・パッケージを考える仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "ice-price"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "package_design"
+    ],
+    "mechanics": [
+      "package_design"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/priceHike.ts"
+    ]
+  },
+  {
+    "id": "line-eng",
+    "displayName": "工場のラインをよくする仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "ice-price"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "line_debug"
+    ],
+    "mechanics": [
+      "line_debug"
+    ],
+    "factConfidence": "needs_manual_review",
+    "sourceFiles": [
+      "src/data/content/priceHike.ts"
+    ]
+  },
+  {
+    "id": "cook",
+    "displayName": "給食調理員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "lunch-late"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "作業工程表",
+      "中心温度計",
+      "衛生ルール",
+      "記録票"
+    ],
+    "dPatterns": [
+      "inspect_and_measure"
+    ],
+    "mechanics": [
+      "inspect_and_measure"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ]
+  },
+  {
+    "id": "nutrition",
+    "displayName": "栄養教諭・学校栄養職員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "lunch-late"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "来月の献立",
+      "栄養の基準",
+      "食材と価格",
+      "旬・地場の情報",
+      "調理場の情報"
+    ],
+    "dPatterns": [
+      "drag_and_drop"
+    ],
+    "mechanics": [
+      "drag_and_drop"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ]
+  },
+  {
+    "id": "farmer",
+    "displayName": "農家・生産者",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "lunch-late"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "品種と栽培ごよみ",
+      "気温の情報",
+      "必要な時期",
+      "畑の土"
+    ],
+    "dPatterns": [
+      "sow_and_grow"
+    ],
+    "mechanics": [
+      "sow_and_grow"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ]
+  },
+  {
+    "id": "logistics",
+    "displayName": "給食の食材を届ける仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "lunch-late"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "学校からの注文書",
+      "保存温度の資料",
+      "トラックの情報",
+      "納品時刻"
+    ],
+    "dPatterns": [
+      "load_and_route"
+    ],
+    "mechanics": [
+      "load_and_route"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ]
+  },
+  {
+    "id": "recycle",
+    "displayName": "食べ残しを資源に変える工場の仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "lunch-late"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "受入ルール",
+      "磁選機",
+      "風力選別",
+      "手選別"
+    ],
+    "dPatterns": [
+      "sort_out"
+    ],
+    "mechanics": [
+      "sort_out"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolLunch.ts"
+    ]
+  },
+  {
+    "id": "trip-planner",
+    "displayName": "旅行会社の教育旅行担当",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "school-trip"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "trip_plan"
+    ],
+    "mechanics": [
+      "trip_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ]
+  },
+  {
+    "id": "trip-teacher",
+    "displayName": "学校の引率責任者・教員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "school-trip"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "safety_plan"
+    ],
+    "mechanics": [
+      "safety_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ]
+  },
+  {
+    "id": "trip-busmanager",
+    "displayName": "貸切バスの運行管理者",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "school-trip"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "bus_ops"
+    ],
+    "mechanics": [
+      "bus_ops"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ]
+  },
+  {
+    "id": "trip-conductor",
+    "displayName": "添乗員・旅程管理担当",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "school-trip"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "delay_recover"
+    ],
+    "mechanics": [
+      "delay_recover"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ]
+  },
+  {
+    "id": "trip-hotel",
+    "displayName": "ホテル・旅館の団体受入担当",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "school-trip"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "hotel_receive"
+    ],
+    "mechanics": [
+      "hotel_receive"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/schoolTrip.ts"
+    ]
+  },
+  {
+    "id": "planner",
+    "displayName": "イベントを企画する仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "plan_mix"
+    ],
+    "mechanics": [
+      "plan_mix"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  },
+  {
+    "id": "promoter",
+    "displayName": "広報・PRの仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "reach_mix"
+    ],
+    "mechanics": [
+      "reach_mix"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  },
+  {
+    "id": "stage-manager",
+    "displayName": "イベントの進行をつくる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "timetable"
+    ],
+    "mechanics": [
+      "timetable"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  },
+  {
+    "id": "venue-designer",
+    "displayName": "会場をつくる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "venue_layout"
+    ],
+    "mechanics": [
+      "venue_layout"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  },
+  {
+    "id": "sound-tech",
+    "displayName": "音響の仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "sound_check"
+    ],
+    "mechanics": [
+      "sound_check"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  },
+  {
+    "id": "crowd-safety",
+    "displayName": "雑踏警備の仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "town-festival"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "crowd_flow"
+    ],
+    "mechanics": [
+      "crowd_flow"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/townEvent.ts"
+    ]
+  }
+]
