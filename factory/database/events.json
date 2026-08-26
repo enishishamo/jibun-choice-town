@@ -28,7 +28,7 @@
     "sourceFiles": [
       "src/data/content/extremeHeat.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "spatial_placement",
       "resource_allocation",
@@ -76,7 +76,7 @@
     "sourceFiles": [
       "src/data/content/medical.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "search_discovery",
       "measurement_inspection",
@@ -113,7 +113,7 @@
     "sourceFiles": [
       "src/data/content/priceHike.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "resource_allocation",
       "parameter_adjust",
@@ -150,7 +150,7 @@
     "sourceFiles": [
       "src/data/content/schoolLunch.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "measurement_inspection",
       "drag_drop_assign",
@@ -187,7 +187,7 @@
     "sourceFiles": [
       "src/data/content/schoolTrip.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "composition_design",
       "drag_drop_assign",
@@ -226,7 +226,7 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:14:09.300Z",
+    "lastScannedAt": "2026-08-26T23:37:19.866Z",
     "mechanicCategories": [
       "composition_design",
       "resource_allocation",

@@ -17,13 +17,13 @@ fact uncertainty を正しく把握できるかを確認する。**猛暑編の�
 | B（困りごと） | 公園が暑すぎて人がいない | 電気の使用量が増え続ける | 39℃の日に工事を進めたい | ダムの水が減っている | 同じ街なのに場所で暑さが違う |
 | C（情報・道具） | 日射・地表温度・風の3レイヤー | 気温予報・需要予測グラフ | 時間帯別WBGT・作業負荷 | 雨予測・貯水率・7日後予測 | 4データレイヤー＋2地点比較 |
 | D（操作） | 対策パーツを配置→ためす | 供給ON/OFF→時間を進める | 作業を時間帯へ割当→実行 | 分野別配分→7日進める | レイヤー比較→対策設置→再シミュ |
-| E（結果） | 人が戻ってきた（配置由来のafter画像） | 「一度も途切れなかった」（**固定**） | 進捗と安全の両立 | 大雨まで水をつないだ | Before/Afterヒートマップ |
+| E（結果） | 人が戻ってきた（配置由来のafter画像） | 途切れず17時 or 停電（※修正後・操作由来） | 進捗と安全の両立 | 大雨まで水をつないだ | Before/Afterヒートマップ |
 | primary mechanic | spatial_placement | resource_allocation | sequencing | resource_allocation | data_layer_compare |
 | secondary | simulation_run, data_layer_compare | simulation_run, tap_select | drag_drop_assign, simulation_run | parameter_adjust, simulation_run | search_discovery, simulation_run |
-| Cは攻略上必要か | partial（試行錯誤で回避可、weak文が理由を示す） | **no（C無視・操作なしでクリア可）** | partial（リスク表示で回避可、基準31はCのみ） | partial（予測チップで代替可） | partial（3択当てずっぽうで回避可） |
-| 操作→結果が変わるか | yes（after画像まで反映） | **no（最終Eが無条件成功）** | yes | yes（危険水準履歴で成功が消える） | yes（fixable判定） |
-| retry可能か | yes（置き直し） | **no（失敗状態が存在しない）** | yes（組み直し） | yes（やり直しボタン） | yes（置きなおし） |
-| fixed progressionでないか | ok | **実質NG（ボタン連打で完走）** | ok | ok | ok |
+| Cは攻略上必要か | partial（試行錯誤で回避可、weak文が理由を示す） | ~~no~~ → partial（※修正後。予測で先回り、失敗ヒントがCを指す） | partial（リスク表示で回避可、基準31はCのみ） | partial（予測チップで代替可） | partial（3択当てずっぽうで回避可） |
+| 操作→結果が変わるか | yes（after画像まで反映） | ~~no~~ → yes（※修正後。不足なら停電、成功は履歴由来） | yes | yes（危険水準履歴で成功が消える） | yes（fixable判定） |
+| retry可能か | yes（置き直し） | ~~no~~ → yes（※修正後。13時からやり直し） | yes（組み直し） | yes（やり直しボタン） | yes（置きなおし） |
+| fixed progressionでないか | ok | ~~実質NG~~ → ok（※修正後。無操作は13→14時で失敗） | ok | ok | ok |
 | Job Reveal | ✅ discoveryEcho あり | ✅ | ✅ | ✅ | ✅ |
 | interestSeeds | ✅ 6個・行為由来 | ✅ 5個 | ✅ 6個 | ✅ 5個 | ✅ 6個 |
 | FACT uncertainty | 職業名仮置き（TODO検出済） | 実務主体TODO検出済 | — | 判断範囲TODO検出済 | 職業名仮置きTODO検出済 |
@@ -39,6 +39,9 @@ unknown とした項目: なし（5ゲームすべてコンポーネントコー
    done 画面は無条件）。途中の需給ゲージは操作を反映するが、最終Eには反映されない。
    → Critic の BLOCKER「操作結果と無関係に固定クリア」に該当。
    詳細は [factory-test-extreme-heat-critic.md](factory-test-extreme-heat-critic.md)。
+   **※2026-08-27 修正済み**: 供給不足のまま進めると停電（失敗）になり13時から
+   やり直す設計へ変更（`src/q1/PowerGame.tsx:56-95`）。Critic 再評価 38→62/80、
+   BLOCKER 解消。表の power-heat 列は修正後の値に更新済み。
 2. **C層の実装場所がテーマにより異なる**（給食編のみデータ層 `tools`、以降は
    コンポーネント内）。このため Critic / Final QA は必ず componentPath のコードを
    読む二層評価とした（rules/game-design-rules.md「二層評価」）。

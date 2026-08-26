@@ -41,7 +41,8 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
   const [on, setOn] = useState<string[]>([]);
   const [openTemp, setOpenTemp] = useState(false);
   const [openGraph, setOpenGraph] = useState(false);
-  const [shortage, setShortage] = useState(false);
+  // 供給不足のまま時間を進めると、その時刻で停電（失敗）になる
+  const [blackoutAt, setBlackoutAt] = useState<number | null>(null);
   const [done, setDone] = useState(false);
 
   const cur = HOURS[step];
@@ -50,6 +51,8 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
   const level = margin >= 400 ? "green" : margin >= 0 ? "yellow" : "red";
   const levelText = { green: "🟢 余裕あり", yellow: "🟡 余裕が少ない", red: "🔴 足りない" }[level];
 
+  // 「進める」は今の供給計画で次の1時間をまかなう、という決定。
+  // 次の時間の需要に届いていなければ、成功が続くのではなく停電が起きる。
   const advance = () => {
     if (step + 1 >= HOURS.length) {
       setDone(true);
@@ -57,10 +60,39 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
     }
     const next = HOURS[step + 1];
     if (supply < next.demand) {
-      setShortage(true);
+      setBlackoutAt(next.h);
+      return;
     }
     setStep(step + 1);
   };
+
+  const restart = () => {
+    setStep(0);
+    setOn([]);
+    setBlackoutAt(null);
+  };
+
+  // E(失敗): 供給不足の結果が停電として街に返る。答えは教えず、
+  // 「その時間にどれだけ使われるはずだったか」= 需要予測(C)へ目を向けさせる。
+  if (blackoutAt !== null) {
+    return (
+      <div className="game board-game">
+        <div className="city-lights">
+          <span>🌃</span><span>🚦</span><span>🌃</span><span>🏥</span>
+        </div>
+        <div className="sched-issues">
+          <p>🔴 {blackoutAt}時。使う量が、作る量をこえてしまった。</p>
+          <p>街の一部で電気が止まり、信号が消えた交差点に人が走っていく…。</p>
+        </div>
+        <p className="game-line soft center-line">
+          {blackoutAt}時には、どれくらい電気が使われるはずだったんだろう？
+        </p>
+        <button className="btn primary big" onClick={restart}>
+          ⏪ 13時にもどってやり直す
+        </button>
+      </div>
+    );
+  }
 
   if (done) {
     return (
@@ -109,9 +141,9 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
             <span>作る量</span>
           </div>
         </div>
-        {shortage && level !== "green" && (
+        {level !== "green" && (
           <p className="balance-warn">
-            使う量が、作る量に追いついてきた…！このあと、どうなるんだろう？
+            使う量が、作る量に追いついてきた…！このまま進めたら、どうなるんだろう？
           </p>
         )}
       </div>

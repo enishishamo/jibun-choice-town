@@ -140,22 +140,22 @@
         "simulation_run",
         "tap_select"
       ],
-      "interactionNotes": "気温予報・需要予測を見ながら3つの供給カードをON/OFFし、1時間ずつ時間を進めて需給バランスを保つ。",
+      "interactionNotes": "気温予報・需要予測を見ながら3つの供給カードをON/OFFし、1時間ずつ時間を進める。「進める」は今の供給計画で次の1時間をまかなう決定で、不足していればその時刻に停電が起きる。",
       "semantic": {
         "C_in_component": "気温予報パネル・需要予測グラフ・需給バランスゲージ",
-        "C_required": "no — Cを開かず供給カードを1枚も入れずに「進める」を5回押すだけで成功エンディングに到達する（advanceは失敗で止まらない）",
-        "action_changes_result": "no（最終結果） — 途中の需給ゲージと警告文は操作を反映するが、最終E画面は需給不足の履歴と無関係に固定の成功文言「一度も途切れなかった」",
-        "retry": "no — 失敗状態が存在せず、時間を戻す手段もない",
-        "fixed_progression": "no — 操作UI自体はあるが、進行が操作内容と無関係に完走する",
+        "C_required": "partial — 需要予測を見ないと次の時間の需要が事前に分からず、見れば15時ピークに先回りできる。失敗画面のヒントもCを指す。ただし供給3種の組み合わせは8通りで、失敗→再試行の総当たりでも到達可能",
+        "action_changes_result": "yes — 供給ON/OFFの合計がadvanceの成否（供給不足なら停電）を決め、最終成功画面は全時間で需要を満たした場合のみ到達する",
+        "retry": "yes — 停電画面の「13時にもどってやり直す」で時刻・供給選択とも初期化して再試行",
+        "fixed_progression": "no — 無操作で進めると13→14時で即失敗する",
         "obvious_binary_choice": "no",
         "evidence": [
-          "src/q1/PowerGame.tsx:53-63",
-          "src/q1/PowerGame.tsx:65-79",
-          "src/q1/PowerGame.tsx:112-116",
-          "src/q1/PowerGame.tsx:152-166"
+          "src/q1/PowerGame.tsx:56-67",
+          "src/q1/PowerGame.tsx:69-73",
+          "src/q1/PowerGame.tsx:77-95",
+          "src/q1/PowerGame.tsx:97-112"
         ]
       },
-      "reviewedHash": "266613ca8b9a"
+      "reviewedHash": "742228ca2214"
     },
     "schedule_and_protect": {
       "primaryMechanic": "sequencing",
