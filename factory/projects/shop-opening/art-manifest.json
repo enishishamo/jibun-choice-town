@@ -1,0 +1,854 @@
+{
+  "world_id": "shop-opening",
+  "version": "1.1",
+  "created": "2026-08-30",
+  "source_design": "factory/projects/shop-opening/design.md (v1.1)",
+  "common_style": "JIBUN CHOICE 共通アートスタイル: 丸みのある3Dクレイ/粘土細工風、手作りミニチュア・ジオラマ感、柔らかく明るい配色、小4〜6向け（幼児向けにしない・少し大人っぽくおしゃれ）。写実CGに寄せない。画像に文字を焼き込まない。既存 public/assets/heat/ ・ public/assets/event/ と同じ素材感に揃える。",
+  "character_consistency_note": "ハルさん（char-haru）は place-counter / place-inspect / ba-after にも登場する。全エントリで同一人物として描く: 30代の大人・中性的で親しみやすい見た目・短い黒髪・あたたかいオレンジ系のエプロン・丸みのあるクレイ人形。実在の人物に似せない。",
+  "before_after_consistency_note": "ba-before / ba-after は同一建物（B物件=元・食堂）。間口・屋根・庇・換気フードの形とカメラアングル（通り正面からのやや引き）を2枚で完全に一致させ、after は開店要素（シャッター開放・のれん・灯り・人）だけを差分にする。board-street の B物件も同じ形・色で描き、カルテのCSSクロップ表示と物語がつながるようにする。",
+  "entries": [
+    {
+      "id": "shop-area-scene",
+      "event": "shop-opening",
+      "game": null,
+      "use": "place",
+      "scene": "エリア探索画面の一枚絵。『商店街のうらがわ』。シャッター商店街の通りを横から見た広いシーン。左右に既存店（パン屋2軒・八百屋など、看板は絵柄のみ）、間に閉まったシャッター店3軒、通りの奥に商店街の事務所。5つの incident ホットスポットを置ける水平の広がりを持たせる。 ※ch1 の place ヘッダー画像としても fit/focus で流用される（place-office 廃止に伴う）。",
+      "composition": "水平パン可能な横長ワイド。目線の高さはやや俯瞰。手前3割を通路として空け、丸形ホットスポットを重ねても絵が潰れない構図。要素間に等間隔の間を取る。",
+      "required_objects": [
+        "閉じたシャッター店3軒",
+        "営業中の既存店（パンの絵柄・野菜の絵柄の庇）",
+        "商店街の事務所らしき小さな建物",
+        "アーケードの街灯"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "看板の読める文言",
+        "実在ブランド",
+        "職業がわかる制服の人物"
+      ],
+      "aspect_ratio": "21:9",
+      "transparent_background": false,
+      "safe_margin": "外周6%（上下は10%: UIヘッダー/吹き出しが重なる）",
+      "intended_display_size": "エリア探索の全画面背景（横スクロール想定）",
+      "filename": "area-street.png",
+      "output_path": "public/assets/shop/area-street.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-icon-ch1",
+      "event": "shop-opening",
+      "game": "shop-vacancy",
+      "use": "incident_icon",
+      "scene": "incident①アイコン。閉じた1枚のシャッターと、その前に置かれた『空き』を想起させる段ボール箱と鍵。職業名や人物は出さない。",
+      "composition": "寄り。シャッター正面をほぼ平面で捉え、下に小さく鍵を添える。丸形にトリミングされても成立する中央寄せ。",
+      "required_objects": [
+        "閉じたシャッター",
+        "古い鍵"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "看板の読める文言",
+        "実在ブランド",
+        "人物",
+        "職業を示す物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周12%（丸形トリミング対応）",
+      "intended_display_size": "丸形ホットスポット 96px",
+      "filename": "icon-shutter.png",
+      "output_path": "public/assets/shop/icon-shutter.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-icon-ch2",
+      "event": "shop-opening",
+      "game": "shop-coach",
+      "use": "incident_icon",
+      "scene": "incident②アイコン。書きかけの計画書（紙は白紙にうっすら線のみ、文字は判読不能の飾り線）と鉛筆、小さな電卓。『この計画でだいじょうぶ？』の雰囲気。",
+      "composition": "寄り。紙を斜め45度に置き、鉛筆を重ねる。中央寄せで丸形トリミング対応。",
+      "required_objects": [
+        "紙（判読できる文字なし・飾り線のみ）",
+        "鉛筆",
+        "小さな電卓（数字キーは無地）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "読める数字",
+        "看板の読める文言",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周12%（丸形トリミング対応）",
+      "intended_display_size": "丸形ホットスポット 96px",
+      "filename": "icon-plan.png",
+      "output_path": "public/assets/shop/icon-plan.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-icon-ch3",
+      "event": "shop-opening",
+      "game": "shop-loan",
+      "use": "incident_icon",
+      "scene": "incident③アイコン。閉じた預金通帳と数枚の硬貨、小さな貯金箱。お金の相談を想起させるが銀行名・数字は描かない。",
+      "composition": "寄り。通帳を斜めに置き、手前に硬貨2〜3枚。中央寄せで丸形トリミング対応。",
+      "required_objects": [
+        "閉じた通帳（表紙は無地）",
+        "硬貨（無地）",
+        "小さな貯金箱"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "読める数字",
+        "実在の通貨デザイン",
+        "実在ブランド・銀行ロゴ",
+        "人物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周12%（丸形トリミング対応）",
+      "intended_display_size": "丸形ホットスポット 96px",
+      "filename": "icon-money.png",
+      "output_path": "public/assets/shop/icon-money.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-icon-ch4",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "incident_icon",
+      "scene": "incident④アイコン。丸めかけの図面（青い紙にうっすら白の間取り線、文字なし）と三角定規、鉛筆。",
+      "composition": "寄り。広げた図面の上に定規を斜めに置く。中央寄せで丸形トリミング対応。",
+      "required_objects": [
+        "図面（判読できる文字・寸法数字なし）",
+        "三角定規",
+        "鉛筆"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "読める数字",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周12%（丸形トリミング対応）",
+      "intended_display_size": "丸形ホットスポット 96px",
+      "filename": "icon-blueprint.png",
+      "output_path": "public/assets/shop/icon-blueprint.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-icon-ch5",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "incident_icon",
+      "scene": "incident⑤アイコン。クリップボードに挟んだチェックシート（チェックマーク記号のみ、文字なし）と虫めがね。『たしかめる』を想起させる。",
+      "composition": "寄り。クリップボードを立て気味に置き、虫めがねを手前に重ねる。中央寄せで丸形トリミング対応。",
+      "required_objects": [
+        "クリップボード",
+        "チェックマーク記号の並んだ紙（文字なし）",
+        "虫めがね"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "職業を示す制服・腕章"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周12%（丸形トリミング対応）",
+      "intended_display_size": "丸形ホットスポット 96px",
+      "filename": "icon-inspect.png",
+      "output_path": "public/assets/shop/icon-inspect.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-place-counter",
+      "event": "shop-opening",
+      "game": "shop-coach",
+      "use": "place",
+      "scene": "ch2のA画面。商工会議所の相談窓口。明るい相談テーブルにハルさん（character_consistency_note の外見）が座り、机の上に書きかけの計画書（文字は判読不能の飾り線）と湯のみ。向かい側（プレイヤー側）の席は空けておく。",
+      "composition": "プレイヤー視点（向かい側の席から）のやや寄り。ハルさんを中央やや右、書類を手前に。表情は少し不安げだが前向き。",
+      "required_objects": [
+        "ハルさん（エプロン姿・共通外見）",
+        "相談テーブル",
+        "計画書らしき紙（文字なし）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "読める数字",
+        "実在ブランド",
+        "職業がわかる名札・ロゴ"
+      ],
+      "aspect_ratio": "16:9",
+      "transparent_background": false,
+      "safe_margin": "外周8%（上部12%: タイトル帯）",
+      "intended_display_size": "ゲーム導入のヘッダー画像（画面幅いっぱい）",
+      "filename": "place-counter.png",
+      "output_path": "public/assets/shop/place-counter.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-place-interview",
+      "event": "shop-opening",
+      "game": "shop-loan",
+      "use": "place",
+      "scene": "ch3のA画面。金融機関の落ち着いた面談室。机の上に書類3点（計画書・通帳・見積書。いずれも文字は判読不能）、椅子2脚、ブラインドの窓。人物なし（面談前の静かな空気）。",
+      "composition": "引き気味の正面。机を画面下半分に大きく、書類3点が判別できる程度に見せる。左右対称に近い落ち着いた構図。",
+      "required_objects": [
+        "面談机",
+        "書類3点（紙2枚と通帳、文字なし）",
+        "椅子2脚"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "読める数字",
+        "実在の金融機関ロゴ",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "16:9",
+      "transparent_background": false,
+      "safe_margin": "外周8%（上部12%: タイトル帯）",
+      "intended_display_size": "ゲーム導入のヘッダー画像（画面幅いっぱい）",
+      "filename": "place-interview.png",
+      "output_path": "public/assets/shop/place-interview.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-place-interior-raw",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "place",
+      "scene": "ch4のA画面。元・食堂の店内、工事前。がらんとした空間に、太い柱1本、壁際の給排水管、残された古い2槽シンク、奥にトイレのドア。床は下地がむき出し。窓から光が差す。",
+      "composition": "室内を斜めから見渡す引き。柱・配管壁・2槽シンクの3要素が一目でわかる配置。中央の床を広く空ける（これから作る余白の表現）。",
+      "required_objects": [
+        "柱",
+        "壁際の給排水管",
+        "古い2槽シンク",
+        "トイレのドア",
+        "むき出しの床"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "完成後の家具・席"
+      ],
+      "aspect_ratio": "16:9",
+      "transparent_background": false,
+      "safe_margin": "外周8%（上部12%: タイトル帯）",
+      "intended_display_size": "ゲーム導入のヘッダー画像（画面幅いっぱい）",
+      "filename": "place-interior-raw.png",
+      "output_path": "public/assets/shop/place-interior-raw.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-place-inspect",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "place",
+      "scene": "ch5のA画面。工事が終わったハルさんの店の入口。真新しい木のカウンターと客席が奥に見え、入口近くでハルさん（共通外見）が両手を前に組んで緊張した面持ちで立っている。まだ、のれん・装飾は出ていない。",
+      "composition": "入口から店内を見る寄りめの構図。ハルさんを右1/3に、店内の新しい内装を左奥に。清潔で明るいが『開店前の静けさ』を出す。",
+      "required_objects": [
+        "ハルさん（緊張した表情・共通外見）",
+        "新しいカウンター",
+        "客席のテーブル",
+        "厨房との区画ドアが奥に見える"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "のれん・開店飾り（wrapUp afterと差別化）",
+        "検査員側の人物"
+      ],
+      "aspect_ratio": "16:9",
+      "transparent_background": false,
+      "safe_margin": "外周8%（上部12%: タイトル帯）",
+      "intended_display_size": "ゲーム導入のヘッダー画像（画面幅いっぱい）",
+      "filename": "place-inspect.png",
+      "output_path": "public/assets/shop/place-inspect.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-char-haru",
+      "event": "shop-opening",
+      "game": null,
+      "use": "character",
+      "scene": "NPCハルさんの立ち絵。30代の大人・中性的で親しみやすい見た目・短い黒髪・あたたかいオレンジ系のエプロン。少し照れたような前向きの笑顔で、胸の前で小さくこぶしを握る。実在の人物に似せない。クレイ人形の質感。",
+      "composition": "全身の立ち絵。正面やや斜め。足元まで入れる。会話UIの横に置くため左右どちらでも使える素直なポーズ。",
+      "required_objects": [
+        "ハルさん本人のみ",
+        "オレンジ系エプロン"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "背景",
+        "特定の実在人物に似た顔",
+        "職業がわかる名札"
+      ],
+      "aspect_ratio": "3:4",
+      "transparent_background": true,
+      "safe_margin": "外周6%",
+      "intended_display_size": "会話・カードUIの立ち絵 160〜240px 高",
+      "filename": "char-haru.png",
+      "output_path": "public/assets/shop/char-haru.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-board-street",
+      "event": "shop-opening",
+      "game": "shop-vacancy",
+      "use": "tool",
+      "scene": "ch1の盤面。商店街の通りを真横から見た帯状の図。左から: 営業中のパン屋（パンの絵柄の庇）、空き店舗A（元・洋品店、間口せまい）、営業中の八百屋（野菜の絵柄）、空き店舗B（元・食堂、間口ふつう・裏に配管の気配）、もう1軒のパン屋、空き店舗C（元・呉服店、間口広い・重厚な木の構え）。空き店舗3軒はシャッターが閉まっていて、それぞれ形と色で見分けがつく。 ※空き店舗カルテのヘッダーはこの画像の該当店舗をCSSクロップして表示する（karte-a/b/c 廃止に伴う）。各店舗単体でクロップしても成立する描き込みにすること。B物件は ba-before と同じ形・色。",
+      "composition": "真横のエレベーション（立面図的）で歪みなし。6軒を等間隔に並べ、各店舗の上に希望者カードをドロップできる余白を上部に確保。店の輪郭が明快でタップ領域を切りやすい。",
+      "required_objects": [
+        "空き店舗A/B/C（形・色・間口で判別可能）",
+        "パン屋2軒（同じパンの絵柄）",
+        "八百屋1軒",
+        "アーケードの連なり"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "看板の読める文言",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "21:9",
+      "transparent_background": false,
+      "safe_margin": "外周4%（上部20%: ドロップ用余白）",
+      "intended_display_size": "ch1盤面の中心画像（画面幅いっぱい・横スクロール可）",
+      "filename": "board-street.png",
+      "output_path": "public/assets/shop/board-street.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-floor-base",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4の配置グリッドの床ベース。元・食堂の店内を真上から見た平面（6×5マスに対応する矩形）。固定要素を描き込む: 太い柱1本、片側の壁に沿った給排水管（配管の壁がひと目でわかる色分け）、隅のトイレ個室、給排水壁際の既存2槽シンク。それ以外の床はフラットな木目でパーツを置ける無地。",
+      "composition": "完全な真上見下ろし（トップダウン）。パース歪みなし。6:5の矩形。マス目の線は描かない（グリッド線はUIで重ねる）。固定要素は角に寄せ、中央を広く空ける。",
+      "required_objects": [
+        "柱（真上から）",
+        "給排水管の走る壁（色分け）",
+        "トイレ個室",
+        "既存2槽シンク（真上から）",
+        "無地の床"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "寸法数字",
+        "実在ブランド",
+        "可動パーツ（席・ドア等はここに描かない）",
+        "グリッド線"
+      ],
+      "aspect_ratio": "6:5",
+      "transparent_background": false,
+      "safe_margin": "外周4%",
+      "intended_display_size": "配置盤面の背景（画面幅いっぱい）",
+      "filename": "floor-base.png",
+      "output_path": "public/assets/shop/floor-base.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-kitchen",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。厨房セット（調理台＋コンロを1つにまとめたユニット）を真上から見たミニチュア。銀色の台に黒いコンロ面。",
+      "composition": "真上見下ろし。floor-base と同スケール感・同ライティング。輪郭明快。",
+      "required_objects": [
+        "調理台",
+        "コンロ"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "火・煙"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px",
+      "filename": "p_kitchen.png",
+      "output_path": "public/assets/shop/p_kitchen.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-door",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。厨房と客席を仕切る区画のスイングドアを真上から見たミニチュア。開閉の弧がわかる半開き表現。",
+      "composition": "真上見下ろし。floor-base と同スケール感。輪郭明快。",
+      "required_objects": [
+        "スイングドア",
+        "仕切り壁の短い袖"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px",
+      "filename": "p_door.png",
+      "output_path": "public/assets/shop/p_door.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-wash-handle",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。手洗い設備・ハンドル式水栓タイプ。真上からでも水栓の丸いハンドル（十字ハンドル）がはっきり見える小さな手洗い器。安っぽさを少し出す。",
+      "composition": "真上見下ろし（水栓形状が判別できるようわずかに斜め上でも可。3タイプで角度を統一）。",
+      "required_objects": [
+        "小さな手洗い器",
+        "十字ハンドルの水栓（判別可能な大きさ）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px・水栓選択UIのサムネイル兼用",
+      "filename": "p_wash_handle.png",
+      "output_path": "public/assets/shop/p_wash_handle.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-wash-lever",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。手洗い設備・レバー式水栓タイプ。長い棒状レバー（ひじで押せる形）がはっきり見える手洗い器。p_wash_handle と同じ器で水栓だけ違う。 ※トイレ用手洗いパーツとしても縮小＋色相変更で流用される（p_wash_toilet 廃止に伴う）。",
+      "composition": "p_wash_handle と同一アングル・同一スケール。水栓の差だけで見分けられること。",
+      "required_objects": [
+        "小さな手洗い器（handleと同型）",
+        "長い棒状レバーの水栓"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px・水栓選択UIのサムネイル兼用",
+      "filename": "p_wash_lever.png",
+      "output_path": "public/assets/shop/p_wash_lever.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-wash-sensor",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。手洗い設備・センサー式水栓タイプ。ハンドルのないすっきりした水栓に小さなセンサー窓の光。少し高級感。p_wash_handle と同じ器で水栓だけ違う。",
+      "composition": "p_wash_handle と同一アングル・同一スケール。水栓の差だけで見分けられること。",
+      "required_objects": [
+        "小さな手洗い器（handleと同型）",
+        "ハンドルなし水栓",
+        "センサー窓の小さな光"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px・水栓選択UIのサムネイル兼用",
+      "filename": "p_wash_sensor.png",
+      "output_path": "public/assets/shop/p_wash_sensor.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-backyard",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。バックヤードセット: フタ付きゴミ箱と扉付き食器棚を1ユニットにまとめたもの。真上からでもフタと扉の存在がわかる描き分け。",
+      "composition": "真上見下ろし（フタ・扉が判別できる程度のわずかな斜めは可）。floor-base と同スケール感。",
+      "required_objects": [
+        "フタ付きゴミ箱",
+        "扉付き食器棚"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "フタなし・扉なしの状態"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px",
+      "filename": "p_backyard.png",
+      "output_path": "public/assets/shop/p_backyard.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-table",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。テーブル席（2席分）。木のテーブル1台と椅子2脚を真上から見たミニチュア。",
+      "composition": "真上見下ろし。floor-base と同スケール感。椅子2脚が数えられる明快さ。",
+      "required_objects": [
+        "テーブル1台",
+        "椅子2脚"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "料理・食器"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px",
+      "filename": "p_table.png",
+      "output_path": "public/assets/shop/p_table.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-p-counter",
+      "event": "shop-opening",
+      "game": "shop-design",
+      "use": "tool",
+      "scene": "ch4のドラッグパーツ。カウンター席ユニット。木のカウンターの一区画とスツール2脚を真上から見たミニチュア。連結して長いカウンターに見えるよう端をまっすぐに。",
+      "composition": "真上見下ろし。floor-base と同スケール感。左右の端を切りっぱなしにして横連結可能。",
+      "required_objects": [
+        "カウンター天板の一区画",
+        "スツール2脚"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "料理・食器"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": true,
+      "safe_margin": "外周8%（左右は連結のため0%可）",
+      "intended_display_size": "グリッド上のドラッグパーツ 64〜96px",
+      "filename": "p_counter.png",
+      "output_path": "public/assets/shop/p_counter.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-inspect-room",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の探索盤面。完成したハルさんの店内を斜め俯瞰で見渡すジオラマ。4エリアが一画面でわかる: 厨房（区画ドアの奥、レバー式手洗い・2槽シンク）、客席（テーブルとカウンター）、トイレ（ドアと専用手洗いの気配）、バックヤード（棚とゴミ箱、古い手洗いの気配）。各スポットはタップ領域が切りやすいよう互いに離す。細部の正誤は近景側で見せるため、この絵では位置がわかれば良い。",
+      "composition": "屋根を外したドールハウス風の斜め俯瞰。4エリアが重ならない配置。明るく清潔。ハルさんは入れない（盤面に人物を置かない）。",
+      "required_objects": [
+        "厨房エリア（区画ドア・シンク類）",
+        "客席エリア",
+        "トイレエリア",
+        "バックヤードエリア"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "16:9",
+      "transparent_background": false,
+      "safe_margin": "外周6%（下部20%: チェックリストドックが重なる）",
+      "intended_display_size": "ch5探索の全画面背景",
+      "filename": "inspect-room.png",
+      "output_path": "public/assets/shop/inspect-room.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-door",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景。厨房と客席を仕切るスイングドアのアップ。きちんと閉まる新しいドア（適合）。",
+      "composition": "目線の高さの寄り。ドアの全体と仕切り壁が入る。判定材料（区画されている）が一目でわかる。",
+      "required_objects": [
+        "スイングドア",
+        "仕切り壁"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-door.png",
+      "output_path": "public/assets/shop/spot-door.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-wash-lever",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景。厨房メインの手洗い。長い棒状レバーの水栓（適合。ただし古風な見た目で『基準を気にすべき水栓』に見え、誤✗を誘う紛らわしい適合スポット）。p_wash_lever と同じ設備の実写ならぬ近景版。",
+      "composition": "水栓の形が主役の寄り。レバーの形状がはっきり判別できる角度。spot-wash-handle-old と同じ構図・同じ距離で撮り、違いが水栓形状だけになるようにする。",
+      "required_objects": [
+        "手洗い器",
+        "棒状レバー水栓（判別可能）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-wash-lever.png",
+      "output_path": "public/assets/shop/spot-wash-lever.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-wash-handle-old",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景・不備(a)（毎回出題の固定枠）。バックヤードに残った旧・手洗い。十字ハンドル式の古い水栓、器にサビと年季（不適合。居抜きの旧設備）。",
+      "composition": "spot-wash-lever と同じ構図・距離。十字ハンドルの形がはっきり判別できること。古さは色味と小傷で表現。",
+      "required_objects": [
+        "古い手洗い器",
+        "十字ハンドル水栓（判別可能）",
+        "経年感"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "極端な汚れ（不衛生表現のやりすぎ）"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-wash-handle-old.png",
+      "output_path": "public/assets/shop/spot-wash-handle-old.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-sink",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景。居抜きの2槽シンク。古いが手入れされていて2つの槽がはっきり見える（適合。『古いから✗』と誤答しやすい紛らわしい適合スポット）。",
+      "composition": "やや上からの寄り。2槽であることが数えられる角度。古さ（色味）と清潔さ（磨かれた面）を両立させる。",
+      "required_objects": [
+        "2槽シンク（槽が2つと判別可能）",
+        "磨かれた水栓まわり"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "汚れ・サビ"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-sink.png",
+      "output_path": "public/assets/shop/spot-sink.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-bin-open",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景・不備(b)。納品されたばかりのゴミ箱。新品だがフタがない（不適合。発注ミスという体なので、汚れではなく『新品なのにフタなし』を描く）。横に納品の段ボール（無地）。",
+      "composition": "やや上からの寄り。フタが無いこと（開口部が見える）がはっきりわかる角度。spot-bin-lid と同じゴミ箱・同じ構図。",
+      "required_objects": [
+        "フタのない新品ゴミ箱（開口部が見える）",
+        "無地の段ボール"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "ゴミ・汚れ"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-bin-open.png",
+      "output_path": "public/assets/shop/spot-bin-open.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-bin-lid",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の再検査用近景。同じゴミ箱にフタが付いた状態（改善後・適合）。spot-bin-open と同一のゴミ箱・同一構図でフタだけ追加。",
+      "composition": "spot-bin-open と完全に同じアングル・距離。差分がフタだけになるようにする。",
+      "required_objects": [
+        "フタ付きゴミ箱（spot-bin-openと同型）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "段ボール（片付いた後）"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-bin-lid.png",
+      "output_path": "public/assets/shop/spot-bin-lid.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-shelf-open",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景・不備(c)。食器棚の扉が未設置のまま（不適合。残工事という体）。棚板に積まれた新しい食器が露出。脇に取り付け前の扉板が立てかけてある。",
+      "composition": "正面やや寄り。扉が無く食器が露出していることと、立てかけられた扉板の両方が入る。spot-shelf-door と同じ棚・同じ構図。",
+      "required_objects": [
+        "扉のない食器棚",
+        "露出した食器",
+        "立てかけた扉板"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "ホコリ・汚れ"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-shelf-open.png",
+      "output_path": "public/assets/shop/spot-shelf-open.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-shelf-door",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の再検査用近景。同じ食器棚に扉が付いた状態（改善後・適合）。spot-shelf-open と同一の棚・同一構図で扉が閉まっている。",
+      "composition": "spot-shelf-open と完全に同じアングル・距離。差分が扉の有無だけになるようにする。",
+      "required_objects": [
+        "扉付き食器棚（spot-shelf-openと同型・扉閉）"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "立てかけた扉板"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-shelf-door.png",
+      "output_path": "public/assets/shop/spot-shelf-door.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-spot-wash-toilet",
+      "event": "shop-opening",
+      "game": "shop-inspect",
+      "use": "tool",
+      "scene": "ch5の近景。トイレの専用手洗いのアップ。トイレ個室のドア脇に設置されたコンパクトなレバー式手洗い（適合）。",
+      "composition": "目線の高さの寄り。トイレのドアの一部を入れて『トイレ用』だとわかる位置関係にする。",
+      "required_objects": [
+        "コンパクトな手洗い器",
+        "レバー式水栓",
+        "トイレのドアの一部"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "実在ブランド",
+        "人物",
+        "便器そのもの（トーン配慮・ドアと手洗いのみ）"
+      ],
+      "aspect_ratio": "1:1",
+      "transparent_background": false,
+      "safe_margin": "外周8%",
+      "intended_display_size": "調べるモーダルの近景 280〜320px",
+      "filename": "spot-wash-toilet.png",
+      "output_path": "public/assets/shop/spot-wash-toilet.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-ba-before",
+      "event": "shop-opening",
+      "game": null,
+      "use": "before_after",
+      "scene": "wrapUp用Before。B物件（元・食堂）の外観。シャッターが閉まり、通りは静か。karte-b と同一の建物・同一アングル。曇り気味の落ち着いた光。周囲のシャッター店も少し見切れる。",
+      "composition": "通り正面からのやや引き。建物を中央に、左右に隣の店を少しだけ入れる。ba-after と完全に同じカメラ位置・画角・建物ディテールで、開店の有無だけが変わるようにする。",
+      "required_objects": [
+        "閉じたシャッター（B物件）",
+        "換気フード（karte-bと同一）",
+        "静かな通り"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "看板の読める文言",
+        "実在ブランド",
+        "人物",
+        "のれん・灯り"
+      ],
+      "aspect_ratio": "4:3",
+      "transparent_background": false,
+      "safe_margin": "外周8%（下部12%: beforeLabel帯）",
+      "intended_display_size": "wrapUpのBefore/Afterスライダー 半画面幅",
+      "filename": "ba-before.png",
+      "output_path": "public/assets/shop/ba-before.png",
+      "status": "pending"
+    },
+    {
+      "id": "shop-ba-after",
+      "event": "shop-opening",
+      "game": null,
+      "use": "before_after",
+      "scene": "wrapUp用After。同じB物件が開店したハルさんの定食屋になった姿。シャッターが上がり、あたたかい灯り、無地ののれん（文字なし・藍色）、店先の小さな置き看板（絵柄のみ）。入口にエプロン姿のハルさん（共通外見）が小さく立ち、通りに歩く人が1〜2人。夕方のあたたかい光。",
+      "composition": "ba-before と完全に同じカメラ位置・画角。建物の形・庇・換気フードは同一のまま、シャッター開放・のれん・灯り・人だけを変える。",
+      "required_objects": [
+        "開いた店先と灯り",
+        "無地の藍色のれん",
+        "ハルさん（小さく・共通外見）",
+        "通りを歩く人1〜2人"
+      ],
+      "forbidden_objects": [
+        "読める文字",
+        "看板の読める文言",
+        "実在ブランド",
+        "隣のA物件まで開いている描写（linesで触れるのみ）"
+      ],
+      "aspect_ratio": "4:3",
+      "transparent_background": false,
+      "safe_margin": "外周8%（下部12%: afterLabel帯）",
+      "intended_display_size": "wrapUpのBefore/Afterスライダー 半画面幅",
+      "filename": "ba-after.png",
+      "output_path": "public/assets/shop/ba-after.png",
+      "status": "pending"
+    }
+  ],
+  "audit_note": "audit-01（2026-08-30）で42→33エントリに削減。廃止9件の置き換え: street-map=街マップは吹き出しのみ（既存方式）/ place-office=area-streetをfit・focusで流用 / karte-a,b,c=board-streetの該当店舗をCSSクロップ / guest立ち絵2=業種エンブレム（emoji）/ tool-passbook=CSS描画 / p_wash_toilet=p_wash_leverの縮小・色相変更。詳細は design.md §6b。"
+}

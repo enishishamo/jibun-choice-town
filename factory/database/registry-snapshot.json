@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-08-26T23:37:19.866Z",
+  "scannedAt": "2026-08-30T23:51:47.493Z",
   "sourceOfTruth": {
     "registry": "src/q1/registry.ts",
     "contentIndex": "src/data/index.ts",
@@ -277,6 +277,46 @@
       "componentExists": true,
       "description": "部屋→食事→入浴の3段階で受け入れる",
       "section": "修学旅行編（5つの役割を自由な順番で体験する）"
+    },
+    {
+      "id": "tenant_match",
+      "component": "TenantMatchGame",
+      "componentPath": "src/q1/TenantMatchGame.tsx",
+      "componentExists": true,
+      "description": "相手の意向×物件条件×全体バランスで組み合わせる",
+      "section": "商店街・開店編"
+    },
+    {
+      "id": "plan_coach",
+      "component": "PlanCoachGame",
+      "componentPath": "src/q1/PlanCoachGame.tsx",
+      "componentExists": true,
+      "description": "話を聞き出す→書類の弱点を特定→直し方を助言",
+      "section": "商店街・開店編"
+    },
+    {
+      "id": "loan_screen",
+      "component": "LoanScreenGame",
+      "componentPath": "src/q1/LoanScreenGame.tsx",
+      "componentExists": true,
+      "description": "複数書類の突き合わせ→面談で確認→承認判断",
+      "section": "商店街・開店編"
+    },
+    {
+      "id": "zone_and_fit",
+      "component": "ZoneFitGame",
+      "componentPath": "src/q1/ZoneFitGame.tsx",
+      "componentExists": true,
+      "description": "基準必須を先に固定し、残りで営業効率を設計",
+      "section": "商店街・開店編"
+    },
+    {
+      "id": "scene_audit",
+      "component": "SceneAuditGame",
+      "componentPath": "src/q1/SceneAuditGame.tsx",
+      "componentExists": true,
+      "description": "現場を見て回り、基準と照らして自分で判定を記入",
+      "section": "商店街・開店編"
     }
   ],
   "modules": [
@@ -1957,6 +1997,309 @@
             "配置を考える",
             "配慮を反映する",
             "混雑を防ぐ",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/shopOpening.ts",
+      "exportName": "shopOpening",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "shopping-street",
+          "name": "商店街",
+          "eventId": "shop-opening"
+        }
+      ],
+      "events": [
+        {
+          "id": "shop-opening",
+          "title": "シャッターだらけの商店街に、\n「お店を開きたい」人が来た",
+          "areaName": "商店街のうらがわ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① どのシャッターなら、開けられる？",
+              "experienceId": "shop-vacancy",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② この計画で、だいじょうぶ？",
+              "experienceId": "shop-coach",
+              "requires": null
+            },
+            {
+              "id": "ch3",
+              "title": "③ お店を開くお金、どうする？",
+              "experienceId": "shop-loan",
+              "requires": [
+                "shop-vacancy",
+                "shop-coach"
+              ]
+            },
+            {
+              "id": "ch4",
+              "title": "④ お店の中を、どうつくる？",
+              "experienceId": "shop-design",
+              "requires": [
+                "shop-loan"
+              ]
+            },
+            {
+              "id": "ch5",
+              "title": "⑤ 開店してもいいか、たしかめる",
+              "experienceId": "shop-inspect",
+              "requires": [
+                "shop-design"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "tenant-coordinator",
+          "name": "商店街の空き店舗対策に関わる仕事",
+          "catch": "空き店舗と「開きたい人」をつないで、通りをつくり直す",
+          "discoveryLine": "空き店舗の事情と商店街ぜんたいを見て、\n「開きたい人」と店をつなぐ仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "不動産の仲介",
+            "市役所の商業振興",
+            "まちづくり会社"
+          ]
+        },
+        {
+          "id": "keiei-shidoin",
+          "name": "経営指導員（商工会議所）",
+          "catch": "決めるのは本人。計画を磨く、伴走役",
+          "discoveryLine": "お店を始めたい人の計画を、\n本人が説明できる数字に磨く仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "創業融資の審査",
+            "税理士",
+            "中小企業診断士"
+          ]
+        },
+        {
+          "id": "loan-screener",
+          "name": "創業融資の審査に関わる仕事（日本政策金融公庫）",
+          "catch": "実績ゼロの挑戦に、「返せる計画か」を確かめてお金を届ける",
+          "discoveryLine": "書類と面談で「返せる計画か」を確かめて、\n実績のない挑戦にお金を届ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "経営指導員",
+            "銀行・信用金庫",
+            "信用保証協会"
+          ]
+        },
+        {
+          "id": "shop-designer",
+          "name": "店舗デザイナー・内装設計に関わる仕事",
+          "catch": "基準・使いやすさ・売上を、1枚の図面で成り立たせる",
+          "discoveryLine": "衛生の基準と働きやすさと席数を、\n1枚の図面で同時にかなえる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "建築士",
+            "内装の施工管理",
+            "食品衛生監視員"
+          ]
+        },
+        {
+          "id": "food-inspector",
+          "name": "食品衛生監視員（保健所）",
+          "catch": "安心して食べられる店だけを、送り出す",
+          "discoveryLine": "基準と現場を突き合わせて、\n安心して食べられる店だけを送り出す仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "店舗デザイナー",
+            "薬剤師",
+            "獣医師",
+            "市役所・県庁"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "shop-vacancy",
+          "professionId": "tenant-coordinator",
+          "eventId": "shop-opening",
+          "gameType": "tenant_match",
+          "componentPath": "src/q1/TenantMatchGame.tsx",
+          "A_place": "商店街の事務所",
+          "B_mission": {
+            "title": "空いている店に、合う人を迎えたい",
+            "lines": [
+              "この商店街には、閉まったままの店が3つある。",
+              "「お店を開きたい」という人も、ハルさんをふくめて3組来ている。",
+              "でも空き店舗は「ある」だけでは動かせない。だれを、どの店に迎える？"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "tenant_match",
+          "E_resolution": {
+            "title": "シャッターが、2枚開くことになった",
+            "lines": [
+              "ハルさんは元・食堂と契約へ。所有者さんとの約束も決まった。",
+              "呉服店は今回は動かなかった。空き店舗が埋まらない理由をたずねた調査では、約4割で「所有者に貸す意思がない」が挙がっているんだ。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき、空き店舗のカルテを開いて、所有者さんの気持ちや商店街の業種バランスを見ながら、だれをどの店に迎えるか考えたよね。実はそれ、「商店街の空き店舗対策に関わる仕事」。空き店舗は「ある」だけでは動かせなくて、貸してもらう交渉から始まるんだ。",
+          "interestSeeds": [
+            "物件のカルテをしらべたこと",
+            "所有者さんに合う条件を考えたこと",
+            "商店街に足りない業種を考えたこと",
+            "だれをどの店に迎えるか組み合わせたこと",
+            "断られても別の組み合わせをさがしたこと",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "shop-coach",
+          "professionId": "keiei-shidoin",
+          "eventId": "shop-opening",
+          "gameType": "plan_coach",
+          "componentPath": "src/q1/PlanCoachGame.tsx",
+          "A_place": "商工会議所の相談窓口",
+          "B_mission": {
+            "title": "ハルさんの計画を、通る計画に磨きたい",
+            "lines": [
+              "「計画書、書いてみたんです。これでお金、借りられますかね？」",
+              "読んでみると…数字に、あやしいところがありそうだ。",
+              "決めるのはハルさん。きみは、弱点に気づいてもらう手伝いをする。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "plan_coach",
+          "E_resolution": {
+            "title": "計画書が、説明できる数字になった",
+            "lines": [
+              "売上は「席の数×回転×客単価」で計算し直した。経費にはアルバイト代も入った。",
+              "「これなら、自分の言葉で説明できそうです」とハルさん。",
+              "決めたのはハルさん自身。きみは、気づく手伝いをしたんだ。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき、ハルさんに質問して、売上の計算のあやしいところを見つけて、直し方をいっしょに考えたよね。実はそれ、商工会議所の「経営指導員」の仕事。お金を貸すかを決める人ではなく、本人が説明できる計画に磨くのを手伝う、中立の伴走役なんだ。",
+          "interestSeeds": [
+            "質問して話を聞き出したこと",
+            "数字のあやしいところをさがしたこと",
+            "計算し直して確かめたこと",
+            "直し方をいっしょに考えたこと",
+            "人の挑戦を応援したこと",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "shop-loan",
+          "professionId": "loan-screener",
+          "eventId": "shop-opening",
+          "gameType": "loan_screen",
+          "componentPath": "src/q1/LoanScreenGame.tsx",
+          "A_place": "日本政策金融公庫の面談室",
+          "B_mission": {
+            "title": "返せる計画か、たしかめてお金を届けたい",
+            "lines": [
+              "ハルさんが創業融資を申しこんだ。お店の実績は、まだゼロ。",
+              "実績のない人の挑戦にお金を貸すのが、ここの仕事。",
+              "だからこそ「返せる計画か」を、書類と面談でしっかりたしかめる。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "loan_screen",
+          "E_resolution": {
+            "title": "融資が決まって、開店のお金がそろった",
+            "lines": [
+              "審査の結果、融資が決まった。月々の返済は、計画の利益なら返しながら続けられる額。",
+              "「実績ゼロの自分を、数字で見てもらえた」とハルさん。工事の準備が始まる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき、通帳のお金の貯まり方までめくって確かめて、「返せる計画か」を見たよね。実はそれ、日本政策金融公庫の「創業融資の審査に関わる仕事」。落とすための審査じゃなく、実績のない人の挑戦に、返せる範囲でお金を届ける仕事なんだ。",
+          "interestSeeds": [
+            "書類どうしを突き合わせたこと",
+            "通帳の貯まり方を読んだこと",
+            "面談で質問してたしかめたこと",
+            "返せるかどうかを計算したこと",
+            "人の挑戦を数字で応援したこと",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "shop-design",
+          "professionId": "shop-designer",
+          "eventId": "shop-opening",
+          "gameType": "zone_and_fit",
+          "componentPath": "src/q1/ZoneFitGame.tsx",
+          "A_place": "元・食堂の店内（工事前）",
+          "B_mission": {
+            "title": "基準を守って、いい店の形をつくりたい",
+            "lines": [
+              "ハルさんの店の内装を設計する。広さと予算は限られている。",
+              "「席はなるべく多く。カウンターごしに話せる店にしたい」とハルさん。",
+              "でも、衛生の基準を満たさない図面で工事をすると、検査で直しになる。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "zone_and_fit",
+          "E_resolution": {
+            "title": "図面が決まって、工事が始まった",
+            "lines": [
+              "基準の設備を先に置いて、残りのスペースで席と動線をつくった。",
+              "先に保健所に相談したから、工事のやり直しの心配はない。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき、基準で決まっている設備を先に置いてから、残りのスペースで席の数と動線を考えたよね。実はそれ、「店舗デザイナー・内装設計に関わる仕事」。かっこよさだけじゃなく、衛生の基準と、働きやすさと、売上を、1枚の図面で同時に成り立たせるんだ。",
+          "interestSeeds": [
+            "図面にパーツを置いていったこと",
+            "基準に合っているかたしかめたこと",
+            "席の数と厨房の広さのバランスを取ったこと",
+            "水道の位置から配置を考えたこと",
+            "工事の前に保健所へ相談したこと",
+            "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "shop-inspect",
+          "professionId": "food-inspector",
+          "eventId": "shop-opening",
+          "gameType": "scene_audit",
+          "componentPath": "src/q1/SceneAuditGame.tsx",
+          "A_place": "完成したハルさんの店（実地検査）",
+          "B_mission": {
+            "title": "開店していいか、現場でたしかめたい",
+            "lines": [
+              "ハルさんの店の営業許可の申請が出た。今日は実地検査の日。",
+              "図面どおりにできているか、基準に合っているか、現場で1つずつたしかめる。",
+              "合格しないと開店できない。でも、基準はゆるめられない。それがお客さんの安全を守る。"
+            ]
+          },
+          "C_tools": [],
+          "D_mechanic": "scene_audit",
+          "E_resolution": {
+            "title": "営業許可が出た。開店できる！",
+            "lines": [
+              "見つけた直すところは、ぜんぶ直って基準に合格。",
+              "許可証が交付されて、ハルさんの店は開店できることになった。",
+              "検査がきびしいのは、お客さんが安心して食べられるように。開店予定日にも、間に合った。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき、チェックリストを持ってお店の中を見て回って、直すところを見つけて、再検査までしたよね。実はそれ、保健所の「食品衛生監視員」の仕事。開店を止めるためじゃなく、お客さんが安心して食べられる店だけを送り出すための仕事なんだ。",
+          "interestSeeds": [
+            "現場を見て回ってしらべたこと",
+            "チェックリストと突き合わせたこと",
+            "直すところを見つけて伝えたこと",
+            "再検査でたしかめたこと",
+            "書類をかくにんしたこと",
             "特にない"
           ],
           "retry": "unknown_lives_in_component"

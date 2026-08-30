@@ -595,6 +595,111 @@
     ]
   },
   {
+    "id": "tenant-coordinator",
+    "displayName": "商店街の空き店舗対策に関わる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "shop-opening"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "tenant_match"
+    ],
+    "mechanics": [
+      "tenant_match"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ]
+  },
+  {
+    "id": "keiei-shidoin",
+    "displayName": "経営指導員（商工会議所）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "shop-opening"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "plan_coach"
+    ],
+    "mechanics": [
+      "plan_coach"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ]
+  },
+  {
+    "id": "loan-screener",
+    "displayName": "創業融資の審査に関わる仕事（日本政策金融公庫）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "shop-opening"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "loan_screen"
+    ],
+    "mechanics": [
+      "loan_screen"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ]
+  },
+  {
+    "id": "shop-designer",
+    "displayName": "店舗デザイナー・内装設計に関わる仕事",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "shop-opening"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "zone_and_fit"
+    ],
+    "mechanics": [
+      "zone_and_fit"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ]
+  },
+  {
+    "id": "food-inspector",
+    "displayName": "食品衛生監視員（保健所）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "shop-opening"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [],
+    "dPatterns": [
+      "scene_audit"
+    ],
+    "mechanics": [
+      "scene_audit"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ]
+  },
+  {
     "id": "planner",
     "displayName": "イベントを企画する仕事",
     "aliases": [],

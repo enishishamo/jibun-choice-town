@@ -28,7 +28,7 @@
     "sourceFiles": [
       "src/data/content/extremeHeat.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "spatial_placement",
       "resource_allocation",
@@ -76,7 +76,7 @@
     "sourceFiles": [
       "src/data/content/medical.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "search_discovery",
       "measurement_inspection",
@@ -113,7 +113,7 @@
     "sourceFiles": [
       "src/data/content/priceHike.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "resource_allocation",
       "parameter_adjust",
@@ -150,7 +150,7 @@
     "sourceFiles": [
       "src/data/content/schoolLunch.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "measurement_inspection",
       "drag_drop_assign",
@@ -187,11 +187,49 @@
     "sourceFiles": [
       "src/data/content/schoolTrip.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "composition_design",
       "drag_drop_assign",
       "sequencing"
+    ]
+  },
+  {
+    "id": "shop-opening",
+    "title": "シャッターだらけの商店街に、\n「お店を開きたい」人が来た",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "shop-vacancy",
+      "shop-coach",
+      "shop-loan",
+      "shop-design",
+      "shop-inspect"
+    ],
+    "jobIds": [
+      "tenant-coordinator",
+      "keiei-shidoin",
+      "loan-screener",
+      "shop-designer",
+      "food-inspector"
+    ],
+    "mechanics": [
+      "tenant_match",
+      "plan_coach",
+      "loan_screen",
+      "zone_and_fit",
+      "scene_audit"
+    ],
+    "sourceFiles": [
+      "src/data/content/shopOpening.ts"
+    ],
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "mechanicCategories": [
+      "matching",
+      "conversation_observation",
+      "measurement_inspection",
+      "spatial_placement",
+      "search_discovery"
     ]
   },
   {
@@ -226,7 +264,7 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ],
-    "lastScannedAt": "2026-08-26T23:37:19.866Z",
+    "lastScannedAt": "2026-08-30T23:51:47.493Z",
     "mechanicCategories": [
       "composition_design",
       "resource_allocation",

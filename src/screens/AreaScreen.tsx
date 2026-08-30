@@ -261,15 +261,27 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
 
           {event.incidents.map((inc, i) => {
             const done = hasCompleted(inc.experienceId);
+            // Same requires-lock behaviour as the sceneMap layout, so events
+            // without a scene illustration (商店街編) can keep a time axis.
+            const locked = !!inc.requires?.some((r) => !hasCompleted(r));
             return (
               <button
                 key={inc.id}
-                className={`hotspot ${done ? "done" : ""}`}
+                className={`hotspot ${done ? "done" : ""} ${locked ? "locked" : ""}`}
                 style={inc.scenePos ? { left: inc.scenePos.left, top: inc.scenePos.top } : undefined}
-                onClick={() => navigate({ name: "q1", experienceId: inc.experienceId })}
+                onClick={() => {
+                  if (locked) {
+                    setLockNote(inc.requiresHint ?? "これは、もう少しあとみたい。");
+                    return;
+                  }
+                  setLockNote(null);
+                  navigate({ name: "q1", experienceId: inc.experienceId });
+                }}
               >
                 <span className="hotspot-icon" style={{ animationDelay: `${i * 0.35}s` }}>
-                  {inc.image ? (
+                  {locked ? (
+                    <span>🔒</span>
+                  ) : inc.image ? (
                     <img className={inc.imageFit === "scene" ? "fit-scene" : ""} src={inc.image} alt="" />
                   ) : (
                     <span>{inc.emoji}</span>
@@ -281,6 +293,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             );
           })}
         </div>
+        {lockNote && <p className="game-note map-note">{lockNote}</p>}
 
         {wrapUp}
         {showLenses && event.lensSummary && (

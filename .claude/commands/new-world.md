@@ -16,9 +16,10 @@ $ARGUMENTS がある場合はテーマの希望として扱う（例: /new-world
 **STEP 2｜候補出し**
 jc-planner エージェントを起動し、出来事候補20〜30 → TOP3 を作らせる。
 
-**STEP 3｜GATE 1（ユーザー選択・必ず停止）**
-TOP3をユーザーに提示し、どの出来事にするか選んでもらう。
-Factoryがここで勝手に選んではいけない。
+**STEP 3｜出来事の決定（既定: Factory が自律判断）**
+2026-08-30 のユーザー指示により、既定では Factory が TOP3 から最適な1つを
+自分で選んで進む（選定理由は最終報告に含める）。
+ユーザーが「ゲートありで」と指定した場合のみ、旧仕様どおりここで停止して選んでもらう。
 
 **STEP 4｜広域調査**
 選ばれた出来事について jc-researcher エージェントを起動し、
@@ -39,6 +40,10 @@ jc-planner エージェントに research.md を渡し、4〜6職種の推奨を
 4. jc-art-director で art-manifest.json 作成
 5. 実装計画を `factory/projects/<world-id>/implementation-plan.md` に作成
    （content モジュール新規ファイル、registry.ts / data/index.ts への追加行、必要画像一覧）
+
+**ユーザーへの報告は implementation-plan.md 完成後に1回**（候補選定理由・職種構成理由・
+Critic 採点・残存 FACT_CHECK・実装計画の所在をまとめて報告する）。
+途中で停止するのは、Critic が重大ファクト問題をエスカレーションした場合のみ。
 
 ## v0.1 の安全弁
 

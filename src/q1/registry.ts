@@ -38,6 +38,11 @@ import SafetyPlanGame from "./SafetyPlanGame";
 import BusOpsGame from "./BusOpsGame";
 import DelayRecoverGame from "./DelayRecoverGame";
 import HotelReceiveGame from "./HotelReceiveGame";
+import TenantMatchGame from "./TenantMatchGame";
+import PlanCoachGame from "./PlanCoachGame";
+import LoanScreenGame from "./LoanScreenGame";
+import ZoneFitGame from "./ZoneFitGame";
+import SceneAuditGame from "./SceneAuditGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -80,4 +85,10 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   bus_ops: BusOpsGame, // 班・運転士・経路をバスへそろえる
   delay_recover: DelayRecoverGame, // 状況確認→連絡→承認→共有の順で立て直す
   hotel_receive: HotelReceiveGame, // 部屋→食事→入浴の3段階で受け入れる
+  // 商店街・開店編
+  tenant_match: TenantMatchGame, // 相手の意向×物件条件×全体バランスで組み合わせる
+  plan_coach: PlanCoachGame, // 話を聞き出す→書類の弱点を特定→直し方を助言
+  loan_screen: LoanScreenGame, // 複数書類の突き合わせ→面談で確認→承認判断
+  zone_and_fit: ZoneFitGame, // 基準必須を先に固定し、残りで営業効率を設計
+  scene_audit: SceneAuditGame, // 現場を見て回り、基準と照らして自分で判定を記入
 };
