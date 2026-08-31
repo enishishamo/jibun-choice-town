@@ -1,0 +1,30 @@
+{
+  "note": "画像生成パイプラインの設定。priceTable は 2026-08 時点の gpt-image-1 参考値（USD/枚）。実行前に https://platform.openai.com/docs/pricing で最新値を確認し、ズレていたらここを直すこと。上限は『これを超えそうなら実行を拒否する』ハードキャップ。",
+  "model": "gpt-image-1",
+  "defaultQuality": "medium",
+  "qualityByUse": {
+    "place": "medium",
+    "incident_icon": "medium",
+    "character": "high",
+    "tool": "medium",
+    "before_after": "high"
+  },
+  "maxImagesPerRun": 40,
+  "maxUSDPerRun": 5.0,
+  "maxUSDPerMonth": 20.0,
+  "priceTable": {
+    "1024x1024": { "low": 0.011, "medium": 0.042, "high": 0.167 },
+    "1536x1024": { "low": 0.016, "medium": 0.063, "high": 0.25 },
+    "1024x1536": { "low": 0.016, "medium": 0.063, "high": 0.25 }
+  },
+  "sizeByAspect": {
+    "1:1": "1024x1024",
+    "16:9": "1536x1024",
+    "21:9": "1536x1024",
+    "4:3": "1536x1024",
+    "6:5": "1536x1024",
+    "3:4": "1024x1536"
+  },
+  "postProcessCrop": true,
+  "useReferenceImages": true
+}

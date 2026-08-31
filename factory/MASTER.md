@@ -39,6 +39,30 @@
 メカニクスは gameType（固有名）のまま登録し、偏り検出用に
 `taxonomy/mechanics-taxonomy.md` の操作パターン（primaryMechanic）へ正規化する。
 
+## 画像生成パイプライン（/generate-art）
+
+Art Director の manifest から画像を自動生成する工程（OpenAI Image API・有料）:
+
+```
+/generate-art <world-id>
+  ├─ STEP 1  dry-run（無料）     scripts/art-generate.mjs <world>（枚数と推定コストを表示）
+  ├─ STEP 2  ★HUMAN_REQUIRED    コストとAPIキーをユーザーが承認（毎回必ず停止）
+  ├─ STEP 3  生成               art-generate.mjs <world> --confirm（リトライ3回・途中再開可）
+  ├─ STEP 4  機械的QA           scripts/art-qa.mjs（寸法・透過・PNG妥当性）
+  ├─ STEP 5  visual QA          Claudeが各PNGをmanifestと突き合わせて目視判定
+  │                             不合格は --flag で needs_regeneration → その画像だけ再生成
+  ├─ STEP 6  実装へ反映         TODO(art)の結線（Claude）＋ scripts/art-check-links.mjs --update
+  └─ STEP 7  build/lint/表示確認 → コミット
+```
+
+- スタイルは manifest の `common_style`（無ければ `art/style-prompt.md`）を全プロンプトに自動適用
+- 人物・建物の一貫性は manifest の consistency note の自動挿入＋キャラ立ち絵を参照画像にした
+  images/edits 呼び出しで担保（キャラクターを最初に生成する順序制御つき）
+- 料金ガード: `art/config.json` の 枚数/回・USD/回・USD/月 上限（超過見込みは実行前に拒否）、
+  `art/generation-log.jsonl` に全生成の台帳
+- 生成済みはスキップ。再生成は `--ids <id> --force` の明示指定のみ
+- APIキーは `.env.local`（gitignore済み）のみ。`.env.example` 参照
+
 ## ディレクトリ
 
 - `rules/` — 全エージェント共通の規約（原則・調査・設計・アート・QA）
