@@ -1,0 +1,187 @@
+#!/usr/bin/env node
+// Codex adapter: run one independent review via `codex exec` (ChatGPT-subscription
+// CLI, no pay-per-use API). Never falls back to a paid provider — if Codex is
+// unavailable the caller gets a structured failure and must decide (fail-open is
+// forbidden; a review that could not run is NOT a PASS).
+//
+// Usage:
+//   node factory/harness/codex-review.mjs --prompt-file <path> [--timeout-sec 600]
+//     [--out <result.json>] [--label <name>]
+//
+// Output (stdout, JSON): { ok, status, verdict?, raw?, error?, elapsed_sec }
+//   status: OK | CODEX_UNAVAILABLE | CODEX_UNAUTHENTICATED | CODEX_TIMEOUT
+//         | CODEX_MALFORMED | CODEX_ERROR
+//
+// Verdict schema (what the reviewer is asked to emit as its final message):
+//   { "verdict": "PASS|FAIL|HUMAN_REQUIRED", "score": 0-100,
+//     "blockers": [], "high": [], "medium": [], "low": [],
+//     "evidence": [], "recommended_actions": [] }
+// Rule enforced here: blockers/high non-empty => verdict downgraded to FAIL.
+
+import { spawn, spawnSync } from "node:child_process";
+import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const args = process.argv.slice(2);
+function argOf(name, dflt) {
+  const i = args.indexOf(name);
+  return i >= 0 && args[i + 1] !== undefined ? args[i + 1] : dflt;
+}
+
+const promptFile = argOf("--prompt-file");
+const timeoutSec = Number(argOf("--timeout-sec", "600"));
+const outFile = argOf("--out");
+const label = argOf("--label", "review");
+const maxAttempts = 2; // one retry on malformed output
+
+if (!promptFile) {
+  console.error("Missing --prompt-file");
+  process.exit(2);
+}
+
+function emit(result) {
+  if (outFile) writeFileSync(outFile, JSON.stringify(result, null, 2));
+  console.log(JSON.stringify(result, null, 2));
+  process.exit(result.ok ? 0 : 1);
+}
+
+// ---- preflight: codex present and authenticated? -------------------------
+const which = spawnSync("codex", ["--version"], { encoding: "utf8" });
+if (which.error || which.status !== 0) {
+  emit({ ok: false, status: "CODEX_UNAVAILABLE", error: "codex CLI not found on PATH", elapsed_sec: 0 });
+}
+const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8" });
+if (auth.status !== 0) {
+  emit({
+    ok: false,
+    status: "CODEX_UNAUTHENTICATED",
+    error: "codex is not logged in. Run `codex login` (ChatGPT account OAuth, no API key).",
+    elapsed_sec: 0,
+  });
+}
+
+// ---- run codex exec with a hard timeout ----------------------------------
+const basePrompt = readFileSync(promptFile, "utf8");
+
+function runCodexOnce(prompt) {
+  return new Promise((resolve) => {
+    const dir = mkdtempSync(join(tmpdir(), "jc-codex-"));
+    const lastMsgFile = join(dir, "last-message.txt");
+    const started = Date.now();
+    const child = spawn(
+      "codex",
+      [
+        "exec",
+        "--sandbox", "read-only",
+        "--cd", process.cwd(),
+        "--skip-git-repo-check",
+        "--output-last-message", lastMsgFile,
+        "-",
+      ],
+      { stdio: ["pipe", "pipe", "pipe"] },
+    );
+    let stdout = "";
+    let stderr = "";
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.kill("SIGTERM");
+      setTimeout(() => child.kill("SIGKILL"), 5000).unref();
+    }, timeoutSec * 1000);
+
+    child.stdout.on("data", (d) => (stdout += d));
+    child.stderr.on("data", (d) => (stderr += d));
+    child.on("error", (err) => {
+      clearTimeout(timer);
+      resolve({ kind: "spawn_error", error: String(err), elapsed: (Date.now() - started) / 1000 });
+    });
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      const elapsed = (Date.now() - started) / 1000;
+      if (timedOut) return resolve({ kind: "timeout", stdout, stderr, elapsed });
+      let lastMsg = "";
+      try {
+        lastMsg = readFileSync(lastMsgFile, "utf8");
+      } catch {
+        /* no final message written */
+      }
+      resolve({ kind: "done", code, stdout, stderr, lastMsg, elapsed });
+    });
+    child.stdin.write(prompt);
+    child.stdin.end();
+  });
+}
+
+// Extract the first top-level JSON object from free text (reviewer may wrap it).
+function extractJson(text) {
+  const start = text.indexOf("{");
+  if (start < 0) return null;
+  for (let end = text.length; end > start; end--) {
+    const slice = text.slice(start, end);
+    if (!slice.trimEnd().endsWith("}")) continue;
+    try {
+      return JSON.parse(slice);
+    } catch {
+      /* keep shrinking */
+    }
+  }
+  return null;
+}
+
+function validateVerdict(v) {
+  if (!v || typeof v !== "object") return "not an object";
+  if (!["PASS", "FAIL", "HUMAN_REQUIRED"].includes(v.verdict)) return `bad verdict: ${v.verdict}`;
+  if (typeof v.score !== "number" || v.score < 0 || v.score > 100) return `bad score: ${v.score}`;
+  for (const k of ["blockers", "high", "medium", "low", "evidence", "recommended_actions"]) {
+    if (!Array.isArray(v[k])) return `missing array field: ${k}`;
+  }
+  return null;
+}
+
+let totalElapsed = 0;
+let lastRaw = "";
+for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  const prompt =
+    attempt === 1
+      ? basePrompt
+      : basePrompt +
+        "\n\nIMPORTANT: Your previous reply was not valid JSON. Reply again. Your ENTIRE final message must be a single JSON object matching the schema — no prose, no code fences.";
+  const r = await runCodexOnce(prompt);
+  totalElapsed += r.elapsed;
+  if (r.kind === "spawn_error") {
+    emit({ ok: false, status: "CODEX_UNAVAILABLE", error: r.error, elapsed_sec: totalElapsed });
+  }
+  if (r.kind === "timeout") {
+    emit({ ok: false, status: "CODEX_TIMEOUT", error: `timed out after ${timeoutSec}s`, elapsed_sec: totalElapsed });
+  }
+  const raw = (r.lastMsg || "").trim() || r.stdout.trim();
+  lastRaw = raw;
+  if (r.code !== 0 && !raw) {
+    emit({
+      ok: false,
+      status: "CODEX_ERROR",
+      error: `codex exec exited ${r.code}: ${r.stderr.slice(-800)}`,
+      elapsed_sec: totalElapsed,
+    });
+  }
+  const parsed = extractJson(raw);
+  const problem = validateVerdict(parsed);
+  if (!problem) {
+    // Enforce: unresolved BLOCKER/HIGH can never PASS.
+    if (parsed.verdict === "PASS" && (parsed.blockers.length > 0 || parsed.high.length > 0)) {
+      parsed.verdict = "FAIL";
+      parsed._downgraded = "PASS with non-empty blockers/high downgraded to FAIL by harness rule";
+    }
+    emit({ ok: true, status: "OK", label, verdict: parsed, elapsed_sec: totalElapsed });
+  }
+  // else: loop for one retry
+}
+
+emit({
+  ok: false,
+  status: "CODEX_MALFORMED",
+  error: "reviewer output was not a valid verdict JSON after retry",
+  raw: lastRaw.slice(0, 4000),
+  elapsed_sec: totalElapsed,
+});

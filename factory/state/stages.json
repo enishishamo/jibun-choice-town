@@ -1,0 +1,143 @@
+{
+  "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
+  "updated_at": null,
+  "stages": [
+    {
+      "id": 0,
+      "name": "Codex connection / Minimal Review Loop",
+      "status": "in_progress",
+      "depends_on": [],
+      "acceptance_criteria": [
+        "Codex CLI callable from Claude Code (subscription auth, no API key)",
+        "Structured verdict JSON obtained from a real review",
+        "Timeout / unavailable / malformed handling proven",
+        "Loop engine completes PRODUCE->REVIEW->REPAIR->RE-REVIEW on a real Q1 without human checks",
+        "All runs logged under factory/state/runs/"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 1,
+      "name": "Game Design Lab mini",
+      "status": "pending",
+      "depends_on": [0],
+      "acceptance_criteria": [
+        "Minimal Game Designer + Critic loop wired into the harness (reuse jc-game-designer / jc-critic)",
+        "Design docs reviewed by Codex as independent reviewer",
+        "Two-axis QA rubric (CAREER_AUTHENTICITY x GAME_QUALITY) drafted as reviewable rules"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 2,
+      "name": "Game Researcher + Mechanics Library",
+      "status": "pending",
+      "depends_on": [1],
+      "acceptance_criteria": [
+        "Researcher decomposes existing games into goal/core_action/information/constraints/decisions/feedback/failure/retry_motivation/mastery/variation/progression/reusable_mechanics",
+        "Mechanics stored as reusable entries (not title imitations) extending factory/taxonomy/",
+        "Library validated by scan scripts + Codex review"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 3,
+      "name": "Existing JIBUN CHOICE game audit",
+      "status": "pending",
+      "depends_on": [0],
+      "acceptance_criteria": [
+        "All 39 registered Q1 games audited with CORE LOOP / MASTERY / REPLAY statements",
+        "Audit reports stored per game with Codex-confirmed verdicts",
+        "Weak games ranked for improvement queue"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 4,
+      "name": "Single Q1 autonomous improvement",
+      "status": "pending",
+      "depends_on": [3],
+      "acceptance_criteria": [
+        "One weak Q1 improved end-to-end by the loop (design -> patch -> build/lint -> Codex re-review -> PASS)",
+        "component-reviews.json updated with new reviewedHash",
+        "No regression in build/lint/registry consistency"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 5,
+      "name": "Harness generalization",
+      "status": "pending",
+      "depends_on": [4],
+      "acceptance_criteria": [
+        "Loop engine parameterized over arbitrary artifact types (design doc / component / data file)",
+        "Producer/reviewer roles pluggable; reviewer independence enforced structurally",
+        "Stage Manager can queue and execute multiple runs unattended"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 6,
+      "name": "Art Harness / Art Loop",
+      "status": "pending",
+      "depends_on": [5],
+      "acceptance_criteria": [
+        "Art priority chain implemented: existing asset reuse > CSS > SVG > composition > new raster",
+        "paid_api.enabled = false enforced; no auto-fallback to paid image APIs",
+        "Raster generation without a no-cost official channel stops as ART_GENERATION_HUMAN_BOUNDARY"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 7,
+      "name": "/new-world end-to-end integration",
+      "status": "pending",
+      "depends_on": [5, 6],
+      "acceptance_criteria": [
+        "/new-world pipeline runs through the harness with GATE 1 / GATE 2 as the only human stops",
+        "Two-axis QA gates completion",
+        "All artifacts and verdicts logged per project"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    },
+    {
+      "id": 8,
+      "name": "Second-world reproducibility test / v1.0 hardening",
+      "status": "pending",
+      "depends_on": [7],
+      "acceptance_criteria": [
+        "A second world produced with no harness code changes",
+        "Failure-mode drills (reviewer down, timeout, malformed) pass",
+        "v1.0 documentation complete"
+      ],
+      "repair_count": 0,
+      "stop_reason": null,
+      "runs": [],
+      "notes": []
+    }
+  ]
+}
