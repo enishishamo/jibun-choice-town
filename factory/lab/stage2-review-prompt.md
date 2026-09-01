@@ -11,8 +11,17 @@ Acceptance criteria to judge:
 
 1. Every library entry has: mechanic_id, description, player_action, skill_expression,
    failure_mode, replay_value, suitable_job_difficulties, unsuitable_cases, age_complexity,
-   example_patterns. Entries are title-independent (no game-name dependence) and are
-   CHALLENGE structures, not operations, rewards, or genre labels.
+   example_patterns, and a `layer` field. The library is INTENTIONALLY three-layered
+   (this is the project owner's specification, do not flag it):
+   - layer=challenge — in-session sources of difficulty/fun; must be genuine challenge
+     structures, not operations, rewards, or genre labels
+   - layer=modifier — solution-space / session-variety shapers (e.g. variable conditions,
+     multiple valid solutions, escalating difficulty)
+   - layer=motivation — long-term drive (e.g. score optimization, collection, persistent
+     learning); the library must make clear these never substitute for a challenge mechanic
+   Judge each entry against ITS OWN layer's definition. Definitions are title-independent;
+   an `evidence_games` provenance field is expected and is not title-dependence — but flag
+   provenance that misrepresents what the cited game actually exhibits per games.json.
 2. The library is grounded: the mechanics collectively cover the dominant structures found in
    the 15-game research corpus (limited attempts, time pressure, partial information, dynamic
    state, tradeoffs, sequencing, spatial optimization, risk/reward, delayed feedback,

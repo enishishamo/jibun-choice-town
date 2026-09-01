@@ -1,0 +1,35 @@
+{
+  "run_id": "run-2026-09-01T23-40-31-gq8q",
+  "task": "Stage 2 confirmation: mechanics library after max-iterations repair (mapping precision fixes)",
+  "artifact": "factory/taxonomy/mechanics-library.json",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "finished",
+  "iteration": 2,
+  "max_iterations": 2,
+  "verdict": "PASS",
+  "issues": [],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "Removed inaccurate mappings (Obra Dinn: multiple_valid_solutions/spatial_optimization/sequencing_dependency; PowerWash: resource_tradeoff); evidence_games resynced from mappings; map guidance no longer says always-add a modifier (respects fixed-solution challenges)."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-40-31-gq8q.review-1.json",
+      "elapsed_sec": 82.765
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-40-31-gq8q.review-2.json",
+      "elapsed_sec": 57.245
+    }
+  ],
+  "started_at": "2026-09-01T23:40:31.629Z",
+  "finished_at": "2026-09-01T23:43:48.347Z",
+  "stop_reason": "passed"
+}

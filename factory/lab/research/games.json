@@ -156,8 +156,6 @@
    "normalized_mechanics": [
     "partial_information",
     "combination_search",
-    "dynamic_state",
-    "sequencing_dependency",
     "limited_attempts",
     "self_quality_gate",
     "rule_matching_verification"
@@ -316,12 +314,12 @@
    "kid_translation_note": "Children could fit tasks, tools, or schedules into limited spaces while keeping future choices open. This could teach planning and organization through quick, low-reading interactions.",
    "normalized_mechanics": [
     "spatial_optimization",
-    "limited_attempts",
     "variable_conditions",
     "dynamic_state",
     "escalating_difficulty",
     "risk_reward",
-    "score_optimization"
+    "score_optimization",
+    "execution_precision"
    ]
   },
   {
@@ -424,10 +422,7 @@
    "normalized_mechanics": [
     "partial_information",
     "combination_search",
-    "spatial_optimization",
-    "sequencing_dependency",
     "self_quality_gate",
-    "multiple_valid_solutions",
     "rule_matching_verification"
    ]
   },
@@ -651,7 +646,8 @@
     "risk_reward",
     "sequencing_dependency",
     "score_optimization",
-    "dynamic_state"
+    "dynamic_state",
+    "execution_precision"
    ]
   },
   {
@@ -822,9 +818,8 @@
    "replay_statement": "A later job can be approached with a different cleaning order, nozzle strategy, route, or division into zones. Players can also try to produce a cleaner workflow with fewer missed patches and less repositioning.",
    "kid_translation_note": "A children's career game could turn tidying, inspecting, repairing, painting, or sorting into a persistent visible transformation with a checklist of small parts. A highlight button for remaining work preserves satisfaction while preventing the final search from becoming frustrating.",
    "normalized_mechanics": [
-    "resource_tradeoff",
     "multiple_valid_solutions",
-    "sequencing_dependency"
+    "execution_precision"
    ]
   }
  ]

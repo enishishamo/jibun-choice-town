@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 84,
+    "blockers": [],
+    "high": [
+      "games.json assigns limited_attempts to Tetris, but the corpus describes spatial capacity, top-out, and escalating speed—not a budgeted number of actions or attempts as required by the library definition.",
+      "Several normalized/provenance assignments overstate sequencing_dependency: PowerWash Simulator explicitly permits self-directed cleaning order without dependency-based failure, while Phoenix Wright largely follows a prescribed sequence rather than asking players to design one."
+    ],
+    "medium": [
+      "combination_search says a single-solution task is unsuitable, yet cited games including Phoenix Wright and Return of the Obra Dinn have substantially fixed authored solutions. The definition should distinguish combination search from multiplicity of valid solutions, which is already handled by the modifier layer.",
+      "Provenance is not fully synchronized: execution_precision cites Overcooked but Overcooked does not normalize to it; Papers, Please normalizes to spatial_optimization without listing it as evidence; Tetris normalizes to limited_attempts without listing it as evidence.",
+      "dynamic_state is weakly grounded for Phoenix Wright: testimony and available information change at scripted points, but the corpus does not describe a continuously evolving state that players must track as defined by this mechanic."
+    ],
+    "low": [
+      "job-mechanics-map.json describes collection_progression but omits persistent_learning from its design_guidance motivation-layer sentence, despite listing all three motivation mechanics elsewhere.",
+      "sequencing_dependency maps to spatial_arrangement, although its library description concerns temporal/process dependencies rather than spatial arrangement; this may produce weak job-mechanic recommendations."
+    ],
+    "evidence": [
+      "factory/taxonomy/mechanics-library.json — 22 entries found: 16 challenge, 3 modifier, and 3 motivation; all entries contain every required field and all mechanic IDs are valid snake_case.",
+      "factory/taxonomy/mechanics-library.json — the three-layer design is explicit, and motivation entries state that they do not replace challenge mechanics.",
+      "factory/lab/research/games.json — all normalized_mechanics references resolve to existing library IDs.",
+      "factory/lab/research/games.json — Tetris describes continuous placement until top-out, with no action-count or attempt budget matching limited_attempts.",
+      "factory/lab/research/games.json — PowerWash Simulator describes optional cleaning order, persistent progress, and little punitive failure, conflicting with dependency-order failure in sequencing_dependency.",
+      "factory/lab/research/games.json — Phoenix Wright says the story largely follows a prescribed sequence and its central solution is fixed.",
+      "factory/taxonomy/job-mechanics-map.json — every mapped mechanic exists, and reverse comparison found no differences between map entries and suitable_job_difficulties for non-motivation mechanics.",
+      "factory/lab/job-difficulty-taxonomy.md — all suitable_job_difficulties values used by the library exist among the 14 defined difficulty IDs.",
+      "factory/taxonomy/mechanics-taxonomy.md — the original 16 operation-layer interaction patterns remain present and documented.",
+      "factory/taxonomy/mechanics-library.json — dominant corpus structures are collectively covered, including limited attempts, time pressure, partial information, dynamic state, tradeoffs, sequencing, spatial optimization, risk/reward, delayed feedback, uncertainty, combination search, prioritization, modifiers, and long-term motivations.",
+      "factory/taxonomy/mechanics-library.json — no duplicate IDs or clear library entries requiring merger were found."
+    ],
+    "recommended_actions": [
+      "Remove limited_attempts from Tetris normalization or revise the mechanic only if a genuine action/attempt budget can be demonstrated from the corpus.",
+      "Remove sequencing_dependency from PowerWash Simulator and reconsider it for Phoenix Wright; use optional workflow optimization or rule-matching structures where supported.",
+      "Rewrite combination_search unsuitable_cases so fixed-solution constraint search remains valid, while multiple_valid_solutions continues to represent solution multiplicity.",
+      "Synchronize evidence_games and normalized_mechanics, then manually validate every disputed association against each game's constraints, decisions, failure, and mastery fields.",
+      "Reconsider the sequencing_dependency-to-spatial_arrangement mapping and update motivation-layer guidance to mention persistent_learning."
+    ]
+  },
+  "elapsed_sec": 74.069
+}

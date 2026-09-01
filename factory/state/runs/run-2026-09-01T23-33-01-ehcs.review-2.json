@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "blockers": [],
+    "high": [
+      "mechanics-library.json contains six entries that are not challenge structures: escalating_difficulty and variable_conditions/multiple_valid_solutions are modifiers; score_optimization, collection_progression, and persistent_learning are motivation/progression mechanisms. This violates the requirement that every library entry be a challenge structure rather than a reward or progression layer."
+    ],
+    "medium": [
+      "The corpus contains execution precision as a material challenge—especially Cooking Mama's direction/rhythm/target-area accuracy and PowerWash Simulator's angle/distance/coverage control—but the library has no title-independent precision/control challenge. Cooking Mama is normalized mainly to time_pressure, sequencing_dependency, dynamic_state, risk_reward, score_optimization, and persistent_learning, which does not capture its central speed-and-precision execution challenge.",
+      "Some provenance assignments overstate grounding. limited_attempts cites Tetris, although games.json describes irreversible placement and top-out rather than a budgeted number of attempts. spatial_optimization cites Papers, Please based on desk organization, but its researched core challenge is rule checking and discrepancy detection rather than spatial optimization.",
+      "combination_search explicitly includes multiple solutions in its definition and replay value, while multiple_valid_solutions separately represents the same property as a modifier. Their roles can coexist, but the boundary should state that combination_search is constrained combinatorial construction while multiple_valid_solutions is an optional solution-space property; otherwise designers may double-count one structure."
+    ],
+    "low": [
+      "collection_progression has an empty suitable_job_difficulties array. The required field exists and motivation-layer entries are intentionally excluded from the difficulty map, but an explicit null/not_applicable convention would be clearer than an empty mapping.",
+      "The map's motivation_layer guidance names score_optimization and collection_progression but omits persistent_learning in the prose, even though persistent_learning is included in the motivation_layer array."
+    ],
+    "evidence": [
+      "factory/taxonomy/mechanics-library.json — 21 entries exist; all contain the ten required fields, all mechanic_id values are unique snake_case, and descriptions/example patterns are title-independent.",
+      "factory/taxonomy/mechanics-library.json — layer values classify 15 entries as challenge, three as modifier, and three as motivation; score_optimization says it has no failure state, and collection_progression says it cannot form a game alone.",
+      "factory/lab/research/games.json — all 15 games have normalized_mechanics, and every referenced ID resolves to an ID in mechanics-library.json.",
+      "factory/lab/research/games.json — Cooking Mama identifies timed gestures, direction/rhythm/target accuracy, cutting accuracy, and speed/precision as core constraints, but no normalized challenge ID directly represents execution precision.",
+      "factory/lab/research/games.json — Tetris lists irreversible placement, stack pressure, speed escalation, and top-out, not a fixed attempt/action budget.",
+      "factory/lab/job-difficulty-taxonomy.md — all suitable_job_difficulties values used by library entries belong to the documented 14 difficulty IDs.",
+      "factory/taxonomy/job-mechanics-map.json — spot checks for incomplete_information, time_pressure, prediction, quality_judgment, and irreversibility match the corresponding challenge/modifier suitability declarations; all mapped mechanic IDs exist.",
+      "factory/taxonomy/mechanics-taxonomy.md — the original 16 operation categories remain intact and are explicitly described as operation/interaction patterns distinct from the challenge library.",
+      "factory/taxonomy/mechanics-library.json — the requested dominant structures are broadly represented by direct or justified equivalents, including limited attempts, time pressure, partial information, dynamic state, tradeoffs, sequencing, spatial optimization, risk/reward, delayed feedback, uncertainty, combination search, prioritization, escalation, variability, multiple solutions, scoring, collection, and persistent learning."
+    ],
+    "recommended_actions": [
+      "Move modifier and motivation entries into separately named collections/files, or change the library schema to expose a challenge-only mechanics array and keep modifier/motivation catalogs explicitly outside acceptance criterion 1.",
+      "Add a title-independent challenge such as precision_execution or timing_and_control_accuracy, ground it in Cooking Mama and applicable PowerWash Simulator evidence, and update normalized_mechanics accordingly.",
+      "Remove Tetris from limited_attempts evidence or broaden/rename that mechanic only if irreversible commitment is intentionally part of its definition; avoid conflating action budgets with irreversible moves.",
+      "Clarify the non-overlapping boundary between combination_search and multiple_valid_solutions, and update design guidance to prevent counting both when they express the same solution-space property.",
+      "Include persistent_learning in the motivation_layer guidance string and adopt an explicit not-applicable convention for motivation entries' suitable_job_difficulties."
+    ]
+  },
+  "elapsed_sec": 62.77
+}

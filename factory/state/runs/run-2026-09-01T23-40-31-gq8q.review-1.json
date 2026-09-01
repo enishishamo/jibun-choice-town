@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 84,
+    "blockers": [],
+    "high": [
+      "Research provenance is semantically inaccurate for several normalized_mechanics assignments. Return of the Obra Dinn has fixed factual solutions and no placement optimization, yet cites multiple_valid_solutions and spatial_optimization. PowerWash Simulator has tool-choice tradeoffs but no scarce-resource allocation or associated failure state, so resource_tradeoff does not match the library definition."
+    ],
+    "medium": [
+      "Return of the Obra Dinn's sequencing_dependency attribution is weak: the corpus describes reconstructing a timeline, not designing or executing an order with dependency-based failure as defined by the library.",
+      "job-mechanics-map.json says to always add variable_conditions or multiple_valid_solutions, although the library itself identifies cases where multiple_valid_solutions is unsuitable and some challenges legitimately have fixed solutions. This guidance may produce unjustified modifiers."
+    ],
+    "low": [
+      "Papers, Please as evidence for spatial_optimization is borderline: desk organization affects efficiency, but it is not the position/adjacency/path optimization described by the mechanic's primary definition."
+    ],
+    "evidence": [
+      "factory/taxonomy/mechanics-library.json — 22 entries; every entry contains all required fields, all IDs are snake_case and unique, and layers are limited to challenge, modifier, and motivation.",
+      "factory/taxonomy/mechanics-library.json — motivation entries explicitly state that they do not substitute for challenge mechanics.",
+      "factory/lab/research/games.json — all 15 games' normalized_mechanics reference existing library IDs.",
+      "factory/lab/research/games.json — Return of the Obra Dinn is described as resolving fixed identities and causes; this does not substantiate multiple valid accepted solutions or player-controlled spatial placement.",
+      "factory/lab/research/games.json — PowerWash Simulator describes unlimited, persistent low-penalty cleaning with nozzle width/power choices, not allocation of a scarce resource whose imbalance causes failure.",
+      "factory/taxonomy/job-mechanics-map.json — all mapped mechanic IDs exist, and forward/reverse spot-checks agree with suitable_job_difficulties.",
+      "factory/lab/job-difficulty-taxonomy.md — all 14 mapping keys correspond to defined difficulty IDs, with no missing difficulty mappings.",
+      "factory/taxonomy/mechanics-taxonomy.md — the original 16 operation-layer interaction patterns remain present and documented.",
+      "factory/taxonomy/mechanics-library.json — collectively covers the requested dominant structures, including limited attempts, time pressure, partial information, dynamic state, tradeoffs, sequencing, spatial optimization, risk/reward, delayed feedback, uncertainty, combination search, prioritization, modifiers, and long-term motivations."
+    ],
+    "recommended_actions": [
+      "Remove or replace Return of the Obra Dinn provenance for multiple_valid_solutions and spatial_optimization; reconsider sequencing_dependency against its exact definition.",
+      "Remove PowerWash Simulator from resource_tradeoff or broaden/rename that mechanic only if capability tradeoffs are intentionally in scope without scarcity or allocation.",
+      "Change the map guidance from always adding one of the two modifiers to adding one only when supported by the job difficulty and solution structure.",
+      "Clarify whether workspace organization qualifies as spatial_optimization; otherwise remove Papers, Please from that evidence list."
+    ]
+  },
+  "elapsed_sec": 82.765
+}

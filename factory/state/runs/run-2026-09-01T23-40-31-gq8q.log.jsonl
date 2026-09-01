@@ -1,0 +1,8 @@
+{"at":"2026-09-01T23:40:31.630Z","type":"start","task":"Stage 2 confirmation: mechanics library after max-iterations repair (mapping precision fixes)","artifact":"factory/taxonomy/mechanics-library.json"}
+{"at":"2026-09-01T23:40:31.658Z","type":"produce-done","iteration":1,"notes":"Tetris/PowerWash/Phoenix Wright mapping precision fixed; evidence_games auto-synced from normalized mappings"}
+{"at":"2026-09-01T23:40:42.346Z","type":"review-start","iteration":1,"promptFile":"factory/lab/stage2-review-prompt.md"}
+{"at":"2026-09-01T23:42:05.330Z","type":"review-done","iteration":1,"verdict":"FAIL","score":84,"blockers":0,"high":1}
+{"at":"2026-09-01T23:42:50.854Z","type":"repair-done","iteration":1,"actions":"Removed inaccurate mappings (Obra Dinn: multiple_valid_solutions/spatial_optimization/sequencing_dependency; PowerWash: resource_tradeoff); evidence_games resynced from mappings; map guidance no longer says always-add a modifier (respects fixed-solution challenges)."}
+{"at":"2026-09-01T23:42:50.884Z","type":"review-start","iteration":2,"promptFile":"factory/lab/stage2-review-prompt.md"}
+{"at":"2026-09-01T23:43:48.346Z","type":"review-done","iteration":2,"verdict":"PASS","score":98,"blockers":0,"high":0}
+{"at":"2026-09-01T23:43:48.347Z","type":"finish","stop_reason":"passed","verdict":"PASS"}

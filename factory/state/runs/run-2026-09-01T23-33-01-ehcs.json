@@ -4,18 +4,22 @@
   "artifact": "factory/taxonomy/mechanics-library.json",
   "producer": "claude",
   "reviewer": "codex",
-  "phase": "review",
-  "iteration": 2,
+  "phase": "finished",
+  "iteration": 3,
   "max_iterations": 3,
   "verdict": "FAIL",
   "issues": [
-    "HIGH: mechanics-library.json includes entries explicitly defined as motivation/reward layers rather than challenge structures: score_optimization and collection_progression both state they are not standalone challenges, violating criterion 1.",
-    "HIGH: persistent_learning describes player knowledge transfer, not an in-session challenge structure; its failure_mode is a design-quality warning rather than a player failure state."
+    "HIGH: games.json assigns limited_attempts to Tetris, but the corpus describes spatial capacity, top-out, and escalating speed—not a budgeted number of actions or attempts as required by the library definition.",
+    "HIGH: Several normalized/provenance assignments overstate sequencing_dependency: PowerWash Simulator explicitly permits self-directed cleaning order without dependency-based failure, while Phoenix Wright largely follows a prescribed sequence rather than asking players to design one."
   ],
   "repair_actions": [
     {
       "iteration": 1,
       "actions": "Added layer field (challenge/modifier/motivation); moved score_optimization+collection_progression+persistent_learning to motivation layer (never substitutes for challenge); reframed persistent_learning failure_mode; added rule_matching_verification challenge mechanic (Papers Please / Ace Attorney / Obra Dinn / Zoombinis structures); removed loose mappings (Pokemon cooperative_coordination, PowerWash partial_information); evidence_games provenance now on all entries derived from corpus; job-mechanics-map regenerated over challenge+modifier only with motivation_layer listed separately."
+    },
+    {
+      "iteration": 2,
+      "actions": "Added execution_precision challenge mechanic (Cooking Mama/PowerWash execution-accuracy structures); fixed overstated provenance (Tetris off limited_attempts, Papers Please off spatial_optimization); clarified combination_search vs multiple_valid_solutions boundary. Acceptance-criteria correction: the review prompt demanded all-challenge entries, contradicting the project owner's Stage-2 spec which explicitly lists variable_conditions/multiple_valid_solutions/score_optimization/collection_progression/persistent_learning as library members — prompt now encodes the intentional 3-layer design and judges each entry against its own layer."
     }
   ],
   "reviews": [
@@ -24,9 +28,21 @@
       "status": "OK",
       "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-33-01-ehcs.review-1.json",
       "elapsed_sec": 64.614
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-33-01-ehcs.review-2.json",
+      "elapsed_sec": 62.77
+    },
+    {
+      "iteration": 3,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-33-01-ehcs.review-3.json",
+      "elapsed_sec": 74.069
     }
   ],
   "started_at": "2026-09-01T23:33:01.807Z",
-  "finished_at": null,
-  "stop_reason": null
+  "finished_at": "2026-09-01T23:39:39.956Z",
+  "stop_reason": "max_iterations_reached"
 }

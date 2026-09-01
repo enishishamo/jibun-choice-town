@@ -4,7 +4,8 @@
  "mapping": {
   "irreversibility": [
    "limited_attempts",
-   "self_quality_gate"
+   "self_quality_gate",
+   "execution_precision"
   ],
   "safety_tradeoff": [
    "limited_attempts",
@@ -23,7 +24,8 @@
    "sequencing_dependency",
    "prioritization_queue",
    "escalating_difficulty",
-   "cooperative_coordination"
+   "cooperative_coordination",
+   "execution_precision"
   ],
   "simultaneous_demands": [
    "time_pressure",
@@ -80,14 +82,15 @@
   ],
   "quality_judgment": [
    "self_quality_gate",
-   "rule_matching_verification"
+   "rule_matching_verification",
+   "execution_precision"
   ]
  },
  "design_guidance": {
-  "combine": "1つのQ1には challenge mechanic を1〜3個。主役1つ+補助1〜2つ。4つ以上は小学生には過積載",
-  "always_add": "variable_conditions か multiple_valid_solutions のどちらかを入れると replay が構造的に生まれる",
+  "always_add": "replayを構造的に生みたい場合は variable_conditions か multiple_valid_solutions の追加を検討する。ただし照合・検査のように固定解が本質の課題では無理に付けない（unsuitable_cases を確認）",
   "motivation_layer": "score_optimization / collection_progression は動機づけ層。単体でゲームにしない",
-  "verify": "選んだ mechanic が C_required / player_judgment_required / action_changes_result を実装として満たすかを game-critic-v2.md で確認する"
+  "verify": "選んだ mechanic が C_required / player_judgment_required / action_changes_result を実装として満たすかを game-critic-v2.md で確認する",
+  "combine": "1つのQ1には challenge mechanic を1〜2個（主役1つ+補助0〜1つ）+ modifier 0〜1個。それ以上は小学生には過積載"
  },
  "motivation_layer": [
   "score_optimization",

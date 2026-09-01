@@ -1,0 +1,26 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 98,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "factory/taxonomy/mechanics-library.json — 22 entries; all contain every required field, including layer and evidence_games; ids are unique snake_case.",
+      "factory/taxonomy/mechanics-library.json — layers comprise 16 genuine challenge structures, 3 solution/session modifiers, and 3 motivation mechanics; motivation entries explicitly state they cannot replace challenge mechanics.",
+      "factory/taxonomy/mechanics-library.json — collectively covers all specified dominant corpus structures, including limited attempts, pressure, incomplete information, dynamic state, tradeoffs, sequencing, spatial optimization, risk, delayed feedback, uncertainty, combination search, prioritization, escalation, variability, multiple solutions, scoring, collection, and persistent learning.",
+      "factory/lab/research/games.json — contains 15 games; every normalized_mechanics value resolves to an existing library id.",
+      "factory/lab/research/games.json / factory/taxonomy/mechanics-library.json — evidence_games provenance is reciprocal with normalized_mechanics, uses valid corpus titles, and is consistent with the documented game structures.",
+      "factory/lab/job-difficulty-taxonomy.md — documents 14 difficulty ids; all suitable_job_difficulties values belong to this set.",
+      "factory/taxonomy/job-mechanics-map.json — all 14 map keys exist in the difficulty taxonomy; mapped challenge/modifier relationships match the library’s suitability declarations, and motivation mechanics are separated explicitly.",
+      "factory/taxonomy/job-mechanics-map.json — guidance requires 1–2 challenge mechanics and states motivation mechanics are additive rather than substitutes.",
+      "factory/taxonomy/mechanics-taxonomy.md — the pre-existing operation layer remains intact with all 16 interaction-pattern categories."
+    ],
+    "recommended_actions": []
+  },
+  "elapsed_sec": 57.245
+}

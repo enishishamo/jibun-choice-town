@@ -1,6 +1,6 @@
 {
  "note": "Reusable mechanics library (Stage 2). Three layers: layer=challenge (the in-session source of difficulty/fun — a game needs 1-2), layer=modifier (shapes the solution space / session variety — add 1 when fitting), layer=motivation (long-term drive — never a substitute for challenge). The 16 interaction patterns in mechanics-taxonomy.md remain the OPERATION layer. Never pick a mechanic first — start from job-difficulty-taxonomy.md via job-mechanics-map.json. evidence_games = provenance from factory/lab/research/games.json; definitions themselves stay title-independent.",
- "version": "0.4",
+ "version": "0.7",
  "updated_at": "2026-09-02",
  "sources": [
   "bootstrap seed (Claude)",
@@ -29,7 +29,6 @@
    "layer": "challenge",
    "evidence_games": [
     "Phoenix Wright: Ace Attorney",
-    "Tetris",
     "Zoombinis"
    ]
   },
@@ -110,7 +109,6 @@
    ],
    "layer": "challenge",
    "evidence_games": [
-    "Phoenix Wright: Ace Attorney",
     "Mini Metro",
     "SimCity",
     "Tetris",
@@ -147,8 +145,7 @@
     "Stardew Valley",
     "Pokémon Red/Blue",
     "The Oregon Trail",
-    "Two Point Hospital",
-    "PowerWash Simulator"
+    "Two Point Hospital"
    ]
   },
   {
@@ -173,13 +170,10 @@
    "layer": "challenge",
    "evidence_games": [
     "Overcooked",
-    "Phoenix Wright: Ace Attorney",
     "SimCity",
-    "Return of the Obra Dinn",
     "Stardew Valley",
     "Cooking Mama",
-    "Two Point Hospital",
-    "PowerWash Simulator"
+    "Two Point Hospital"
    ]
   },
   {
@@ -206,7 +200,6 @@
     "Mini Metro",
     "SimCity",
     "Tetris",
-    "Return of the Obra Dinn",
     "Two Point Hospital"
    ]
   },
@@ -290,7 +283,7 @@
   },
   {
    "mechanic_id": "combination_search",
-   "description": "要素の組み合わせから条件を満たす解を探す。複数解が存在する",
+   "description": "制約下で要素を組み合わせて成立解を構築する（構築行為そのものが挑戦）。解空間が複数解かどうかは modifier: multiple_valid_solutions が別途表現する",
    "player_action": "組み合わせを作り、評価を見て入れ替える",
    "skill_expression": "制約の構造を理解し総当たりせず解へ向かえる",
    "failure_mode": "制約違反。ただの総当たりは回数/時間で罰する",
@@ -300,7 +293,7 @@
     "counterpart_variability",
     "prioritization"
    ],
-   "unsuitable_cases": "解が1つしかないなら見せかけ（クイズ化する）",
+   "unsuitable_cases": "組み合わせの探索余地が実質ゼロ（1手で自明に決まる）課題。なお著者が用意した固定解へ収束する構造は成立し得る（複数解かどうかは modifier: multiple_valid_solutions の領域）",
    "age_complexity": "medium — 要素数を絞り即時評価チップで補助",
    "example_patterns": [
     "献立の組み立て",
@@ -396,7 +389,7 @@
   },
   {
    "mechanic_id": "multiple_valid_solutions",
-   "description": "合格解が複数あり、方針の違いがそのまま個性になる",
+   "description": "（modifier）合格解が複数あり方針の違いが個性になる、という解空間の性質。構築の挑戦自体は combination_search 等の challenge 側が担う",
    "player_action": "自分の方針（安全重視/コスト重視等）で解を組む",
    "skill_expression": "方針ごとの得失を理解して選べる",
    "failure_mode": "解が多くても制約は実在し、無方針は落ちる",
@@ -417,7 +410,6 @@
     "Mini Metro",
     "SimCity",
     "Slay the Spire",
-    "Return of the Obra Dinn",
     "Stardew Valley",
     "Pokémon Red/Blue",
     "PowerWash Simulator"
@@ -570,6 +562,32 @@
     "Phoenix Wright: Ace Attorney",
     "Return of the Obra Dinn",
     "Zoombinis"
+   ]
+  },
+  {
+   "mechanic_id": "execution_precision",
+   "layer": "challenge",
+   "description": "タイミング・位置・量の正確な実行そのものが挑戦。頭で分かっていても手が伴わないと成功しない",
+   "player_action": "合図・ゲージ・対象をよく見て、正確な瞬間・場所・量で操作する",
+   "skill_expression": "反復で精度が上がる。速さと正確さを両立できる",
+   "failure_mode": "ズレた実行が品質低下・やり直しになる",
+   "replay_value": "一発成功・ノーミスを狙う楽しみが残る",
+   "suitable_job_difficulties": [
+    "quality_judgment",
+    "time_pressure",
+    "irreversibility"
+   ],
+   "unsuitable_cases": "思考・判断が本質の課題に貼ると反射ゲーになる。低学年には猶予を広めに",
+   "age_complexity": "low — ゲージや呼吸表示など視覚合図で補助",
+   "example_patterns": [
+    "息止めの瞬間にシャッター",
+    "包丁のリズム",
+    "ノズルの当て方"
+   ],
+   "evidence_games": [
+    "Tetris",
+    "Cooking Mama",
+    "PowerWash Simulator"
    ]
   }
  ]

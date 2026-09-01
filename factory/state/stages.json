@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-01T23:36:20.383Z",
+  "updated_at": "2026-09-01T23:44:17.166Z",
   "stages": [
     {
       "id": 0,
@@ -54,7 +54,7 @@
     {
       "id": 2,
       "name": "Game Researcher + Mechanics Library",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         1
       ],
@@ -66,14 +66,20 @@
       "repair_count": 1,
       "stop_reason": null,
       "runs": [
-        "run-2026-09-01T23-33-01-ehcs"
+        "run-2026-09-01T23-33-01-ehcs",
+        "run-2026-09-01T23-40-31-gq8q"
       ],
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-09-01T23:44:17.138Z",
+          "text": "PASS 98 (confirmation run gq8q iter2). 22 mechanics in 3 layers (16 challenge / 3 modifier / 3 motivation), evidence-grounded in 15-game corpus, map regenerated. Main run ehcs hit max_iterations at 84 (mapping-precision tail); fixes confirmed in follow-up run."
+        }
+      ]
     },
     {
       "id": 3,
       "name": "Existing JIBUN CHOICE game audit",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         0
       ],
