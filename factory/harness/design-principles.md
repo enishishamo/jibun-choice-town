@@ -14,10 +14,18 @@ A → B → C ⇄ D → E
 - **D**: C を使った判断・操作・試行錯誤
 - **E**: 結果として起きる社会の変化
 
-重要条件（必須）:
+重要条件（必須・2026-09-02 ユーザー裁定で較正済み）:
 
 - `C_required = true` — C を見ずに突破できてはならない
+- `C_alone_determines_answer = false` — C を読んだだけで答えが一意に決まってはならない
+- `player_judgment_required = true` — C を「適用する」プレイヤー自身の判断・操作が残ること
 - `action_changes_result = true` — 操作によって結果が変わらなければならない
+
+**較正ルール（reviewer 必読）**: 「C に必要情報が書いてある」こと自体は BLOCKER にしない。
+区別せよ — (A) C が必要である（JIBUN CHOICE では望ましい）／(B) C を読めば答えが一意に
+決まりプレイヤー自身の判断が残らない（これのみ game quality の問題）。
+小学生向けであることを理由に game quality の基準は下げない。ただし認知負荷・文章量・
+UI complexity は対象年齢に合わせる（simple ≠ shallow）。
 
 ## 禁止 anti-pattern
 

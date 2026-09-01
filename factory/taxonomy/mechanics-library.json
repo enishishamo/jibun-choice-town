@@ -1,0 +1,576 @@
+{
+ "note": "Reusable mechanics library (Stage 2). Three layers: layer=challenge (the in-session source of difficulty/fun — a game needs 1-2), layer=modifier (shapes the solution space / session variety — add 1 when fitting), layer=motivation (long-term drive — never a substitute for challenge). The 16 interaction patterns in mechanics-taxonomy.md remain the OPERATION layer. Never pick a mechanic first — start from job-difficulty-taxonomy.md via job-mechanics-map.json. evidence_games = provenance from factory/lab/research/games.json; definitions themselves stay title-independent.",
+ "version": "0.4",
+ "updated_at": "2026-09-02",
+ "sources": [
+  "bootstrap seed (Claude)",
+  "factory/lab/research/games.json (Codex research, curated)"
+ ],
+ "mechanics": [
+  {
+   "mechanic_id": "limited_attempts",
+   "description": "行動回数に予算があり、使い切ると失敗・コスト増になる",
+   "player_action": "1回1回を大事に使う。撃つ前に考える",
+   "skill_expression": "少ない試行で成功できる（準備・観察の質が回数に出る）",
+   "failure_mode": "予算切れで課題失敗。安易な連打が罰される",
+   "replay_value": "前回より少ない回数でのクリアが自己目標になる",
+   "suitable_job_difficulties": [
+    "irreversibility",
+    "safety_tradeoff",
+    "limited_resources"
+   ],
+   "unsuitable_cases": "自由な実験・探索そのものが主役の課題（萎縮させる）",
+   "age_complexity": "low — 残り回数メーター1本で伝わる",
+   "example_patterns": [
+    "X線5回まで",
+    "面接は3人まで",
+    "試作は4回まで"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Phoenix Wright: Ace Attorney",
+    "Tetris",
+    "Zoombinis"
+   ]
+  },
+  {
+   "mechanic_id": "time_pressure",
+   "description": "時間の経過そのものが敵。待つほど状況が悪化する",
+   "player_action": "急ぐ/丁寧の切替を判断する",
+   "skill_expression": "速さと正確さの両立。慣れで所要時間が縮む",
+   "failure_mode": "間に合わない・待たせた相手が怒る/悪化する",
+   "replay_value": "より速い段取りを試したくなる",
+   "suitable_job_difficulties": [
+    "time_pressure",
+    "simultaneous_demands",
+    "dynamic_state"
+   ],
+   "unsuitable_cases": "熟考が本質の仕事（審査・設計）。低学年にはターン制の期限で代替",
+   "age_complexity": "medium — リアルタイムは短時間に限定する",
+   "example_patterns": [
+    "注文が溜まる厨房",
+    "発車時刻までに整える"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Overcooked",
+    "Cooking Mama",
+    "The Oregon Trail"
+   ]
+  },
+  {
+   "mechanic_id": "partial_information",
+   "description": "全部は見えない。どこを調べるかを選び、残った不確実性の中で決める",
+   "player_action": "調べる対象を選択し、得た手がかりから推論する",
+   "skill_expression": "情報価値の高い調べ先を先に引ける",
+   "failure_mode": "調べ損ねた場所に原因があり、誤判断する",
+   "replay_value": "別の調べ方・別の手順を試せる",
+   "suitable_job_difficulties": [
+    "incomplete_information",
+    "oversight_risk",
+    "trial_and_error"
+   ],
+   "unsuitable_cases": "手順遵守が本質の課題（衛生手順など）",
+   "age_complexity": "medium — 調べ先は5〜7個に絞る",
+   "example_patterns": [
+    "問診で何を聞くか",
+    "点検でどこを開けるか"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Phoenix Wright: Ace Attorney",
+    "SimCity",
+    "Slay the Spire",
+    "Return of the Obra Dinn",
+    "Pokémon Red/Blue",
+    "Zoombinis",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "dynamic_state",
+   "description": "対象の状態が自分の操作や時間で変化し続ける",
+   "player_action": "状態を読み、変化に合わせて操作を変える",
+   "skill_expression": "変化の先読み。後手に回らない",
+   "failure_mode": "放置・誤操作で状態が悪化して詰む",
+   "replay_value": "状態の初期値・推移が変わると同じ手が通じない",
+   "suitable_job_difficulties": [
+    "dynamic_state",
+    "prediction",
+    "simultaneous_demands"
+   ],
+   "unsuitable_cases": "静的な照合・審査が本質の課題",
+   "age_complexity": "medium — 変化する変数は1〜2個まで",
+   "example_patterns": [
+    "患者の容態",
+    "発酵の進み",
+    "電力需要カーブ"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Phoenix Wright: Ace Attorney",
+    "Mini Metro",
+    "SimCity",
+    "Tetris",
+    "Cooking Mama",
+    "The Oregon Trail",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "resource_tradeoff",
+   "description": "1つの資源を複数の用途が取り合う。増やせば別が減る",
+   "player_action": "配分を動かし、結果を見て調整する",
+   "skill_expression": "トレードオフの構造を理解し最適点へ寄せられる",
+   "failure_mode": "偏った配分でどこかが破綻する",
+   "replay_value": "別の配分方針（安全寄り/攻め）を試せる",
+   "suitable_job_difficulties": [
+    "limited_resources",
+    "safety_tradeoff",
+    "prioritization"
+   ],
+   "unsuitable_cases": "資源が1用途しかない課題では見せかけになる",
+   "age_complexity": "medium — 配分先は3つ前後",
+   "example_patterns": [
+    "予算を品質/宣伝/人手へ",
+    "水を3分野へ"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Overcooked",
+    "Mini Metro",
+    "SimCity",
+    "Slay the Spire",
+    "Stardew Valley",
+    "Pokémon Red/Blue",
+    "The Oregon Trail",
+    "Two Point Hospital",
+    "PowerWash Simulator"
+   ]
+  },
+  {
+   "mechanic_id": "sequencing_dependency",
+   "description": "順番に依存関係があり、正しい順序を設計する必要がある",
+   "player_action": "工程を並べ、前後関係の衝突を解消する",
+   "skill_expression": "依存を先読みして手戻りなく組める",
+   "failure_mode": "順序違反で工程が失敗・やり直しになる",
+   "replay_value": "別解順序の探索・より短い工程",
+   "suitable_job_difficulties": [
+    "prioritization",
+    "time_pressure",
+    "spatial_arrangement"
+   ],
+   "unsuitable_cases": "順序が本質でない課題に貼ると作業ゲーになる",
+   "age_complexity": "medium",
+   "example_patterns": [
+    "段取り（下ごしらえ→加熱）",
+    "工事工程",
+    "転換込みタイムテーブル"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Overcooked",
+    "Phoenix Wright: Ace Attorney",
+    "SimCity",
+    "Return of the Obra Dinn",
+    "Stardew Valley",
+    "Cooking Mama",
+    "Two Point Hospital",
+    "PowerWash Simulator"
+   ]
+  },
+  {
+   "mechanic_id": "spatial_optimization",
+   "description": "位置・隣接・動線が結果を決める配置問題",
+   "player_action": "置く→試す→詰まりを見て直す",
+   "skill_expression": "空間の因果（隣接効果・動線）を読める",
+   "failure_mode": "見た目は埋まっているが動線・隣接が破綻",
+   "replay_value": "複数の成立配置・条件替えで別解",
+   "suitable_job_difficulties": [
+    "spatial_arrangement",
+    "prediction"
+   ],
+   "unsuitable_cases": "位置が結果に影響しないならただのパズル貼り付け",
+   "age_complexity": "medium — グリッドと即時フィードバックで補助",
+   "example_patterns": [
+    "会場レイアウト",
+    "売場配置",
+    "積載"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Mini Metro",
+    "SimCity",
+    "Tetris",
+    "Return of the Obra Dinn",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "risk_reward",
+   "description": "安全で確実な選択と、リスクはあるが得の大きい選択が併存する",
+   "player_action": "状況を読んでどこまで攻めるか決める",
+   "skill_expression": "リスクの見積り精度が上がる",
+   "failure_mode": "攻めすぎて破綻／守りすぎて目標未達",
+   "replay_value": "別のリスク姿勢を試せる",
+   "suitable_job_difficulties": [
+    "safety_tradeoff",
+    "prediction",
+    "limited_resources"
+   ],
+   "unsuitable_cases": "安全が絶対の職務文脈で攻めを美化しないこと",
+   "age_complexity": "medium",
+   "example_patterns": [
+    "仕入れ量の強気/弱気",
+    "工期短縮と安全"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Tetris",
+    "Slay the Spire",
+    "Pokémon Red/Blue",
+    "Cooking Mama",
+    "The Oregon Trail"
+   ]
+  },
+  {
+   "mechanic_id": "delayed_feedback",
+   "description": "操作の結果がすぐには分からず、時間経過後に判明する",
+   "player_action": "仮説を立てて手を打ち、後で答え合わせする",
+   "skill_expression": "先読みの精度。結果から学んで次に活かす",
+   "failure_mode": "手遅れになってから問題が発覚する",
+   "replay_value": "前回の学びで初動が変わる",
+   "suitable_job_difficulties": [
+    "prediction",
+    "trial_and_error",
+    "dynamic_state"
+   ],
+   "unsuitable_cases": "低学年では遅延を1ステップに留める（忘れる）",
+   "age_complexity": "medium-high",
+   "example_patterns": [
+    "種まき→収穫",
+    "施策→翌月の数字"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "SimCity",
+    "Stardew Valley",
+    "The Oregon Trail",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "uncertainty_management",
+   "description": "確率・ばらつきを前提に、期待値や保険で構える",
+   "player_action": "ばらつきに備えた余裕・保険を積む",
+   "skill_expression": "運に見えるものを構えで平均的に勝てる",
+   "failure_mode": "楽観プランが1回の不運で崩壊する",
+   "replay_value": "毎回異なる乱数条件",
+   "suitable_job_difficulties": [
+    "prediction",
+    "incomplete_information",
+    "dynamic_state"
+   ],
+   "unsuitable_cases": "理不尽に見えない演出（予兆・確率の可視化）が必須",
+   "age_complexity": "high — 低学年では「天気予報」等の直感的表現に翻訳",
+   "example_patterns": [
+    "天候リスクの旅程",
+    "在庫の安全余裕"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "The Oregon Trail"
+   ]
+  },
+  {
+   "mechanic_id": "combination_search",
+   "description": "要素の組み合わせから条件を満たす解を探す。複数解が存在する",
+   "player_action": "組み合わせを作り、評価を見て入れ替える",
+   "skill_expression": "制約の構造を理解し総当たりせず解へ向かえる",
+   "failure_mode": "制約違反。ただの総当たりは回数/時間で罰する",
+   "replay_value": "別解の探索・縛りプレイ",
+   "suitable_job_difficulties": [
+    "limited_resources",
+    "counterpart_variability",
+    "prioritization"
+   ],
+   "unsuitable_cases": "解が1つしかないなら見せかけ（クイズ化する）",
+   "age_complexity": "medium — 要素数を絞り即時評価チップで補助",
+   "example_patterns": [
+    "献立の組み立て",
+    "テナントの組み合わせ"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Phoenix Wright: Ace Attorney",
+    "Slay the Spire",
+    "Return of the Obra Dinn",
+    "Pokémon Red/Blue",
+    "Zoombinis",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "prioritization_queue",
+   "description": "同時に来る複数の要求に優先順位を付けてさばく",
+   "player_action": "重要度・緊急度を読み、順番と割り当てを決める",
+   "skill_expression": "正しいトリアージ。後回しの影響を読める",
+   "failure_mode": "誤った後回しで重大事案が悪化する",
+   "replay_value": "要求の構成が変わると最適順も変わる",
+   "suitable_job_difficulties": [
+    "simultaneous_demands",
+    "prioritization",
+    "time_pressure"
+   ],
+   "unsuitable_cases": "1件ずつ処理が本質の仕事には不自然",
+   "age_complexity": "medium",
+   "example_patterns": [
+    "ナースコール3件",
+    "修理受付の順番"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Overcooked",
+    "Mini Metro",
+    "Stardew Valley",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "escalating_difficulty",
+   "description": "成功するほど課題が複雑・高速になり、習熟を試し続ける",
+   "player_action": "上がる要求水準に段取りを進化させる",
+   "skill_expression": "序盤の手法を捨てて上位の手法へ乗り換えられる",
+   "failure_mode": "物量に処理が追いつかず破綻する",
+   "replay_value": "どこまで行けるかの記録更新",
+   "suitable_job_difficulties": [
+    "simultaneous_demands",
+    "time_pressure"
+   ],
+   "unsuitable_cases": "Q1の短尺では2〜3段階の昇級で十分",
+   "age_complexity": "low — 「2日目はお客が増える」で直感的に伝わる",
+   "example_patterns": [
+    "ランチラッシュ",
+    "収穫最盛期"
+   ],
+   "layer": "modifier",
+   "evidence_games": [
+    "Papers, Please",
+    "Mini Metro",
+    "Tetris",
+    "Zoombinis"
+   ]
+  },
+  {
+   "mechanic_id": "variable_conditions",
+   "description": "症例・天候・相手・地形などの初期条件がプレイごとに変わる",
+   "player_action": "毎回、条件を読み直してから方針を決める",
+   "skill_expression": "パターン記憶でなく原理の理解で解ける",
+   "failure_mode": "前回の暗記解を貼ると失敗する",
+   "replay_value": "本質的なリプレイ性の土台",
+   "suitable_job_difficulties": [
+    "counterpart_variability",
+    "incomplete_information",
+    "dynamic_state"
+   ],
+   "unsuitable_cases": "検証コストが上がるためバリエーションは検証可能な数に絞る",
+   "age_complexity": "low",
+   "example_patterns": [
+    "3値ランダム症例",
+    "日替わり天候",
+    "客層の違い"
+   ],
+   "layer": "modifier",
+   "evidence_games": [
+    "Mini Metro",
+    "Tetris",
+    "Slay the Spire",
+    "Stardew Valley"
+   ]
+  },
+  {
+   "mechanic_id": "multiple_valid_solutions",
+   "description": "合格解が複数あり、方針の違いがそのまま個性になる",
+   "player_action": "自分の方針（安全重視/コスト重視等）で解を組む",
+   "skill_expression": "方針ごとの得失を理解して選べる",
+   "failure_mode": "解が多くても制約は実在し、無方針は落ちる",
+   "replay_value": "別方針でのクリアが動機になる",
+   "suitable_job_difficulties": [
+    "limited_resources",
+    "spatial_arrangement",
+    "counterpart_variability"
+   ],
+   "unsuitable_cases": "唯一解が本質の照合・検査業務",
+   "age_complexity": "low",
+   "example_patterns": [
+    "複数の成立献立",
+    "方針タグつき旅程"
+   ],
+   "layer": "modifier",
+   "evidence_games": [
+    "Mini Metro",
+    "SimCity",
+    "Slay the Spire",
+    "Return of the Obra Dinn",
+    "Stardew Valley",
+    "Pokémon Red/Blue",
+    "PowerWash Simulator"
+   ]
+  },
+  {
+   "mechanic_id": "score_optimization",
+   "description": "合格ラインの上に連続的な出来の良さがあり、上を目指せる",
+   "player_action": "クリア後も配分・手順を磨いて記録を上げる",
+   "skill_expression": "上位解への理解の深さが点に出る",
+   "failure_mode": "なし（上振れの動機づけ層）。合格判定と併用する",
+   "replay_value": "スコアアタック・自己ベスト",
+   "suitable_job_difficulties": [
+    "prioritization",
+    "limited_resources",
+    "quality_judgment"
+   ],
+   "unsuitable_cases": "点数だけが目的化して仕事の意味付けが消えないよう文言で担保",
+   "age_complexity": "low",
+   "example_patterns": [
+    "X線1回・見立て一発の完全クリア",
+    "残食ゼロ達成"
+   ],
+   "layer": "motivation",
+   "evidence_games": [
+    "Overcooked",
+    "Mini Metro",
+    "Tetris",
+    "Cooking Mama",
+    "Two Point Hospital"
+   ]
+  },
+  {
+   "mechanic_id": "collection_progression",
+   "description": "集める・図鑑が埋まる・段階的に増える長期動機",
+   "player_action": "未収集・未達成を狙って別条件に挑む",
+   "skill_expression": "コンプリートへの計画性",
+   "failure_mode": "なし（動機づけ層）。単体ではゲームにならない点に注意",
+   "replay_value": "全症例制覇・全職業制覇など",
+   "suitable_job_difficulties": [],
+   "unsuitable_cases": "challenge mechanic の代替にしない（Zukanは既にこの層）",
+   "age_complexity": "low",
+   "example_patterns": [
+    "職業図鑑",
+    "症例コンプリート"
+   ],
+   "layer": "motivation",
+   "evidence_games": [
+    "Pokémon Red/Blue"
+   ]
+  },
+  {
+   "mechanic_id": "persistent_learning",
+   "description": "プレイヤー自身の理解が次のプレイへ持ち越される長期動機（動機づけ層。challenge機構と必ず併用）",
+   "player_action": "前回の失敗から原理を学び、初見の課題に応用する",
+   "skill_expression": "転移可能な理解（なぜ息を止めるのか等）",
+   "failure_mode": "（動機づけ層のため単体の失敗状態は持たない）暗記で解ける設計と組むと学習が転移せず機能しない",
+   "replay_value": "理解の確認そのものが再挑戦動機になる",
+   "suitable_job_difficulties": [
+    "trial_and_error",
+    "quality_judgment",
+    "prediction"
+   ],
+   "unsuitable_cases": "variable_conditions と組み合わせないと暗記に落ちる",
+   "age_complexity": "low",
+   "example_patterns": [
+    "わざと失敗して原理を確かめられる設計"
+   ],
+   "layer": "motivation",
+   "evidence_games": [
+    "Slay the Spire",
+    "Stardew Valley",
+    "Pokémon Red/Blue",
+    "Zoombinis",
+    "Cooking Mama",
+    "The Oregon Trail"
+   ]
+  },
+  {
+   "mechanic_id": "self_quality_gate",
+   "description": "成果物を自分で良否判定してから提出する。提出後の差し戻しは高くつく",
+   "player_action": "基準と見比べ「これで出せるか」を自分で決める",
+   "skill_expression": "判定眼。ダメなものを出す前に気づける",
+   "failure_mode": "甘い自己判定が差し戻し・信用低下を招く",
+   "replay_value": "判定基準の理解が深まるほど一発通過率が上がる",
+   "suitable_job_difficulties": [
+    "quality_judgment",
+    "oversight_risk",
+    "irreversibility"
+   ],
+   "unsuitable_cases": "判定基準が画面から読み取れないと理不尽になる",
+   "age_complexity": "medium",
+   "example_patterns": [
+    "ブレ画像を届けるか撮り直すか",
+    "味見して出すか作り直すか"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "Phoenix Wright: Ace Attorney",
+    "Return of the Obra Dinn"
+   ]
+  },
+  {
+   "mechanic_id": "cooperative_coordination",
+   "description": "相互依存する複数の役割・担当へ仕事を割り振り、受け渡しを設計して共通目標を達成する（1人プレイでは役割・スタッフの采配として翻訳する）",
+   "player_action": "役割を分け、進捗や詰まりを伝え、必要に応じて担当を交代しながら成果物を受け渡す。",
+   "skill_expression": "全体の流れを見て重複や待ち時間を減らし、誰が次に何をすべきかを適切に調整できる。",
+   "failure_mode": "担当の重複、仕事の放置、受け渡し漏れ、または一人への負荷集中によって工程全体が停止する。",
+   "replay_value": "役割分担、受け渡し順、交代タイミングを変えて、より滑らかな協働方法を試せる。",
+   "suitable_job_difficulties": [
+    "simultaneous_demands",
+    "prioritization",
+    "time_pressure"
+   ],
+   "unsuitable_cases": "単独作業が本質の仕事。マルチプレイ前提の設計をそのまま持ち込まない",
+   "age_complexity": "medium — 役割は3〜5個に絞る",
+   "example_patterns": [
+    "修学旅行の5役割",
+    "厨房の分担",
+    "病院の受付→診察→検査の流れ"
+   ],
+   "evidence_games": [
+    "Overcooked"
+   ],
+   "layer": "challenge"
+  },
+  {
+   "mechanic_id": "rule_matching_verification",
+   "layer": "challenge",
+   "description": "規則・基準・証言と対象を突き合わせ、違反や矛盾を自分で発見する。規則は都度変わり得る",
+   "player_action": "規則文書と対象を交互に見比べ、食い違う箇所を指摘する",
+   "skill_expression": "効率的な照合順序・矛盾への嗅覚。規則の変更に気づける",
+   "failure_mode": "見落とし・誤指摘が実害（誤承認・冤罪・差し戻し）につながる",
+   "replay_value": "規則や対象が変わると照合ポイントも変わる",
+   "suitable_job_difficulties": [
+    "oversight_risk",
+    "incomplete_information",
+    "quality_judgment"
+   ],
+   "unsuitable_cases": "規則が1行で照合が自明な課題（クイズ化する）",
+   "age_complexity": "medium — 規則は絵と短文で3〜5項目に絞る",
+   "example_patterns": [
+    "書類と実物の照合",
+    "証言と証拠の矛盾探し",
+    "基準表と現場の突き合わせ"
+   ],
+   "evidence_games": [
+    "Papers, Please",
+    "Phoenix Wright: Ace Attorney",
+    "Return of the Obra Dinn",
+    "Zoombinis"
+   ]
+  }
+ ]
+}

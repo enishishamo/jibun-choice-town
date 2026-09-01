@@ -1,0 +1,291 @@
+{
+ "game_mappings": [
+  {
+   "title": "Papers, Please",
+   "normalized_mechanics": [
+    "partial_information",
+    "escalating_difficulty",
+    "time_pressure",
+    "risk_reward",
+    "spatial_optimization",
+    "resource_tradeoff",
+    "delayed_feedback",
+    "self_quality_gate"
+   ]
+  },
+  {
+   "title": "Overcooked",
+   "normalized_mechanics": [
+    "prioritization_queue",
+    "sequencing_dependency",
+    "time_pressure",
+    "resource_tradeoff",
+    "score_optimization"
+   ]
+  },
+  {
+   "title": "Phoenix Wright: Ace Attorney",
+   "normalized_mechanics": [
+    "partial_information",
+    "combination_search",
+    "dynamic_state",
+    "sequencing_dependency",
+    "limited_attempts",
+    "self_quality_gate"
+   ]
+  },
+  {
+   "title": "Mini Metro",
+   "normalized_mechanics": [
+    "spatial_optimization",
+    "dynamic_state",
+    "resource_tradeoff",
+    "prioritization_queue",
+    "escalating_difficulty",
+    "score_optimization",
+    "variable_conditions",
+    "multiple_valid_solutions"
+   ]
+  },
+  {
+   "title": "SimCity",
+   "normalized_mechanics": [
+    "dynamic_state",
+    "spatial_optimization",
+    "resource_tradeoff",
+    "partial_information",
+    "sequencing_dependency",
+    "delayed_feedback",
+    "multiple_valid_solutions"
+   ]
+  },
+  {
+   "title": "Tetris",
+   "normalized_mechanics": [
+    "spatial_optimization",
+    "limited_attempts",
+    "variable_conditions",
+    "dynamic_state",
+    "escalating_difficulty",
+    "risk_reward",
+    "score_optimization"
+   ]
+  },
+  {
+   "title": "Slay the Spire",
+   "normalized_mechanics": [
+    "combination_search",
+    "partial_information",
+    "resource_tradeoff",
+    "risk_reward",
+    "multiple_valid_solutions",
+    "persistent_learning",
+    "variable_conditions"
+   ]
+  },
+  {
+   "title": "Return of the Obra Dinn",
+   "normalized_mechanics": [
+    "partial_information",
+    "combination_search",
+    "spatial_optimization",
+    "sequencing_dependency",
+    "self_quality_gate",
+    "multiple_valid_solutions"
+   ]
+  },
+  {
+   "title": "Stardew Valley",
+   "normalized_mechanics": [
+    "resource_tradeoff",
+    "variable_conditions",
+    "delayed_feedback",
+    "sequencing_dependency",
+    "persistent_learning",
+    "prioritization_queue",
+    "multiple_valid_solutions"
+   ]
+  },
+  {
+   "title": "Pokémon Red/Blue",
+   "normalized_mechanics": [
+    "collection_progression",
+    "partial_information",
+    "combination_search",
+    "resource_tradeoff",
+    "risk_reward",
+    "persistent_learning",
+    "multiple_valid_solutions"
+   ]
+  },
+  {
+   "title": "Zoombinis",
+   "normalized_mechanics": [
+    "partial_information",
+    "combination_search",
+    "persistent_learning",
+    "limited_attempts",
+    "escalating_difficulty"
+   ]
+  },
+  {
+   "title": "Cooking Mama",
+   "normalized_mechanics": [
+    "persistent_learning",
+    "time_pressure",
+    "risk_reward",
+    "sequencing_dependency",
+    "score_optimization",
+    "dynamic_state"
+   ]
+  },
+  {
+   "title": "The Oregon Trail",
+   "normalized_mechanics": [
+    "resource_tradeoff",
+    "risk_reward",
+    "uncertainty_management",
+    "time_pressure",
+    "delayed_feedback",
+    "dynamic_state",
+    "persistent_learning"
+   ]
+  },
+  {
+   "title": "Two Point Hospital",
+   "normalized_mechanics": [
+    "dynamic_state",
+    "prioritization_queue",
+    "spatial_optimization",
+    "combination_search",
+    "sequencing_dependency",
+    "partial_information",
+    "delayed_feedback",
+    "resource_tradeoff",
+    "score_optimization"
+   ]
+  },
+  {
+   "title": "PowerWash Simulator",
+   "normalized_mechanics": [
+    "resource_tradeoff",
+    "partial_information",
+    "multiple_valid_solutions",
+    "sequencing_dependency"
+   ]
+  }
+ ],
+ "unmapped": [
+  {
+   "raw": "narrative_revelation_rewards",
+   "reason_no_fit": "A narrative reward/presentation layer, not a challenge structure."
+  },
+  {
+   "raw": "line_completion_clearing",
+   "reason_no_fit": "A game-specific board operation and success event rather than a reusable challenge structure."
+  },
+  {
+   "raw": "instant_restart",
+   "reason_no_fit": "Retry pacing and UX tuning, not a challenge mechanic."
+  },
+  {
+   "raw": "frozen_scene_investigation",
+   "reason_no_fit": "A game-specific investigation presentation format; its underlying challenge is already captured by partial_information."
+  },
+  {
+   "raw": "relationship_progression",
+   "reason_no_fit": "A progression/reward system rather than a challenge-level structure."
+  },
+  {
+   "raw": "visible_workspace_growth",
+   "reason_no_fit": "Visual progression feedback rather than a source of challenge."
+  },
+  {
+   "raw": "soft_failure_recovery",
+   "reason_no_fit": "Failure-severity and recovery tuning rather than a distinct challenge."
+  },
+  {
+   "raw": "recoverable_defeat",
+   "reason_no_fit": "Failure-state tuning rather than a challenge structure."
+  },
+  {
+   "raw": "characterized_puzzle_tokens",
+   "reason_no_fit": "Characterization and presentation applied to puzzle elements, not a challenge."
+  },
+  {
+   "raw": "journey_linked_puzzles",
+   "reason_no_fit": "A progression and framing structure connecting puzzles, not an individual challenge mechanic."
+  },
+  {
+   "raw": "recoverable_logic_failure",
+   "reason_no_fit": "Failure-severity tuning rather than a distinct challenge."
+  },
+  {
+   "raw": "visible_material_transformation",
+   "reason_no_fit": "Visual feedback showing task progress, not a challenge structure."
+  },
+  {
+   "raw": "forgiving_recipe_completion",
+   "reason_no_fit": "Pass/fail leniency tuning rather than a challenge mechanic."
+  },
+  {
+   "raw": "instant_coach_reaction",
+   "reason_no_fit": "Feedback presentation rather than a challenge."
+  },
+  {
+   "raw": "landmark_progress",
+   "reason_no_fit": "Journey-progress presentation rather than a challenge structure."
+  },
+  {
+   "raw": "visible_before_after_transformation",
+   "reason_no_fit": "Visual reward and progress feedback rather than a challenge."
+  },
+  {
+   "raw": "persistent_incremental_progress",
+   "reason_no_fit": "Save/progression behavior rather than a challenge-level mechanic."
+  },
+  {
+   "raw": "completion_by_subcomponent",
+   "reason_no_fit": "Task decomposition and completion accounting, without an inherent decision or constraint."
+  },
+  {
+   "raw": "highlight_remaining_work",
+   "reason_no_fit": "A visibility and assistance feature rather than a challenge."
+  },
+  {
+   "raw": "low_penalty_work_loop",
+   "reason_no_fit": "Penalty and accessibility tuning rather than a challenge structure."
+  },
+  {
+   "raw": "completion_timelapse",
+   "reason_no_fit": "A completion reward and presentation feature rather than a challenge."
+  }
+ ],
+ "new_mechanic_candidates": [
+  {
+   "mechanic_id": "cooperative_coordination",
+   "description": "複数の担当者が相互依存する仕事を分担し、受け渡しと担当変更を調整して共通目標を達成する。",
+   "player_action": "役割を分け、進捗や詰まりを伝え、必要に応じて担当を交代しながら成果物を受け渡す。",
+   "skill_expression": "全体の流れを見て重複や待ち時間を減らし、誰が次に何をすべきかを適切に調整できる。",
+   "failure_mode": "担当の重複、仕事の放置、受け渡し漏れ、または一人への負荷集中によって工程全体が停止する。",
+   "replay_value": "役割分担、受け渡し順、交代タイミングを変えて、より滑らかな協働方法を試せる。",
+   "suitable_job_difficulties": [
+    "simultaneous_demands",
+    "prioritization",
+    "time_pressure"
+   ],
+   "unsuitable_cases": "一人で完結する仕事、担当間の依存がない課題、または協力相手を安定して用意できないプレイ環境。",
+   "age_complexity": "medium — 役割を2〜3個に絞り、受け渡し先と待機状態を色やアイコンで明示する。",
+   "example_patterns": [
+    "cooperative_role_assignment",
+    "handoff_based_teamwork",
+    "dynamic_role_switching",
+    "調理役と配膳役が途中で交代する",
+    "医療チームが検査結果を次の担当へ渡す"
+   ],
+   "evidence_games": [
+    "Overcooked"
+   ]
+  }
+ ]
+}

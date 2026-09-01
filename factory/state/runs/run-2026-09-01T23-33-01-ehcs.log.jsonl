@@ -1,0 +1,6 @@
+{"at":"2026-09-01T23:33:01.807Z","type":"start","task":"Stage 2: Mechanics Library + job-mechanics map","artifact":"factory/taxonomy/mechanics-library.json"}
+{"at":"2026-09-01T23:33:01.836Z","type":"produce-done","iteration":1,"notes":"20 challenge mechanics (seed + research-derived), difficulty map, normalized game mappings"}
+{"at":"2026-09-01T23:33:14.072Z","type":"review-start","iteration":1,"promptFile":"factory/lab/stage2-review-prompt.md"}
+{"at":"2026-09-01T23:34:18.804Z","type":"review-done","iteration":1,"verdict":"FAIL","score":78,"blockers":0,"high":2}
+{"at":"2026-09-01T23:36:05.673Z","type":"repair-done","iteration":1,"actions":"Added layer field (challenge/modifier/motivation); moved score_optimization+collection_progression+persistent_learning to motivation layer (never substitutes for challenge); reframed persistent_learning failure_mode; added rule_matching_verification challenge mechanic (Papers Please / Ace Attorney / Obra Dinn / Zoombinis structures); removed loose mappings (Pokemon cooperative_coordination, PowerWash partial_information); evidence_games provenance now on all entries derived from corpus; job-mechanics-map regenerated over challenge+modifier only with motivation_layer listed separately."}
+{"at":"2026-09-01T23:36:05.702Z","type":"review-start","iteration":2,"promptFile":"factory/lab/stage2-review-prompt.md"}

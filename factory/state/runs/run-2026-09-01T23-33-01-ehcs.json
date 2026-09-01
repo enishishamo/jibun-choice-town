@@ -1,0 +1,32 @@
+{
+  "run_id": "run-2026-09-01T23-33-01-ehcs",
+  "task": "Stage 2: Mechanics Library + job-mechanics map",
+  "artifact": "factory/taxonomy/mechanics-library.json",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "review",
+  "iteration": 2,
+  "max_iterations": 3,
+  "verdict": "FAIL",
+  "issues": [
+    "HIGH: mechanics-library.json includes entries explicitly defined as motivation/reward layers rather than challenge structures: score_optimization and collection_progression both state they are not standalone challenges, violating criterion 1.",
+    "HIGH: persistent_learning describes player knowledge transfer, not an in-session challenge structure; its failure_mode is a design-quality warning rather than a player failure state."
+  ],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "Added layer field (challenge/modifier/motivation); moved score_optimization+collection_progression+persistent_learning to motivation layer (never substitutes for challenge); reframed persistent_learning failure_mode; added rule_matching_verification challenge mechanic (Papers Please / Ace Attorney / Obra Dinn / Zoombinis structures); removed loose mappings (Pokemon cooperative_coordination, PowerWash partial_information); evidence_games provenance now on all entries derived from corpus; job-mechanics-map regenerated over challenge+modifier only with motivation_layer listed separately."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T23-33-01-ehcs.review-1.json",
+      "elapsed_sec": 64.614
+    }
+  ],
+  "started_at": "2026-09-01T23:33:01.807Z",
+  "finished_at": null,
+  "stop_reason": null
+}

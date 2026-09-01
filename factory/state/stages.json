@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-01T23:07:30.568Z",
+  "updated_at": "2026-09-01T23:36:20.383Z",
   "stages": [
     {
       "id": 0,
@@ -30,7 +30,7 @@
     {
       "id": 1,
       "name": "Game Design Lab mini",
-      "status": "pending",
+      "status": "passed",
       "depends_on": [
         0
       ],
@@ -41,13 +41,20 @@
       ],
       "repair_count": 0,
       "stop_reason": null,
-      "runs": [],
-      "notes": []
+      "runs": [
+        "run-2026-09-01T23-33-01-4h3p"
+      ],
+      "notes": [
+        {
+          "at": "2026-09-01T23:36:20.329Z",
+          "text": "PASS score 98 (run-2026-09-01T23-33-01-4h3p). 15-game research corpus (codex-delegated), critic v2 rubric, difficulty taxonomy, lab structure."
+        }
+      ]
     },
     {
       "id": 2,
       "name": "Game Researcher + Mechanics Library",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         1
       ],
@@ -56,9 +63,11 @@
         "Mechanics stored as reusable entries (not title imitations) extending factory/taxonomy/",
         "Library validated by scan scripts + Codex review"
       ],
-      "repair_count": 0,
+      "repair_count": 1,
       "stop_reason": null,
-      "runs": [],
+      "runs": [
+        "run-2026-09-01T23-33-01-ehcs"
+      ],
       "notes": []
     },
     {
@@ -80,6 +89,10 @@
         {
           "at": "2026-09-01T23:07:30.539Z",
           "text": "Calibration decision needed before mass audits: Codex holds 'answer written in the order sheet' to be the forbidden anti-pattern, stricter than the project's C_required=partial baseline. See factory/projects/q1-improve-xray/loop-report.md HUMAN_REQUIRED section."
+        },
+        {
+          "at": "2026-09-01T23:25:07.287Z",
+          "text": "Calibration RESOLVED by user 2026-09-02: C_required=true is desirable; only C_alone_determines_answer=true (no player judgment left) is a quality problem. Rules updated in design-principles.md + game-critic-v2.md"
         }
       ]
     },

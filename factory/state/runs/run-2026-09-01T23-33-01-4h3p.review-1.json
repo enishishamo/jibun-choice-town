@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 98,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "factory/lab/research/games.json:8 — Corpus begins a complete set of 15 named games; titles through line 776 span work simulation, cooking, deduction, management, city building, spatial puzzle, collection/growth, roguelike, children’s logic, and educational simulation.",
+      "factory/lab/research/games.json:46 — Papers, Please has specific, non-boilerplate CORE LOOP, MASTERY, and REPLAY statements grounded in document inspection, changing rules, moral tradeoffs, and household survival.",
+      "factory/lab/research/games.json:153 — Phoenix Wright explicitly acknowledges its fixed solution and limited replay variation rather than overstating replayability.",
+      "factory/lab/research/games.json:365 — Slay the Spire accurately describes its combat/deck-building loop, novice–expert distinction, randomized adaptation, and replay structure.",
+      "factory/lab/research/games.json:418 — Return of the Obra Dinn accurately identifies distributed visual deduction, batch confirmation, mastery through peripheral evidence, and limited mechanical replay.",
+      "factory/lab/research/games.json:589 — Zoombinis provides a meaningful child/educational loop based on hypothesis testing, controlled variables, error limits, and changing attribute combinations.",
+      "factory/lab/research/games.json:817 — PowerWash Simulator distinguishes low punitive failure from skill in coverage planning, tool choice, positioning, and missed-area detection.",
+      "factory/rules/game-critic-v2.md:11 — The rubric covers is-it-a-game, meaningful choice, failure, feedback, skill expression, mastery, replay, variation, constraints, and action-result causality.",
+      "factory/rules/game-critic-v2.md:21 — The rubric separately covers C_required, C_alone_determines_answer, player judgment, exploitability, fixed progression, spam success, and all-select success.",
+      "factory/rules/game-critic-v2.md:31 — All four required statements are present, including NOVICE VS EXPERT DIFFERENCE.",
+      "factory/rules/game-critic-v2.md:38 — CAREER_AUTHENTICITY and GAME_QUALITY are distinct axes, and line 42 requires both to pass.",
+      "factory/rules/game-critic-v2.md:46 — Calibration correctly treats C_required=true as desirable and C_alone_determines_answer=true with no remaining judgment as the defect.",
+      "factory/harness/design-principles.md:19 — The calibrated conditions explicitly require C_required=true, C_alone_determines_answer=false, player judgment, and action-result causality.",
+      "factory/harness/design-principles.md:27 — Age adaptation is limited to cognitive load, text, and UI complexity; the game-quality bar is not lowered.",
+      "factory/lab/README.md:14 — The pipeline places job-specific difficulty before mechanic matching and explicitly prohibits mechanic-first design.",
+      "factory/lab/README.md:23 — The lab’s iron rule reiterates that mechanics may not be pasted onto jobs; job-specific difficulty must be extracted first.",
+      "factory/lab/job-difficulty-taxonomy.md:3 — The taxonomy independently establishes difficulty-first design and routes difficulty to mechanics afterward.",
+      "factory/lab/job-difficulty-taxonomy.md:11 — Fourteen job-specific difficulty categories include real-work manifestations and child-oriented translations without removing judgment."
+    ],
+    "recommended_actions": []
+  },
+  "elapsed_sec": 56.671
+}

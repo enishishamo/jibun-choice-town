@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "blockers": [],
+    "high": [
+      "mechanics-library.json includes entries explicitly defined as motivation/reward layers rather than challenge structures: score_optimization and collection_progression both state they are not standalone challenges, violating criterion 1.",
+      "persistent_learning describes player knowledge transfer, not an in-session challenge structure; its failure_mode is a design-quality warning rather than a player failure state."
+    ],
+    "medium": [
+      "variable_conditions, multiple_valid_solutions, and escalating_difficulty are primarily scenario/solution-space/progression modifiers. They may remain useful metadata, but should be separated from core challenge mechanics or clearly typed as modifiers.",
+      "The cooperative_coordination entry contains evidence_games:[\"Overcooked\"], so the entry is not completely title-independent even though its functional description is reusable.",
+      "Some corpus normalization is semantically loose: Pokémon Red/Blue maps team composition to cooperative_coordination despite lacking the described handoffs/work allocation, and PowerWash Simulator maps self-directed task order to sequencing_dependency despite no required dependency being identified.",
+      "Recurring rule-application, contradiction-detection, and constraint-validation structures across Papers, Please, Phoenix Wright, Return of the Obra Dinn, and Zoombinis are only indirectly represented through partial_information, combination_search, and self_quality_gate. A dedicated rule_constraint_validation challenge or an explicit equivalence justification is warranted."
+    ],
+    "low": [
+      "collection_progression has an empty suitable_job_difficulties array. This is structurally valid but further confirms that it does not belong in the job-difficulty-driven challenge library.",
+      "Only cooperative_coordination records evidence_games; grounding provenance is inconsistent across entries."
+    ],
+    "evidence": [
+      "factory/taxonomy/mechanics-library.json — 20 entries exist, all IDs are unique snake_case and every entry contains all ten required fields.",
+      "factory/taxonomy/mechanics-library.json — score_optimization says \"なし（上振れの動機づけ層）\" and collection_progression says \"なし（動機づけ層）。単体ではゲームにならない\", directly conflicting with the challenge-only requirement.",
+      "factory/taxonomy/mechanics-library.json — persistent_learning defines retained knowledge in the player's head and gives a design defect, \"暗記で解ける設計\", as its failure mode.",
+      "factory/taxonomy/mechanics-library.json — cooperative_coordination includes the game-specific field evidence_games:[\"Overcooked\"].",
+      "factory/taxonomy/job-mechanics-map.json — every mapped mechanic ID exists in the library, and the mapping exactly matches the inverse of suitable_job_difficulties for all entries.",
+      "factory/lab/job-difficulty-taxonomy.md — all 14 difficulty IDs referenced by the library and map are defined in the taxonomy.",
+      "factory/taxonomy/mechanics-taxonomy.md — the original operation layer remains present with all 16 interaction categories and has not been deleted.",
+      "factory/lab/research/games.json — contains 15 games; every normalized_mechanics value resolves to an existing library ID, and every library ID is referenced at least once.",
+      "factory/lab/research/games.json — the corpus repeatedly identifies rule checking, discrepancy/contradiction detection, classification, and evidence validation, but the library has no direct challenge-level entry for that recurring family.",
+      "factory/taxonomy/mechanics-library.json — collectively covers the requested dominant families, including attempts, pressure, incomplete information, dynamic state, tradeoffs, sequencing, spatial optimization, risk, delay, uncertainty, combination search, prioritization, escalation, variation, multiple solutions, scoring, collection, and learning."
+    ],
+    "recommended_actions": [
+      "Introduce an explicit type/layer field and move score_optimization and collection_progression to a motivation layer; move persistent_learning to a learning/meta-progression layer.",
+      "Treat variable_conditions, multiple_valid_solutions, and escalating_difficulty as typed challenge modifiers, or rewrite them with concrete player decisions and player-level failure states.",
+      "Remove game titles from individual reusable entries; keep source provenance in a separate evidence mapping keyed by mechanic_id.",
+      "Add rule_constraint_validation/discrepancy_detection as a challenge mechanic, or document a rigorous equivalence showing how existing entries fully cover that recurring corpus structure.",
+      "Audit normalized_mechanics semantically, especially cooperative_coordination for Pokémon Red/Blue and sequencing_dependency for PowerWash Simulator."
+    ]
+  },
+  "elapsed_sec": 64.614
+}

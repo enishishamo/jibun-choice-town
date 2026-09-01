@@ -1,0 +1,97 @@
+{
+ "note": "Job-difficulty -> candidate mechanics (challenge+modifier layers only; motivation-layer ids listed in motivation_layer and are added on top, never instead). GENERATED from mechanics-library.json. Workflow: identify the job's 2-4 difficulties first (factory/lab/job-difficulty-taxonomy.md), then pick here. Never the reverse.",
+ "updated_at": "2026-09-02",
+ "mapping": {
+  "irreversibility": [
+   "limited_attempts",
+   "self_quality_gate"
+  ],
+  "safety_tradeoff": [
+   "limited_attempts",
+   "resource_tradeoff",
+   "risk_reward"
+  ],
+  "limited_resources": [
+   "limited_attempts",
+   "resource_tradeoff",
+   "risk_reward",
+   "combination_search",
+   "multiple_valid_solutions"
+  ],
+  "time_pressure": [
+   "time_pressure",
+   "sequencing_dependency",
+   "prioritization_queue",
+   "escalating_difficulty",
+   "cooperative_coordination"
+  ],
+  "simultaneous_demands": [
+   "time_pressure",
+   "dynamic_state",
+   "prioritization_queue",
+   "escalating_difficulty",
+   "cooperative_coordination"
+  ],
+  "dynamic_state": [
+   "time_pressure",
+   "dynamic_state",
+   "delayed_feedback",
+   "uncertainty_management",
+   "variable_conditions"
+  ],
+  "incomplete_information": [
+   "partial_information",
+   "uncertainty_management",
+   "variable_conditions",
+   "rule_matching_verification"
+  ],
+  "oversight_risk": [
+   "partial_information",
+   "self_quality_gate",
+   "rule_matching_verification"
+  ],
+  "trial_and_error": [
+   "partial_information",
+   "delayed_feedback"
+  ],
+  "prediction": [
+   "dynamic_state",
+   "spatial_optimization",
+   "risk_reward",
+   "delayed_feedback",
+   "uncertainty_management"
+  ],
+  "prioritization": [
+   "resource_tradeoff",
+   "sequencing_dependency",
+   "combination_search",
+   "prioritization_queue",
+   "cooperative_coordination"
+  ],
+  "spatial_arrangement": [
+   "sequencing_dependency",
+   "spatial_optimization",
+   "multiple_valid_solutions"
+  ],
+  "counterpart_variability": [
+   "combination_search",
+   "variable_conditions",
+   "multiple_valid_solutions"
+  ],
+  "quality_judgment": [
+   "self_quality_gate",
+   "rule_matching_verification"
+  ]
+ },
+ "design_guidance": {
+  "combine": "1つのQ1には challenge mechanic を1〜3個。主役1つ+補助1〜2つ。4つ以上は小学生には過積載",
+  "always_add": "variable_conditions か multiple_valid_solutions のどちらかを入れると replay が構造的に生まれる",
+  "motivation_layer": "score_optimization / collection_progression は動機づけ層。単体でゲームにしない",
+  "verify": "選んだ mechanic が C_required / player_judgment_required / action_changes_result を実装として満たすかを game-critic-v2.md で確認する"
+ },
+ "motivation_layer": [
+  "score_optimization",
+  "collection_progression",
+  "persistent_learning"
+ ]
+}
