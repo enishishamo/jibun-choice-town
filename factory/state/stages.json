@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-01T23:44:17.166Z",
+  "updated_at": "2026-09-01T23:51:25.380Z",
   "stages": [
     {
       "id": 0,
@@ -79,7 +79,7 @@
     {
       "id": 3,
       "name": "Existing JIBUN CHOICE game audit",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         0
       ],
@@ -99,13 +99,17 @@
         {
           "at": "2026-09-01T23:25:07.287Z",
           "text": "Calibration RESOLVED by user 2026-09-02: C_required=true is desirable; only C_alone_determines_answer=true (no player judgment left) is a quality problem. Rules updated in design-principles.md + game-critic-v2.md"
+        },
+        {
+          "at": "2026-09-01T23:51:25.323Z",
+          "text": "39/39 audited by Codex under calibrated critic v2. avgGQ62/avgCA74. Weakest: lab_check(18), clue_board(31), line_debug(39), rx_check(42), timetable(43). 10 fake-choice flags. NOTE: current xray_shoot (bootstrap-repaired) scores GQ86/CA89 under the calibrated rubric — the old 58 was pre-calibration."
         }
       ]
     },
     {
       "id": 4,
       "name": "Single Q1 autonomous improvement",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         3
       ],

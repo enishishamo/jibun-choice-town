@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "ranking": [
+      "A",
+      "C",
+      "B",
+      "D"
+    ],
+    "scores": {
+      "A": 82,
+      "B": 68,
+      "C": 76,
+      "D": 40
+    },
+    "per_proposal_notes": {
+      "A": "Best translation of radiographic positioning and collimation into player judgment. The player must interpret the request, place a clinically sufficient frame, and balance coverage against unnecessary exposure; the source information is required but does not alone specify exact frame boundaries. It fits the one-patient story and can replace the current shallow body-part buttons without rebuilding the whole loop. Its main weakness is limited replay if anatomy, requested views, and acceptable framing remain fixed.",
+      "B": "Highly feasible and authentically represents adapting exposure conditions to body habitus, but the proposed three body sizes mapped to three strength buttons risks becoming a direct rule-matching quiz. Once the mapping is learned, the displayed body size nearly determines the answer, leaving little strategy or mastery. Case variation does not help if case type never changes the exposure decision.",
+      "C": "Offers the most activity and combinatorial variation, but it combines exposure selection, breathing timing, quality gating, magnifier scanning, six-region localization, and abnormality reporting. That is ambitious for a small smartphone rework and risks a long sequence of individually shallow tasks. The scanning mechanic may become mandatory dragging rather than judgment, while asking the technologist to identify and report pathology can blur the boundary between producing diagnostically adequate images and physicians' diagnostic interpretation.",
+      "D": "Prioritization can create meaningful choices only if patients have differing urgency, constraints, and consequences; none are specified. As written, choosing among three chest, arm, and abdominal patients is weakly grounded in the radiographer's core judgment and likely becomes arbitrary ordering or throughput play. It also exceeds small scope and directly conflicts with the medical world's one-patient narrative."
+    },
+    "recommended": "A",
+    "modifications_to_recommended": [
+      "Use large snap zones and forgiving clinical tolerance bands so success depends on coverage judgment rather than finger precision.",
+      "Show a required anatomy silhouette only after exposure, not while framing, so the player must learn landmarks rather than trace an answer overlay.",
+      "Vary patient height, posture, and target request while preserving one patient per playthrough.",
+      "Score framing continuously: missing required anatomy is unusable, adequate coverage passes, and excessive coverage consumes additional exposure budget.",
+      "Make the request specify the clinical purpose and required structures without naming the exact screen region or frame dimensions.",
+      "Retain breathing timing and the self-quality gate, but remove the current redundant three-button body-part selection.",
+      "Include occasional near-miss images where coverage, motion blur, and excess field size must be distinguished before accepting or retaking."
+    ],
+    "risks_to_watch": [
+      "Turning anatomical framing into pixel-perfect drag dexterity.",
+      "Using a visible target outline that makes placement automatic.",
+      "Keeping only one fixed chest frame, which would reduce replay to memorization.",
+      "Rewarding overly broad fields despite the ALARA principle.",
+      "Making exposure-condition choices a fixed small lookup table.",
+      "Treating abnormality diagnosis as the radiographer's primary responsibility.",
+      "Allowing repeated retakes or brute-force placement without a consequential exposure cost."
+    ]
+  },
+  "output": "{\n  \"ranking\": [\"A\", \"C\", \"B\", \"D\"],\n  \"scores\": {\n    \"A\": 82,\n    \"B\": 68,\n    \"C\": 76,\n    \"D\": 40\n  },\n  \"per_proposal_notes\": {\n    \"A\": \"Best translation of radiographic positioning and collimation into player judgment. The player must interpret the request, place a clinically sufficient frame, and balance coverage against unnecessary exposure; the source information is required but does not alone specify exact frame boundaries. It fits the one-patient story and can replace the current shallow body-part buttons without rebuilding the whole loop. Its main weakness is limited replay if anatomy, requested views, and acceptable framing remain fixed.\",\n    \"B\": \"Highly feasible and authentically represents adapting exposure conditions to body habitus, but the proposed three body sizes mapped to three strength buttons risks becoming a direct rule-matching quiz. Once the mapping is learned, the displayed body size nearly determines the answer, leaving little strategy or mastery. Case variation does not help if case type never changes the exposure decision.\",\n    \"C\": \"Offers the most activity and combinatorial variation, but it combines exposure selection, breathing timing, quality gating, magnifier scanning, six-region localization, and abnormality reporting. That is ambitious for a small smartphone rework and risks a long sequence of individually shallow tasks. The scanning mechanic may become mandatory dragging rather than judgment, while asking the technologist to identify and report pathology can blur the boundary between producing diagnostically adequate images and physicians' diagnostic interpretation.\",\n    \"D\": \"Prioritization can create meaningful choices only if patients have differing urgency, constraints, and consequences; none are specified. As written, choosing among three chest, arm, and abdominal patients is weakly grounded in the radiographer's core judgment and likely becomes arbitrary ordering or throughput play. It also exceeds small scope and directly conflicts with the medical world's one-patient narrative.\"\n  },\n  \"recommended\": \"A\",\n  \"modifications_to_recommended\": [\n    \"Use large snap zones and forgiving clinical tolerance bands so success depends on coverage judgment rather than finger precision.\",\n    \"Show a required anatomy silhouette only after exposure, not while framing, so the player must learn landmarks rather than trace an answer overlay.\",\n    \"Vary patient height, posture, and target request while preserving one patient per playthrough.\",\n    \"Score framing continuously: missing required anatomy is unusable, adequate coverage passes, and excessive coverage consumes additional exposure budget.\",\n    \"Make the request specify the clinical purpose and required structures without naming the exact screen region or frame dimensions.\",\n    \"Retain breathing timing and the self-quality gate, but remove the current redundant three-button body-part selection.\",\n    \"Include occasional near-miss images where coverage, motion blur, and excess field size must be distinguished before accepting or retaking.\"\n  ],\n  \"risks_to_watch\": [\n    \"Turning anatomical framing into pixel-perfect drag dexterity.\",\n    \"Using a visible target outline that makes placement automatic.\",\n    \"Keeping only one fixed chest frame, which would reduce replay to memorization.\",\n    \"Rewarding overly broad fields despite the ALARA principle.\",\n    \"Making exposure-condition choices a fixed small lookup table.\",\n    \"Treating abnormality diagnosis as the radiographer's primary responsibility.\",\n    \"Allowing repeated retakes or brute-force placement without a consequential exposure cost.\"\n  ]\n}",
+  "elapsed_sec": 39.126
+}
