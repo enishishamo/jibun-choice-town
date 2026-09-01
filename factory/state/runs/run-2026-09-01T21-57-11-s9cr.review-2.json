@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "status": "CODEX_TIMEOUT",
+  "error": "timed out after 600s",
+  "elapsed_sec": 3339.508
+}

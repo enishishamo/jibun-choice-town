@@ -79,25 +79,46 @@ function runCodexOnce(prompt) {
         "--output-last-message", lastMsgFile,
         "-",
       ],
-      { stdio: ["pipe", "pipe", "pipe"] },
+      // detached: own process group, so the timeout can kill codex AND its
+      // children (otherwise grandchildren keep stdio open and we wait forever).
+      { stdio: ["pipe", "pipe", "pipe"], detached: true },
     );
     let stdout = "";
     let stderr = "";
     let timedOut = false;
+    let settled = false;
+    const killGroup = (sig) => {
+      try {
+        process.kill(-child.pid, sig);
+      } catch {
+        try { child.kill(sig); } catch { /* already gone */ }
+      }
+    };
     const timer = setTimeout(() => {
       timedOut = true;
-      child.kill("SIGTERM");
-      setTimeout(() => child.kill("SIGKILL"), 5000).unref();
+      killGroup("SIGTERM");
+      setTimeout(() => killGroup("SIGKILL"), 5000);
+      // Hard fallback: resolve even if stdio never closes (orphaned pipes).
+      setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          resolve({ kind: "timeout", stdout, stderr, elapsed: (Date.now() - started) / 1000 });
+        }
+      }, 10000);
     }, timeoutSec * 1000);
 
     child.stdout.on("data", (d) => (stdout += d));
     child.stderr.on("data", (d) => (stderr += d));
     child.on("error", (err) => {
       clearTimeout(timer);
+      if (settled) return;
+      settled = true;
       resolve({ kind: "spawn_error", error: String(err), elapsed: (Date.now() - started) / 1000 });
     });
     child.on("close", (code) => {
       clearTimeout(timer);
+      if (settled) return;
+      settled = true;
       const elapsed = (Date.now() - started) / 1000;
       if (timedOut) return resolve({ kind: "timeout", stdout, stderr, elapsed });
       let lastMsg = "";

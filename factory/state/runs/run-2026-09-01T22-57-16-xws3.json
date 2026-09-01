@@ -1,0 +1,50 @@
+{
+  "run_id": "run-2026-09-01T22-57-16-xws3",
+  "task": "Re-review of repaired XrayGame (xray_shoot) after run-2026-09-01T21-57-11-s9cr repair (iter-2 review lost to reviewer timeout)",
+  "artifact": "src/q1/XrayGame.tsx",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "finished",
+  "iteration": 3,
+  "max_iterations": 3,
+  "verdict": "FAIL",
+  "issues": [
+    "BLOCKER: C_required is not satisfied: the code requires opening the order card, but never verifies or mechanically requires using its information. A player can open-and-ignore it, choose the visually obvious chest option, and shoot when the UI explicitly says the breathing has stopped.",
+    "BLOCKER: The instruction card directly reveals both mechanical answers—select the chest/lungs and press the shutter at the stopped-breath phase—matching the forbidden 'reading instructions reveals the answer button' pattern.",
+    "HIGH: Replay depth is weak: a replay changes only which of three haze states is displayed; there is no alternative technique, tradeoff, or strategy to try.",
+    "HIGH: Mastery is shallow and largely memorization: skilled play means repeating the single prescribed sequence and recognizing an intentionally conspicuous white haze."
+  ],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "Iteration-2 repair: (1) removed all answer-repeating guidance — shoot screen no longer restates the order sheet's timing rule; breath labels are now neutral observations; the only place the timing rule and target part exist is the order sheet (C). (2) Body-part choice now has real consequences: any part can be shot; delivering a wrong-part image is rejected by the doctor and counts as a wasted exposure (X-ray burden — a real professional constraint stated in the order). No more blocked-until-correct gate. (3) Lung reading de-guided: tapping a lung only focuses it; the haze must be spotted visually; findings submission judged with misread counter. (4) Hold window tightened 1400->1000ms. (5) E screen now reports wasted shots + retakes + misreads. verify battery PASS."
+    },
+    {
+      "iteration": 2,
+      "actions": "Iteration-3 repair addressing brute-force + consequence blockers: (1) X-ray exposure budget — every shutter press consumes 1 of 5 exposures (stated in the order sheet as patient burden); exceeding the budget FAILS the case. (2) Wrong finding submitted twice FAILS the case (delayed diagnosis). (3) A failed case restarts with a NEW random case, so brute-forced answers do not carry over. (4) Case now has 3 variants: haze right / haze left / clean lungs — 'どちらもきれい' is a real correct answer, killing pattern-matching. (5) Findings unlock only after observing both lungs. (6) Part choice labels no longer contain 肺 (order says 肺, player maps to むね). (7) E screen reports exposures/misreads/attempts; perfect play distinguished. verify battery PASS."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T22-57-16-xws3.review-1.json",
+      "elapsed_sec": 44.033
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T22-57-16-xws3.review-2.json",
+      "elapsed_sec": 46.859
+    },
+    {
+      "iteration": 3,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-01T22-57-16-xws3.review-3.json",
+      "elapsed_sec": 43.138
+    }
+  ],
+  "started_at": "2026-09-01T22:57:16.819Z",
+  "finished_at": "2026-09-01T23:05:01.891Z",
+  "stop_reason": "max_iterations_reached"
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "blockers": [
+      "C_required=false: opening the order sheet is mechanically required, but using or understanding its job-specific information is not. With C hidden, a player can guess the chest, try shutter timings, inspect feedback, and eventually succeed.",
+      "Success can be guaranteed by selecting options until one works: wrong findings only increment a counter and leave every answer enabled, so the player can submit all three findings without interpreting the image."
+    ],
+    "high": [
+      "The shooting-location decision is strongly guided: the order explicitly says 肺 and the matching choice is labeled むね（肺）, making this essentially reading the instruction and pressing the answer.",
+      "Failures have weak consequences. Wrong locations, blurred images, and misreads cannot end the case or materially alter the delivered outcome; they only force or invite retry and change summary counters.",
+      "Replay variation is shallow: only the haze side changes, while the optimal procedure and timing remain identical on every play."
+    ],
+    "medium": [
+      "Comparing both lungs is suggested but not required; finding choices appear after inspecting only one lung, and a correct answer immediately completes the task.",
+      "The core loop is mostly a fixed sequence of order → location → timed shutter → accept/retry → finding. Only shutter timing and visual side recognition provide meaningful skill.",
+      "Mastery exists as fewer retakes, wasted shots, and misreads, but there is no scoring threshold, resource limit, or changed outcome that makes those distinctions consequential."
+    ],
+    "low": [
+      "The result screen calls every completed run a diagnostic-quality success even when the recorded history contains many avoidable exposures or misreads."
+    ],
+    "evidence": [
+      "factory/harness/design-principles.md:19 — C must be required for success.",
+      "factory/harness/design-principles.md:24 — obvious choices, fixed progression, selecting everything, and instruction-revealed answers are forbidden.",
+      "factory/rules/game-design-rules.md:45 — reviewers must test whether the game can be cleared with C hidden.",
+      "src/q1/XrayGame.tsx:79 — opening the order sheet merely sets a boolean; comprehension is never tested.",
+      "src/q1/XrayGame.tsx:88 — the order directly states that the target is the lungs.",
+      "src/q1/XrayGame.tsx:92 — the order directly states that the shutter must be used while breath is held.",
+      "src/q1/XrayGame.tsx:125 — progression checks only whether the order was opened, not whether its information was used.",
+      "src/q1/XrayGame.tsx:165 — shutter timing directly produces sharp or blurred quality, providing a genuine skill-dependent result.",
+      "src/q1/XrayGame.tsx:179 — only chest is accepted, so other location choices are deterministic wrong answers.",
+      "src/q1/XrayGame.tsx:223 — wrong location and blur block advancement and provide feedback, establishing a retry loop.",
+      "src/q1/XrayGame.tsx:268 — finding choices unlock after viewing just one lung.",
+      "src/q1/XrayGame.tsx:283 — choosing the haze side immediately succeeds regardless of whether both lungs were compared.",
+      "src/q1/XrayGame.tsx:288 — wrong findings only increment misreads; choices remain available for exhaustive selection.",
+      "src/q1/XrayGame.tsx:307 — mastery is represented only through accumulated error counters.",
+      "src/q1/XrayGame.tsx:311 — the successful diagnostic outcome is fixed for every completed run.",
+      "src/q1/XrayGame.tsx:325 — actions alter only the performance-summary wording on the final game screen.",
+      "src/q1/BodyInsideView.tsx:16 — replay variation mirrors the same haze between the two lungs.",
+      "src/q1/BodyInsideView.tsx:54 — the haze is directly visible on the affected side, supplying the final answer visually."
+    ],
+    "recommended_actions": [
+      "Replace the fixed lung order with several cases whose target, projection, or capture constraint varies, so the current order data must be interpreted and cannot be solved by memorizing one route.",
+      "Make C usage semantic rather than ceremonial: derive the valid setup from case data and require a setup combination that cannot be recovered cheaply through guessing.",
+      "Require inspection of both lungs before enabling the finding submission, and use observations gathered from each side in the decision.",
+      "Prevent exhaustive answer selection by committing the report, imposing a meaningful exposure or accuracy budget, or restarting the case after an incorrect report.",
+      "Make mistakes affect the final outcome beyond summary text, while retaining child-friendly retry—for example, grade image usefulness and patient burden and require both to meet a clear threshold.",
+      "Add replayable variation that changes the reasoning or operation, not merely whether the visible haze appears on the left or right."
+    ]
+  },
+  "elapsed_sec": 46.859
+}

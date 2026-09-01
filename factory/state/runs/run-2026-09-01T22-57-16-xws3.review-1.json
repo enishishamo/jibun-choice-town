@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 54,
+    "blockers": [
+      "C_required=false: opening the request card is mechanically required, but understanding its job-specific information is not. The shooting screen repeats the exact timing instruction, and wrong body-part choices can be corrected through explicit feedback until chest is selected."
+    ],
+    "high": [
+      "The lung-reading task is overly guided: tapping either lung explicitly states whether it contains haze or is clear, effectively revealing which answer button to press.",
+      "The body-part decision is fixed progression disguised as a choice: there is one invariant correct option, unlimited consequence-free attempts, and feedback points the player directly back to the stated answer."
+    ],
+    "medium": [
+      "Failure has little lasting consequence. Mistimed shots and wrong findings only delay completion; retries are unlimited and the successful clinical outcome is guaranteed.",
+      "Replay variation changes only the haze from left to right. The strategy and interaction sequence remain identical, so there is little to try differently beyond reducing recorded mistakes.",
+      "The strongest mastery opportunity is shutter timing, but the hold phase is explicitly labeled and has a generous 1400 ms window, limiting the skill ceiling."
+    ],
+    "low": [
+      "The final screen records retakes and misreads in text, but those counters do not change the substantive result delivered to the shell."
+    ],
+    "evidence": [
+      "factory/harness/design-principles.md:19 — C must be necessary to succeed, not merely present or opened.",
+      "factory/harness/design-principles.md:24 — obvious choices, fixed progression, answer-revealing instructions, and fake choices are forbidden.",
+      "src/q1/XrayGame.tsx:74 — opening the request only sets the boolean orderOpened; comprehension is not tested.",
+      "src/q1/XrayGame.tsx:83 — the request states that the target is the lungs.",
+      "src/q1/XrayGame.tsx:116 — progression checks only whether the request was opened.",
+      "src/q1/XrayGame.tsx:124 — every non-chest selection is rejected with feedback directing the player back to the request.",
+      "src/q1/XrayGame.tsx:145 — after the request, the task bar independently reveals the required action: shoot while breath is held.",
+      "src/q1/XrayGame.tsx:151 — the current breathing phase explicitly displays the hold state.",
+      "src/q1/XrayGame.tsx:159 — shutter timing genuinely changes image quality, so action_changes_result is present.",
+      "src/q1/XrayGame.tsx:182 — a mistimed shot visibly produces a blurred image.",
+      "src/q1/XrayGame.tsx:193 — the player can retake the image, providing a functional failure-and-retry loop.",
+      "src/q1/XrayGame.tsx:206 — a blurred image cannot advance, giving timing failure a real intermediate consequence.",
+      "src/q1/XrayGame.tsx:240 — tapping a lung explicitly tells the player whether that side contains the haze.",
+      "src/q1/XrayGame.tsx:250 — answer choices appear after inspecting only one lung; comparison of both lungs is not required.",
+      "src/q1/XrayGame.tsx:265 — selecting the randomized haze side is the sole completion condition.",
+      "src/q1/XrayGame.tsx:270 — an incorrect finding only increments a counter and leaves the same choices available.",
+      "src/q1/XrayGame.tsx:306 — mastery is represented by zero retakes and zero misreads, but only as result text.",
+      "src/q1/BodyInsideView.tsx:16 — replay variation merely mirrors the same haze graphic across the center line.",
+      "src/q1/gameTypes.ts:10 — onComplete is intended to be called only after the challenge is solved."
+    ],
+    "recommended_actions": [
+      "Remove the duplicated timing answer from the shooting screen and require the player to derive the correct phase from the request plus a less explicit breathing signal.",
+      "Replace the open-card boolean gate with a mechanic that makes request details operational, such as configuring body region, projection, or breath instruction before imaging, with distinct resulting images.",
+      "Do not state the lung diagnosis after a tap. Let players inspect visual evidence, compare both sides, and commit an independent finding.",
+      "Require inspection of both lungs or collect evidence markers before permitting a report, while ensuring that selecting every region is not an automatic solution.",
+      "Add case variation that changes relevant evidence or constraints, not only left-right placement, so a second play supports a genuinely different decision.",
+      "Give errors a meaningful but child-appropriate consequence, such as a limited image-quality budget, patient-comfort cost, or scored diagnostic confidence, while retaining retry."
+    ]
+  },
+  "elapsed_sec": 44.033
+}

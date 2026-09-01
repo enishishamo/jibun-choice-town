@@ -6,10 +6,14 @@ interface Props {
   inside: boolean;
   /** 中が見えているとき、どちらの肺を光らせるか */
   focus?: "right" | "left" | null;
+  /** 白いモヤ（＝何かたまっている）を出す側。none なら健康な肺。症例ごとに変えられる */
+  hazeSide?: "right" | "left" | "none";
   onPickLung?: (side: "right" | "left") => void;
 }
 
-export default function BodyInsideView({ inside, focus = null, onPickLung }: Props) {
+export default function BodyInsideView({ inside, focus = null, hazeSide = "right", onPickLung }: Props) {
+  // Mirror the haze across the body's center line (x=120) for left-lung cases.
+  const hx = (x: number) => (hazeSide === "left" ? 240 - x : x);
   return (
     <svg className={`body-view ${inside ? "inside" : ""}`} viewBox="0 0 240 250" role="img" aria-label="からだの絵">
       {/* ベッド */}
@@ -47,11 +51,11 @@ export default function BodyInsideView({ inside, focus = null, onPickLung }: Pro
           fill="#f0b8bd" stroke="#d99aa2" strokeWidth="3"
           onClick={() => onPickLung?.("left")}
         />
-        {/* 右の肺の白いモヤ（＝何かたまっている） */}
-        <g className="haze">
-          <circle cx="88" cy="150" r="19" fill="#fdfaf2" opacity="0.85" />
-          <circle cx="98" cy="163" r="13" fill="#fdfaf2" opacity="0.75" />
-          <circle cx="80" cy="164" r="11" fill="#fdfaf2" opacity="0.7" />
+        {/* 白いモヤ（＝何かたまっている）。hazeSide の肺に出る（none なら無し） */}
+        <g className="haze" style={hazeSide === "none" ? { display: "none" } : undefined}>
+          <circle cx={hx(88)} cy="150" r="19" fill="#fdfaf2" opacity="0.85" />
+          <circle cx={hx(98)} cy="163" r="13" fill="#fdfaf2" opacity="0.75" />
+          <circle cx={hx(80)} cy="164" r="11" fill="#fdfaf2" opacity="0.7" />
         </g>
         {/* 心臓 */}
         <path d="M120 150 q10 -14 20 -2 q8 10 -20 28 q-28 -18 -20 -28 q10 -12 20 2 z" fill="#e79a9a" stroke="#cf8383" strokeWidth="2.5" opacity="0.9" />

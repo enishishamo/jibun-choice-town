@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "blockers": [
+      "C_required is not satisfied: the code requires opening the order card, but never verifies or mechanically requires using its information. A player can open-and-ignore it, choose the visually obvious chest option, and shoot when the UI explicitly says the breathing has stopped.",
+      "The instruction card directly reveals both mechanical answers—select the chest/lungs and press the shutter at the stopped-breath phase—matching the forbidden 'reading instructions reveals the answer button' pattern."
+    ],
+    "high": [
+      "Replay depth is weak: a replay changes only which of three haze states is displayed; there is no alternative technique, tradeoff, or strategy to try.",
+      "Mastery is shallow and largely memorization: skilled play means repeating the single prescribed sequence and recognizing an intentionally conspicuous white haze."
+    ],
+    "medium": [
+      "Progression is substantially fixed: invalid images cannot be submitted, and feedback explicitly sends the player back to the predetermined correct location or timing.",
+      "The lung-inspection interaction forces clicking both lungs before choices appear, but those clicks collect no player judgment and do not affect diagnosis or outcome.",
+      "The stated five-exposure limit is implemented as failure only when exposures exceed five, allowing a sixth exposure before failure."
+    ],
+    "low": [
+      "Opening the order remains permanently recorded across retries and new cases, further weakening the relationship between consulting C and each case."
+    ],
+    "evidence": [
+      "factory/harness/design-principles.md:19 — C_required requires that the game cannot be cleared without using C.",
+      "factory/harness/design-principles.md:24 — fixed progression is explicitly forbidden.",
+      "factory/harness/design-principles.md:29 — revealing the correct button through instructions is explicitly forbidden.",
+      "factory/rules/game-design-rules.md:46 — the required thought experiment is whether the game remains solvable when C is hidden.",
+      "src/q1/XrayGame.tsx:108 — opening the information card merely sets orderOpened to true.",
+      "src/q1/XrayGame.tsx:117 — the card directly states that the target is the lungs.",
+      "src/q1/XrayGame.tsx:120 — the card directly states that shooting must occur when breathing stops.",
+      "src/q1/XrayGame.tsx:154 — progression checks only whether the card was opened, not whether its information was used.",
+      "src/q1/XrayGame.tsx:179 — the selected body-part label remains visible during shooting.",
+      "src/q1/XrayGame.tsx:185 — the live UI explicitly displays the current breathing phase.",
+      "src/q1/XrayGame.tsx:196 — image quality is determined solely by whether the shutter was pressed during the visibly labeled hold phase.",
+      "src/q1/XrayGame.tsx:198 — exposure failure uses used > EXPOSURE_LIMIT rather than used >= EXPOSURE_LIMIT.",
+      "src/q1/XrayGame.tsx:260 — wrong-location images are rejected and cannot advance.",
+      "src/q1/XrayGame.tsx:266 — blurred images are rejected and cannot advance.",
+      "src/q1/XrayGame.tsx:283 — diagnosis controls remain hidden until both lungs have been clicked.",
+      "src/q1/XrayGame.tsx:295 — clicking a lung only records it as seen and changes focus/note state.",
+      "src/q1/XrayGame.tsx:320 — the final diagnosis choice genuinely changes success versus error state.",
+      "src/q1/XrayGame.tsx:327 — two incorrect diagnoses cause meaningful case failure.",
+      "src/q1/XrayGame.tsx:368 — exposure count, misreads, and attempts distinguish perfect from non-perfect completion.",
+      "src/q1/BodyInsideView.tsx:55 — case variation consists of showing or hiding a fixed haze graphic.",
+      "src/q1/BodyInsideView.tsx:56 — the abnormality is rendered as large, bright circles, making visual interpretation minimally demanding."
+    ],
+    "recommended_actions": [
+      "Replace the answer-revealing order with case-specific imaging parameters that must be interpreted and applied through controls, such as target region, projection, positioning, or exposure settings.",
+      "Make incorrect settings produce diagnostically different images that the player must evaluate, rather than blocking advancement with corrective dialogue.",
+      "Remove the forced click-both-lungs gate and make focused inspection reveal subtle, case-specific evidence that affects the diagnosis.",
+      "Add case variation requiring different imaging decisions, not just a randomized haze location, so second plays support a different approach.",
+      "Create measurable mastery through balancing image quality, radiation use, positioning, and diagnostic confidence.",
+      "Correct the exposure threshold so the documented fifth-shot limit and failure behavior agree.",
+      "Reset orderOpened when restarting if consulting the new case order is intended to be required."
+    ]
+  },
+  "elapsed_sec": 43.138
+}

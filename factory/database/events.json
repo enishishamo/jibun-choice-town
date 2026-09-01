@@ -28,7 +28,7 @@
     "sourceFiles": [
       "src/data/content/extremeHeat.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "spatial_placement",
       "resource_allocation",
@@ -76,11 +76,11 @@
     "sourceFiles": [
       "src/data/content/medical.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "search_discovery",
       "measurement_inspection",
-      "simulation_run",
+      "timing_action",
       "matching",
       "parameter_adjust",
       "trial_and_error_experiment",
@@ -113,7 +113,7 @@
     "sourceFiles": [
       "src/data/content/priceHike.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "resource_allocation",
       "parameter_adjust",
@@ -150,7 +150,7 @@
     "sourceFiles": [
       "src/data/content/schoolLunch.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "measurement_inspection",
       "drag_drop_assign",
@@ -187,7 +187,7 @@
     "sourceFiles": [
       "src/data/content/schoolTrip.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "composition_design",
       "drag_drop_assign",
@@ -223,7 +223,7 @@
     "sourceFiles": [
       "src/data/content/shopOpening.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "matching",
       "conversation_observation",
@@ -264,7 +264,7 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ],
-    "lastScannedAt": "2026-08-30T23:51:47.493Z",
+    "lastScannedAt": "2026-09-01T23:06:34.446Z",
     "mechanicCategories": [
       "composition_design",
       "resource_allocation",

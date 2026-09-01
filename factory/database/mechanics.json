@@ -773,7 +773,7 @@
     }
   },
   {
-    "componentHash": "429da89e7491",
+    "componentHash": "f315d8433a0a",
     "reviewStale": false,
     "id": "xray_shoot",
     "label": "XrayGame",
@@ -787,24 +787,27 @@
     ],
     "description": "条件を決めて撮る→写りを見て撮り直す",
     "section": "医療編（1人の患者を9章で追う）",
-    "primaryMechanic": "simulation_run",
+    "primaryMechanic": "timing_action",
     "secondaryMechanics": [
-      "data_layer_compare",
-      "tap_select"
+      "measurement_inspection",
+      "tap_select",
+      "trial_and_error_experiment"
     ],
-    "interactionNotes": "撮影部位（頭・胸・腹）を選んで装置を動かすと体が透けて中が見え、左右の肺をタップして見くらべる。両方見ると医師へ画像を届けられる。",
+    "interactionNotes": "依頼票（C）を読み、部位を自分で選んで撮影。呼吸サイクルを読んで息止めの瞬間にシャッターを切らないとブレる。X線は5回までの予算制で、超過や誤所見2回で症例失敗→新症例で再挑戦。撮れた画像は左右を見比べ、所見（右/左/どちらもきれいの3値・症例ごとにランダム）を自分で判断して医師へ届ける。",
     "semantic": {
-      "C_in_component": "撮影装置、部位選択、体内画像、右肺の影 vs 左肺の正常所見という読影的比較",
-      "C_required": "yes — 部位は「むね」以外を選ぶと進めず、左右両肺のタップも必須。画像というCを見る行為がクリア条件そのもの",
-      "action_changes_result": "yes — ただし限定的。タップした肺に応じて所見が変わり部位誤選択で進行ブロック。結果自体は固定で分岐はない",
-      "retry": "yes — 胸以外を選ぶと即ヒントが出て選び直し",
-      "fixed_progression": "yes — 正解部位が1つに固定され誤選択は即時矯正、以降は一本道。演出主体で判断要素はほぼない",
-      "obvious_binary_choice": "yes — 実質3択だが非正解へ誘導ノートが出るため、明らかな正解1つの形式的選択に近い",
+      "C_in_component": "医師のさつえい依頼票（みたい場所・息止めの注意・X線5回まで）と、画像そのもの（白いモヤの有無を目視判定）",
+      "C_required": "partial — 依頼票の開封は必須ゲート。部位と撮影タイミングの正解は依頼票にしか書かれておらず、試行錯誤だけで探すとX線予算（5回）を使い切って症例失敗になりやすい。ただし依頼票を開けば答えは明記されているため、Codex独立レビューは「読めば分かる」構造をBLOCKERと判定（2026-09-02、量刑は人間判断待ち）",
+      "action_changes_result": "yes — シャッターのタイミングで sharp/blurred が分岐、部位選択で写る場所が分岐、被ばく回数・見立てミス回数が失敗分岐とE画面文言に反映",
+      "retry": "yes — ブレ/誤部位は差し戻し→撮り直し。予算超過・誤所見2回は症例失敗→新しいランダム症例で再挑戦（総当たりの持ち越し不可）",
+      "fixed_progression": "partial — 工程順序（依頼→撮影→確認→読影）は固定だが、各工程に失敗分岐と実コストがある",
+      "obvious_binary_choice": "no — 所見は3値（右/左/きれい）で症例ごとにランダム。正解は画像の目視比較でしか分からない",
       "evidence": [
-        "src/q1/XrayGame.tsx:44-58",
-        "src/q1/XrayGame.tsx:63-70",
-        "src/q1/XrayGame.tsx:107-128"
-      ]
+        "src/q1/XrayGame.tsx:180-196",
+        "src/q1/XrayGame.tsx:238-263",
+        "src/q1/XrayGame.tsx:296-321",
+        "src/q1/BodyInsideView.tsx:14-16"
+      ],
+      "reviewHistory": "Codex独立レビュー: 改修前 FAIL score22 → 改修後 FAIL score58（max_iterations到達で停止・factory/state/runs/ 参照）。残BLOCKERは品質バーの解釈問題としてHUMAN_REQUIRED"
     }
   },
   {
