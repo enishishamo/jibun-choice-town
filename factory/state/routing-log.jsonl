@@ -19,3 +19,6 @@
 {"at":"2026-09-02T14:47:58.358Z","agent":"codex","kind":"delegated-task","label":"experience-backlog-scan","promptFile":"factory/state/backlog-scan-prompt.md","status":"OK","elapsed_sec":324.682}
 {"ts":"2026-09-02T15:23:11.933Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-zoo-wrapup.png","factory/state/art/shots/desktop-zoo-wrapup.png"],"exit":0}
 {"ts":"2026-09-02T15:23:37.975Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-town-map.png","factory/state/art/shots/desktop-town-map.png"],"exit":0}
+{"ts":"2026-09-02T15:40:24.792Z","tool":"codex-review","label":"experience-gate-review-3","prompt_file":"factory/state/experience-gate-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":128.691}
+{"ts":"2026-09-02T15:41:03.105Z","tool":"codex-review","label":"factory-self-critique-3","prompt_file":"factory/state/factory-self-critique-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":140.71}
+{"ts":"2026-09-02T15:48:58.445Z","tool":"codex-review","label":"experience-gate-final","prompt_file":"factory/state/experience-gate-final-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":180.782}

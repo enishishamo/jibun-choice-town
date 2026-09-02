@@ -201,7 +201,7 @@ async function runViewport(browser, label, width, height) {
     await clickText(page, "やってみる"); await sleep(600);
     await shot(page, `${label}-zoo-game-${g.tag}`);
     let ok = false;
-    for (let attempt = 0; attempt < 3 && !ok; attempt++) {
+    for (let attempt = 0; attempt < 6 && !ok; attempt++) {
       ok = await g.play(page);
       if (!ok) {
         const retried = await page.evaluate(() => {

@@ -193,7 +193,7 @@
         6
       ],
       "acceptance_criteria": [
-        "/new-world pipeline runs through the harness with GATE 1 / GATE 2 as the only human stops",
+        "/new-world pipeline runs through the harness fully autonomously (superseded 2026-09-03: no scheduled human gates; HUMAN_REQUIRED only for cost/API-key/legal-safety/irreversible/max-loop conditions)",
         "Two-axis QA gates completion",
         "All artifacts and verdicts logged per project"
       ],

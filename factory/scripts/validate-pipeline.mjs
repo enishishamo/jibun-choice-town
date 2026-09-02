@@ -4,6 +4,7 @@
 // really says PASS with zero blockers/high. Self-attestation alone fails.
 // Usage: node factory/scripts/validate-pipeline.mjs <world>
 import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -18,10 +19,20 @@ const pipePath = P(`factory/projects/${world}/pipeline.json`);
 req(existsSync(pipePath), "pipeline.json missing");
 const pipe = existsSync(pipePath) ? JSON.parse(readFileSync(pipePath, "utf8")) : { phases: {} };
 
+// every declared phase must be done (self-attested statuses are then cross-checked below)
+for (const [ph, v] of Object.entries(pipe.phases || {})) {
+  req(typeof v?.status === "string" && v.status.startsWith("done"), `phase ${ph} not done (${v?.status})`);
+}
+
 // artifacts per claimed-done phase
 req(existsSync(P(`factory/projects/${world}/design.md`)), "design.md missing");
 req(existsSync(P(`factory/projects/${world}/research.result.json`)) || existsSync(P(`factory/projects/${world}/research.md`)), "research artifact missing");
 req(existsSync(P(`factory/harness/gameplay-qa-${world}.mjs`)), `gameplay-qa-${world}.mjs missing`);
+if (existsSync(P(`factory/harness/gameplay-qa-${world}.mjs`))) {
+  // completion is not self-attested: the QA suite is EXECUTED here
+  const qa = spawnSync("node", [P(`factory/harness/gameplay-qa-${world}.mjs`)], { encoding: "utf8", timeout: 120000 });
+  req(qa.status === 0, `gameplay QA suite FAILED when executed (exit ${qa.status})`);
+}
 
 // binding gate: find the recorded impl review evidence and RE-READ the verdict
 const implCandidates = [
@@ -51,7 +62,9 @@ if (!bindingOk) {
       try {
         const d = JSON.parse(readFileSync(join(runsDir, f), "utf8"));
         const hay = `${d.task || ""} ${d.artifact || ""} ${JSON.stringify(d.files || "")}`;
-        return hay.includes(world) || hay.includes({ waste: "ごみ", zoo: "動物園" }[world] || "\u0000");
+        // attribution is path-anchored, not free-substring: the run must name this
+        // world's logic module or content module
+        return hay.includes(`src/q1/${world}Logic`) || hay.includes(`content/${world}`) || hay.includes(`${world}Logic.ts`);
       } catch { return false; }
     }).map((f) => f.replace(/\.json$/, ""));
     outer: for (const runId of worldRuns) {
@@ -73,7 +86,8 @@ req(bindingOk, "no machine-readable binding review PASS (blockers/high=0, both a
 
 // presentation QA evidence (mandatory since the Asset Presentation Gate)
 const audits = P("factory/state/art/presentation-audit");
-if (pipe.phases?.presentation_qa) {
+req(Boolean(pipe.phases?.presentation_qa), "presentation_qa phase missing (Asset Presentation Gate is mandatory)");
+{
   let anyPass = false, anyFail = false;
   if (existsSync(audits)) {
     for (const f of readdirSync(audits).filter((x) => x.endsWith(".json"))) {
@@ -89,12 +103,18 @@ if (pipe.phases?.presentation_qa) {
   req(!anyFail, "presentation_qa claimed but a FAIL audit file remains for this world");
 }
 
-// gameplay reference traceability (Game Reference Gate)
+// gameplay reference traceability (Game Reference Gate) — WORLD-specific:
+// every gameType this world's content module registers needs a non-empty entry
 try {
   const refs = JSON.parse(readFileSync(P("factory/taxonomy/gameplay-references.json"), "utf8"));
-  const pipeGames = Object.keys(refs.games || {});
-  req(pipeGames.length > 0, "gameplay-references.json empty");
-} catch { errs.push("gameplay-references.json unreadable"); }
+  const content = readFileSync(P(`src/data/content/${world}.ts`), "utf8");
+  const gts = [...new Set([...content.matchAll(/gameType:\s*"([a-z_]+)"/g)].map((m) => m[1]))];
+  req(gts.length > 0, `no gameTypes found in src/data/content/${world}.ts`);
+  for (const gt of gts) {
+    const e = refs.games?.[gt];
+    req(Boolean(e && Array.isArray(e.reference_games) && e.reference_games.length > 0 && e.trace), `gameplay reference missing/empty for ${gt}`);
+  }
+} catch (e) { errs.push(`gameplay-references check failed: ${e.message}`); }
 
 if (errs.length) {
   console.log(JSON.stringify({ world, ok: false, errors: errs }, null, 1));

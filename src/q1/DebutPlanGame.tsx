@@ -46,6 +46,23 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">今日は、ここまで</span></div>
+        {ds && (
+          <div className="body-stage" style={{ padding: "6px 0" }}>
+            <div style={{ position: "relative", width: "92%", maxWidth: 360, height: 110, background: "linear-gradient(#e2ecd8, #c9dcb9)", borderRadius: 14, border: "2px solid #b7d2a6", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 6, left: 8, fontSize: 14 }}>
+                {[0, 1, 2].map((i) => (<span key={i}>{i < ds.signs ? "⚠️" : "▫️"}</span>))}
+              </div>
+              <div style={{ position: "absolute", left: 10, bottom: 8, width: 84, height: 58, background: "linear-gradient(#7d6247, #5f4a34)", borderRadius: "40px 40px 12px 12px", textAlign: "center", border: "2px solid #4c3b29" }}>
+                <div style={{ fontSize: 20, marginTop: 2 }}>🦝</div>
+                <div style={{ fontSize: 10, color: "#fff" }}>かくれ場でおやすみ</div>
+              </div>
+              <span style={{ position: "absolute", top: 4, right: 8, fontSize: 15, opacity: 0.45 }}>🚶🚶🚶 →</span>
+              <span style={{ position: "absolute", bottom: 4, right: 8, fontSize: 10, color: "#4c6242", background: "rgba(255,255,255,0.75)", borderRadius: 8, padding: "1px 7px" }}>
+                お客さんは、しずかに帰っていった
+              </span>
+            </div>
+          </div>
+        )}
         <p className="game-line center-line">{failText}</p>
         <p className="game-line soft center-line">
           あの子は寝室でゆっくり休んでいるよ。ここからは先輩の企画担当が引き継いで、
@@ -252,7 +269,7 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
           onClick={() => {
             const r = debutStep(ds, { kind: "stop" });
             setDs(r);
-            if (r.refusal) { setNote(`園長「${r.refusal}」`); return; }
+            if (r.refusal) { setNote(r.refusal); return; }
             if (r.outcome === "done_early") { setStep("done"); return; }
             if (r.outcome === "postponed") {
               setFailText("サインが早くから重なり、ほとんど公開できないまま中止に。プランが今日のこの子に合っていなかった——仕切り直して、計画から見直そう。");

@@ -18,7 +18,7 @@
 // Exit 0 on success; non-zero with a JSON error line otherwise.
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -107,6 +107,9 @@ function generateWithCodex({ promptFile, outPath, refs, size, timeoutSec }) {
   for (const r of refs) cargs.push("-i", resolve(ROOT, r));
   cargs.push("-");
   const r = spawnSync("codex", cargs, { input: prompt, encoding: "utf8", timeout: timeoutSec * 1000, env: SAFE_ENV });
+  try {
+    appendFileSync(join(ROOT, "factory/state/routing-log.jsonl"), JSON.stringify({ ts: new Date().toISOString(), tool: "art-provider", mode: "imagegen", out: outPath, exit: r.status }) + "\n");
+  } catch { /* logging must never break generation */ }
   const produced = join(work, fname);
   const replyRaw = existsSync(join(work, "reply.txt")) ? readFileSync(join(work, "reply.txt"), "utf8") : "";
   if (r.status !== 0 && !existsSync(produced)) {

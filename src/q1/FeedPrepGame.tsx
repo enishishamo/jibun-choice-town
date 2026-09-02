@@ -54,10 +54,26 @@ export default function FeedPrepGame({ onComplete }: Q1GameProps) {
   const usedUnits = (item: FeedItem) =>
     (Object.keys(trays) as FeedAnimal[]).flatMap((a) => trays[a]).filter((s) => s.item === item).reduce((sum, s) => sum + (s.size ? SIZE_COST[s.size] : 0), 0);
 
+  const trayView = (
+    <div style={{ margin: "4px 14px" }}>
+      {(Object.keys(trays) as FeedAnimal[]).map((a) => (
+        <div key={a} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, margin: "3px 0" }}>
+          <span style={{ width: 120 }}>{ANIMAL_LABEL[a]}</span>
+          {trays[a].slice(0, SLOTS[a]).map((x, i) => (
+            <span key={i} style={{ background: "#fdf6e5", borderRadius: 8, padding: "2px 8px", border: "1px solid #e0d6bd" }}>
+              {x.item ? `${ITEM_LABEL[x.item]} ${x.size}` : "—"}
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   if (step === "failed") {
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">今朝は、先輩と作り直し</span></div>
+        {trayView}
         <p className="game-line center-line">差し戻しが続いたので、先輩と一緒に「規則を今日のデータに当てはめる」ところからやり直したよ。</p>
         <p className="game-line soft center-line">表の規則 × 今朝の日誌 × 在庫、の3点で組むのがコツ。（体重も授乳メモも毎朝ちがう）</p>
         <button className="btn primary big" onClick={restart}>🔁 明日の朝にもう一度</button>
@@ -70,6 +86,7 @@ export default function FeedPrepGame({ onComplete }: Q1GameProps) {
     return (
       <div className="game board-game">
         <div className="result-card good"><span className="result-title">3にんぶんの朝ごはん、提供完了！</span></div>
+        {trayView}
         <p className="game-line soft center-line">
           {perfect
             ? "一発合格。規則を今日のデータに当てはめ、在庫の競合まで読めていた。"

@@ -22,8 +22,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
   const [bs, setBs] = useState<BabyState>(() => newBabyState());
   const [step, setStep] = useState<Step>("work");
   const [note, setNote] = useState<string | null>(null);
-  const [nudge, setNudge] = useState(false); // mentor points back at the data
-  const [calls, setCalls] = useState<BabyCall[]>([]); // the week's decisions, etched on the chart
+  const [calls, setCalls] = useState<{ call: BabyCall; ok: boolean }[]>([]); // decisions + the mentor's flag, etched on the chart
   const [attempts, setAttempts] = useState(1);
   const days = bs.days;
   const idx = Math.min(bs.idx, BABY_DAYS - 1);
@@ -32,7 +31,6 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
   const restart = () => {
     setBs(newBabyState());
     setNote(null);
-    setNudge(false);
     setCalls([]);
     setStep("work");
     setAttempts((a) => a + 1);
@@ -51,7 +49,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
   const pts = weights.map((wt, i) => `${20 + i * 60},${120 - (wt - BASE_WEIGHT) * 1.6}`).join(" ");
   const curveSvg = (
     <div className="body-stage" style={{ padding: "10px 0" }}>
-      <svg viewBox="0 0 320 152" style={{ width: "92%", maxWidth: 360, background: "#fffdf5", borderRadius: 12, border: nudge ? "2px solid #d9744a" : "1px solid #e5ddc8", boxShadow: nudge ? "0 0 10px rgba(217,116,74,0.55)" : "none", transition: "box-shadow 0.4s" }}>
+      <svg viewBox="0 0 320 152" style={{ width: "92%", maxWidth: 360, background: "#fffdf5", borderRadius: 12, border: "1px solid #e5ddc8" }}>
         <text x="8" y="14" fontSize="10" fill="#999">たいじゅう(g) — 成長曲線</text>
         {[0, 1, 2, 3, 4].map((i) => (
           <line key={i} x1={20 + i * 60} y1={20} x2={20 + i * 60} y2={125} stroke="#eee" />
@@ -64,7 +62,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
           <text key={i} x={20 + i * 60} y={135} fontSize="9" textAnchor="middle" fill="#888">{i + 1}日</text>
         ))}
         {calls.map((cl, i) => (
-          <text key={i} x={20 + i * 60} y={149} fontSize="11" textAnchor="middle">{CALL_ICON[cl]}</text>
+          <text key={i} x={20 + i * 60} y={149} fontSize="11" textAnchor="middle">{CALL_ICON[cl.call]}{cl.ok ? "" : "❗"}</text>
         ))}
       </svg>
       <span className="body-cap">🔴 今朝の点。きみの見立てが日付の下に残る</span>
@@ -117,7 +115,22 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
 
       {curveSvg}
 
-      <p className="game-note" style={{ margin: "4px 14px", border: nudge ? "2px solid #d9744a" : undefined, borderRadius: nudge ? 8 : undefined, boxShadow: nudge ? "0 0 10px rgba(217,116,74,0.55)" : undefined, transition: "box-shadow 0.4s" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "2px 14px" }}>
+        <span style={{ fontSize: 34 }}>
+          {d.badStool || d.lowActivity ? "🙀" : d.delta < 0 ? "😿" : d.milkLeftover ? "😼" : "😸"}
+        </span>
+        <span style={{ fontSize: 12, color: "#7a6f5c" }}>
+          {d.badStool || d.lowActivity
+            ? "今朝のようすが、いつもとちがう"
+            : d.delta < 0
+              ? "きのうより、少し軽い"
+              : d.milkLeftover
+                ? "ミルクを残した"
+                : "ごきげん。よく飲んでいる"}
+        </span>
+      </div>
+
+      <p className="game-note" style={{ margin: "4px 14px" }}>
         📔 今朝の日誌：ミルクの飲み残し{d.milkLeftover ? "あり" : "なし"} ・ うんち{d.badStool ? "がゆるい" : "ふつう"} ・ 動き{d.lowActivity ? "が少ない" : "ふつう"}
       </p>
 
@@ -145,20 +158,17 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
             onClick={() => {
               const { state, correct } = babyMakeCall(bs, c.id);
               setBs(state);
-              setCalls((h) => [...h, c.id]);
+              setCalls((h) => [...h, { call: c.id, ok: c.id === correct }]);
               if (c.id === correct) {
                 setNote(
                   correct === "ok" ? "うん、この形なら大丈夫。" :
                   correct === "adjust" ? "ミルクの量と回数を、獣医さん・栄養担当と相談して調整した。" :
                   "すぐ獣医さんへ。日誌のメモが診察の手がかりになる。",
                 );
-                setNudge(false);
               } else {
-                // staged hint: the game does NOT explain the rule on a mistake.
-                // 1st miss = the mentor silently re-opens the data (visual nudge);
-                // the 2nd miss ends the week (mentor takeover teaches the method).
-                setNote("…先輩は何も言わず、成長曲線と今朝の日誌をもう一度ならべて見せた。");
-                setNudge(true);
+                // staged: no rule is spoken on a mistake — the ❗ etched on the
+                // chart is the consequence; the failure screen teaches method.
+                setNote("…先輩は何も言わずに、首をかしげた。");
               }
               if (state.outcome === "mentor_fail") setStep("failed");
               else if (state.outcome === "done") setStep("done");

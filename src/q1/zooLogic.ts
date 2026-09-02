@@ -403,17 +403,17 @@ export function debutStep(s: DebutState, action: DebutAction, rand: () => number
   if (action.kind === "stop") {
     if (st.signs === 0) {
       // Refused: a cancellation with no welfare sign cannot be explained.
-      return { ...s, refusal: "サインが出ていないのに中止はできない（お客さんに説明がつかない）。ようすを見よう。" };
+      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
     }
     if (st.signs === 1) {
       // Research: one behavior alone must not decide a cancellation. The
       // proportionate response to a single sign is to SHRINK, not stop.
-      return { ...s, refusal: "サイン1つでは、まだお客さんに説明がつかない。" };
+      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
     }
     if (st.shrinks.length === 0) {
       // Research: 縮小→それでも続けば中止. Stopping without ever trying a
       // mitigation is skipping the professional ladder.
-      return { ...s, refusal: "何も手を打たないままの中止は、園として説明がつかない。" };
+      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
     }
     // pattern (>=2 signs) + mitigation attempted: stopping is professional.
     st.outcome = st.slot >= 2 ? "done_early" : "postponed";

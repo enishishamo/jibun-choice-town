@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "factory-self-critique-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 42,
+    "blockers": [
+      "The completion validator does not validate completion of the pipeline. It ignores phase statuses and does not require build/static QA, browser QA, art QA, database update, or commit evidence; a third world can pass with a few files and an unrelated review.",
+      "Binding-review attribution is unsafe for third worlds: review runs are selected by substring matching the world name anywhere in task/artifact metadata, with no immutable pipeline-to-run reference or reviewed-artifact hash."
+    ],
+    "high": [
+      "The gameplay-reference gate is global rather than world-specific: any existing entry in gameplay-references.json satisfies validation for a new third world.",
+      "Presentation QA is optional in validate-pipeline.mjs: omitting presentation_qa from pipeline.json skips the supposedly mandatory Asset Presentation Gate entirely.",
+      "present-shots.mjs remains substantially zoo-specific. It always executes four zoo bots before its generic walker, while the generic path captures only opening/area/first-game screens and does not verify failure, retry, success, JobReveal, or wrapUp for a third world.",
+      "Delegation observability is incomplete and fail-open: routing-log writes deliberately suppress all errors, and art-provider Codex generation calls are not logged. The sampled routing log also does not substantiate the pipelines' claimed review/delegation counts.",
+      "pipeline.json metrics remain manually aggregated self-attestations. validate-pipeline.mjs neither recomputes nor verifies delegation, repair, art-generation, QA-check, browser-flow, or human-intervention counts."
+    ],
+    "medium": [
+      "The generic presentation walker silently tolerates missing first-Q1 and start controls: failure to find them produces no failure record, allowing misleadingly incomplete screenshot runs.",
+      "Completion validation checks only that gameplay-qa-<world>.mjs exists; it does not execute it or require a machine-readable successful result, so a placeholder or stale script qualifies.",
+      "Presentation validation accepts one PASS audit whose filename starts with the world name, regardless of required screen/viewport coverage, and also treats the shared town-map audit as evidence for every world.",
+      "The documented pipeline says browser QA covers entry through failure, retry, success, JobReveal, and wrapUp, but the reusable presentation walker does not enforce that contract for arbitrary worlds.",
+      "stages.json retains stale architecture language saying GATE 1/GATE 2 are the only human stops, while /new-world now describes autonomous default operation and additional HUMAN_REQUIRED conditions."
+    ],
+    "low": [
+      "Art-loop and art-QA correctly enforce the new Series Style and Asset Presentation thresholds mechanically, but threshold/category definitions are duplicated between style-contract.md, prompts, and JavaScript, creating drift risk.",
+      "Provider freshness is enforced by art-loop.mjs but not by direct art-provider.mjs generation, leaving the adapter's safety claims dependent on callers using the intended wrapper."
+    ],
+    "evidence": [
+      "factory/scripts/validate-pipeline.mjs:21 — completion validation requires only design, research, and existence of a gameplay-QA script before checking selected gates.",
+      "factory/scripts/validate-pipeline.mjs:48 — third-world review discovery is based on task/artifact text rather than an explicit run ID and artifact digest.",
+      "factory/scripts/validate-pipeline.mjs:54 — hay.includes(world) permits incidental substring mentions to associate an unrelated run with a world.",
+      "factory/scripts/validate-pipeline.mjs:76 — presentation audits are checked only when pipeline.phases.presentation_qa already exists, so omission bypasses the gate.",
+      "factory/scripts/validate-pipeline.mjs:82 — any audit beginning with the world name or town-map can satisfy presentation evidence without screen coverage requirements.",
+      "factory/scripts/validate-pipeline.mjs:94 — gameplay-reference validation checks only that the global games object is nonempty, not that the target world has complete Q1 entries.",
+      "factory/harness/art/present-shots.mjs:37 — the shared presentation harness embeds correct-play bots specifically derived from zooLogic.",
+      "factory/harness/art/present-shots.mjs:176 — every viewport unconditionally begins a hard-coded zoo full-flow sequence.",
+      "factory/harness/art/present-shots.mjs:228 — the world-agnostic walker is explicitly limited to opening, area, first-Q1 intro, and first game screen.",
+      "factory/harness/art/present-shots.mjs:258 — failure to find the first Q1 merely skips the remainder instead of failing the run.",
+      "factory/harness/codex-review.mjs:46 — routing-log append failures are swallowed, so a review can occur with no routing trace.",
+      "factory/harness/art/art-qa.mjs:51 — art-QA likewise treats routing-log failure as non-fatal.",
+      "factory/harness/art/art-provider.mjs:109 — Codex image generation is invoked without any routing-log append.",
+      "factory/state/routing-log.jsonl:21 — the sampled log ends with only two presentation critic records and contains no recorded codex-review or art-provider invocation supporting the completed-world claims.",
+      "factory/projects/waste/pipeline.json:78 — metrics are declared to be aggregated by the orchestrating Claude session rather than machine-derived.",
+      "factory/projects/zoo/pipeline.json:86 — the source note explicitly retains an honesty caveat on manually aggregated metrics.",
+      "factory/harness/art/art-qa.mjs:147 — Series Style verdicts are recomputed fail-closed by the harness.",
+      "factory/harness/art/art-qa.mjs:283 — Asset Presentation Quality below 80 is mechanically rejected.",
+      "factory/harness/art/art-qa.mjs:287 — BADGE_COLLISION mechanically prevents PASS.",
+      "factory/harness/art/art-loop.mjs:339 — failed generation or QA exits nonzero, while reused assets are honestly distinguished as reused_existing.",
+      "factory/state/stages.json:196 — stale stage criteria still describe GATE 1/GATE 2 as the only human stops."
+    ],
+    "recommended_actions": [
+      "Replace validate-pipeline.mjs with a phase-schema validator requiring every mandatory phase to be present and done, with typed evidence records rather than prose.",
+      "Store explicit run IDs, reviewed artifact paths, and cryptographic hashes in pipeline.json; validate the exact final review against the current implementation hash.",
+      "Require target-world gameplay-reference entries for every designed Q1 and validate all required traceability fields.",
+      "Make presentation QA unconditional and require a manifest of expected screens for both viewports, including failure, retry, success, JobReveal, and wrapUp.",
+      "Move zoo deep-flow logic out of present-shots.mjs into a registered per-world bot and make the shared runner discover and execute the target world's bot.",
+      "Make routing-log writes mandatory or record a secondary durable failure; add logging around art-provider generation and assign invocation IDs shared across pipeline, run, and routing records.",
+      "Generate pipeline metrics mechanically from invocation/run/artifact records and reject human_interventions=0 when evidence is incomplete.",
+      "Require machine-readable successful outputs from build, static QA, gameplay QA, browser QA, art QA, and database validation—not merely scripts or prose claims.",
+      "Centralize all art thresholds and required categories in one machine-readable policy consumed by documentation, prompts, and enforcement code.",
+      "Update stages.json to match the current autonomous-default and HUMAN_REQUIRED architecture."
+    ]
+  },
+  "elapsed_sec": 140.71
+}

@@ -33,6 +33,7 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("work");
   const [note, setNote] = useState<string | null>(null);
   const [failText, setFailText] = useState<string | null>(null);
+  const [lastPlan, setLastPlan] = useState<ZooPlan | null>(null);
   const [attempts, setAttempts] = useState(1);
   const c = zs.c;
   const burden = zs.burden;
@@ -54,9 +55,41 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
   };
 
   // the diagnostic board (burden bar + suspect chips + findings) IS the world:
-  // it stays visible on the terminal screens too
+  // it stays visible on the terminal screens too. The observation window shows
+  // the cub with overlays derived ONLY from findings the player has revealed.
+  const sawLimp = evidence.some((e) => e.text.includes("かばう") || e.text.includes("腫れて"));
+  const sawStool = evidence.some((e) => e.text.includes("ゆるい"));
+  const sawEggs = evidence.some((e) => e.text.includes("卵が見つかった"));
   const board = (
     <>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "6px 14px", background: "#eef3e6", borderRadius: 12, padding: "6px 10px" }}>
+        <span style={{ fontSize: 34, position: "relative" }}>
+          {step === "failed" ? "🙀" : step === "done" ? "😸" : "🦝"}
+          {lastPlan && step !== "work" && (
+            <span style={{ position: "absolute", left: -14, top: -4, fontSize: 14 }}>
+              {lastPlan === "deworm" ? "💊" : lastPlan === "diet_review" ? "🥗" : "🛏️"}{step === "done" ? "✓" : "✗"}
+            </span>
+          )}
+          {sawLimp && <span style={{ position: "absolute", right: -8, bottom: -2, fontSize: 14 }}>🦵❗</span>}
+          {sawStool && !sawLimp && <span style={{ position: "absolute", right: -8, bottom: -2, fontSize: 14 }}>💩</span>}
+          {sawEggs && <span style={{ position: "absolute", right: -10, top: -4, fontSize: 12 }}>🔬</span>}
+        </span>
+        <span style={{ fontSize: 11, color: "#5f6b50" }}>
+          {step === "done"
+            ? "正しいケアが始まって、ようすが落ち着いてきた"
+            : zs.outcome === "restraint_aborted"
+              ? "強い抵抗のあと、寝室で休んでいる"
+              : step === "failed"
+                ? "効果が出ず、まだ元気がない"
+                : evidence.length === 0
+                  ? "柵の向こうで、いつもよりじっとしている"
+                  : sawLimp
+                    ? "右うしろ足を、かばっているように見える"
+                    : sawStool
+                      ? "おなかの調子がよくなさそうだ"
+                      : "見た目は大きく変わらない——決め手はまだない"}
+        </span>
+      </div>
       <div style={{ display: "flex", alignItems: "center", gap: 4, margin: "6px 14px" }}>
         <span style={{ fontSize: 12 }}>🦝 負担</span>
         {Array.from({ length: BURDEN_BUDGET }).map((_, i) => (
@@ -180,6 +213,7 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
               const r = zooDecide(zs, p.id);
               setZs(r);
               if (r.refusal) { setNote(r.refusal); return; }
+              setLastPlan(p.id);
               if (r.outcome === "solved") { setStep("done"); return; }
               setStep("failed");
             }}
