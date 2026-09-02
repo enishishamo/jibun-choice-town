@@ -1,0 +1,25 @@
+{
+ "world": "waste",
+ "pipeline_version": "new-world v2 (autonomous)",
+ "phases": {
+  "world_selection": {"status": "done", "evidence": "selection.md + factory/state/world-selection.result.json"},
+  "event_research": {"status": "running", "evidence": "research.result.json (codex delegated)"},
+  "job_discovery": {"status": "done", "evidence": "selection.md job table"},
+  "career_fact_research": {"status": "running"},
+  "difficulty_extraction": {"status": "pending"},
+  "mechanics_matching": {"status": "pending"},
+  "game_design": {"status": "pending"},
+  "design_critics": {"status": "pending"},
+  "art_need_detection": {"status": "pending"},
+  "art_generation_qa": {"status": "pending"},
+  "implementation": {"status": "pending"},
+  "build_static_qa": {"status": "pending"},
+  "gameplay_qa": {"status": "pending"},
+  "browser_qa": {"status": "pending"},
+  "adversarial_review": {"status": "pending"},
+  "db_manifest_update": {"status": "pending"},
+  "commit": {"status": "pending"}
+ },
+ "human_interventions": 0,
+ "metrics": {"research_tasks": 1, "codex_delegations": 2, "repairs": 0, "art_generations": 0, "art_regenerations": 0}
+}

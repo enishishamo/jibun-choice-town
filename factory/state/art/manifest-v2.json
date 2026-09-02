@@ -2717,6 +2717,131 @@
     "JOB_ACCURACY": 97,
     "MOBILE_USABILITY": 90
    }
+  },
+  {
+   "asset_id": "waste_scene_journey",
+   "filename": "scene-journey.png",
+   "world": "waste",
+   "purpose": "「ごみのゆくえ」エリア探索マップの台紙。左=街の集積所、中央=清掃工場、右=処分場の丘の横断ジオラマに4章ホットスポットが乗る",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: One wide miniature diorama showing a Japanese garbage journey from left to right: LEFT a small neighborhood corner with a garbage collection point (a few pale-blue semi-transparent garbage bags neatly placed, green mesh net) and a cute boxy garbage truck; CENTER a clean modern waste-to-energy incineration plant (big boxy hall, one tall slim chimney with a FAINT wisp of white steam, small crane visible through a window); RIGHT a green landfill hill with terraced layers and a tiny monitoring hut. A single winding road connects all three. Bright daytime sky.\nRole in game: 「ごみのゆくえ」エリア探索マップの台紙。左=街の集積所、中央=清掃工場、右=処分場の丘の横断ジオラマに4章ホットスポットが乗る\nCamera / composition: Slight top-down diorama view (like a toy model on a table), the three zones evenly spaced left/center/right so UI hotspots can sit on each zone plus the road. Generous margins, nothing important near edges. Clean, friendly, NOT dirty or smoky.\nMust include: collection point with bags and net; garbage truck; incineration plant with one chimney and faint white steam; green landfill hill with terraces; connecting road\nMust NOT include: readable text or signs; black smoke; flames; dirty piles or scattered trash; people in danger\nAspect ratio: 4:3 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- 左の住宅・集積所と右の処分場の丘が画面端で切れており、place用途の外周8%セーフマージンを満たさない — 端末比率変更やトリミングで章の目的地が欠落する\n- 重要な両端エリアが中央70%の外側にある — モバイル表示では集積所と処分場がさらに小さく、ホットスポットの識別性が落ちる\n- 4章に対して視覚的な目的地点は集積所・清掃工場・処分場の3区画が中心で、第4ホットスポット候補が明確でない — 探索順序を画像だけで把握しにくい\n- 処分場が整然とした緑の段丘と小屋だけに見え、ごみの埋立・搬入・管理を示す設備が乏しい — 学習用の「処分場」として意味が伝わりにくい\n- 集積所の袋や処分場頂上の設備が小さい — 縮小表示では装飾に埋もれ、タップ対象としての可読性が不足する\n- 左下の囲いと住宅、右端の丘が不完全な状態でフレーム外へ続く — 完結した横断ジオラマとしてのオブジェクト完全性を損なう",
+   "reference_assets": [
+    "public/assets/town-hero.png",
+    "public/assets/shop/ba-before.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T05:18:36.545Z",
+   "iteration": 2,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 95,
+    "COMPOSITION": 92,
+    "CROP_SAFETY": 94,
+    "READABILITY": 89,
+    "OBJECT_COMPLETENESS": 94,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 93,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 91,
+    "MOBILE_USABILITY": 86
+   },
+   "qa_issues": [
+    "右側の処分場は配管・道路・植栽の情報量が多い — 小さな画面ではホットスポットと背景要素が競合しやすい",
+    "左側に住宅・袋置き場・収集設備が密集している — 「街の集積所」の主対象が一目で特定しにくい",
+    "中央下の収集車と施設が近接している — ホットスポットを重ねる位置によっては清掃工場への導線や車両が隠れる",
+    "清掃工場の煙突から白煙が出ている — 排煙表現として誤解されないよう、学習内容やUI上で処理工程との関係を補足したい",
+    "全体に細部のコントラストが高い — 章アイコンを載せる際は中央70%内に十分な無地余白または視認性の高い台座が必要"
+   ],
+   "file_hash": "a42e156c9639",
+   "used_by": [
+    "src/data/content/waste.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "waste_ba_before",
+   "filename": "ba-before.png",
+   "world": "waste",
+   "purpose": "wrapUpのBefore: 朝の集積所にごみ袋が積まれている（子どもが毎朝見る風景）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A Japanese neighborhood garbage collection point in the morning: a small corner beside a low wall, a green mesh net partly covering a tidy pile of pale semi-transparent garbage bags (8-10 bags), a small sign pole WITHOUT readable text, morning light, a house corner and a bit of street visible. Calm and clean-ish, not dirty; no scattered loose trash.\nRole in game: wrapUpのBefore: 朝の集積所にごみ袋が積まれている（子どもが毎朝見る風景）\nCamera / composition: Eye-level, the collection point centered, enough context around it (wall, street edge). This will pair with an AFTER image of the SAME spot, so keep architecture simple and memorable. Generous margins.\nMust include: pile of pale garbage bags; green mesh net; low wall corner; textless sign pole\nMust NOT include: readable text; crows tearing bags; scattered loose garbage; people\nAspect ratio: 4:3 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/shop/ba-before.png",
+    "public/assets/town-hero.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T05:20:32.379Z",
+   "iteration": 1,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 93,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 88,
+    "READABILITY": 86,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 90,
+    "MOBILE_USABILITY": 89
+   },
+   "qa_issues": [
+    "ごみ袋が白く均一で内容物もほぼ見えない — 清潔な荷物や資材にも見え、朝のごみ集積所だという理解が少し弱い",
+    "緑色ネットと植栽の色が近い — 小さい画面ではネットの輪郭が背景に溶け、ごみ袋の山を覆っている構造が読み取りにくい",
+    "左端の住宅と門が途中で切れている — 主役への影響は小さいが、横方向に強くトリミングすると集積所の生活圏らしさが弱まる",
+    "袋が整然と積まれすぎている — Beforeとしての問題状況や毎朝の生活感がやや穏やかで、改善前後の差を演出しにくい"
+   ],
+   "file_hash": "84393353aa09",
+   "used_by": [
+    "src/data/content/waste.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "waste_ba_after",
+   "filename": "ba-after.png",
+   "world": "waste",
+   "purpose": "wrapUpのAfter: 同じ集積所が夕方には空っぽ。遠くに清掃工場の煙突がうっすら見える",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: THE SAME Japanese garbage collection point as the reference image: same corner, same low wall, same green mesh net (now neatly folded), same textless sign pole, same camera. The ONLY changes: the garbage bags are GONE (clean empty pavement), the light is warm late-afternoon, and in the far background between buildings a slim incineration-plant chimney with a faint white steam wisp is now subtly visible.\nRole in game: wrapUpのAfter: 同じ集積所が夕方には空っぽ。遠くに清掃工場の煙突がうっすら見える\nCamera / composition: Identical camera and framing to the reference BEFORE image. Do not move or redesign the wall, pole, or street; only remove the bags, fold the net, shift to afternoon light, and add the distant chimney.\nMust include: same corner and wall as reference; folded green net; empty clean pavement; distant slim chimney with faint white steam\nMust NOT include: readable text; garbage bags; black smoke; people\nAspect ratio: 4:3 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/waste/ba-before.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T05:22:00.338Z",
+   "iteration": 1,
+   "qa_score": 92,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 96,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 92,
+    "READABILITY": 95,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 95,
+    "BEFORE_AFTER_CONSISTENCY": 96,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 94
+   },
+   "qa_issues": [
+    "AFTERでは夕方の色調変化が画面全体に強くかかり、壁・家・植栽の色までBEFOREよりかなり黄味が増している — 意図した時間経過として成立するが、差分比較では回収結果以外の変化がやや目立つ",
+    "左端の建物と門、右端の道路が途中で切れている — 主役の意味は壊れないものの、外周セーフマージンはやや弱い",
+    "AFTERで追加された煙突と煙が比較的はっきり見える — 意図には合うが、「うっすら」という指定より少し存在感が強い"
+   ],
+   "file_hash": "c03f369f23ed",
+   "used_by": [
+    "src/data/content/waste.ts"
+   ],
+   "status": "qa_passed"
   }
  ]
 }

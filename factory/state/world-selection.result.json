@@ -1,0 +1,101 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "scores": {
+      "A": {
+        "total": 88,
+        "by": {
+          "comprehensibility": 92,
+          "multi_job_reality": 95,
+          "mechanic_diversity": 91,
+          "novelty": 69,
+          "hidden_society": 97,
+          "future_broadening": 91,
+          "feasibility": 82
+        }
+      },
+      "B": {
+        "total": 89,
+        "by": {
+          "comprehensibility": 98,
+          "multi_job_reality": 87,
+          "mechanic_diversity": 86,
+          "novelty": 92,
+          "hidden_society": 90,
+          "future_broadening": 88,
+          "feasibility": 84
+        }
+      },
+      "C": {
+        "total": 91,
+        "by": {
+          "comprehensibility": 95,
+          "multi_job_reality": 91,
+          "mechanic_diversity": 93,
+          "novelty": 89,
+          "hidden_society": 88,
+          "future_broadening": 91,
+          "feasibility": 97
+        }
+      },
+      "D": {
+        "total": 92,
+        "by": {
+          "comprehensibility": 93,
+          "multi_job_reality": 94,
+          "mechanic_diversity": 95,
+          "novelty": 80,
+          "hidden_society": 99,
+          "future_broadening": 93,
+          "feasibility": 90
+        }
+      },
+      "E": {
+        "total": 92,
+        "by": {
+          "comprehensibility": 94,
+          "multi_job_reality": 95,
+          "mechanic_diversity": 96,
+          "novelty": 83,
+          "hidden_society": 99,
+          "future_broadening": 91,
+          "feasibility": 94
+        }
+      },
+      "F": {
+        "total": 86,
+        "by": {
+          "comprehensibility": 94,
+          "multi_job_reality": 88,
+          "mechanic_diversity": 86,
+          "novelty": 76,
+          "hidden_society": 76,
+          "future_broadening": 97,
+          "feasibility": 82
+        }
+      }
+    },
+    "ranking": [
+      "E",
+      "D",
+      "C",
+      "B",
+      "A",
+      "F"
+    ],
+    "recommended_stage7": "E",
+    "recommended_stage8": "B",
+    "risks": {
+      "A": "猛暑編と、予測・資源配分・ライフライン対応という構造が重なりやすい。被災、けが、避難失敗を恐怖演出にせず、備えることで被害を減らせる構成が必要。避難情報や復旧優先順位の正確な監修も要る。",
+      "B": "動物の病気や死亡を失敗罰にすると重すぎる。赤ちゃんのかわいさだけに寄ると、獣医師・栄養担当・展示企画の異なる判断が薄まる。動物福祉と展示・集客の関係は慎重な説明が必要。",
+      "C": "工程紹介だけの直線的な並べ替えゲームになりやすい。編集の校正判断、印刷の色調整、製本の工程設計、書店・図書館の選書判断を明確に分ける必要がある。著作権や出版流通は簡略化しすぎに注意。",
+      "D": "猛暑編のwater-opsと題材が直接重なるため、節水配分ではなく、漏水箇所の推理、水質基準との照合、浄水条件の調整、長期更新計画を中心にすべき。水質・消毒・料金制度は正確さと平易さの両立が難しい。",
+      "E": "給食編のリサイクル選別と重なるため、選別だけで一本にしないこと。焼却炉の状態管理、収集ルート、排ガス対策、最終処分場の容量判断まで広げる必要がある。汚れや煙を過度に不快・危険に描かず、焼却万能という誤解も避ける。",
+      "F": "画面内で別のアプリ画面を操作する構成になりやすく、クレイ世界の視覚的魅力が弱まる。既存のアイス編にある企画・デザイン・line_debugとの構造的重複もある。プログラマーだけを主役にせず、利用者調査、アクセシビリティ、テストなどを実務的に描く必要がある。"
+    },
+    "notes": "totalは7項目の単純平均を四捨五入。Stage 7は、日常のごみから巨大な産業・公共システムへつながり、収集・動的プラント運転・選別・長期容量計画という異質な判断を作れるEを推奨。Stage 8は産業インフラ型のEと性質が異なる、生命・ケア・観察中心のBを推奨。"
+  },
+  "output": "{\"scores\":{\"A\":{\"total\":88,\"by\":{\"comprehensibility\":92,\"multi_job_reality\":95,\"mechanic_diversity\":91,\"novelty\":69,\"hidden_society\":97,\"future_broadening\":91,\"feasibility\":82}},\"B\":{\"total\":89,\"by\":{\"comprehensibility\":98,\"multi_job_reality\":87,\"mechanic_diversity\":86,\"novelty\":92,\"hidden_society\":90,\"future_broadening\":88,\"feasibility\":84}},\"C\":{\"total\":91,\"by\":{\"comprehensibility\":95,\"multi_job_reality\":91,\"mechanic_diversity\":93,\"novelty\":89,\"hidden_society\":88,\"future_broadening\":91,\"feasibility\":97}},\"D\":{\"total\":92,\"by\":{\"comprehensibility\":93,\"multi_job_reality\":94,\"mechanic_diversity\":95,\"novelty\":80,\"hidden_society\":99,\"future_broadening\":93,\"feasibility\":90}},\"E\":{\"total\":92,\"by\":{\"comprehensibility\":94,\"multi_job_reality\":95,\"mechanic_diversity\":96,\"novelty\":83,\"hidden_society\":99,\"future_broadening\":91,\"feasibility\":94}},\"F\":{\"total\":86,\"by\":{\"comprehensibility\":94,\"multi_job_reality\":88,\"mechanic_diversity\":86,\"novelty\":76,\"hidden_society\":76,\"future_broadening\":97,\"feasibility\":82}}},\"ranking\":[\"E\",\"D\",\"C\",\"B\",\"A\",\"F\"],\"recommended_stage7\":\"E\",\"recommended_stage8\":\"B\",\"risks\":{\"A\":\"猛暑編と、予測・資源配分・ライフライン対応という構造が重なりやすい。被災、けが、避難失敗を恐怖演出にせず、備えることで被害を減らせる構成が必要。避難情報や復旧優先順位の正確な監修も要る。\",\"B\":\"動物の病気や死亡を失敗罰にすると重すぎる。赤ちゃんのかわいさだけに寄ると、獣医師・栄養担当・展示企画の異なる判断が薄まる。動物福祉と展示・集客の関係は慎重な説明が必要。\",\"C\":\"工程紹介だけの直線的な並べ替えゲームになりやすい。編集の校正判断、印刷の色調整、製本の工程設計、書店・図書館の選書判断を明確に分ける必要がある。著作権や出版流通は簡略化しすぎに注意。\",\"D\":\"猛暑編のwater-opsと題材が直接重なるため、節水配分ではなく、漏水箇所の推理、水質基準との照合、浄水条件の調整、長期更新計画を中心にすべき。水質・消毒・料金制度は正確さと平易さの両立が難しい。\",\"E\":\"給食編のリサイクル選別と重なるため、選別だけで一本にしないこと。焼却炉の状態管理、収集ルート、排ガス対策、最終処分場の容量判断まで広げる必要がある。汚れや煙を過度に不快・危険に描かず、焼却万能という誤解も避ける。\",\"F\":\"画面内で別のアプリ画面を操作する構成になりやすく、クレイ世界の視覚的魅力が弱まる。既存のアイス編にある企画・デザイン・line_debugとの構造的重複もある。プログラマーだけを主役にせず、利用者調査、アクセシビリティ、テストなどを実務的に描く必要がある。\"},\"notes\":\"totalは7項目の単純平均を四捨五入。Stage 7は、日常のごみから巨大な産業・公共システムへつながり、収集・動的プラント運転・選別・長期容量計画という異質な判断を作れるEを推奨。Stage 8は産業インフラ型のEと性質が異なる、生命・ケア・観察中心のBを推奨。\"}",
+  "elapsed_sec": 87.303
+}

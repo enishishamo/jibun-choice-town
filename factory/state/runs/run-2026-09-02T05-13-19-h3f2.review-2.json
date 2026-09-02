@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 58,
+    "game_quality_score": 66,
+    "blockers": [],
+    "high": [
+      "Q1-4 contradicts the researched duty of prompt covering: the design rewards skipping cover on clear nights even though covering also controls scattering, odor, and fire, not only rainwater infiltration.",
+      "Q1-4's operational rules are materially underspecified: it is unclear whether covering is permanent, whether previously covered sections can receive more waste, what one unit of cover covers, and how exposed area—not merely exposed-section count—affects leachate. Solvability, causality, and exploit resistance therefore cannot be validated as designed.",
+      "Q1-2 lacks an initial furnace temperature and precise turn resolution for mixing, delivery, temperature change, and depletion. Random-generation constraints are also absent, so some generated games may be trivial or unwinnable.",
+      "Q1-3 delegates its essential evidence logic to a future wasteLogic.ts implementation without specifying the evidence matrix in the reviewed design. The claimed two-inspection mastery, consistent inference, non-determinism, and solvability cannot be independently evaluated before implementation."
+    ],
+    "medium": [
+      "Q1-3 makes any incorrect request immediately fail because the town cannot be given an explanation. This exaggerates the consequence of an internal diagnostic request and omits the researched escalation, verification, load reduction, remeasurement, and staged response practices.",
+      "Q1-2 reduces furnace operation to fixed instantaneous temperature increments based only on three visible waste types. This authentically represents mixing at a basic level, but omits the researched delayed effects and interacting CO, air, feed-rate, and combustion-state signals; the claimed prediction difficulty is consequently thinner than the profession.",
+      "Q1-4 says concentrating waste makes a section more likely to overflow, but overflow is represented only as exceeding a plainly visible fixed capacity. That is avoidable placement illegality rather than the researched prediction challenge involving rain, exposed area, storage, and treatment capacity.",
+      "World progression is described as a requires chain, but no designed consequence carries performance or state between the four jobs. The one-bag relay is presently narrative sequencing rather than a systemic world-level loop.",
+      "Q1-1 provides randomized bag contents but apparently keeps the collection category and local rules fixed. Replay variation changes cases, yet does not exercise the profession's difficulty of changing districts, days, and municipality-specific rules.",
+      "The world avoids exact mechanic-ID duplication, but structural overlap remains: Q1-1 is another repeated matching game like existing tenant_match/rx_check/sort_out, and Q1-3 resembles existing line_debug/clue-board diagnosis. Their occupational content differentiates them, but the claimed no-duplication result is overstated."
+    ],
+    "low": [
+      "Q1-1's smoke-on-loading feedback should remain non-graphic and should not imply that workers intentionally test suspicious bags by loading them.",
+      "Q1-2 labels 850–950°C as the safe band while failure occurs only above 1000°C. The status and consequence of 951–1000°C should be made explicit to avoid teaching two conflicting upper limits.",
+      "Q1-2's claim that ash volume becomes 1/20 should state that this is an approximate example dependent on waste composition and process, as required by the research uncertainty note.",
+      "Q1-3 uses CO and HCl mini-graphs together, but the design should explicitly identify HCl continuous monitoring as a feature of this fictional facility rather than a universal facility requirement.",
+      "For grades 4–6, Q1-3's CO/HCl, differential pressure, calibration, four inspection sites, graphs, and elimination list create the highest cognitive load. The staged UI helps, but each term needs pictorial, plain-language scaffolding."
+    ],
+    "evidence": [
+      "factory/projects/waste/design.md/Q1-4 D and Mastery — clear-night cover omission is explicitly rewarded despite the stated immediate-cover duty.",
+      "factory/projects/waste/research.result.json/professions.landfill D — covering suppresses scattering, odor, fire, and rainwater infiltration; it is not solely a rain-response resource.",
+      "factory/projects/waste/design.md/Q1-4 Constraint — capacities are listed, but cover persistence, placement reopening, exposure calculation, and daily operation order are not defined.",
+      "factory/projects/waste/design.md/Q1-2 D/Constraint — fixed temperature deltas are given without initial temperature or a complete turn-order/state-transition rule.",
+      "factory/projects/waste/design.md/Q1-3 D — decisive inspection behavior is deferred to wasteLogic.ts, which is not part of the pre-implementation design specification.",
+      "factory/projects/waste/research.result.json/professions.measurement D — researched responses include escalation, load reduction or stopping, investigation, remeasurement, and reporting rather than automatic failure after one mistaken internal request.",
+      "factory/projects/waste/research.result.json/professions.incinerator C/D — authentic operation uses interacting temperature, CO, oxygen, air, feed, pressure, and delayed trends; the design models only waste-type temperature increments.",
+      "factory/taxonomy/mechanics-library.json/rule_matching_verification — replay value expects changing rules or objects; Q1-1 varies objects but does not design changing local rules.",
+      "factory/database/events.json — existing structures already include matching games, line_debug, clue_board, and measurement/inspection games, so novelty must be established structurally rather than by primary-mechanic labels alone.",
+      "factory/rules/game-critic-v2.md/QUALITY GATE — action-result causality, exploitability, mastery, replay, and variation must be assessable as designed; future implementation promises cannot close design-stage gaps.",
+      "factory/projects/waste/design.md/Q1-1 — randomized visual cases, reason selection, mistake costs, and hazardous-item escalation provide a valid C-required observation-and-verification loop.",
+      "factory/projects/waste/design.md/Q1-2 — mixing dry and wet waste into a more uniform feed is directly grounded in the researched crane operator duty.",
+      "factory/projects/waste/design.md/Q1-3 Constraint — staged evidence disclosure and visual elimination appropriately attempt to control cognitive load.",
+      "factory/projects/waste/design.md/World safety — lithium batteries are routed to adult/municipal help, municipality-dependent aerosol rules are not universalized, and graphic accident depictions are avoided."
+    ],
+    "recommended_actions": [
+      "Redesign Q1-4 so required operational cover is respected. Create tradeoffs through limited crews, staged active faces, temporary rain sheets versus proper daily soil cover, exposed-area minimization, tank storage, and treatment scheduling without rewarding routine non-covering.",
+      "Specify Q1-4 as a complete state machine: daily order, section/cell state, capacity legality, cover type and duration, reopening rules, cover cost, rainfall formula, treatment timing, forecast uncertainty, and generation bounds; enumerate representative winning and losing traces.",
+      "Specify Q1-2's initial state, exact action and event order, mixing-turn thermal effect, replenishment/depletion rules, score formula, and constrained scenario generator. Prove every generated scenario is winnable and not solvable by a fixed policy.",
+      "Embed Q1-3's complete evidence matrix and waveform-generation rules in design.md. Demonstrate that every case has a consistent diagnosis, permits a skilled low-cost route, and cannot be solved from the first alert alone.",
+      "Replace Q1-3's one-mistake narrative failure with an authentic staged consequence such as lost time, unnecessary maintenance, rising risk, escalation, or forced safe shutdown; preserve a meaningful failure state.",
+      "Strengthen Q1-2 authenticity with one additional child-readable operational signal or delayed effect, such as CO trend or next-turn temperature momentum, while keeping only one or two dynamic variables visible at once.",
+      "Vary Q1-1's fictional local rule card across validated scenarios—collection day/category, bag marking, and municipality-specific hazardous-waste instruction—so mastery transfers beyond memorizing object categories.",
+      "Define at least one state or consequence that carries between jobs so the world-level one-bag relay is mechanically meaningful, or explicitly present the world as four independent occupational games rather than a systemic requires chain.",
+      "Run documented simulations or exhaustive state checks on Q1-2 through Q1-4 after the rules are specified, covering unwinnable seeds, fixed-policy exploits, all-select/spam strategies, and grade-appropriate decision counts."
+    ]
+  },
+  "elapsed_sec": 111.954
+}

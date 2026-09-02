@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 54,
+    "career_authenticity_score": 68,
+    "game_quality_score": 54,
+    "blockers": [],
+    "high": [
+      "Q1-3 gas_watch — 全4点検＋正解対応が時間5以内に収まり、all-select／総当たりで常に成功できる。ハーネスもallInspectWinを計算するだけで失敗条件を検査しておらず、拘束ルーブリックのall_select_success・exploitabilityに違反する。",
+      "Q1-4 landfill_ops — 設計が主張する「区画を絞るとあふれやすい」というトレードオフはコードに存在しない。浸出水は未覆土の使用区画数だけで増えるため、集約は覆土材と浸出水の両方で常に有利になり、配置判断に支配戦略がある。",
+      "Q1-1 curb_check — wrong_bag生成時にpick(OK_ITEMS)とRecord全体を配列として渡しており、観察対象のitemsが正常生成されない。シミュレーションはtruthを直接参照するため、この実プレイ上の欠陥を検出していない。",
+      "世界全体／Q1-1 — 6袋を外観から分類して対応先を選ぶ基本構造は、既存sort_outやscene_audit系の「複数対象を規則照合して分類」と近い。名称上の『回収可否判定』だけでは、既存構造との重複回避を十分に立証できない。"
+    ],
+    "medium": [
+      "Q1-2 pit_crane — Goalと表示上の安全帯は850〜950℃だが、実装は951〜999℃を失敗にもミスにもせず許容する。プレイヤーへ示す成功条件と実際の判定が一致していない。",
+      "Q1-2 pit_crane — 設計は「温度振れ幅最小」のmastery評価を約束するが、wasteLogic.tsには安定度の記録・評価規則がない。現状の実行規則ではクリア以上の熟達結果を判定できない。",
+      "Q1-4 landfill_ops — 覆土が毎晩消費され、翌晩には同じ区画が再び未覆土扱いになるモデルは、即日覆土・作業面管理の強い抽象化である。教材上は『今夜だけ有効な仮設シート』等として明示しないと、実務について誤解を生む。",
+      "数値仕様 — curb_check本文は「ミス予算2、3回目で停止」だが数値仕様とコードは2回目で停止する。landfill_ops本文も区画容量3×4・覆土材6と記す一方、正本コードと数値仕様は3×5・覆土材5である。",
+      "Q1-3 gas_watch — 「基準超過が出る前」「時間5コマ」「誤依頼による時間喪失」はwasteLogic.tsの状態遷移として実装されておらず、現状はinspectと正誤対応の純粋関数だけである。action→result causalityの重要部分が設計文とハーネス側の仮定に留まる。"
+    ],
+    "low": [
+      "Q1-1の危険物積載を即座に「収集車火災」と確定する表現は、研究の「発火することがある」より断定的である。非刺激的な警報・作業停止表現へ弱める余地がある。",
+      "Q1-3は段階開示により小4〜6の認知負荷へ配慮しているが、CO・HCl・校正・差圧を同時導入するため、各語の短い視覚説明が必要である。",
+      "Q1-2の温度暗算とQ1-4の翌日予測は高学年には適切だが、小4向けには変化量のプレビューや具体物による補助が望ましい。"
+    ],
+    "evidence": [
+      "factory/rules/game-critic-v2.md／必須評価項目・較正 — 総当たり、全選択、固定進行、C単独決定を禁止し、操作→結果をコードで要求している。",
+      "factory/harness/design-principles.md／禁止anti-pattern — all-select成功と説明を読んで正解ボタンを明示的に禁止している。",
+      "factory/harness/gameplay-qa-waste.mjs／gas_watch — allInspectWinを500件で算出するがcheck()を行わず、4点検＋対応がGAS_TIME=5以内であることを自ら確認している。",
+      "src/q1/wasteLogic.ts／gas_watch — inspect()は何度でも呼べ、点検済み状態・残り時間・対応後の状態遷移が存在しない。",
+      "src/q1/wasteLogic.ts／landfill_ops lfNight() — 増水量はuncoveredDirty×2であり、区画内の埋立量や集約度による増水リスクはない。",
+      "factory/harness/gameplay-qa-waste.mjs／landfill_ops — 最適方針は常にconcentratePlacerで、配置の代替戦略や集約の不利益を検証していない。",
+      "factory/projects/waste/design.md／Q1-4 D — 「区画を絞って埋めると覆土が少なくて済むが、あふれやすい」とするが実行規則と逆である。",
+      "src/q1/wasteLogic.ts／makeBags wrong_bag分岐 — items: pick(OK_ITEMS)となっており、DayType別配列を選んでいない。",
+      "factory/harness/gameplay-qa-waste.mjs／curb_check — 方策がbag.truthを直接読み、look.itemsの生成・可読性を検査していない。",
+      "factory/database/events.json／lunch-late・shop-opening — sort_out、scene_audit、matchingカテゴリの既存ゲームがあり、curb_checkとの構造的近似が残る。",
+      "factory/projects/waste/research.result.json／collection C・D — 外観、指定袋、当日区分、危険物、取り残し理由の照合は研究に忠実で、職掌も概ね適切である。",
+      "factory/projects/waste/research.result.json／incinerator C・D — 湿乾ごみの撹拌、投入場所選択、850℃目安、設備保護はpit_craneの中心操作と整合する。",
+      "factory/projects/waste/research.result.json／measurement D — 計器異常、薬剤供給、燃焼状態を迅速に切り分ける仕事はgas_watchの原因調査と直接対応する。",
+      "factory/projects/waste/research.result.json／landfill D — 埋立場所、覆土、雨量予報、浸出水容量の先読みは題材として真正だが、コード上の支配戦略が実務のトレードオフを弱めている。",
+      "factory/harness/gameplay-qa-waste.mjs／実行結果 — 22 checksは全PASSだが、gasの全点検成功、表示データ生成、本文と定数の整合、landfill配置の支配戦略は検査対象外である。"
+    ],
+    "recommended_actions": [
+      "gas_watchの点検上限を2〜3回未満にする、点検ごとの異なる時間コストを設ける、または不要な点検に排出リスクを加え、全点検では成功不能にする。allInspectWin===0または十分低率を明示検査する。",
+      "landfill_opsに集約の実害をコード化する。例として作業面ごとの一時受入上限、転圧待ち、雨水集中、翌日搬入種類との適合、区画閉鎖後の再使用不可などを導入し、天候と搬入条件によって分散が有利な症例も生成する。",
+      "makeBagsのwrong_bagをpick(OK_ITEMS[day])へ修正し、全Bagでlook.itemsが配列かつ可視情報だけからtruthを判別できることをQAする。",
+      "curb_checkを単純分類から差別化するため、袋の外観だけでは断定できない症例、回収順・時間・安全停止など収集現場固有の連続判断を加える。",
+      "850〜950℃を成功評価へ実装するか、表示上の目標帯を実際の判定に合わせる。温度振れ幅を状態として記録しmastery gradeへ反映する。",
+      "design.mdのミス上限、区画容量、覆土材を正本コードと一致させる。",
+      "覆土モデルを実務に近づけるか、有限資源を『今夜用の仮設シート』として明示して、恒久的な覆土と誤認させない。",
+      "gas_watchの時間、誤対応、超過到達をwasteLogic.tsの状態遷移として実装し、ハーネスがUI外の仮定ではなく同じ正本規則を実行するようにする。"
+    ]
+  },
+  "elapsed_sec": 88.06
+}

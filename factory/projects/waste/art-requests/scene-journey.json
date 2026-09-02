@@ -1,0 +1,16 @@
+{
+  "asset_id": "waste_scene_journey",
+  "filename": "scene-journey.png",
+  "world": "waste",
+  "use": "place",
+  "purpose": "「ごみのゆくえ」エリア探索マップの台紙。左=街の集積所、中央=清掃工場、右=処分場の丘の横断ジオラマに4章ホットスポットが乗る",
+  "scene": "One wide miniature diorama showing a Japanese garbage journey from left to right: LEFT a small neighborhood corner with a garbage collection point (a few pale-blue semi-transparent garbage bags neatly placed, green mesh net) and a cute boxy garbage truck; CENTER a clean modern waste-to-energy incineration plant (big boxy hall, one tall slim chimney with a FAINT wisp of white steam, small crane visible through a window); RIGHT a green landfill hill with terraced layers and a tiny monitoring hut. A single winding road connects all three. Bright daytime sky.",
+  "composition": "Slight top-down diorama view (like a toy model on a table), the three zones evenly spaced left/center/right so UI hotspots can sit on each zone plus the road. Generous margins, nothing important near edges. Clean, friendly, NOT dirty or smoky.",
+  "required_objects": ["collection point with bags and net", "garbage truck", "incineration plant with one chimney and faint white steam", "green landfill hill with terraces", "connecting road"],
+  "forbidden_objects": ["readable text or signs", "black smoke", "flames", "dirty piles or scattered trash", "people in danger"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "reference_assets": ["public/assets/town-hero.png", "public/assets/shop/ba-before.png"],
+  "output_path": "public/assets/waste/scene-journey.png",
+  "used_by": ["src/data/content/waste.ts"]
+}

@@ -43,6 +43,10 @@ import PlanCoachGame from "./PlanCoachGame";
 import LoanScreenGame from "./LoanScreenGame";
 import ZoneFitGame from "./ZoneFitGame";
 import SceneAuditGame from "./SceneAuditGame";
+import CurbCheckGame from "./CurbCheckGame";
+import PitCraneGame from "./PitCraneGame";
+import GasWatchGame from "./GasWatchGame";
+import LandfillOpsGame from "./LandfillOpsGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -91,4 +95,9 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   loan_screen: LoanScreenGame, // 複数書類の突き合わせ→面談で確認→承認判断
   zone_and_fit: ZoneFitGame, // 基準必須を先に固定し、残りで営業効率を設計
   scene_audit: SceneAuditGame, // 現場を見て回り、基準と照らして自分で判定を記入
+  // ごみのゆくえ編
+  curb_check: CurbCheckGame, // 袋を観察→ルール照合→積む/残す/隔離連絡を判定
+  pit_crane: PitCraneGame, // ごみ質を見てつかむ・混ぜる→炉温を帯に保つ
+  gas_watch: GasWatchGame, // 点検で原因を切り分け→正しい相手に依頼
+  landfill_ops: LandfillOpsGame, // 型別に区画へ埋め→天気で覆いの優先順位を決める
 };

@@ -1,0 +1,17 @@
+{
+  "asset_id": "waste_ba_after",
+  "filename": "ba-after.png",
+  "world": "waste",
+  "use": "before_after",
+  "purpose": "wrapUpのAfter: 同じ集積所が夕方には空っぽ。遠くに清掃工場の煙突がうっすら見える",
+  "scene": "THE SAME Japanese garbage collection point as the reference image: same corner, same low wall, same green mesh net (now neatly folded), same textless sign pole, same camera. The ONLY changes: the garbage bags are GONE (clean empty pavement), the light is warm late-afternoon, and in the far background between buildings a slim incineration-plant chimney with a faint white steam wisp is now subtly visible.",
+  "composition": "Identical camera and framing to the reference BEFORE image. Do not move or redesign the wall, pole, or street; only remove the bags, fold the net, shift to afternoon light, and add the distant chimney.",
+  "required_objects": ["same corner and wall as reference", "folded green net", "empty clean pavement", "distant slim chimney with faint white steam"],
+  "forbidden_objects": ["readable text", "garbage bags", "black smoke", "people"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "pair_change": "朝あった袋の山が回収されて空になり、ネットが畳まれ、夕方の光に。遠景に清掃工場の煙突がうっすら見える。場所・壁・ポール・カメラは不変",
+  "reference_assets": [],
+  "output_path": "public/assets/waste/ba-after.png",
+  "used_by": ["src/data/content/waste.ts"]
+}

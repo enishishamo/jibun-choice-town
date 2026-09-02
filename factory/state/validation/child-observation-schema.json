@@ -1,0 +1,22 @@
+{
+ "note": "Real-child playtest observation schema (Stage 7/8 §18). Factory PASS = AI_VERIFIED only; real engagement stays REAL_CHILD_VALIDATION_PENDING until observations accumulate here. Append one JSON object per child x game session to child-observations.jsonl. Feed results back via /game-lab improve <gameType> (attach the relevant observation lines to the improvement project's redesign-proposals.md section 1).",
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "title": "ChildObservation",
+ "type": "object",
+ "required": ["world", "game", "age", "completed", "time_to_understand", "retries", "confusion_points", "spontaneous_replay", "asked_for_help", "comments", "observer_notes"],
+ "properties": {
+  "observed_at": { "type": "string", "format": "date" },
+  "world": { "type": "string", "description": "event id, e.g. shop-opening" },
+  "game": { "type": "string", "description": "gameType, e.g. xray_shoot" },
+  "age": { "type": "integer", "minimum": 5, "maximum": 15 },
+  "completed": { "type": "boolean" },
+  "time_to_understand": { "type": "string", "description": "e.g. '30s', '3min', 'never without help'" },
+  "retries": { "type": "integer", "minimum": 0 },
+  "confusion_points": { "type": "array", "items": { "type": "string" }, "description": "where the child got stuck / misread the UI / misunderstood the goal" },
+  "spontaneous_replay": { "type": "boolean", "description": "did the child replay WITHOUT being asked" },
+  "asked_for_help": { "type": "integer", "minimum": 0, "description": "times the child asked an adult" },
+  "comments": { "type": "array", "items": { "type": "string" }, "description": "child's own words (verbatim where possible)" },
+  "observer_notes": { "type": "string" },
+  "engagement_signals": { "type": "array", "items": { "type": "string" }, "description": "optional: leaning in, narrating, showing others, ignoring distractions..." }
+ }
+}

@@ -1,0 +1,16 @@
+{
+  "asset_id": "waste_ba_before",
+  "filename": "ba-before.png",
+  "world": "waste",
+  "use": "before_after",
+  "purpose": "wrapUpのBefore: 朝の集積所にごみ袋が積まれている（子どもが毎朝見る風景）",
+  "scene": "A Japanese neighborhood garbage collection point in the morning: a small corner beside a low wall, a green mesh net partly covering a tidy pile of pale semi-transparent garbage bags (8-10 bags), a small sign pole WITHOUT readable text, morning light, a house corner and a bit of street visible. Calm and clean-ish, not dirty; no scattered loose trash.",
+  "composition": "Eye-level, the collection point centered, enough context around it (wall, street edge). This will pair with an AFTER image of the SAME spot, so keep architecture simple and memorable. Generous margins.",
+  "required_objects": ["pile of pale garbage bags", "green mesh net", "low wall corner", "textless sign pole"],
+  "forbidden_objects": ["readable text", "crows tearing bags", "scattered loose garbage", "people"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "reference_assets": ["public/assets/shop/ba-before.png", "public/assets/town-hero.png"],
+  "output_path": "public/assets/waste/ba-before.png",
+  "used_by": ["src/data/content/waste.ts"]
+}

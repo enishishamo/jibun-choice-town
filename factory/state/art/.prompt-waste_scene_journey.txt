@@ -1,0 +1,21 @@
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: One wide miniature diorama showing a Japanese garbage journey from left to right: LEFT a small neighborhood corner with a garbage collection point (a few pale-blue semi-transparent garbage bags neatly placed, green mesh net) and a cute boxy garbage truck; CENTER a clean modern waste-to-energy incineration plant (big boxy hall, one tall slim chimney with a FAINT wisp of white steam, small crane visible through a window); RIGHT a green landfill hill with terraced layers and a tiny monitoring hut. A single winding road connects all three. Bright daytime sky.
+Role in game: 「ごみのゆくえ」エリア探索マップの台紙。左=街の集積所、中央=清掃工場、右=処分場の丘の横断ジオラマに4章ホットスポットが乗る
+Camera / composition: Slight top-down diorama view (like a toy model on a table), the three zones evenly spaced left/center/right so UI hotspots can sit on each zone plus the road. Generous margins, nothing important near edges. Clean, friendly, NOT dirty or smoky.
+Must include: collection point with bags and net; garbage truck; incineration plant with one chimney and faint white steam; green landfill hill with terraces; connecting road
+Must NOT include: readable text or signs; black smoke; flames; dirty piles or scattered trash; people in danger
+Aspect ratio: 4:3 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- 左の住宅・集積所と右の処分場の丘が画面端で切れており、place用途の外周8%セーフマージンを満たさない — 端末比率変更やトリミングで章の目的地が欠落する
+- 重要な両端エリアが中央70%の外側にある — モバイル表示では集積所と処分場がさらに小さく、ホットスポットの識別性が落ちる
+- 4章に対して視覚的な目的地点は集積所・清掃工場・処分場の3区画が中心で、第4ホットスポット候補が明確でない — 探索順序を画像だけで把握しにくい
+- 処分場が整然とした緑の段丘と小屋だけに見え、ごみの埋立・搬入・管理を示す設備が乏しい — 学習用の「処分場」として意味が伝わりにくい
+- 集積所の袋や処分場頂上の設備が小さい — 縮小表示では装飾に埋もれ、タップ対象としての可読性が不足する
+- 左下の囲いと住宅、右端の丘が不完全な状態でフレーム外へ続く — 完結した横断ジオラマとしてのオブジェクト完全性を損なう

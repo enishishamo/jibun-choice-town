@@ -1,58 +1,50 @@
----
-description: JIBUN CHOICE Game Factoryで新しい世界（イベント編）を1本制作する標準フロー
----
+# /new-world — 新しい世界を自律制作する（v2・Harness統合）
 
-JIBUN CHOICE Game Factory の /new-world フローを開始してください。
-ユーザーが自然言語で「次の世界を作って」と言った場合もこのフローに従います。
+Stage 0〜6 で実証した部品による end-to-end production workflow。**default は autonomous**：
+HUMAN_REQUIRED（追加課金・APIキー・重大fact不確実・legal/safety・irreversible・max loop でも
+BLOCKER 解消不能）以外で停止しない。「どの職業にしますか？」等の通常質問は禁止。
 
-$ARGUMENTS がある場合はテーマの希望として扱う（例: /new-world 防災）。
+オプション:
+- `/new-world --theme="..."` — テーマを指定して開始（選定フェーズをスキップ）
+- `/new-world --interactive` — 旧 GATE 1/2（出来事選択・職種承認）で停止する互換モード
 
-## 標準フロー
+## パイプライン（各フェーズの実行部品）
 
-**STEP 1｜DB更新**
-`node factory/scripts/update-factory-db.mjs` を実行し、DBを実コードと同期する。
-エラーが出たら先に解決する。
+| # | フェーズ | 実行 | 成果物（factory/projects/<world>/） |
+| --- | --- | --- | --- |
+| 1 | WORLD SELECTION | Claude 起案 → `codex-task` 独立採点 → synthesis | selection.md |
+| 2 | EVENT / SOCIAL RESEARCH | `codex-task` 委譲（構造化・出典方針は research-rules.md） | research.md |
+| 3 | JOB DISCOVERY | 同上（出来事を成立させる仕事を列挙→バランス選定。数は自律決定） | research.md |
+| 4 | CAREER FACT RESEARCH | `codex-task`（C=道具/データ/基準、D=判断を職業ごとに） | research.md |
+| 5 | DIFFICULTY EXTRACTION | Claude（job-difficulty-taxonomy.md の id で 2〜4/職） | design.md |
+| 6 | MECHANICS MATCHING | job-mechanics-map.json から候補（**mechanic先行禁止**）＋多様性確認 | design.md |
+| 7 | GAME DESIGN | Claude（Q1毎に Goal/CoreAction/C/D/制約/失敗/Retry/Mastery/Replay/Variation/Result + 4 statements） | design.md |
+| 8 | GAME CRITIC + CAREER CRITIC | `loop.mjs` + design 用二軸レビュー prompt（--require-axes） | critic レビュー(runs/) |
+| 9 | ART NEED DETECTION | `art/art-need-detector.mjs`（reuse優先・OPTIONAL生成禁止） | art-requests/ |
+| 10 | ART GENERATION / QA | `art/art-loop.mjs run / run-pair`（直列・regen≤3・pair整合） | manifest-v2 反映 |
+| 11 | IMPLEMENTATION | Claude（純ロジック `<x>Logic.ts` 分離・registry 登録・既存アーキ尊重） | src/ |
+| 12 | BUILD / STATIC QA | `verify.mjs`（build/lint/factory-data）+ `art/art-link-qa.mjs` | verify ログ |
+| 13 | AUTOMATED GAMEPLAY QA | Q1毎の `gameplay-qa-<world>.mjs`（no-action/spam/all-select/ignore-C/最短/edge/乱数/optimal） | harness/ |
+| 14 | BROWSER QA | Browser pane（mobile 375px + desktop、entry→map→Q1→failure→retry→success→JobReveal→wrapUp、console/networkエラー確認） | スクリーンショット記録 |
+| 15 | CODEX ADVERSARIAL REVIEW | `loop.mjs review --require-axes`（二軸・BLOCKER/HIGH=0 まで repair、max_iterations で明示停止） | runs/ |
+| 16 | DATABASE / MANIFEST | `update-factory-db.mjs` + component-reviews.json（新hash）+ validate | database/ |
+| 17 | COMMIT | meaningful commit（remote push 禁止） | git |
 
-**STEP 2｜候補出し**
-jc-planner エージェントを起動し、出来事候補20〜30 → TOP3 を作らせる。
+進行状態は `factory/projects/<world>/pipeline.json`（フェーズ毎の status/evidence）へ記録する。
 
-**STEP 3｜出来事の決定（既定: Factory が自律判断）**
-2026-08-30 のユーザー指示により、既定では Factory が TOP3 から最適な1つを
-自分で選んで進む（選定理由は最終報告に含める）。
-ユーザーが「ゲートありで」と指定した場合のみ、旧仕様どおりここで停止して選んでもらう。
+## 品質ゲート（必須）
 
-**STEP 4｜広域調査**
-選ばれた出来事について jc-researcher エージェントを起動し、
-関わる仕事を広く調べさせる（`factory/projects/<world-id>/research.md`）。
-world-id はケバブケースで命名（例: `disaster-drill`）。
+- 各 Q1: `C_required=true` / `C_alone_determines_answer=false` / `player_judgment_required=true` / `action_changes_result=true`
+- 4 statements（CORE LOOP / MASTERY / REPLAY / NOVICE VS EXPERT）が意味のある内容で書けること
+- 二軸（CAREER_AUTHENTICITY × GAME_QUALITY）両方 PASS・BLOCKER/HIGH = 0
+- world 内 mechanics 多様性（primary challenge mechanic の重複は最大2）
+- Art: reuse 優先・Style Contract 準拠・Before/After は同一建物/カメラ
+- コスト: subscription_included_confirmed のみ。provider status 変化時は再probe、unknown は停止
 
-**STEP 5｜職種推奨**
-jc-planner エージェントに research.md を渡し、4〜6職種の推奨を作らせる。
+## 検証境界（§18）
 
-**STEP 6｜GATE 2（ユーザー確認・必ず停止）**
-職種構成をユーザーに提示し、承認をもらう。
-
-**STEP 7｜以降は原則止めない**
-1. jc-researcher で採用職種の深掘り調査（research.md を更新）
-2. jc-game-designer で design.md 作成
-3. jc-critic で採点。基準未達なら Designer へ差し戻し（自動で最大2回。
-   重大なファクト問題だけはユーザーへエスカレーション）
-4. jc-art-director で art-manifest.json 作成
-5. 実装計画を `factory/projects/<world-id>/implementation-plan.md` に作成
-   （content モジュール新規ファイル、registry.ts / data/index.ts への追加行、必要画像一覧）
-
-**ユーザーへの報告は implementation-plan.md 完成後に1回**（候補選定理由・職種構成理由・
-Critic 採点・残存 FACT_CHECK・実装計画の所在をまとめて報告する）。
-途中で停止するのは、Critic が重大ファクト問題をエスカレーションした場合のみ。
-
-## v0.1 の安全弁
-
-本番コード（src/）への自動実装はまだ行わない。STEP 7 の成果物は
-implementation-plan.md まで。実装はユーザーが計画を確認してから
-「実装して」と指示した時に着手する。実装時も:
-
-- 既存の content モジュール・ゲームコンポーネント・共通画面は変更しない
-  （registry.ts / data/index.ts への追加行のみ可）
-- 実装後は jc-final-qa エージェントで QA を行い、
-  `node factory/scripts/update-factory-db.mjs` でDBを更新する
-- main へ直接 push しない
+Factory の PASS は **AI_VERIFIED** であり、実際の子どもの熱中は
+**REAL_CHILD_VALIDATION_PENDING**。観察結果は
+`factory/state/validation/child-observations.jsonl`（schema:
+`child-observation-schema.json`）に蓄積し、`/game-lab improve <gameType>` の
+入力として戻す。

@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T01:26:51.739Z",
+  "updated_at": "2026-09-02T05:52:50.408Z",
   "stages": [
     {
       "id": 0,
@@ -187,7 +187,7 @@
     {
       "id": 7,
       "name": "/new-world end-to-end integration",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         5,
         6
@@ -199,7 +199,10 @@
       ],
       "repair_count": 0,
       "stop_reason": null,
-      "runs": [],
+      "runs": [
+        "run-2026-09-02T05-13-19-h3f2",
+        "run-2026-09-02T05-52-50-2vrl"
+      ],
       "notes": []
     },
     {
