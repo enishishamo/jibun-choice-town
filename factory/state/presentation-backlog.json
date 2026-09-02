@@ -1,0 +1,55 @@
+{
+ "note": "Asset Presentation Gate backlog — systemic/shared-component findings from the in-context audit (factory/state/art/presentation-audit/). Stage 7/8-specific FAILs were repaired pre-v1.0; these remain for later repair passes.",
+ "created": "2026-09-03",
+ "items": [
+  {
+   "id": "map-balloon-collisions",
+   "scope": "HomeScreen (all worlds)",
+   "finding": "8 event balloons overlap each other and cover map landmarks on mobile; clamp added for edge clipping but placement is not collision-aware",
+   "repair_sketch": "collision-aware balloon layout (grid slots or force layout) + longer pointers into negative space",
+   "source": "presentation-audit/town-map.json"
+  },
+  {
+   "id": "map-mobile-crop",
+   "scope": "HomeScreen",
+   "finding": "mobile crop keeps desktop-oriented hotspot coordinates; much of the scene width lost",
+   "repair_sketch": "mobile-specific map crop + per-viewport mapPos",
+   "source": "presentation-audit/town-map.json"
+  },
+  {
+   "id": "map-bottom-edge",
+   "scope": "HomeScreen",
+   "finding": "scene ends in a hard horizontal boundary over a featureless beige area",
+   "repair_sketch": "terrain fade / framed mask at map bottom",
+   "source": "presentation-audit/town-map.json"
+  },
+  {
+   "id": "area-callout-component",
+   "scope": "AreaScreen (all worlds)",
+   "finding": "incident labels are free-floating with inconsistent widths; collisions must be avoided by hand-tuned scenePos",
+   "repair_sketch": "shared callout component with max-width, collision-aware placement, tap-to-expand text",
+   "source": "presentation-audit/zoo-area.json"
+  },
+  {
+   "id": "q1-intro-seam",
+   "scope": "ExperienceScreen (all worlds)",
+   "finding": "hero scene image meets the mission card with an abrupt seam; location label crowds scene content",
+   "repair_sketch": "shared overflow-hidden wrapper with coordinated radii; inset location label",
+   "source": "presentation-audit/zoo-q1-intro.json"
+  },
+  {
+   "id": "emoji-icon-set",
+   "scope": "all game UIs",
+   "finding": "generic emoji rendering (task icons, characters) clashes with the custom clay UI in places",
+   "repair_sketch": "gradual replacement with a consistent custom icon set (reuse-first, OPTIONAL generation rules apply)",
+   "source": "presentation-audit/zoo-game-debut.json"
+  },
+  {
+   "id": "ba-after-bottom-crop",
+   "scope": "zoo ba-after.png artwork",
+   "finding": "foreground visitors touch the artwork's own bottom edge (composition trait; asset CROP_SAFETY passed)",
+   "repair_sketch": "optional regeneration with more bottom margin next time zoo art is touched",
+   "source": "presentation-audit/zoo-wrapup.json"
+  }
+ ]
+}

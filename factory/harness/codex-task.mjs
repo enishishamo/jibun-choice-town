@@ -57,9 +57,13 @@ function emit(result) {
   process.exit(result.ok ? 0 : 1);
 }
 
-const which = spawnSync("codex", ["--version"], { encoding: "utf8" });
+// Cost safety: the subscription-only boundary is enforced mechanically in EVERY
+// codex transport — strip provider API keys so no key-based path can be taken.
+const SAFE_ENV = { ...process.env };
+for (const k of Object.keys(SAFE_ENV)) if (/^(OPENAI|AZURE_OPENAI|ANTHROPIC)_/i.test(k)) delete SAFE_ENV[k];
+const which = spawnSync("codex", ["--version"], { encoding: "utf8", env: SAFE_ENV });
 if (which.error || which.status !== 0) emit({ ok: false, status: "CODEX_UNAVAILABLE", error: "codex CLI not found", elapsed_sec: 0 });
-const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8" });
+const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8", env: SAFE_ENV });
 if (auth.status !== 0) emit({ ok: false, status: "CODEX_UNAUTHENTICATED", error: "run `codex login` (ChatGPT OAuth)", elapsed_sec: 0 });
 
 const prompt = readFileSync(promptFile, "utf8");
@@ -72,7 +76,7 @@ function runOnce(p) {
     const child = spawn(
       "codex",
       ["exec", "--sandbox", "read-only", "--cd", process.cwd(), "--skip-git-repo-check", "--output-last-message", lastMsgFile, "-"],
-      { stdio: ["pipe", "pipe", "pipe"], detached: true },
+      { stdio: ["pipe", "pipe", "pipe"], detached: true, env: SAFE_ENV },
     );
     let stderr = "";
     let settled = false;

@@ -1,0 +1,31 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 94,
+  "SUBJECT_OCCLUSION": 72,
+  "FOCAL_OBJECT_VISIBILITY": 88,
+  "BADGE_OVERLAP": 78,
+  "CONTAINER_FIT": 92,
+  "BACKGROUND_EDGE_QUALITY": 95,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 82,
+  "MOBILE_CROP": 78,
+  "DESKTOP_CROP": 93,
+  "ASSET_PRESENTATION_QUALITY": 84
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "複数の仕事ラベルと半透明ロックが建物の主要部分を覆い、背景イラストを観察する余地が少ない",
+  "モバイルでは横スクロール前提のため右側の情景が画面外へ切れ、初見の構図がやや窮屈",
+  "ラベルの配置間隔と高さが不均一で、地図上に暫定配置したような密集感がある",
+  "ロック表示と仕事ラベルで視覚スタイルや影の強さが異なり、オーバーレイ体系の統一感が弱い"
+ ],
+ "issues": [
+  "zoo-area/仕事ラベル群 — 建物や入口など判断対象となるランドマークを広く覆っている — ラベルを空き地側へ移動し、短いリーダー線で対象地点と接続する",
+  "zoo-area/半透明ロック3個 — 大きな円形オーバーレイが屋根や中央施設を隠し、ラベルとも重なって地図が混雑している — 円を25〜35%縮小し、屋根の余白側へposition調整する",
+  "zoo-area/中央のロックと③ラベル — ロック円と吹き出しが接近・部分重複し、中央の焦点が不明瞭 — 両者の間に8〜12px以上の間隔を設ける",
+  "zoo-area/mobile scene — 横長シーンの右側が画面外へ切れ、全体像と進行順が一度に把握できない — 初期スクロール位置を少し右へ寄せるか、モバイルのみ全体を軽く縮小して次領域が見える程度の横スクロール affordance を残す"
+ ]
+}

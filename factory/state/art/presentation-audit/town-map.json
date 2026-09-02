@@ -1,0 +1,24 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 91,
+  "SUBJECT_OCCLUSION": 82,
+  "FOCAL_OBJECT_VISIBILITY": 92,
+  "BADGE_OVERLAP": 94,
+  "CONTAINER_FIT": 96,
+  "BACKGROUND_EDGE_QUALITY": 95,
+  "ASPECT_RATIO_FIT": 98,
+  "VISUAL_INTEGRATION": 88,
+  "MOBILE_CROP": 84,
+  "DESKTOP_CROP": 94,
+  "ASSET_PRESENTATION_QUALITY": 90
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
+ "issues": [
+  "mobile/「ごみのゆくえ？」吹き出し — 工場の準備中ラベルに部分的に重なり、密集感がある — 吹き出しを左下へ数px移動するか、工場ラベルとの間隔を確保する",
+  "mobile/「赤ちゃん誕生！」吹き出し — 「アイスが高くなってる！」と近接して窮屈に見える — 吹き出しを右下へ少し移動して境界間に余白を設ける"
+ ]
+}

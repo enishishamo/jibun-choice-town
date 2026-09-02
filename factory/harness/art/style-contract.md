@@ -40,3 +40,46 @@
 読める文字/ロゴ/透かし・写実質感・実在ブランド/人物・過度な汚れや恐怖表現・
 人物の頭/手の見切れ・不自然な指・幼児向けすぎるデフォルメ・古臭い画風・
 Before/Afterで建物や街並みが別物になること
+
+## Series Style Gate（2026-09-02 追加・fail-closed）
+- SERIES_STYLE_MATCH（<80でFAIL・必須）: 「綺麗な画像か」ではなく「既存JIBUN CHOICE
+  reference set（factory/harness/art/reference-set.json の実画像）と並べたとき、同じ作品・
+  同じ世界に見えるか」。clay material / miniature感 / 頭身 / 顔・目・鼻口の簡略化 /
+  髪・肌・服の素材 / lighting / saturation / depth / 背景処理 / カメラ感 / toy-diorama感。
+- CHARACTER_SERIES_MATCH（人物がいる場合<80でFAIL・必須）: Pixar/Disney/generic 3D寄り、
+  リアルCG寄り、ソシャゲキャラ寄り、頭身過大、目が大きすぎ、肌が人間的に滑らか、
+  髪がリアル、顔だけ精密、服だけ布リアル、「粘土人形でなく3Dアニメキャラに見える」を検出。
+- 総合点が高くてもこの2ゲート未達ならPASS禁止。QAは毎回 reference set を実画像入力で添付。
+- 生成時も generation_refs を毎回 -i で添付（文章だけの "3D clay style" 指定は禁止）。
+- FAIL時のrepairは曖昧語（もっとclay等）禁止：criticの series_diffs（referenceとの具体差分）を
+  次promptへ自動注入する。
+- contact sheet（factory/harness/art/contact-sheet.py → factory/state/art/contact-sheet.png）で
+  ref+新規を並べ、シリーズ内driftを面で確認する。
+
+### FAILURE PATTERN（factory learning・再発防止）
+"generic high-quality 3D clay character passes QA but does not match JIBUN CHOICE series"
+— 単体品質の高い汎用clay/Pixar風人物が旧QA（text contractのみ）を通過した。
+対策: reference-based series comparison を Art QA の標準工程とする（本ゲート）。
+
+## Asset Presentation Gate（2026-09-03 追加・fail-closed・in-context）
+ASSET QUALITY ≠ PRESENTATION QUALITY。asset単体のQA PASSでは完成にしない。
+実ブラウザのscreenshot（mobile 375px + desktop 両方）を art-qa.mjs `presentation` モードで監査：
+SUBJECT_CROP / SUBJECT_OCCLUSION / FOCAL_OBJECT_VISIBILITY / BADGE_OVERLAP /
+CONTAINER_FIT / BACKGROUND_EDGE_QUALITY / ASPECT_RATIO_FIT / VISUAL_INTEGRATION /
+MOBILE_CROP / DESKTOP_CROP。ASSET_PRESENTATION_QUALITY < 80 で FAIL、
+BADGE_COLLISION（NEW等が顔・頭・手・職業道具に被る）= true で FAIL。
+- subject safe area 優先：装飾（NEW/ラベル/sparkle/吹き出し）よりsubject。
+- raw rectangle 検出：カード背景と合わない「四角い画像をそのまま貼った」見た目は
+  border-radius / masking / object-fit / object-position / matching background /
+  intentional frame で解消（無理な背景除去はしない。意図的なscene frameは許容）。
+- object-fit: cover を無条件に使わない（人物・道具・scene情報が切れるなら contain /
+  position調整 / 別aspect / responsive crop）。
+- スクショ撮影は factory/harness/art/present-shots.mjs（puppeteer-core + 手元Chrome）、
+  一覧比較は factory/state/art/contact-sheet-incontext.png（IN-CONTEXT CONTACT SHEET）。
+- UI POLISH ADVERSARIAL QUESTION を毎回問う：「完成した商用ゲームUIに見えるか、
+  素材を仮置きしたprototypeに見えるか」。prototype感の理由を具体列挙させる。
+
+### FAILURE PATTERN（factory learning・再発防止）
+"Asset itself passes Art QA, but its in-app presentation is poorly cropped,
+occluded by badges, or visually pasted into the UI."
+— 対策: IMAGE QA と IN-CONTEXT PRESENTATION QA の両PASSを完成条件とする（本ゲート）。

@@ -2681,41 +2681,42 @@
    "asset_id": "shop_char_haru",
    "filename": "char-haru.png",
    "world": "shop",
-   "purpose": "商店街・開店編エリア導入（sceneMap.opening）の物語の顔。将来: 会話/discovery/E画面への展開候補",
+   "purpose": "5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場",
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair.\nRole in game: 5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場\nCamera / composition: UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.\nMust include: navy apron; round wooden serving tray with rice bowl and miso soup; warm hopeful expression; big-head chibi proportions (2.5-3 heads); generous margins on all sides\nMust NOT include: readable text; brand logos; realistic adult proportions (4+ heads tall); full body / legs / shoes; kitchen background clutter; photorealistic skin; elements touching the image edges\nCharacters: modern, kind adult; series chibi clay proportions (2.5-3 heads), NOT realistic proportions; no gender-stereotyped exaggeration\nAspect ratio: 1:1 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- 顔が大きく頬が丸い幼児的な造形で、成人の「ハルさん」より低年齢の少年に見える — 小4〜6年生向けの「幼すぎない、少し大人っぽい」人物表現というMUSTに反する\n- 目・鼻・口の単純化と頭部比率が強く、基準の2.5〜3頭身より幼い印象が先行する — 5章を通じて定食屋の開業を目指す人物としての成熟度が伝わりにくい\n- エプロンと定食の盆で飲食店志望は明確だが、服装が非常に素朴で現代的なおしゃれ感が弱い — シリーズの対象年齢に合う洗練を少し加える余地がある\n- STYLE_CONSISTENCY below threshold: 68",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair. CRITICAL series-match fixes (from reference comparison): small simple dot eyes with NO gloss highlights; matte clay skin with subtle handmade surface irregularity (never smooth CG skin); hair as ONE simplified solid clay mass with minimal grooves; apron and clothes read as molded matte clay (no fabric weave texture); the figure must look like a handcrafted clay figurine standing in a toy-diorama world, NOT a studio 3D character portrait.\nRole in game: 5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場\nCamera / composition: UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.\nMust include: navy apron; round wooden serving tray with rice bowl and miso soup; warm hopeful expression; big-head chibi proportions (2.5-3 heads); generous margins on all sides\nMust NOT include: readable text; brand logos; realistic adult proportions (4+ heads tall); full body / legs / shoes; kitchen background clutter; photorealistic skin; elements touching the image edges; glossy or oversized animation-style eyes; smooth CG-like skin; strand-detailed or sculpturally polished hair; fabric-textured clothing; studio-portrait rendering / rim lighting\nCharacters: modern, kind adult; series chibi clay proportions (2.5-3 heads), NOT realistic proportions; no gender-stereotyped exaggeration\nAspect ratio: 1:1 (compose for this frame).",
    "reference_assets": [
-    "public/assets/medical/who_doctor.jpg",
-    "public/assets/town-hero.png"
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/medical/who_doctor.jpg"
    ],
    "dimensions": "800x800",
    "aspect_ratio": 1,
-   "created_at": "2026-09-02T01:08:08.321Z",
-   "iteration": 2,
-   "qa_score": 86,
-   "qa_issues": [
-    "髪の最上部と胴体下端の余白がやや少ない — UI側で拡大表示や縦長クロップを行うと窮屈に見える可能性がある",
-    "基準の人物画像より表面が滑らかで高精細 — 反復登場時に他NPCより少し写実CG寄りに見える可能性がある",
-    "定食屋の仕事はエプロン・ご飯・汁物で十分伝わるが、献立の種類が少なく開店準備中という物語情報までは単体で判別しにくい"
-   ],
-   "file_hash": "27d839830d2c",
+   "created_at": "2026-09-02T14:47:36.940Z",
+   "iteration": 1,
+   "qa_score": 92,
+   "qa_issues": [],
+   "file_hash": "c313fd1e5e36",
    "used_by": [
-    "src/data/content/shopOpening.ts (sceneMap.opening.image)"
+    "src/data/content/shopOpening.ts"
    ],
    "status": "qa_passed",
    "qa_scores": {
-    "STYLE_CONSISTENCY": 92,
-    "COMPOSITION": 94,
-    "CROP_SAFETY": 88,
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 95,
+    "CROP_SAFETY": 96,
     "READABILITY": 97,
-    "OBJECT_COMPLETENESS": 98,
-    "CHARACTER_ANATOMY": 96,
-    "SERIES_CONSISTENCY": 86,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 95,
+    "SERIES_CONSISTENCY": 93,
     "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 97,
-    "MOBILE_USABILITY": 90
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 96,
+    "SERIES_STYLE_MATCH": 92,
+    "CHARACTER_SERIES_MATCH": 94
    }
   },
   {
@@ -2840,6 +2841,131 @@
    "file_hash": "c03f369f23ed",
    "used_by": [
     "src/data/content/waste.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "zoo_scene",
+   "filename": "scene-zoo.png",
+   "world": "zoo",
+   "purpose": "動物園バックヤード横断マップ（4章ホットスポットの台紙）: 保育室・診察室・餌の調理場・展示場",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: One diorama of a Japanese zoo's backyard area: LEFT a small nursery room seen through a big window (warm lamp, a tiny incubator crib, a growth chart poster WITHOUT readable text), CENTER-LEFT a small veterinary exam room (window view: scale, stethoscope on a table), CENTER-RIGHT a feed kitchen (counter with vegetable baskets, bamboo bundle, hanging ladles), RIGHT an outdoor exhibit yard for a red panda with a climbing tree, a small wooden hide-box, and a low visitor fence at a respectful distance. A little path connects all four. NO animals visible except a tiny red panda tail peeking from the hide-box (cute hint).\nRole in game: 動物園バックヤード横断マップ（4章ホットスポットの台紙）: 保育室・診察室・餌の調理場・展示場\nCamera / composition: Slight top-down diorama (toy model feel), four zones evenly spaced left-to-right for UI hotspots, generous margins, nothing important near edges. Bright, warm, calm.\nMust include: nursery window with incubator crib; vet room window; feed kitchen with bamboo and vegetables; outdoor exhibit with climbing tree and hide-box; connecting path; low visitor fence far from the exhibit\nMust NOT include: readable text or signs; visitors crowding; cages with bars (use glass/moats/fences); any sad or sick imagery\nAspect ratio: 4:3 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/waste/scene-journey.png",
+    "public/assets/town-hero.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T08:52:20.496Z",
+   "iteration": 1,
+   "qa_score": 76,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 78,
+    "READABILITY": 84,
+    "OBJECT_COMPLETENESS": 90,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 92,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 86,
+    "MOBILE_USABILITY": 76
+   },
+   "qa_issues": [
+    "保育室が左端、展示場が右端に寄っている — モバイルの横方向クロップで章ホットスポットが欠ける可能性がある",
+    "診察室の机上器具がハサミに見えやすい — 動物用診察室としての識別性を上げるなら聴診器などをより明確に見せたい",
+    "展示場が小屋と遊具中心で動物不在 — 他の3施設より用途の即時判別がやや弱い",
+    "背景の樹木や花、小物の情報量が多い — 小画面では4つの主要ホットスポットへの視線誘導が少し弱くなる",
+    "保育室内の壁面パネルに記号状の細部がある — 現状は読める文字ではないが、縮尺や生成差分によって疑似文字化しないよう注意が必要"
+   ],
+   "file_hash": "dcf4b67fc32c",
+   "used_by": [
+    "src/data/content/zoo.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "zoo_ba_before",
+   "filename": "ba-before.png",
+   "world": "zoo",
+   "purpose": "wrapUpのBefore: デビュー前の静かな展示場（準備が整い、まだ誰もいない）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A small Japanese zoo exhibit yard prepared for a red panda baby's debut, EMPTY and quiet: a climbing tree with a soft branch bed, a small wooden hide-box with its door open, fresh bamboo bundle placed, a shallow water dish, soft morning light. A low wooden visitor fence in the foreground at a respectful distance, with a small blank sign board (NO text). No animals, no people.\nRole in game: wrapUpのBefore: デビュー前の静かな展示場（準備が整い、まだ誰もいない）\nCamera / composition: Eye-level from just behind the visitor fence, the exhibit filling the frame with the climbing tree slightly left of center and the hide-box visible right. This pairs with an AFTER image of the SAME yard, so keep layout simple and memorable. Generous margins.\nMust include: climbing tree; open hide-box; bamboo bundle; low visitor fence in foreground; blank sign board\nMust NOT include: readable text; animals; people; bars or cages\nAspect ratio: 4:3 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/waste/ba-before.png",
+    "public/assets/town-hero.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T08:53:58.679Z",
+   "iteration": 1,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 93,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 85,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 91,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 93,
+    "MOBILE_USABILITY": 84
+   },
+   "qa_issues": [
+    "案内板が右下の画面端に近い — モバイルで左右がクロップされると一部が欠けやすい",
+    "水場・小屋・寝床が横方向に分散している — 狭い表示では展示場の準備完了を示す要素を同時に把握しにくい",
+    "樹冠や背景の被写界深度がやや写実CG寄り — シリーズ基準の手作り粘土感をさらに強める余地がある"
+   ],
+   "file_hash": "4e20a66c5602",
+   "used_by": [
+    "src/data/content/zoo.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "zoo_ba_after",
+   "filename": "ba-after.png",
+   "world": "zoo",
+   "purpose": "wrapUpのAfter: 同じ展示場のデビュー日。赤ちゃんが自分から出てきて、少人数が静かに見守る",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: THE SAME zoo exhibit yard as the reference image: same climbing tree, same hide-box, same fence, same camera. Now it is debut day: a small fluffy red panda cub is out on the low branch near the hide-box (it chose to come out), and BEHIND the fence stand just three quiet visitors — a parent and a child crouching to the child's eye level, and one adult — all keeping distance, no phones raised, warm gentle light. The blank sign board remains textless.\nRole in game: wrapUpのAfter: 同じ展示場のデビュー日。赤ちゃんが自分から出てきて、少人数が静かに見守る\nCamera / composition: Identical camera and framing to the reference BEFORE image. Do not move or redesign the tree, hide-box, or fence; only add the cub and the few calm visitors behind the fence.\nMust include: same yard as reference; red panda cub on the low branch; three calm visitors BEHIND the fence at distance; open hide-box (escape route visible)\nMust NOT include: readable text; crowds; reaching hands or feeding; flash/cameras pointed; different camera angle\nAspect ratio: 4:3 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/zoo/ba-before.png"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-02T08:55:47.022Z",
+   "iteration": 1,
+   "qa_score": 87,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 88,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 93,
+    "CHARACTER_ANATOMY": 91,
+    "SERIES_CONSISTENCY": 93,
+    "BEFORE_AFTER_CONSISTENCY": 98,
+    "JOB_ACCURACY": 94,
+    "MOBILE_USABILITY": 87
+   },
+   "qa_issues": [
+    "AFTERの人物が画面下端に接して胴体が途中で切れている — 頭や手の見切れはないが、モバイルでさらにトリミングされると人物の姿勢や少人数で静かに見守る状況が弱くなる",
+    "赤ちゃんのレッサーパンダが中央70%内にはいるものの小さめで、背景の丸太や植栽と色が近い — 小画面では主役の発見がやや遅れる",
+    "赤ちゃんが小屋から出てきた結果は表現されているが、小屋と赤ちゃんの間に距離があり、出てきた直後という因果関係は少し伝わりにくい",
+    "人物の衣服は粘土風に統一されているが、髪やセーターの微細な表面表現が背景よりわずかに精密 — シリーズの簡潔なクレイ質感から軽微に外れる"
+   ],
+   "file_hash": "bf61f0affb4d",
+   "used_by": [
+    "src/data/content/zoo.ts"
    ],
    "status": "qa_passed"
   }

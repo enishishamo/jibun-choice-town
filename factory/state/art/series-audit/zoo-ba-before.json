@@ -1,0 +1,34 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 92,
+  "COMPOSITION": 90,
+  "CROP_SAFETY": 91,
+  "READABILITY": 89,
+  "OBJECT_COMPLETENESS": 94,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 91,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 87,
+  "SERIES_STYLE_MATCH": 91,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "Candidate has slightly sharper wood-grain detailing and stronger micro-texture than the softer, simpler clay surfaces in several references.",
+  "Foreground fence and foliage are somewhat more visually dominant than comparable scene edges in the reference set.",
+  "The empty signboard resembles a UI/text placeholder, though it contains no readable text and does not violate the contract."
+ ],
+ "issues": [
+  "Central enclosure elements are complete and clearly readable, but the lower foreground fence consumes substantial space and may reduce scene clarity on a small mobile crop.",
+  "The habitat is convincingly presented as an empty 'before' state, though the blank signboard may attract attention without communicating useful visual information."
+ ],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1868942,
+  "issues": []
+ }
+}

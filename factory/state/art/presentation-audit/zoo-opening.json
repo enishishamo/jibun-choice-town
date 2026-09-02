@@ -1,0 +1,23 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 96,
+  "SUBJECT_OCCLUSION": 100,
+  "FOCAL_OBJECT_VISIBILITY": 82,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 96,
+  "BACKGROUND_EDGE_QUALITY": 98,
+  "ASPECT_RATIO_FIT": 100,
+  "VISUAL_INTEGRATION": 94,
+  "MOBILE_CROP": 97,
+  "DESKTOP_CROP": 97,
+  "ASSET_PRESENTATION_QUALITY": 95
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
+ "issues": [
+  "zoo-opening/main scene — the copy centers on a newborn red panda, but no clearly identifiable red panda is visible in the illustration, weakening the image’s narrative focal point — show the baby in-frame or revise the copy so the enclosure itself is the intended focal object"
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 95,
+  "COMPOSITION": 94,
+  "CROP_SAFETY": 97,
+  "READABILITY": 94,
+  "OBJECT_COMPLETENESS": 96,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 95,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 96,
+  "MOBILE_USABILITY": 93,
+  "SERIES_STYLE_MATCH": 95,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "Candidate uses a cleaner, more isolated floating-island presentation than the denser town-overview reference, but its rounded geometry, matte clay surfaces, miniature scale, color temperature, lighting, and toy-diorama rendering remain strongly aligned.",
+  "The sky and surrounding water are slightly smoother and less visibly handmade than the modeled land, buildings, trees, vehicles, and waste facilities."
+ ],
+ "issues": [],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1826199,
+  "issues": []
+ }
+}

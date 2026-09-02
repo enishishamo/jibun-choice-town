@@ -79,7 +79,16 @@ function generatorAvailable() {
   try {
     const st = JSON.parse(readFileSync(join(STATE, "provider-status.json"), "utf8"));
     const g = st.providers.find((x) => x.provider === "codex_imagegen");
-    return Boolean(g && g.available && g.safe_for_automation && g.extra_cost_status === "subscription_included_confirmed");
+    if (!(g && g.available && g.safe_for_automation && g.extra_cost_status === "subscription_included_confirmed")) return false;
+    // freshness: a probe is only trusted for 14 days — after that the provider
+    // must be RE-PROBED (per §21: status changes require re-probing; stale
+    // evidence fails closed to human_boundary, never to a paid path).
+    const probedAt = Date.parse(g.probed_at || st.probed_at || 0);
+    if (!Number.isFinite(probedAt) || Date.now() - probedAt > 14 * 24 * 3600 * 1000) {
+      console.error("provider probe evidence is stale (>14d) — re-run the Stage-6 probe before generating.");
+      return false;
+    }
+    return true;
   } catch {
     return false;
   }
@@ -124,7 +133,17 @@ function dims(p) {
   return { w: Number(out.match(/pixelWidth: (\d+)/)?.[1]), h: Number(out.match(/pixelHeight: (\d+)/)?.[1]) };
 }
 
-const STYLE_BLOCK = `Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+// Series Style Gate: never describe the style by TEXT alone — a text-only
+// "3D clay style" drifts toward generic Pixar-like renders. Every generation
+// attaches the fixed known-good reference images and must match THEM.
+const REFSET = JSON.parse(readFileSync(join(ART, "reference-set.json"), "utf8"));
+const SERIES_REFS = (REFSET.generation_refs || []).filter((p) => existsSync(resolve(ROOT, p)));
+
+const STYLE_BLOCK = `MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
 bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
 aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
 buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
@@ -196,7 +215,7 @@ function runOne(req, extraRefs = [], pairPartner = null) {
     const r = spawnSync("node", [join(ART, "art-provider.mjs"), "reuse", "--src", req.reuse_asset], { encoding: "utf8", cwd: ROOT });
     let ad; try { ad = JSON.parse(r.stdout.trim().split("\n").pop()); } catch { ad = null; }
     if (!ad?.ok) { console.error(`[${req.asset_id}] reuse failed: ${(r.stderr || r.stdout).slice(-200)}`); return { status: "reuse_target_missing" }; }
-    const entry = { asset_id: req.asset_id, filename: req.reuse_asset.split("/").pop(), world: req.world, purpose: req.purpose, source_type: ad.source_type, provider: ad.provider, extra_cost_status: ad.extra_cost_status, prompt: ad.prompt, reference_assets: [], dimensions: ad.dimensions, aspect_ratio: ad.aspect_ratio, created_at: new Date().toISOString(), iteration: 0, qa_score: null, qa_scores: null, qa_issues: [ad.qa_note], file_hash: ad.file_hash, used_by: req.used_by || [], status: "qa_passed" };
+    const entry = { asset_id: req.asset_id, filename: req.reuse_asset.split("/").pop(), world: req.world, purpose: req.purpose, source_type: ad.source_type, provider: ad.provider, extra_cost_status: ad.extra_cost_status, prompt: ad.prompt, reference_assets: [], dimensions: ad.dimensions, aspect_ratio: ad.aspect_ratio, created_at: new Date().toISOString(), iteration: 0, qa_score: null, qa_scores: null, qa_issues: [ad.qa_note], file_hash: ad.file_hash, used_by: req.used_by || [], status: "reused_existing" }; // honesty: inherited QA, no fresh gate run
     upsert(m, entry); saveManifest(m);
     return entry;
   }
@@ -232,7 +251,7 @@ function runOne(req, extraRefs = [], pairPartner = null) {
   for (let iter = 1; iter <= MAX_ITER; iter++) {
     const promptText = buildPrompt(req, amendments);
     console.log(`[${req.asset_id}] iteration ${iter}: generating...`);
-    const gen = generateOnce(req, promptText, [...(req.reference_assets || []), ...extraRefs]);
+    const gen = generateOnce(req, promptText, [...new Set([...SERIES_REFS, ...(req.reference_assets || []), ...extraRefs])]);
     const genProvider = gen.provider || "unknown";
     if (!gen.ok) {
       console.error(`[${req.asset_id}] generation failed: ${gen.error}`);
@@ -254,7 +273,7 @@ function runOne(req, extraRefs = [], pairPartner = null) {
       provider: genProvider,
       extra_cost_status: "subscription_included_confirmed",
       prompt: promptText,
-      reference_assets: [...(req.reference_assets || []), ...extraRefs],
+      reference_assets: [...new Set([...SERIES_REFS, ...(req.reference_assets || []), ...extraRefs])],
       dimensions: `${d.w}x${d.h}`,
       aspect_ratio: Number((d.w / d.h).toFixed(3)),
       created_at: new Date().toISOString(),
@@ -274,7 +293,10 @@ function runOne(req, extraRefs = [], pairPartner = null) {
     }
     console.log(`[${req.asset_id}] QA FAIL (iter ${iter}): ${(qa.issues || []).slice(0, 3).join(" | ")}`);
     // Never retry the same prompt: feed the QA issues into the next attempt.
-    amendments = (qa.issues || []).slice(0, 6);
+    // Series drift repairs must be CONCRETE reference diffs, never vague
+    // "more clay" wording: prepend the critic's series_diffs verbatim.
+    const drift = (qa.series_diffs || []).map((d) => `Fix vs reference set: ${d}`);
+    amendments = [...drift, ...(qa.issues || [])].slice(0, 8);
   }
   console.error(`[${req.asset_id}] max_iterations_reached without QA pass`);
   return last;
@@ -310,17 +332,17 @@ switch (cmd) {
     acquireLock();
     const req = JSON.parse(readFileSync(argOf("--request"), "utf8"));
     const r = runOne(req);
-    process.exit(r.status === "qa_passed" ? 0 : 1);
+    process.exit(r.status === "qa_passed" || r.status === "reused_existing" ? 0 : 1);
   }
   case "run-pair": {
     acquireLock();
     const before = JSON.parse(readFileSync(argOf("--before"), "utf8"));
     const after = JSON.parse(readFileSync(argOf("--after"), "utf8"));
     const rb = runOne(before);
-    if (rb.status !== "qa_passed") process.exit(1);
+    if (rb.status !== "qa_passed" && rb.status !== "reused_existing") process.exit(1);
     // AFTER uses the accepted BEFORE as its consistency reference and is QA'd as a pair.
     const ra = runOne(after, [before.output_path], before.output_path);
-    process.exit(ra.status === "qa_passed" ? 0 : 1);
+    process.exit(ra.status === "qa_passed" || ra.status === "reused_existing" ? 0 : 1);
   }
   case "status": {
     const m = loadManifest();

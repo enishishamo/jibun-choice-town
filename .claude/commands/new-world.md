@@ -18,15 +18,16 @@ BLOCKER 解消不能）以外で停止しない。「どの職業にしますか
 | 4 | CAREER FACT RESEARCH | `codex-task`（C=道具/データ/基準、D=判断を職業ごとに） | research.md |
 | 5 | DIFFICULTY EXTRACTION | Claude（job-difficulty-taxonomy.md の id で 2〜4/職） | design.md |
 | 6 | MECHANICS MATCHING | job-mechanics-map.json から候補（**mechanic先行禁止**）＋多様性確認 | design.md |
-| 7 | GAME DESIGN | Claude（Q1毎に Goal/CoreAction/C/D/制約/失敗/Retry/Mastery/Replay/Variation/Result + 4 statements） | design.md |
+| 7 | GAME DESIGN | Claude（Q1毎に Goal/CoreAction/C/D/制約/失敗/Retry/Mastery/Replay/Variation/Result + 4 statements）＋ **GAMEPLAY_REFERENCE 記録**（taxonomy/gameplay-references.json に reference_games/principles/trace — 空で完成禁止・skin copy禁止） | design.md |
 | 8 | GAME CRITIC + CAREER CRITIC | `loop.mjs` + design 用二軸レビュー prompt（--require-axes） | critic レビュー(runs/) |
 | 9 | ART NEED DETECTION | `art/art-need-detector.mjs`（reuse優先・OPTIONAL生成禁止） | art-requests/ |
-| 10 | ART GENERATION / QA | `art/art-loop.mjs run / run-pair`（直列・regen≤3・pair整合） | manifest-v2 反映 |
+| 10 | ART GENERATION / QA | `art/art-loop.mjs run / run-pair`（直列・regen≤3・pair整合）。**Series Style Gate**: reference-set.json を生成・QA 両方に実画像添付、SERIES_STYLE_MATCH / CHARACTER_SERIES_MATCH < 80 で FAIL、repair は series_diffs 注入 | manifest-v2 反映 |
 | 11 | IMPLEMENTATION | Claude（純ロジック `<x>Logic.ts` 分離・registry 登録・既存アーキ尊重） | src/ |
 | 12 | BUILD / STATIC QA | `verify.mjs`（build/lint/factory-data）+ `art/art-link-qa.mjs` | verify ログ |
 | 13 | AUTOMATED GAMEPLAY QA | Q1毎の `gameplay-qa-<world>.mjs`（no-action/spam/all-select/ignore-C/最短/edge/乱数/optimal） | harness/ |
 | 14 | BROWSER QA | Browser pane（mobile 375px + desktop、entry→map→Q1→failure→retry→success→JobReveal→wrapUp、console/networkエラー確認） | スクリーンショット記録 |
-| 15 | CODEX ADVERSARIAL REVIEW | `loop.mjs review --require-axes`（二軸・BLOCKER/HIGH=0 まで repair、max_iterations で明示停止） | runs/ |
+| 14b | PRESENTATION QA | `art/present-shots.mjs`（実スクショ mobile+desktop）→ `art/art-qa.mjs presentation`。**Asset Presentation Gate**: ASSET_PRESENTATION_QUALITY<80 / BADGE_COLLISION で FAIL（asset単体QAと独立） | state/art/shots + presentation-audit |
+| 15 | CODEX ADVERSARIAL REVIEW | `loop.mjs review --require-axes`（二軸・BLOCKER/HIGH=0 まで repair、max_iterations で明示停止）。**Game Quality v3 必須**（game-critic-v2.md v3節: WORLD_FEEDBACK_QUALITY / TEXT_ONLY_CONSEQUENCE / HINT_LEAKAGE / VISUAL_GAMEPLAY_LEGIBILITY / GAME-LIKENESS question） | runs/ |
 | 16 | DATABASE / MANIFEST | `update-factory-db.mjs` + component-reviews.json（新hash）+ validate | database/ |
 | 17 | COMMIT | meaningful commit（remote push 禁止） | git |
 

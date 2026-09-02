@@ -1,0 +1,29 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 88,
+  "SUBJECT_OCCLUSION": 76,
+  "FOCAL_OBJECT_VISIBILITY": 82,
+  "BADGE_OVERLAP": 86,
+  "CONTAINER_FIT": 94,
+  "BACKGROUND_EDGE_QUALITY": 95,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 86,
+  "MOBILE_CROP": 78,
+  "DESKTOP_CROP": 94,
+  "ASSET_PRESENTATION_QUALITY": 86
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "Mobile intentionally uses a horizontally scrollable scene, but the partial right-edge cutoff initially makes the composition feel slightly unfinished before the swipe instruction is noticed.",
+  "The numbered speech labels and translucent lock markers overlap substantial portions of the detailed map, creating a busier, less art-directed composition.",
+  "The very large empty lower region makes the overall screen feel less deliberately balanced, especially on desktop."
+ ],
+ "issues": [
+  "mobile/main waste-processing scene — the fixed-width scene is cut off at the right viewport edge, including part of the fourth-stage area — add a stronger horizontal-scroll affordance, reveal a deliberate preview sliver, or scale the scene slightly to improve the initial composition",
+  "main scene/gameplay overlays — clue labels and lock circles obscure portions of roads, buildings, and machinery that help users inspect the process — reposition labels into quieter areas and connect them to targets with short pointers",
+  "desktop/page composition — the illustrated interaction occupies only the top portion of a tall narrow column, leaving excessive unstructured space below — tighten the screen height or add a contained completion/progress area to balance the composition"
+ ]
+}

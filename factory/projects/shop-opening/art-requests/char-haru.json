@@ -4,7 +4,7 @@
   "world": "shop",
   "use": "character",
   "purpose": "5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場",
-  "scene": "A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair.",
+  "scene": "A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair. CRITICAL series-match fixes (from reference comparison): small simple dot eyes with NO gloss highlights; matte clay skin with subtle handmade surface irregularity (never smooth CG skin); hair as ONE simplified solid clay mass with minimal grooves; apron and clothes read as molded matte clay (no fabric weave texture); the figure must look like a handcrafted clay figurine standing in a toy-diorama world, NOT a studio 3D character portrait.",
   "composition": "UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.",
   "required_objects": [
     "navy apron",
@@ -20,7 +20,12 @@
     "full body / legs / shoes",
     "kitchen background clutter",
     "photorealistic skin",
-    "elements touching the image edges"
+    "elements touching the image edges",
+    "glossy or oversized animation-style eyes",
+    "smooth CG-like skin",
+    "strand-detailed or sculpturally polished hair",
+    "fabric-textured clothing",
+    "studio-portrait rendering / rim lighting"
   ],
   "aspect_ratio": "1:1",
   "size": "800x800",

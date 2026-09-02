@@ -58,7 +58,12 @@ export default function HomeScreen() {
               <button
                 key={p.id}
                 className="event-balloon"
-                style={p.mapPos ? { left: p.mapPos.left, top: p.mapPos.top } : undefined}
+                style={p.mapPos ? {
+                  // clamp so a balloon anchored near the map edge is never
+                  // clipped by the viewport (balloon max-width/2 ~= 100px)
+                  left: `clamp(100px, ${p.mapPos.left}, calc(100% - 100px))`,
+                  top: p.mapPos.top,
+                } : undefined}
                 onClick={() => navigate({ name: "area", eventId: ev.id })}
               >
                 {/* Manual flag for the newest event only — not a general

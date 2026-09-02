@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T08:50:23.404Z",
+  "updated_at": "2026-09-02T15:21:36.099Z",
   "stages": [
     {
       "id": 0,
@@ -215,7 +215,7 @@
     {
       "id": 8,
       "name": "Second-world reproducibility test / v1.0 hardening",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         7
       ],
@@ -224,7 +224,7 @@
         "Failure-mode drills (reviewer down, timeout, malformed) pass",
         "v1.0 documentation complete"
       ],
-      "repair_count": 0,
+      "repair_count": 10,
       "stop_reason": null,
       "runs": [
         "run-2026-09-02T08-50-23-9oyi"

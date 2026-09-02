@@ -1,0 +1,55 @@
+{
+ "note": "§15 reproducibility: Stage 7 (waste) vs Stage 8 (zoo) — same /new-world v2 pipeline, no world-specific harness edits.",
+ "created": "2026-09-03",
+ "comparison": {
+  "human_interventions": {
+   "waste": 0,
+   "zoo": 0
+  },
+  "design_critic_iterations": {
+   "waste": 5,
+   "zoo": 3
+  },
+  "impl_review_iterations": {
+   "waste": 2,
+   "zoo": 2
+  },
+  "codex_delegations": {
+   "waste": 10,
+   "zoo": 9
+  },
+  "repairs": {
+   "waste": 6,
+   "zoo": 9
+  },
+  "art_generations": {
+   "waste": 4,
+   "zoo": 3
+  },
+  "art_regenerations": {
+   "waste": 1,
+   "zoo": 0
+  },
+  "gameplay_qa": {
+   "waste": "24/24",
+   "zoo": "48/48"
+  },
+  "final_scores": {
+   "waste": {
+    "CA": 91,
+    "GQ": 86
+   },
+   "zoo": {
+    "CA": 94,
+    "GQ": 91
+   }
+  }
+ },
+ "variance_notes": [
+  "zoo design needed fewer critic iterations (3 vs 5) — mechanics library + waste exploit patterns carried over as priors",
+  "both worlds: impl adversarial review FAIL on iter1 (68/72) then PASS on iter2 (91/86) after mechanical repairs — the binding two-axis gate behaved identically",
+  "art: both worlds 3 generated assets; zoo needed 0 regenerations (style contract + pair-reference flow matured); waste needed 1",
+  "no harness code was edited per-world for zoo (checked in §16 self-critique); world data (content module, scenePos/mapPos) is per-world BY DESIGN",
+  "human_interventions=0 in both pipelines; user issued three FACTORY-LEVEL gate additions during Stage 8 (Series Style / Experience / Presentation) — these changed the factory, not the zoo world's content, and are recorded as factory hardening, not world intervention"
+ ]
+}

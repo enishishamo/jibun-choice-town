@@ -1,0 +1,33 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 93,
+  "COMPOSITION": 92,
+  "CROP_SAFETY": 94,
+  "READABILITY": 91,
+  "OBJECT_COMPLETENESS": 96,
+  "CHARACTER_ANATOMY": 92,
+  "SERIES_CONSISTENCY": 93,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 90,
+  "SERIES_STYLE_MATCH": 92,
+  "CHARACTER_SERIES_MATCH": 90
+ },
+ "series_diffs": [
+  "Human figures are shown only from behind, so their facial design and small-dot eye treatment cannot be directly verified against the reference characters.",
+  "The foreground visitors have slightly more pronounced knitted-fabric surface texture than the mostly smoother clay clothing in the reference set."
+ ],
+ "issues": [
+  "The blank information sign may look unfinished, although it correctly avoids prohibited readable text.",
+  "The red panda is relatively small within the scene, so its visibility may weaken on narrow mobile crops."
+ ],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1846784,
+  "issues": []
+ }
+}

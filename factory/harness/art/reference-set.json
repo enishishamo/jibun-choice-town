@@ -1,0 +1,18 @@
+{
+  "note": "FIXED reference set for SERIES_STYLE_MATCH — known-good existing JIBUN CHOICE assets. Every Art QA vision call attaches these BEFORE the candidate image(s); every codex generation attaches a subset as style references. Do not add factory-generated images here without a passed Series Style Gate.",
+  "references": [
+    { "path": "public/assets/kyushoku/farmer_char.png", "role": "person-portrait: clay figure, 2.5-3 heads, dot eyes, simplified nose/mouth, matte clay skin & hair" },
+    { "path": "public/assets/schooltrip/school-trip-teacher.jpg", "role": "people-group-indoor: adult figures around a table, simplified faces, handmade props" },
+    { "path": "public/assets/medical/er_exam.jpg", "role": "people-indoor: professionals at work, clay material continuity" },
+    { "path": "public/assets/town-hero.png", "role": "town-overview: miniature diorama town, saturated warm palette, toy-like buildings" },
+    { "path": "public/assets/price/shop.jpg", "role": "building-interior + objects: shop scene, clay goods, tilt-shift diorama depth" },
+    { "path": "public/assets/kyushoku/school_kitchen.jpg", "role": "workplace-scene: kitchen interior, handmade miniature equipment" },
+    { "path": "public/assets/event/venue_busy.jpg", "role": "outdoor-scene with crowd: open-air venue, many small clay figures" }
+  ],
+  "generation_refs": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+  ]
+}

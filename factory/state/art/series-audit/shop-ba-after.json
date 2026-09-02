@@ -1,0 +1,37 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 94,
+  "COMPOSITION": 91,
+  "CROP_SAFETY": 94,
+  "READABILITY": 90,
+  "OBJECT_COMPLETENESS": 96,
+  "CHARACTER_ANATOMY": 94,
+  "SERIES_CONSISTENCY": 93,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 89,
+  "SERIES_STYLE_MATCH": 93,
+  "CHARACTER_SERIES_MATCH": 92
+ },
+ "series_diffs": [
+  "人物は参照画像の主要人物より画面内で小さく、顔・目・粘土素材のシリーズ特性を確認しにくい",
+  "建物正面の大きな無地看板がやや空虚で、参照画像より未完成な印象を与える",
+  "参照画像より影がわずかに硬く、閉鎖店舗の暗いシャッターとの明暗差が強い"
+ ],
+ "issues": [
+  "中央店舗と人物が主要要素として中央70%以内に収まり、モバイルクロップでも意味を維持できる",
+  "人物、建物、植木、舗装が同じマットな粘土素材で統一され、参照画像と同じ手作りジオラマ世界に見える",
+  "人物は小さな点状の目、単純化された鼻口、塊状の髪、簡略化された手を持ち、汎用Pixar風や写実CGへの顕著な逸脱がない",
+  "読める文字、数字、ロゴ、透かしはなく、画像内テキスト禁止に適合する",
+  "単一画像のみの審査であり、対応するbefore画像が提示されていないためbefore/after同一性は評価対象外"
+ ],
+ "mechanical": {
+  "width": 1100,
+  "height": 825,
+  "bytes": 1314926,
+  "issues": []
+ }
+}

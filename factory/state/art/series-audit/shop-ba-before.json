@@ -1,0 +1,34 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 91,
+  "COMPOSITION": 94,
+  "CROP_SAFETY": 94,
+  "READABILITY": 92,
+  "OBJECT_COMPLETENESS": 96,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 90,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 91,
+  "SERIES_STYLE_MATCH": 89,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "候補は正本より建物表面と歩道が均質で滑らかであり、手作り粘土の指跡・わずかな不均一感が弱い",
+  "正本の街シーンより影がやや硬く、閉じたシャッターの暗部が重いため、全体の明るく柔らかな印象が少し弱い",
+  "中央店舗の大きな無地看板面が視覚情報の空白になり、正本の豊かなミニチュア小物感より簡素に見える"
+ ],
+ "issues": [
+  "Before/After用途として単体の構図・建物識別性は良好だが、対応するAfter画像が提示されていないため、同一建物・同一カメラ・同一街並みの一致は実地確認できない",
+  "左右端の建物は一部切れているが、主役の3店舗は中央70%付近に収まり意味は損なわれない"
+ ],
+ "mechanical": {
+  "width": 1100,
+  "height": 825,
+  "bytes": 1293946,
+  "issues": []
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 89,
+  "COMPOSITION": 91,
+  "CROP_SAFETY": 95,
+  "READABILITY": 88,
+  "OBJECT_COMPLETENESS": 93,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 88,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 93,
+  "SERIES_STYLE_MATCH": 87,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "夕方の強い金色光と長い影が、参照画像の明るく均一な昼光より暖色寄り",
+  "道路や壁の表面が参照画像より少し滑らかで写実的だが、全体の粘土ミニチュア感は維持されている",
+  "主役の集積所が大きく簡素なため、参照シーンより小物の情報密度がやや低い"
+ ],
+ "issues": [
+  "緑色のネットと球状物だけでは、ごみ集積所の「after」状態が少し伝わりにくい",
+  "標識面が完全な無地で、文字禁止には適合するが用途を示す非言語アイコンもなく意味が弱い"
+ ],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1847038,
+  "issues": []
+ }
+}

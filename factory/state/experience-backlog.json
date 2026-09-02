@@ -1,0 +1,701 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "scanned": 39,
+    "backlog": [
+      {
+        "component": "BusOpsGame.tsx",
+        "gameType": "bus_ops",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "BusOpsGame.tsx:69 — 出発結果は専用フェーズになるが、道路上の移動ではなく看板と文章が中心。",
+          "BusOpsGame.tsx:78 — 失敗直後に「道路情報の資料も見てみよう」と特定資料を直接指定。",
+          "BusOpsGame.tsx:190 — 班・運転士・経路を割り当てる制約充足パズルを実装。"
+        ],
+        "repair_sketch": "バスを経路図上で動かし、閉鎖地点・休憩・乗客状態を車両ごとに可視化する。"
+      },
+      {
+        "component": "ClueBoardGame.tsx",
+        "gameType": "clue_board",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": true
+        },
+        "evidence": [
+          "ClueBoardGame.tsx:94 — 主操作は質問文を押して回答文を読む問診リスト。",
+          "ClueBoardGame.tsx:62 — 世界の変化は患者反応ではなく文章の手がかりメモ追加に限定。",
+          "ClueBoardGame.tsx:150 — 不足時の案内は調べ方全般で、特定の正解情報までは漏らしていない。"
+        ],
+        "repair_sketch": "患者の顔色・呼吸・姿勢と測定器表示を観察対象として画面上に反映する。"
+      },
+      {
+        "component": "CookGame.tsx",
+        "gameType": "inspect_and_measure",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "CookGame.tsx:146 — 魚の3部位を測定し、温度状態を画面上で更新する。",
+          "CookGame.tsx:191 — 衛生ミス直後に正しい消毒ルールと理由をそのまま提示。",
+          "CookGame.tsx:233 — 測定→調整→再測定という反復的フィードバック制御を実装。"
+        ],
+        "repair_sketch": "初回の衛生ミスは汚染マークだけを出し、具体ルールは段階的ヒントにする。"
+      },
+      {
+        "component": "CrowdFlowGame.tsx",
+        "gameType": "crowd_flow",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "CrowdFlowGame.tsx:146 — 会場マップ上の混雑地点へ道具を直接配置する。",
+          "CrowdFlowGame.tsx:192 — 試行後は地点別の混雑状態が配置結果に応じて変化。",
+          "CrowdFlowGame.tsx:225 — 空間配置→シミュレーション→再配置の反復設計。"
+        ],
+        "repair_sketch": "現状維持を基本に、人流の移動アニメーションを追加して因果をさらに明瞭にする。"
+      },
+      {
+        "component": "DelayRecoverGame.tsx",
+        "gameType": "delay_recover",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "DelayRecoverGame.tsx:114 — 主操作は文章の行動カードを順番に並べること。",
+          "DelayRecoverGame.tsx:160 — 不正解は世界を変えず、「まず状況確認」と正しい先頭手順を文章で通知。",
+          "DelayRecoverGame.tsx:161 — 各失敗分岐が欠けた連絡先や正しい順序を直接列挙。",
+          "DelayRecoverGame.tsx:114 — 依存関係を満たすシーケンス構築パズルを実装。"
+        ],
+        "repair_sketch": "影響マップ上で未連絡先や遅延波及を進行させ、誤順序の結果を予定崩壊として見せる。"
+      },
+      {
+        "component": "DiagnoseGame.tsx",
+        "gameType": "clue_join",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "DiagnoseGame.tsx:68 — 文章の手がかりカードを読み、選択してまとめることが主ループ。",
+          "DiagnoseGame.tsx:96 — 失敗は説明文だけが表示され、患者や診断ボードの状態変化がない。",
+          "DiagnoseGame.tsx:68 — 複数証拠の共通パターンを探すセット収集・推理原則を実装。"
+        ],
+        "repair_sketch": "選んだ証拠を身体図へ結線し、整合・矛盾を線や領域の変化で示す。"
+      },
+      {
+        "component": "FactoryLineGame.tsx",
+        "gameType": "line_debug",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "FactoryLineGame.tsx:101 — 工程ラインと流れるアイスが詰まりを視覚表示。",
+          "FactoryLineGame.tsx:132 — 再実行時はアイスの動きがstuckからsmoothへ変化。",
+          "FactoryLineGame.tsx:156 — 実行→観察→原因特定→調整→再実行というデバッグループを実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、各調整が速度・滞留量へ与える途中変化を強める。"
+      },
+      {
+        "component": "FarmGame.tsx",
+        "gameType": "sow_and_grow",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "FarmGame.tsx:120 — 畑の月・生育状態が時間経過に応じて画面上で変化。",
+          "FarmGame.tsx:159 — 失敗時も畑状態を残したまま別品種を試せる。",
+          "FarmGame.tsx:182 — 仮説選択→時間経過→結果観察→再試行の実験ループを実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、生育差を文章以外の作物サイズ・色でも強調する。"
+      },
+      {
+        "component": "HotelReceiveGame.tsx",
+        "gameType": "hotel_receive",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "HotelReceiveGame.tsx:118 — 部屋割りは9マスの可視グリッドで操作。",
+          "HotelReceiveGame.tsx:157 — 部屋割り失敗は問題文一覧だけで、宿泊者の反応や動線変化がない。",
+          "HotelReceiveGame.tsx:203 — 食事失敗時に花組の正解食と他班の正解を直接提示。",
+          "HotelReceiveGame.tsx:110 — 空間・容量・個別条件を満たす制約充足パズルを実装。"
+        ],
+        "repair_sketch": "部屋距離、配膳トレー、浴場混雑を同一宿マップ上の状態変化として見せる。"
+      },
+      {
+        "component": "LabCheckGame.tsx",
+        "gameType": "lab_check",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": true
+        },
+        "evidence": [
+          "LabCheckGame.tsx:73 — 三つの文章付き検査ボタンをすべて順に押すだけで判断がない。",
+          "LabCheckGame.tsx:101 — 装置結果は数値行の追加のみで、検体や装置の観察可能な変化が乏しい。",
+          "LabCheckGame.tsx:118 — 全検査実施が固定条件で、失敗や比較判断を形成していない。"
+        ],
+        "repair_sketch": "限られた検査回数で波形・粒子像を比較し、追加検査を選ぶ小さな判断を入れる。"
+      },
+      {
+        "component": "LifePlanGame.tsx",
+        "gameType": "life_plan",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": true
+        },
+        "evidence": [
+          "LifePlanGame.tsx:136 — 主ループは生活項目を押して本人の文章を読む構造。",
+          "LifePlanGame.tsx:223 — 支援不足は説明文と再選択ボタンだけで生活場面が変化しない。",
+          "LifePlanGame.tsx:228 — 失敗後に未対応箇所を示す印を見るよう直接誘導。",
+          "LifePlanGame.tsx:152 — 全項目閲覧を強制し、選択・優先順位・資源制約の原則が追跡できない。"
+        ],
+        "repair_sketch": "朝昼夜の生活マップで自立度と支援負担を変化させ、限られた支援枠を配分させる。"
+      },
+      {
+        "component": "LoanScreenGame.tsx",
+        "gameType": "loan_screen",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "LoanScreenGame.tsx:117 — 主操作の大半は三つの書類本文を読み比べること。",
+          "LoanScreenGame.tsx:66 — 誤記入後は説明文だけが返り、審査世界の状態は変化しない。",
+          "LoanScreenGame.tsx:70 — 失敗時に「書類間の数字」を見比べるという突破口を直接提示。",
+          "LoanScreenGame.tsx:204 — 証拠照合と返済余力の可視シミュレーションという推理・リスク評価原則を実装。"
+        ],
+        "repair_sketch": "書類の数値を比較盤へ置き、矛盾線と返済余力の変化を視覚化する。"
+      },
+      {
+        "component": "LogisticsGame.tsx",
+        "gameType": "load_and_route",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "LogisticsGame.tsx:249 — 食材を温度別荷室へ積む空間操作が主ループ。",
+          "LogisticsGame.tsx:164 — 検収場面はあるが、品質悪化そのものは主に台詞で説明。",
+          "LogisticsGame.tsx:150 — 失敗直後に保存温度資料を特定して見るよう指示。",
+          "LogisticsGame.tsx:202 — 荷室分類と訪問順を組み合わせる packing-and-routing 原則を実装。"
+        ],
+        "repair_sketch": "走行中に食材の温度・時計・車両位置を変化させ、検収拒否の原因を視覚化する。"
+      },
+      {
+        "component": "MealFitGame.tsx",
+        "gameType": "meal_fit",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "MealFitGame.tsx:102 — 量・回数・形態を操作するパラメータ調整が中心。",
+          "MealFitGame.tsx:132 — 出した量と実際に食べられた量がメーターで比較表示される。",
+          "MealFitGame.tsx:158 — 調整→提供→摂取結果比較という反復最適化を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、患者の食事トレーと表情にも摂取結果を同期する。"
+      },
+      {
+        "component": "MenuGame.tsx",
+        "gameType": "drag_and_drop",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "MenuGame.tsx:142 — 料理をトレーへ入れ替える直接操作が中心。",
+          "MenuGame.tsx:201 — 失敗直後に栄養資料を特定して開くよう指示。",
+          "MenuGame.tsx:144 — 栄養・予算・調達を同時に満たすリアルタイム制約充足を実装。"
+        ],
+        "repair_sketch": "初回失敗はトレー上の不足指標だけを点滅させ、資料名の提示は後段に送る。"
+      },
+      {
+        "component": "MoveTryGame.tsx",
+        "gameType": "move_try",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "MoveTryGame.tsx:96 — 動作ステージはあるが、失敗結果は警告文へ置き換わるだけ。",
+          "MoveTryGame.tsx:125 — 不適切な工夫は「変わらなかった」という文章のみで返る。",
+          "MoveTryGame.tsx:107 — 動作試行→補助選択→再評価という反復的足場掛け原則を実装。"
+        ],
+        "repair_sketch": "姿勢・ふらつき・移動距離をキャラクターの動きと安定度で示す。"
+      },
+      {
+        "component": "NurseObserveGame.tsx",
+        "gameType": "observe_care",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": true
+        },
+        "evidence": [
+          "NurseObserveGame.tsx:103 — 観察項目を押して文章の所見を集めることが中心。",
+          "NurseObserveGame.tsx:184 — 不適切なケアは状態が続くという説明文だけで返る。",
+          "NurseObserveGame.tsx:24 — 誤った見立て後に「ほかに集めた情報」を見るよう突破口を提示。",
+          "NurseObserveGame.tsx:169 — 一定数の情報収集を要求する固定進行で、観察技能の原則が明瞭でない。"
+        ],
+        "repair_sketch": "患者の顔色・水分・食事・睡眠をベッドサイドの可視状態として変化させる。"
+      },
+      {
+        "component": "PackageGame.tsx",
+        "gameType": "package_design",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "PackageGame.tsx:131 — 素材・形・サイズを組み合わせる操作自体は視覚的。",
+          "PackageGame.tsx:178 — テスト失敗は「ふやけた」「つぶれた」等の文章一覧だけで包装物が変化しない。",
+          "PackageGame.tsx:193 — 組合せ作成→多軸テスト→再試作というプロトタイピング原則を実装。"
+        ],
+        "repair_sketch": "冷凍・落下・表示テストを順に再生し、箱の変形や濡れを実物状態で示す。"
+      },
+      {
+        "component": "ParkHeatGame.tsx",
+        "gameType": "place_and_test",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "ParkHeatGame.tsx:168 — 同じ公園図上へ対策を配置し続ける空間操作。",
+          "ParkHeatGame.tsx:126 — 試行結果を公園上の人と暑い場所の変化として表示。",
+          "ParkHeatGame.tsx:104 — データレイヤー観察→配置→シミュレーションの空間最適化原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、暑さ変化の遷移アニメーションを加える。"
+      },
+      {
+        "component": "PlanCoachGame.tsx",
+        "gameType": "plan_coach",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "PlanCoachGame.tsx:151 — 計画書と面談回答の文章を読むことが主ループ。",
+          "PlanCoachGame.tsx:102 — 誤助言はbounce文章だけで、計画値や相談者状態が変わらない。",
+          "PlanCoachGame.tsx:113 — Before/Afterは成功後のみで、途中の助言結果はほぼナレーション。",
+          "PlanCoachGame.tsx:155 — 質問で情報を解禁して弱点を特定する情報ゲーティング・推理原則を実装。"
+        ],
+        "repair_sketch": "助言ごとに売上根拠・費用網羅度・相談者納得度を計画書上で変化させる。"
+      },
+      {
+        "component": "PlanEventGame.tsx",
+        "gameType": "plan_mix",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "PlanEventGame.tsx:133 — 時間と対象層の充足がメーターで常時変化。",
+          "PlanEventGame.tsx:159 — 配置拒否時に会場条件資料を直接指定。",
+          "PlanEventGame.tsx:184 — 検証失敗ごとに時間・来場者という正解資料を明示。",
+          "PlanEventGame.tsx:150 — 複数企画を予算・時間・対象条件で組むdrafting/constraint原則を実装。"
+        ],
+        "repair_sketch": "資料名を消し、超過したステージや退屈する来場者の視覚反応だけを初回に返す。"
+      },
+      {
+        "component": "PowerGame.tsx",
+        "gameType": "forecast_and_balance",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "PowerGame.tsx:130 — 需要と供給をbalance-barで常時比較。",
+          "PowerGame.tsx:75 — 供給不足は街の停電状態として専用失敗画面へ反映。",
+          "PowerGame.tsx:55 — 予測→資源投入→時間進行という需要追従・リスク管理原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、停電区域と復旧の段階を街の絵へ加える。"
+      },
+      {
+        "component": "PromoGame.tsx",
+        "gameType": "reach_mix",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "PromoGame.tsx:126 — 媒体選択に応じて三対象層の到達バーが変化。",
+          "PromoGame.tsx:185 — 手間超過時に特定の資料を見るよう直接指示。",
+          "PromoGame.tsx:190 — 未到達時に媒体カードから該当層に強い方法を探すよう明示。",
+          "PromoGame.tsx:143 — 限られたコストで集合被覆を作るportfolio/set-cover原則を実装。"
+        ],
+        "repair_sketch": "初回は未到達の人々だけを街から薄く表示し、特定資料への誘導を段階化する。"
+      },
+      {
+        "component": "RecipeGame.tsx",
+        "gameType": "recipe_balance",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "RecipeGame.tsx:150 — 原料量の変更が配合バーへ即時反映。",
+          "RecipeGame.tsx:74 — コストと味の双方の状態を保ったまま再調整できる。",
+          "RecipeGame.tsx:37 — 多変数調整→試作→評価というhill-climbing型最適化を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、試作品の色・硬さ・表情評価も数値と同期させる。"
+      },
+      {
+        "component": "RecycleGame.tsx",
+        "gameType": "sort_out",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "RecycleGame.tsx:131 — ライン上の異物へ道具を直接使用する操作。",
+          "RecycleGame.tsx:150 — 合わない道具の結果は拒否文のみで、異物やラインの反応が変化しない。",
+          "RecycleGame.tsx:117 — 道具固有のaffordanceを学ぶsorting/tool-matching原則を実装。"
+        ],
+        "repair_sketch": "磁石の吸着、網の通過、手選別の危険反応を短い物理演出で返す。"
+      },
+      {
+        "component": "RxCheckGame.tsx",
+        "gameType": "rx_check",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "RxCheckGame.tsx:78 — 処方・患者情報・検査結果の文章カード閲覧が中心。",
+          "RxCheckGame.tsx:139 — 不適切な対応は将来影響の説明文だけで、患者や投薬状態が変わらない。",
+          "RxCheckGame.tsx:59 — 成功時まで世界側の結果がほぼ固定の文章カード。",
+          "RxCheckGame.tsx:52 — 複数文書の矛盾を探すcross-reference deductionを実装。"
+        ],
+        "repair_sketch": "薬物残留リスク、用量、患者状態を一つの可視モデルで連動させる。"
+      },
+      {
+        "component": "SafetyPlanGame.tsx",
+        "gameType": "safety_plan",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "SafetyPlanGame.tsx:113 — 班と大人の割当は会場グリッドで操作。",
+          "SafetyPlanGame.tsx:188 — 安全チェック失敗はissues文章一覧だけで隊列や危険状態が変化しない。",
+          "SafetyPlanGame.tsx:189 — issuesが不足役割・不適切配置を毎回具体的に通知。",
+          "SafetyPlanGame.tsx:162 — 配置と役割を同時に満たす制約充足原則を実装。"
+        ],
+        "repair_sketch": "実際の隊列図を歩かせ、空白区間・配慮班・救急到達距離を可視化する。"
+      },
+      {
+        "component": "SceneAuditGame.tsx",
+        "gameType": "scene_audit",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "SceneAuditGame.tsx:171 — 現場スポットを開いて特徴文を読み、○✗を記入する構造。",
+          "SceneAuditGame.tsx:104 — 誤判定後は件数と「形を見て」という文章だけが返る。",
+          "SceneAuditGame.tsx:52 — 誤改善時に水栓の構造と基準を見ることを直接示す。",
+          "SceneAuditGame.tsx:74 — ランダム不備を探索して判定・修正・再検査するinspection/hidden-defect原則を実装。"
+        ],
+        "repair_sketch": "各スポットを絵の差分として観察させ、改善後は設備形状そのものを置換する。"
+      },
+      {
+        "component": "SiteHeatGame.tsx",
+        "gameType": "schedule_and_protect",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "SiteHeatGame.tsx:126 — 作業カードを時間帯タイムラインへ配置。",
+          "SiteHeatGame.tsx:105 — 実行後に作業員リスクと進捗が同時に状態表示される。",
+          "SiteHeatGame.tsx:41 — 安全と進捗を両立するrisk/reward scheduling原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、作業員の疲労と工程完成を現場絵にも同期する。"
+      },
+      {
+        "component": "SoundCheckGame.tsx",
+        "gameType": "sound_check",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "SoundCheckGame.tsx:120 — 客席三地点の聞こえ方をバーで表示。",
+          "SoundCheckGame.tsx:144 — 音量・向き・追加スピーカー操作で各席の状態が変化。",
+          "SoundCheckGame.tsx:205 — 失敗直後に機材資料を特定して再調整を指示。",
+          "SoundCheckGame.tsx:28 — パラメータ調整→複数地点テストというsystems-tuning原則を実装。"
+        ],
+        "repair_sketch": "初回失敗は各席の客の身振りとメーターだけにし、資料誘導を段階化する。"
+      },
+      {
+        "component": "SourcingGame.tsx",
+        "gameType": "sourcing_mix",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "SourcingGame.tsx:113 — 調達量と予算がメーターで更新される。",
+          "SourcingGame.tsx:184 — 不足・遅延・集中リスクが組合せに応じて状態表示される。",
+          "SourcingGame.tsx:198 — 失敗後に仕入先詳細を開くよう直接誘導。",
+          "SourcingGame.tsx:35 — 複数供給元へ量を配分するportfolio/resource-allocation原則を実装。"
+        ],
+        "repair_sketch": "初回は未着トラックと空いた原料タンクを見せ、詳細カード誘導は後段にする。"
+      },
+      {
+        "component": "TenantMatchGame.tsx",
+        "gameType": "tenant_match",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": true,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "TenantMatchGame.tsx:79 — 候補配置の結果は所有者・予算条件を説明する文章が中心。",
+          "TenantMatchGame.tsx:83 — 不成立配置は店舗や通りを変えず、説明文だけで拒否される。",
+          "TenantMatchGame.tsx:136 — 通り・物件・希望者を組み合わせるmatching/constraint-satisfaction原則を実装。"
+        ],
+        "repair_sketch": "配置時に改装費、通りの業種構成、所有者納得度を街並み上で変化させる。"
+      },
+      {
+        "component": "TimetableGame.tsx",
+        "gameType": "timetable",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "TimetableGame.tsx:129 — 演目と転換を時刻付きタイムラインで可視化。",
+          "TimetableGame.tsx:156 — 終演超過が配置変更と同時に時刻表示へ反映。",
+          "TimetableGame.tsx:192 — 失敗時に同種演目の連続と転換資料という解法を直接提示。",
+          "TimetableGame.tsx:41 — 順序依存のセットアップコストを扱うscheduling原則を実装。"
+        ],
+        "repair_sketch": "初回超過は終演線と撤収遅れだけを強調し、転換の解法説明を後段へ移す。"
+      },
+      {
+        "component": "TripPlanGame.tsx",
+        "gameType": "trip_plan",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "TripPlanGame.tsx:149 — 予定カードを三日間へ配置する操作が中心。",
+          "TripPlanGame.tsx:201 — 検証失敗は問題文一覧だけで、旅程地図や参加者状態が変化しない。",
+          "TripPlanGame.tsx:98 — 予算超過時の影響も文章のみ。",
+          "TripPlanGame.tsx:50 — 複数目的と時間窓を扱うitinerary scheduling原則を実装。"
+        ],
+        "repair_sketch": "地図上の移動線、時計、疲労、財布を日ごとに連動表示する。"
+      },
+      {
+        "component": "UrbanHeatGame.tsx",
+        "gameType": "layer_and_compare",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "UrbanHeatGame.tsx:165 — 日射・風・建物・樹木レイヤーを同一都市図へ重ねる。",
+          "UrbanHeatGame.tsx:169 — 対策結果が地点のheatクラスとして変化し、効かない場所は変わらない。",
+          "UrbanHeatGame.tsx:187 — レイヤー比較→仮説→介入というvisual-analysis原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、風向きや日陰の変化を短いアニメーションで補強する。"
+      },
+      {
+        "component": "VenueLayoutGame.tsx",
+        "gameType": "venue_layout",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "VenueLayoutGame.tsx:128 — 設備を3×3会場グリッドへ配置する操作が中心。",
+          "VenueLayoutGame.tsx:182 — 配置検証の失敗はissues文章だけで、人流や視界が変化しない。",
+          "VenueLayoutGame.tsx:206 — 失敗後に会場のきまりを見るよう直接誘導。",
+          "VenueLayoutGame.tsx:124 — 視界・入口・搬入制約を満たすspatial-puzzle原則を実装。"
+        ],
+        "repair_sketch": "来場者を入口から歩かせ、遮られた視界と通路詰まりを盤面上で示す。"
+      },
+      {
+        "component": "WaterGame.tsx",
+        "gameType": "allocate_and_forecast",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "WaterGame.tsx:125 — 貯水率がダム水位として画面上で変化。",
+          "WaterGame.tsx:134 — 危険水準は赤い状態と履歴を伴い、単なる説明カードではない。",
+          "WaterGame.tsx:58 — 配分→時間進行→枯渇予測というresource-management原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、各利用分野への絞り過ぎの影響を街・畑・工場へ反映する。"
+      },
+      {
+        "component": "XrayGame.tsx",
+        "gameType": "xray_shoot",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": false,
+          "WEAK_WORLD_FEEDBACK": false,
+          "HINT_LEAKAGE": false,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "XrayGame.tsx:157 — 患者像上でフレーム位置とサイズを選ぶ観察操作。",
+          "XrayGame.tsx:212 — 呼吸状態を見て撮影タイミングを決める。",
+          "XrayGame.tsx:244 — 撮影結果は切れ・ブレを含む画像そのものとして表示。",
+          "XrayGame.tsx:282 — 初回は一般的注意、後続で具体化する段階的ヒントになっている。",
+          "XrayGame.tsx:45 — 精度と被ばく予算を両立するtiming/resource-risk原則を実装。"
+        ],
+        "repair_sketch": "現状維持を基本に、失敗画面にも直前の画像と被ばく履歴を残す。"
+      },
+      {
+        "component": "ZoneFitGame.tsx",
+        "gameType": "zone_and_fit",
+        "flags": {
+          "TEXT_HEAVY_GAMEPLAY": false,
+          "TEXT_ONLY_FAILURE": true,
+          "WEAK_WORLD_FEEDBACK": true,
+          "HINT_LEAKAGE": true,
+          "NO_REFERENCE_TRACEABILITY": false
+        },
+        "evidence": [
+          "ZoneFitGame.tsx:184 — 設備を給排水帯付き床グリッドへ配置する操作が中心。",
+          "ZoneFitGame.tsx:83 — 不可配置は設備が置かれず、理由文だけが返る。",
+          "ZoneFitGame.tsx:99 — 予算失敗時にセンサー式を避けて別タイプを探す解法を直接示唆。",
+          "ZoneFitGame.tsx:155 — 固定障害・設備基準・予算を満たすspatial constraint puzzleを実装。"
+        ],
+        "repair_sketch": "配管接続線、動線、残予算を盤面へ常時表示し、不可配置時は線や予算の破綻で示す。"
+      }
+    ],
+    "worst_offenders": [
+      "LifePlanGame.tsx",
+      "NurseObserveGame.tsx",
+      "DelayRecoverGame.tsx",
+      "LoanScreenGame.tsx",
+      "SceneAuditGame.tsx"
+    ]
+  },
+  "output": "{\"scanned\":39,\"backlog\":[{\"component\":\"BusOpsGame.tsx\",\"gameType\":\"bus_ops\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"BusOpsGame.tsx:69 — 出発結果は専用フェーズになるが、道路上の移動ではなく看板と文章が中心。\",\"BusOpsGame.tsx:78 — 失敗直後に「道路情報の資料も見てみよう」と特定資料を直接指定。\",\"BusOpsGame.tsx:190 — 班・運転士・経路を割り当てる制約充足パズルを実装。\"],\"repair_sketch\":\"バスを経路図上で動かし、閉鎖地点・休憩・乗客状態を車両ごとに可視化する。\"},{\"component\":\"ClueBoardGame.tsx\",\"gameType\":\"clue_board\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":true},\"evidence\":[\"ClueBoardGame.tsx:94 — 主操作は質問文を押して回答文を読む問診リスト。\",\"ClueBoardGame.tsx:62 — 世界の変化は患者反応ではなく文章の手がかりメモ追加に限定。\",\"ClueBoardGame.tsx:150 — 不足時の案内は調べ方全般で、特定の正解情報までは漏らしていない。\"],\"repair_sketch\":\"患者の顔色・呼吸・姿勢と測定器表示を観察対象として画面上に反映する。\"},{\"component\":\"CookGame.tsx\",\"gameType\":\"inspect_and_measure\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"CookGame.tsx:146 — 魚の3部位を測定し、温度状態を画面上で更新する。\",\"CookGame.tsx:191 — 衛生ミス直後に正しい消毒ルールと理由をそのまま提示。\",\"CookGame.tsx:233 — 測定→調整→再測定という反復的フィードバック制御を実装。\"],\"repair_sketch\":\"初回の衛生ミスは汚染マークだけを出し、具体ルールは段階的ヒントにする。\"},{\"component\":\"CrowdFlowGame.tsx\",\"gameType\":\"crowd_flow\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"CrowdFlowGame.tsx:146 — 会場マップ上の混雑地点へ道具を直接配置する。\",\"CrowdFlowGame.tsx:192 — 試行後は地点別の混雑状態が配置結果に応じて変化。\",\"CrowdFlowGame.tsx:225 — 空間配置→シミュレーション→再配置の反復設計。\"],\"repair_sketch\":\"現状維持を基本に、人流の移動アニメーションを追加して因果をさらに明瞭にする。\"},{\"component\":\"DelayRecoverGame.tsx\",\"gameType\":\"delay_recover\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"DelayRecoverGame.tsx:114 — 主操作は文章の行動カードを順番に並べること。\",\"DelayRecoverGame.tsx:160 — 不正解は世界を変えず、「まず状況確認」と正しい先頭手順を文章で通知。\",\"DelayRecoverGame.tsx:161 — 各失敗分岐が欠けた連絡先や正しい順序を直接列挙。\",\"DelayRecoverGame.tsx:114 — 依存関係を満たすシーケンス構築パズルを実装。\"],\"repair_sketch\":\"影響マップ上で未連絡先や遅延波及を進行させ、誤順序の結果を予定崩壊として見せる。\"},{\"component\":\"DiagnoseGame.tsx\",\"gameType\":\"clue_join\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"DiagnoseGame.tsx:68 — 文章の手がかりカードを読み、選択してまとめることが主ループ。\",\"DiagnoseGame.tsx:96 — 失敗は説明文だけが表示され、患者や診断ボードの状態変化がない。\",\"DiagnoseGame.tsx:68 — 複数証拠の共通パターンを探すセット収集・推理原則を実装。\"],\"repair_sketch\":\"選んだ証拠を身体図へ結線し、整合・矛盾を線や領域の変化で示す。\"},{\"component\":\"FactoryLineGame.tsx\",\"gameType\":\"line_debug\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"FactoryLineGame.tsx:101 — 工程ラインと流れるアイスが詰まりを視覚表示。\",\"FactoryLineGame.tsx:132 — 再実行時はアイスの動きがstuckからsmoothへ変化。\",\"FactoryLineGame.tsx:156 — 実行→観察→原因特定→調整→再実行というデバッグループを実装。\"],\"repair_sketch\":\"現状維持を基本に、各調整が速度・滞留量へ与える途中変化を強める。\"},{\"component\":\"FarmGame.tsx\",\"gameType\":\"sow_and_grow\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"FarmGame.tsx:120 — 畑の月・生育状態が時間経過に応じて画面上で変化。\",\"FarmGame.tsx:159 — 失敗時も畑状態を残したまま別品種を試せる。\",\"FarmGame.tsx:182 — 仮説選択→時間経過→結果観察→再試行の実験ループを実装。\"],\"repair_sketch\":\"現状維持を基本に、生育差を文章以外の作物サイズ・色でも強調する。\"},{\"component\":\"HotelReceiveGame.tsx\",\"gameType\":\"hotel_receive\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"HotelReceiveGame.tsx:118 — 部屋割りは9マスの可視グリッドで操作。\",\"HotelReceiveGame.tsx:157 — 部屋割り失敗は問題文一覧だけで、宿泊者の反応や動線変化がない。\",\"HotelReceiveGame.tsx:203 — 食事失敗時に花組の正解食と他班の正解を直接提示。\",\"HotelReceiveGame.tsx:110 — 空間・容量・個別条件を満たす制約充足パズルを実装。\"],\"repair_sketch\":\"部屋距離、配膳トレー、浴場混雑を同一宿マップ上の状態変化として見せる。\"},{\"component\":\"LabCheckGame.tsx\",\"gameType\":\"lab_check\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":true},\"evidence\":[\"LabCheckGame.tsx:73 — 三つの文章付き検査ボタンをすべて順に押すだけで判断がない。\",\"LabCheckGame.tsx:101 — 装置結果は数値行の追加のみで、検体や装置の観察可能な変化が乏しい。\",\"LabCheckGame.tsx:118 — 全検査実施が固定条件で、失敗や比較判断を形成していない。\"],\"repair_sketch\":\"限られた検査回数で波形・粒子像を比較し、追加検査を選ぶ小さな判断を入れる。\"},{\"component\":\"LifePlanGame.tsx\",\"gameType\":\"life_plan\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":true},\"evidence\":[\"LifePlanGame.tsx:136 — 主ループは生活項目を押して本人の文章を読む構造。\",\"LifePlanGame.tsx:223 — 支援不足は説明文と再選択ボタンだけで生活場面が変化しない。\",\"LifePlanGame.tsx:228 — 失敗後に未対応箇所を示す印を見るよう直接誘導。\",\"LifePlanGame.tsx:152 — 全項目閲覧を強制し、選択・優先順位・資源制約の原則が追跡できない。\"],\"repair_sketch\":\"朝昼夜の生活マップで自立度と支援負担を変化させ、限られた支援枠を配分させる。\"},{\"component\":\"LoanScreenGame.tsx\",\"gameType\":\"loan_screen\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"LoanScreenGame.tsx:117 — 主操作の大半は三つの書類本文を読み比べること。\",\"LoanScreenGame.tsx:66 — 誤記入後は説明文だけが返り、審査世界の状態は変化しない。\",\"LoanScreenGame.tsx:70 — 失敗時に「書類間の数字」を見比べるという突破口を直接提示。\",\"LoanScreenGame.tsx:204 — 証拠照合と返済余力の可視シミュレーションという推理・リスク評価原則を実装。\"],\"repair_sketch\":\"書類の数値を比較盤へ置き、矛盾線と返済余力の変化を視覚化する。\"},{\"component\":\"LogisticsGame.tsx\",\"gameType\":\"load_and_route\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"LogisticsGame.tsx:249 — 食材を温度別荷室へ積む空間操作が主ループ。\",\"LogisticsGame.tsx:164 — 検収場面はあるが、品質悪化そのものは主に台詞で説明。\",\"LogisticsGame.tsx:150 — 失敗直後に保存温度資料を特定して見るよう指示。\",\"LogisticsGame.tsx:202 — 荷室分類と訪問順を組み合わせる packing-and-routing 原則を実装。\"],\"repair_sketch\":\"走行中に食材の温度・時計・車両位置を変化させ、検収拒否の原因を視覚化する。\"},{\"component\":\"MealFitGame.tsx\",\"gameType\":\"meal_fit\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"MealFitGame.tsx:102 — 量・回数・形態を操作するパラメータ調整が中心。\",\"MealFitGame.tsx:132 — 出した量と実際に食べられた量がメーターで比較表示される。\",\"MealFitGame.tsx:158 — 調整→提供→摂取結果比較という反復最適化を実装。\"],\"repair_sketch\":\"現状維持を基本に、患者の食事トレーと表情にも摂取結果を同期する。\"},{\"component\":\"MenuGame.tsx\",\"gameType\":\"drag_and_drop\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"MenuGame.tsx:142 — 料理をトレーへ入れ替える直接操作が中心。\",\"MenuGame.tsx:201 — 失敗直後に栄養資料を特定して開くよう指示。\",\"MenuGame.tsx:144 — 栄養・予算・調達を同時に満たすリアルタイム制約充足を実装。\"],\"repair_sketch\":\"初回失敗はトレー上の不足指標だけを点滅させ、資料名の提示は後段に送る。\"},{\"component\":\"MoveTryGame.tsx\",\"gameType\":\"move_try\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"MoveTryGame.tsx:96 — 動作ステージはあるが、失敗結果は警告文へ置き換わるだけ。\",\"MoveTryGame.tsx:125 — 不適切な工夫は「変わらなかった」という文章のみで返る。\",\"MoveTryGame.tsx:107 — 動作試行→補助選択→再評価という反復的足場掛け原則を実装。\"],\"repair_sketch\":\"姿勢・ふらつき・移動距離をキャラクターの動きと安定度で示す。\"},{\"component\":\"NurseObserveGame.tsx\",\"gameType\":\"observe_care\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":true},\"evidence\":[\"NurseObserveGame.tsx:103 — 観察項目を押して文章の所見を集めることが中心。\",\"NurseObserveGame.tsx:184 — 不適切なケアは状態が続くという説明文だけで返る。\",\"NurseObserveGame.tsx:24 — 誤った見立て後に「ほかに集めた情報」を見るよう突破口を提示。\",\"NurseObserveGame.tsx:169 — 一定数の情報収集を要求する固定進行で、観察技能の原則が明瞭でない。\"],\"repair_sketch\":\"患者の顔色・水分・食事・睡眠をベッドサイドの可視状態として変化させる。\"},{\"component\":\"PackageGame.tsx\",\"gameType\":\"package_design\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"PackageGame.tsx:131 — 素材・形・サイズを組み合わせる操作自体は視覚的。\",\"PackageGame.tsx:178 — テスト失敗は「ふやけた」「つぶれた」等の文章一覧だけで包装物が変化しない。\",\"PackageGame.tsx:193 — 組合せ作成→多軸テスト→再試作というプロトタイピング原則を実装。\"],\"repair_sketch\":\"冷凍・落下・表示テストを順に再生し、箱の変形や濡れを実物状態で示す。\"},{\"component\":\"ParkHeatGame.tsx\",\"gameType\":\"place_and_test\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"ParkHeatGame.tsx:168 — 同じ公園図上へ対策を配置し続ける空間操作。\",\"ParkHeatGame.tsx:126 — 試行結果を公園上の人と暑い場所の変化として表示。\",\"ParkHeatGame.tsx:104 — データレイヤー観察→配置→シミュレーションの空間最適化原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、暑さ変化の遷移アニメーションを加える。\"},{\"component\":\"PlanCoachGame.tsx\",\"gameType\":\"plan_coach\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"PlanCoachGame.tsx:151 — 計画書と面談回答の文章を読むことが主ループ。\",\"PlanCoachGame.tsx:102 — 誤助言はbounce文章だけで、計画値や相談者状態が変わらない。\",\"PlanCoachGame.tsx:113 — Before/Afterは成功後のみで、途中の助言結果はほぼナレーション。\",\"PlanCoachGame.tsx:155 — 質問で情報を解禁して弱点を特定する情報ゲーティング・推理原則を実装。\"],\"repair_sketch\":\"助言ごとに売上根拠・費用網羅度・相談者納得度を計画書上で変化させる。\"},{\"component\":\"PlanEventGame.tsx\",\"gameType\":\"plan_mix\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"PlanEventGame.tsx:133 — 時間と対象層の充足がメーターで常時変化。\",\"PlanEventGame.tsx:159 — 配置拒否時に会場条件資料を直接指定。\",\"PlanEventGame.tsx:184 — 検証失敗ごとに時間・来場者という正解資料を明示。\",\"PlanEventGame.tsx:150 — 複数企画を予算・時間・対象条件で組むdrafting/constraint原則を実装。\"],\"repair_sketch\":\"資料名を消し、超過したステージや退屈する来場者の視覚反応だけを初回に返す。\"},{\"component\":\"PowerGame.tsx\",\"gameType\":\"forecast_and_balance\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"PowerGame.tsx:130 — 需要と供給をbalance-barで常時比較。\",\"PowerGame.tsx:75 — 供給不足は街の停電状態として専用失敗画面へ反映。\",\"PowerGame.tsx:55 — 予測→資源投入→時間進行という需要追従・リスク管理原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、停電区域と復旧の段階を街の絵へ加える。\"},{\"component\":\"PromoGame.tsx\",\"gameType\":\"reach_mix\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"PromoGame.tsx:126 — 媒体選択に応じて三対象層の到達バーが変化。\",\"PromoGame.tsx:185 — 手間超過時に特定の資料を見るよう直接指示。\",\"PromoGame.tsx:190 — 未到達時に媒体カードから該当層に強い方法を探すよう明示。\",\"PromoGame.tsx:143 — 限られたコストで集合被覆を作るportfolio/set-cover原則を実装。\"],\"repair_sketch\":\"初回は未到達の人々だけを街から薄く表示し、特定資料への誘導を段階化する。\"},{\"component\":\"RecipeGame.tsx\",\"gameType\":\"recipe_balance\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"RecipeGame.tsx:150 — 原料量の変更が配合バーへ即時反映。\",\"RecipeGame.tsx:74 — コストと味の双方の状態を保ったまま再調整できる。\",\"RecipeGame.tsx:37 — 多変数調整→試作→評価というhill-climbing型最適化を実装。\"],\"repair_sketch\":\"現状維持を基本に、試作品の色・硬さ・表情評価も数値と同期させる。\"},{\"component\":\"RecycleGame.tsx\",\"gameType\":\"sort_out\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"RecycleGame.tsx:131 — ライン上の異物へ道具を直接使用する操作。\",\"RecycleGame.tsx:150 — 合わない道具の結果は拒否文のみで、異物やラインの反応が変化しない。\",\"RecycleGame.tsx:117 — 道具固有のaffordanceを学ぶsorting/tool-matching原則を実装。\"],\"repair_sketch\":\"磁石の吸着、網の通過、手選別の危険反応を短い物理演出で返す。\"},{\"component\":\"RxCheckGame.tsx\",\"gameType\":\"rx_check\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"RxCheckGame.tsx:78 — 処方・患者情報・検査結果の文章カード閲覧が中心。\",\"RxCheckGame.tsx:139 — 不適切な対応は将来影響の説明文だけで、患者や投薬状態が変わらない。\",\"RxCheckGame.tsx:59 — 成功時まで世界側の結果がほぼ固定の文章カード。\",\"RxCheckGame.tsx:52 — 複数文書の矛盾を探すcross-reference deductionを実装。\"],\"repair_sketch\":\"薬物残留リスク、用量、患者状態を一つの可視モデルで連動させる。\"},{\"component\":\"SafetyPlanGame.tsx\",\"gameType\":\"safety_plan\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"SafetyPlanGame.tsx:113 — 班と大人の割当は会場グリッドで操作。\",\"SafetyPlanGame.tsx:188 — 安全チェック失敗はissues文章一覧だけで隊列や危険状態が変化しない。\",\"SafetyPlanGame.tsx:189 — issuesが不足役割・不適切配置を毎回具体的に通知。\",\"SafetyPlanGame.tsx:162 — 配置と役割を同時に満たす制約充足原則を実装。\"],\"repair_sketch\":\"実際の隊列図を歩かせ、空白区間・配慮班・救急到達距離を可視化する。\"},{\"component\":\"SceneAuditGame.tsx\",\"gameType\":\"scene_audit\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"SceneAuditGame.tsx:171 — 現場スポットを開いて特徴文を読み、○✗を記入する構造。\",\"SceneAuditGame.tsx:104 — 誤判定後は件数と「形を見て」という文章だけが返る。\",\"SceneAuditGame.tsx:52 — 誤改善時に水栓の構造と基準を見ることを直接示す。\",\"SceneAuditGame.tsx:74 — ランダム不備を探索して判定・修正・再検査するinspection/hidden-defect原則を実装。\"],\"repair_sketch\":\"各スポットを絵の差分として観察させ、改善後は設備形状そのものを置換する。\"},{\"component\":\"SiteHeatGame.tsx\",\"gameType\":\"schedule_and_protect\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"SiteHeatGame.tsx:126 — 作業カードを時間帯タイムラインへ配置。\",\"SiteHeatGame.tsx:105 — 実行後に作業員リスクと進捗が同時に状態表示される。\",\"SiteHeatGame.tsx:41 — 安全と進捗を両立するrisk/reward scheduling原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、作業員の疲労と工程完成を現場絵にも同期する。\"},{\"component\":\"SoundCheckGame.tsx\",\"gameType\":\"sound_check\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"SoundCheckGame.tsx:120 — 客席三地点の聞こえ方をバーで表示。\",\"SoundCheckGame.tsx:144 — 音量・向き・追加スピーカー操作で各席の状態が変化。\",\"SoundCheckGame.tsx:205 — 失敗直後に機材資料を特定して再調整を指示。\",\"SoundCheckGame.tsx:28 — パラメータ調整→複数地点テストというsystems-tuning原則を実装。\"],\"repair_sketch\":\"初回失敗は各席の客の身振りとメーターだけにし、資料誘導を段階化する。\"},{\"component\":\"SourcingGame.tsx\",\"gameType\":\"sourcing_mix\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"SourcingGame.tsx:113 — 調達量と予算がメーターで更新される。\",\"SourcingGame.tsx:184 — 不足・遅延・集中リスクが組合せに応じて状態表示される。\",\"SourcingGame.tsx:198 — 失敗後に仕入先詳細を開くよう直接誘導。\",\"SourcingGame.tsx:35 — 複数供給元へ量を配分するportfolio/resource-allocation原則を実装。\"],\"repair_sketch\":\"初回は未着トラックと空いた原料タンクを見せ、詳細カード誘導は後段にする。\"},{\"component\":\"TenantMatchGame.tsx\",\"gameType\":\"tenant_match\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":true,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"TenantMatchGame.tsx:79 — 候補配置の結果は所有者・予算条件を説明する文章が中心。\",\"TenantMatchGame.tsx:83 — 不成立配置は店舗や通りを変えず、説明文だけで拒否される。\",\"TenantMatchGame.tsx:136 — 通り・物件・希望者を組み合わせるmatching/constraint-satisfaction原則を実装。\"],\"repair_sketch\":\"配置時に改装費、通りの業種構成、所有者納得度を街並み上で変化させる。\"},{\"component\":\"TimetableGame.tsx\",\"gameType\":\"timetable\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"TimetableGame.tsx:129 — 演目と転換を時刻付きタイムラインで可視化。\",\"TimetableGame.tsx:156 — 終演超過が配置変更と同時に時刻表示へ反映。\",\"TimetableGame.tsx:192 — 失敗時に同種演目の連続と転換資料という解法を直接提示。\",\"TimetableGame.tsx:41 — 順序依存のセットアップコストを扱うscheduling原則を実装。\"],\"repair_sketch\":\"初回超過は終演線と撤収遅れだけを強調し、転換の解法説明を後段へ移す。\"},{\"component\":\"TripPlanGame.tsx\",\"gameType\":\"trip_plan\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"TripPlanGame.tsx:149 — 予定カードを三日間へ配置する操作が中心。\",\"TripPlanGame.tsx:201 — 検証失敗は問題文一覧だけで、旅程地図や参加者状態が変化しない。\",\"TripPlanGame.tsx:98 — 予算超過時の影響も文章のみ。\",\"TripPlanGame.tsx:50 — 複数目的と時間窓を扱うitinerary scheduling原則を実装。\"],\"repair_sketch\":\"地図上の移動線、時計、疲労、財布を日ごとに連動表示する。\"},{\"component\":\"UrbanHeatGame.tsx\",\"gameType\":\"layer_and_compare\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"UrbanHeatGame.tsx:165 — 日射・風・建物・樹木レイヤーを同一都市図へ重ねる。\",\"UrbanHeatGame.tsx:169 — 対策結果が地点のheatクラスとして変化し、効かない場所は変わらない。\",\"UrbanHeatGame.tsx:187 — レイヤー比較→仮説→介入というvisual-analysis原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、風向きや日陰の変化を短いアニメーションで補強する。\"},{\"component\":\"VenueLayoutGame.tsx\",\"gameType\":\"venue_layout\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"VenueLayoutGame.tsx:128 — 設備を3×3会場グリッドへ配置する操作が中心。\",\"VenueLayoutGame.tsx:182 — 配置検証の失敗はissues文章だけで、人流や視界が変化しない。\",\"VenueLayoutGame.tsx:206 — 失敗後に会場のきまりを見るよう直接誘導。\",\"VenueLayoutGame.tsx:124 — 視界・入口・搬入制約を満たすspatial-puzzle原則を実装。\"],\"repair_sketch\":\"来場者を入口から歩かせ、遮られた視界と通路詰まりを盤面上で示す。\"},{\"component\":\"WaterGame.tsx\",\"gameType\":\"allocate_and_forecast\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"WaterGame.tsx:125 — 貯水率がダム水位として画面上で変化。\",\"WaterGame.tsx:134 — 危険水準は赤い状態と履歴を伴い、単なる説明カードではない。\",\"WaterGame.tsx:58 — 配分→時間進行→枯渇予測というresource-management原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、各利用分野への絞り過ぎの影響を街・畑・工場へ反映する。\"},{\"component\":\"XrayGame.tsx\",\"gameType\":\"xray_shoot\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":false,\"WEAK_WORLD_FEEDBACK\":false,\"HINT_LEAKAGE\":false,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"XrayGame.tsx:157 — 患者像上でフレーム位置とサイズを選ぶ観察操作。\",\"XrayGame.tsx:212 — 呼吸状態を見て撮影タイミングを決める。\",\"XrayGame.tsx:244 — 撮影結果は切れ・ブレを含む画像そのものとして表示。\",\"XrayGame.tsx:282 — 初回は一般的注意、後続で具体化する段階的ヒントになっている。\",\"XrayGame.tsx:45 — 精度と被ばく予算を両立するtiming/resource-risk原則を実装。\"],\"repair_sketch\":\"現状維持を基本に、失敗画面にも直前の画像と被ばく履歴を残す。\"},{\"component\":\"ZoneFitGame.tsx\",\"gameType\":\"zone_and_fit\",\"flags\":{\"TEXT_HEAVY_GAMEPLAY\":false,\"TEXT_ONLY_FAILURE\":true,\"WEAK_WORLD_FEEDBACK\":true,\"HINT_LEAKAGE\":true,\"NO_REFERENCE_TRACEABILITY\":false},\"evidence\":[\"ZoneFitGame.tsx:184 — 設備を給排水帯付き床グリッドへ配置する操作が中心。\",\"ZoneFitGame.tsx:83 — 不可配置は設備が置かれず、理由文だけが返る。\",\"ZoneFitGame.tsx:99 — 予算失敗時にセンサー式を避けて別タイプを探す解法を直接示唆。\",\"ZoneFitGame.tsx:155 — 固定障害・設備基準・予算を満たすspatial constraint puzzleを実装。\"],\"repair_sketch\":\"配管接続線、動線、残予算を盤面へ常時表示し、不可配置時は線や予算の破綻で示す。\"}],\"worst_offenders\":[\"LifePlanGame.tsx\",\"NurseObserveGame.tsx\",\"DelayRecoverGame.tsx\",\"LoanScreenGame.tsx\",\"SceneAuditGame.tsx\"]}",
+  "elapsed_sec": 324.682
+}

@@ -1,12 +1,12 @@
 {
  "note": "Mechanical asset inventory (Stage 6). Regenerate: node factory/harness/art/asset-inventory.mjs",
- "generated_at": "2026-09-02T05:55:08.405Z",
+ "generated_at": "2026-09-02T15:02:26.961Z",
  "totals": {
-  "assets": 158,
+  "assets": 161,
   "orphans": 42,
   "duplicates_groups": 0,
-  "oversized": 5,
-  "total_bytes": 27697932
+  "oversized": 8,
+  "total_bytes": 33279677
  },
  "duplicate_groups": [],
  "missing_references": [],
@@ -2310,7 +2310,8 @@
    "file_size": 1314926,
    "referenced_by": [
     "src/data/content/shopOpening.ts",
-    "src/data/content/waste.ts"
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
    ],
    "hash": "76a713730c2b",
    "likely_reusable": true,
@@ -2327,7 +2328,8 @@
    "file_size": 1293946,
    "referenced_by": [
     "src/data/content/shopOpening.ts",
-    "src/data/content/waste.ts"
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
    ],
    "hash": "9ef9b3c0f89e",
    "likely_reusable": true,
@@ -2341,11 +2343,11 @@
    "width": 800,
    "height": 800,
    "aspect_ratio": 1,
-   "file_size": 843504,
+   "file_size": 850415,
    "referenced_by": [
     "src/data/content/shopOpening.ts"
    ],
-   "hash": "27d839830d2c",
+   "hash": "c313fd1e5e36",
    "likely_reusable": true,
    "quality_flags": []
   },
@@ -2550,7 +2552,8 @@
    "file_size": 1847038,
    "referenced_by": [
     "src/data/content/shopOpening.ts",
-    "src/data/content/waste.ts"
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
    ],
    "hash": "c03f369f23ed",
    "likely_reusable": true,
@@ -2569,7 +2572,8 @@
    "file_size": 1898357,
    "referenced_by": [
     "src/data/content/shopOpening.ts",
-    "src/data/content/waste.ts"
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
    ],
    "hash": "84393353aa09",
    "likely_reusable": true,
@@ -2590,6 +2594,64 @@
     "src/data/content/waste.ts"
    ],
    "hash": "a42e156c9639",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_zoo_ba_after_png",
+   "path": "public/assets/zoo/ba-after.png",
+   "world": "zoo",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1846784,
+   "referenced_by": [
+    "src/data/content/shopOpening.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "bf61f0affb4d",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_zoo_ba_before_png",
+   "path": "public/assets/zoo/ba-before.png",
+   "world": "zoo",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1868942,
+   "referenced_by": [
+    "src/data/content/shopOpening.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "4e20a66c5602",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_zoo_scene_zoo_png",
+   "path": "public/assets/zoo/scene-zoo.png",
+   "world": "zoo",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1859108,
+   "referenced_by": [
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "dcf4b67fc32c",
    "likely_reusable": true,
    "quality_flags": [
     "oversized"

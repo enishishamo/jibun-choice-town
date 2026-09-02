@@ -1,0 +1,35 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 91,
+  "COMPOSITION": 85,
+  "CROP_SAFETY": 96,
+  "READABILITY": 90,
+  "OBJECT_COMPLETENESS": 82,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 90,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 88,
+  "MOBILE_USABILITY": 89,
+  "SERIES_STYLE_MATCH": 89,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "建物の壁・屋根がreference setより均一で滑らかで、手ごね粘土より成形された玩具の質感に少し寄っている",
+  "referenceの場所シーンより俯瞰角度が強く、画面下部の空いた地面が広いため、主役の施設がやや小さく見える",
+  "奥行きのぼけと柔らかな斜光は合っているが、室内設備の輪郭がreferenceより少し硬質で精密"
+ ],
+ "issues": [
+  "右側の動物は箱から尾だけが見えており、動物園の場面として意図が伝わりにくい",
+  "画面下部の大きな空白が情報密度を下げ、モバイル表示では主要な3施設が相対的に小さくなる",
+  "中央の診療室にある金属器具はやや写実的で、周囲の丸い粘土素材感からわずかに浮いている"
+ ],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1859108,
+  "issues": []
+ }
+}

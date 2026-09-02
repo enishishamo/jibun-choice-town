@@ -1,0 +1,29 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 100,
+  "SUBJECT_OCCLUSION": 100,
+  "FOCAL_OBJECT_VISIBILITY": 96,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 92,
+  "BACKGROUND_EDGE_QUALITY": 96,
+  "ASPECT_RATIO_FIT": 100,
+  "VISUAL_INTEGRATION": 82,
+  "MOBILE_CROP": 100,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 88
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The visible book, clipboard, and boar assets are platform-style emoji rather than a cohesive custom game-art set, making the interface feel slightly more provisional than a finished commercial game UI.",
+  "Icon scale and visual weight vary: the book and clipboard are prominent while the boar inside the primary action is comparatively tiny.",
+  "The assets have no shared framing, rendering style, or controlled color treatment, weakening visual cohesion despite otherwise consistent spacing and containers."
+ ],
+ "issues": [
+  "screen/resource-row icons — book and clipboard emoji use inconsistent intrinsic shapes and rendering styles — replace them with a unified custom icon set at a fixed size and optical alignment",
+  "screen/primary action — boar emoji is undersized relative to the large button and label — enlarge it slightly and reserve a consistent icon slot with controlled spacing",
+  "screen/all illustrated assets — native emoji appearance may vary by operating system and browser — use bundled SVG or raster assets to guarantee consistent commercial presentation"
+ ]
+}

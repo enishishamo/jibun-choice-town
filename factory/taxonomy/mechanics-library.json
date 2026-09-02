@@ -1,7 +1,7 @@
 {
  "note": "Reusable mechanics library (Stage 2). Three layers: layer=challenge (the in-session source of difficulty/fun — a game needs 1-2), layer=modifier (shapes the solution space / session variety — add 1 when fitting), layer=motivation (long-term drive — never a substitute for challenge). The 16 interaction patterns in mechanics-taxonomy.md remain the OPERATION layer. Never pick a mechanic first — start from job-difficulty-taxonomy.md via job-mechanics-map.json. evidence_games = provenance from factory/lab/research/games.json; definitions themselves stay title-independent.",
  "version": "0.7",
- "updated_at": "2026-09-02",
+ "updated_at": "2026-09-03",
  "sources": [
   "bootstrap seed (Claude)",
   "factory/lab/research/games.json (Codex research, curated)"
@@ -589,6 +589,57 @@
     "Cooking Mama",
     "PowerWash Simulator"
    ]
+  },
+  {
+   "mechanic_id": "justified_refusal",
+   "description": "『やらない』選択が正解になるが、根拠なしの拒否はルールが拒む（拒否にも説明責任がある）",
+   "player_action": "停止・中止・拒否を、証拠が揃ったタイミングで選ぶ",
+   "skill_expression": "根拠の閾値を読める（早すぎる中止は却下、遅すぎると失敗）",
+   "failure_mode": "根拠なし停止はrefusalで戻される／様子見しすぎると悪化で失敗",
+   "replay_value": "『いつ止めるか』のタイミング学習",
+   "suitable_job_difficulties": [
+    "safety_tradeoff",
+    "accountability",
+    "irreversibility"
+   ],
+   "unsuitable_cases": "停止に実害がない課題（拒否が無料の場合は形骸化）",
+   "age_complexity": "low — 「園長に説明がつくか」の一言で伝わる",
+   "example_patterns": [
+    "デビュー中止の階段（縮小→続けば中止）",
+    "無所見の診断拒否",
+    "危険物は積まず連絡"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Papers, Please",
+    "FTL: Faster Than Light"
+   ],
+   "learned_from": "Stage 7/8 (waste curb hazard / zoo debut・checkup)。単一成功例の一般化に注意：拒否が正解になり得る職務でのみ使う"
+  },
+  {
+   "mechanic_id": "pressure_matched_response",
+   "description": "対応手段が複数あり、それぞれ異なる圧力に最もよく効く（手段は交換可能ではない）",
+   "player_action": "今の状況を読み、それに合った手段を選ぶ",
+   "skill_expression": "状況→手段のマッピングを学ぶ（汎用連打より圧力対応が上回る）",
+   "failure_mode": "手段のミスマッチは効果が薄く、状況が悪化する",
+   "replay_value": "状況の組合せごとに最適手が変わる",
+   "suitable_job_difficulties": [
+    "situation_reading",
+    "limited_resources",
+    "safety_tradeoff"
+   ],
+   "unsuitable_cases": "手段の差を世界の見た目で示せない場合（differentiationが伝わらない）",
+   "age_complexity": "medium — 効き目の差を視覚フィードバックで見せること",
+   "example_patterns": [
+    "人数しぼり↔混雑・距離↔近接・時間↔長時間公開",
+    "ガスの4点検×3原因の切り分け"
+   ],
+   "layer": "challenge",
+   "evidence_games": [
+    "Overcooked",
+    "FTL: Faster Than Light"
+   ],
+   "learned_from": "Stage 8 zoo debut_plan（レビュー指摘『レバー一律-2』の修理から獲得）"
   }
  ]
 }

@@ -1,0 +1,150 @@
+{
+ "note": "Game Reference Gate (v3): per-Q1 design traceability. reference_games are the proven games whose PRINCIPLES (not skins) each Q1 borrows; chain = JOB DIFFICULTY -> PRINCIPLE -> MECHANIC -> PLAYER ACTION -> WORLD FEEDBACK -> MASTERY. Sources: factory/taxonomy/mechanics-library.json evidence_games.",
+ "reviewedAt": "2026-09-02",
+ "games": {
+  "curb_check": {
+   "reference_games": [
+    "Papers, Please"
+   ],
+   "borrowed_design_principles": [
+    "document-vs-object inspection under a mistake budget",
+    "one-item-at-a-time judgment queue with hidden violations"
+   ],
+   "transformed_for_job": [
+    "passport rules -> today's collection rules (day type rotates)",
+    "contraband -> hazardous items (spray cans/batteries) with a mechanical fire consequence",
+    "stamp choices -> load / violation sticker / bag sticker / hazard call"
+   ],
+   "why_it_is_fun": "each bag is a small whodunit against a rotating rulebook; the black-bag blur adds info pressure",
+   "what_requires_skill": "cross-referencing bag look with today's rules; knowing when NOT to load",
+   "why_replay": "bags, day type and violations re-randomize; perfect run = zero mistakes",
+   "trace": "hazard/irreversibility -> inspection-queue principle -> measurement_inspection -> per-bag 4-way call -> bag loads/sticker appears/truck fire ends day -> fewer mistakes per street"
+  },
+  "pit_crane": {
+   "reference_games": [
+    "Overcooked",
+    "Mini Metro"
+   ],
+   "borrowed_design_principles": [
+    "spatial resource juggling under throughput pressure",
+    "keep a system balanced, not a single task done"
+   ],
+   "transformed_for_job": [
+    "kitchen orders -> incoming waste loads of differing wetness",
+    "plate delivery -> feeding the incinerator a HOMOGENEOUS mix (850C rationale)"
+   ],
+   "why_it_is_fun": "grid juggling: every turn the pit changes, and greedy feeding backfires",
+   "what_requires_skill": "reading the 3x3 grid state and mixing BEFORE feeding",
+   "why_replay": "load sequences re-randomize; expert = stable burn all 8 turns",
+   "trace": "fuel homogeneity duty -> spatial juggling principle -> spatial_placement/resource_allocation -> mix/feed choices on a grid -> grid cells + burn meter shift -> stable-burn streaks"
+  },
+  "gas_watch": {
+   "reference_games": [
+    "Papers, Please",
+    "Phoenix Wright: Ace Attorney"
+   ],
+   "borrowed_design_principles": [
+    "evidence elimination under a hard time budget",
+    "asking the RIGHT authority matters more than acting fast"
+   ],
+   "transformed_for_job": [
+    "cross-examination -> instrument checks (calibration/tank/furnace/filter)",
+    "wrong accusation -> wrong team dispatched while the real cause reaches the stack"
+   ],
+   "why_it_is_fun": "a 3-suspect mystery where every check costs a time slot",
+   "what_requires_skill": "choosing checks that SPLIT the remaining causes (information value)",
+   "why_replay": "cause and meter values re-randomize; expert = 2-check triage",
+   "trace": "alert triage duty -> elimination-under-time principle -> evidence_elimination + time budget -> check picks then one request -> time pips burn, cause chips strike out -> 2-check mastery"
+  },
+  "landfill_ops": {
+   "reference_games": [
+    "Mini Metro",
+    "Overcooked"
+   ],
+   "borrowed_design_principles": [
+    "persistent duties compete with throughput",
+    "small daily choices compound into system health"
+   ],
+   "transformed_for_job": [
+    "line expansion -> cell allocation for typed intake (ash/incombustible)",
+    "nightly covering duty + leachate tank as the compounding system"
+   ],
+   "why_it_is_fun": "a tiny management sim: today's shortcuts visibly bite tomorrow",
+   "what_requires_skill": "placement concentration (less exposed face) + weather-aware cover priority",
+   "why_replay": "intake + weather re-randomize; expert = 5 clean days, low complaints",
+   "trace": "duty-vs-throughput -> compounding-sim principle -> resource_allocation -> place loads + choose covers -> cells fill, tank/complaint meters move -> clean-week mastery"
+  },
+  "baby_care": {
+   "reference_games": [
+    "Papers, Please",
+    "Nintendogs"
+   ],
+   "borrowed_design_principles": [
+    "daily judgment against slowly drifting data",
+    "care loop where overreaction is a real error class"
+   ],
+   "transformed_for_job": [
+    "document stamps -> ok/adjust/consult triage from the growth CURVE + diary",
+    "pet care -> professional husbandry: single dips are noise, patterns are signal"
+   ],
+   "why_it_is_fun": "reading a living curve like a detective: is today noise or signal?",
+   "what_requires_skill": "trend-vs-single-number discrimination; combining curve shape with diary flags",
+   "why_replay": "12+ week layouts, benign dips punish panic; perfect week = 5/5 calls",
+   "trace": "trend triage duty -> daily-judgment principle -> trend_reading -> 3-way call each morning -> curve grows + mentor nudge on miss -> mistake-free weeks"
+  },
+  "zoo_checkup": {
+   "reference_games": [
+    "Phoenix Wright: Ace Attorney",
+    "Papers, Please"
+   ],
+   "borrowed_design_principles": [
+    "evidence elimination with cost-weighted probes",
+    "last-resort actions carry real risk"
+   ],
+   "transformed_for_job": [
+    "testimony -> low-burden observations (diary/camera/feces)",
+    "final accusation -> one-shot treatment plan; restraint = 12% aborted day, gated behind 2 observations"
+   ],
+   "why_it_is_fun": "diagnosing without touching: burden budget makes every probe a real choice",
+   "what_requires_skill": "choosing checks that change the plan; burden economy",
+   "why_replay": "3 causes re-randomize; expert = diagnosis at burden <=1",
+   "trace": "low-burden ladder -> cost-weighted elimination -> evidence_elimination + resource_budget -> pick checks then one plan -> burden bar fills, cause chips die -> burden-1 mastery"
+  },
+  "feed_prep": {
+   "reference_games": [
+    "Overcooked",
+    "Papers, Please"
+   ],
+   "borrowed_design_principles": [
+    "assemble orders against a spec under resource constraints",
+    "the spec interacts with today's tickets (no memorized answer)"
+   ],
+   "transformed_for_job": [
+    "recipes -> the daily ration table applied to TODAY's weigh-in and nursing memo",
+    "limited ingredients -> veg stock arithmetic with lactation priority"
+   ],
+   "why_it_is_fun": "a pantry puzzle where the same table yields a different correct breakfast every morning",
+   "what_requires_skill": "rule x data derivation + stock counting + priority reasoning",
+   "why_replay": "weigh-in straddles the milk line, stock varies; perfect = zero redos",
+   "trace": "rules-x-data duty -> spec-assembly principle -> rule_application + resource_budget -> tray building -> trays fill, senior silently points at a wrong tray -> first-serve mastery"
+  },
+  "debut_plan": {
+   "reference_games": [
+    "FTL: Faster Than Light",
+    "Frostpunk"
+   ],
+   "borrowed_design_principles": [
+    "plan under uncertainty, then adapt to live events",
+    "withdrawing can be the winning move, but must be justified"
+   ],
+   "transformed_for_job": [
+    "ship loadout -> debut plan derived from the practice record (expectation gate scales with it)",
+    "live crises -> crowd/noise slots + stress signs; levers counter DIFFERENT pressures; stop ladder enforced"
+   ],
+   "why_it_is_fun": "a tense little ops sim: watch the cub, pick the right lever, dare to stop",
+   "what_requires_skill": "record-to-plan translation + pressure-matched lever choice + stop timing",
+   "why_replay": "temperament and events re-randomize; perfect = fitting plan with calm day or justified early stop",
+   "trace": "welfare-first ops -> plan-then-adapt principle -> plan_then_adapt + event_response -> plan sliders + per-slot actions -> cub drifts to hide box, sign lamps light, crowd icons -> lever-matching mastery"
+  }
+ }
+}

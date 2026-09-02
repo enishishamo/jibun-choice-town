@@ -1,0 +1,24 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 91,
+  "SUBJECT_OCCLUSION": 84,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 96,
+  "CONTAINER_FIT": 93,
+  "BACKGROUND_EDGE_QUALITY": 95,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 91,
+  "MOBILE_CROP": 90,
+  "DESKTOP_CROP": 94,
+  "ASSET_PRESENTATION_QUALITY": 92
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
+ "issues": [
+  "zoo-wrapup/interactive zoo overview — central callout balloons are slightly crowded and obscure portions of the illustrated buildings, though no face, tool, or judgment-critical object is blocked — slightly reduce balloon widths or spread their anchor positions",
+  "zoo-wrapup/mobile before-and-after comparison — narrow cards make the captions visually dense relative to the images — add a little caption spacing or reduce caption size while retaining the current image crop"
+ ]
+}

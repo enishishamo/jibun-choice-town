@@ -48,11 +48,15 @@ function emit(result) {
 }
 
 // ---- preflight: codex present and authenticated? -------------------------
-const which = spawnSync("codex", ["--version"], { encoding: "utf8" });
+// Cost safety: the subscription-only boundary is enforced mechanically in EVERY
+// codex transport — strip provider API keys so no key-based path can be taken.
+const SAFE_ENV = { ...process.env };
+for (const k of Object.keys(SAFE_ENV)) if (/^(OPENAI|AZURE_OPENAI|ANTHROPIC)_/i.test(k)) delete SAFE_ENV[k];
+const which = spawnSync("codex", ["--version"], { encoding: "utf8", env: SAFE_ENV });
 if (which.error || which.status !== 0) {
   emit({ ok: false, status: "CODEX_UNAVAILABLE", error: "codex CLI not found on PATH", elapsed_sec: 0 });
 }
-const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8" });
+const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8", env: SAFE_ENV });
 if (auth.status !== 0) {
   emit({
     ok: false,
@@ -82,7 +86,7 @@ function runCodexOnce(prompt) {
       ],
       // detached: own process group, so the timeout can kill codex AND its
       // children (otherwise grandchildren keep stdio open and we wait forever).
-      { stdio: ["pipe", "pipe", "pipe"], detached: true },
+      { stdio: ["pipe", "pipe", "pipe"], detached: true, env: SAFE_ENV },
     );
     let stdout = "";
     let stderr = "";

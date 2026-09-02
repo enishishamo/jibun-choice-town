@@ -21,7 +21,7 @@ export const waste: ContentModule = {
       id: "waste-plant",
       name: "清掃工場",
       eventId: "waste-journey",
-      mapPos: { left: "12%", top: "44%" },
+      mapPos: { left: "19%", top: "40%" },
     },
   ],
 

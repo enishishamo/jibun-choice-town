@@ -66,7 +66,8 @@
    "evidence": "component-reviews +4 (hashes), 47/47 classified, validate OK"
   },
   "commit": {
-   "status": "pending"
+   "status": "done",
+   "evidence": "commit 'Stage 8: 動物園世界…PASS 91' on feature/harness-bootstrap"
   }
  },
  "human_interventions": 0,
@@ -81,6 +82,7 @@
   "final_scores": {
    "CA": 94,
    "GQ": 91
-  }
+  },
+  "source_note": "counts derived from factory/state/runs/ + routing-log.jsonl + manifest-v2.json; aggregated by the orchestrating Claude session (see §16 response for the honesty caveat on aggregate metrics)"
  }
 }

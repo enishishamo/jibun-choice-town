@@ -1,0 +1,29 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 100,
+  "SUBJECT_OCCLUSION": 100,
+  "FOCAL_OBJECT_VISIBILITY": 100,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 94,
+  "BACKGROUND_EDGE_QUALITY": 96,
+  "ASPECT_RATIO_FIT": 100,
+  "VISUAL_INTEGRATION": 84,
+  "MOBILE_CROP": 94,
+  "DESKTOP_CROP": 90,
+  "ASSET_PRESENTATION_QUALITY": 91
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The desktop composition has excessive empty space and concentrates all visual content in a narrow central strip.",
+  "The sparkle decorations feel slightly arbitrary in placement and scale, particularly the isolated right-side cluster.",
+  "The focal illustration is comparatively small for a reveal moment, reducing the screen's sense of payoff."
+ ],
+ "issues": [
+  "desktop/focal illustration group — composition feels undersized and top-heavy within the large viewport — modestly enlarge the medallion and rebalance the group vertically",
+  "mobile/reveal content — large gap between the medallion and job-title copy weakens visual cohesion — reduce the vertical spacing or group the reveal elements in one responsive container",
+  "sparkle decorations — placements feel loosely attached to the focal medallion rather than deliberately framed — anchor them responsively to the medallion with consistent offsets"
+ ]
+}

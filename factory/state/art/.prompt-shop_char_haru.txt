@@ -1,3 +1,7 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
 Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
 bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
 aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
@@ -5,16 +9,10 @@ buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplifie
 NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
 NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
 Keep every important element inside the central 70% (mobile crop safety).
-Scene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair.
+Scene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair. CRITICAL series-match fixes (from reference comparison): small simple dot eyes with NO gloss highlights; matte clay skin with subtle handmade surface irregularity (never smooth CG skin); hair as ONE simplified solid clay mass with minimal grooves; apron and clothes read as molded matte clay (no fabric weave texture); the figure must look like a handcrafted clay figurine standing in a toy-diorama world, NOT a studio 3D character portrait.
 Role in game: 5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場
 Camera / composition: UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.
 Must include: navy apron; round wooden serving tray with rice bowl and miso soup; warm hopeful expression; big-head chibi proportions (2.5-3 heads); generous margins on all sides
-Must NOT include: readable text; brand logos; realistic adult proportions (4+ heads tall); full body / legs / shoes; kitchen background clutter; photorealistic skin; elements touching the image edges
+Must NOT include: readable text; brand logos; realistic adult proportions (4+ heads tall); full body / legs / shoes; kitchen background clutter; photorealistic skin; elements touching the image edges; glossy or oversized animation-style eyes; smooth CG-like skin; strand-detailed or sculpturally polished hair; fabric-textured clothing; studio-portrait rendering / rim lighting
 Characters: modern, kind adult; series chibi clay proportions (2.5-3 heads), NOT realistic proportions; no gender-stereotyped exaggeration
 Aspect ratio: 1:1 (compose for this frame).
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- 顔が大きく頬が丸い幼児的な造形で、成人の「ハルさん」より低年齢の少年に見える — 小4〜6年生向けの「幼すぎない、少し大人っぽい」人物表現というMUSTに反する
-- 目・鼻・口の単純化と頭部比率が強く、基準の2.5〜3頭身より幼い印象が先行する — 5章を通じて定食屋の開業を目指す人物としての成熟度が伝わりにくい
-- エプロンと定食の盆で飲食店志望は明確だが、服装が非常に素朴で現代的なおしゃれ感が弱い — シリーズの対象年齢に合う洗練を少し加える余地がある
-- STYLE_CONSISTENCY below threshold: 68

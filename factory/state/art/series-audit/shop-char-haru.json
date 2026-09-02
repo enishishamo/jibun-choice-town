@@ -1,0 +1,36 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 86,
+  "COMPOSITION": 91,
+  "CROP_SAFETY": 93,
+  "READABILITY": 95,
+  "OBJECT_COMPLETENESS": 94,
+  "CHARACTER_ANATOMY": 92,
+  "SERIES_CONSISTENCY": 84,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 88,
+  "MOBILE_USABILITY": 94,
+  "SERIES_STYLE_MATCH": 83,
+  "CHARACTER_SERIES_MATCH": 82
+ },
+ "series_diffs": [
+  "Candidate has a cleaner studio-portrait presentation, while most reference characters and scenes feel more handmade and visibly embedded in a toy-diorama world.",
+  "Eyes are slightly larger, glossier, and more animation-character-like than the small, simpler dot eyes used across the group and scene references.",
+  "Skin is smoother and more evenly rendered than the references’ subtly irregular matte-clay surfaces.",
+  "Hair has deeper grooves and polished sculptural definition, giving it a mildly generic high-quality 3D-character finish compared with the simpler clay hair in the references.",
+  "The shirt and apron show slightly more fabric-like texture than the consistently molded-clay clothing of the reference figures."
+ ],
+ "issues": [
+  "Series match is close to the gate: reducing eye size and gloss, making skin and clothing more matte and hand-molded, and simplifying the hair would better anchor the character in the established JIBUN CHOICE world.",
+  "The meal tray communicates food service clearly, but the exact shop role is somewhat ambiguous without a stronger non-text occupational cue such as a counter or serving utensil."
+ ],
+ "mechanical": {
+  "width": 800,
+  "height": 800,
+  "bytes": 843504,
+  "issues": []
+ }
+}

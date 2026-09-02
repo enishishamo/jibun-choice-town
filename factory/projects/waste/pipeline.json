@@ -70,6 +70,7 @@
   "final_scores": {
    "CA": 91,
    "GQ": 86
-  }
+  },
+  "source_note": "counts derived from factory/state/runs/ + routing-log.jsonl + manifest-v2.json; aggregated by the orchestrating Claude session"
  }
 }

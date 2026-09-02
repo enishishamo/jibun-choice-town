@@ -1,0 +1,33 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "STYLE_CONSISTENCY": 94,
+  "COMPOSITION": 94,
+  "CROP_SAFETY": 96,
+  "READABILITY": 95,
+  "OBJECT_COMPLETENESS": 97,
+  "CHARACTER_ANATOMY": 100,
+  "SERIES_CONSISTENCY": 93,
+  "BEFORE_AFTER_CONSISTENCY": 100,
+  "JOB_ACCURACY": 100,
+  "MOBILE_USABILITY": 95,
+  "SERIES_STYLE_MATCH": 92,
+  "CHARACTER_SERIES_MATCH": 100
+ },
+ "series_diffs": [
+  "Garbage bags and netting are slightly more translucent and materially realistic than the predominantly matte clay surfaces in the reference set.",
+  "Background depth is a little shallower and cleaner than the denser miniature-diorama environments in the town and outdoor-scene references."
+ ],
+ "issues": [
+  "The garbage bags and mesh net lean mildly toward simulated plastic and woven material rather than fully unified clay construction, creating a small material-consistency drift.",
+  "The blank circular sign is visually safe and contains no prohibited text, but its prominence may imply missing UI information if no label or explanation is supplied separately."
+ ],
+ "mechanical": {
+  "width": 1200,
+  "height": 900,
+  "bytes": 1898357,
+  "issues": []
+ }
+}

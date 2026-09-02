@@ -1,0 +1,29 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 88,
+  "SUBJECT_OCCLUSION": 92,
+  "FOCAL_OBJECT_VISIBILITY": 95,
+  "BADGE_OVERLAP": 91,
+  "CONTAINER_FIT": 89,
+  "BACKGROUND_EDGE_QUALITY": 76,
+  "ASPECT_RATIO_FIT": 94,
+  "VISUAL_INTEGRATION": 87,
+  "MOBILE_CROP": 91,
+  "DESKTOP_CROP": 88,
+  "ASSET_PRESENTATION_QUALITY": 86
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The fire icon has a visibly different square background, making it look pasted onto the card.",
+  "The desktop hero crop cuts through the decorative clock at the top edge.",
+  "The large empty area below the CTA on desktop makes the composition feel less deliberately finished."
+ ],
+ "issues": [
+  "instruction card/fire icon — pale square backing remains visibly distinct from the card — use a transparent-background asset or match the backing color exactly",
+  "desktop hero scene/top edge — decorative clock is abruptly cut by the crop — adjust object-position slightly downward or remove the partially visible clock from the composition",
+  "desktop layout/overall composition — content occupies only the upper portion with excessive unused space below — vertically balance the game panel or constrain the desktop stage height"
+ ]
+}

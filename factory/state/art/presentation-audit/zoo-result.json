@@ -1,0 +1,26 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 100,
+  "SUBJECT_OCCLUSION": 100,
+  "FOCAL_OBJECT_VISIBILITY": 100,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 100,
+  "BACKGROUND_EDGE_QUALITY": 100,
+  "ASPECT_RATIO_FIT": 100,
+  "VISUAL_INTEGRATION": 100,
+  "MOBILE_CROP": 100,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 100
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "No image assets are visible on this screen, so there are no crop, framing, overlap, or aspect-ratio defects to evaluate.",
+  "The very large unused lower area and entirely text-based result presentation make the screen feel sparse for a commercial game UI, especially on desktop."
+ ],
+ "issues": [
+  "zoo-result/overall composition — the result content occupies only the top portion while most of both viewports is empty — vertically rebalance the result panel or add a deliberate contextual illustration/background treatment"
+ ]
+}
