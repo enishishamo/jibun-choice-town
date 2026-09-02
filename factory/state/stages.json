@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-01T23:51:25.380Z",
+  "updated_at": "2026-09-02T00:10:05.619Z",
   "stages": [
     {
       "id": 0,
@@ -109,7 +109,7 @@
     {
       "id": 4,
       "name": "Single Q1 autonomous improvement",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         3
       ],
@@ -118,13 +118,19 @@
         "component-reviews.json updated with new reviewedHash",
         "No regression in build/lint/registry consistency"
       ],
-      "repair_count": 0,
+      "repair_count": 1,
       "stop_reason": null,
-      "runs": [],
+      "runs": [
+        "run-2026-09-02T00-02-57-vq3a"
+      ],
       "notes": [
         {
           "at": "2026-09-01T23:07:30.567Z",
           "text": "XrayGame improved score 22->58 through the loop but final verdict FAIL (quality-bar interpretation, HUMAN_REQUIRED). Stage 4 should start from the reviewer-calibration decision."
+        },
+        {
+          "at": "2026-09-02T00:10:05.564Z",
+          "text": "PASS 78 (CA82/GQ78, adversarial, zero blockers/high) run-2026-09-02T00-02-57-vq3a. Rebuild: framing judgment over 3x3 random patients, position-strict L, budget 4, misjudge limit, clipped self-check. Gameplay QA 20/20. Browser mobile flow verified."
         }
       ]
     },

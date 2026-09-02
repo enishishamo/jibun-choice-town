@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 76,
+    "game_quality_score": 68,
+    "blockers": [],
+    "high": [
+      "The always-L/mid strategy guarantees adequate framing for every randomized build and posture. Because one L exposure costs only 2 of the 5-unit budget and immediately permits completion, its extra cost has no consequential tradeoff; players can bypass the central collimation judgment.",
+      "Image adequacy self-check is bypassable: pressing “use this image” on every result invokes a consequence-free validator that explicitly identifies cutoff or blur. The player can use delivery as an oracle instead of visually judging the image."
+    ],
+    "medium": [
+      "The automated QA mischaracterizes always-L as a meaningful risk/reward strategy. It verifies cost and average exposure but never verifies that the cost can affect success, and the tested strategy succeeds on essentially every case.",
+      "C_required is weak in practice: opening the order sheet is enforced, but largest-frame selection plus waiting for the visibly labelled stopped phase clears every case without understanding the framing principles. The breathing rule and patient-specific geometry therefore need not both be applied.",
+      "A failed delivery does not increment retakes, consume another resource, or otherwise penalize the premature decision; only voluntarily choosing retake increments the counter. This makes repeated delivery guesses strictly advantageous.",
+      "The observation-note phase displays the complete, unclipped body rather than the delivered radiograph, so the player assesses haze using information outside the actual acquired image. This weakens imaging-work authenticity."
+    ],
+    "low": [
+      "The breathing cycle always starts at the same phase and uses four fixed one-second intervals, making shutter timing highly memorisable across attempts, although a live timing action still remains.",
+      "The completion text says a lung is clean or has haze with more certainty than the intended non-diagnostic technologist role warrants, despite the surrounding text correctly assigning diagnosis to the physician."
+    ],
+    "evidence": [
+      "src/q1/xrayLogic.ts:37 — L is 170×150, large enough to cover all randomized lung rectangles from the fixed mid position.",
+      "src/q1/xrayLogic.ts:45 — L costs 2 while the total exposure allowance is 5, leaving ample unused budget after the guaranteed framing strategy.",
+      "src/q1/xrayLogic.ts:121 — Deliverability depends only on coverage and breath timing; oversized framing never prevents delivery.",
+      "src/q1/XrayGame.tsx:264 — The delivery button directly calls the authoritative rejection function without charging a cost or recording a mistaken quality judgment.",
+      "src/q1/XrayGame.tsx:265 — Rejection reveals the exact cutoff defect and leaves the player free to retry.",
+      "src/q1/XrayGame.tsx:269 — Rejection likewise reveals blur for free, turning delivery into an answer-check button.",
+      "src/q1/XrayGame.tsx:253 — Retakes are counted only when the player voluntarily selects retake, not when the senior rejects an attempted delivery.",
+      "src/q1/XrayGame.tsx:294 — Note assessment renders the full inside view without clipToFrame, rather than the acquired image.",
+      "src/q1/XrayGame.tsx:33 — The hold phase is explicitly labelled and always occurs at the same fixed point in the cycle.",
+      "factory/harness/gameplay-qa-xray.mjs:80 — The QA explicitly accepts always-L success based only on higher average exposure, without testing whether that cost creates failure risk or blocks completion.",
+      "factory/harness/gameplay-qa-xray.mjs:54 — The spam simulation differs from the component: it repeatedly shoots after rejected delivery, whereas the UI remains on the same check screen until retake is selected.",
+      "src/q1/XrayGame.tsx:146 — CORE LOOP is satisfiable: inspect the patient, choose position and size, time the shutter, inspect the result, and either retake or deliver; however two judgments are bypassable as described.",
+      "src/q1/xrayLogic.ts:80 — MASTERY is satisfiable: expert play can find the minimum-cost covering frame and avoid retakes, while novices spend more exposure.",
+      "src/q1/xrayLogic.ts:95 — REPLAY is satisfiable: build, posture, and haze are independently randomized for each new case.",
+      "src/q1/XrayGame.tsx:387 — NOVICE VS EXPERT is satisfiable: experts can minimize exposure, avoid retakes, time breath hold, and identify haze, though completion does not require framing efficiency."
+    ],
+    "recommended_actions": [
+      "Make oversized framing consequential: reduce the budget, require multiple views/tasks within one shared budget, or reject clinically excessive collimation so L/mid is not a universal completion strategy.",
+      "Replace the free delivery oracle with an explicit adequacy decision graded after commitment, or charge rejected delivery as a recorded quality failure/retake.",
+      "Count every rejected delivery attempt as a retake and attach the same resource or outcome cost as a mistaken self-check.",
+      "Use the clipped acquired image in the observation-note phase so findings must be derived from what the player actually captured.",
+      "Extend QA with assertions that no single fixed framing clears every case, premature delivery has a cost, and the component state transitions match the simulated strategies."
+    ]
+  },
+  "elapsed_sec": 55.748
+}

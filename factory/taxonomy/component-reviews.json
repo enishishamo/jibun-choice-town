@@ -490,29 +490,28 @@
    "reviewedHash": "68bdd9eec886"
   },
   "xray_shoot": {
-   "primaryMechanic": "timing_action",
+   "primaryMechanic": "spatial_placement",
    "secondaryMechanics": [
-    "measurement_inspection",
-    "tap_select",
-    "trial_and_error_experiment"
+    "timing_action",
+    "measurement_inspection"
    ],
-   "interactionNotes": "依頼票（C）を読み、部位を自分で選んで撮影。呼吸サイクルを読んで息止めの瞬間にシャッターを切らないとブレる。X線は5回までの予算制で、超過や誤所見2回で症例失敗→新症例で再挑戦。撮れた画像は左右を見比べ、所見（右/左/どちらもきれいの3値・症例ごとにランダム）を自分で判断して医師へ届ける。",
+   "interactionNotes": "依頼票（症状ベース）を読み、患者の体格×写り位置（3×3ランダム）を見て撮影フレームの位置×サイズを判断。呼吸サイクル（開始位相ランダム）を読んで息止めの瞬間に撮影。うつった画像（フレームでclip）を自分の目で良否判定して届けるか撮り直すか決める。X線予算4（Lは2消費・位置一致必須）、不適切画像の提出3回で症例失敗（1回目は理由を教えない）。気づきメモは合否でなくE演出。",
    "semantic": {
-    "C_in_component": "医師のさつえい依頼票（みたい場所・息止めの注意・X線5回まで）と、画像そのもの（白いモヤの有無を目視判定）",
-    "C_required": "partial — 依頼票の開封は必須ゲート。部位と撮影タイミングの正解は依頼票にしか書かれておらず、試行錯誤だけで探すとX線予算（5回）を使い切って症例失敗になりやすい。ただし依頼票を開けば答えは明記されているため、Codex独立レビューは「読めば分かる」構造をBLOCKERと判定（2026-09-02、量刑は人間判断待ち）",
-    "action_changes_result": "yes — シャッターのタイミングで sharp/blurred が分岐、部位選択で写る場所が分岐、被ばく回数・見立てミス回数が失敗分岐とE画面文言に反映",
-    "retry": "yes — ブレ/誤部位は差し戻し→撮り直し。予算超過・誤所見2回は症例失敗→新しいランダム症例で再挑戦（総当たりの持ち越し不可）",
-    "fixed_progression": "partial — 工程順序（依頼→撮影→確認→読影）は固定だが、各工程に失敗分岐と実コストがある",
-    "obvious_binary_choice": "no — 所見は3値（右/左/きれい）で症例ごとにランダム。正解は画像の目視比較でしか分からない",
+    "C_in_component": "医師の依頼票（症状・肺の位置の原理・息止め・被ばく上限）と、患者の見た目（体格・姿勢）・呼吸表示・うつった画像そのもの",
+    "C_required": "yes — 依頼票の原理を目の前のランダム患者へ適用しないとフレーミングが決まらない。C単独では答えが確定しない（C_alone_determines_answer=false）",
+    "action_changes_result": "yes — フレーム選択で写る範囲、シャッタータイミングでブレ、提出判断で差し戻し/進行、全てxrayLogic.tsの純関数で分岐",
+    "retry": "yes — 撮り直し（予算消費）と差し戻し。予算切れ/誤提出3回で症例失敗→新ランダム症例（暗記持ち越し不可）",
+    "fixed_progression": "no — 工程順はあるが全工程に失敗分岐と実コスト",
+    "obvious_binary_choice": "no — フレーミング3×3、症例3値、判断は画像の目視",
     "evidence": [
-     "src/q1/XrayGame.tsx:180-196",
-     "src/q1/XrayGame.tsx:238-263",
-     "src/q1/XrayGame.tsx:296-321",
-     "src/q1/BodyInsideView.tsx:14-16"
+     "src/q1/xrayLogic.ts:79-95",
+     "src/q1/xrayLogic.ts:116-138",
+     "src/q1/XrayGame.tsx (check step misjudge handling)",
+     "factory/harness/gameplay-qa-xray.mjs (20 behavior checks)"
     ],
-    "reviewHistory": "Codex独立レビュー: 改修前 FAIL score22 → 改修後 FAIL score58（max_iterations到達で停止・factory/state/runs/ 参照）。残BLOCKERは品質バーの解釈問題としてHUMAN_REQUIRED"
+    "reviewHistory": "Stage4 rebuild: Codex adversarial two-axis review FAIL68→repair→PASS78 (CA82/GQ78, blockers/high zero). run-2026-09-02T00-02-57-vq3a"
    },
-   "reviewedHash": "f315d8433a0a"
+   "reviewedHash": "5e2b5d045bd7"
   },
   "clue_join": {
    "primaryMechanic": "matching",

@@ -1,34 +1,28 @@
-// Q1: 診療放射線技師 (gameType: xray_shoot)
+// Q1: 診療放射線技師 (gameType: xray_shoot) — Stage 4 redesign (proposal A)
 // この仕事の核：
 //   「外からは見えないからだの中を、"診断に使える画像"にして見えるようにする」
-// C = 医師のさつえい依頼票（みたい場所・「息を止めた瞬間に撮る」・被ばくを最小に）。
-//     答えは依頼票にしか書かれていない（画面のガイドで繰り返さない）。
-// D = 部位を自分で決めて撮る／呼吸を読んでシャッターを切る／
-//     写りを自分の目で確かめる／左右を見比べて所見を自分で決めて届ける
-// 失敗が本当に効く：
-//   - シャッター1回 = X線1回。5回を超えると症例失敗（患者への負担）
-//   - まちがった所見を2回届けると症例失敗（診断がおくれる）
-//   - 失敗したら新しい症例でやり直し（モヤの位置は毎回変わる）
-// 症例は3種類からランダム：右肺にモヤ／左肺にモヤ／どちらもきれい。
+// プレイヤーの判断（すべて xrayLogic.ts が判定する）：
+//   1. フレーミング — この患者の体格・写り位置を見て、フレームの位置×サイズを決める
+//      （正解オーバーレイは無い。依頼票は原理だけ教える）
+//   2. タイミング — 呼吸を読み、息が止まった瞬間に撮る
+//   3. 品質判定 — うつった画像（切れ/ブレ/OK）を自分の目で見て、届けるか撮り直すか決める
+//   4. 被ばく予算 — 撮影1回=X線1回。広いフレームは2回ぶん（ALARA）。5回で症例失敗
+// 気づきメモ（どちらの肺があやしいか）は技師の本分でないため合否ゲートにしない。
+// 正解ならE画面で医師に感謝され、外しても症例は失敗しない。
 import { useEffect, useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import BodyInsideView from "./BodyInsideView";
 import InfoCards from "./InfoCards";
+import {
+  BUILD_SCALE, EXPOSURE_LIMIT, FRAME_COST, FRAME_POSITIONS, FRAME_SIZES, LUNG_POS_DY, MISJUDGE_LIMIT,
+  canAfford, deliveryRejectionReason, frameRect, isPerfect, newCase, noteIsCorrect, shoot,
+} from "./xrayLogic";
+import type { CaseKind, FramePos, FrameSize, PatientCase, ShotResult, Side } from "./xrayLogic";
 
-type Where = "chest" | "belly" | "head";
-const WHERE: { id: Where; icon: string; label: string }[] = [
-  { id: "head", icon: "🧠", label: "あたま" },
-  { id: "chest", icon: "🫀", label: "むね" },
-  { id: "belly", icon: "🫄", label: "おなか" },
-];
-const WHERE_LABEL: Record<Where, string> = { head: "あたま", chest: "むね", belly: "おなか" };
-
-type Step = "order" | "shoot" | "check" | "look" | "done" | "failed";
-type Side = "right" | "left";
-type CaseKind = Side | "none";
+type Step = "order" | "frame" | "shoot" | "check" | "note" | "done" | "failed";
 const SIDE_LABEL: Record<Side, string> = { right: "右の肺", left: "左の肺" };
-const CASES: CaseKind[] = ["right", "left", "none"];
-const EXPOSURE_LIMIT = 5;
+const POS_LABEL: Record<FramePos, string> = { high: "うえ", mid: "まんなか", low: "した" };
+const SIZE_LABEL: Record<FrameSize, string> = { S: "小", M: "中", L: "大" };
 
 // Breathing cycle. The display only describes what the patient is doing —
 // WHICH moment to shoot is written only in the doctor's order sheet (C).
@@ -39,58 +33,58 @@ const BREATH: { label: string; hold: boolean; ms: number }[] = [
   { label: "……とまった。", hold: true, ms: 1000 },
 ];
 
-function newCase(): CaseKind {
-  return CASES[Math.floor(Math.random() * CASES.length)];
-}
-
 export default function XrayGame({ onComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("order");
-  const [caseKind, setCaseKind] = useState<CaseKind>(newCase);
+  const [c, setCase] = useState<PatientCase>(newCase);
   const [failReason, setFailReason] = useState<string | null>(null);
   const [orderOpened, setOrderOpened] = useState(false);
-  const [where, setWhere] = useState<Where | null>(null);
-  const [shotWhere, setShotWhere] = useState<Where | null>(null);
+  const [pos, setPos] = useState<FramePos | null>(null);
+  const [size, setSize] = useState<FrameSize | null>(null);
   const [breathIdx, setBreathIdx] = useState(0);
-  const [quality, setQuality] = useState<"sharp" | "blurred" | null>(null);
+  const [shot, setShot] = useState<ShotResult | null>(null);
   const [exposures, setExposures] = useState(0);
-  const [misreads, setMisreads] = useState(0);
+  const [retakes, setRetakes] = useState(0);
+  const [misjudges, setMisjudges] = useState(0);
   const [attempts, setAttempts] = useState(1);
   const [seen, setSeen] = useState<Side[]>([]);
   const [lastSeen, setLastSeen] = useState<Side | null>(null);
   const [note, setNote] = useState<string | null>(null);
+  const [noteResult, setNoteResult] = useState<boolean | null>(null);
 
-  // A failed case starts over with a NEW random case, so an answer learned by
-  // brute force does not carry over.
+  // A failed case starts over with a NEW random patient, so a memorized
+  // framing/answer does not carry over.
   const restart = () => {
-    setCaseKind(newCase());
+    setCase(newCase());
     setFailReason(null);
-    setOrderOpened(false); // each case requires consulting the order sheet again
-    setWhere(null);
-    setShotWhere(null);
+    setOrderOpened(false);
+    setPos(null);
+    setSize(null);
     setBreathIdx(0);
-    setQuality(null);
+    setShot(null);
     setExposures(0);
-    setMisreads(0);
+    setRetakes(0);
+    setMisjudges(0);
     setAttempts((a) => a + 1);
     setSeen([]);
     setLastSeen(null);
     setNote(null);
+    setNoteResult(null);
     setStep("order");
   };
 
   // Advance the breathing cycle while aiming.
   useEffect(() => {
     if (step !== "shoot") return;
-    const t = setTimeout(
-      () => setBreathIdx((i) => (i + 1) % BREATH.length),
-      BREATH[breathIdx].ms,
-    );
+    const t = setTimeout(() => setBreathIdx((i) => (i + 1) % BREATH.length), BREATH[breathIdx].ms);
     return () => clearTimeout(t);
   }, [step, breathIdx]);
 
-  const exposureMeter = `☢️ つかったX線 ${exposures}/${EXPOSURE_LIMIT}`;
+  const scale = BUILD_SCALE[c.build];
+  const dy = LUNG_POS_DY[c.lungPos];
+  const meter = `☢️ X線 ${exposures}/${EXPOSURE_LIMIT}`;
+  const curFrame = pos && size ? frameRect(pos, size) : null;
 
-  // ---------- C: 依頼票を読んで、どこをどう撮るか自分で決める ----------
+  // ---------- C: 依頼票を読む ----------
   if (step === "order") {
     return (
       <div className="game board-game">
@@ -100,8 +94,8 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
         </div>
 
         <div className="body-stage">
-          <BodyInsideView inside={false} hazeSide={caseKind} />
-          <span className="body-cap">外から見えるのは、ここまで</span>
+          <BodyInsideView inside={false} hazeSide={c.haze} scale={scale} dy={dy} />
+          <span className="body-cap">今日の患者さん（よく見ておこう）</span>
         </div>
 
         <InfoCards
@@ -115,15 +109,17 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
               body: (
                 <>
                   <p>
-                    <strong>みたい場所：</strong>肺（はい）の中。せきが続いている。
+                    <strong>知りたいこと：</strong>せきが続いている。肺（はい）の中のようすを見たい。
+                    <strong>左右の肺が両方、切れずに</strong>写っていること。
                   </p>
                   <p>
-                    <strong>だいじなこと：</strong>むねは呼吸でうごく。
-                    <strong>息を止めた瞬間</strong>に撮らないと、写真がブレます。
+                    <strong>コツ：</strong>肺はむねの中、かたのすぐ下あたり。
+                    からだの大きい人は、写る範囲も大きくなる。
                   </p>
                   <p>
-                    <strong>おねがい：</strong>X線はからだに負担があるので、
-                    使えるのは<strong>{EXPOSURE_LIMIT}回まで</strong>。むだな撮影はしないこと。
+                    <strong>だいじなこと：</strong>むねは呼吸でうごく。<strong>息が止まった瞬間</strong>に
+                    撮らないとブレる。X線は<strong>{EXPOSURE_LIMIT}回まで</strong>。
+                    広いフレームは2回ぶん使う。むだな被ばくをさせないこと。
                   </p>
                 </>
               ),
@@ -131,24 +127,7 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
           ]}
         />
 
-        <p className="pick-title">どこを撮る？</p>
-        <div className="choice-row wrap">
-          {WHERE.map((w) => (
-            <button
-              key={w.id}
-              className={`choice-card ${where === w.id ? "selected" : ""}`}
-              onClick={() => {
-                setWhere(w.id);
-                setNote(null);
-              }}
-            >
-              <span className="choice-emoji">{w.icon}</span>
-              <span className="choice-name">{w.label}</span>
-            </button>
-          ))}
-        </div>
         {note && <p className="game-note">{note}</p>}
-
         <button
           className="btn primary big"
           onClick={() => {
@@ -156,13 +135,8 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
               setNote("撮る前に、医師の依頼票をひらいて確認するのがきまり。");
               return;
             }
-            if (!where) {
-              setNote("どこを撮るか、まだ決めていない。");
-              return;
-            }
             setNote(null);
-            setBreathIdx(0);
-            setStep("shoot");
+            setStep("frame");
           }}
         >
           📷 装置の前へ
@@ -171,37 +145,82 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  // ---------- D: 患者のようすを読んで、シャッターを切る ----------
-  if (step === "shoot") {
-    const phase = BREATH[breathIdx];
+  // ---------- D1: フレーミング（位置×サイズを患者を見て決める） ----------
+  if (step === "frame") {
     return (
       <div className="game board-game">
         <div className="task-bar">
-          <span className="task-now">{WHERE_LABEL[where!]}を撮る</span>
-          <span className="task-sub">{exposureMeter}｜患者さんのようすを、よく見て</span>
+          <span className="task-now">どこを、どの広さで撮る？</span>
+          <span className="task-sub">{meter}｜患者さんのからだをよく見て決めよう</span>
         </div>
 
         <div className="body-stage">
-          <BodyInsideView inside={false} hazeSide={caseKind} />
-          <span className="body-cap">🫁 {phase.label}</span>
+          <BodyInsideView inside={false} hazeSide={c.haze} scale={scale} dy={dy} frame={curFrame} />
+          <span className="body-cap">フレーム＝X線が当たる範囲</span>
         </div>
 
+        <div className="choice-row wrap">
+          {FRAME_POSITIONS.map((p) => (
+            <button key={p} className={`choice-card ${pos === p ? "selected" : ""}`} onClick={() => { setPos(p); setNote(null); }}>
+              <span className="choice-name">位置：{POS_LABEL[p]}</span>
+            </button>
+          ))}
+        </div>
+        <div className="choice-row wrap">
+          {FRAME_SIZES.map((s) => (
+            <button key={s} className={`choice-card ${size === s ? "selected" : ""}`} onClick={() => { setSize(s); setNote(null); }}>
+              <span className="choice-name">サイズ：{SIZE_LABEL[s]}{FRAME_COST[s] > 1 ? "（X線2回ぶん）" : ""}</span>
+            </button>
+          ))}
+        </div>
         {note && <p className="game-note">{note}</p>}
 
         <button
           className="btn primary big"
           onClick={() => {
-            // The budget is a hard limit: the shot past it never happens.
-            if (exposures >= EXPOSURE_LIMIT) {
-              setFailReason(
-                "X線を使いきってしまった。患者さんの負担が大きく、今日はもう撮影できない。",
-              );
+            if (!pos || !size) {
+              setNote("フレームの位置とサイズを決めよう。");
+              return;
+            }
+            if (!canAfford(exposures, size)) {
+              setFailReason("X線を使いきってしまった。患者さんの負担が大きく、今日はもう撮影できない。");
               setStep("failed");
               return;
             }
-            setExposures(exposures + 1);
-            setShotWhere(where);
-            setQuality(phase.hold ? "sharp" : "blurred");
+            setNote(null);
+            // Random starting phase so the shutter moment can't be memorized.
+            setBreathIdx(Math.floor(Math.random() * BREATH.length));
+            setStep("shoot");
+          }}
+        >
+          ✅ この範囲でかまえる
+        </button>
+      </div>
+    );
+  }
+
+  // ---------- D2: 呼吸を読んで、シャッターを切る ----------
+  if (step === "shoot") {
+    const phase = BREATH[breathIdx];
+    return (
+      <div className="game board-game">
+        <div className="task-bar">
+          <span className="task-now">かまえた。あとは、いつ撮るか</span>
+          <span className="task-sub">{meter}｜患者さんのようすを、よく見て</span>
+        </div>
+
+        <div className="body-stage">
+          <BodyInsideView inside={false} hazeSide={c.haze} scale={scale} dy={dy} frame={curFrame} />
+          <span className="body-cap">🫁 {phase.label}</span>
+        </div>
+
+        {note && <p className="game-note">{note}</p>}
+        <button
+          className="btn primary big"
+          onClick={() => {
+            const r = shoot(c, pos!, size!, phase.hold);
+            setExposures((e) => e + r.cost);
+            setShot(r);
             setNote(null);
             setStep("check");
           }}
@@ -212,45 +231,32 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  // ---------- D: 写りを自分の目で確かめる ----------
-  if (step === "check") {
-    const blurred = quality === "blurred";
-    const wrongPart = shotWhere !== "chest";
+  // ---------- D3: うつった画像を自分の目で確かめる ----------
+  if (step === "check" && shot) {
     return (
       <div className="game board-game">
         <div className="task-bar">
           <span className="task-now">うつった画像を、たしかめる</span>
-          <span className="task-sub">{exposureMeter}｜この画像で、依頼にこたえられる？</span>
+          <span className="task-sub">{meter}｜この画像で、医師の依頼にこたえられる？</span>
         </div>
 
         <div
           className="body-stage revealing"
-          style={blurred ? { filter: "blur(4px)", opacity: 0.9 } : undefined}
+          style={shot.blurred ? { filter: "blur(4px)", opacity: 0.9 } : undefined}
         >
-          {wrongPart ? (
-            <BodyInsideView inside={false} hazeSide={caseKind} />
-          ) : (
-            <BodyInsideView inside hazeSide={caseKind} />
-          )}
-          <span className="body-cap">
-            {wrongPart
-              ? `うつったのは、${WHERE_LABEL[shotWhere!]}のあたり`
-              : blurred
-                ? "……なんだか、ぼやけている"
-                : "むねの中が、うつった"}
-          </span>
+          <BodyInsideView inside hazeSide={c.haze} scale={scale} dy={dy} frame={curFrame} clipToFrame />
+          <span className="body-cap">うつった画像（フレームの外は写らない）</span>
         </div>
 
         {note && <p className="game-note">{note}</p>}
-
         <div className="choice-row">
           <button
             className="btn"
             onClick={() => {
-              setQuality(null);
-              setShotWhere(null);
+              setRetakes((r) => r + 1);
+              setShot(null);
               setNote(null);
-              setStep("order");
+              setStep("frame");
             }}
           >
             🔁 とりなおす
@@ -258,18 +264,33 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
           <button
             className="btn primary"
             onClick={() => {
-              if (wrongPart) {
-                setNote(
-                  `医師「これは${WHERE_LABEL[shotWhere!]}の画像だね……依頼票を確認して、撮りなおしてもらえる？」`,
-                );
-                return;
-              }
-              if (blurred) {
-                setNote("先輩技師「ブレていて、中がよく見えない。これは医師に届けられないな」");
+              const reject = deliveryRejectionReason(shot);
+              if (reject) {
+                // A rejected delivery is a misjudgement with a real cost:
+                // the first one teaches nothing specific (no free oracle),
+                // the second names the defect, the third ends the case.
+                const m = misjudges + 1;
+                setMisjudges(m);
+                if (m >= MISJUDGE_LIMIT) {
+                  setFailReason(
+                    "見られない画像を、何度も先輩に持っていってしまった。「自分の目でたしかめる」のも技師の仕事——今日はここまで。",
+                  );
+                  setStep("failed");
+                  return;
+                }
+                if (m === 1) {
+                  setNote("先輩技師「ん？ 本当にこれでいい？ 依頼票を思い出して、もういちど自分の目でたしかめて」");
+                } else {
+                  setNote(
+                    reject === "cutoff"
+                      ? "先輩技師「よく見て。肺のはしが切れている。左右の肺がまるごと写っていないと、医師は診断できないんだ」"
+                      : "先輩技師「よく見て。ブレていて中が見えない。呼吸が止まった瞬間に撮れていたかな」",
+                  );
+                }
                 return;
               }
               setNote(null);
-              setStep("look");
+              setStep("note");
             }}
           >
             ✅ この画像でいく
@@ -279,19 +300,19 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  // ---------- D: 左右を自分の目で見比べて、所見を決める ----------
-  if (step === "look") {
+  // ---------- おまけのD: 左右を見比べて、気づきをメモする（合否ゲートではない） ----------
+  if (step === "note") {
     const both = seen.length === 2;
     return (
       <div className="game board-game">
         <div className="task-bar">
-          <span className="task-now">左右の肺を見くらべて、気づいたことを医師へ</span>
-          <span className="task-sub">タップすると、その肺に注目できる</span>
+          <span className="task-now">届ける前に、左右を見くらべてみよう</span>
+          <span className="task-sub">気づいたことをメモすると、医師の助けになる</span>
         </div>
         <div className="body-stage">
           <BodyInsideView
-            inside
-            hazeSide={caseKind}
+            inside hazeSide={c.haze} scale={scale} dy={dy}
+            frame={curFrame} clipToFrame
             focus={lastSeen}
             onPickLung={(side) => {
               setSeen((s) => (s.includes(side) ? s : [...s, side]));
@@ -299,43 +320,31 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
               setNote(`${SIDE_LABEL[side]}に注目している……`);
             }}
           />
-          <span className="body-cap">タップ：右の肺 / 左の肺</span>
+          <span className="body-cap">届ける画像（タップ：右の肺 / 左の肺）</span>
         </div>
         {note && <p className="game-note">{note}</p>}
 
         {both && (
           <>
-            <p className="pick-title">医師へ、なんと伝える？（まちがえられるのは1回まで）</p>
+            <p className="pick-title">メモに何と書く？</p>
             <div className="choice-row wrap">
               {(
                 [
-                  { id: "right", label: "右の肺があやしい" },
-                  { id: "left", label: "左の肺があやしい" },
-                  { id: "none", label: "どちらもきれい" },
+                  { id: "right", label: "右の肺に白いモヤ" },
+                  { id: "left", label: "左の肺に白いモヤ" },
+                  { id: "none", label: "どちらもきれいに見える" },
                 ] as { id: CaseKind; label: string }[]
-              ).map((c) => (
+              ).map((ch) => (
                 <button
-                  key={c.id}
+                  key={ch.id}
                   className="choice-card"
                   onClick={() => {
-                    if (c.id === caseKind) {
-                      setNote(null);
-                      setStep("done");
-                      return;
-                    }
-                    const m = misreads + 1;
-                    setMisreads(m);
-                    if (m >= 2) {
-                      setFailReason(
-                        "まちがった見立てを2回つたえてしまった。診断がおくれてしまう。",
-                      );
-                      setStep("failed");
-                      return;
-                    }
-                    setNote("医師「本当に？ もういちど、左右をよーく見くらべてみて」");
+                    setNoteResult(noteIsCorrect(c, ch.id));
+                    setNote(null);
+                    setStep("done");
                   }}
                 >
-                  <span className="choice-name">{c.label}</span>
+                  <span className="choice-name">{ch.label}</span>
                 </button>
               ))}
             </div>
@@ -345,7 +354,7 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  // ---------- 症例失敗：新しい症例でやり直し ----------
+  // ---------- 症例失敗：新しい患者でやり直し ----------
   if (step === "failed") {
     return (
       <div className="game board-game">
@@ -355,18 +364,18 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
         <p className="game-line center-line">{failReason}</p>
         <p className="game-line soft center-line">
           だいじょうぶ、先輩も最初はそうだった。<strong>次の患者さん</strong>でもう一度。
-          （症例は毎回ちがう）
+          （患者さんの体格も写り方も、毎回ちがう）
         </p>
         <button className="btn primary big" onClick={restart}>
-          🔁 次の症例に挑戦する
+          🔁 次の患者さんを担当する
         </button>
       </div>
     );
   }
 
   // ---------- E: Before → After ----------
-  const clean = caseKind === "none";
-  const perfect = exposures === 1 && misreads === 0 && attempts === 1;
+  const clean = c.haze === "none";
+  const perfect = isPerfect(c, exposures, retakes, noteResult === true) && misjudges === 0;
   return (
     <div className="game board-game">
       <div className="result-card good">
@@ -381,25 +390,25 @@ export default function XrayGame({ onComplete }: Q1GameProps) {
             <span className="ba-mini-emoji">🫁</span>
             <small>
               {clean ? (
-                <>肺はきれい<br />だと分かった</>
+                <>肺はきれいに<br />写っていた</>
               ) : (
-                <>{SIDE_LABEL[caseKind as Side]}に<br />白いモヤがある</>
+                <>{SIDE_LABEL[c.haze as Side]}に<br />白いモヤが写った</>
               )}
             </small>
           </span>
         </div>
       </div>
       <p className="game-line soft center-line">
-        {perfect
-          ? "X線1回・見立ても一発。依頼票と患者さんをよく見ていた証拠。"
-          : `つかったX線${exposures}回・見立てなおし${misreads}回` +
-            (attempts > 1 ? `・${attempts}人目の患者さんで成功。` : "。") +
-            "コツをつかめば、患者さんの負担をもっと減らせる。"}
+        {noteResult
+          ? "医師「メモ、助かったよ。画像もきれいだ」— きみの気づきが診断を早くした。"
+          : "医師は画像をじっくり読み、見立てを立てた。（メモの見立てはちがっていたけれど、画像がよければ診断はできる）"}
       </p>
       <p className="game-line soft center-line">
-        {clean
-          ? "「何もない」と分かることも、医師にとって大切な手がかりになる。"
-          : "きみの画像と気づきは、医師にとって新しい手がかりになる。"}
+        {perfect
+          ? `X線${exposures}回だけ・撮りなおしゼロ・メモも正解。むだな負担のない、プロの仕事。`
+          : `つかったX線${exposures}回・とりなおし${retakes}回・先輩への差しもどし${misjudges}回` +
+            (attempts > 1 ? `・${attempts}人目の患者さんで成功。` : "。") +
+            "コツをつかめば、もっと少ない負担で撮れる。"}
       </p>
       <button className="btn primary big" onClick={onComplete}>
         画像を送る

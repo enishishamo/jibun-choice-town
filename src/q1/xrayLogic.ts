@@ -21,7 +21,10 @@ export interface PatientCase {
   haze: CaseKind; // what the finished image will show
 }
 
-export const EXPOSURE_LIMIT = 5;
+export const EXPOSURE_LIMIT = 4;
+// Showing an inadequate image to the senior wastes the team's time and trust:
+// the third rejected delivery ends the case.
+export const MISJUDGE_LIMIT = 3;
 export const FRAME_POSITIONS: FramePos[] = ["high", "mid", "low"];
 export const FRAME_SIZES: FrameSize[] = ["S", "M", "L"];
 export const BUILDS: Build[] = ["small", "medium", "large"];
@@ -37,9 +40,11 @@ export const LUNG_POS_DY: Record<FramePos, number> = { high: -16, mid: 0, low: 1
 const FRAME_DIMS: Record<FrameSize, { w: number; h: number }> = {
   S: { w: 88, h: 86 },
   M: { w: 100, h: 98 },
-  L: { w: 170, h: 150 },
+  L: { w: 170, h: 120 }, // tall enough for any build, but only at the MATCHING position
 };
-const FRAME_CY: Record<FramePos, number> = { high: 120, mid: 144, low: 168 };
+// Frame centers track the patient posture offsets (LUNG_POS_DY) so a correctly
+// judged position+size always has a minimal-cost solution.
+const FRAME_CY: Record<FramePos, number> = { high: 128, mid: 144, low: 160 };
 export const FRAME_COST: Record<FrameSize, number> = { S: 1, M: 1, L: 2 };
 
 export interface Rect {

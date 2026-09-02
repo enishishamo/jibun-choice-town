@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 78,
+    "career_authenticity_score": 82,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "Always-L with the visually observed position and breath-hold succeeds for every patient. Therefore body-build judgment and exposure economy affect only the optional perfect rating, not case completion; the four-unit budget never constrains this two-unit one-shot strategy.",
+      "The ALARA model equates a wider collimation field with two X-ray exposures. This communicates dose economy but is an oversimplified representation: field size changes irradiated volume and scatter, rather than literally converting one exposure into two.",
+      "Image adequacy judgment exists, but cutoff and blur are deliberately conspicuous and binary; there is limited room for progressively finer expert image-quality assessment."
+    ],
+    "low": [
+      "The automated claim that position-aware L framing merely 'works' at a risk/reward cost understates the exploit: correct-position L deterministically covers all 27 generated cases.",
+      "The behavior harness exercises pure rules rather than rendered React interactions, so it does not verify rapid-click state-transition behavior, visual clipping fidelity, or whether children can reliably perceive the randomized build/posture cues."
+    ],
+    "evidence": [
+      "src/q1/xrayLogic.ts:98 — build, lung position, and haze are independently randomized, preventing a fixed answer across new cases.",
+      "src/q1/xrayLogic.ts:39 — frame dimensions make the minimum economical size depend on patient build.",
+      "src/q1/xrayLogic.ts:79 — coverage is computed from both randomized patient geometry and selected position/size; the order sheet alone cannot determine these inputs.",
+      "src/q1/XrayGame.tsx:97 — the randomized patient's exterior is rendered before framing, supplying the required per-patient observation.",
+      "src/q1/XrayGame.tsx:116 — the order sheet teaches principles rather than exposing the randomized build or lung-position answer; C_required=true and C_alone_determines_answer=false.",
+      "src/q1/XrayGame.tsx:191 — the initial breathing phase is randomized, preventing memorization of a fixed shutter delay.",
+      "src/q1/XrayGame.tsx:221 — live breath phase changes the shot's blur state and therefore delivery outcome.",
+      "src/q1/XrayGame.tsx:243 — the captured image is visibly blurred when mistimed and clipped to the selected frame for player self-check.",
+      "src/q1/XrayGame.tsx:267 — delivering an inadequate image causes rejection, while the third misjudgment fails the case.",
+      "src/q1/XrayGame.tsx:303 — the observation note is explicitly supplementary and does not gate delivery, preserving the doctor's diagnostic responsibility.",
+      "src/q1/XrayGame.tsx:407 — economical framing, zero retakes, and correct observation are recognized as perfect play, providing a mastery target.",
+      "src/q1/BodyInsideView.tsx:43 — randomized scale and vertical offset are applied to the rendered patient, so geometry variation is visible rather than rules-only.",
+      "src/q1/BodyInsideView.tsx:49 — the post-shot image is genuinely clipped to the chosen frame.",
+      "src/q1/xrayLogic.ts:43 — L covers every build at its matching position and costs two units.",
+      "src/q1/xrayLogic.ts:129 — with a four-unit limit, the universal position-aware L strategy is always affordable for its successful first shot.",
+      "factory/harness/gameplay-qa-xray.mjs:103 — the harness defines the position-aware always-L strategy but only checks success above 80%, concealing that code geometry makes it 100%.",
+      "factory/harness/gameplay-qa-xray.mjs:175 — the supplied automated suite was executed and passed 20/20 checks.",
+      "CORE LOOP — inspect the patient, choose collimation, read the breathing cycle, expose, visually judge adequacy, then deliver or retake under a dose budget.",
+      "MASTERY — an expert matches position and minimum frame size, anticipates breath hold, rejects inadequate images without consulting the senior, and finishes with fewer exposures and retakes.",
+      "REPLAY — remounts or failed-case restarts generate different combinations of three builds, three positions, and three haze outcomes, allowing different economical framing decisions.",
+      "NOVICE VS EXPERT — novices can over-collimate, mistime, or misjudge an image; experts visually infer the matching position and smallest adequate field, time the hold, and recognize cutoff or motion blur."
+    ],
+    "recommended_actions": [
+      "Make exposure economy consequential to completion, not only the perfect label—for example, use a multi-view or multi-patient dose budget where always-L leaves insufficient capacity.",
+      "Represent ALARA as relative dose or irradiated-area cost instead of counting a single wide exposure as two separate X-rays.",
+      "Add rendered-component tests for rapid clicks, randomized starting phases, clip-path output, and visible correspondence between rule geometry and the actual lung paths.",
+      "Strengthen the harness assertion for position-aware always-L to report its exact success rate and explicitly flag it as a completion-safe but inefficient strategy."
+    ]
+  },
+  "elapsed_sec": 55.086
+}
