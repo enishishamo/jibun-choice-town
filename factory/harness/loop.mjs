@@ -66,6 +66,12 @@ switch (cmd) {
   case "start": {
     const task = argOf("--task") || fail("--task required");
     const artifact = argOf("--artifact") || fail("--artifact required");
+    const producer = argOf("--producer", "claude");
+    const reviewer = argOf("--reviewer", "codex");
+    // Reviewer independence is structural: the only wired reviewer is the Codex
+    // adapter, and the producer may never review its own work.
+    if (reviewer !== "codex") fail(`unsupported reviewer "${reviewer}" — only codex is wired`);
+    if (producer === "codex") fail("producer=codex is forbidden (reviewer independence)");
     const run = {
       run_id: `run-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${Math.random().toString(36).slice(2, 6)}`,
       task,
@@ -104,6 +110,7 @@ switch (cmd) {
     if (run.phase !== "review-ready") fail(`review invalid in phase ${run.phase} (need review-ready)`);
     const promptFile = argOf("--prompt-file") || fail("--prompt-file required");
     const timeoutSec = argOf("--timeout-sec", "600");
+    const requireAxes = rest.includes("--require-axes");
     run.phase = "review";
     saveRun(run);
     logEvent(run.run_id, { type: "review-start", iteration: run.iteration, promptFile });
@@ -111,7 +118,7 @@ switch (cmd) {
     const resFile = join(RUNS_DIR, `${run.run_id}.review-${run.iteration}.json`);
     const r = spawnSync(
       "node",
-      [join(HARNESS_DIR, "codex-review.mjs"), "--prompt-file", promptFile, "--timeout-sec", timeoutSec, "--out", resFile, "--label", `iter-${run.iteration}`],
+      [join(HARNESS_DIR, "codex-review.mjs"), "--prompt-file", promptFile, "--timeout-sec", timeoutSec, "--out", resFile, "--label", `iter-${run.iteration}`, ...(requireAxes ? ["--require-axes"] : [])],
       { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
     );
     let result;

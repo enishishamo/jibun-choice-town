@@ -33,6 +33,7 @@ const promptFile = argOf("--prompt-file");
 const timeoutSec = Number(argOf("--timeout-sec", "600"));
 const outFile = argOf("--out");
 const label = argOf("--label", "review");
+const requireAxes = args.includes("--require-axes"); // game reviews: both axis scores mandatory
 const maxAttempts = 2; // one retry on malformed output
 
 if (!promptFile) {
@@ -157,6 +158,11 @@ function validateVerdict(v) {
   for (const k of ["blockers", "high", "medium", "low", "evidence", "recommended_actions"]) {
     if (!Array.isArray(v[k])) return `missing array field: ${k}`;
   }
+  if (requireAxes) {
+    for (const k of ["career_authenticity_score", "game_quality_score"]) {
+      if (typeof v[k] !== "number" || v[k] < 0 || v[k] > 100) return `missing/bad axis score: ${k}`;
+    }
+  }
   return null;
 }
 
@@ -193,6 +199,18 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     if (parsed.verdict === "PASS" && (parsed.blockers.length > 0 || parsed.high.length > 0)) {
       parsed.verdict = "FAIL";
       parsed._downgraded = "PASS with non-empty blockers/high downgraded to FAIL by harness rule";
+    }
+    // Two-axis gate (mechanical): when axis scores are reported, BOTH must clear
+    // the completion bar for a PASS, and the headline score is their minimum.
+    const ca = parsed.career_authenticity_score;
+    const gq = parsed.game_quality_score;
+    if (typeof ca === "number" && typeof gq === "number") {
+      parsed.score = Math.min(parsed.score, ca, gq);
+      if (parsed.verdict === "PASS" && (ca < 60 || gq < 60)) {
+        parsed.verdict = "FAIL";
+        parsed._downgraded = (parsed._downgraded ? parsed._downgraded + "; " : "") +
+          "two-axis gate: an axis below 60 cannot PASS";
+      }
     }
     emit({ ok: true, status: "OK", label, verdict: parsed, elapsed_sec: totalElapsed });
   }

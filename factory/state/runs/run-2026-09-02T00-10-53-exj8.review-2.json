@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "blockers": [],
+    "high": [
+      "The two-axis completion gate is not structurally enforced. codex-review.mjs accepts verdicts without career_authenticity_score or game_quality_score and applies the axis threshold only when both happen to be present, so a malformed/incomplete PASS can bypass the documented career+game quality gate.",
+      "Reviewer independence is violated by the generalized final-review template: it explicitly feeds redesign-proposals.md to Codex even though the generated document contains a producer-authored Claude evaluation and synthesis. This contradicts the acceptance requirement that producers' self-assessments are not fed into review prompts."
+    ],
+    "medium": [
+      "A fresh improve scaffold refers to a proposal-review prompt but never creates that prompt or prints an executable codex-task invocation. The proven Xray project had a hand-authored proposal-review-prompt.md, so the generalized workflow does not fully scaffold the feature it promises.",
+      "The improve command starts its loop with artifact src/q1/<gameType>, not the registered componentPath it already resolved. For identifiers such as lab_check this is generally a nonexistent path, weakening run provenance and making the recorded artifact misleading.",
+      "audit-all ignores the exit status of summarize-audit.mjs, so the command may exit successfully even when the documented audit-summary.md result was not generated.",
+      "status labels its output as recent runs but relies on filesystem readdir order and slices the final five entries without sorting by started_at.",
+      "audit batch validation only checks r.ok and that r.json is an array. It does not validate batch length, expected game identities, required fields, or scores; duplicate/unexpected records can reach the merged audit as long as every expected ID appears somewhere."
+    ],
+    "low": [
+      "loop.mjs does not validate max_iterations as a positive integer, allowing zero, negative, or NaN values to enter run state.",
+      "audit-all constructs an unquoted bash command string from filesystem paths. It works in the current workspace but is not reusable in paths containing shell-sensitive characters or spaces."
+    ],
+    "evidence": [
+      "factory/harness/codex-review.mjs:153 — validateVerdict requires only headline score and generic arrays; it does not require either axis score.",
+      "factory/harness/codex-review.mjs:199 — the two-axis gate runs only when both optional values have numeric types.",
+      "factory/harness/game-lab.mjs:50 — generalized final-review prompt directs the reviewer to read redesign-proposals.md.",
+      "factory/harness/game-lab.mjs:155 — the generated redesign document explicitly contains sections for Claude evaluation and Claude synthesis.",
+      "factory/projects/q1-improve-xray/redesign-proposals.md:69 — the proven proposal document contains the producer's comparison and recommendation.",
+      "factory/projects/q1-improve-xray/proposal-review-prompt.md:6 — the proven independent proposal review carefully limits reading to sections 1-4 and explicitly says to ignore the author's section 5; the generalized final-review template has no equivalent exclusion.",
+      "factory/harness/game-lab.mjs:155 — scaffold text tells the operator to run proposal-review-prompt but no code creates that file.",
+      "factory/harness/game-lab.mjs:161 — improve creates only final-review-prompt.md after the proposal document.",
+      "factory/harness/game-lab.mjs:162 — loop artifact is synthesized as src/q1/<gameType> instead of using compPath from the registry.",
+      "factory/harness/game-lab.mjs:137 — summarize-audit.mjs is invoked without checking its returned status.",
+      "factory/harness/game-lab.mjs:176 — status reads run filenames without chronological sorting.",
+      "factory/harness/game-lab.mjs:178 — the unsorted array is sliced to produce the purported recent five runs.",
+      "factory/harness/game-lab.mjs:127 — audit result validation accepts any successful JSON array.",
+      "factory/harness/audit-q1.mjs:109 — merge checks only set membership of expected IDs, not per-batch identity, duplicates, schema, or field validity.",
+      "factory/harness/loop.mjs:83 — max_iterations is converted with Number but never range- or integer-validated.",
+      "factory/state/runs/run-2026-09-01T23-33-01-4h3p.json:4 — historical run records a directory artifact, factory/lab.",
+      "factory/state/runs/run-2026-09-01T23-40-31-gq8q.json:4 — historical run records a JSON artifact, mechanics-library.json.",
+      "factory/state/runs/run-2026-09-02T00-02-57-vq3a.json:4 — historical run records a React component artifact, XrayGame.tsx, confirming artifact-type agnosticism.",
+      "factory/harness/loop.mjs:69 — only reviewer=codex is accepted and producer=codex is forbidden.",
+      "factory/harness/codex-review.mjs:97 — review timeout terminates the Codex process group, escalates to SIGKILL, and has a hard fallback resolution.",
+      "factory/harness/loop.mjs:144 — adapter failure finishes the run as HUMAN_REQUIRED rather than PASS.",
+      "factory/harness/codex-review.mjs:192 — PASS with blockers or high findings is mechanically downgraded to FAIL.",
+      "factory/harness/codex-task.mjs:72 — delegated work uses codex exec with a read-only sandbox.",
+      "factory/harness/codex-task.mjs:124 — unavailable and timeout outcomes fail closed; malformed JSON ultimately emits CODEX_MALFORMED.",
+      "factory/harness/README.md:10 — documented external reviewer transport is subscription-authenticated Codex CLI.",
+      "factory/harness/design-principles.md:64 — harness policy explicitly forbids pay-per-use APIs.",
+      "factory/harness/game-lab.mjs:90 — research routes externally only through codex-task.mjs; no art-generation flow is invoked.",
+      "factory/harness/game-lab.mjs:119 — audit batches likewise route only through codex-task.mjs."
+    ],
+    "recommended_actions": [
+      "Require and validate numeric career_authenticity_score and game_quality_score in codex-review.mjs, enforce their 0-100 ranges, set score to their minimum, and reject missing axes as CODEX_MALFORMED.",
+      "Separate producer design intent from producer assessment. Generate an independent-review input containing factual requirements and proposals only, or explicitly restrict proposal review to sections 1-4 as the proven Xray prompt does; do not feed Claude rankings or synthesis into independent review.",
+      "Have improve generate proposal-review-prompt.md and print the exact codex-task command, plus create a gameplay-QA placeholder or explicit named template.",
+      "Record entry.componentPath as the loop artifact and fail if the gameType is unregistered instead of fabricating a path.",
+      "Propagate summarize-audit failure, sort status runs by started_at, validate positive max_iterations, and add strict audit batch schema/identity/uniqueness checks."
+    ]
+  },
+  "elapsed_sec": 76.722
+}

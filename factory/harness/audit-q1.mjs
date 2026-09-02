@@ -102,11 +102,17 @@ Your ENTIRE final message must be a single JSON array with one object per game, 
     if (!Array.isArray(arr)) { missing.push(i); return; }
     all.push(...arr);
   });
-  if (missing.length) console.error(`WARNING: missing/invalid batches: ${missing.join(", ")}`);
+  if (missing.length) {
+    console.error(`ERROR: missing/invalid batches: ${missing.join(", ")} — fix or re-run them before merging.`);
+    process.exit(1);
+  }
   const expected = new Set(games.map((g) => g.id));
   const got = new Set(all.map((a) => a.gameType));
   const absent = [...expected].filter((id) => !got.has(id));
-  if (absent.length) console.error(`WARNING: games not audited: ${absent.join(", ")}`);
+  if (absent.length) {
+    console.error(`ERROR: games not audited: ${absent.join(", ")} — refusing to write a partial q1-audit.json.`);
+    process.exit(1);
+  }
   const doc = {
     note: "Stage 3 full Q1 audit. Auditor: Codex (independent). Merged by audit-q1.mjs.",
     audited_at: new Date().toISOString().slice(0, 10),

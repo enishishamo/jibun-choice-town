@@ -38,6 +38,64 @@ Your ENTIRE final message must be a single JSON array of these objects, no prose
 Games:
 `;
 
+function genericReviewPrompt(gameType, compPath) {
+  return `You are an INDEPENDENT, ADVERSARIAL reviewer for JIBUN CHOICE (educational career-experience
+web game for Japanese elementary-school children). The game ${gameType} was rebuilt. Try hard to
+find real defects — exploits, fake choices, memorization shortcuts, authenticity failures.
+Read the actual code:
+
+- ${compPath}                       — the component under review (and any extracted logic module it imports)
+- factory/rules/game-critic-v2.md        — rubric + calibration you MUST apply
+- factory/harness/design-principles.md   — A->B->C<->D->E conditions
+(Do NOT read the producer's own design documents or self-assessments — judge the code.)
+
+CALIBRATION (binding): C_required=true is desirable. A defect exists only when
+C_alone_determines_answer=true — i.e. reading the in-game documents alone fixes every input
+with no per-case observation, timing, or visual judgment remaining. Simple UI / few options
+are fine for children; only absence of real judgment is a defect.
+
+Evaluate BOTH axes and score each:
+1. CAREER_AUTHENTICITY — does it capture this job's real specific judgments and constraints,
+   translated (not decorated) into rules a child can operate?
+2. GAME_QUALITY — per the rubric: meaningful choice, failure with cost, causality,
+   exploitability (button spam, select-all, brute force, memorization across restarts),
+   mastery, replay, variation.
+
+Also verify the four statements are satisfiable from code: CORE LOOP / MASTERY / REPLAY /
+NOVICE VS EXPERT.
+
+Output (STRICT — single JSON object, no prose, no code fences):
+{"verdict":"PASS|FAIL|HUMAN_REQUIRED","score":0-100,
+ "career_authenticity_score":0-100,"game_quality_score":0-100,
+ "blockers":[],"high":[],"medium":[],"low":[],
+ "evidence":["file:line — finding"],"recommended_actions":[]}
+score = min of the two axis scores. verdict must be FAIL if any blockers or high remain.
+`;
+}
+
+function proposalJudgePrompt(gameType, compPath) {
+  return `You are an INDEPENDENT game-design judge for JIBUN CHOICE (educational career game for
+Japanese elementary-school children). Redesign proposals exist for ${gameType}. Evaluate them
+WITHOUT deferring to the author's own comparison (IGNORE the proposal document's own
+comparison/selection sections — rank from the proposal descriptions only). Read:
+
+- factory/projects/q1-improve-${gameType.replace(/_/g, "-")}/redesign-proposals.md (sections 1-4 only)
+- ${compPath}                              (current implementation)
+- factory/rules/game-critic-v2.md          (rubric + calibration)
+- factory/taxonomy/mechanics-library.json  (mechanics definitions)
+- factory/lab/job-difficulty-taxonomy.md
+
+Judge each proposal on: depth of player judgment (C_required=true while
+C_alone_determines_answer=false); career authenticity; feasibility as a small-scope rework of
+one React component for children on smartphones; replay/variation and mastery; anti-pattern
+risk; consistency with the world's narrative structure.
+
+Output (STRICT — single JSON object, no prose):
+{"ranking":["best","..."],"scores":{},"per_proposal_notes":{},"recommended":"...",
+ "modifications_to_recommended":[],"risks_to_watch":[]}
+`;
+}
+
 const [cmd, ...rest] = process.argv.slice(2);
 
 switch (cmd) {
@@ -64,6 +122,10 @@ switch (cmd) {
   case "audit-all": {
     const wi = rest.indexOf("--wave-size");
     const waveSize = wi >= 0 ? Number(rest[wi + 1]) : 4;
+    if (!Number.isInteger(waveSize) || waveSize < 1 || waveSize > 8) {
+      console.error("--wave-size must be an integer 1-8");
+      process.exit(2);
+    }
     const plan = runCap("node", [join(HARNESS, "audit-q1.mjs"), "plan"]);
     const batches = plan.stdout.trim().split("\n").length;
     console.log(plan.stdout.trim());
@@ -81,9 +143,33 @@ switch (cmd) {
         .join("\n") + "\nwait";
       run("bash", ["-c", script]);
       void procs;
+      // fail closed: verify every batch result of this wave before continuing
+      for (const n of wave) {
+        const f = join(ROOT, "factory", "state", "audits", `batch-${n}.result.json`);
+        let problem = null;
+        try {
+          const r = JSON.parse(readFileSync(f, "utf8"));
+          if (!r.ok || !Array.isArray(r.json)) problem = "task failed or no JSON array";
+          else {
+            const expected = plan.stdout.trim().split("\n")[n].split(": ")[1].split(", ");
+            const got = new Set(r.json.map((g) => g.gameType));
+            const miss = expected.filter((id) => !got.has(id));
+            if (miss.length) problem = `missing games: ${miss.join(",")}`;
+            else if (r.json.some((g) => typeof g.game_quality_score !== "number" || typeof g.career_authenticity_score !== "number")) problem = "missing axis scores";
+          }
+        } catch { problem = "unreadable result file"; }
+        if (problem) {
+          console.error(`ERROR: batch ${n} invalid (${problem}) — re-run it, then \`audit-q1.mjs merge\` + summarize.`);
+          process.exit(1);
+        }
+      }
     }
-    run("node", [join(HARNESS, "audit-q1.mjs"), "merge"]);
-    run("node", [join(HARNESS, "summarize-audit.mjs")]);
+    const m = runCap("node", [join(HARNESS, "audit-q1.mjs"), "merge"]);
+    process.stdout.write(m.stdout); process.stderr.write(m.stderr);
+    if (m.status !== 0) process.exit(m.status);
+    const sm = runCap("node", [join(HARNESS, "summarize-audit.mjs")]);
+    process.stdout.write(sm.stdout); process.stderr.write(sm.stderr);
+    if (sm.status !== 0) process.exit(sm.status);
     break;
   }
 
@@ -104,15 +190,22 @@ switch (cmd) {
         `# ${gameType} 再設計 — 提案書\n\n## 1. Job reality 再確認\n（一次情報で職業の実務を書く）\n\n## 2. Job-specific difficulties\n（factory/lab/job-difficulty-taxonomy.md の id で 2〜4 個）\n\n## 3. Mechanic 候補\n（factory/taxonomy/job-mechanics-map.json から。mechanic先行は禁止）\n\n## 4. 設計案（2〜4案）\n\n## 5. 比較・選択（Claude 評価）\n\n## 6. 最終決定（Claude synthesis × Codex 独立審査）\n（proposal-review-prompt を codex-task で流し、突き合わせて決める）\n`,
       );
     }
-    const tpl = readFileSync(join(ROOT, "factory", "projects", "q1-improve-xray", "final-review-prompt.md"), "utf8");
-    writeFileSync(join(dir, "final-review-prompt.md"), tpl.replace(/XrayGame/g, gameType).replace(/src\/q1\/XrayGame\.tsx/g, `src/q1/<Component>.tsx  # FIXME set component path`));
-    const start = runCap("node", [join(HARNESS, "loop.mjs"), "start", "--task", `improve ${gameType}`, "--artifact", `src/q1/${gameType}`, "--max-iterations", "3"]);
+    const mechDb = JSON.parse(readFileSync(join(ROOT, "factory", "database", "mechanics.json"), "utf8"));
+    const entry = (Array.isArray(mechDb) ? mechDb : mechDb.mechanics || Object.values(mechDb)).find((g) => g.id === gameType);
+    const compPath = entry?.componentPath || `src/q1/<Component>.tsx`;
+    writeFileSync(join(dir, "final-review-prompt.md"), genericReviewPrompt(gameType, compPath));
+    writeFileSync(join(dir, "proposal-review-prompt.md"), proposalJudgePrompt(gameType, compPath));
+    const start = runCap("node", [join(HARNESS, "loop.mjs"), "start", "--task", `improve ${gameType}`, "--artifact", compPath, "--max-iterations", "3"]);
     const runId = start.stdout.trim();
     console.log(`project: ${dir}`);
     console.log(`loop run: ${runId}`);
     console.log(`WORKFLOW: 1) fill redesign-proposals.md (job reality -> difficulties -> mechanics -> 2-4 proposals)`);
-    console.log(`          2) codex-task the proposal review, synthesize, implement (extract pure logic for QA)`);
-    console.log(`          3) write a gameplay-qa script; verify.mjs; loop produce-done/review with final-review-prompt.md`);
+    console.log(`          2) judge proposals independently:`);
+    console.log(`             node factory/harness/codex-task.mjs --prompt-file ${join("factory/projects", `q1-improve-${gameType.replace(/_/g, "-")}`, "proposal-review-prompt.md")} --expect-json --label ${gameType}-proposal-judge --out ${join("factory/projects", `q1-improve-${gameType.replace(/_/g, "-")}`, "proposal-review.result.json")}`);
+    console.log(`             then synthesize, implement (extract pure logic for QA)`);
+    console.log(`          3) write a gameplay-qa script; verify.mjs; then:`);
+    console.log(`             node factory/harness/loop.mjs produce-done ${runId}`);
+    console.log(`             node factory/harness/loop.mjs review ${runId} --prompt-file .../final-review-prompt.md --require-axes`);
     console.log(`          4) update taxonomy/component-reviews.json (new hash) + update-factory-db.mjs`);
     break;
   }
@@ -120,10 +213,12 @@ switch (cmd) {
   case "status": {
     run("node", [join(HARNESS, "stage-manager.mjs"), "status"]);
     const runsDir = join(ROOT, "factory", "state", "runs");
-    const runs = readdirSync(runsDir).filter((f) => f.endsWith(".json") && !f.includes("review") && !f.includes("verify"));
+    const runs = readdirSync(runsDir)
+      .filter((f) => f.endsWith(".json") && !f.includes("review") && !f.includes("verify"))
+      .map((f) => JSON.parse(readFileSync(join(runsDir, f), "utf8")))
+      .sort((a, b) => String(a.started_at).localeCompare(String(b.started_at)));
     console.log(`\nruns: ${runs.length} (factory/state/runs/)`);
-    for (const f of runs.slice(-5)) {
-      const r = JSON.parse(readFileSync(join(runsDir, f), "utf8"));
+    for (const r of runs.slice(-5)) {
       console.log(`  ${r.run_id}  ${r.phase}  ${r.verdict ?? "-"}  ${r.stop_reason ?? ""}  ${r.task.slice(0, 60)}`);
     }
     break;

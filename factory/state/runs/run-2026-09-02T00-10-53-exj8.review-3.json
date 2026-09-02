@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 88,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "Stage 5 state is still in_progress and its attached review run remains at iteration 3 with the previous FAIL recorded; the implementation may satisfy the criteria, but the canonical stage state has not been reconciled with the repaired code.",
+      "The Stage Manager is a state tracker, not an unattended multi-run queue/executor as claimed by the Stage 5 acceptance criterion and the README's description of autonomous stage progression.",
+      "audit-all validates expected IDs and axis scores but does not reject duplicate records, unexpected game IDs, or missing non-score audit fields, so structurally incomplete batch data can still reach the canonical merged audit.",
+      "improve accepts an unregistered gameType, falls back to src/q1/<Component>.tsx, and creates a misleading project/run instead of rejecting the unknown identifier."
+    ],
+    "low": [
+      "loop.mjs does not validate --max-iterations as a positive integer.",
+      "research uses date-only request filenames, so multiple research invocations on the same day overwrite the earlier prompt and result.",
+      "codex-task.mjs treats a nonzero Codex exit as successful when a parseable final message exists; JSON validity is checked, but process failure is not preserved in that case.",
+      "The Codex adapters leave their temporary directories behind."
+    ],
+    "evidence": [
+      "factory/harness/game-lab.mjs:32-38 — research generates the complete reusable-mechanics decomposition schema and requires a JSON array.",
+      "factory/harness/game-lab.mjs:81-94 — research delegates exclusively through codex-task.mjs and prints the required human/Claude curation and normalization continuation.",
+      "factory/harness/game-lab.mjs:96-148 — audit-all plans all registered batches, validates wave size, runs Codex batches, checks expected game IDs and both axis scores, then merges and summarizes fail-closed.",
+      "factory/harness/game-lab.mjs:151-193 — improve creates audit, proposal, independent proposal-review, final-review, and loop scaffolding and prints implementation, gameplay-QA, verification, review, and registry-update steps.",
+      "factory/harness/game-lab.mjs:164-165 — an unknown gameType falls back to a placeholder component path rather than being rejected.",
+      "factory/harness/game-lab.mjs:195-208 — status delegates stage state to stage-manager and reports chronologically sorted recent run records.",
+      "factory/harness/loop.mjs:69-74 — reviewer identity is restricted to Codex and producer=codex is forbidden structurally.",
+      "factory/harness/loop.mjs:80-83 — artifact is stored as an opaque path, while max_iterations is converted without positive-integer validation.",
+      "factory/state/runs/run-2026-09-01T23-33-01-4h3p.json — a completed loop used the factory/lab directory as its artifact.",
+      "factory/state/runs/run-2026-09-01T23-40-31-gq8q.json — a completed loop used factory/taxonomy/mechanics-library.json as its artifact.",
+      "factory/state/runs/run-2026-09-02T00-02-57-vq3a.json — a completed loop used src/q1/XrayGame.tsx as its artifact.",
+      "factory/harness/game-lab.mjs:41-65 — the generalized final-review prompt tells Codex to read implementation and rubric files directly and explicitly excludes producer design documents and self-assessments.",
+      "factory/harness/game-lab.mjs:68-78 — proposal judging is limited to proposal sections 1-4 and explicitly ignores producer comparison/selection sections.",
+      "factory/projects/q1-improve-xray/proposal-review-prompt.md:4-8 — the proven Xray proposal review independently ranks descriptions while excluding the author's comparison.",
+      "factory/harness/codex-task.mjs:60-74 — delegation preflights ChatGPT OAuth and invokes only the read-only Codex CLI.",
+      "factory/harness/codex-task.mjs:79-105 — delegated tasks run in a detached process group with TERM, KILL, and hard timeout resolution.",
+      "factory/harness/codex-task.mjs:119-132 — malformed JSON is retried once and ultimately returns CODEX_MALFORMED rather than passing.",
+      "factory/harness/codex-review.mjs:50-81 — reviews use only subscription-authenticated, read-only Codex CLI transport.",
+      "factory/harness/codex-review.mjs:98-135 — reviewer timeout kills the process group and has a hard fallback that prevents hanging.",
+      "factory/harness/codex-review.mjs:154-166 — verdict validation requires the generic schema and, under --require-axes, both bounded QA-axis scores.",
+      "factory/harness/codex-review.mjs:198-214 — PASS is mechanically downgraded for blockers/high or an axis below 60, and headline score is bounded by both axes.",
+      "factory/harness/loop.mjs:117-138 — adapter failure is recorded as HUMAN_REQUIRED with reviewer_failure and exits nonzero.",
+      "factory/harness/loop.mjs:146-154 — PASS finishes, HUMAN_REQUIRED stops, max iterations stops without auto-pass, and other FAIL results enter repair.",
+      "factory/harness/audit-q1.mjs:96-118 — merge refuses missing batches and absent registered games, but does not enforce uniqueness, reject extras, or validate the full audit schema.",
+      "factory/harness/summarize-audit.mjs:1-70 — the audit summary actually generates rankings, heatmap, repair queue, exploit categories, and structural-duplication reporting.",
+      "factory/harness/stage-manager.mjs:1-103 — Stage Manager supports state queries and mutations but contains no queue or unattended run execution facility.",
+      "factory/state/stages.json:138-157 — Stage 5 remains in_progress with an attached run despite the subsequent repairs.",
+      "factory/state/runs/run-2026-09-02T00-10-53-exj8.json — the attached Stage 5 run still records FAIL issues and has not reached a terminal verdict.",
+      "factory/harness/README.md:8-13 — harness transport is documented as Codex CLI using ChatGPT OAuth with no pay-per-use fallback.",
+      "factory/harness/game-lab.mjs:22-208 — no game-lab path imports or invokes art-generate.mjs or /generate-art; the Stage-6 image API boundary is not automatically crossed.",
+      "factory/harness/codex-task.mjs:127-130 — a nonzero Codex exit is only treated as CODEX_ERROR when no output exists; parseable output can still be accepted."
+    ],
+    "recommended_actions": [
+      "Run the repaired Stage 5 review to a terminal result and update stages.json through stage-manager.mjs; do not mark the stage passed solely from prior repair notes.",
+      "Either implement the advertised unattended multi-run queue/executor or narrow the Stage 5 state/README language to the state-tracking behavior that exists.",
+      "Strengthen audit validation to require exactly one result per expected game, reject extras, and validate every required field before replacing q1-audit.json.",
+      "Reject unregistered gameType values before creating an improve project or loop run.",
+      "Validate max_iterations and adapter timeout values as finite positive integers, and give research requests collision-resistant filenames."
+    ]
+  },
+  "elapsed_sec": 73.169
+}

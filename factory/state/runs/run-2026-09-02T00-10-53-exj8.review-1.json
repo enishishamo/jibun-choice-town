@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "blockers": [],
+    "high": [
+      "The generalized improve scaffold is not reusable: it copies an Xray-specific final-review prompt, leaves unrelated X-ray source/QA references and radiographer-specific evaluation criteria, points the component to a FIXME placeholder, and does not create the proposal-review prompt that its workflow tells the operator to run.",
+      "audit-all does not fail closed. It ignores prompt-generation and Codex task exit statuses, proceeds to merge after failed batches, and audit-q1.mjs only warns about missing/invalid results before writing a partial q1-audit.json. Therefore the documented promise to audit every registered Q1 can silently produce incomplete output.",
+      "The repository contains an executable pay-per-use OpenAI Images API path using OPENAI_API_KEY, directly contradicting the acceptance criterion and documentation claim that no paid APIs exist anywhere."
+    ],
+    "medium": [
+      "The documented two-axis completion gate is prompt-driven rather than mechanically enforced. codex-review.mjs validates the generic verdict schema and blockers/high arrays but does not validate career_authenticity_score or game_quality_score, their presence, thresholds, or that score equals their minimum.",
+      "audit-all accepts zero, negative, NaN, or missing --wave-size values without validation; zero/NaN can prevent progress or produce nonsensical execution.",
+      "loop.mjs records configurable producer/reviewer labels but always invokes Codex regardless of the reviewer label and does not reject producer=codex. Actual reviews use Codex, but the advertised role parameterization is misleading and does not structurally prevent same-role labeling."
+    ],
+    "low": [
+      "game-lab status selects recent runs by lexicographically sorted directory entries rather than explicit timestamps; current run IDs make this generally work but it is not a robust recency definition.",
+      "Temporary directories created by the Codex adapters are not removed after completion."
+    ],
+    "evidence": [
+      "factory/harness/game-lab.mjs:107-109 — improve copies the Xray final-review template with only two textual substitutions and starts a run against src/q1/<gameType>, not the registered componentPath.",
+      "factory/projects/q1-improve-lab-check/final-review-prompt.md:2-29 — generated scaffold still describes a radiographer, xrayLogic.ts, BodyInsideView.tsx, gameplay-qa-xray.mjs, ALARA, lungs, breathing, and framing for lab_check.",
+      "factory/harness/game-lab.mjs:101-116 — scaffold creates audit-excerpt.json, redesign-proposals.md, and final-review-prompt.md, but never creates proposal-review-prompt.md despite printed instructions to run proposal review.",
+      "factory/harness/game-lab.mjs:74-86 — audit task results and child statuses are ignored and merge/summary execute unconditionally.",
+      "factory/harness/audit-q1.mjs:97-118 — missing or invalid batches only emit warnings; a partial audit document is still written.",
+      ".claude/commands/game-lab.md:23-30 — documentation promises all registered Q1 games are re-audited and names complete audit outputs without warning that partial output is possible.",
+      "factory/scripts/art-generate.mjs:148-184 — executable image generation requires OPENAI_API_KEY and calls OpenAI Images API endpoints.",
+      "factory/harness/README.md:12 — documentation states pay-per-use APIs are not used at all.",
+      "factory/harness/codex-review.mjs:153-160 — verdict validation requires only the generic score and issue arrays; two-axis fields are not checked.",
+      "factory/harness/codex-review.mjs:192-197 — only nonempty blockers/high mechanically downgrade PASS.",
+      "factory/harness/game-lab.mjs:65-70 — waveSize is converted with Number and used as the loop increment without finite-positive-integer validation.",
+      "factory/harness/loop.mjs:73-75 — producer and reviewer are accepted as arbitrary labels.",
+      "factory/harness/loop.mjs:112-115 — review always invokes codex-review.mjs irrespective of the recorded reviewer label.",
+      "factory/state/runs/run-2026-09-01T23-33-01-4h3p.json — loop has run over the factory/lab directory.",
+      "factory/state/runs/run-2026-09-01T23-40-31-gq8q.json — loop has run over factory/taxonomy/mechanics-library.json.",
+      "factory/state/runs/run-2026-09-02T00-02-57-vq3a.json — loop has run over src/q1/XrayGame.tsx.",
+      "factory/harness/codex-task.mjs:72-105 — delegated Codex task runs in a detached process group with TERM/KILL timeout fallback.",
+      "factory/harness/codex-review.mjs:72-134 — reviewer runs read-only with detached process-group termination and hard timeout resolution.",
+      "factory/harness/codex-review.mjs:163-208 — malformed verdicts receive one retry and then return CODEX_MALFORMED rather than PASS.",
+      "factory/harness/loop.mjs:117-131 — adapter failures terminate the run as HUMAN_REQUIRED with reviewer_failure status.",
+      "factory/projects/q1-improve-xray/proposal-review-prompt.md:1-10 — proposal reviewer is instructed to form its own ranking and ignore the author's comparison section.",
+      "factory/projects/q1-improve-xray/final-review-prompt.md:1-11 — final reviewer is instructed to read actual implementation and QA files directly.",
+      "factory/harness/codex-task.mjs:60-75 — generalized delegation transport is Codex CLI with login preflight and read-only codex exec.",
+      "factory/state/stages.json:138-154 — Stage 5 remains in_progress, consistent with unresolved generalization work."
+    ],
+    "recommended_actions": [
+      "Generate game-specific proposal-review and final-review prompts from neutral templates; resolve the registered componentPath automatically and remove every Xray-specific file, fact, and QA claim.",
+      "Make audit-all validate wave size, check every subprocess status, use fresh per-run result locations or delete/identify stale results safely, verify exact batch/game coverage, and abort without replacing canonical audit outputs on any failure.",
+      "Remove or disable the pay-per-use OpenAI image generator and its API-key documentation, or narrow and correct the no-paid-API acceptance criterion if that legacy code is intentionally outside scope.",
+      "Extend codex-review validation or add a dedicated two-axis gate requiring both axis scores, defined thresholds, and score=min(axis scores) before PASS.",
+      "Either remove the producer/reviewer CLI parameters or validate producer and reviewer identities and reject configurations that violate reviewer independence."
+    ]
+  },
+  "elapsed_sec": 73.913
+}

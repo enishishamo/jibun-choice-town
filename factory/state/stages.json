@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T00:10:05.619Z",
+  "updated_at": "2026-09-02T00:18:47.123Z",
   "stages": [
     {
       "id": 0,
@@ -137,7 +137,7 @@
     {
       "id": 5,
       "name": "Harness generalization",
-      "status": "pending",
+      "status": "passed",
       "depends_on": [
         4
       ],
@@ -146,10 +146,17 @@
         "Producer/reviewer roles pluggable; reviewer independence enforced structurally",
         "Stage Manager can queue and execute multiple runs unattended"
       ],
-      "repair_count": 0,
+      "repair_count": 2,
       "stop_reason": null,
-      "runs": [],
-      "notes": []
+      "runs": [
+        "run-2026-09-02T00-10-53-exj8"
+      ],
+      "notes": [
+        {
+          "at": "2026-09-02T00:18:47.122Z",
+          "text": "PASS 88 (run exj8 iter3, blockers/high zero). /game-lab research|audit-all|improve|status extracted from proven Stage1-4 pipeline. 2 repairs: fail-closed audit merge, generic prompts (no xray copy), role guards, structural two-axis gate (--require-axes), reviewer never fed producer docs. MEDIUM notes for Stage 8 hardening: unattended multi-run queue semantics, duplicate-record validation, unknown-gameType rejection in improve."
+        }
+      ]
     },
     {
       "id": 6,
