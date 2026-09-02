@@ -68,6 +68,10 @@
   "commit": {
    "status": "done",
    "evidence": "commit 'Stage 8: 動物園世界…PASS 91' on feature/harness-bootstrap"
+  },
+  "experience_gate": {
+   "status": "done",
+   "evidence": "Game Quality v3 (user-added): 3 full reviews + 2 focused verifications; final: baby 73/76, checkup 82/84, feed 80/84, debut 80/76 PASS78 — all flags false (factory/state/experience-gate-*.json)"
   }
  },
  "human_interventions": 0,

@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "status": "CODEX_MALFORMED",
+  "error": "reviewer output was not a valid verdict JSON after retry",
+  "raw": "{\"verdict\":\"PASS\",\"score\":78,\"games\":{\"debut_plan\":{\"WORLD_FEEDBACK_QUALITY\":80,\"VISUAL_GAMEPLAY_LEGIBILITY\":76,\"TEXT_ONLY_CONSEQUENCE\":false,\"HINT_LEAKAGE\":false}},\"blockers\":[],\"high\":[],\"medium\":[],\"low\":[\"Widening distance and shortening time lack distinct immediate world animations; their effects are mainly inferred from later sign outcomes (src/q1/DebutPlanGame.tsx:250).\"],\"evidence\":[\"Stress signs illuminate as visible lamps and move the cub toward the hiding place (src/q1/DebutPlanGame.tsx:195).\",\"Crowd pressure and visitor capping visibly change the viewing-lane icons (src/q1/DebutPlanGame.tsx:180).\",\"Failure visibly places the cub in the hiding area and shows visitors departing (src/q1/DebutPlanGame.tsx:45).\",\"Consequences are computed through stress, mitigation, event pressure, sign accumulation, and state transitions rather than text-only branching (src/q1/zooLogic.ts:442).\",\"The first refused stop returns only a silent headshake; later refusals add only a generic missing-information reaction (src/q1/zooLogic.ts:405).\",\"The refusal text contains neither rule content nor the name of an information source (src/q1/zooLogic.ts:413).\"]}",
+  "elapsed_sec": 94.035
+}

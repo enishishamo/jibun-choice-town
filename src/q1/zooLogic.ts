@@ -363,7 +363,9 @@ export interface DebutState {
   plan: DebutPlan;
   slot: number;
   signs: number;
-  shrinks: ShrinkLever[]; // which operational cuts were made (each once, -2 load)
+  shrinks: ShrinkLever[]; // which operational cuts were made (each once)
+  /** how many stop attempts the rules have refused (drives STAGED, rule-free feedback) */
+  stopRefusals: number;
   outcome: "open" | "hidden_fail" | "expect_fail" | "postponed" | "done_full" | "done_early";
   /** transient: set when the last action was refused by the rules */
   refusal?: string;
@@ -372,9 +374,9 @@ export interface DebutState {
 
 export function startDebut(c: DebutCase, plan: DebutPlan): DebutState {
   if (planValue(plan) < expectMin(c)) {
-    return { c, plan, slot: 0, signs: 0, shrinks: [], outcome: "expect_fail", slotLog: [] };
+    return { c, plan, slot: 0, signs: 0, shrinks: [], stopRefusals: 0, outcome: "expect_fail", slotLog: [] };
   }
-  return { c, plan, slot: 0, signs: 0, shrinks: [], outcome: "open", slotLog: [] };
+  return { c, plan, slot: 0, signs: 0, shrinks: [], stopRefusals: 0, outcome: "open", slotLog: [] };
 }
 
 export type DebutAction =
@@ -403,17 +405,35 @@ export function debutStep(s: DebutState, action: DebutAction, rand: () => number
   if (action.kind === "stop") {
     if (st.signs === 0) {
       // Refused: a cancellation with no welfare sign cannot be explained.
-      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
+      {
+      // STAGED and rule-free: 1st refusal = a silent headshake; later ones add
+      // only a generic "something is still missing" air. No rule content —
+      // the ladder lives in the C card, the state in the sign lamps.
+      const n = s.stopRefusals + 1;
+      return { ...s, stopRefusals: n, refusal: n <= 1 ? "園長は、だまって首を横にふった。" : "園長は首を横にふった。（何かが、まだ足りないようだ）" };
+    }
     }
     if (st.signs === 1) {
       // Research: one behavior alone must not decide a cancellation. The
       // proportionate response to a single sign is to SHRINK, not stop.
-      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
+      {
+      // STAGED and rule-free: 1st refusal = a silent headshake; later ones add
+      // only a generic "something is still missing" air. No rule content —
+      // the ladder lives in the C card, the state in the sign lamps.
+      const n = s.stopRefusals + 1;
+      return { ...s, stopRefusals: n, refusal: n <= 1 ? "園長は、だまって首を横にふった。" : "園長は首を横にふった。（何かが、まだ足りないようだ）" };
+    }
     }
     if (st.shrinks.length === 0) {
       // Research: 縮小→それでも続けば中止. Stopping without ever trying a
       // mitigation is skipping the professional ladder.
-      return { ...s, refusal: "園長は首を横にふった。「まだ、お客さんに説明がつかないよ」" };
+      {
+      // STAGED and rule-free: 1st refusal = a silent headshake; later ones add
+      // only a generic "something is still missing" air. No rule content —
+      // the ladder lives in the C card, the state in the sign lamps.
+      const n = s.stopRefusals + 1;
+      return { ...s, stopRefusals: n, refusal: n <= 1 ? "園長は、だまって首を横にふった。" : "園長は首を横にふった。（何かが、まだ足りないようだ）" };
+    }
     }
     // pattern (>=2 signs) + mitigation attempted: stopping is professional.
     st.outcome = st.slot >= 2 ? "done_early" : "postponed";
