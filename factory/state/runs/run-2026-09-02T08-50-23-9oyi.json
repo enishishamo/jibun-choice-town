@@ -1,0 +1,51 @@
+{
+  "run_id": "run-2026-09-02T08-50-23-9oyi",
+  "task": "Stage 8 zoo world: design+rules review (two-axis)",
+  "artifact": "factory/projects/zoo/design.md",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "finished",
+  "iteration": 3,
+  "max_iterations": 3,
+  "verdict": "FAIL",
+  "issues": [
+    "BLOCKER: baby_care: Cカードが正解条件を完全な決定規則として明示し、コードもそのまま照合するため、Cを読んだ後に専門的判断が残らない（C_alone_determines_answer=true）。",
+    "BLOCKER: feed_prep: feedValidateが必要スロット数までしか検査しないため、後続スロットへ全食材を追加するall-select exploitが成立する。QAはこの経路を検証していない。",
+    "HIGH: debut_plan: 練習記録を無視した固定プランでも成功可能であり、QAも成功ではなくperfect率差だけを要求している。したがってC_requiredを満たさない。",
+    "HIGH: feed_prep: 飼料表、当日日誌、在庫から唯一のトレイを導出して照合する正解再現課題で、配分の代替案や品質判断がない。C適用後に残るのは単純な算数だけである。",
+    "HIGH: baby_care: 生成系列は実質2レイアウトで、毎回adjustとconsultが各1回固定される。初回後は内容理解よりイベント位置・規則照合が中心となり、mastery/replayが弱い。"
+  ],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "BLOCKER1 feed: redesigned as rule-x-data derivation — the table gives RULES, the answer is derived from today's randomized diary (baby weigh-in vs 500g line straddling 440-584g; mother's veg by nursing note); static memorized trays fail 88% of mornings; bread decoy always rejected; redo budget enforced in FeedState. BLOCKER2 debut: zero-sign stop is REFUSED by the rules (state unchanged, refusal message) — instant-stop cheese impossible (machine-verified); early stop honored only as a response to a sign. HIGH: all four games now run through enforced state machines in zooLogic.ts (BabyState/ZooState/FeedState/DebutState — budgets, one-shot decisions, refusals); components mirror, never gate. HIGH non-dup: explicit comparison section added vs waste world and existing 39 games. MEDIUMs: sign types are concrete welfare observations (pace/hide/eat_stop); shrink is a per-lever choice (shorten/widen/cap, once each); QA extended to 29 checks incl. machine-enforcement and instant-stop tests."
+    },
+    {
+      "iteration": 2,
+      "actions": "B1/B2 debut: the research's operational ladder is now the rule — stop refused at 0 signs AND at 1 sign (single behavior never decides; shrink first), honored only for a 2-sign pattern after attempted mitigation; early-slot stops become postponed (plan misfit); perfect requires a 0-sign low-shrink full run or a pattern-justified stop; log-ignoring fixed plans succeed (reactive welfare ops are authentic) but are mechanically worse on quality (perfect 0.32 vs 0.43, comparative QA). H checkup: blood/restraint now carries a REAL 12% abort-the-day risk in the rules (the research's restraint-risk weighing made mechanical); low-burden route carries none. H feed: shortage is no longer a flag — stock is generated as motherNeed+0..2 and the player must compute whether the goat's share remains (same stock number flips meaning with the mother's condition); validation is order-agnostic multiset; static trays fail 84%. H QA: 35 checks incl. machine-enforcement (budgets, one-shot, refusals), instant/single-sign stop refusals, blood-risk distribution, and the comparative quality gap."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T08-50-23-9oyi.review-1.json",
+      "elapsed_sec": 108.452
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T08-50-23-9oyi.review-2.json",
+      "elapsed_sec": 103.523
+    },
+    {
+      "iteration": 3,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T08-50-23-9oyi.review-3.json",
+      "elapsed_sec": 115.064
+    }
+  ],
+  "started_at": "2026-09-02T08:50:23.336Z",
+  "finished_at": "2026-09-02T09:11:44.393Z",
+  "stop_reason": "max_iterations_reached"
+}

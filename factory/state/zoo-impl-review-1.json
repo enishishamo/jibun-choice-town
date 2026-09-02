@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "zoo-impl-review-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 84,
+    "game_quality_score": 68,
+    "blockers": [],
+    "high": [
+      "debut_planの当該時間帯のcrowd/noiseイベントは、プレイヤーが行動した後に初めて表示される。したがって、現在の圧力に合う縮小策を選ぶという中核判断が事前には不可能で、結果が推測と乱数に依存する。",
+      "debut_planのUIが練習記録から内部計算したexpectMinを数値表示しており、資料を読まなくてもcalmか否かを判別して最低限通るプラン値を作れる。練習記録を読む仕事固有の情報処理をUIが代行している。"
+    ],
+    "medium": [
+      "debut_planでは縮小効果が以後の全時間帯へ累積し、イベント非依存でも各レバーが最低1軽減するため、異なる縮小を順番に選ぶだけの汎用戦略が強い。圧力とレバーを対応させる熟達性を弱める。",
+      "debut_planの失敗画面は休養と再計画を示すが、他3ゲームと異なり先輩・チームが引き継ぐことを明記していないため、『failure = mentors take over』という児童向け安全フレーミングが統一されていない。"
+    ],
+    "low": [
+      "ZooCheckupGameの候補原因表示は証拠取得後に自動消去され、推論を強く補助する。ただし選択前の正解漏洩ではなく、取得した所見の可視化なので致命的ではない。"
+    ],
+    "evidence": [
+      "src/q1/DebutPlanGame.tsx:88 — 練習記録から算出された合格閾値expectMin(c)を計画画面で直接表示している。",
+      "src/q1/DebutPlanGame.tsx:95 — 本来プレイヤーが読むべき展示練習記録を提示しているが、同画面の閾値表示が分類結果を別経路で漏らす。",
+      "src/q1/zooLogic.ts:425 — 現在時間帯のeventはdebutStep内で行動選択後に参照される。",
+      "src/q1/DebutPlanGame.tsx:169 — crowd/noise/noneは処理済みslotLogだけに表示され、選択対象の現在イベントは表示されない。",
+      "src/q1/zooLogic.ts:389 — 縮小効果はeventや初期planとの一致で変化するため、非表示イベントが実質的な正解条件になる。",
+      "src/q1/zooLogic.ts:426 — 過去に選んだ全縮小レバーの効果が毎時間帯で合算される。",
+      "src/q1/DebutPlanGame.tsx:51 — 失敗時は休養を保証するが、先輩・チームによる引継ぎは書かれていない。",
+      "src/q1/BabyCareGame.tsx:49 — 飼育ゲームは失敗時に先輩が交代し、安全なケアを継続する。",
+      "src/q1/ZooCheckupGame.tsx:62 — 診察失敗時は獣医チームが見直して正しいケアへ切り替える。",
+      "src/q1/FeedPrepGame.tsx:47 — 餌づくり失敗時は先輩と作り直す。",
+      "src/q1/zooLogic.ts:25 — baby_careは連日の傾向と当日日誌を組み合わせる判断を実装している。",
+      "src/q1/zooLogic.ts:147 — zoo_checkupは検査負担、重複、採血順序をルール層で強制している。",
+      "src/q1/zooLogic.ts:257 — feed_prepは表・当日データ・在庫を照合し、余分な品やパン、誤った代替を拒否する。",
+      "src/q1/BabyCareGame.tsx:30 — 再挑戦時に新しい週を生成し、リプレイと再ランダム化を成立させる。",
+      "src/q1/ZooCheckupGame.tsx:40 — 再診時に症例を再生成する。",
+      "src/q1/FeedPrepGame.tsx:31 — 再挑戦時に体重・授乳・在庫を再生成する。",
+      "src/q1/DebutPlanGame.tsx:36 — 再計画時に性格と当日イベントを再生成する。",
+      "factory/rules/game-critic-v2.md:24 — PASSにはCORE LOOP、MASTERY、REPLAY、NOVICE-VS-EXPERTの4ステートメントが意味を持って成立する必要がある。4ゲーム全体では反復判断、低コスト最適化、再ランダム化、資料適用精度として記述可能だが、debut_planの熟達差は上記UI問題で毀損している。"
+    ],
+    "recommended_actions": [
+      "各時間帯のcrowd/noise/noneを行動選択前に表示し、その圧力を見て縮小レバーを選べる順序へ変更する。",
+      "expectMin(c)の直接表示を廃止するか、練習記録をプレイヤー自身が解釈して期待との両立を判断するUIにする。少なくとも内部sensitivityの分類結果を数値で漏らさない。",
+      "縮小効果を対象圧力へ限定するか、無関係な縮小には運営上のコストを持たせ、全レバー順押しを有効な万能戦略にしない。",
+      "debut_planの全失敗文に、先輩または担当チームが運営を引き継ぎ、動物の安全を確保したことを明記する。"
+    ]
+  },
+  "elapsed_sec": 95.012
+}

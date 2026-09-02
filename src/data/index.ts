@@ -11,8 +11,9 @@ import { medical } from "./content/medical";
 import { schoolTrip } from "./content/schoolTrip";
 import { shopOpening } from "./content/shopOpening";
 import { waste } from "./content/waste";
+import { zoo } from "./content/zoo";
 
-const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste];
+const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste, zoo];
 
 export const places: Place[] = MODULES.flatMap((m) => m.places);
 export const events: AreaEvent[] = MODULES.flatMap((m) => m.events);

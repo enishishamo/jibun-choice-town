@@ -47,6 +47,10 @@ import CurbCheckGame from "./CurbCheckGame";
 import PitCraneGame from "./PitCraneGame";
 import GasWatchGame from "./GasWatchGame";
 import LandfillOpsGame from "./LandfillOpsGame";
+import BabyCareGame from "./BabyCareGame";
+import ZooCheckupGame from "./ZooCheckupGame";
+import FeedPrepGame from "./FeedPrepGame";
+import DebutPlanGame from "./DebutPlanGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -100,4 +104,9 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   pit_crane: PitCraneGame, // ごみ質を見てつかむ・混ぜる→炉温を帯に保つ
   gas_watch: GasWatchGame, // 点検で原因を切り分け→正しい相手に依頼
   landfill_ops: LandfillOpsGame, // 型別に区画へ埋め→天気で覆いの優先順位を決める
+  // 動物園・赤ちゃん誕生編
+  baby_care: BabyCareGame, // 成長曲線と日誌の傾向で毎朝3値の見立て
+  zoo_checkup: ZooCheckupGame, // 負担予算内で検査を選び原因を特定
+  feed_prep: FeedPrepGame, // 日量表の規則×今朝のデータで餌を導出
+  debut_plan: DebutPlanGame, // 練習記録でプラン→当日サインで運営判断
 };

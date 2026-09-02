@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-09-02T08:21:42.413Z",
+  "scannedAt": "2026-09-02T14:42:41.468Z",
   "sourceOfTruth": {
     "registry": "src/q1/registry.ts",
     "contentIndex": "src/data/index.ts",
@@ -349,6 +349,38 @@
       "componentExists": true,
       "description": "型別に区画へ埋め→天気で覆いの優先順位を決める",
       "section": "ごみのゆくえ編"
+    },
+    {
+      "id": "baby_care",
+      "component": "BabyCareGame",
+      "componentPath": "src/q1/BabyCareGame.tsx",
+      "componentExists": true,
+      "description": "成長曲線と日誌の傾向で毎朝3値の見立て",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "zoo_checkup",
+      "component": "ZooCheckupGame",
+      "componentPath": "src/q1/ZooCheckupGame.tsx",
+      "componentExists": true,
+      "description": "負担予算内で検査を選び原因を特定",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "feed_prep",
+      "component": "FeedPrepGame",
+      "componentPath": "src/q1/FeedPrepGame.tsx",
+      "componentExists": true,
+      "description": "日量表の規則×今朝のデータで餌を導出",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "debut_plan",
+      "component": "DebutPlanGame",
+      "componentPath": "src/q1/DebutPlanGame.tsx",
+      "componentExists": true,
+      "description": "練習記録でプラン→当日サインで運営判断",
+      "section": "動物園・赤ちゃん誕生編"
     }
   ],
   "modules": [
@@ -2948,6 +2980,300 @@
             "限られた材料の使いどころ",
             "埋めたあとまで管理するところ",
             "ごみを減らす提案につながるところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/zoo.ts",
+      "exportName": "zoo",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "city-zoo",
+          "name": "動物園",
+          "eventId": "zoo-baby"
+        }
+      ],
+      "events": [
+        {
+          "id": "zoo-baby",
+          "title": "動物園に、レッサーパンダの\n赤ちゃんが生まれた！",
+          "areaName": "動物園のうらがわ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① 今朝の体重、どう見る？",
+              "experienceId": "zoo-care",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② 触らずに、どこまで分かる？",
+              "experienceId": "zoo-checkup",
+              "requires": [
+                "zoo-care"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 3にんぶんの朝ごはんを作れ",
+              "experienceId": "zoo-feed",
+              "requires": [
+                "zoo-checkup"
+              ]
+            },
+            {
+              "id": "ch4",
+              "title": "④ デビューの日を、だれが決める？",
+              "experienceId": "zoo-debut",
+              "requires": [
+                "zoo-feed"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "zoo-keeper",
+          "name": "動物園の飼育員",
+          "catch": "毎日の小さな変化に、いちばん先に気づく人",
+          "discoveryLine": "体重と日誌の「傾向」を読んで、\n今日のケアを見立てる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "動物園の獣医師",
+            "水族館の飼育スタッフ",
+            "牧場の仕事"
+          ]
+        },
+        {
+          "id": "zoo-vet",
+          "name": "動物園の獣医師",
+          "catch": "「まず触る」とは限らない、負担をおさえる名医",
+          "discoveryLine": "動画・うんち・柵ごしの観察で、\n触らずに原因へ近づく仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "動物病院の獣医師",
+            "野生動物の保護の仕事",
+            "飼育員"
+          ]
+        },
+        {
+          "id": "zoo-nutritionist",
+          "name": "動物園の栄養担当（餌づくり）",
+          "catch": "動物ごとの給食を、グラム単位で設計する食の管理者",
+          "discoveryLine": "日量表の規則を今日のデータに当てはめ、\n在庫と優先順位まで決める仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "管理栄養士",
+            "飼育員",
+            "食品の品質管理の仕事"
+          ]
+        },
+        {
+          "id": "zoo-planner",
+          "name": "動物園の展示・広報企画",
+          "catch": "「見せる」と「守る」を両立させる設計者",
+          "discoveryLine": "練習記録とストレスサインを読んで、\nデビューの日程と運営を決める仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "イベント企画の仕事",
+            "広報の仕事",
+            "飼育員"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "zoo-care",
+          "professionId": "zoo-keeper",
+          "eventId": "zoo-baby",
+          "gameType": "baby_care",
+          "componentPath": "src/q1/BabyCareGame.tsx",
+          "A_place": "バックヤードの保育室",
+          "B_mission": {
+            "title": "今週の見立て当番は、きみだ",
+            "lines": [
+              "毎朝、体重を量って成長曲線に点を打つ。",
+              "日誌と合わせて「順調・調整・相談」を見立てよう。単発の数字であわてない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "scale",
+              "name": "電子ばかり",
+              "desc": "毎朝同じ条件で量る"
+            },
+            {
+              "id": "curve",
+              "name": "成長曲線",
+              "desc": "単発の数字より、増え方の形を見る"
+            },
+            {
+              "id": "diary",
+              "name": "飼育日誌",
+              "desc": "飲み残し・うんち・動きのメモ"
+            }
+          ],
+          "D_mechanic": "baby_care",
+          "E_resolution": {
+            "title": "今週の見立て、ぶじ完了",
+            "lines": [
+              "日誌は次の当番と獣医さんへ引き継がれる。毎日の記録が、赤ちゃんを守る。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「傾向か、単発か」を見分けたよね。あの見立てを毎朝やる仕事があるんだ。",
+          "interestSeeds": [
+            "毎日の変化に気づくところ",
+            "グラフの形を読むところ",
+            "あわてず見きわめるところ",
+            "記録を引き継ぐところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "zoo-checkup",
+          "professionId": "zoo-vet",
+          "eventId": "zoo-baby",
+          "gameType": "zoo_checkup",
+          "componentPath": "src/q1/ZooCheckupGame.tsx",
+          "A_place": "診察室（モニター前）",
+          "B_mission": {
+            "title": "触らずに、原因を突き止めろ",
+            "lines": [
+              "赤ちゃんのようすが、いつもとちがう。",
+              "負担の小さい調べ方から。「その検査で方針が変わるか」も考えて。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "diary",
+              "name": "飼育日誌",
+              "desc": "飼育員の毎日の記録（負担ゼロの宝物）"
+            },
+            {
+              "id": "cam",
+              "name": "見守りカメラ",
+              "desc": "ふだんの暮らしのままの映像"
+            },
+            {
+              "id": "kit",
+              "name": "検査キット",
+              "desc": "糞便検査・血液検査（負担に注意）"
+            }
+          ],
+          "D_mechanic": "zoo_checkup",
+          "E_resolution": {
+            "title": "低負担で、原因にたどりついた",
+            "lines": [
+              "治療の計画はチームで共有。赤ちゃんはふだんの暮らしのまま。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「負担と情報のバランス」で検査を選んだよね。それが動物園の獣医さんの毎日の判断なんだ。",
+          "interestSeeds": [
+            "証拠から絞り込むところ",
+            "相手の負担を考えるところ",
+            "検査を選ぶ駆け引き",
+            "チームで方針を決めるところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "zoo-feed",
+          "professionId": "zoo-nutritionist",
+          "eventId": "zoo-baby",
+          "gameType": "feed_prep",
+          "componentPath": "src/q1/FeedPrepGame.tsx",
+          "A_place": "動物たちの調理場",
+          "B_mission": {
+            "title": "3にんぶんの朝ごはんを、規則どおりに",
+            "lines": [
+              "日量表は「規則」。今朝の体重と授乳メモに当てはめて量を決める。",
+              "足りない食材は、じゅにゅう中のおかあさんを優先。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "table",
+              "name": "飼料日量表",
+              "desc": "動物×条件ごとの規則"
+            },
+            {
+              "id": "diary",
+              "name": "今朝の日誌",
+              "desc": "体重と授乳のようす（今日のデータ）"
+            },
+            {
+              "id": "stock",
+              "name": "在庫ボード",
+              "desc": "今朝つかえる食材の残り"
+            }
+          ],
+          "D_mechanic": "feed_prep",
+          "E_resolution": {
+            "title": "3にんぶん、提供完了",
+            "lines": [
+              "台車が保育室と放飼場へ。食は、健康のいちばんの土台。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「規則を今日のデータに当てはめて」量を決めたよね。あれが飼料日量表の使い方なんだ。",
+          "interestSeeds": [
+            "規則を当てはめて考えるところ",
+            "だれを優先するか決めるところ",
+            "在庫をやりくりするところ",
+            "提供前に自分で照合するところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "zoo-debut",
+          "professionId": "zoo-planner",
+          "eventId": "zoo-baby",
+          "gameType": "debut_plan",
+          "componentPath": "src/q1/DebutPlanGame.tsx",
+          "A_place": "展示場のバックヤード",
+          "B_mission": {
+            "title": "デビュー初日を、設計せよ",
+            "lines": [
+              "練習記録を読んで、時間・距離・人数を決める。",
+              "当日はサインを見て、縮小や中止をためらわない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "log",
+              "name": "展示練習の記録",
+              "desc": "この子の性格が見えるデータ"
+            },
+            {
+              "id": "signs",
+              "name": "サインのめやす",
+              "desc": "往復行動・隠れがち・採食中断"
+            },
+            {
+              "id": "mic",
+              "name": "園内放送",
+              "desc": "「今日は見られないことがあります」"
+            }
+          ],
+          "D_mechanic": "debut_plan",
+          "E_resolution": {
+            "title": "デビューの一日が、終わった",
+            "lines": [
+              "決めたのは赤ちゃん自身。それを支えるのが、この仕事。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「サインを見て縮小・中止」を判断したよね。中止する勇気も、プロの技術なんだ。",
+          "interestSeeds": [
+            "相手に合わせて計画するところ",
+            "当日のようすで調整するところ",
+            "中止を決める勇気",
+            "見せ方と守り方の両立"
           ],
           "retry": "unknown_lives_in_component"
         }

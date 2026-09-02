@@ -1,0 +1,16 @@
+{
+  "asset_id": "zoo_scene",
+  "filename": "scene-zoo.png",
+  "world": "zoo",
+  "use": "place",
+  "purpose": "動物園バックヤード横断マップ（4章ホットスポットの台紙）: 保育室・診察室・餌の調理場・展示場",
+  "scene": "One diorama of a Japanese zoo's backyard area: LEFT a small nursery room seen through a big window (warm lamp, a tiny incubator crib, a growth chart poster WITHOUT readable text), CENTER-LEFT a small veterinary exam room (window view: scale, stethoscope on a table), CENTER-RIGHT a feed kitchen (counter with vegetable baskets, bamboo bundle, hanging ladles), RIGHT an outdoor exhibit yard for a red panda with a climbing tree, a small wooden hide-box, and a low visitor fence at a respectful distance. A little path connects all four. NO animals visible except a tiny red panda tail peeking from the hide-box (cute hint).",
+  "composition": "Slight top-down diorama (toy model feel), four zones evenly spaced left-to-right for UI hotspots, generous margins, nothing important near edges. Bright, warm, calm.",
+  "required_objects": ["nursery window with incubator crib", "vet room window", "feed kitchen with bamboo and vegetables", "outdoor exhibit with climbing tree and hide-box", "connecting path", "low visitor fence far from the exhibit"],
+  "forbidden_objects": ["readable text or signs", "visitors crowding", "cages with bars (use glass/moats/fences)", "any sad or sick imagery"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "reference_assets": ["public/assets/waste/scene-journey.png", "public/assets/town-hero.png"],
+  "output_path": "public/assets/zoo/scene-zoo.png",
+  "used_by": ["src/data/content/zoo.ts"]
+}

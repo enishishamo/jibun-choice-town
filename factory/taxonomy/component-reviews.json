@@ -932,7 +932,7 @@
     "spatial_placement",
     "simulation_run"
    ],
-   "interactionNotes": "5日間、型付き搬入（灰/不燃は別区画=施設受入区分）を3区画へ配置し、夜は作業面への覆いが日課（覆いは持続）。材料不足の夜だけ天気を読んだ優先順位判断。雨=浸出水/風=苦情。",
+   "interactionNotes": "5日間、型付き搬入（灰/不燃は別区画=施設受入区分）を3区画へ配置し、夜は作業面への覆いが日課（覆いは持続）。材料不足の夜だけ天気を読んだ優先順位判断。雨=浸出水/風=苦情。（実装レビュー修正でセルは常時タップ可・受入可否はロジック側の拒否で提示＝UIオラクルなし。再照合済み 2026-09-02）",
    "semantic": {
     "C_in_component": "処分場のきまりカード（覆いの意味・浸出水の仕組み・受入区分）・天気予報・残量メーター",
     "C_required": "yes — 覆い放棄4.2%/事後対応20%どまり。配置集約＋義務履行で100%（配置判断が成否を分ける: 散らかし配置は43.6%）",
@@ -945,7 +945,91 @@
      "gameplay-qa-waste.mjs landfill section"
     ]
    },
-   "reviewedHash": "9709c3b6ee2d"
+   "reviewedHash": "ad154f7f9188"
+  },
+  "baby_care": {
+   "primaryMechanic": "trend_reading",
+   "secondaryMechanics": [
+    "document_check",
+    "tap_select"
+   ],
+   "interactionNotes": "毎朝の体重を成長曲線に足し、日誌（飲み残し/便/活動）と重ねて 順調/調整/相談 の3値を見立てる。週レイアウトは12基本配置（stall対+相談日+40%良性凹み）で位置暗記無効。ミス予算2をロジックが強制。",
+   "semantic": {
+    "C_in_component": "見立てのめやす（先輩のメモ＝規則カード）＋成長曲線の形＋今朝の日誌",
+    "C_required": "yes — 規則を今日の曲線・日誌・前日履歴に当てはせないと3値を当てられない。ok/consult/adjustスパムは全て0%完走（QA 48/48）",
+    "action_changes_result": "yes — 判定ごとに正誤とミス予算が分岐、週は毎回再抽選",
+    "retry": "yes — 失敗で新しい週（レイアウト再抽選）",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 3値×良性凹みの過剰反応罰",
+    "evidence": [
+     "src/q1/zooLogic.ts:babyCorrect/newBabyWeek/babyMakeCall",
+     "factory/harness/gameplay-qa-zoo.mjs baby section"
+    ]
+   },
+   "reviewedHash": "3daa3019e3ad"
+  },
+  "zoo_checkup": {
+   "primaryMechanic": "evidence_elimination",
+   "secondaryMechanics": [
+    "resource_budget",
+    "risk_tradeoff"
+   ],
+   "interactionNotes": "負担予算4の中で検査を選び3原因を絞り込む。血液以外の単独検査は確定不能（証拠行列）。無所見診断は拒否、bloodは低負担2手後のみ＋12%保定中止リスク。方針決定は1回勝負。",
+   "semantic": {
+    "C_in_component": "検査ごとの所見テキスト＋負担コスト表＋「方針が変わるか」の原則",
+    "C_required": "yes — 無所見診断はロジックが拒否（勘の1/3勝ち封鎖）。低負担ルートは100%確定・平均負担<1.2（QA）",
+    "action_changes_result": "yes — 検査ごとに証拠が増え原因候補が消える。blood保定は12%で診察日喪失",
+    "retry": "yes — 失敗・保定中止で新症例",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 5検査×3方針×負担予算",
+    "evidence": [
+     "src/q1/zooLogic.ts:zooInspect/zooCheck/zooDecide",
+     "factory/harness/gameplay-qa-zoo.mjs checkup section"
+    ]
+   },
+   "reviewedHash": "a7b0ddbdc858"
+  },
+  "feed_prep": {
+   "primaryMechanic": "rule_application",
+   "secondaryMechanics": [
+    "resource_budget",
+    "document_check"
+   ],
+   "interactionNotes": "飼料日量表（規則）を今朝の体重・授乳メモ（データ）に当てはめてトレイを組む。野菜在庫の充足は算術（在庫数を自分で数える）で、不足朝は授乳中の母を優先。パンはデコイ。全数検査で余剰のせ不可。差し戻し予算2。",
+   "semantic": {
+    "C_in_component": "飼料日量表カード＋今朝の日誌＋在庫数",
+    "C_required": "yes — 体重線470-584gの跨ぎと授乳メモで正解が毎朝変わる。暗記固定トレイは469/500失敗（QA）",
+    "action_changes_result": "yes — 提供ごとに差し戻し/完了が分岐、全のせ・余剰・横取りは全て拒否",
+    "retry": "yes — 失敗で翌朝（条件再抽選）",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 6食材×2サイズ×3トレイ×在庫競合",
+    "evidence": [
+     "src/q1/zooLogic.ts:feedExpected/feedValidate/vegShort",
+     "factory/harness/gameplay-qa-zoo.mjs feed section"
+    ]
+   },
+   "reviewedHash": "cf24896ccb4a"
+  },
+  "debut_plan": {
+   "primaryMechanic": "plan_then_adapt",
+   "secondaryMechanics": [
+    "risk_tradeoff",
+    "event_response"
+   ],
+   "interactionNotes": "練習記録から初日プランを組み（園の期待は記録連動：calmの子は最低5）、当日は時間帯ごとのイベントとサインを見て続行/縮小(3種・圧力対応)/中止を判断。サイン0や縮小前の中止はロジックが拒否。done_earlyのperfectはプラン適合時のみ。",
+   "semantic": {
+    "C_in_component": "展示練習の記録＋デビューのきまり（縮小の使い分け含む）＋当日のイベント表示",
+    "C_required": "yes — 記録無視の安全固定プランはcalm日に期待ゲートで163/500失敗、品質差0.39vs0.19（QA）",
+    "action_changes_result": "yes — レバーは圧力別に効き（cap↔混雑0.60vs0.91）、サイン3で中止、正当な早期中止は成功",
+    "retry": "yes — 失敗で別の日（性格・イベント再抽選）",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — プラン3軸×時間帯4×行動5",
+    "evidence": [
+     "src/q1/zooLogic.ts:expectMin/shrinkRelief/debutStep/debutGrade",
+     "factory/harness/gameplay-qa-zoo.mjs debut section"
+    ]
+   },
+   "reviewedHash": "44337cc9b4fe"
   }
  }
 }

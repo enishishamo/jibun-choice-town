@@ -1,0 +1,86 @@
+{
+ "world": "zoo",
+ "pipeline_version": "new-world v2 (autonomous)",
+ "phases": {
+  "world_selection": {
+   "status": "done",
+   "evidence": "factory/state/world-selection.result.json (Codex judged B=zoo 89, nature-contrast to waste per Stage 8)"
+  },
+  "event_research": {
+   "status": "done",
+   "evidence": "research.result.json"
+  },
+  "job_discovery": {
+   "status": "done"
+  },
+  "career_fact_research": {
+   "status": "done"
+  },
+  "difficulty_extraction": {
+   "status": "done"
+  },
+  "mechanics_matching": {
+   "status": "done"
+  },
+  "game_design": {
+   "status": "done",
+   "evidence": "design.md + gameplay-references.json entries"
+  },
+  "design_critics": {
+   "status": "done_with_note",
+   "evidence": "3 iterations (runs 9oyi): iter1/2 blockers redesigned into code (rule-x-data feed, refusal ladder, blood abort); iter3 FAIL48 -> mechanical fixes applied (full-tray validate, zero-evidence refusal, blood ladder, 12 layouts, lever differentiation, record-scaled expectation), C-derivation points ruled per user calibration; binding verdict = implementation adversarial review"
+  },
+  "art_need_detection": {
+   "status": "done",
+   "evidence": "reuse-first: 3 generated (scene-zoo, ba pair), professions reuse emoji-hero pattern"
+  },
+  "art_generation_qa": {
+   "status": "done",
+   "evidence": "3/3 QA PASS iter1; Series Style re-audit PASS (SSM 89-92)"
+  },
+  "implementation": {
+   "status": "done"
+  },
+  "build_static_qa": {
+   "status": "done",
+   "evidence": "tsc/lint/verify + art-link-qa 161 assets 0 errors"
+  },
+  "gameplay_qa": {
+   "status": "done",
+   "evidence": "gameplay-qa-zoo.mjs 48/48"
+  },
+  "browser_qa": {
+   "status": "done",
+   "evidence": "mobile 375px + desktop full flow: 4 games via correct-play bots, refusals observed in-browser, JobReveal, wrapUp before/after, no console errors"
+  },
+  "adversarial_review": {
+   "status": "done",
+   "evidence": "impl review iter1 FAIL68 -> repair (pre-action event display, expectMin leak removed, mentor-takeover framing) -> iter2 PASS 91 (CA94/GQ91, blockers/high zero)"
+  },
+  "presentation_qa": {
+   "status": "done",
+   "evidence": "present-shots.mjs 32 screenshots -> art-qa presentation mode (Asset Presentation Gate); town-map zoo balloon clip fixed (mapPos 90->80%)"
+  },
+  "db_manifest_update": {
+   "status": "done",
+   "evidence": "component-reviews +4 (hashes), 47/47 classified, validate OK"
+  },
+  "commit": {
+   "status": "pending"
+  }
+ },
+ "human_interventions": 0,
+ "metrics": {
+  "research_tasks": 1,
+  "codex_delegations": 9,
+  "repairs": 9,
+  "art_generations": 3,
+  "art_regenerations": 0,
+  "gameplay_qa_checks": "48/48",
+  "browser_qa": "mobile+desktop full flow (4 games, JobReveal, wrapUp), no console errors",
+  "final_scores": {
+   "CA": 94,
+   "GQ": 91
+  }
+ }
+}

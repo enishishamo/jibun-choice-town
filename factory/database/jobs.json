@@ -924,5 +924,105 @@
     "sourceFiles": [
       "src/data/content/waste.ts"
     ]
+  },
+  {
+    "id": "zoo-keeper",
+    "displayName": "動物園の飼育員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "zoo-baby"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "電子ばかり",
+      "成長曲線",
+      "飼育日誌"
+    ],
+    "dPatterns": [
+      "baby_care"
+    ],
+    "mechanics": [
+      "baby_care"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/zoo.ts"
+    ]
+  },
+  {
+    "id": "zoo-vet",
+    "displayName": "動物園の獣医師",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "zoo-baby"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "飼育日誌",
+      "見守りカメラ",
+      "検査キット"
+    ],
+    "dPatterns": [
+      "zoo_checkup"
+    ],
+    "mechanics": [
+      "zoo_checkup"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/zoo.ts"
+    ]
+  },
+  {
+    "id": "zoo-nutritionist",
+    "displayName": "動物園の栄養担当（餌づくり）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "zoo-baby"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "飼料日量表",
+      "今朝の日誌",
+      "在庫ボード"
+    ],
+    "dPatterns": [
+      "feed_prep"
+    ],
+    "mechanics": [
+      "feed_prep"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/zoo.ts"
+    ]
+  },
+  {
+    "id": "zoo-planner",
+    "displayName": "動物園の展示・広報企画",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "zoo-baby"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "展示練習の記録",
+      "サインのめやす",
+      "園内放送"
+    ],
+    "dPatterns": [
+      "debut_plan"
+    ],
+    "mechanics": [
+      "debut_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/zoo.ts"
+    ]
   }
 ]

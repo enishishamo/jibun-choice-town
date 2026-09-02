@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 76,
+    "game_quality_score": 48,
+    "blockers": [
+      "baby_care: Cカードが正解条件を完全な決定規則として明示し、コードもそのまま照合するため、Cを読んだ後に専門的判断が残らない（C_alone_determines_answer=true）。",
+      "feed_prep: feedValidateが必要スロット数までしか検査しないため、後続スロットへ全食材を追加するall-select exploitが成立する。QAはこの経路を検証していない。"
+    ],
+    "high": [
+      "debut_plan: 練習記録を無視した固定プランでも成功可能であり、QAも成功ではなくperfect率差だけを要求している。したがってC_requiredを満たさない。",
+      "feed_prep: 飼料表、当日日誌、在庫から唯一のトレイを導出して照合する正解再現課題で、配分の代替案や品質判断がない。C適用後に残るのは単純な算数だけである。",
+      "baby_care: 生成系列は実質2レイアウトで、毎回adjustとconsultが各1回固定される。初回後は内容理解よりイベント位置・規則照合が中心となり、mastery/replayが弱い。"
+    ],
+    "medium": [
+      "zoo_checkup: 血液検査は単独で原因を確定し、88%程度はそのまま勝てるため、低負担検査を組み立てる専門的ループを高確率で迂回できる。負担グレードはルール状態に存在しない。",
+      "zoo_checkup: 診断は検査なしでも即時実行でき、ランダム選択で約1/3成功する。QAは成功率45%未満を許容しており、C_requiredの否定を防いでいない。",
+      "debut_plan: 3つの縮小レバーはすべて一律-2で、時間・距離・人数制限の異なる因果が失われている。職業判断が『未使用レバーを選ぶ』へ縮退する。",
+      "design.mdは29/29 PASSと記す一方、依頼文は21 passing simsとしており、QA件数の正本が不整合。",
+      "既存39ゲームとの非重複はdesign.mdの自己申告のみで、許可された資料内に比較対象のルールがないため独立検証できない。"
+    ],
+    "low": [
+      "feed_prepの設計本文は竹不足、禁忌対象、要求量のランダム化を述べるが、実装では竹在庫と献立が固定され、禁忌はパンの単一デコイに縮小されている。",
+      "debut_planの距離値はplanValueとbaseStressの双方を増加させるため、値が距離そのものなら『遠距離ほど低負担』という設計意図と逆になる。値の意味を明記すべき。"
+    ],
+    "evidence": [
+      "factory/rules/game-critic-v2.md:21 — Cを使わず突破できないことが必須。",
+      "factory/rules/game-critic-v2.md:22 — Cだけで答えが一意に決まる設計は問題。",
+      "factory/rules/game-critic-v2.md:46 — C適用後に判断が残らない場合はBLOCKERとする拘束的較正。",
+      "src/q1/zooLogic.ts:21 — baby_careのCカードがコードと同一の正解規則を教えると明記。",
+      "src/q1/zooLogic.ts:25 — babyCorrectは3条件の決定的照合だけで正解を返す。",
+      "src/q1/zooLogic.ts:59 — 各週のadjust日とconsult日が各1回に固定される。",
+      "src/q1/zooLogic.ts:74 — baby_careの系列は2レイアウトのみ。",
+      "src/q1/zooLogic.ts:103 — checkupの証拠行列は3症例×固定文面。",
+      "src/q1/zooLogic.ts:109 — blood単独でwormsを確定し、他症例も同様に単独確定する。",
+      "src/q1/zooLogic.ts:129 — bloodの中止確率は12%だけで、残りは単独確定ルートになる。",
+      "src/q1/zooLogic.ts:160 — zooDecideは検査実施を要求せず即時診断を許す。",
+      "src/q1/zooLogic.ts:207 — feed条件は変動するが、規則から唯一の正解トレイが生成される。",
+      "src/q1/zooLogic.ts:226 — feedExpectedが全動物の唯一解を直接構築する。",
+      "src/q1/zooLogic.ts:247 — トレイをwant.lengthでsliceするため余剰カードが検査対象外になる。",
+      "src/q1/zooLogic.ts:324 — debutの期待値は時間・距離・人数制限の単純加算。",
+      "src/q1/zooLogic.ts:327 — debutのストレスも同じ計画値からほぼ単調に算出される。",
+      "src/q1/zooLogic.ts:384 — どの縮小レバーも個別効果を持たず、使用数だけが参照される。",
+      "src/q1/zooLogic.ts:388 — 各縮小の効果は種類にかかわらず一律-2。",
+      "factory/harness/gameplay-qa-zoo.mjs:55 — checkup QAは『単独検査が3原因すべてを分離しない』だけを検証し、観察後の判断深度を検証しない。",
+      "factory/harness/gameplay-qa-zoo.mjs:71 — 無検査診断の約1/3成功を許容している。",
+      "factory/harness/gameplay-qa-zoo.mjs:113 — feed QAの正解トレイはfeedExpectedから直接コピーされ、独立した期待値検証ではない。",
+      "factory/harness/gameplay-qa-zoo.mjs:123 — feed exploit検査はパン置換のみで、余剰スロットへの全選択を検査しない。",
+      "factory/harness/gameplay-qa-zoo.mjs:219 — debut QAは記録無視の固定プランを明示的に使用する。",
+      "factory/harness/gameplay-qa-zoo.mjs:230 — 固定プランは成功可能で、要求される差はperfect率0.10だけ。",
+      "factory/projects/zoo/design.md:103 — 設計はQAを29/29 PASSと記載。",
+      "factory/projects/zoo/design.md:124 — 設計自身が記録無視プランの成功を認め、Cの効果を品質差だけに限定。",
+      "factory/projects/zoo/research.result.json:230 — 研究Dは成長曲線・授乳・便・活動性の総合、最低負担検査、授乳に応じた飼料更新、継続する複数サインへの縮小・中止を支持する。"
+    ],
+    "recommended_actions": [
+      "baby_careは閾値表の直接照合をやめ、測定条件の乱れ、複数日の程度、矛盾する日誌サインなどを入れ、同じCから複数の妥当な判断とトレードオフが生じるよう再設計する。",
+      "feedValidateで各トレイの正確な長さを検証し、余剰カードを拒否するall-select QAを追加する。",
+      "feed_prepに複数の栄養的に妥当な代替、衛生・在庫・個体状態の競合を導入し、唯一解コピーではなく理由付き配分判断にする。",
+      "debut_planは練習記録を使わない限り完了品質ゲートを突破できないようにし、各縮小レバーへ異なるイベント別効果とコストを持たせる。",
+      "zoo_checkupは診断前に十分な証拠状態を要求し、blood単独ルートには機械的な品質低下または適応条件を設ける。",
+      "QAにfeed余剰全選択、無検査診断、blood-first反復、debut固定プラン突破、各縮小レバー差、C-alone determinismの検査を追加する。",
+      "QA件数表記を実ファイルと一致させ、既存39ゲームとの比較可能な証拠をレビュー資料に含める。"
+    ]
+  },
+  "elapsed_sec": 115.064
+}

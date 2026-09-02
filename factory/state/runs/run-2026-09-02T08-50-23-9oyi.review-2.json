@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 68,
+    "game_quality_score": 52,
+    "blockers": [
+      "debut_plan has a guaranteed C-free strategy: use any fixed plan with value >=4, continue until the first sign, then stop. A step produces at most one sign, stopping after any sign always yields done_early, and that outcome is usually graded perfect. Practice logs, sensitivity, event interpretation, lever choice, and multi-sign judgment are unnecessary.",
+      "debut_plan treats one randomly selected sign as sufficient justification for a perfect stop, contradicting the research warning that a single behavior must not determine cancellation without comparison to baseline, duration, appetite, and rest."
+    ],
+    "high": [
+      "zoo_checkup does not mechanically reward lowest-burden testing: blood alone identifies every cause at cost 3 and produces the same solved outcome as the expert cost-1 route. Burden is stored but never graded or used after diagnosis, so the central professional tradeoff is optional.",
+      "feed_prep is principally exact rule matching rather than resource-allocation judgment: conditions deterministically produce one ordered tray configuration, and the supposed lactation-priority decision is precomputed by feedExpected. Replay changes inputs but not strategy.",
+      "The QA suite verifies generated examples and selected scripted policies, but misses the guaranteed debut exploit and never asserts that low-burden diagnosis receives a better outcome than blood-first diagnosis."
+    ],
+    "medium": [
+      "baby_care authentically combines trend and diary evidence and defeats constant-call spam, but generation has only two fixed event layouts; numeric variation rarely changes reasoning, limiting replay and mastery depth.",
+      "baby_care's exact decision table makes each call deterministic once data are read. It retains comparison and temporal judgment, so this is not a calibration blocker, but the boundary between expert judgment and classification exercise is thin.",
+      "feed_prep validates tray entries by array position, making arrangement order part of correctness even though the research supports ration contents, quantities, substitution, hygiene, and allocation—not a particular slot order.",
+      "The four state machines are independent; the designed birth-to-debut requires chain is narrative only, with no executable transfer of care, diagnosis, ration, or readiness consequences between Q1s.",
+      "Non-duplication versus the waste world and all existing 39 games cannot be independently verified from the permitted files; design.md provides only author assertions and selected comparisons."
+    ],
+    "low": [
+      "The request describes 21 passing simulations, while the harness contains 29 check calls and design.md also claims 29/29; align the stated QA count.",
+      "debut sensitivity generation uses two random draws, producing approximately 34% calm, 33% normal, and 33% shy but making the distribution less transparent than a single draw.",
+      "The feed design mentions randomized daily-table rules and changing contraindication targets, while executable variation is limited to baby weight, nursing strength, and vegetable shortage; bread is the only contraindication-like decoy."
+    ],
+    "evidence": [
+      "factory/projects/zoo/research.result.json:222 — research explicitly says a single stress behavior must not alone determine cancellation; baseline difference, persistence, appetite, and rest should be combined.",
+      "src/q1/zooLogic.ts:345 — stop is accepted after signs>0 without considering sign type, persistence, event, sensitivity, or prior adjustment.",
+      "src/q1/zooLogic.ts:377 — done_early with at most one sign is graded perfect.",
+      "src/q1/zooLogic.ts:360 — each operational step can add only one sign, enabling a guaranteed stop-before-failure policy.",
+      "src/q1/zooLogic.ts:368 — hidden failure requires three accumulated signs, which the first-sign-stop policy can never reach.",
+      "src/q1/zooLogic.ts:325 — any planValue of at least 4 enters play, allowing a fixed qualifying plan without reading the practice log.",
+      "factory/harness/gameplay-qa-zoo.mjs:174 — QA explicitly models stopping after the first sign and treats its frequent perfect grade as desirable rather than testing it as an exploit.",
+      "src/q1/zooLogic.ts:101 — blood is specified to identify every cause by itself.",
+      "src/q1/zooLogic.ts:150 — diagnosis outcome is only solved or misdiagnosed; accumulated burden does not affect success quality.",
+      "factory/harness/gameplay-qa-zoo.mjs:73 — QA compares route costs numerically but does not verify a gameplay consequence for choosing blood-first.",
+      "src/q1/zooLogic.ts:25 — baby decisions require current diary flags plus previous-day trend, preserving temporal evidence use.",
+      "src/q1/zooLogic.ts:59 — every baby week uses one adjust event, one consult event, and one of only two layouts.",
+      "factory/harness/gameplay-qa-zoo.mjs:44 — all three constant-call strategies are checked as non-completing.",
+      "src/q1/zooLogic.ts:209 — feedExpected directly computes the single required contents and quantities for every animal.",
+      "src/q1/zooLogic.ts:231 — feed validation compares each array position against the corresponding expected position.",
+      "src/q1/zooLogic.ts:196 — lactation priority and shortage allocation are encoded into stock and expected trays rather than left as a genuine allocation choice.",
+      "factory/projects/zoo/design.md:13 — the world promises a requires chain from care through debut.",
+      "src/q1/zooLogic.ts:39 — each Q1 creates an independent state with no cross-game input or consequence.",
+      "factory/projects/zoo/design.md:132 — non-duplication is supported by prose comparisons, but the permitted evidence set contains no executable inventory of the existing 39 games.",
+      "factory/projects/zoo/design.md:103 — design claims 29/29 QA passes, inconsistent with the request's 21-pass description.",
+      "factory/projects/zoo/design.md:4 — explicit safety framing prohibits death/punishment, pet-like treatment, and touch rewards.",
+      "src/q1/zooLogic.ts:8 — executable rules preserve mentor-takeover framing and contain no death outcome.",
+      "factory/projects/zoo/research.result.json:8 — research supports non-contact observation and minimizing disturbance.",
+      "src/q1/zooLogic.ts:107 — veterinary inspection is explicitly described as observation through the barrier, respecting non-pet handling."
+    ],
+    "recommended_actions": [
+      "Redesign debut stopping so one isolated sign triggers observation or a targeted adjustment, while a persistent sign, multiple evidence types, or a severe contextual combination can justify stopping; preserve stopping as a positively graded outcome.",
+      "Add a QA strategy for fixed planValue=4 plus continue-until-first-sign/stop and require that it cannot guarantee top-grade completion without using practice-log and event evidence.",
+      "Make debut sign types and persistence causally meaningful instead of cosmetic, and grade decisions against the observed pattern and chosen lever.",
+      "Give veterinary burden an enforced consequence: tiered grade, remaining-burden objective, or success condition that distinguishes the cost-1 targeted route from blood-alone, while retaining blood as a justified fallback for appropriately ambiguous or urgent cases.",
+      "Add QA assertions comparing final grades for targeted low-burden, blood-first, redundant-test, and blind-diagnosis strategies.",
+      "Turn feed shortage into a real allocation decision with more than one defensible substitution or quantity plan and explicit consequences, while preserving lactation priority; validate tray contents as sets unless slot order is professionally meaningful.",
+      "Expand baby generation beyond two templates with ambiguous but coherent trend histories, while keeping guaranteed adjust and consult learning coverage.",
+      "Either implement cross-Q1 state transfer or revise the world description so it does not claim an executable requires chain.",
+      "Reconcile the QA count and document exactly which checks constitute the claimed anti-exploit/solvability suite."
+    ]
+  },
+  "elapsed_sec": 103.523
+}

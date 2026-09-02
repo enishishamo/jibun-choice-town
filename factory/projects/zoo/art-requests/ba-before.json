@@ -1,0 +1,16 @@
+{
+  "asset_id": "zoo_ba_before",
+  "filename": "ba-before.png",
+  "world": "zoo",
+  "use": "before_after",
+  "purpose": "wrapUpのBefore: デビュー前の静かな展示場（準備が整い、まだ誰もいない）",
+  "scene": "A small Japanese zoo exhibit yard prepared for a red panda baby's debut, EMPTY and quiet: a climbing tree with a soft branch bed, a small wooden hide-box with its door open, fresh bamboo bundle placed, a shallow water dish, soft morning light. A low wooden visitor fence in the foreground at a respectful distance, with a small blank sign board (NO text). No animals, no people.",
+  "composition": "Eye-level from just behind the visitor fence, the exhibit filling the frame with the climbing tree slightly left of center and the hide-box visible right. This pairs with an AFTER image of the SAME yard, so keep layout simple and memorable. Generous margins.",
+  "required_objects": ["climbing tree", "open hide-box", "bamboo bundle", "low visitor fence in foreground", "blank sign board"],
+  "forbidden_objects": ["readable text", "animals", "people", "bars or cages"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "reference_assets": ["public/assets/waste/ba-before.png", "public/assets/town-hero.png"],
+  "output_path": "public/assets/zoo/ba-before.png",
+  "used_by": ["src/data/content/zoo.ts"]
+}

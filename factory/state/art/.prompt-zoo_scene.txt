@@ -1,0 +1,13 @@
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: One diorama of a Japanese zoo's backyard area: LEFT a small nursery room seen through a big window (warm lamp, a tiny incubator crib, a growth chart poster WITHOUT readable text), CENTER-LEFT a small veterinary exam room (window view: scale, stethoscope on a table), CENTER-RIGHT a feed kitchen (counter with vegetable baskets, bamboo bundle, hanging ladles), RIGHT an outdoor exhibit yard for a red panda with a climbing tree, a small wooden hide-box, and a low visitor fence at a respectful distance. A little path connects all four. NO animals visible except a tiny red panda tail peeking from the hide-box (cute hint).
+Role in game: 動物園バックヤード横断マップ（4章ホットスポットの台紙）: 保育室・診察室・餌の調理場・展示場
+Camera / composition: Slight top-down diorama (toy model feel), four zones evenly spaced left-to-right for UI hotspots, generous margins, nothing important near edges. Bright, warm, calm.
+Must include: nursery window with incubator crib; vet room window; feed kitchen with bamboo and vegetables; outdoor exhibit with climbing tree and hide-box; connecting path; low visitor fence far from the exhibit
+Must NOT include: readable text or signs; visitors crowding; cages with bars (use glass/moats/fences); any sad or sick imagery
+Aspect ratio: 4:3 (compose for this frame).

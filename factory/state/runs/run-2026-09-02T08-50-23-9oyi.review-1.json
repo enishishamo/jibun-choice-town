@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 78,
+    "game_quality_score": 52,
+    "blockers": [
+      "Q1-3 feed_prep: 飼料日量表・在庫・明示された授乳母優先規則から唯一の配膳が直接決まり、Cを読んだ後に独立した栄養判断が残らない（C_alone_determines_answer）。",
+      "Q1-4 debut_plan: 開始直後にstopを選ぶだけで、サイン0のdone_earlyがperfectになる。練習記録・イベント・プラン判断を全回避できる決定的exploit。"
+    ],
+    "high": [
+      "Q1-2 zoo_checkup: 負担予算、検査選択履歴、予算超過拒否、診断1回制限が実行規則に存在せず、定数とQA内の算術確認だけである。component実装に依存するためaction_result_causalityとexploit resistanceを現時点で保証できない。",
+      "Q1-1 baby_care: ミス蓄積・2回目の交代はロジックに実装されず、QA側のplayBabyがゲーム進行を代行している。source-of-truth単体では制約が機械強制されない。",
+      "World/non-duplication: 設計書が比較しているのはStage 7の一部だけで、waste worldおよび既存39ゲームとの非重複を、閲覧許可された資料からは検証できない。"
+    ],
+    "medium": [
+      "Q1-3 feed_prep: 設計書が主張する母の要求量・在庫数・禁忌対象のランダム化は未実装。変化するのは野菜不足の有無と赤ちゃんのミルク量だけで、禁忌規則もvalidatorに存在しない。",
+      "Q1-3 feed_prep: FEED_REDO_LIMITは定数のみで、差し戻し回数や交代状態を実行規則が管理しない。",
+      "Q1-4 debut_plan: stress signは具体的な往復行動・隠れ・採食中断ではなく確率的booleanだけで、研究が注意する『単一行動でなく平常時との差・持続・複数指標で総合』を弱く翻訳している。",
+      "Q1-4 debut_plan: shrinkは時間・距離・人数のどれをどう変更したかを選ばない一律-3処理で、展示企画固有の運用判断を抽象化しすぎている。",
+      "QAは代表戦略21件を検査するだけで、全行動列の探索、即時stop、検査総当たり、状態制約の不存在を検査していない。"
+    ],
+    "low": [
+      "Q1-1の週生成は2種類の固定配置が中心で、数値差が正解規則を変えないため、リプレイ時の戦略変化は限定的。",
+      "zoo_checkupの血液検査は負担3で単独確定でき、成績低下を強制するgrading規則がsource-of-truthにないため、低負担ルート習熟の動機がコード上は弱い。"
+    ],
+    "evidence": [
+      "src/q1/zooLogic.ts:21 — babyCorrectのコメント自体が『C card teaches exactly these』とし、正解は固定3規則で算出される。",
+      "src/q1/zooLogic.ts:33 — baby週はadjust日とconsult日を各1つ必ず含む固定構造。",
+      "src/q1/zooLogic.ts:18 — BABY_MISTAKE_LIMITは定数だけで、進行状態や交代処理がない。",
+      "factory/harness/gameplay-qa-zoo.mjs:21 — ミス蓄積と失敗処理は製品ロジックでなくQA内playBabyが実装している。",
+      "src/q1/zooLogic.ts:62 — 検査コストと予算は定義されるが、選択履歴や予算を検証する状態遷移関数がない。",
+      "factory/harness/gameplay-qa-zoo.mjs:76 — 予算強制のQAは3+1+1>4という算術確認だけで、超過操作の拒否を検査していない。",
+      "src/q1/zooLogic.ts:76 — 所見取得関数は任意の検査を無制限に呼べる。",
+      "src/q1/zooLogic.ts:130 — feed生成の可変要素はshortVegとミルクS/Mだけで、設計記載の広いランダム化がない。",
+      "src/q1/zooLogic.ts:156 — feedValidateは日量表との一致・在庫・代替・母優先を照合するが、禁忌判定やプレイヤーによる栄養評価はない。",
+      "src/q1/zooLogic.ts:171 — 在庫が十分なら代替不可、不足なら母優先という規則により正解配分が一意に決まる。",
+      "src/q1/zooLogic.ts:245 — debutStepはopen状態なら条件なしでstopを受理する。",
+      "src/q1/zooLogic.ts:248 — 即時stopが無条件にdone_earlyを生成する。",
+      "src/q1/zooLogic.ts:269 — done_earlyかつsigns<=1をperfectとするため、開始直後stopが最高評価になる。",
+      "factory/harness/gameplay-qa-zoo.mjs:146 — QAのstop戦略はサイン発生後だけで、即時stop exploitを検査していない。",
+      "src/q1/zooLogic.ts:254 — shrinkは具体的なプラン変更ではなくstress loadの一律3減算。",
+      "factory/projects/zoo/research.result.json:49 — safety_sensitivitiesは死亡罰、ペット化、接触報酬、体重単独判断を明示的に禁止する。",
+      "factory/projects/zoo/research.result.json:79 — 飼育員Dは成長曲線・授乳・便・活動性を合わせたトリアージを要求し、baby_careの中心規則は概ね一致する。",
+      "factory/projects/zoo/research.result.json:120 — 獣医師Dは非接触評価と低負担検査、方針を変える情報の選択を要求し、checkupの証拠設計は概ね一致する。",
+      "factory/projects/zoo/research.result.json:155 — 栄養担当Cは重量、調理・解凍、代替品まで含む飼料日量表を示すが、実装は食材とS/Mに縮退している。",
+      "factory/projects/zoo/research.result.json:206 — 展示Dは隠れる選択の優先を要求し、停止を肯定する方向性自体は一致する。",
+      "factory/projects/zoo/design.md:73 — feedの要求量・在庫数・禁忌対象が毎回変わるとの設計主張はコードと不一致。",
+      "factory/rules/game-critic-v2.md:47 — Cを読んだ後に判断等が残らない場合はBLOCKERとする拘束規定。",
+      "factory/rules/game-critic-v2.md:20 — 操作から結果への因果はコード実装が必須。"
+    ],
+    "recommended_actions": [
+      "debutStepで、少なくとも観測済みサインまたは明示された福祉上の根拠がなければstopをperfectにしない。即時stop、常時stop、常時shrinkをQAへ追加する。",
+      "checkupに選択済み検査・累積負担・残予算・診断済み状態を持つ遷移APIを追加し、予算超過、同一検査連打、全検査選択、複数診断を機械的に拒否する。",
+      "baby_careとfeed_prepにもミス／差し戻し回数と終了状態をsource-of-truth側で管理する遷移規則を追加する。",
+      "feed_prepは日量表を単純転記するだけでなく、複数の合法候補から個体データ・衛生・在庫を比較する判断を残す。要求量・在庫・禁忌の実ランダム化も設計記述どおり実装する。",
+      "debutのshrinkを時間短縮・距離拡大・人数制限の具体的選択に分け、イベントと観測サインに応じて効果を変える。",
+      "全有限行動列またはproperty-based testで、即時終了、連打、全選択、予算回避、固定暗記を探索する。",
+      "waste worldと既存39ゲームのmechanic一覧を対象資料に加え、primary loop・情報構造・制約・状態遷移単位で非重複を再審査する。"
+    ]
+  },
+  "elapsed_sec": 108.452
+}
