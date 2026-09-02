@@ -153,7 +153,7 @@ export function zooCheck(s: ZooState, check: ZooCheck, rand: () => number = Math
   if (check === "blood" && s.checked.length < 2) {
     // Research ladder: 追跡・保定・麻酔は最後の手段。 A capture is only
     // justifiable after low-burden observation has been tried first.
-    return { state: s, result: { refused: "保定して採血は最後の手段。まず負担の小さい調べ方を2つはためそう。" } };
+    return { state: s, result: { refused: "いきなり保定はできない——動物への負担が大きすぎる。" } };
   }
   if (check === "blood" && rand() < BLOOD_ABORT_P) {
     // The restraint itself is a real risk (research: 追跡・保定・麻酔の危険と比較).
@@ -171,7 +171,7 @@ export function zooCheck(s: ZooState, check: ZooCheck, rand: () => number = Math
 export function zooDecide(s: ZooState, p: ZooPlan): ZooState {
   if (s.outcome !== "open") return s;
   if (s.checked.length === 0) {
-    return { ...s, refusal: "所見がひとつもない。まず何かで調べてから方針を決めよう（勘では方針にできない）。" };
+    return { ...s, refusal: "所見がひとつもないまま、方針は出せない。" };
   }
   const st = { ...s, outcome: zooPlanCorrect(s.c, p) ? ("solved" as const) : ("misdiagnosed" as const) };
   delete st.refusal;
@@ -408,12 +408,12 @@ export function debutStep(s: DebutState, action: DebutAction, rand: () => number
     if (st.signs === 1) {
       // Research: one behavior alone must not decide a cancellation. The
       // proportionate response to a single sign is to SHRINK, not stop.
-      return { ...s, refusal: "サイン1つでは中止と説明できない。まずは縮小して、続くかどうかを見よう。" };
+      return { ...s, refusal: "サイン1つでは、まだお客さんに説明がつかない。" };
     }
     if (st.shrinks.length === 0) {
       // Research: 縮小→それでも続けば中止. Stopping without ever trying a
       // mitigation is skipping the professional ladder.
-      return { ...s, refusal: "中止の前に、縮小を試すのが順番（観覧を減らす・距離を広げる・時間を切り上げる）。" };
+      return { ...s, refusal: "何も手を打たないままの中止は、園として説明がつかない。" };
     }
     // pattern (>=2 signs) + mitigation attempted: stopping is professional.
     st.outcome = st.slot >= 2 ? "done_early" : "postponed";

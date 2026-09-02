@@ -41,6 +41,10 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
   const [failText, setFailText] = useState("");
   const [note, setNote] = useState<string | null>(null);
   const [attempts, setAttempts] = useState(1);
+  // the WORLD shows each judgment's consequence: every judged bag lands in the
+  // truck bed / stays at the curb with a sticker / waits for the hazard team —
+  // a wrong call is marked on the bag itself, not explained in prose.
+  const [judged, setJudged] = useState<{ icon: string; dest: "truck" | "left" | "call"; wrong: boolean }[]>([]);
 
   const restart = () => {
     const d = pickDayType();
@@ -49,9 +53,32 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
     setIdx(0);
     setMistakes(0);
     setNote(null);
+    setJudged([]);
     setStep("work");
     setAttempts((a) => a + 1);
   };
+
+  const streetStrip = (
+    <div style={{ display: "flex", gap: 6, margin: "6px 14px", fontSize: 12 }}>
+      {([
+        { dest: "truck", label: "🚛 荷台", bg: "#e8efdd" },
+        { dest: "left", label: "🏷 残置", bg: "#f4ead8" },
+        { dest: "call", label: "📞 連絡待ち", bg: "#f5dfda" },
+      ] as const).map((zone) => (
+        <div key={zone.dest} style={{ flex: 1, background: zone.bg, borderRadius: 10, padding: "4px 6px", minHeight: 44 }}>
+          <div style={{ fontSize: 10, color: "#6d6350" }}>{zone.label}</div>
+          <div style={{ fontSize: 16, letterSpacing: 2 }}>
+            {judged.filter((j) => j.dest === zone.dest).map((j, i) => (
+              <span key={i} style={{ position: "relative" }}>
+                {j.icon}
+                {j.wrong && <span style={{ position: "absolute", top: -6, right: -4, fontSize: 10 }}>❗</span>}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   if (step === "failed") {
     return (
@@ -59,6 +86,7 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
         <div className="result-card">
           <span className="result-title">今日は、ここまで</span>
         </div>
+        {streetStrip}
         <p className="game-line center-line">{failText}</p>
         <p className="game-line soft center-line">
           だいじょうぶ、先輩と一緒にもう一度。（集積所の袋は、毎回ちがう）
@@ -100,6 +128,8 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
         <span className="task-now">この袋、積んでいい？（{idx + 1}/{bags.length}）</span>
         <span className="task-sub">まちがえられるのは あと{CURB_MISTAKE_LIMIT - mistakes - 1}回</span>
       </div>
+
+      {streetStrip}
 
       <div className="body-stage" style={{ padding: "14px 0" }}>
         <div
@@ -156,11 +186,15 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
             className="choice-card"
             onClick={() => {
               const r = judgeBag(bag, a.id);
+              const icon = bag.look.items[0] || "🛍";
+              const dest = a.id === "load" ? "truck" : a.id === "reject_hazard" ? "call" : "left";
               if (r === "fire") {
-                setFailText("危険物を積んでしまった…収集車の荷台から煙が出て、今日の収集は中止になった。スプレー缶や電池は、積まずに連絡が正解。");
+                setJudged((h) => [...h, { icon: "🔥", dest: "truck", wrong: true }]);
+                setFailText("荷台から煙が上がった——危険物を積んでしまった。今日の収集は中止。");
                 setStep("failed");
                 return;
               }
+              setJudged((h) => [...h, { icon, dest, wrong: r === "mistake" }]);
               if (r === "mistake") {
                 const m = mistakes + 1;
                 setMistakes(m);
@@ -173,21 +207,11 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
                   setStep("failed");
                   return;
                 }
-                setNote(
-                  bag.truth === "ok"
-                    ? "…これは回収できる袋だった。残された住民は困ってしまう。"
-                    : bag.truth === "hazard"
-                      ? "…この袋、よく見るとあぶないものが入っていた。対応がちがう。"
-                      : "…理由がちがった。袋と中身をもう一度よく見よう。",
-                );
+                // staged: the world reacts, the reason is NOT spoken — the
+                // senior re-opens the bag; the ❗ mark lands on the street strip
+                setNote("…先輩がその袋をもう一度ひらいて、だまってこちらを見た。（何かを見落としたらしい）");
               } else {
-                setNote(
-                  a.id === "load"
-                    ? "よし、荷台へ。"
-                    : a.id === "reject_hazard"
-                      ? "はなれて営業所へ連絡した。専門の手順で回収してもらう。"
-                      : "シールを貼って残した。理由が伝われば、次はちゃんと出してもらえる。",
-                );
+                setNote(null);
               }
               if (idx + 1 >= bags.length) setStep("done");
               else setIdx(idx + 1);

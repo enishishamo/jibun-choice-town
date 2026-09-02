@@ -23,6 +23,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("work");
   const [note, setNote] = useState<string | null>(null);
   const [nudge, setNudge] = useState(false); // mentor points back at the data
+  const [calls, setCalls] = useState<BabyCall[]>([]); // the week's decisions, etched on the chart
   const [attempts, setAttempts] = useState(1);
   const days = bs.days;
   const idx = Math.min(bs.idx, BABY_DAYS - 1);
@@ -32,6 +33,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
     setBs(newBabyState());
     setNote(null);
     setNudge(false);
+    setCalls([]);
     setStep("work");
     setAttempts((a) => a + 1);
   };
@@ -43,10 +45,37 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
     weights.push(w);
   }
 
+  // the growth chart is the world: it stays visible on terminal screens, and
+  // every call the player made is etched under its day
+  const CALL_ICON: Record<BabyCall, string> = { ok: "🙂", adjust: "🍼", consult: "🩺" };
+  const pts = weights.map((wt, i) => `${20 + i * 60},${120 - (wt - BASE_WEIGHT) * 1.6}`).join(" ");
+  const curveSvg = (
+    <div className="body-stage" style={{ padding: "10px 0" }}>
+      <svg viewBox="0 0 320 152" style={{ width: "92%", maxWidth: 360, background: "#fffdf5", borderRadius: 12, border: nudge ? "2px solid #d9744a" : "1px solid #e5ddc8", boxShadow: nudge ? "0 0 10px rgba(217,116,74,0.55)" : "none", transition: "box-shadow 0.4s" }}>
+        <text x="8" y="14" fontSize="10" fill="#999">たいじゅう(g) — 成長曲線</text>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <line key={i} x1={20 + i * 60} y1={20} x2={20 + i * 60} y2={125} stroke="#eee" />
+        ))}
+        <polyline points={pts} fill="none" stroke="#d98f4a" strokeWidth="3" strokeLinecap="round" />
+        {weights.map((wt, i) => (
+          <circle key={i} cx={20 + i * 60} cy={120 - (wt - BASE_WEIGHT) * 1.6} r="5" fill={i === idx && step === "work" ? "#c0392b" : "#d98f4a"} />
+        ))}
+        {weights.map((_, i) => (
+          <text key={i} x={20 + i * 60} y={135} fontSize="9" textAnchor="middle" fill="#888">{i + 1}日</text>
+        ))}
+        {calls.map((cl, i) => (
+          <text key={i} x={20 + i * 60} y={149} fontSize="11" textAnchor="middle">{CALL_ICON[cl]}</text>
+        ))}
+      </svg>
+      <span className="body-cap">🔴 今朝の点。きみの見立てが日付の下に残る</span>
+    </div>
+  );
+
   if (step === "failed") {
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">今週は、先輩と一緒に</span></div>
+        {curveSvg}
         <p className="game-line center-line">
           見立てがちがう日が続いたので、先輩飼育員が交代して見立てのコツを教えてくれた。
           赤ちゃんはチームがしっかりケアしているよ。
@@ -62,6 +91,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
     return (
       <div className="game board-game">
         <div className="result-card good"><span className="result-title">今週の見立て、おつかれさま！</span></div>
+        {curveSvg}
         <p className="game-line soft center-line">
           {perfect
             ? "5日間ぜんぶ正しい見立て。単発の数字にまどわされず、傾向とサインで判断できた。"
@@ -77,8 +107,6 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
   }
 
   const d = days[idx];
-  // simple SVG growth curve
-  const pts = weights.map((wt, i) => `${20 + i * 60},${120 - (wt - BASE_WEIGHT) * 1.6}`).join(" ");
 
   return (
     <div className="game board-game">
@@ -87,22 +115,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
         <span className="task-sub">見立てをまちがえられるのは あと{BABY_MISTAKE_LIMIT - mistakes - 1}回</span>
       </div>
 
-      <div className="body-stage" style={{ padding: "10px 0" }}>
-        <svg viewBox="0 0 320 140" style={{ width: "92%", maxWidth: 360, background: "#fffdf5", borderRadius: 12, border: nudge ? "2px solid #d9744a" : "1px solid #e5ddc8", boxShadow: nudge ? "0 0 10px rgba(217,116,74,0.55)" : "none", transition: "box-shadow 0.4s" }}>
-          <text x="8" y="14" fontSize="10" fill="#999">たいじゅう(g) — 成長曲線</text>
-          {[0, 1, 2, 3, 4].map((i) => (
-            <line key={i} x1={20 + i * 60} y1={20} x2={20 + i * 60} y2={125} stroke="#eee" />
-          ))}
-          <polyline points={pts} fill="none" stroke="#d98f4a" strokeWidth="3" strokeLinecap="round" />
-          {weights.map((wt, i) => (
-            <circle key={i} cx={20 + i * 60} cy={120 - (wt - BASE_WEIGHT) * 1.6} r="5" fill={i === idx ? "#c0392b" : "#d98f4a"} />
-          ))}
-          {weights.map((_, i) => (
-            <text key={i} x={20 + i * 60} y={135} fontSize="9" textAnchor="middle" fill="#888">{i + 1}日</text>
-          ))}
-        </svg>
-        <span className="body-cap">🔴 今朝の点。単発の数字より「形」を見よう</span>
-      </div>
+      {curveSvg}
 
       <p className="game-note" style={{ margin: "4px 14px", border: nudge ? "2px solid #d9744a" : undefined, borderRadius: nudge ? 8 : undefined, boxShadow: nudge ? "0 0 10px rgba(217,116,74,0.55)" : undefined, transition: "box-shadow 0.4s" }}>
         📔 今朝の日誌：ミルクの飲み残し{d.milkLeftover ? "あり" : "なし"} ・ うんち{d.badStool ? "がゆるい" : "ふつう"} ・ 動き{d.lowActivity ? "が少ない" : "ふつう"}
@@ -132,6 +145,7 @@ export default function BabyCareGame({ onComplete }: Q1GameProps) {
             onClick={() => {
               const { state, correct } = babyMakeCall(bs, c.id);
               setBs(state);
+              setCalls((h) => [...h, c.id]);
               if (c.id === correct) {
                 setNote(
                   correct === "ok" ? "うん、この形なら大丈夫。" :

@@ -1,0 +1,133 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "experience-gate-review-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "games": {
+      "curb_check": {
+        "WORLD_FEEDBACK_QUALITY": 74,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 76,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — rotating-rule inspection, hidden violations, four-way sorting, and mistake mastery survive reskinning."
+      },
+      "pit_crane": {
+        "WORLD_FEEDBACK_QUALITY": 68,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 73,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — spatial mixing and temperature balancing provide transferable planning and mastery."
+      },
+      "gas_watch": {
+        "WORLD_FEEDBACK_QUALITY": 52,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 60,
+        "TEXT_ONLY_CONSEQUENCE": true,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — constrained evidence elimination and a one-shot commitment remain a deduction game."
+      },
+      "landfill_ops": {
+        "WORLD_FEEDBACK_QUALITY": 78,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 80,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — spatial packing, scarce covering resources, forecasts, and compounding meters form a management puzzle."
+      },
+      "baby_care": {
+        "WORLD_FEEDBACK_QUALITY": 58,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 64,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "NO — without the care context it is chiefly an explicit conditional-rule worksheet with three answer buttons."
+      },
+      "zoo_checkup": {
+        "WORLD_FEEDBACK_QUALITY": 54,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 61,
+        "TEXT_ONLY_CONSEQUENCE": true,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — cost-weighted probes, hypothesis elimination, and one-shot diagnosis retain deductive mastery."
+      },
+      "feed_prep": {
+        "WORLD_FEEDBACK_QUALITY": 72,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 78,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — constrained tray assembly, shared inventory, decoys, and first-serve optimization remain puzzle-like."
+      },
+      "debut_plan": {
+        "WORLD_FEEDBACK_QUALITY": 84,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 86,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": true,
+        "reference_valid": true,
+        "game_likeness": "YES — planning under uncertainty, event-responsive mitigation, and justified withdrawal retain strategic mastery."
+      }
+    },
+    "blockers": [
+      "pit_crane WORLD_FEEDBACK_QUALITY is below 70 because terminal temperature failures replace the grid and temperature gauge with a prose-only retry screen.",
+      "gas_watch misses both visual axes and has a text-only terminal consequence for the decisive request.",
+      "baby_care misses both visual axes and fails game-likeness once its professional content is removed.",
+      "zoo_checkup misses both visual axes and resolves wrong plans or restraint failure through prose-only retry screens.",
+      "debut_plan leaks the specific practice-record source immediately after a rejected plan."
+    ],
+    "high": [
+      "gas_watch: wrong final requests produce an explanatory failure card without showing the dispatched team, stack progression, or alert-meter consequence.",
+      "zoo_checkup: the decisive wrong-plan and restraint-abort consequences are narrated after the diagnostic board disappears.",
+      "baby_care: correctness is expressed mainly through notes and mentor takeover; the animal/care state does not visibly react to calls."
+    ],
+    "medium": [
+      "pit_crane preserves excellent live balancing feedback but removes that world state exactly when failure needs to be legible.",
+      "curb_check keeps calls visible in destination zones, though ordinary wrong calls use a generic exclamation rather than a distinct physical consequence.",
+      "feed_prep visually identifies the rejected tray but does not show downstream feeding or inventory consequences.",
+      "landfill_ops relies partly on overnight prose to explain why tank or complaint meters changed."
+    ],
+    "low": [
+      "All eight gameplay-reference entries are non-empty, principle-level, and materially traceable to implemented mechanics rather than visual skin copying."
+    ],
+    "evidence": [
+      "src/q1/CurbCheckGame.tsx:61 — persistent truck, curb, and hazard zones display every judged bag.",
+      "src/q1/CurbCheckGame.tsx:191 — hazardous loading visibly places fire in the truck; ordinary mistakes receive an on-object exclamation.",
+      "src/q1/PitCraneGame.tsx:103 — temperature gauge visibly moves and changes warning color.",
+      "src/q1/PitCraneGame.tsx:58 — failure rendering omits the temperature gauge and pit grid, leaving failText plus retry.",
+      "src/q1/GasWatchGame.tsx:87 — time pips and struck-through cause chips provide limited visual deduction state.",
+      "src/q1/GasWatchGame.tsx:149 — a wrong request becomes explanatory failText, including the true cause, before the board is replaced.",
+      "src/q1/LandfillOpsGame.tsx:75 — soil, tank, complaints, and weather remain visible during play.",
+      "src/q1/LandfillOpsGame.tsx:84 — fill heights and cover overlays visibly encode persistent cell state.",
+      "src/q1/LandfillOpsGame.tsx:194 — overnight causal results are chiefly explained by a textual note alongside meter changes.",
+      "src/q1/BabyCareGame.tsx:90 — the growth curve expands across days and a miss highlights the curve and diary.",
+      "src/q1/BabyCareGame.tsx:135 — calls primarily produce explanatory notes; wrong calls advance state without a visible care-world consequence.",
+      "src/q1/BabyCareGame.tsx:46 — mentor takeover replaces the curve and diary with a teaching-and-retry card.",
+      "src/q1/ZooCheckupGame.tsx:98 — burden pips and eliminated-cause styling expose resource and hypothesis changes.",
+      "src/q1/ZooCheckupGame.tsx:125 — actual evidence remains paragraph text rather than observable animal or instrument state.",
+      "src/q1/ZooCheckupGame.tsx:56 — failed plans and restraint aborts replace the diagnostic board with prose and retry.",
+      "src/q1/FeedPrepGame.tsx:100 — trays visibly fill with selected ingredients and sizes.",
+      "src/q1/FeedPrepGame.tsx:178 — first rejection silently points to and highlights one faulty tray without revealing why.",
+      "src/q1/DebutPlanGame.tsx:164 — cub position, hide box, crowd icons, and sign lamps visibly communicate pressure and deterioration.",
+      "src/q1/DebutPlanGame.tsx:145 — a rejected plan immediately directs the player to the practice record, leaking which information source to consult.",
+      "factory/taxonomy/gameplay-references.json:5 — curb_check records inspection-queue principles and traces them to destination-strip feedback.",
+      "factory/taxonomy/gameplay-references.json:23 — pit_crane traces system balancing to grid mixing and temperature movement.",
+      "factory/taxonomy/gameplay-references.json:41 — gas_watch traces time-budgeted elimination to checks, time pips, and cause chips.",
+      "factory/taxonomy/gameplay-references.json:59 — landfill_ops traces compounding management to cells, tank, and complaint meters.",
+      "factory/taxonomy/gameplay-references.json:77 — baby_care traces trend judgment to a growing curve and mentor nudge.",
+      "factory/taxonomy/gameplay-references.json:95 — zoo_checkup traces cost-weighted elimination to burden and cause-state feedback.",
+      "factory/taxonomy/gameplay-references.json:113 — feed_prep traces specification assembly to filled trays and silent rejection.",
+      "factory/taxonomy/gameplay-references.json:131 — debut_plan traces adaptive planning to cub movement, sign lamps, and crowd pressure."
+    ],
+    "recommended_actions": [
+      "Keep the live pit grid and temperature gauge visible on failure, freezing and emphasizing the causal cell and out-of-band meter position.",
+      "For gas_watch, animate the chosen dispatch, unresolved fault propagation, and stack/alert meter crossing its limit before offering retry.",
+      "Give baby_care calls persistent visible effects on the animal or care plan, and replace answer-button rule recall with a more manipulable trend-management loop.",
+      "For zoo_checkup, show the animal, selected intervention, burden reaction, and treatment mismatch in-world while retaining the evidence board.",
+      "Remove debut_plan's immediate verbal direction to the practice record; use an unstaged refusal or generic/visual nudge first."
+    ]
+  },
+  "elapsed_sec": 119.72
+}

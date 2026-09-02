@@ -53,10 +53,42 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
     return true;
   };
 
+  // the diagnostic board (burden bar + suspect chips + findings) IS the world:
+  // it stays visible on the terminal screens too
+  const board = (
+    <>
+      <div style={{ display: "flex", alignItems: "center", gap: 4, margin: "6px 14px" }}>
+        <span style={{ fontSize: 12 }}>🦝 負担</span>
+        {Array.from({ length: BURDEN_BUDGET }).map((_, i) => (
+          <span key={i} style={{ width: 26, height: 10, borderRadius: 5, background: i < burden ? "#d9744a" : "#e9e2cf", transition: "background 0.4s" }} />
+        ))}
+        <span style={{ fontSize: 11, color: "#8a7f6a" }}>{burden}/{BURDEN_BUDGET}</span>
+      </div>
+      <div style={{ display: "flex", gap: 6, margin: "2px 14px", flexWrap: "wrap" }}>
+        {(Object.keys(CAUSE_LABEL) as ZooCause[]).map((cause) => (
+          <span key={cause} style={{
+            fontSize: 12, padding: "4px 10px", borderRadius: 12,
+            background: alive(cause) ? "#fdf3d8" : "#e8e8e8",
+            textDecoration: alive(cause) ? "none" : "line-through",
+            opacity: alive(cause) ? 1 : 0.5,
+          }}>
+            {CAUSE_LABEL[cause]}
+          </span>
+        ))}
+      </div>
+      {evidence.map((e, i) => (
+        <p key={i} className="game-note" style={{ margin: "4px 14px" }}>
+          🔎 {CHECKS.find((k) => k.id === e.check)?.label.split("（")[0]}：{e.text}
+        </p>
+      ))}
+    </>
+  );
+
   if (step === "failed") {
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">チーム会議で、見立て直し</span></div>
+        {board}
         <p className="game-line center-line">
           {failText ??
             "方針が合わず、効果が出なかった。獣医チームで所見を見直して、正しいケアに切りかえたよ。赤ちゃんはだいじょうぶ。"}
@@ -72,6 +104,7 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
     return (
       <div className="game board-game">
         <div className="result-card good"><span className="result-title">負担をおさえて、原因にたどりついた！</span></div>
+        {board}
         <p className="game-line soft center-line">
           原因は「{CAUSE_LABEL[c.cause]}」。つかった負担は {burden}。
           {grade === "perfect"
@@ -95,26 +128,7 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
         <span className="task-sub">動物への負担（こえる検査は選べない）</span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 4, margin: "6px 14px" }}>
-        <span style={{ fontSize: 12 }}>🦝 負担</span>
-        {Array.from({ length: BURDEN_BUDGET }).map((_, i) => (
-          <span key={i} style={{ width: 26, height: 10, borderRadius: 5, background: i < burden ? "#d9744a" : "#e9e2cf", transition: "background 0.4s" }} />
-        ))}
-        <span style={{ fontSize: 11, color: "#8a7f6a" }}>{burden}/{BURDEN_BUDGET}</span>
-      </div>
-
-      <div style={{ display: "flex", gap: 6, margin: "6px 14px", flexWrap: "wrap" }}>
-        {(Object.keys(CAUSE_LABEL) as ZooCause[]).map((cause) => (
-          <span key={cause} style={{
-            fontSize: 12, padding: "4px 10px", borderRadius: 12,
-            background: alive(cause) ? "#fdf3d8" : "#e8e8e8",
-            textDecoration: alive(cause) ? "none" : "line-through",
-            opacity: alive(cause) ? 1 : 0.5,
-          }}>
-            {CAUSE_LABEL[cause]}
-          </span>
-        ))}
-      </div>
+      {board}
 
       {evidence.length === 0 && (
         <p className="game-line soft center-line">
@@ -122,11 +136,6 @@ export default function ZooCheckupGame({ onComplete }: Q1GameProps) {
           「その検査で方針が変わるか」も考えて選ぼう。
         </p>
       )}
-      {evidence.map((e, i) => (
-        <p key={i} className="game-note" style={{ margin: "4px 14px" }}>
-          🔎 {CHECKS.find((k) => k.id === e.check)?.label.split("（")[0]}：{e.text}
-        </p>
-      ))}
       {note && <p className="game-note">{note}</p>}
 
       <p className="pick-title">調べる</p>

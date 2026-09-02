@@ -53,10 +53,37 @@ export default function GasWatchGame({ onComplete }: Q1GameProps) {
     return true;
   };
 
+  // The control panel IS the world: the alert value climbs toward the stack
+  // limit as time slots burn; it stays on screen even on the terminal screens.
+  const panel = (finalNote: string | null) => {
+    const used = GAS_TIME - time;
+    const meterPct = Math.min(100, 30 + used * 22 + (step === "failed" ? 20 : step === "done" ? -25 : 0));
+    return (
+      <div style={{ margin: "6px 14px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "#6d6350" }}>
+          <span>🏭 {c.alertMeter}</span>
+          <div style={{ flex: 1, position: "relative", height: 14, borderRadius: 7, background: "linear-gradient(90deg,#8fce8f 0%,#8fce8f 55%,#e5c77f 55%,#e5c77f 80%,#e57f7f 80%)" }}>
+            <div style={{ position: "absolute", left: `${meterPct}%`, top: -3, width: 4, height: 20, background: meterPct > 80 ? "#c0392b" : "#2c5c8a", borderRadius: 2, transition: "left 0.6s" }} />
+          </div>
+          <span>管理値</span>
+        </div>
+        <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap" }}>
+          {(Object.keys(CAUSE_LABEL) as GasCause[]).map((cause) => (
+            <span key={cause} style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: alive(cause) ? "#fdf3d8" : "#e8e8e8", textDecoration: alive(cause) ? "none" : "line-through", opacity: alive(cause) ? 1 : 0.5 }}>
+              {CAUSE_LABEL[cause]}
+            </span>
+          ))}
+        </div>
+        {finalNote && <div style={{ fontSize: 10, color: "#8a7f6a", marginTop: 2 }}>{finalNote}</div>}
+      </div>
+    );
+  };
+
   if (step === "failed") {
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">基準超過の一歩手前だった</span></div>
+        {panel("値が管理値の目前まで来ていた——まちがった依頼のあいだも、原因は動き続けた")}
         <p className="game-line center-line">{failText}</p>
         <p className="game-line soft center-line">アラートの原因は毎回ちがう。切り分けてから動こう。</p>
         <button className="btn primary big" onClick={restart}>🔁 次のアラートに備える</button>
@@ -69,6 +96,7 @@ export default function GasWatchGame({ onComplete }: Q1GameProps) {
     return (
       <div className="game board-game">
         <div className="result-card good"><span className="result-title">原因を突き止めて、正しく依頼できた！</span></div>
+        {panel("正しい依頼で、値はゆっくり下がりはじめた")}
         <p className="game-line soft center-line">
           原因は「{CAUSE_LABEL[c.cause]}」だった。
           {quick ? "少ない点検で確定させた、みごとな切り分け。" : "確定はできた。点検の順番を工夫すると、もっと早く絞れる。"}
@@ -89,22 +117,7 @@ export default function GasWatchGame({ onComplete }: Q1GameProps) {
         <span className="task-sub">のこり時間 {"⏱".repeat(time)}{"・".repeat(GAS_TIME - time)}（点検1回=1コマ）</span>
       </div>
 
-      {/* 容疑リスト（消し込み） */}
-      <div style={{ display: "flex", gap: 6, margin: "6px 14px", flexWrap: "wrap" }}>
-        {(Object.keys(CAUSE_LABEL) as GasCause[]).map((cause) => (
-          <span
-            key={cause}
-            style={{
-              fontSize: 12, padding: "4px 10px", borderRadius: 12,
-              background: alive(cause) ? "#fdf3d8" : "#e8e8e8",
-              textDecoration: alive(cause) ? "none" : "line-through",
-              opacity: alive(cause) ? 1 : 0.5,
-            }}
-          >
-            {CAUSE_LABEL[cause]}
-          </span>
-        ))}
-      </div>
+      {panel(null)}
 
       {evidence.length === 0 && (
         <p className="game-line soft center-line">

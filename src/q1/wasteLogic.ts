@@ -167,7 +167,7 @@ export function pitStep(s: PitState, action: PitAction, rand: () => number = Mat
     const ta = st.grid[action.a], tb = st.grid[action.b];
     const pair = [ta, tb].sort().join("+");
     if (!adjacent(action.a, action.b) || pair !== "dry+wet") {
-      return { state: s, event: "invalid", note: "まぜられるのは、となり合った「かわき」と「しめり」。" };
+      return { state: s, event: "invalid", note: "クレーンは動かなかった。（そこは、まぜられない）" };
     }
     st.grid[action.a] = "mixed";
     st.grid[action.b] = "mixed";

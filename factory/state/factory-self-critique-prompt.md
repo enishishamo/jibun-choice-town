@@ -71,3 +71,20 @@ architecture with rationale):
   than blockers IF they are properly recorded: legacy-UI presentation backlog
   (factory/state/presentation-backlog.json), existing-39 experience backlog
   (factory/state/experience-backlog.json), per-world QA scripts by design.
+
+--- ITERATION 3 CONTEXT (repairs since iteration 2) ---
+Additionally repaired; verify and judge the remainder:
+- All codex transports (codex-review, codex-task, art-qa, art-provider) now REJECT
+  a Codex session whose `codex login status` is not ChatGPT OAuth (API-key
+  sessions refused mechanically).
+- codex-review.mjs prepends an immutable INDEPENDENCE_PREAMBLE that overrides any
+  producer-supplied softening, and appends every invocation to routing-log.jsonl.
+- factory/scripts/validate-pipeline.mjs is a machine completion check: it re-reads
+  the actual binding review JSON (PASS + blockers/high=0 + both axes >= 60),
+  requires design/research/gameplay-QA artifacts, verifies presentation-audit
+  PASS files, and fails on self-attestation. Both worlds pass it.
+- waste pipeline.json now records the retrofitted presentation_qa phase.
+- present-shots.mjs: JC_CHROME env override; generation reference subset now
+  fails closed in art-loop as well.
+Remaining accepted-and-documented architecture (not new findings): Claude-session
+orchestration with machine gates; per-world deep QA bots; legacy backlogs.

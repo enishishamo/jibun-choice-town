@@ -16,7 +16,7 @@ mkdirSync(OUT, { recursive: true });
 const BASE = process.argv.includes("--base")
   ? process.argv[process.argv.indexOf("--base") + 1]
   : "http://localhost:5177/jibun-choice-town/";
-const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const CHROME = process.env.JC_CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

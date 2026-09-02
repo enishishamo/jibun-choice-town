@@ -144,7 +144,7 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
           onClick={() => {
             const s = startDebut(c, plan);
             if (s.outcome === "expect_fail") {
-              setNote("園長「それでは楽しみにしてきたお客さんに応えられないよ。記録を見て、出せるところは出そう」");
+              setNote("園長「それでは、楽しみにしてきたお客さんに応えられないよ」");
               return;
             }
             setDs(s);

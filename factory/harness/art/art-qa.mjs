@@ -36,6 +36,15 @@ if (REF_FILES.length !== REFSET.references.length) {
 // Cost safety + observability: same mechanical boundary as every codex transport.
 const SAFE_ENV = { ...process.env };
 for (const k of Object.keys(SAFE_ENV)) if (/^(OPENAI|AZURE_OPENAI|ANTHROPIC)_/i.test(k)) delete SAFE_ENV[k];
+// preflight: refuse non-ChatGPT (API-key) codex sessions — pay-per-use is forbidden
+{
+  const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8", env: SAFE_ENV });
+  const t = `${auth.stdout || ""}${auth.stderr || ""}`;
+  if (auth.status !== 0 || /api\s*key/i.test(t) || !/ChatGPT/i.test(t)) {
+    console.log(JSON.stringify({ ok: false, error: `codex session is not ChatGPT OAuth (${t.trim().slice(0, 60)}) — refused` }));
+    process.exit(1);
+  }
+}
 function logRouting(entry) {
   try {
     appendFileSync(join(ROOT, "factory/state/routing-log.jsonl"), JSON.stringify({ ts: new Date().toISOString(), tool: "art-qa", ...entry }) + "\n");

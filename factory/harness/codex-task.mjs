@@ -64,6 +64,15 @@ for (const k of Object.keys(SAFE_ENV)) if (/^(OPENAI|AZURE_OPENAI|ANTHROPIC)_/i.
 const which = spawnSync("codex", ["--version"], { encoding: "utf8", env: SAFE_ENV });
 if (which.error || which.status !== 0) emit({ ok: false, status: "CODEX_UNAVAILABLE", error: "codex CLI not found", elapsed_sec: 0 });
 const auth = spawnSync("codex", ["login", "status"], { encoding: "utf8", env: SAFE_ENV });
+const authText = `${auth.stdout || ""}${auth.stderr || ""}`;
+if (/api\s*key/i.test(authText) || !/ChatGPT/i.test(authText)) {
+  emit({
+    ok: false,
+    status: "CODEX_UNAUTHENTICATED",
+    error: `codex login mode is not the ChatGPT subscription (got: ${authText.trim().slice(0, 80)}). API-key sessions are refused (pay-per-use).`,
+    elapsed_sec: 0,
+  });
+}
 if (auth.status !== 0) emit({ ok: false, status: "CODEX_UNAUTHENTICATED", error: "run `codex login` (ChatGPT OAuth)", elapsed_sec: 0 });
 
 const prompt = readFileSync(promptFile, "utf8");

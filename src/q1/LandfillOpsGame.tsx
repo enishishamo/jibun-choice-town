@@ -92,7 +92,7 @@ export default function LandfillOpsGame({ onComplete }: Q1GameProps) {
               const r = lfPlace(s, i);
               if (r.result === "no_space_fail") { setFailText("この種類を置ける区画がなくなり、搬入を断ることになってしまった。"); setStep("failed"); return; }
               if (r.result === "cell_full") { setNote("この区画はいっぱい。ほかへ。"); return; }
-              if (r.result === "type_mismatch") { setNote("この区画は別の種類のごみ用。灰と不燃はまぜられない。"); return; }
+              if (r.result === "type_mismatch") { setNote("係員が手で×をつくった——この区画には受け入れられない。"); return; }
               setS(r.state);
               setNote(null);
               if (r.state.placedToday >= today.length) {

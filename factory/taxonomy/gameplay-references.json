@@ -15,10 +15,10 @@
     "contraband -> hazardous items (spray cans/batteries) with a mechanical fire consequence",
     "stamp choices -> load / violation sticker / bag sticker / hazard call"
    ],
-   "why_it_is_fun": "each bag is a small whodunit against a rotating rulebook; the black-bag blur adds info pressure",
+   "why_it_is_fun": "each bag is a small whodunit against a rotating rulebook; the street strip fills up with your calls and mistakes stay visible",
    "what_requires_skill": "cross-referencing bag look with today's rules; knowing when NOT to load",
    "why_replay": "bags, day type and violations re-randomize; perfect run = zero mistakes",
-   "trace": "hazard/irreversibility -> inspection-queue principle -> measurement_inspection -> per-bag 4-way call -> bag loads/sticker appears/truck fire ends day -> fewer mistakes per street"
+   "trace": "hazard/irreversibility -> inspection-queue principle -> measurement_inspection -> per-bag 4-way call -> the street strip changes (bag lands in truck bed / stays stickered / waits for the hazard team; a wrong call gets a visible ❗ mark; loading a hazard puts 🔥 on the bed and ends the day) -> fewer mistakes per street"
   },
   "pit_crane": {
    "reference_games": [

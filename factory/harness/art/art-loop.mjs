@@ -138,6 +138,10 @@ function dims(p) {
 // attaches the fixed known-good reference images and must match THEM.
 const REFSET = JSON.parse(readFileSync(join(ART, "reference-set.json"), "utf8"));
 const SERIES_REFS = (REFSET.generation_refs || []).filter((p) => existsSync(resolve(ROOT, p)));
+if (SERIES_REFS.length !== (REFSET.generation_refs || []).length) {
+  console.error(`generation reference set incomplete: ${SERIES_REFS.length}/${(REFSET.generation_refs || []).length} — fix reference-set.json before generating.`);
+  process.exit(1);
+}
 
 const STYLE_BLOCK = `MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
 (JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character

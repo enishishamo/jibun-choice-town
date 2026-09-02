@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "factory-self-critique-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "blockers": [],
+    "high": [
+      "Cost boundary is incomplete: codex-review.mjs, codex-task.mjs, and art-qa.mjs strip API-key environment variables but do not reject a Codex CLI session already authenticated with a stored API key. Only art-provider.mjs verifies that login status explicitly says ChatGPT OAuth, so review/delegation/vision paths could still incur paid API usage.",
+      "Reviewer independence is only identity-level, not prompt-level. loop.mjs accepts an arbitrary producer-supplied prompt file and codex-review.mjs adds no immutable adversarial rubric or trusted scope boundary; the producer can frame, omit, or constrain what the reviewer examines.",
+      "The supposedly world-agnostic presentation runner remains dominated by a hard-coded zoo workflow. Its generic third-world walker covers only opening, area, Q1 intro, and initial game screen, and silently succeeds when the first Q1 or start button is absent. It therefore cannot substantiate the required failure→retry→success→JobReveal→wrapUp presentation flow for a third world.",
+      "Pipeline completion remains largely self-attested. Many phases are marked done without evidence pointers, aggregate metrics are manually produced by the orchestrating model, and no machine-enforced pipeline state machine verifies that every mandatory phase and binding artifact exists before commit/completion."
+    ],
+    "medium": [
+      "The global routing log is not a complete delegation/review ledger: codex-task and art-qa append there, while codex-review relies on per-run logs. Calls made directly through other Codex or browser paths can occur without a uniform trace, and art-qa deliberately suppresses routing-log write failures.",
+      "waste/pipeline.json has no presentation_qa phase although the current /new-world contract makes it mandatory. Treating this as legacy presentation debt is acceptable only if the omission is explicitly linked to the documented presentation backlog rather than presented as full current-pipeline compliance.",
+      "Failure handling is fail-closed inside individual adapters, but the prose orchestrator remains responsible for honoring returned failure statuses. There is no top-level executable controller preventing Claude from marking later phases done after generation_failed, qa_failed, HUMAN_REQUIRED, or missing evidence.",
+      "Reproducibility metrics are not independently reproducible from pipeline.json: counts are described as aggregated by Claude, evidence uses abbreviated run identifiers, and timestamps, model sampling, research results, image generation, and random gameplay variation are not captured as a replayable input/configuration manifest.",
+      "Threshold and completion policy remain distributed between game-critic-v2.md, codex-review.mjs, art-qa.mjs, style-contract.md, and prompts. The documented distinction between a 60 mechanical floor and 75 completion guidance is coherent, but drift remains likely because no shared policy module validates all gates."
+    ],
+    "low": [
+      "present-shots.mjs hard-codes a macOS Google Chrome executable and a localhost URL, limiting portability without command-line overrides for the browser path.",
+      "Reference-set completeness now fails closed for art QA, but art-loop.mjs independently filters missing generation references instead of rejecting an incomplete generation reference subset; QA mitigates this after generation but the generation-side claim is weaker than documented.",
+      "Per-world gameplay QA scripts are an explicitly documented architectural choice and are not themselves a blocker, but their creation and coverage still depend on Claude correctly translating each new world's rules."
+    ],
+    "evidence": [
+      "factory/harness/codex-review.mjs:53-55 — SAFE_ENV removes environment keys, but authentication preflight only checks exit status and does not reject stored API-key authentication.",
+      "factory/harness/codex-task.mjs:51-56 — delegation transport likewise accepts any successful `codex login status` without confirming ChatGPT OAuth.",
+      "factory/harness/art/art-qa.mjs:36-42 — vision QA strips environment keys but performs no authentication-mode verification; routing-log write failures are swallowed.",
+      "factory/harness/art/art-provider.mjs:88-100 — only the image provider explicitly requires `ChatGPT` in login status and rejects `API key`, demonstrating the missing enforcement in the other transports.",
+      "factory/harness/loop.mjs:113-122 — review receives a caller-selected `--prompt-file`; no canonical rubric or mandatory adversarial prompt is injected by the harness.",
+      "factory/harness/codex-review.mjs:137-148 — reviewer receives the prompt file contents essentially verbatim, with only malformed-output retry wording added.",
+      "factory/projects/zoo/design.md:157 — producer-authored design text asks reviewers to accept a disputed pattern by invoking user calibration and a previous world's PASS, creating anchoring pressure.",
+      "factory/harness/art/present-shots.mjs:37-142 — four correct-play bots and their constants are specifically coded around zoo rules and Japanese zoo UI text.",
+      "factory/harness/art/present-shots.mjs:176-226 — the mandatory deep presentation flow is explicitly hard-coded to zoo milestones and controls.",
+      "factory/harness/art/present-shots.mjs:228-263 — generic walker stops at the first game screen; absence of Q1 or the start button does not add a failure.",
+      "factory/harness/art/present-shots.mjs:279-285 — exit failure depends only on accumulated failures/errors, so the generic walker's unasserted missing milestones can silently pass.",
+      ".claude/commands/new-world.md:14-45 — the factory pipeline is a procedural instruction table driven by Claude, not an executable top-level workflow enforcing phase dependencies.",
+      "factory/rules/game-critic-v2.md:113-116 — documentation honestly declares Claude as workflow glue but requires evidence trails; it does not mechanically enforce them.",
+      "factory/projects/waste/pipeline.json:9-27 — multiple research/design phases are marked done without evidence fields.",
+      "factory/projects/waste/pipeline.json:35-59 — art, implementation, static QA, gameplay QA, browser QA, database, and commit are marked done with little or no artifact-level evidence.",
+      "factory/projects/waste/pipeline.json:62-74 — metrics are explicitly aggregated by the orchestrating Claude session rather than generated by a deterministic collector.",
+      "factory/projects/zoo/pipeline.json:74-86 — zoo metrics have the same manual aggregation caveat.",
+      "factory/projects/waste/pipeline.json:28-30 — timed-out design confirmation was bypassed in favor of the documented binding implementation review; this is disclosed and consistent with the revised architecture, not silently auto-passed.",
+      "factory/rules/game-critic-v2.md:104-124 — binding implementation gate, Claude-orchestrator architecture, human-intervention definition, and 60/75 threshold distinction are now documented coherently.",
+      "factory/harness/art/art-qa.mjs:139-157 — Series Style scores are mechanically validated and cannot be rescued by a high overall score.",
+      "factory/harness/art/art-qa.mjs:265-283 — presentation quality, category thresholds, critic FAIL, and badge collision are independently fail-closed.",
+      "factory/harness/art/art-qa.mjs:28-33 — incomplete reference sets now terminate QA fail-closed.",
+      "factory/harness/art/art-loop.mjs:136-140 — generation references are merely filtered to existing files, so incomplete generation references do not themselves stop generation.",
+      "factory/harness/art/art-loop.mjs:214-220 — reused assets are honestly recorded as `reused_existing`, not `qa_passed`.",
+      "factory/harness/art/art-loop.mjs:78-94 — provider evidence older than 14 days fails closed.",
+      "factory/harness/art/art-loop.mjs:175-185 — crashed or malformed QA is converted to an explicit FAIL result.",
+      "factory/harness/codex-review.mjs:189-225 — timeout and malformed JSON return structured failure; PASS with blockers/high or a sub-60 axis is mechanically downgraded.",
+      "factory/harness/loop.mjs:128-138 — reviewer adapter failure terminates the run as HUMAN_REQUIRED rather than PASS.",
+      "factory/state/routing-log.jsonl:1-21 — sampled records include delegated tasks and recent art-QA calls, but not a unified record of implementation reviews and browser operations.",
+      "factory/harness/art/present-shots.mjs:19 — Chrome executable is hard-coded to a macOS application path.",
+      "factory/projects/waste/pipeline.json:4-59 — unlike zoo, the recorded waste phase set contains no presentation_qa entry.",
+      "factory/projects/zoo/pipeline.json:68-70 — repaired zoo commit phase is now recorded as done with commit evidence.",
+      "factory/state/experience-backlog.json:1-394 — existing-game experience deficiencies are explicitly inventoried; this is a documented legacy limitation rather than evidence that new worlds may bypass the v3 gate."
+    ],
+    "recommended_actions": [
+      "Apply one shared `assertSubscriptionAuth()` implementation to every Codex transport, requiring positive ChatGPT-OAuth evidence and rejecting API-key or ambiguous authentication before spawning Codex.",
+      "Make codex-review.mjs construct the review prompt from an immutable factory-owned adversarial preamble and rubric, treating producer prompt content only as artifact/task context; log the final prompt hash and reviewed artifact hashes.",
+      "Replace the embedded zoo workflow in present-shots.mjs with a generic flow contract or registered per-world driver. Require and assert opening, area, every Q1, deliberate failure, retry, success, JobReveal, and wrapUp for the target world; missing selectors must fail.",
+      "Add an executable top-level pipeline controller that owns phase transitions and refuses completion unless all mandatory commands exited successfully and required evidence files, hashes, review verdicts, and presentation results exist.",
+      "Generate pipeline.json and metrics mechanically from run logs, routing records, manifests, QA outputs, and git metadata; store full run IDs, artifact hashes, model/configuration identifiers, seeds, timestamps, and explicit nondeterminism notes.",
+      "Unify routing into an append-only ledger covering task delegation, review, art QA, browser QA, implementation actions, failures, and retries; make inability to record a mandatory event fail the phase.",
+      "Centralize gate thresholds and mandatory phase definitions in a machine-readable policy file consumed by review, art QA, the orchestrator, and validation tooling.",
+      "Link waste's missing presentation phase to the accepted presentation backlog with an explicit status such as `legacy_pending`, rather than leaving the current mandatory phase absent."
+    ]
+  },
+  "elapsed_sec": 133.395
+}

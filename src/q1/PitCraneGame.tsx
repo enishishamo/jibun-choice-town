@@ -55,12 +55,28 @@ export default function PitCraneGame({ onComplete }: Q1GameProps) {
     setMixMode(false);
   };
 
+  // final world state stays visible on the terminal screens — the gauge and
+  // the pit ARE the explanation of what went wrong
+  const finalPct = Math.max(0, Math.min(100, ((s.temp - 750) / 350) * 100));
+  const finalBoard = (
+    <div style={{ margin: "6px 12px" }}>
+      <div style={{ position: "relative", height: 14, borderRadius: 7, background: "linear-gradient(90deg,#7fb2e5 0%,#7fb2e5 28%,#8fce8f 28%,#8fce8f 57%,#e5a97f 57%,#e5c77f 71%,#e57f7f 71%)" }}>
+        <div style={{ position: "absolute", left: `${finalPct}%`, top: -3, width: 4, height: 20, background: s.temp >= TEMP_MIN && s.temp < 1000 ? "#2c7a2c" : "#c0392b", borderRadius: 2 }} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 6, fontSize: 15 }}>
+        {s.grid.map((c, i) => (<span key={i} style={{ opacity: c === "empty" ? 0.3 : 1 }}>{CELL_STYLE[c].emoji}</span>))}
+      </div>
+      <div style={{ textAlign: "center", fontSize: 10, color: "#8a7f6a" }}>最終ターンの炉温 {s.temp}℃ とピットのようす</div>
+    </div>
+  );
+
   if (step === "failed") {
     return (
       <div className="game board-game">
         <div className="result-card">
           <span className="result-title">炉を止めて、点検へ</span>
         </div>
+        {finalBoard}
         <p className="game-line center-line">{failText}</p>
         <p className="game-line soft center-line">ピットのごみの置き方は毎回ちがう。もう一度、質を見て運転しよう。</p>
         <button className="btn primary big" onClick={restart}>🔁 もう一度運転する</button>

@@ -1,0 +1,135 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "experience-gate-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 30,
+    "games": {
+      "curb_check": {
+        "WORLD_FEEDBACK_QUALITY": 30,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 55,
+        "TEXT_ONLY_CONSEQUENCE": true,
+        "HINT_LEAKAGE": true,
+        "reference_valid": false,
+        "game_likeness": "YES — rotating-rule object inspection and a mistake budget retain deduction mastery without the waste theme."
+      },
+      "pit_crane": {
+        "WORLD_FEEDBACK_QUALITY": 88,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 90,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": true,
+        "reference_valid": true,
+        "game_likeness": "YES — spatial mixing, turn costs, incoming pieces, and balancing a volatile meter form a standalone systems puzzle."
+      },
+      "gas_watch": {
+        "WORLD_FEEDBACK_QUALITY": 74,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 72,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — limited-turn evidence elimination followed by a one-shot decision retains deduction and optimization."
+      },
+      "landfill_ops": {
+        "WORLD_FEEDBACK_QUALITY": 76,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 80,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": true,
+        "reference_valid": true,
+        "game_likeness": "YES — constrained placement, persistent coverage, forecasts, and compounding resources create a reusable management loop."
+      },
+      "baby_care": {
+        "WORLD_FEEDBACK_QUALITY": 74,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 77,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — classifying evolving noisy trends under a mistake budget remains a pattern-recognition game."
+      },
+      "zoo_checkup": {
+        "WORLD_FEEDBACK_QUALITY": 71,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 72,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": true,
+        "reference_valid": true,
+        "game_likeness": "YES — cost-weighted probes, suspect elimination, and a one-shot conclusion retain deduction and resource mastery."
+      },
+      "feed_prep": {
+        "WORLD_FEEDBACK_QUALITY": 82,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 84,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": false,
+        "reference_valid": true,
+        "game_likeness": "YES — assembling variable orders from rules and scarce inventory remains a constrained allocation puzzle."
+      },
+      "debut_plan": {
+        "WORLD_FEEDBACK_QUALITY": 90,
+        "VISUAL_GAMEPLAY_LEGIBILITY": 91,
+        "TEXT_ONLY_CONSEQUENCE": false,
+        "HINT_LEAKAGE": true,
+        "reference_valid": true,
+        "game_likeness": "YES — planning under uncertainty, reacting to events, and timing mitigation or withdrawal form a standalone strategy loop."
+      }
+    },
+    "blockers": [
+      "curb_check fails both score axes, uses text-only consequences, leaks answers after mistakes, and its reference trace claims world feedback that is not implemented.",
+      "pit_crane, landfill_ops, zoo_checkup, and debut_plan fail the no-HINT_LEAKAGE requirement through immediate prescriptive rule explanations after invalid actions."
+    ],
+    "high": [
+      "curb_check replaces the claimed load/sticker/fire world changes with note or result text while immediately advancing or ending the queue.",
+      "Several otherwise game-like loops use unstaged textual refusals that state the exact legal rule or next required action."
+    ],
+    "medium": [
+      "gas_watch and zoo_checkup barely clear the visual thresholds because evidence itself is presented as prose; their meters and crossed-out cause chips carry most observer-test legibility.",
+      "landfill_ops shows fill and cover spatially, but nighttime rain/wind damage is mainly communicated by numeric meter changes plus explanatory text.",
+      "baby_care's changing curve and red nudge are visible, but the distinct effects of the three player calls remain mostly textual."
+    ],
+    "low": [],
+    "evidence": [
+      "factory/rules/game-critic-v2.md:v3 — WORLD_FEEDBACK requires central consequences to be shown through world changes; text-only consequence and immediate exact-rule hints prohibit passage.",
+      "src/q1/CurbCheckGame.tsx:150 — ordinary outcome feedback is rendered only as a textual note.",
+      "src/q1/CurbCheckGame.tsx:159 — loading a hazard switches directly to a text-based failure screen; no truck, smoke, or fire state is rendered.",
+      "src/q1/CurbCheckGame.tsx:176 — the first mistake immediately reveals that the bag was collectable or hazardous, leaking the answer class.",
+      "src/q1/CurbCheckGame.tsx:192 — correct and non-terminal incorrect judgments both simply advance to the next bag, with no persistent loaded/sticker world state.",
+      "factory/taxonomy/gameplay-references.json:21 — curb_check claims that bags load, stickers appear, and truck fire ends the day; the component implements only text and screen transitions, breaking traceability.",
+      "src/q1/PitCraneGame.tsx:103 — a colored animated temperature meter visibly communicates system state.",
+      "src/q1/PitCraneGame.tsx:113 — the 3x3 grid visibly changes among dry, wet, mixed, and empty cells.",
+      "src/q1/wasteLogic.ts:169 — an invalid mix immediately states the exact permitted adjacency and dry-plus-wet rule.",
+      "src/q1/GasWatchGame.tsx:87 — remaining-time pips visibly burn as inspections consume turns.",
+      "src/q1/GasWatchGame.tsx:92 — incompatible causes become grey, struck-through chips, embodying evidence elimination.",
+      "src/q1/LandfillOpsGame.tsx:84 — typed cells visibly fill and receive green cover overlays.",
+      "src/q1/LandfillOpsGame.tsx:95 — an invalid placement immediately explains the exact type-separation rule.",
+      "src/q1/LandfillOpsGame.tsx:194 — overnight environmental consequences are chiefly narrated while tank and complaint values update numerically.",
+      "src/q1/BabyCareGame.tsx:90 — the growing SVG curve makes the observed trend persistent and visible.",
+      "src/q1/BabyCareGame.tsx:91 — a mistake produces a red border and glow around the relevant data rather than revealing the correct call.",
+      "src/q1/BabyCareGame.tsx:143 — first-miss teaching is staged as a silent visual nudge; the general-method lesson occurs only after takeover.",
+      "src/q1/ZooCheckupGame.tsx:98 — the burden bar changes color as costly checks accumulate.",
+      "src/q1/ZooCheckupGame.tsx:106 — evidence eliminates causes through grey struck-through chips.",
+      "src/q1/zooLogic.ts:153 — premature blood testing is refused with the exact instruction to perform two lower-burden checks first.",
+      "src/q1/FeedPrepGame.tsx:100 — tray contents and allocation remain spatially visible throughout assembly.",
+      "src/q1/FeedPrepGame.tsx:106 — rejection highlights and points to one faulty tray without stating the violated rule, which the rubric explicitly permits.",
+      "src/q1/DebutPlanGame.tsx:178 — the yard visualizes crowd pressure, accumulated sign lamps, a hide box, and the cub moving toward it.",
+      "src/q1/DebutPlanGame.tsx:193 — cub position transitions as stress signs accumulate, providing direct world feedback.",
+      "src/q1/zooLogic.ts:403 — invalid stop attempts immediately disclose the exact sign-count and mitigation-before-stop ladder.",
+      "factory/taxonomy/gameplay-references.json:23 — pit_crane's spatial juggling and balance trace matches its grid, turn, delivery, and temperature mechanics.",
+      "factory/taxonomy/gameplay-references.json:41 — gas_watch's time-budgeted elimination trace matches its checks, time pips, cause chips, and one-shot request.",
+      "factory/taxonomy/gameplay-references.json:59 — landfill_ops's compounding management trace matches placement, cover choice, persistent cells, tank, and complaints.",
+      "factory/taxonomy/gameplay-references.json:77 — baby_care's drifting-data judgment trace matches the evolving curve and silent mentor nudge.",
+      "factory/taxonomy/gameplay-references.json:95 — zoo_checkup's cost-weighted elimination trace matches burden accounting, probes, cause chips, and final plan.",
+      "factory/taxonomy/gameplay-references.json:113 — feed_prep's constrained specification-assembly trace matches variable trays, stock arithmetic, and silent tray pointing.",
+      "factory/taxonomy/gameplay-references.json:131 — debut_plan's plan-then-adapt trace matches plan controls, live events, sign lamps, cub movement, mitigation levers, and stopping."
+    ],
+    "recommended_actions": [
+      "For curb_check, persist a visible street/truck state: animate accepted bags into the truck, leave rejected bags with visibly distinct stickers, and render smoke/fire as an actual state change before failure.",
+      "For curb_check mistakes, show only the attempted physical outcome or a generic visual rejection on the first miss; do not reveal the bag's truth class.",
+      "Update curb_check's reference trace only after its claimed load, sticker, and fire feedback exists, or revise the trace to exactly match implementation.",
+      "Replace pit_crane's invalid-pair explanation with a visual refusal first; reveal the dry-plus-wet adjacency rule only through staged hints after repeated misses.",
+      "Replace landfill_ops type-mismatch prose with a state-styled refusal such as incompatible cell highlighting; defer the exact separation rule to staged help.",
+      "For zoo_checkup, make premature restraint a visual refusal or generic burden nudge first; disclose the two-observation rule only after repeated attempts.",
+      "For debut_plan, make premature stopping visibly refused without prescribing the exact next step; stage the sign-count and mitigation ladder across repeated mistakes.",
+      "Strengthen gas_watch and zoo_checkup evidence with instrument-state illustrations or icons so observers need not read evidence sentences.",
+      "Give landfill nighttime consequences graphical tank fill/scatter animations and give baby-care call outcomes distinct persistent visual states."
+    ]
+  },
+  "elapsed_sec": 148.127
+}

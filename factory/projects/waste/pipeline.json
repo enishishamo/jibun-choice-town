@@ -56,6 +56,10 @@
   },
   "commit": {
    "status": "done"
+  },
+  "presentation_qa": {
+   "status": "done",
+   "evidence": "Asset Presentation Gate (retrofit 2026-09-03): waste-opening PASS97 / waste-area PASS86 / waste-q1-intro PASS86 (factory/state/art/presentation-audit/), town-map balloon edge-clamp applied; curb_check street-strip world feedback added under the Experience Gate"
   }
  },
  "human_interventions": 0,
