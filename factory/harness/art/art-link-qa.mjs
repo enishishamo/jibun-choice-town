@@ -1,7 +1,10 @@
 #!/usr/bin/env node
-// Asset link QA (Stage 6, §16): fails (exit 1) on broken references, casing
-// mismatches, duplicate basenames across worlds, files outside expected dirs,
-// or oversized additions. Informational: orphans (protected, not deleted).
+// Asset link QA (Stage 6, §16): fails (exit 1) on broken references (explicit
+// paths AND extension-less helper calls), casing mismatches, files outside
+// expected dirs, and huge files (>4MB). WARNINGS (non-fatal by design):
+// duplicate basenames across worlds (safe — helper references are scoped per
+// directory), 1.5-4MB files, duplicate content. Informational: orphans
+// (protected, never deleted).
 //
 // Usage: node factory/harness/art/art-link-qa.mjs
 
@@ -43,9 +46,34 @@ for (const a of inv.assets) {
   if (!/^public\/(assets\/|.*\.(svg|png|ico)$)/.test(a.path)) errors.push(`unexpected location: ${a.path}`);
 }
 
-// 5. oversized
+// 5. oversized: warn above 1.5MB, hard error above 4MB (accidental huge files)
 for (const a of inv.assets) {
-  if (a.quality_flags.includes("oversized")) warnings.push(`oversized: ${a.path} (${(a.file_size / 1e6).toFixed(1)}MB)`);
+  if (a.file_size > 4_000_000) errors.push(`huge file: ${a.path} (${(a.file_size / 1e6).toFixed(1)}MB > 4MB)`);
+  else if (a.quality_flags.includes("oversized")) warnings.push(`oversized: ${a.path} (${(a.file_size / 1e6).toFixed(1)}MB)`);
+}
+
+// 5b. extensionless helper references: const X = (n) => \`...assets/<dir>/${n}.<ext>\`
+//     — every literal X("stem") call must resolve to an existing file.
+import { readFileSync as rf, readdirSync as rd } from "node:fs";
+import { join as pj } from "node:path";
+function srcFiles(dir, acc = []) {
+  for (const e of rd(pj(ROOT, dir), { withFileTypes: true })) {
+    const rel = pj(dir, e.name);
+    if (e.isDirectory()) srcFiles(rel, acc);
+    else if (/\.(tsx?|ts)$/.test(e.name)) acc.push(rel);
+  }
+  return acc;
+}
+const assetSet = new Set(inv.assets.map((a) => a.path));
+for (const f of srcFiles("src")) {
+  const text = rf(pj(ROOT, f), "utf8");
+  for (const def of text.matchAll(/const (\w+) = \((?:n|name)[^)]*\) =>\s*`\$\{import\.meta\.env\.BASE_URL\}(assets\/[a-z-]+\/)\$\{(?:n|name)\}\.(\w+)`/g)) {
+    const [, helper, dir, ext] = def;
+    for (const call of text.matchAll(new RegExp(`\\b${helper}\\((["'])([^"'\\)]+)\\1\\)`, "g"))) {
+      const path = `public/${dir}${call[2]}.${ext}`;
+      if (!assetSet.has(path)) errors.push(`broken helper reference: ${helper}(${call[1]}${call[2]}${call[1]}) -> ${path} (in ${f})`);
+    }
+  }
 }
 
 // 6. duplicate content

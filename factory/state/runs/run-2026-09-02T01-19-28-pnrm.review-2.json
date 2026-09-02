@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "blockers": [],
+    "high": [
+      "Provider abstraction is incomplete: reuse, CSS, and SVG are hard-coded in art-loop.mjs rather than implemented behind art-provider.mjs; CSS/SVG merely create manifest placeholders without producing or verifying artifacts. This fails acceptance criterion 7.",
+      "Manifest-v2 provenance is not guaranteed for every adapter strategy: composition entries omit prompt, dimensions, aspect_ratio, and qa_score; CSS/SVG entries omit references, dimensions, QA results, hash, and used_by. This fails acceptance criterion 8."
+    ],
+    "medium": [
+      "The current need-detector output leaves the shop-opening scene-audit visual classified ESSENTIAL with generate_or_compose, despite a documented override intended to mark it resolved by design. findOverride checks only n.what, while the matching word 'inspection' occurs in n.where, so the override silently fails.",
+      "The practical-run notes claim all three generated assets passed on iteration 1, but char-haru's manifest records iteration 2 after a failed first attempt. The loop evidence is valid, but the run log is internally inaccurate.",
+      "provider-status.json's reuse-provider probe still reports an inventory of 152 assets while the checked-in mechanical inventory contains 155."
+    ],
+    "low": [
+      "shopOpening.ts still describes hero() as an interim placeholder 'until the character art is generated', although char-haru is generated and wired elsewhere.",
+      "The generated before/after PNGs slightly exceed the inventory's 1.5 MB oversized threshold, producing warnings, though they remain below the link-QA hard limit."
+    ],
+    "evidence": [
+      "factory/harness/art/art-provider.mjs:142 — adapter exposes only generate, compose, and human-boundary commands; reuse/css/svg have no adapter implementations.",
+      "factory/harness/art/art-loop.mjs:185 — strategy routing for reuse/compose/css/svg is implemented directly inside the loop.",
+      "factory/harness/art/art-loop.mjs:216 — CSS/SVG strategies only write status=in_session_task and do not create or validate an artifact.",
+      "factory/harness/art/art-loop.mjs:212 — composition provenance omits required dimensions, aspect ratio, prompt, and qa_score.",
+      "factory/harness/art/art-loop.mjs:217 — CSS/SVG provenance omits reference assets, dimensions, QA, hash, and used_by.",
+      "factory/harness/art/art-need-detector.mjs:58 — override matching examines n.what but not n.where.",
+      "factory/state/art/need-overrides.json:12 — the scene-audit override depends on 'inspection'/'検査'.",
+      "factory/state/art/art-needs.json:818 — scene_audit remains ESSENTIAL and unresolved as generate_or_compose.",
+      "factory/state/runs/run-2026-09-02T00-58-56-yzf4.log.jsonl:2 — run note says all three assets passed iteration 1.",
+      "factory/state/art/manifest-v2.json:2696 — char-haru is correctly recorded as iteration 2 with the amended failed-QA prompt.",
+      "factory/harness/art/art-provider.mjs:127 — generating-provider selection is data-driven and rejects anything not safely probed and subscription-included.",
+      "factory/harness/art/art-provider.mjs:132 — explicitly requested paid providers are mechanically rejected.",
+      "factory/harness/art/art-qa.mjs:83 — missing/invalid category scores and scores below 70 fail closed.",
+      "factory/harness/art/art-qa.mjs:119 — pair mode enforces same building, camera, composition, neighborhood, and identity.",
+      "factory/harness/art/art-loop.mjs:230 — regeneration is capped at three attempts and QA issues amend subsequent prompts.",
+      "factory/harness/art/art-loop.mjs:313 — run-pair generates BEFORE first and supplies the accepted file as AFTER's generation reference and pair-QA partner.",
+      "factory/state/art/manifest-v2.json:2649 — ba-after provenance records ba-before as its reference asset and pair consistency score 99.",
+      "src/data/content/shopOpening.ts:39 — sceneMap uses ba-before and opening uses char-haru.",
+      "src/data/content/shopOpening.ts:105 — wrapUp correctly wires ba-before and ba-after.",
+      "factory/state/art/provider-status.json:46 — real probe records generated file, dimensions, saved evidence, visual verification, and subscription-included status.",
+      "factory/state/art/probe-evidence/probe-result.txt:1 — probe reply records generated=true and image_gen.imagegen.",
+      "factory/harness/art/asset-inventory.mjs:64 — dynamic template-literal prefixes are detected and protected from false orphan classification.",
+      "factory/harness/art/style-contract.md:19 — textual style contract includes concrete reference asset paths.",
+      "factory/harness/art/art-link-qa.mjs:17 — link QA regenerates inventory before checking and exits nonzero on errors."
+    ],
+    "recommended_actions": [
+      "Move reuse, css, svg, composition, codex_imagegen, and human_boundary behind one provider-neutral adapter interface; make the loop dispatch only through that interface.",
+      "Define and validate a single manifest-v2 schema for every strategy, requiring prompt/null, provider, cost status, references, dimensions/null, QA details, hash/null, and used_by.",
+      "Make need overrides match normalized world/where/what fields, then regenerate art-needs.json and verify the intended scene-audit decision is recorded.",
+      "Correct the practical-run log or append an auditable correction noting char-haru's iteration-2 regeneration.",
+      "Refresh provider-status inventory probe text and optimize the two oversized shop PNGs."
+    ]
+  },
+  "elapsed_sec": 103.455
+}

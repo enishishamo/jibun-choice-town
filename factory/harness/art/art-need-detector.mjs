@@ -51,14 +51,28 @@ const scan = JSON.parse(readFileSync(scanFile, "utf8")).json;
 execFileSync("node", [join(ART, "asset-inventory.mjs")], { stdio: "pipe" });
 const inv = JSON.parse(readFileSync(join(STATE, "asset-inventory.json"), "utf8"));
 
+// Confirmed design decisions can override scanner classifications — each
+// override must cite the deciding document (kept in need-overrides.json).
+const overridesFile = join(STATE, "need-overrides.json");
+const overrides = existsSync(overridesFile) ? JSON.parse(readFileSync(overridesFile, "utf8")).overrides : [];
+function findOverride(n) {
+  return overrides.find((o) => n.world.includes(o.world_match) && (n.what.toLowerCase().includes(o.what_match.toLowerCase()) || (o.what_match_ja && n.what.includes(o.what_match_ja))));
+}
+
 const needs = (scan.art_needs || []).map((n) => {
+  const ov = findOverride(n);
+  if (ov) {
+    // keep the scanner's raw class for audit, but the EFFECTIVE class follows
+    // the confirmed design decision so classification and resolution agree
+    return { ...n, scanner_class: n.class, class: ov.effective_class || "OPTIONAL", resolution: { strategy: "resolved_by_design", decision: ov.decision, source: ov.source } };
+  }
   const candidate = n.existing_candidate && inv.assets.find((a) => ("/" + a.path.replace(/^public\//, "")) === n.existing_candidate || a.path === n.existing_candidate.replace(/^\//, "public/"));
   return {
     ...n,
-    resolution: candidate
-      ? { strategy: "reuse", asset: candidate.path }
-      : n.class === "OPTIONAL"
-        ? { strategy: "skip", reason: "optional decoration — do not add images for their own sake" }
+    resolution: n.class === "OPTIONAL"
+      ? { strategy: "skip", reason: "optional decoration — do not add images for their own sake" }
+      : candidate
+        ? { strategy: "reuse_candidate", asset: candidate.path, note: "CANDIDATE ONLY — a human/Claude must confirm the asset actually communicates this need (the scan may have named it as the inadequate placeholder). Unconfirmed candidates go through the provider chain." }
         : { strategy: "generate_or_compose", note: "no reusable asset — goes through the provider chain (css/svg/composition/codex_imagegen/human_boundary)" },
   };
 });
@@ -73,7 +87,8 @@ const doc = {
     essential: needs.filter((n) => n.class === "ESSENTIAL").length,
     supporting: needs.filter((n) => n.class === "SUPPORTING").length,
     optional_skipped: needs.filter((n) => n.class === "OPTIONAL").length,
-    resolved_by_reuse: needs.filter((n) => n.resolution.strategy === "reuse").length,
+    resolved_by_design: needs.filter((n) => n.resolution.strategy === "resolved_by_design").length,
+    reuse_candidates_to_confirm: needs.filter((n) => n.resolution.strategy === "reuse_candidate").length,
     require_generation: needs.filter((n) => n.resolution.strategy === "generate_or_compose").length,
   },
 };

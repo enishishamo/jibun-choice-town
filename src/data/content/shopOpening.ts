@@ -12,7 +12,8 @@ import type { ContentModule } from "../types";
 
 const S = (n: string) => `${import.meta.env.BASE_URL}assets/shop/${n}.png`;
 
-// Interim discovery-hero until the character art is generated.
+// Interim discovery-hero for the five PROFESSION cards (intentionally kept as
+// SVG placeholders per art-plan-v2; the story NPC char-haru IS generated).
 const hero = (emoji: string, bg: string) =>
   "data:image/svg+xml;utf8," +
   encodeURIComponent(

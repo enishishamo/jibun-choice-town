@@ -4,14 +4,44 @@
   "artifact": "factory/harness/art",
   "producer": "claude",
   "reviewer": "codex",
-  "phase": "review",
-  "iteration": 1,
+  "phase": "finished",
+  "iteration": 3,
   "max_iterations": 3,
-  "verdict": null,
-  "issues": [],
-  "repair_actions": [],
-  "reviews": [],
+  "verdict": "FAIL",
+  "issues": [
+    "HIGH: Vision QA can reuse stale results and falsely pass: every invocation reads the shared /tmp/jc-artqa-reply.txt without deleting it first or requiring the current Codex process to succeed. A failed or concurrent invocation can therefore consume an earlier valid PASS, violating fail-closed QA."
+  ],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "H1 provider-agnostic: art-loop now routes by req.strategy (reuse/compose/css/svg/generate/human_boundary); generation consults provider-status.json and auto-falls-back to a complete human-boundary package when no no-cost automatable provider is available. H2 QA fail-closed: art-qa computes the verdict itself from the 10 category scores (all must be numeric and >=70; critic verdict recorded but never trusted). H3: char-haru re-QA'd under the strict gate — correctly FAILED (48, wrong proportions/cropping/job legibility), request improved, regenerated through the loop (iter1 FAIL too-childish -> issues fed to prompt -> iter2 PASS); manifest has full scores. H4: need detector marks existing candidates as reuse_candidate requiring confirmation (never auto-resolution); fresh scan confirms the 3 shop needs are resolved by the new assets. MEDIUMs: atomic wx lockfile; link-qa hard-errors on >4MB and validates extensionless helper references (helper-def parsing); provider validates exit status, reply JSON, PNG/JPEG magic bytes and sips decodability before copying; legacy manifest entries now extra_cost_status=unknown with record-only note. Regression: build/lint/link-qa green."
+    },
+    {
+      "iteration": 2,
+      "actions": "H1: generator selection is now data-driven — adapter resolves --provider auto from a GENERATORS registry filtered by the REAL probe rows in provider-status.json (can_generate + safe_for_automation + subscription_included_confirmed); the loop passes 'auto' and records the provider the adapter reports; adding a provider = one registry entry + one probed status row, no loop changes. H2: QA is bidirectionally fail-closed — a critic FAIL verdict (MUST violation) fails the asset even when all numeric scores clear 70, and score gaps still fail regardless of critic PASS. MEDIUMs: register-existing writes extra_cost_status=unknown with a record-only cost note (mechanically reproducible, matches checked-in manifest) and skips assets already tracked by file hash (dedupe guard, duplicates removed); link-qa header now documents the intended severity split (duplicates warn by design because helper references are directory-scoped); need detector supports confirmed design-decision overrides citing source docs (need-overrides.json seeded with the two shop items from art-plan-v2), fresh needs show resolved_by_design=1."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T00-58-56-yzf4.review-1.json",
+      "elapsed_sec": 86.395
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T00-58-56-yzf4.review-2.json",
+      "elapsed_sec": 76.223
+    },
+    {
+      "iteration": 3,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T00-58-56-yzf4.review-3.json",
+      "elapsed_sec": 102.363
+    }
+  ],
   "started_at": "2026-09-02T00:58:56.378Z",
-  "finished_at": null,
-  "stop_reason": null
+  "finished_at": "2026-09-02T01:18:22.316Z",
+  "stop_reason": "max_iterations_reached"
 }

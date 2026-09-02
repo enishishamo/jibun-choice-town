@@ -1,12 +1,12 @@
 {
  "note": "Mechanical asset inventory (Stage 6). Regenerate: node factory/harness/art/asset-inventory.mjs",
- "generated_at": "2026-09-02T00:55:08.988Z",
+ "generated_at": "2026-09-02T01:26:24.109Z",
  "totals": {
   "assets": 155,
   "orphans": 42,
   "duplicates_groups": 0,
-  "oversized": 4,
-  "total_bytes": 22580747
+  "oversized": 2,
+  "total_bytes": 22126338
  },
  "duplicate_groups": [],
  "missing_references": [],
@@ -2304,36 +2304,32 @@
    "path": "public/assets/shop/ba-after.png",
    "world": "shop",
    "format": "png",
-   "width": 1200,
-   "height": 900,
+   "width": 1100,
+   "height": 825,
    "aspect_ratio": 1.333,
-   "file_size": 1574123,
+   "file_size": 1314926,
    "referenced_by": [
     "src/data/content/shopOpening.ts"
    ],
-   "hash": "137110cc0788",
+   "hash": "76a713730c2b",
    "likely_reusable": true,
-   "quality_flags": [
-    "oversized"
-   ]
+   "quality_flags": []
   },
   {
    "asset_id": "public_assets_shop_ba_before_png",
    "path": "public/assets/shop/ba-before.png",
    "world": "shop",
    "format": "png",
-   "width": 1200,
-   "height": 900,
+   "width": 1100,
+   "height": 825,
    "aspect_ratio": 1.333,
-   "file_size": 1556799,
+   "file_size": 1293946,
    "referenced_by": [
     "src/data/content/shopOpening.ts"
    ],
-   "hash": "17784a5d0e3e",
+   "hash": "9ef9b3c0f89e",
    "likely_reusable": true,
-   "quality_flags": [
-    "oversized"
-   ]
+   "quality_flags": []
   },
   {
    "asset_id": "public_assets_shop_char_haru_png",
@@ -2343,11 +2339,11 @@
    "width": 800,
    "height": 800,
    "aspect_ratio": 1,
-   "file_size": 775863,
+   "file_size": 843504,
    "referenced_by": [
     "src/data/content/shopOpening.ts"
    ],
-   "hash": "68559791aa1c",
+   "hash": "27d839830d2c",
    "likely_reusable": true,
    "quality_flags": []
   },

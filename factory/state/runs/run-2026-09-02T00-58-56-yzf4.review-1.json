@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 66,
+    "blockers": [],
+    "high": [
+      "The adapter/loop is not provider-agnostic as required: the loop hardcodes codex_imagegen and the adapter implements generation only for codex_imagegen; reuse, CSS, SVG, composition, and human_boundary cannot be selected through the same loop without code changes.",
+      "Vision QA is not mechanically fail-closed against its stated threshold. It trusts the critic-supplied PASS verdict without independently rejecting missing/non-numeric scores or applicable scores below 70.",
+      "Manifest v2 marks char-haru qa_passed despite missing QA scores and records only a manually restored race note; this does not provide the required per-asset QA provenance.",
+      "The need-reduction artifact contradicts its own semantic finding: it says bg-road cannot communicate the ESSENTIAL shop scene, then resolves that need by reusing bg-road."
+    ],
+    "medium": [
+      "The lock uses a non-atomic exists-then-write sequence, so simultaneous processes can both acquire it and clobber manifest entries; the artifact confirms this race already occurred.",
+      "Link QA labels oversized and duplicate-content assets as warnings and exits successfully, contradicting its fail-closed claim for oversized additions.",
+      "Missing-link detection only validates explicit asset paths containing extensions; broken extensionless helper references are not detected.",
+      "Provider success is inferred solely from the existence of the requested filename; the Codex process exit status, reply JSON, image format, and file integrity are not validated before copying.",
+      "Existing legacy assets are assigned subscription_included_confirmed despite provider unknown_legacy, making cost provenance unsupported."
+    ],
+    "low": [
+      "The generated before/after pair is visually highly consistent and correctly shows only the middle shutter opening, although the after scene lacks the requested plain noren curtain.",
+      "char-haru is correctly wired and visually usable, but its output is full-body despite the request specifying upper-body composition.",
+      "Dynamic-prefix detection is global rather than scoped to the helper/path context, so unrelated assets sharing a prefix can be falsely protected from orphan classification."
+    ],
+    "evidence": [
+      "factory/harness/art/art-loop.mjs:113 — generation always invokes art-provider with --provider codex_imagegen.",
+      "factory/harness/art/art-provider.mjs:59 — generate rejects every provider other than codex_imagegen despite the documented provider family.",
+      "factory/harness/art/art-qa.mjs:60 — prompt states the <70 rule, but lines 92-94 derive PASS solely from vis.verdict and mechanical issues.",
+      "factory/state/art/manifest-v2.json:2586 — char-haru has qa_score null while line 2594 declares qa_passed.",
+      "factory/state/art/manifest-v2.json:2588 — QA provenance is a manual concurrent-write-race restoration note rather than structured QA results.",
+      "factory/state/art/art-needs.json:92 — detector states bg-road cannot represent the essential scene; lines 94-97 nevertheless resolve it through bg-road reuse.",
+      "factory/harness/art/art-need-detector.mjs:55 — reuse is accepted by exact path existence alone, without semantic suitability validation.",
+      "factory/harness/art/art-loop.mjs:37 — lock acquisition performs a race-prone existsSync check before writeFileSync at line 41.",
+      "factory/harness/art/art-link-qa.mjs:46 — oversized assets become warnings; line 61 exits only on errors.",
+      "factory/harness/art/asset-inventory.mjs:121 — missing-reference scanning covers only explicit extension-bearing paths.",
+      "factory/harness/art/art-provider.mjs:79 — process result is captured but its exit status is never checked; line 81 accepts filename existence as success.",
+      "factory/harness/art/art-loop.mjs:192 — registered legacy assets use provider unknown_legacy; line 193 nevertheless asserts subscription_included_confirmed.",
+      "factory/state/art/provider-status.json:54 — codex_imagegen records a real OAuth generation probe with a saved 1254x1254 PNG.",
+      "factory/harness/art/art-provider.mjs:56 — named paid providers are mechanically rejected before generation.",
+      "factory/harness/art/art-loop.mjs:71 — prompts inject style, no-text, composition constraints, and central-70% crop safety.",
+      "factory/harness/art/art-loop.mjs:132 — regeneration is capped at three iterations and lines 174-176 feed QA issues into the next prompt.",
+      "factory/harness/art/art-qa.mjs:101 — pair QA loads both images and explicitly requires identical building, camera, composition, neighborhood, and identity.",
+      "src/data/content/shopOpening.ts:39 — ba-before is wired as sceneMap imagery and char-haru as opening imagery.",
+      "src/data/content/shopOpening.ts:105 — wrapUp correctly wires ba-before and ba-after.",
+      "factory/harness/art/style-contract.md:19 — textual contract includes six concrete reference-asset paths.",
+      "factory/state/art/asset-inventory.json:1 — regenerable inventory records 155 assets with no explicit missing references."
+    ],
+    "recommended_actions": [
+      "Introduce a provider-neutral request/result interface and route reuse, css, svg, composition, codex_imagegen, and human_boundary through it; remove the hardcoded provider from art-loop.",
+      "Validate every required QA score in code, require finite 0-100 values, compute the verdict mechanically, and fail on missing categories or any applicable score below 70.",
+      "Rerun char-haru QA and replace the restored manifest entry with complete structured scores, issues, mechanical checks, prompt, hash, and run provenance.",
+      "Make lock creation atomic using exclusive file creation and avoid unconditional removal of a lock not owned by the current PID.",
+      "Require semantic confirmation before reuse; regenerate art-needs so the acknowledged-unrelated bg-road asset cannot resolve the essential shop scene.",
+      "Make link QA fail for newly oversized/duplicate additions and extend reference checking to recognized extensionless helper calls and dynamic paths.",
+      "Require successful provider exit, parse and validate the reply contract, verify image format/dimensions, and constrain all input/output paths to approved repository directories.",
+      "Use unknown cost status for unknown legacy provenance unless subscription inclusion is actually evidenced."
+    ]
+  },
+  "elapsed_sec": 86.395
+}

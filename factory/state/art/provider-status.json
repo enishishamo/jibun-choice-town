@@ -11,7 +11,7 @@
    "can_generate": false,
    "can_save_file": true,
    "repo_accessible": true,
-   "test_result": "inventory built: 152 assets indexed",
+   "test_result": "inventory regenerable via asset-inventory.mjs (155 assets as of Stage 6 completion; count grows with generated assets)",
    "safe_for_automation": true
   },
   {
@@ -59,7 +59,7 @@
    "can_generate": true,
    "can_save_file": true,
    "repo_accessible": true,
-   "test_result": "REAL PROBE PASSED: codex exec --sandbox workspace-write generated probe.png (1254x1254 PNG, red circle verified visually) via built-in image_gen.imagegen; no API key exists in env (~/.codex OAuth only), no billing mechanism, usage drawn from ChatGPT plan limits",
+   "test_result": "REAL PROBE PASSED: codex exec --sandbox workspace-write generated a 1254x1254 PNG via built-in image_gen.imagegen with reply {\"generated\":true}; artifacts preserved at factory/state/art/probe-evidence/ (probe.png + probe-result.txt); visually verified (red circle on white); no API key in env (~/.codex OAuth only)",
    "safe_for_automation": true
   },
   {

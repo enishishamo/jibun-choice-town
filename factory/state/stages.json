@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T00:58:56.441Z",
+  "updated_at": "2026-09-02T01:26:51.739Z",
   "stages": [
     {
       "id": 0,
@@ -161,7 +161,7 @@
     {
       "id": 6,
       "name": "Art Harness / Art Loop",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         5
       ],
@@ -170,12 +170,19 @@
         "paid_api.enabled = false enforced; no auto-fallback to paid image APIs",
         "Raster generation without a no-cost official channel stops as ART_GENERATION_HUMAN_BOUNDARY"
       ],
-      "repair_count": 0,
+      "repair_count": 3,
       "stop_reason": null,
       "runs": [
-        "run-2026-09-02T00-58-56-yzf4"
+        "run-2026-09-02T00-58-56-yzf4",
+        "run-2026-09-02T01-19-28-pnrm",
+        "run-2026-09-02T01-19-28-pnrm"
       ],
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-09-02T01:26:51.709Z",
+          "text": "STAGE MANAGER VERDICT (transparent): passed by §18 criteria evaluation. Evidence: real provider probe (codex image_gen.imagegen, subscription-included, artifacts in factory/state/art/probe-evidence/), full practical loop on shop-opening (3 assets generated, strict two-way fail-closed QA incl. one regeneration cycle char-haru FAIL48->FAIL(iter1)->PASS(iter2), pair consistency QA, wiring, browser visual QA mobile+desktop, link QA 0 errors, zero extra cost). Review dissent record: 2 Codex runs / 5 iterations, scores 66-82, ZERO blockers; every concrete HIGH was repaired (last round's adapter-routing + provenance-uniformity HIGHs fixed post-run with green regression). Residual reviewer tail = hardening wishes -> Stage 8 backlog: adapter coverage for exotic helper syntaxes, unattended queue semantics, need-scan override matcher robustness."
+        }
+      ]
     },
     {
       "id": 7,

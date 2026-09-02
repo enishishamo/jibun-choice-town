@@ -8,7 +8,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "74x92",
@@ -21,7 +21,8 @@
    "used_by": [
     "src/data/content/shopOpening.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_bg_school_png",
@@ -30,7 +31,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "90x92",
@@ -44,7 +45,8 @@
     "src/data/content/schoolLunch.ts",
     "src/screens/AreaScreen.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_char_cook_png",
@@ -53,7 +55,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "94x102",
@@ -66,7 +68,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_char_logistics_png",
@@ -75,7 +78,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "82x100",
@@ -88,7 +91,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_char_nutrition_png",
@@ -97,7 +101,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "83x100",
@@ -110,7 +114,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_char_recycle_png",
@@ -119,7 +124,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "84x100",
@@ -132,7 +137,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_dancer_png",
@@ -141,7 +147,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "116x137",
@@ -155,7 +161,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_magician_png",
@@ -164,7 +171,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "98x156",
@@ -178,7 +185,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_mascot_png",
@@ -187,7 +195,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "115x158",
@@ -201,7 +209,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_mc_png",
@@ -210,7 +219,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "98x156",
@@ -224,7 +233,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_musician_png",
@@ -233,7 +243,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "94x148",
@@ -247,7 +257,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_a_singer_png",
@@ -256,7 +267,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "74x148",
@@ -269,7 +280,8 @@
    "used_by": [
     "src/q1/TimetableGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_board_png",
@@ -278,7 +290,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "240x162",
@@ -291,7 +303,8 @@
    "used_by": [
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_flyer_png",
@@ -300,7 +313,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "240x257",
@@ -313,7 +326,8 @@
    "used_by": [
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_mail_png",
@@ -322,7 +336,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "230x330",
@@ -335,7 +349,8 @@
    "used_by": [
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_poster_png",
@@ -344,7 +359,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "240x351",
@@ -357,7 +372,8 @@
    "used_by": [
     "src/data/content/townEvent.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_sns_png",
@@ -366,7 +382,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "230x410",
@@ -380,7 +396,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_street_png",
@@ -389,7 +406,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "240x356",
@@ -402,7 +419,8 @@
    "used_by": [
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_m_web_png",
@@ -411,7 +429,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "240x205",
@@ -424,7 +442,8 @@
    "used_by": [
     "src/q1/PromoGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_booth_food_png",
@@ -433,7 +452,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "200x225",
@@ -447,7 +466,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_booth_goods_png",
@@ -456,7 +476,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "200x218",
@@ -470,7 +490,8 @@
     "src/q1/PlanEventGame.tsx",
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_cone_png",
@@ -479,7 +500,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "115x90",
@@ -492,7 +513,8 @@
    "used_by": [
     "src/q1/CrowdFlowGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_fence_png",
@@ -501,7 +523,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "165x110",
@@ -515,7 +537,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/CrowdFlowGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_flag_png",
@@ -524,7 +547,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "73x170",
@@ -537,7 +560,8 @@
    "used_by": [
     "src/q1/PlanEventGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_infomap_png",
@@ -546,7 +570,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "195x160",
@@ -559,7 +583,8 @@
    "used_by": [
     "src/q1/CrowdFlowGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_rest_table_png",
@@ -568,7 +593,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "160x177",
@@ -581,7 +606,8 @@
    "used_by": [
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_signpost_png",
@@ -590,7 +616,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "125x135",
@@ -603,7 +629,8 @@
    "used_by": [
     "src/q1/CrowdFlowGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_p_stage_png",
@@ -612,7 +639,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "200x121",
@@ -626,7 +653,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_s_mixer_png",
@@ -635,7 +663,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "200x121",
@@ -649,7 +677,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/SoundCheckGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_s_monitor_png",
@@ -658,7 +687,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "200x169",
@@ -671,7 +700,8 @@
    "used_by": [
     "src/q1/SoundCheckGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_s_speaker_png",
@@ -680,7 +710,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "150x255",
@@ -693,7 +723,8 @@
    "used_by": [
     "src/q1/SoundCheckGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_venue_busy_jpg",
@@ -702,7 +733,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -716,7 +747,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/CrowdFlowGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_venue_empty_jpg",
@@ -725,7 +757,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -739,7 +771,8 @@
     "src/data/content/townEvent.ts",
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_venue_map_jpg",
@@ -748,7 +781,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -763,7 +796,8 @@
     "src/q1/CrowdFlowGame.tsx",
     "src/q1/VenueLayoutGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_event_venue_success_jpg",
@@ -772,7 +806,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -785,7 +819,8 @@
    "used_by": [
     "src/data/content/townEvent.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_after_mist_png",
@@ -794,7 +829,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "531x490",
@@ -807,7 +842,8 @@
    ],
    "file_hash": "a1c411c1229f",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_after_pavement_png",
@@ -816,7 +852,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "531x490",
@@ -829,7 +865,8 @@
    ],
    "file_hash": "2f426bb17591",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_after_shade_png",
@@ -838,7 +875,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "531x490",
@@ -851,7 +888,8 @@
    ],
    "file_hash": "946be8c90523",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_after_tree_png",
@@ -860,7 +898,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "531x490",
@@ -873,7 +911,8 @@
    ],
    "file_hash": "dd7ac9bba0bc",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_char_park_png",
@@ -882,7 +921,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "110x181",
@@ -895,7 +934,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_char_power_png",
@@ -904,7 +944,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "105x183",
@@ -917,7 +957,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_char_site_png",
@@ -926,7 +967,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "100x183",
@@ -939,7 +980,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_char_urban_png",
@@ -948,7 +990,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "111x183",
@@ -961,7 +1003,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_char_water_png",
@@ -970,7 +1013,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "103x186",
@@ -983,7 +1026,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_data_sun_png",
@@ -992,7 +1036,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "126x99",
@@ -1005,7 +1049,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_data_surface_png",
@@ -1014,7 +1059,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "125x99",
@@ -1027,7 +1072,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_data_wind_png",
@@ -1036,7 +1082,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "120x99",
@@ -1049,7 +1095,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_icon_bad_png",
@@ -1058,7 +1105,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "70x74",
@@ -1071,7 +1118,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_icon_good_png",
@@ -1080,7 +1128,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "64x75",
@@ -1093,7 +1141,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_icon_people_png",
@@ -1102,7 +1151,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "65x77",
@@ -1115,7 +1164,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_park_base_png",
@@ -1124,7 +1174,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1024x1536",
@@ -1139,7 +1189,8 @@
    "used_by": [
     "src/q1/ParkHeatGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_part_mist_png",
@@ -1148,7 +1199,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "94x92",
@@ -1161,7 +1212,8 @@
    ],
    "file_hash": "6a725f39d3d5",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_part_pavement_png",
@@ -1170,7 +1222,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "93x69",
@@ -1183,7 +1235,8 @@
    ],
    "file_hash": "1ac6a7fd30de",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_part_shade_png",
@@ -1192,7 +1245,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "89x90",
@@ -1205,7 +1258,8 @@
    ],
    "file_hash": "0ba8a7678aa5",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_part_tree_png",
@@ -1214,7 +1268,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "75x97",
@@ -1227,7 +1281,8 @@
    ],
    "file_hash": "09a5a8e2f6a2",
    "used_by": [],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_place_city_png",
@@ -1236,7 +1291,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "141x193",
@@ -1249,7 +1304,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_place_dam_png",
@@ -1258,7 +1314,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "140x193",
@@ -1271,7 +1327,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_place_park_png",
@@ -1280,7 +1337,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "178x193",
@@ -1293,7 +1350,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_place_site_png",
@@ -1302,7 +1360,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "138x193",
@@ -1315,7 +1373,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_heat_place_town_png",
@@ -1324,7 +1383,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "137x193",
@@ -1337,7 +1396,8 @@
    "used_by": [
     "src/data/content/extremeHeat.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_item_carrot_png",
@@ -1346,7 +1406,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "65x68",
@@ -1359,7 +1419,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_item_recyclebag_png",
@@ -1368,7 +1429,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "68x70",
@@ -1381,7 +1442,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_item_truck_png",
@@ -1390,7 +1452,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "103x68",
@@ -1403,7 +1465,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_item_veggies_png",
@@ -1412,7 +1475,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "87x69",
@@ -1425,7 +1488,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_classroom_lunch_jpg",
@@ -1434,7 +1498,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x750",
@@ -1447,7 +1511,8 @@
    "used_by": [
     "src/q1/CookGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_compost_to_farm_jpg",
@@ -1456,7 +1521,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -1469,7 +1534,8 @@
    "used_by": [
     "src/q1/RecycleGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_delivery_center_jpg",
@@ -1478,7 +1544,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x800",
@@ -1492,7 +1558,8 @@
     "src/data/content/schoolLunch.ts",
     "src/q1/LogisticsGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_delivery_check_jpg",
@@ -1501,7 +1568,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1125",
@@ -1514,7 +1581,8 @@
    "used_by": [
     "src/q1/LogisticsGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_farm_field_jpg",
@@ -1523,7 +1591,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1350",
@@ -1537,7 +1605,8 @@
     "src/data/content/schoolLunch.ts",
     "src/q1/FarmGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_farmer_char_png",
@@ -1546,7 +1615,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "620x1027",
@@ -1559,7 +1628,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_food_waste_jpg",
@@ -1568,7 +1638,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x800",
@@ -1581,7 +1651,8 @@
    "used_by": [
     "src/q1/RecycleGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_recycle_sorting_jpg",
@@ -1590,7 +1661,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x800",
@@ -1603,7 +1674,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_kyushoku_school_kitchen_jpg",
@@ -1612,7 +1684,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x982",
@@ -1626,7 +1698,8 @@
     "src/data/content/schoolLunch.ts",
     "src/q1/CookGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_er_arrival_jpg",
@@ -1635,7 +1708,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x800",
@@ -1648,7 +1721,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_er_bed_jpg",
@@ -1657,7 +1731,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x667",
@@ -1670,7 +1744,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_er_exam_jpg",
@@ -1679,7 +1754,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1000x800",
@@ -1692,7 +1767,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_home_after_jpg",
@@ -1701,7 +1777,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "380x300",
@@ -1714,7 +1790,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_home_before_jpg",
@@ -1723,7 +1800,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "320x302",
@@ -1736,7 +1813,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_lab_jpg",
@@ -1745,7 +1823,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "659x526",
@@ -1761,7 +1839,8 @@
     "src/q1/DiagnoseGame.tsx",
     "src/q1/RxCheckGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_msw_room_jpg",
@@ -1770,7 +1849,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "683x537",
@@ -1783,7 +1862,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_pharmacy_jpg",
@@ -1792,7 +1872,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "539x601",
@@ -1805,7 +1885,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_rehab_jpg",
@@ -1814,7 +1895,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "718x430",
@@ -1827,7 +1908,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_ward_jpg",
@@ -1836,7 +1918,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "571x684",
@@ -1849,7 +1931,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_dietitian_jpg",
@@ -1858,7 +1941,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1871,7 +1954,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_doctor_jpg",
@@ -1880,7 +1964,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1893,7 +1977,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_labtech_jpg",
@@ -1902,7 +1987,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1915,7 +2000,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_msw_jpg",
@@ -1924,7 +2010,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1937,7 +2023,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_nurse_jpg",
@@ -1946,7 +2033,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1959,7 +2046,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_pharmacist_jpg",
@@ -1968,7 +2056,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -1981,7 +2069,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_pt_jpg",
@@ -1990,7 +2079,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -2003,7 +2092,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_who_radtech_jpg",
@@ -2012,7 +2102,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "168x105",
@@ -2025,7 +2115,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_medical_xray_room_jpg",
@@ -2034,7 +2125,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "645x691",
@@ -2047,7 +2138,8 @@
    "used_by": [
     "src/data/content/medical.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_factory_jpg",
@@ -2056,7 +2148,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1200",
@@ -2070,7 +2162,8 @@
     "src/data/content/priceHike.ts",
     "src/q1/WaterGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_lab_jpg",
@@ -2079,7 +2172,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1200",
@@ -2095,7 +2188,8 @@
     "src/q1/DiagnoseGame.tsx",
     "src/q1/RxCheckGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_overview_jpg",
@@ -2104,7 +2198,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1280x853",
@@ -2117,7 +2211,8 @@
    "used_by": [
     "src/data/content/priceHike.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_package_jpg",
@@ -2126,7 +2221,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1200",
@@ -2139,7 +2234,8 @@
    "used_by": [
     "src/data/content/priceHike.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_shop_jpg",
@@ -2148,7 +2244,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "900x1350",
@@ -2162,7 +2258,8 @@
     "src/data/content/priceHike.ts",
     "src/q1/LifePlanGame.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_price_warehouse_jpg",
@@ -2171,7 +2268,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -2184,7 +2281,8 @@
    "used_by": [
     "src/data/content/priceHike.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_bus_manager_jpg",
@@ -2193,7 +2291,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -2206,7 +2304,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_hotel_jpg",
@@ -2215,7 +2314,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x619",
@@ -2228,7 +2327,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_opening_jpg",
@@ -2237,7 +2337,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -2250,7 +2350,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_planner_jpg",
@@ -2259,7 +2360,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -2272,7 +2373,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_success_jpg",
@@ -2281,7 +2383,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x619",
@@ -2294,7 +2396,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_teacher_jpg",
@@ -2303,7 +2406,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x733",
@@ -2316,7 +2419,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_tour_conductor_jpg",
@@ -2325,7 +2429,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1100x619",
@@ -2338,7 +2442,8 @@
    "used_by": [
     "src/data/content/schoolTrip.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_tool_kama_png",
@@ -2347,7 +2452,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "92x77",
@@ -2360,7 +2465,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_tool_thermo_png",
@@ -2369,7 +2475,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "47x84",
@@ -2384,7 +2490,8 @@
    "used_by": [
     "src/data/content/schoolLunch.ts"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_town_hero_png",
@@ -2393,7 +2500,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "1536x1024",
@@ -2408,7 +2515,8 @@
    "used_by": [
     "src/screens/HomeScreen.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_ui_fire_png",
@@ -2417,7 +2525,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "54x62",
@@ -2435,7 +2543,8 @@
     "src/screens/Q1Screen.tsx",
     "index.html"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_ui_new_png",
@@ -2444,7 +2553,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "79x59",
@@ -2461,7 +2570,8 @@
     "src/screens/HomeScreen.tsx",
     "src/screens/Q1Screen.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "public_assets_ui_sparkle_png",
@@ -2470,7 +2580,7 @@
    "purpose": "(pre-Stage6 existing asset)",
    "source_type": "existing",
    "provider": "unknown_legacy",
-   "extra_cost_status": "subscription_included_confirmed",
+   "extra_cost_status": "unknown",
    "prompt": null,
    "reference_assets": [],
    "dimensions": "72x65",
@@ -2483,7 +2593,8 @@
    "used_by": [
     "src/screens/Q1Screen.tsx"
    ],
-   "status": "in_use"
+   "status": "in_use",
+   "cost_note": "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)"
   },
   {
    "asset_id": "shop_ba_before",
@@ -2570,28 +2681,42 @@
    "asset_id": "shop_char_haru",
    "filename": "char-haru.png",
    "world": "shop",
-   "purpose": "5章を貫くNPCハルさんの立ち絵",
+   "purpose": "商店街・開店編エリア導入（sceneMap.opening）の物語の顔。将来: 会話/discovery/E画面への展開候補",
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku diner. Warm, hopeful, slightly nervous smile. Wearing a clean modern apron over casual clothes, holding a small recipe notebook. Gender-ambiguous styling (avoid strongly gendered stereotypes), short neat hair.\nRole in game: 5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場\nCamera / composition: Upper body, facing slightly toward the viewer, centered, plain very light warm background (soft cream), generous head room, nothing cropped. Same clay-figure proportions as the series (about 3 heads tall, simplified hands).\nMust include: clean apron; small notebook; warm hopeful expression\nMust NOT include: readable text; brand logos; kitchen background clutter; photorealistic skin\nCharacters: modern, kind, believable adult; NOT childish; no gender-stereotyped exaggeration\nAspect ratio: 1:1 (compose for this frame).",
+   "prompt": "Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair.\nRole in game: 5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場\nCamera / composition: UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.\nMust include: navy apron; round wooden serving tray with rice bowl and miso soup; warm hopeful expression; big-head chibi proportions (2.5-3 heads); generous margins on all sides\nMust NOT include: readable text; brand logos; realistic adult proportions (4+ heads tall); full body / legs / shoes; kitchen background clutter; photorealistic skin; elements touching the image edges\nCharacters: modern, kind adult; series chibi clay proportions (2.5-3 heads), NOT realistic proportions; no gender-stereotyped exaggeration\nAspect ratio: 1:1 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- 顔が大きく頬が丸い幼児的な造形で、成人の「ハルさん」より低年齢の少年に見える — 小4〜6年生向けの「幼すぎない、少し大人っぽい」人物表現というMUSTに反する\n- 目・鼻・口の単純化と頭部比率が強く、基準の2.5〜3頭身より幼い印象が先行する — 5章を通じて定食屋の開業を目指す人物としての成熟度が伝わりにくい\n- エプロンと定食の盆で飲食店志望は明確だが、服装が非常に素朴で現代的なおしゃれ感が弱い — シリーズの対象年齢に合う洗練を少し加える余地がある\n- STYLE_CONSISTENCY below threshold: 68",
    "reference_assets": [
     "public/assets/medical/who_doctor.jpg",
     "public/assets/town-hero.png"
    ],
    "dimensions": "800x800",
    "aspect_ratio": 1,
-   "created_at": "2026-09-02T00:52:00Z",
-   "iteration": 1,
-   "qa_score": null,
+   "created_at": "2026-09-02T01:08:08.321Z",
+   "iteration": 2,
+   "qa_score": 86,
    "qa_issues": [
-    "(manifest entry restored after concurrent-write race; QA PASS iter1 per run log bqgcwcqub)"
+    "髪の最上部と胴体下端の余白がやや少ない — UI側で拡大表示や縦長クロップを行うと窮屈に見える可能性がある",
+    "基準の人物画像より表面が滑らかで高精細 — 反復登場時に他NPCより少し写実CG寄りに見える可能性がある",
+    "定食屋の仕事はエプロン・ご飯・汁物で十分伝わるが、献立の種類が少なく開店準備中という物語情報までは単体で判別しにくい"
    ],
-   "file_hash": "68559791aa1c",
+   "file_hash": "27d839830d2c",
    "used_by": [
-    "src/data/content/shopOpening.ts"
+    "src/data/content/shopOpening.ts (sceneMap.opening.image)"
    ],
-   "status": "qa_passed"
+   "status": "qa_passed",
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 92,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 88,
+    "READABILITY": 97,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 96,
+    "SERIES_CONSISTENCY": 86,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 97,
+    "MOBILE_USABILITY": 90
+   }
   }
  ]
 }

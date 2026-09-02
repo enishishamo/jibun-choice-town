@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "blockers": [],
+    "high": [
+      "The Codex generation path does not mechanically guarantee subscription-only authentication. It merely checks that `codex login status` exits successfully, does not validate its reported auth mode, and launches `codex exec` with the inherited environment. An API-key-backed Codex configuration could therefore enter the supposedly no-pay-per-use path.",
+      "Stale-lock recovery is race-prone. Two processes that both observe a stale PID can each proceed through deletion/recreation; one can delete the other process's newly acquired lock, allowing concurrent manifest read-modify-write runs and lost entries."
+    ],
+    "medium": [
+      "Provider abstraction is incomplete: reuse, CSS, and SVG are implemented as hard-coded branches in `art-loop.mjs`, while the adapter exposes only generate, compose, and human-boundary. Swapping or adding those strategy providers can require loop changes, contrary to the stated adapter boundary.",
+      "Manifest provenance is not uniform across strategies. Reuse entries omit dimensions, aspect ratio, prompt and structured QA fields; CSS/SVG and human-boundary entries omit most required provenance fields. Generated and registered-existing entries are substantially complete.",
+      "`art-link-qa.mjs` calls itself fail-closed, but extensionless validation recognizes only one narrowly formatted helper declaration and double-quoted literal calls. Equivalent helpers, single-quoted calls, imported helpers, and other computed references can escape validation.",
+      "The generated Haru asset is wired only into `sceneMap.opening`, despite its manifest/request purpose claiming repeated use across five chapters, discovery, and encyclopedia screens."
+    ],
+    "low": [
+      "Both before/after PNGs exceed the inventory's 1.5 MB oversized threshold, at approximately 1.56 MB and 1.57 MB.",
+      "The inventory's dynamic-prefix handling is global rather than directory/helper scoped, so an unrelated asset sharing any discovered prefix can be marked `dynamic_ref_possible` instead of orphaned.",
+      "The loop records `extra_cost_status` as `subscription_included_confirmed` from local constants rather than preserving and validating the adapter's returned status for each generated entry."
+    ],
+    "evidence": [
+      "factory/harness/art/art-provider.mjs:88 — generation preflight only tests the exit status of `codex login status`.",
+      "factory/harness/art/art-provider.mjs:99 — `codex exec` inherits the process environment without stripping API-key variables or pinning OAuth authentication.",
+      "factory/harness/art/art-provider.mjs:117 — provider registry correctly admits only implemented providers recorded as `subscription_included_confirmed`.",
+      "factory/harness/art/art-provider.mjs:123 — explicitly named paid providers are rejected.",
+      "factory/harness/art/art-loop.mjs:46 — lock acquisition begins atomically, but stale recovery is a separate check/delete/create sequence.",
+      "factory/harness/art/art-loop.mjs:51 — stale-lock liveness is checked before an unguarded deletion.",
+      "factory/harness/art/art-loop.mjs:53 — recovery can delete a lock newly created by another contender.",
+      "factory/harness/art/art-loop.mjs:174 — strategy routing is implemented directly in the loop rather than wholly through the provider adapter.",
+      "factory/harness/art/art-loop.mjs:183 — reuse provenance omits dimensions, aspect ratio, prompt and QA details.",
+      "factory/harness/art/art-loop.mjs:203 — CSS/SVG strategies only create `in_session_task` records and do not execute through the adapter.",
+      "factory/harness/art/art-loop.mjs:217 — generation is capped at three iterations.",
+      "factory/harness/art/art-loop.mjs:261 — QA issues amend the next prompt, preventing unchanged-prompt retries when issues are returned.",
+      "factory/harness/art/art-qa.mjs:82 — vision QA defines all ten required categories.",
+      "factory/harness/art/art-qa.mjs:83 — missing, invalid, or sub-threshold scores fail closed.",
+      "factory/harness/art/art-qa.mjs:119 — pair mode mechanically and visually evaluates both images.",
+      "factory/harness/art/art-link-qa.mjs:70 — extensionless helper discovery depends on one exact declaration regex.",
+      "factory/harness/art/art-link-qa.mjs:72 — helper-call validation accepts only double-quoted literal calls.",
+      "factory/harness/art/style-contract.md:7 — textual MUST rules cover style, age, text, anatomy and consistency.",
+      "factory/harness/art/style-contract.md:19 — six concrete reference asset paths are supplied.",
+      "factory/state/art/provider-status.json:54 — Codex image generation is recorded as ChatGPT OAuth and subscription-included.",
+      "factory/state/art/provider-status.json:62 — the real probe records generation, saved probe evidence and visual verification.",
+      "factory/state/art/asset-inventory.json:1 — recorded inventory contains 155 assets and no missing explicit references.",
+      "factory/state/art/manifest-v2.json:2600 — before asset records prompt, provider, cost status, references, dimensions, QA, hash and usage.",
+      "factory/state/art/manifest-v2.json:2641 — after asset records the accepted before image as its reference and pair-consistency score 99.",
+      "factory/state/art/manifest-v2.json:2681 — Haru records an amended second-iteration prompt and passing QA.",
+      "src/data/content/shopOpening.ts:39 — `sceneMap` uses the generated before image and Haru opening portrait.",
+      "src/data/content/shopOpening.ts:105 — wrap-up correctly wires the generated before/after pair.",
+      "src/data/content/shopOpening.ts:42 — Haru is wired only to the opening scene despite the broader recorded asset purpose.",
+      "factory/projects/shop-opening/art-requests/ba-after.json:7 — after request explicitly requires identical buildings, camera and composition with only the middle shop opened.",
+      "public/assets/shop/ba-before.png — visual inspection confirms three closed storefronts, clay style and no readable text.",
+      "public/assets/shop/ba-after.png — visual inspection confirms strong same-scene consistency and only the central storefront opened.",
+      "public/assets/shop/char-haru.png — visual inspection confirms a text-free clay character with apron, rice and soup tray."
+    ],
+    "recommended_actions": [
+      "Enforce OAuth mechanically before generation: parse `codex login status` for the expected ChatGPT authentication mode, reject API-key mode, and launch the subprocess with API-key environment variables removed.",
+      "Replace stale-lock deletion with an atomic ownership protocol, such as an atomically created per-run lock directory plus ownership-token verification before release; never delete a lock after a non-atomic stale observation.",
+      "Move reuse, CSS, SVG, composition, generation and human-boundary behind one adapter interface, or narrow the provider-agnostic claim and acceptance contract.",
+      "Use one manifest-entry schema validator for every strategy and require dimensions, references, cost status, hash where applicable, QA/status, and `used_by`.",
+      "Broaden link QA by resolving project asset helpers through AST analysis or a documented helper registry, including single-quoted and imported helper calls.",
+      "Either wire Haru into the repeated contexts stated by its request/purpose or correct the request and manifest purpose to reflect opening-only use.",
+      "Optimize the two before/after PNGs below the inventory warning threshold without changing their hashes silently; regenerate inventory and manifest hashes afterward."
+    ]
+  },
+  "elapsed_sec": 96.925
+}

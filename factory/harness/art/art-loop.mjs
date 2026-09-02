@@ -17,7 +17,7 @@
 
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -33,13 +33,69 @@ const MAX_ITER = 3;
 // The manifest is read-modify-write: two concurrent runs would clobber each
 // other's entries (this actually happened in Stage 6). Simple lockfile guard.
 const LOCK = join(STATE, ".art-loop.lock");
-function acquireLock() {
-  if (existsSync(LOCK)) {
-    console.error(`another art-loop run is active (${LOCK} exists) — run art loops SEQUENTIALLY. Delete the lock only if you are sure no run is alive.`);
-    process.exit(2);
+function lockHolderAlive() {
+  try {
+    const pid = Number(readFileSync(LOCK, "utf8"));
+    if (!Number.isInteger(pid) || pid <= 0) return false;
+    process.kill(pid, 0); // throws if the process no longer exists
+    return true;
+  } catch {
+    return false;
   }
-  writeFileSync(LOCK, String(process.pid));
+}
+function acquireLock() {
+  try {
+    // atomic create-exclusive: two processes can never both acquire it
+    writeFileSync(LOCK, String(process.pid), { flag: "wx" });
+  } catch {
+    if (lockHolderAlive()) {
+      console.error(`another art-loop run is active (${LOCK} exists, holder alive) — run art loops SEQUENTIALLY.`);
+      process.exit(2);
+    }
+    // Stale lock: recover via atomic rename — of N racers exactly ONE rename
+    // succeeds (the file disappears for the rest), so only one may re-create.
+    try {
+      renameSync(LOCK, `${LOCK}.stale-${process.pid}`);
+      rmSync(`${LOCK}.stale-${process.pid}`, { force: true });
+    } catch {
+      console.error("lock contended during stale recovery — another process won; retry later.");
+      process.exit(2);
+    }
+    try {
+      writeFileSync(LOCK, String(process.pid), { flag: "wx" });
+      console.error("stale lock recovered (previous holder was gone).");
+    } catch {
+      console.error("lock contended after recovery — another process won; retry later.");
+      process.exit(2);
+    }
+  }
   process.on("exit", () => { try { rmSync(LOCK, { force: true }); } catch { /* ignore */ } });
+}
+
+// Provider availability: consult the REAL probe results; if the generating
+// provider is not safe_for_automation, requests fall through to human_boundary
+// (Stage-6 rule: the boundary is not a failure).
+function generatorAvailable() {
+  try {
+    const st = JSON.parse(readFileSync(join(STATE, "provider-status.json"), "utf8"));
+    const g = st.providers.find((x) => x.provider === "codex_imagegen");
+    return Boolean(g && g.available && g.safe_for_automation && g.extra_cost_status === "subscription_included_confirmed");
+  } catch {
+    return false;
+  }
+}
+
+function writeHumanBoundary(req, reason) {
+  const dir = join(STATE, "human-boundary");
+  mkdirSync(dir, { recursive: true });
+  const pkg = {
+    status: "ART_GENERATION_HUMAN_BOUNDARY",
+    reason,
+    prompt: buildPrompt(req),
+    ...req,
+  };
+  writeFileSync(join(dir, `${req.asset_id}.json`), JSON.stringify(pkg, null, 1) + "\n");
+  return join("factory", "state", "art", "human-boundary", `${req.asset_id}.json`);
 }
 
 const args = process.argv.slice(2);
@@ -110,10 +166,12 @@ function runQA(mode, opts) {
   }
 }
 
+// Provider is resolved by the adapter ("auto" = data-driven registry x probe
+// status); the loop stays provider-agnostic.
 function generateOnce(req, promptText, refs) {
   const pf = join(STATE, `.prompt-${req.asset_id}.txt`);
   writeFileSync(pf, promptText);
-  const cargs = [join(ART, "art-provider.mjs"), "generate", "--provider", "codex_imagegen", "--prompt-file", pf, "--out", req.output_path, "--timeout-sec", "900"];
+  const cargs = [join(ART, "art-provider.mjs"), "generate", "--provider", "auto", "--prompt-file", pf, "--out", req.output_path, "--timeout-sec", "900"];
   if (req.size) cargs.push("--size", req.size);
   for (const r of refs || []) cargs.push("--ref", r);
   const r = spawnSync("node", cargs, { encoding: "utf8", cwd: ROOT, timeout: 960000 });
@@ -125,14 +183,57 @@ function generateOnce(req, promptText, refs) {
 }
 
 // One full loop for a single request. Returns the final manifest entry.
+// Strategy routing (provider-agnostic): req.strategy selects the provider —
+//   reuse        -> verify + register the existing asset (no generation)
+//   compose      -> art-provider compose (sips crop/resize of an existing asset)
+//   css | svg    -> recorded as an in-session Claude implementation task
+//   generate     -> codex_imagegen if available, else human_boundary package
+//   (default: generate)
 function runOne(req, extraRefs = [], pairPartner = null) {
   const m = loadManifest();
+  const strategy = req.strategy || "generate";
+  if (strategy === "reuse") {
+    const r = spawnSync("node", [join(ART, "art-provider.mjs"), "reuse", "--src", req.reuse_asset], { encoding: "utf8", cwd: ROOT });
+    let ad; try { ad = JSON.parse(r.stdout.trim().split("\n").pop()); } catch { ad = null; }
+    if (!ad?.ok) { console.error(`[${req.asset_id}] reuse failed: ${(r.stderr || r.stdout).slice(-200)}`); return { status: "reuse_target_missing" }; }
+    const entry = { asset_id: req.asset_id, filename: req.reuse_asset.split("/").pop(), world: req.world, purpose: req.purpose, source_type: ad.source_type, provider: ad.provider, extra_cost_status: ad.extra_cost_status, prompt: ad.prompt, reference_assets: [], dimensions: ad.dimensions, aspect_ratio: ad.aspect_ratio, created_at: new Date().toISOString(), iteration: 0, qa_score: null, qa_scores: null, qa_issues: [ad.qa_note], file_hash: ad.file_hash, used_by: req.used_by || [], status: "qa_passed" };
+    upsert(m, entry); saveManifest(m);
+    return entry;
+  }
+  if (strategy === "compose") {
+    const cargs = [join(ART, "art-provider.mjs"), "compose", "--src", req.compose_src, "--out", req.output_path];
+    if (req.compose_crop) cargs.push("--crop", req.compose_crop);
+    if (req.compose_resize) cargs.push("--resize", req.compose_resize);
+    const r = spawnSync("node", cargs, { encoding: "utf8", cwd: ROOT });
+    if (r.status !== 0) { console.error(`[${req.asset_id}] compose failed: ${r.stderr}`); return { status: "compose_failed" }; }
+    const qa = runQA("asset", { file: req.output_path, purpose: req.purpose });
+    const cd = dims(req.output_path);
+    const entry = { asset_id: req.asset_id, filename: req.filename, world: req.world, purpose: req.purpose, source_type: "composition", provider: "composition", extra_cost_status: "subscription_included_confirmed", prompt: null, reference_assets: [req.compose_src], dimensions: `${cd.w}x${cd.h}`, aspect_ratio: Number((cd.w / cd.h).toFixed(3)), created_at: new Date().toISOString(), iteration: 1, qa_score: qa.scores ? Math.min(...Object.values(qa.scores)) : null, qa_scores: qa.scores || null, qa_issues: qa.issues || [], file_hash: fileHash(req.output_path), used_by: req.used_by || [], status: qa.verdict === "PASS" ? "qa_passed" : "qa_failed" };
+    upsert(m, entry); saveManifest(m);
+    return entry;
+  }
+  if (strategy === "css" || strategy === "svg") {
+    const r = spawnSync("node", [join(ART, "art-provider.mjs"), "in-session-task", "--strategy", strategy], { encoding: "utf8", cwd: ROOT });
+    let ad; try { ad = JSON.parse(r.stdout.trim().split("\n").pop()); } catch { ad = null; }
+    if (!ad?.ok) { console.error(`[${req.asset_id}] in-session-task failed`); return { status: "adapter_failed" }; }
+    const entry = { asset_id: req.asset_id, world: req.world, purpose: req.purpose, source_type: ad.source_type, provider: ad.provider, extra_cost_status: ad.extra_cost_status, prompt: null, reference_assets: [], dimensions: null, aspect_ratio: null, created_at: new Date().toISOString(), iteration: 0, qa_score: null, qa_scores: null, qa_issues: [ad.qa_note], file_hash: null, used_by: req.used_by || [], status: "in_session_task" };
+    upsert(m, entry); saveManifest(m);
+    return entry;
+  }
+  if (!generatorAvailable()) {
+    const pkgPath = writeHumanBoundary(req, "no no-cost automatable generation provider available (see provider-status.json)");
+    const entry = { asset_id: req.asset_id, filename: req.filename, world: req.world, purpose: req.purpose, source_type: "human_boundary", provider: "human_boundary", extra_cost_status: "subscription_included_confirmed", created_at: new Date().toISOString(), status: "ART_GENERATION_HUMAN_BOUNDARY", request_package: pkgPath, used_by: req.used_by || [] };
+    upsert(m, entry); saveManifest(m);
+    console.log(`[${req.asset_id}] GENERATION_PROVIDER_UNAVAILABLE -> human-boundary package: ${pkgPath}`);
+    return entry;
+  }
   let amendments = [];
   let last = null;
   for (let iter = 1; iter <= MAX_ITER; iter++) {
     const promptText = buildPrompt(req, amendments);
     console.log(`[${req.asset_id}] iteration ${iter}: generating...`);
     const gen = generateOnce(req, promptText, [...(req.reference_assets || []), ...extraRefs]);
+    const genProvider = gen.provider || "unknown";
     if (!gen.ok) {
       console.error(`[${req.asset_id}] generation failed: ${gen.error}`);
       upsert(m, { asset_id: req.asset_id, filename: req.filename, world: req.world, purpose: req.purpose, source_type: "codex_imagegen", provider: "codex_imagegen", extra_cost_status: "subscription_included_confirmed", status: "generation_failed", iteration: iter, qa_issues: [gen.error], created_at: new Date().toISOString() });
@@ -150,7 +251,7 @@ function runOne(req, extraRefs = [], pairPartner = null) {
       world: req.world,
       purpose: req.purpose,
       source_type: "generated",
-      provider: "codex_imagegen",
+      provider: genProvider,
       extra_cost_status: "subscription_included_confirmed",
       prompt: promptText,
       reference_assets: [...(req.reference_assets || []), ...extraRefs],
@@ -187,10 +288,14 @@ switch (cmd) {
     for (const a of inv.assets) {
       if (!a.referenced_by.length && !a.quality_flags.includes("dynamic_ref_possible")) continue;
       if (m.assets.some((x) => x.asset_id === a.asset_id)) continue;
+      // an asset already tracked under another id (e.g. generated via the loop)
+      if (m.assets.some((x) => x.file_hash === a.hash)) continue;
       upsert(m, {
         asset_id: a.asset_id, filename: a.path.split("/").pop(), world: a.world,
         purpose: "(pre-Stage6 existing asset)", source_type: "existing", provider: "unknown_legacy",
-        extra_cost_status: "subscription_included_confirmed", prompt: null, reference_assets: [],
+        extra_cost_status: "unknown",
+        cost_note: "legacy asset created before Stage 6; provenance unknown, no future cost (record-only, never a generation path)",
+        prompt: null, reference_assets: [],
         dimensions: a.width && a.height ? `${a.width}x${a.height}` : null, aspect_ratio: a.aspect_ratio,
         created_at: null, iteration: 0, qa_score: null, qa_issues: a.quality_flags,
         file_hash: a.hash, used_by: a.referenced_by, status: "in_use",

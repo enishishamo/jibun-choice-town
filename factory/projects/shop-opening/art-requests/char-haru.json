@@ -4,14 +4,33 @@
   "world": "shop",
   "use": "character",
   "purpose": "5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場",
-  "scene": "A friendly Japanese adult in their early 30s who dreams of opening a small teishoku diner. Warm, hopeful, slightly nervous smile. Wearing a clean modern apron over casual clothes, holding a small recipe notebook. Gender-ambiguous styling (avoid strongly gendered stereotypes), short neat hair.",
-  "composition": "Upper body, facing slightly toward the viewer, centered, plain very light warm background (soft cream), generous head room, nothing cropped. Same clay-figure proportions as the series (about 3 heads tall, simplified hands).",
-  "required_objects": ["clean apron", "small notebook", "warm hopeful expression"],
-  "forbidden_objects": ["readable text", "brand logos", "kitchen background clutter", "photorealistic skin"],
+  "scene": "A friendly Japanese adult in their early 30s who dreams of opening a small teishoku (set-meal) diner. Warm, hopeful smile. Wearing a clean modern navy apron over casual clothes, holding a round wooden serving tray with a small clay bowl of rice and a tiny miso soup bowl on it (clearly a diner cook-to-be). Gender-ambiguous styling, short neat hair.",
+  "composition": "UPPER BODY ONLY (waist-up), centered, LOTS of empty margin: the head top must be well below the top edge (at least 15% headroom) and the waist crop well above the bottom edge. Plain very light warm background (soft cream). CRITICAL: chibi clay-figure proportions of this series — big round head, small body, about 2.5 heads tall in full (so the visible waist-up is mostly head and chest), simplified mitten-like hands.",
+  "required_objects": [
+    "navy apron",
+    "round wooden serving tray with rice bowl and miso soup",
+    "warm hopeful expression",
+    "big-head chibi proportions (2.5-3 heads)",
+    "generous margins on all sides"
+  ],
+  "forbidden_objects": [
+    "readable text",
+    "brand logos",
+    "realistic adult proportions (4+ heads tall)",
+    "full body / legs / shoes",
+    "kitchen background clutter",
+    "photorealistic skin",
+    "elements touching the image edges"
+  ],
   "aspect_ratio": "1:1",
   "size": "800x800",
-  "character_constraints": "modern, kind, believable adult; NOT childish; no gender-stereotyped exaggeration",
-  "reference_assets": ["public/assets/medical/who_doctor.jpg", "public/assets/town-hero.png"],
+  "character_constraints": "modern, kind adult; series chibi clay proportions (2.5-3 heads), NOT realistic proportions; no gender-stereotyped exaggeration",
+  "reference_assets": [
+    "public/assets/medical/who_doctor.jpg",
+    "public/assets/town-hero.png"
+  ],
   "output_path": "public/assets/shop/char-haru.png",
-  "used_by": ["src/data/content/shopOpening.ts"]
+  "used_by": [
+    "src/data/content/shopOpening.ts"
+  ]
 }

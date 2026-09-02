@@ -1,0 +1,26 @@
+{
+ "note": "Confirmed design decisions that override the scanner's art-need classification. Every entry must cite the deciding document. Reviewed when the source document changes.",
+ "overrides": [
+  {
+   "world_match": "商店街",
+   "what_match": "profession",
+   "what_match_ja": "portraits",
+   "decision": "職業ヒーロー5点はSVGプレースホルダのまま（任意・次回リスト昇格待ち）。生成しないのは意図的な設計判断",
+   "source": "factory/projects/shop-opening/art-plan-v2.md 『任意（体験は上がるが必須ではない・今回は生成しない）』"
+  },
+  {
+   "world_match": "商店街",
+   "what_match": "observation",
+   "what_match_ja": "検査",
+   "decision": "ch5検査の観察はテキスト記述がC（基準と突き合わせる情報）そのものであり、画像化しない設計。実プレイQA済み",
+   "source": "factory/projects/shop-opening/art-plan-v2.md 分類②『ch5 スポット近景9: 観察テキスト＝Cそのもの』"
+  },
+  {
+   "world_match": "商店街",
+   "what_match": "scene-audit",
+   "what_match_ja": "現場",
+   "decision": "ch5検査（scene_audit）の観察はテキスト記述がCそのもの。画像化しない設計（実プレイQA済み）",
+   "source": "factory/projects/shop-opening/art-plan-v2.md 分類②"
+  }
+ ]
+}

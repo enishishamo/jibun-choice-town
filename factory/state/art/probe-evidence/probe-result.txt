@@ -1,0 +1,1 @@
+{"generated":true,"file":"probe.png","tool_used":"image_gen.imagegen","error":null}

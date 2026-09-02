@@ -1,0 +1,12 @@
+You are doing a repo-wide ART REQUIREMENT scan for JIBUN CHOICE (React+TS, educational game).
+Read the actual code — src/ components, src/data/content/*.ts, src/index.css — and report:
+1. todo_art: every TODO(art) / art-related TODO with file:line and what it asks for.
+2. emoji_placeholders: emoji used as stand-ins for scene/object visuals (not ordinary UI emoji).
+3. art_needs: for each WORLD, places where a genuinely MISSING visual hurts comprehension,
+   classified ESSENTIAL (game understanding / before-after / state difference / scene
+   observation / job-specific visual), SUPPORTING (people, town, atmosphere), OPTIONAL
+   (decoration). Be conservative: if existing assets, CSS or emoji already communicate it,
+   do NOT list it. Adding images is not a goal.
+Output single JSON object only:
+{"todo_art":[{"file":"","line":0,"ask":""}],"emoji_placeholders":[{"file":"","line":0,"represents":""}],
+ "art_needs":[{"world":"","where":"","what":"","class":"ESSENTIAL|SUPPORTING|OPTIONAL","existing_candidate":"path or null"}]}

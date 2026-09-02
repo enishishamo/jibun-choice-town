@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "blockers": [],
+    "high": [
+      "Provider abstraction requirement is not met: generation is hard-coded to codex_imagegen in both the loop and adapter, so another generating provider cannot be substituted without modifying harness code.",
+      "Vision QA can pass an asset despite the critic returning FAIL for a style-contract MUST violation: the enforced verdict ignores critic_verdict and issue semantics when all numeric scores are at least 70."
+    ],
+    "medium": [
+      "Manifest registration is not mechanically reproducible: register-existing writes subscription_included_confirmed for unknown_legacy assets, while the checked-in manifest was manually corrected to unknown.",
+      "Link QA documentation says duplicate basenames fail, but the implementation records them only as warnings and exits successfully.",
+      "The current need detector marks shop profession portraits and the inspection scene ESSENTIAL, yet the practical run generated neither; shopOpening.ts describes the remaining profession portraits as optional, contradicting art-needs.json."
+    ],
+    "low": [
+      "The lockfile prevents concurrent manifest clobbering but has no PID-liveness or stale-lock recovery mechanism.",
+      "Generated before/after PNGs exceed the inventory's 1.5 MB oversized threshold, although they remain below the QA hard limit."
+    ],
+    "evidence": [
+      "factory/harness/art/art-loop.mjs:144 — generateOnce always passes --provider codex_imagegen.",
+      "factory/harness/art/art-provider.mjs:59 — generate rejects every provider except codex_imagegen.",
+      "factory/harness/art/art-loop.mjs:156 — provider-agnostic claim describes strategy routing, but css/svg are only recorded as in-session tasks and generation remains hard-coded.",
+      "factory/harness/art/art-qa.mjs:79 — enforceVerdict derives PASS solely from score validity, thresholds, and mechanical issues.",
+      "factory/harness/art/art-qa.mjs:111 — critic_verdict is emitted for diagnostics but is not used by the gate.",
+      "factory/harness/art/art-loop.mjs:260 — register-existing assigns subscription_included_confirmed to provider unknown_legacy.",
+      "factory/state/art/manifest-v2.json — checked-in unknown_legacy entries instead contain extra_cost_status unknown, diverging from the regenerating code path.",
+      "factory/harness/art/art-link-qa.mjs:42 — duplicate basenames are appended to warnings rather than errors.",
+      "factory/harness/art/art-link-qa.mjs:85 — process exit status depends only on errors, so duplicate basename findings do not fail QA.",
+      "factory/state/art/art-needs.json — current output contains four ESSENTIAL needs, including shop profession portraits and the restaurant inspection scene.",
+      "src/data/content/shopOpening.ts:9 — remaining profession heroes are described as optional despite current detector classification as ESSENTIAL.",
+      "src/data/content/shopOpening.ts:39 — sceneMap uses ba-before and opening uses char-haru.",
+      "src/data/content/shopOpening.ts:105 — wrapUp correctly wires ba-before and ba-after.",
+      "factory/harness/art/art-loop.mjs:199 — regeneration is capped at MAX_ITER=3 and failed QA issues amend subsequent prompts.",
+      "factory/harness/art/art-loop.mjs:284 — accepted before output is supplied as the after-generation reference and pair-QA partner.",
+      "factory/state/art/manifest-v2.json — three shop assets record prompts, provider, cost status, references, dimensions, QA scores, hashes, and used_by; char-haru records iteration 2 with amended prompt.",
+      "factory/state/art/provider-status.json — codex_imagegen probe records an executed, saved, visually verified 1254x1254 PNG and subscription_included_confirmed status.",
+      "factory/harness/art/art-provider.mjs:56 — named paid providers are mechanically rejected before generation.",
+      "factory/harness/art/style-contract.md:16 — textual MUST rules include no readable text, and the reference table contains concrete repository asset paths.",
+      "factory/state/art/asset-inventory.json — inventory contains 155 assets, zero missing references, and correct dimensions/hashes/references for all three shop assets.",
+      "public/assets/shop/ba-before.png — inspected artifact is a coherent text-free clay shopping street with three closed storefronts.",
+      "public/assets/shop/ba-after.png — inspected artifact preserves the same camera, buildings, and neighborhood while opening only the middle storefront.",
+      "public/assets/shop/char-haru.png — inspected artifact is a text-free clay character with apron, serving tray, rice, and soup."
+    ],
+    "recommended_actions": [
+      "Introduce a provider interface/registry so the loop selects a request-configured provider and all supported strategies return a common result schema without loop changes.",
+      "Make QA fail whenever critic_verdict is FAIL, and explicitly detect contract-MUST issues such as readable text, logos, photorealism, cropping, or pair inconsistency.",
+      "Change register-existing to write extra_cost_status unknown for unknown_legacy and regenerate the manifest from code.",
+      "Promote duplicate-basename findings to errors or align the stated link-QA contract with the actual policy.",
+      "Resolve the ESSENTIAL shop needs or reclassify them with documented evidence; remove the conflicting optional claim from shopOpening.ts.",
+      "Add stale-lock validation using the recorded PID and optimize the two oversized shop images."
+    ]
+  },
+  "elapsed_sec": 76.223
+}

@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 82,
+    "blockers": [],
+    "high": [
+      "Vision QA can reuse stale results and falsely pass: every invocation reads the shared /tmp/jc-artqa-reply.txt without deleting it first or requiring the current Codex process to succeed. A failed or concurrent invocation can therefore consume an earlier valid PASS, violating fail-closed QA."
+    ],
+    "medium": [
+      "The provider abstraction is incomplete: reuse, CSS, and SVG bypass art-provider.mjs; CSS/SVG merely create manifest entries marked in_session_task without producing or verifying an artifact. The adapter itself exposes only generate, compose, and human-boundary.",
+      "Asset link QA recognizes only a narrow helper definition and double-quoted literal calls. Single-quoted calls, template literals, imported helpers, and computed arguments evade validation, so its general fail-closed claim is too broad.",
+      "art-needs.json retains an ESSENTIAL classification while resolving it through an override whose cited design decision calls it optional. This leaves classification and resolution semantics inconsistent and permits ESSENTIAL needs to be suppressed without reclassification."
+    ],
+    "low": [
+      "The art-loop lock has no PID-liveness or stale-lock recovery check; an abnormal termination can permanently block later runs until manual deletion.",
+      "The recorded provider probe result asserts that probe.png was generated and visually checked, but probe-codex-gen.json records only tool availability and the probe image itself is absent. The three generated production assets nevertheless provide stronger practical evidence that the provider could generate and save files."
+    ],
+    "evidence": [
+      "factory/harness/art/art-qa.mjs:63 — all QA runs write to one fixed /tmp/jc-artqa-reply.txt path.",
+      "factory/harness/art/art-qa.mjs:66-72 — process exit status is not required to be successful and the possibly stale file is parsed directly.",
+      "factory/harness/art/art-loop.mjs:31 — regeneration is capped at three iterations.",
+      "factory/harness/art/art-loop.mjs:245-246 — QA issues are injected as amendments for the next prompt.",
+      "factory/harness/art/art-loop.mjs:167-190 — reuse/CSS/SVG are handled outside the provider adapter; CSS/SVG only register in_session_task entries.",
+      "factory/harness/art/art-provider.mjs:113-133 — generator selection requires a probed, safe, subscription-included provider and has only codex_imagegen implemented.",
+      "factory/harness/art/art-provider.mjs:122-126 — explicitly requested paid providers are rejected, and unprobed/paid/unknown providers cannot enter the usable set.",
+      "factory/harness/art/art-link-qa.mjs:70-75 — helper validation supports only a specific local definition shape and double-quoted literal calls.",
+      "factory/harness/art/asset-inventory.mjs:64-90 — dynamic prefix-${id} references are mechanically detected and protected from orphan classification.",
+      "factory/harness/art/style-contract.md:7-28 — textual MUST rules and six concrete reference-asset paths are present.",
+      "factory/harness/art/art-need-detector.mjs:20-31 — scan prompt defines ESSENTIAL, SUPPORTING, and OPTIONAL and explicitly says adding images is not a goal.",
+      "factory/harness/art/art-need-detector.mjs:70-74 — OPTIONAL needs are skipped and existing candidates reduce generation needs.",
+      "factory/state/art/art-needs.json:2-8 — output is regenerable evidence and still reports an unresolved art TODO.",
+      "factory/state/art/provider-status.json:54-63 — codex_imagegen is recorded as OAuth, subscription-included, real-probed, file-saving, and safe for automation.",
+      "factory/state/art/probe-codex-gen.json:1-13 — probe artifact confirms tool availability but contains neither generated-file metadata nor visual-verification evidence.",
+      "factory/state/art/manifest-v2.json:2600-2638 — before asset records prompt, provider, cost status, references, dimensions, QA, hash, and used_by.",
+      "factory/state/art/manifest-v2.json:2641-2678 — after asset records the before image as its reference and pair consistency score 99.",
+      "factory/state/art/manifest-v2.json:2681-2719 — Haru records iteration 2 with the prior QA defects incorporated into its amended prompt.",
+      "factory/projects/shop-opening/art-requests/ba-after.json:7-13 — request requires identical architecture/camera and limits the change to opening the middle shop.",
+      "src/data/content/shopOpening.ts:39-49 — ba-before and char-haru are wired into sceneMap/opening.",
+      "src/data/content/shopOpening.ts:105-111 — ba-before and ba-after are wired into wrapUp.beforeAfter.",
+      "public/assets/shop/ba-before.png:1 — inspected artifact is a coherent 1200x900 no-text clay storefront scene.",
+      "public/assets/shop/ba-after.png:1 — inspected artifact preserves the building, framing, neighbors, and palette while opening only the center shop.",
+      "public/assets/shop/char-haru.png:1 — inspected 800x800 artifact is a no-text clay character with apron, tray, rice, and soup.",
+      "factory/state/art/manifest-v2.json:2634 — recorded before hash 17784a5d0e3e matches the file on disk.",
+      "factory/state/art/manifest-v2.json:2674 — recorded after hash 137110cc0788 matches the file on disk.",
+      "factory/state/art/manifest-v2.json:2703 — recorded Haru hash 27d839830d2c matches the file on disk."
+    ],
+    "recommended_actions": [
+      "Use a unique mkdtemp-created QA reply path per invocation, remove it before execution, require r.status === 0, and parse only a newly created file.",
+      "Route reuse/CSS/SVG through explicit provider-adapter operations that actually validate or produce their outputs; do not mark placeholder manifest records as completed work.",
+      "Replace regex-only link checking with AST-based extraction or broaden it to all literal quote styles, template literals, imported helpers, and resolvable computed calls.",
+      "Require overrides to explicitly reclassify a need with an auditable reason, or prohibit resolved_by_design from suppressing an item that remains classified ESSENTIAL.",
+      "Add stale-lock recovery using PID/liveness metadata and atomic ownership checks.",
+      "Persist the probe image plus dimensions/hash/verification result, or make provider-status reference the generated production evidence used to establish the probe."
+    ]
+  },
+  "elapsed_sec": 102.363
+}

@@ -1,0 +1,837 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "todo_art": [
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 7,
+        "ask": "Generate board-street.png, then replace the CSS-rendered shop cards with cropped views of that board artwork."
+      }
+    ],
+    "emoji_placeholders": [
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 56,
+        "represents": "Commercial-building hotspot for the vacant-shop matching chapter."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 63,
+        "represents": "Business-plan document hotspot for the management-coaching chapter."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 70,
+        "represents": "Financing/money hotspot for the loan-screening chapter."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 79,
+        "represents": "Floor-plan/design hotspot for the shop-design chapter."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 88,
+        "represents": "Inspection hotspot for the food-safety chapter."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 127,
+        "represents": "Interim SVG emoji portrait for the vacant-shop coordinator profession."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 160,
+        "represents": "Interim SVG emoji portrait for the management adviser profession."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 192,
+        "represents": "Interim SVG emoji portrait for the loan-screening profession."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 224,
+        "represents": "Interim SVG emoji portrait for the shop designer profession."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 256,
+        "represents": "Interim SVG emoji portrait for the food-sanitation inspector profession."
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 61,
+        "represents": "Itinerary-planning scene hotspot."
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 62,
+        "represents": "Teacher-led student-safety scene hotspot."
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 63,
+        "represents": "Bus-operation scene hotspot."
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 64,
+        "represents": "Tour-conductor delay-recovery scene hotspot."
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 65,
+        "represents": "Ryokan group-reception scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 84,
+        "represents": "Doctor/examination scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 85,
+        "represents": "Blood-laboratory scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 87,
+        "represents": "Chest-X-ray scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 89,
+        "represents": "Diagnostic clue-synthesis scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 91,
+        "represents": "Medication-safety scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 93,
+        "represents": "Nurse-observation scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 94,
+        "represents": "Hospital-meal/dietitian scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 96,
+        "represents": "Patient-mobility/physical-therapy scene hotspot."
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 98,
+        "represents": "Returning-home/social-work scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 62,
+        "represents": "Event-planning scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 69,
+        "represents": "Event-promotion scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 76,
+        "represents": "Event-program timing scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 83,
+        "represents": "Venue-layout scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 90,
+        "represents": "Sound-engineering scene hotspot."
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 97,
+        "represents": "Crowd-control/security scene hotspot."
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 60,
+        "represents": "Milk/raw-material sourcing scene hotspot."
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 67,
+        "represents": "Ice-cream recipe-development scene hotspot."
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 74,
+        "represents": "Package-development scene hotspot."
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 81,
+        "represents": "Factory-line production scene hotspot."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 303,
+        "represents": "Work-process chart used as a cook-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 305,
+        "represents": "Hygiene-rule material used as a cook-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 306,
+        "represents": "Temperature record sheet used as a cook-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 331,
+        "represents": "Next-month menu sheet used as a nutritionist-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 332,
+        "represents": "Nutrition standards used as a nutritionist-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 333,
+        "represents": "Ingredient-price information used as a nutritionist-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 334,
+        "represents": "Seasonal/local-food information used as a nutritionist-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 335,
+        "represents": "Kitchen-capability information used as a nutritionist-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 366,
+        "represents": "Carrot variety and cultivation calendar used as a farming-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 367,
+        "represents": "Temperature forecast used as a farming-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 368,
+        "represents": "School delivery-date order used as a farming-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 369,
+        "represents": "Field-soil condition used as a farming-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 394,
+        "represents": "School order sheet used as a logistics-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 395,
+        "represents": "Food storage-temperature material used as a logistics-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 397,
+        "represents": "Delivery deadline/time used as a logistics-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 420,
+        "represents": "Factory acceptance rules used as a recycling-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 421,
+        "represents": "Magnetic sorting machine used as a recycling-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 422,
+        "represents": "Air classifier used as a recycling-game tool."
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 423,
+        "represents": "Manual sorting station used as a recycling-game tool."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 16,
+        "represents": "Haru and her planned set-meal restaurant."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 17,
+        "represents": "Prospective variety-goods shop tenant."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 18,
+        "represents": "Prospective bakery tenant."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 31,
+        "represents": "Former clothing-store vacant property."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 37,
+        "represents": "Former restaurant vacant property."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 45,
+        "represents": "Former kimono-store vacant property."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 53,
+        "represents": "Existing bakery on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 54,
+        "represents": "Vacant storefront A on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 55,
+        "represents": "Existing greengrocer on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 56,
+        "represents": "Vacant storefront B on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 57,
+        "represents": "Second existing bakery on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 58,
+        "represents": "Vacant storefront C on the CSS shopping street."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 18,
+        "represents": "Kitchen equipment block placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 19,
+        "represents": "Partition door placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 20,
+        "represents": "Kitchen handwashing fixture placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 21,
+        "represents": "Restroom handwashing fixture placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 22,
+        "represents": "Waste-bin and dish-cupboard area placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 23,
+        "represents": "Two-seat table placed on the floor plan."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 24,
+        "represents": "Two-seat counter placed on the floor plan."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 26,
+        "represents": "Kitchen-to-dining-room door inspected in the completed shop."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 28,
+        "represents": "Kitchen handwashing fixture inspected in the completed shop."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 30,
+        "represents": "Kitchen sink inspected in the completed shop."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 32,
+        "represents": "Restroom handwashing fixture inspected in the completed shop."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 34,
+        "represents": "Back-room waste bin inspected for a lid."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 38,
+        "represents": "Back-room dish cupboard inspected for doors."
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 42,
+        "represents": "Obsolete back-room handwashing fixture inspected for removal."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 21,
+        "represents": "Raw-milk input station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 22,
+        "represents": "Mixing station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 23,
+        "represents": "Freezing station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 24,
+        "represents": "Container-filling station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 25,
+        "represents": "Wrapping station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 26,
+        "represents": "Box-packing station on the ice-cream factory line."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "line": 133,
+        "represents": "Ice-cream product moving or becoming stuck on the factory line."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 20,
+        "represents": "Paper packaging material."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 21,
+        "represents": "Plastic packaging material."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 22,
+        "represents": "Aluminum packaging material."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 23,
+        "represents": "Plant-based packaging material."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 36,
+        "represents": "Cup package shape."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 37,
+        "represents": "Bag package shape."
+      },
+      {
+        "file": "src/q1/PackageGame.tsx",
+        "line": 38,
+        "represents": "Box package shape."
+      },
+      {
+        "file": "src/q1/RecipeGame.tsx",
+        "line": 24,
+        "represents": "Milk ingredient in the recipe formulation."
+      },
+      {
+        "file": "src/q1/RecipeGame.tsx",
+        "line": 25,
+        "represents": "Sugar ingredient in the recipe formulation."
+      },
+      {
+        "file": "src/q1/RecipeGame.tsx",
+        "line": 26,
+        "represents": "Strawberry ingredient in the recipe formulation."
+      },
+      {
+        "file": "src/q1/RecipeGame.tsx",
+        "line": 27,
+        "represents": "Water content in the recipe formulation."
+      },
+      {
+        "file": "src/q1/RecipeGame.tsx",
+        "line": 28,
+        "represents": "Other ingredients in the recipe formulation."
+      },
+      {
+        "file": "src/q1/SourcingGame.tsx",
+        "line": 25,
+        "represents": "Supplier A and its delivery operation."
+      },
+      {
+        "file": "src/q1/SourcingGame.tsx",
+        "line": 26,
+        "represents": "Supplier B and its delivery operation."
+      },
+      {
+        "file": "src/q1/SourcingGame.tsx",
+        "line": 27,
+        "represents": "Supplier C and its delivery operation."
+      },
+      {
+        "file": "src/q1/LogisticsGame.tsx",
+        "line": 26,
+        "represents": "Fresh mackerel cargo."
+      },
+      {
+        "file": "src/q1/LogisticsGame.tsx",
+        "line": 27,
+        "represents": "Potato cargo."
+      },
+      {
+        "file": "src/q1/LogisticsGame.tsx",
+        "line": 28,
+        "represents": "Chicken cargo."
+      },
+      {
+        "file": "src/q1/LogisticsGame.tsx",
+        "line": 29,
+        "represents": "Frozen-croquette cargo."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 28,
+        "represents": "Unavailable spinach side dish on the school-lunch tray."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 36,
+        "represents": "Spinach sourced from another region."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 37,
+        "represents": "Komatsuna sesame side dish."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 38,
+        "represents": "Cabbage side dish."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 39,
+        "represents": "French-fries side dish."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 123,
+        "represents": "Rice on the meal tray."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 124,
+        "represents": "Grilled mackerel on the meal tray."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 126,
+        "represents": "Miso soup on the meal tray."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 30,
+        "represents": "Metal spoon contaminant in the recycling stream."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 40,
+        "represents": "Plastic-bag contaminant in the recycling stream."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 50,
+        "represents": "Chopstick contaminant in the recycling stream."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 60,
+        "represents": "Magnetic separator used to remove metal."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 61,
+        "represents": "Screen/net used to sort by size."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 62,
+        "represents": "Manual sorting used to remove visible contaminants."
+      },
+      {
+        "file": "src/q1/SiteHeatGame.tsx",
+        "line": 34,
+        "represents": "Heavy outdoor construction task."
+      },
+      {
+        "file": "src/q1/SiteHeatGame.tsx",
+        "line": 35,
+        "represents": "Heavy brick-carrying outdoor task."
+      },
+      {
+        "file": "src/q1/SiteHeatGame.tsx",
+        "line": 36,
+        "represents": "Light tool-based work task."
+      },
+      {
+        "file": "src/q1/SiteHeatGame.tsx",
+        "line": 37,
+        "represents": "Indoor work task."
+      },
+      {
+        "file": "src/q1/SiteHeatGame.tsx",
+        "line": 38,
+        "represents": "Cooling/rest period."
+      },
+      {
+        "file": "src/q1/WaterGame.tsx",
+        "line": 26,
+        "represents": "Household water-use sector."
+      },
+      {
+        "file": "src/q1/WaterGame.tsx",
+        "line": 36,
+        "represents": "Agricultural water-use sector."
+      },
+      {
+        "file": "src/q1/WaterGame.tsx",
+        "line": 46,
+        "represents": "Industrial water-use sector."
+      },
+      {
+        "file": "src/q1/WaterGame.tsx",
+        "line": 98,
+        "represents": "Rain falling into the CSS-rendered dam visualization."
+      },
+      {
+        "file": "src/q1/PowerGame.tsx",
+        "line": 34,
+        "represents": "Additional thermal-power generation."
+      },
+      {
+        "file": "src/q1/PowerGame.tsx",
+        "line": 35,
+        "represents": "Stored hydroelectric generation."
+      },
+      {
+        "file": "src/q1/PowerGame.tsx",
+        "line": 36,
+        "represents": "Electricity imported from another region."
+      },
+      {
+        "file": "src/q1/UrbanHeatGame.tsx",
+        "line": 11,
+        "represents": "Solar-radiation map layer."
+      },
+      {
+        "file": "src/q1/UrbanHeatGame.tsx",
+        "line": 12,
+        "represents": "Wind map layer."
+      },
+      {
+        "file": "src/q1/UrbanHeatGame.tsx",
+        "line": 13,
+        "represents": "Building-density map layer."
+      },
+      {
+        "file": "src/q1/UrbanHeatGame.tsx",
+        "line": 14,
+        "represents": "Tree-cover map layer and proposed mitigation."
+      },
+      {
+        "file": "src/q1/LifePlanGame.tsx",
+        "line": 71,
+        "represents": "The elderly patient beside the discharge-planning interview."
+      },
+      {
+        "file": "src/q1/LifePlanGame.tsx",
+        "line": 126,
+        "represents": "The elderly patient's stated wishes."
+      },
+      {
+        "file": "src/q1/NurseObserveGame.tsx",
+        "line": 53,
+        "represents": "The elderly patient being observed at bedside."
+      },
+      {
+        "file": "src/q1/NurseObserveGame.tsx",
+        "line": 78,
+        "represents": "The patient's largely uneaten meal."
+      },
+      {
+        "file": "src/q1/MealFitGame.tsx",
+        "line": 84,
+        "represents": "The elderly patient during the dietitian interview."
+      },
+      {
+        "file": "src/q1/MoveTryGame.tsx",
+        "line": 24,
+        "represents": "Patient attempting to sit up from bed."
+      },
+      {
+        "file": "src/q1/MoveTryGame.tsx",
+        "line": 28,
+        "represents": "Patient attempting to stand."
+      },
+      {
+        "file": "src/q1/MoveTryGame.tsx",
+        "line": 32,
+        "represents": "Patient attempting to walk to the toilet."
+      },
+      {
+        "file": "src/q1/XrayGame.tsx",
+        "line": 214,
+        "represents": "Lungs in the X-ray result phase."
+      },
+      {
+        "file": "src/q1/SafetyPlanGame.tsx",
+        "line": 15,
+        "represents": "Homeroom teacher available for the trip safety team."
+      },
+      {
+        "file": "src/q1/SafetyPlanGame.tsx",
+        "line": 16,
+        "represents": "Assistant homeroom teacher available for the trip safety team."
+      },
+      {
+        "file": "src/q1/SafetyPlanGame.tsx",
+        "line": 17,
+        "represents": "Grade leader available for the trip safety team."
+      },
+      {
+        "file": "src/q1/SafetyPlanGame.tsx",
+        "line": 18,
+        "represents": "School nurse available for the trip safety team."
+      },
+      {
+        "file": "src/q1/SafetyPlanGame.tsx",
+        "line": 19,
+        "represents": "Parent representative available for the trip safety team."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 15,
+        "represents": "Tour bus 1."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 16,
+        "represents": "Tour bus 2."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 17,
+        "represents": "Tour bus 3."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 23,
+        "represents": "Bus driver Tanaka."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 24,
+        "represents": "Bus driver Sato."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 25,
+        "represents": "Bus driver Suzuki."
+      },
+      {
+        "file": "src/q1/BusOpsGame.tsx",
+        "line": 75,
+        "represents": "Road closure encountered during bus operation."
+      },
+      {
+        "file": "src/q1/HotelReceiveGame.tsx",
+        "line": 136,
+        "represents": "Student groups, supervising teacher, and hotel rooms in the room-assignment board."
+      },
+      {
+        "file": "src/q1/SoundCheckGame.tsx",
+        "line": 114,
+        "represents": "Stage microphone in the venue sound-map visualization."
+      }
+    ],
+    "art_needs": [
+      {
+        "world": "商店街・開店編",
+        "where": "Profession discovery cards and job encyclopedia entries for all five professions",
+        "what": "Actual job-specific people/workplace portraits are missing; every profession currently uses a colored-circle inline SVG containing only a generic emoji, which does not show what the worker does or distinguish the roles visually.",
+        "class": "ESSENTIAL",
+        "existing_candidate": null
+      },
+      {
+        "world": "商店街・開店編",
+        "where": "食品衛生監視員の実地検査 game (scene_audit)",
+        "what": "The core observation task has no view of the completed restaurant or visible defects; children inspect a text list decorated with fixture emojis, so the spatial and visual difference between compliant and noncompliant states cannot be observed.",
+        "class": "ESSENTIAL",
+        "existing_candidate": null
+      },
+      {
+        "world": "医療編",
+        "where": "看護師の患者観察 game (nurse_observe)",
+        "what": "The patient and uneaten meal are represented only by emojis while the task is explicitly about noticing a change in appearance and behavior; a patient-state visual would make observation, rather than checklist reading, carry the decision.",
+        "class": "ESSENTIAL",
+        "existing_candidate": "public/assets/medical/ward.jpg"
+      },
+      {
+        "world": "医療編",
+        "where": "理学療法士の動作確認 game (move_try)",
+        "what": "Sitting up, standing, and walking are represented by generic emojis and text, so posture, support, balance, and the effect of aids are not visually distinguishable even though those state differences are the job-specific subject of the activity.",
+        "class": "ESSENTIAL",
+        "existing_candidate": "public/assets/medical/rehab.jpg"
+      }
+    ]
+  },
+  "output": "{\"todo_art\":[{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":7,\"ask\":\"Generate board-street.png, then replace the CSS-rendered shop cards with cropped views of that board artwork.\"}],\"emoji_placeholders\":[{\"file\":\"src/data/content/shopOpening.ts\",\"line\":56,\"represents\":\"Commercial-building hotspot for the vacant-shop matching chapter.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":63,\"represents\":\"Business-plan document hotspot for the management-coaching chapter.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":70,\"represents\":\"Financing/money hotspot for the loan-screening chapter.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":79,\"represents\":\"Floor-plan/design hotspot for the shop-design chapter.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":88,\"represents\":\"Inspection hotspot for the food-safety chapter.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":127,\"represents\":\"Interim SVG emoji portrait for the vacant-shop coordinator profession.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":160,\"represents\":\"Interim SVG emoji portrait for the management adviser profession.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":192,\"represents\":\"Interim SVG emoji portrait for the loan-screening profession.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":224,\"represents\":\"Interim SVG emoji portrait for the shop designer profession.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":256,\"represents\":\"Interim SVG emoji portrait for the food-sanitation inspector profession.\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":61,\"represents\":\"Itinerary-planning scene hotspot.\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":62,\"represents\":\"Teacher-led student-safety scene hotspot.\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":63,\"represents\":\"Bus-operation scene hotspot.\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":64,\"represents\":\"Tour-conductor delay-recovery scene hotspot.\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":65,\"represents\":\"Ryokan group-reception scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":84,\"represents\":\"Doctor/examination scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":85,\"represents\":\"Blood-laboratory scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":87,\"represents\":\"Chest-X-ray scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":89,\"represents\":\"Diagnostic clue-synthesis scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":91,\"represents\":\"Medication-safety scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":93,\"represents\":\"Nurse-observation scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":94,\"represents\":\"Hospital-meal/dietitian scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":96,\"represents\":\"Patient-mobility/physical-therapy scene hotspot.\"},{\"file\":\"src/data/content/medical.ts\",\"line\":98,\"represents\":\"Returning-home/social-work scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":62,\"represents\":\"Event-planning scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":69,\"represents\":\"Event-promotion scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":76,\"represents\":\"Event-program timing scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":83,\"represents\":\"Venue-layout scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":90,\"represents\":\"Sound-engineering scene hotspot.\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":97,\"represents\":\"Crowd-control/security scene hotspot.\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":60,\"represents\":\"Milk/raw-material sourcing scene hotspot.\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":67,\"represents\":\"Ice-cream recipe-development scene hotspot.\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":74,\"represents\":\"Package-development scene hotspot.\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":81,\"represents\":\"Factory-line production scene hotspot.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":303,\"represents\":\"Work-process chart used as a cook-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":305,\"represents\":\"Hygiene-rule material used as a cook-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":306,\"represents\":\"Temperature record sheet used as a cook-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":331,\"represents\":\"Next-month menu sheet used as a nutritionist-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":332,\"represents\":\"Nutrition standards used as a nutritionist-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":333,\"represents\":\"Ingredient-price information used as a nutritionist-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":334,\"represents\":\"Seasonal/local-food information used as a nutritionist-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":335,\"represents\":\"Kitchen-capability information used as a nutritionist-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":366,\"represents\":\"Carrot variety and cultivation calendar used as a farming-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":367,\"represents\":\"Temperature forecast used as a farming-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":368,\"represents\":\"School delivery-date order used as a farming-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":369,\"represents\":\"Field-soil condition used as a farming-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":394,\"represents\":\"School order sheet used as a logistics-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":395,\"represents\":\"Food storage-temperature material used as a logistics-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":397,\"represents\":\"Delivery deadline/time used as a logistics-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":420,\"represents\":\"Factory acceptance rules used as a recycling-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":421,\"represents\":\"Magnetic sorting machine used as a recycling-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":422,\"represents\":\"Air classifier used as a recycling-game tool.\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":423,\"represents\":\"Manual sorting station used as a recycling-game tool.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":16,\"represents\":\"Haru and her planned set-meal restaurant.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":17,\"represents\":\"Prospective variety-goods shop tenant.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":18,\"represents\":\"Prospective bakery tenant.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":31,\"represents\":\"Former clothing-store vacant property.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":37,\"represents\":\"Former restaurant vacant property.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":45,\"represents\":\"Former kimono-store vacant property.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":53,\"represents\":\"Existing bakery on the CSS shopping street.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":54,\"represents\":\"Vacant storefront A on the CSS shopping street.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":55,\"represents\":\"Existing greengrocer on the CSS shopping street.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":56,\"represents\":\"Vacant storefront B on the CSS shopping street.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":57,\"represents\":\"Second existing bakery on the CSS shopping street.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":58,\"represents\":\"Vacant storefront C on the CSS shopping street.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":18,\"represents\":\"Kitchen equipment block placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":19,\"represents\":\"Partition door placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":20,\"represents\":\"Kitchen handwashing fixture placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":21,\"represents\":\"Restroom handwashing fixture placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":22,\"represents\":\"Waste-bin and dish-cupboard area placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":23,\"represents\":\"Two-seat table placed on the floor plan.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":24,\"represents\":\"Two-seat counter placed on the floor plan.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":26,\"represents\":\"Kitchen-to-dining-room door inspected in the completed shop.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":28,\"represents\":\"Kitchen handwashing fixture inspected in the completed shop.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":30,\"represents\":\"Kitchen sink inspected in the completed shop.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":32,\"represents\":\"Restroom handwashing fixture inspected in the completed shop.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":34,\"represents\":\"Back-room waste bin inspected for a lid.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":38,\"represents\":\"Back-room dish cupboard inspected for doors.\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":42,\"represents\":\"Obsolete back-room handwashing fixture inspected for removal.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":21,\"represents\":\"Raw-milk input station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":22,\"represents\":\"Mixing station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":23,\"represents\":\"Freezing station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":24,\"represents\":\"Container-filling station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":25,\"represents\":\"Wrapping station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":26,\"represents\":\"Box-packing station on the ice-cream factory line.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"line\":133,\"represents\":\"Ice-cream product moving or becoming stuck on the factory line.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":20,\"represents\":\"Paper packaging material.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":21,\"represents\":\"Plastic packaging material.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":22,\"represents\":\"Aluminum packaging material.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":23,\"represents\":\"Plant-based packaging material.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":36,\"represents\":\"Cup package shape.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":37,\"represents\":\"Bag package shape.\"},{\"file\":\"src/q1/PackageGame.tsx\",\"line\":38,\"represents\":\"Box package shape.\"},{\"file\":\"src/q1/RecipeGame.tsx\",\"line\":24,\"represents\":\"Milk ingredient in the recipe formulation.\"},{\"file\":\"src/q1/RecipeGame.tsx\",\"line\":25,\"represents\":\"Sugar ingredient in the recipe formulation.\"},{\"file\":\"src/q1/RecipeGame.tsx\",\"line\":26,\"represents\":\"Strawberry ingredient in the recipe formulation.\"},{\"file\":\"src/q1/RecipeGame.tsx\",\"line\":27,\"represents\":\"Water content in the recipe formulation.\"},{\"file\":\"src/q1/RecipeGame.tsx\",\"line\":28,\"represents\":\"Other ingredients in the recipe formulation.\"},{\"file\":\"src/q1/SourcingGame.tsx\",\"line\":25,\"represents\":\"Supplier A and its delivery operation.\"},{\"file\":\"src/q1/SourcingGame.tsx\",\"line\":26,\"represents\":\"Supplier B and its delivery operation.\"},{\"file\":\"src/q1/SourcingGame.tsx\",\"line\":27,\"represents\":\"Supplier C and its delivery operation.\"},{\"file\":\"src/q1/LogisticsGame.tsx\",\"line\":26,\"represents\":\"Fresh mackerel cargo.\"},{\"file\":\"src/q1/LogisticsGame.tsx\",\"line\":27,\"represents\":\"Potato cargo.\"},{\"file\":\"src/q1/LogisticsGame.tsx\",\"line\":28,\"represents\":\"Chicken cargo.\"},{\"file\":\"src/q1/LogisticsGame.tsx\",\"line\":29,\"represents\":\"Frozen-croquette cargo.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":28,\"represents\":\"Unavailable spinach side dish on the school-lunch tray.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":36,\"represents\":\"Spinach sourced from another region.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":37,\"represents\":\"Komatsuna sesame side dish.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":38,\"represents\":\"Cabbage side dish.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":39,\"represents\":\"French-fries side dish.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":123,\"represents\":\"Rice on the meal tray.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":124,\"represents\":\"Grilled mackerel on the meal tray.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":126,\"represents\":\"Miso soup on the meal tray.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":30,\"represents\":\"Metal spoon contaminant in the recycling stream.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":40,\"represents\":\"Plastic-bag contaminant in the recycling stream.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":50,\"represents\":\"Chopstick contaminant in the recycling stream.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":60,\"represents\":\"Magnetic separator used to remove metal.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":61,\"represents\":\"Screen/net used to sort by size.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":62,\"represents\":\"Manual sorting used to remove visible contaminants.\"},{\"file\":\"src/q1/SiteHeatGame.tsx\",\"line\":34,\"represents\":\"Heavy outdoor construction task.\"},{\"file\":\"src/q1/SiteHeatGame.tsx\",\"line\":35,\"represents\":\"Heavy brick-carrying outdoor task.\"},{\"file\":\"src/q1/SiteHeatGame.tsx\",\"line\":36,\"represents\":\"Light tool-based work task.\"},{\"file\":\"src/q1/SiteHeatGame.tsx\",\"line\":37,\"represents\":\"Indoor work task.\"},{\"file\":\"src/q1/SiteHeatGame.tsx\",\"line\":38,\"represents\":\"Cooling/rest period.\"},{\"file\":\"src/q1/WaterGame.tsx\",\"line\":26,\"represents\":\"Household water-use sector.\"},{\"file\":\"src/q1/WaterGame.tsx\",\"line\":36,\"represents\":\"Agricultural water-use sector.\"},{\"file\":\"src/q1/WaterGame.tsx\",\"line\":46,\"represents\":\"Industrial water-use sector.\"},{\"file\":\"src/q1/WaterGame.tsx\",\"line\":98,\"represents\":\"Rain falling into the CSS-rendered dam visualization.\"},{\"file\":\"src/q1/PowerGame.tsx\",\"line\":34,\"represents\":\"Additional thermal-power generation.\"},{\"file\":\"src/q1/PowerGame.tsx\",\"line\":35,\"represents\":\"Stored hydroelectric generation.\"},{\"file\":\"src/q1/PowerGame.tsx\",\"line\":36,\"represents\":\"Electricity imported from another region.\"},{\"file\":\"src/q1/UrbanHeatGame.tsx\",\"line\":11,\"represents\":\"Solar-radiation map layer.\"},{\"file\":\"src/q1/UrbanHeatGame.tsx\",\"line\":12,\"represents\":\"Wind map layer.\"},{\"file\":\"src/q1/UrbanHeatGame.tsx\",\"line\":13,\"represents\":\"Building-density map layer.\"},{\"file\":\"src/q1/UrbanHeatGame.tsx\",\"line\":14,\"represents\":\"Tree-cover map layer and proposed mitigation.\"},{\"file\":\"src/q1/LifePlanGame.tsx\",\"line\":71,\"represents\":\"The elderly patient beside the discharge-planning interview.\"},{\"file\":\"src/q1/LifePlanGame.tsx\",\"line\":126,\"represents\":\"The elderly patient's stated wishes.\"},{\"file\":\"src/q1/NurseObserveGame.tsx\",\"line\":53,\"represents\":\"The elderly patient being observed at bedside.\"},{\"file\":\"src/q1/NurseObserveGame.tsx\",\"line\":78,\"represents\":\"The patient's largely uneaten meal.\"},{\"file\":\"src/q1/MealFitGame.tsx\",\"line\":84,\"represents\":\"The elderly patient during the dietitian interview.\"},{\"file\":\"src/q1/MoveTryGame.tsx\",\"line\":24,\"represents\":\"Patient attempting to sit up from bed.\"},{\"file\":\"src/q1/MoveTryGame.tsx\",\"line\":28,\"represents\":\"Patient attempting to stand.\"},{\"file\":\"src/q1/MoveTryGame.tsx\",\"line\":32,\"represents\":\"Patient attempting to walk to the toilet.\"},{\"file\":\"src/q1/XrayGame.tsx\",\"line\":214,\"represents\":\"Lungs in the X-ray result phase.\"},{\"file\":\"src/q1/SafetyPlanGame.tsx\",\"line\":15,\"represents\":\"Homeroom teacher available for the trip safety team.\"},{\"file\":\"src/q1/SafetyPlanGame.tsx\",\"line\":16,\"represents\":\"Assistant homeroom teacher available for the trip safety team.\"},{\"file\":\"src/q1/SafetyPlanGame.tsx\",\"line\":17,\"represents\":\"Grade leader available for the trip safety team.\"},{\"file\":\"src/q1/SafetyPlanGame.tsx\",\"line\":18,\"represents\":\"School nurse available for the trip safety team.\"},{\"file\":\"src/q1/SafetyPlanGame.tsx\",\"line\":19,\"represents\":\"Parent representative available for the trip safety team.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":15,\"represents\":\"Tour bus 1.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":16,\"represents\":\"Tour bus 2.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":17,\"represents\":\"Tour bus 3.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":23,\"represents\":\"Bus driver Tanaka.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":24,\"represents\":\"Bus driver Sato.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":25,\"represents\":\"Bus driver Suzuki.\"},{\"file\":\"src/q1/BusOpsGame.tsx\",\"line\":75,\"represents\":\"Road closure encountered during bus operation.\"},{\"file\":\"src/q1/HotelReceiveGame.tsx\",\"line\":136,\"represents\":\"Student groups, supervising teacher, and hotel rooms in the room-assignment board.\"},{\"file\":\"src/q1/SoundCheckGame.tsx\",\"line\":114,\"represents\":\"Stage microphone in the venue sound-map visualization.\"}],\"art_needs\":[{\"world\":\"商店街・開店編\",\"where\":\"Profession discovery cards and job encyclopedia entries for all five professions\",\"what\":\"Actual job-specific people/workplace portraits are missing; every profession currently uses a colored-circle inline SVG containing only a generic emoji, which does not show what the worker does or distinguish the roles visually.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":null},{\"world\":\"商店街・開店編\",\"where\":\"食品衛生監視員の実地検査 game (scene_audit)\",\"what\":\"The core observation task has no view of the completed restaurant or visible defects; children inspect a text list decorated with fixture emojis, so the spatial and visual difference between compliant and noncompliant states cannot be observed.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":null},{\"world\":\"医療編\",\"where\":\"看護師の患者観察 game (nurse_observe)\",\"what\":\"The patient and uneaten meal are represented only by emojis while the task is explicitly about noticing a change in appearance and behavior; a patient-state visual would make observation, rather than checklist reading, carry the decision.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":\"public/assets/medical/ward.jpg\"},{\"world\":\"医療編\",\"where\":\"理学療法士の動作確認 game (move_try)\",\"what\":\"Sitting up, standing, and walking are represented by generic emojis and text, so posture, support, balance, and the effect of aids are not visually distinguishable even though those state differences are the job-specific subject of the activity.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":\"public/assets/medical/rehab.jpg\"}]}",
+  "elapsed_sec": 128.126
+}

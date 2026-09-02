@@ -10,7 +10,8 @@
 // Output (stdout JSON): { ok, verdict: PASS|FAIL, scores{}, issues[], mechanical{} }
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, statSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, dirname, resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -60,18 +61,40 @@ Scoring: use 100 for categories that do not apply (e.g. CHARACTER_ANATOMY with n
 BEFORE_AFTER_CONSISTENCY for a single image). verdict=FAIL if any applicable category < 70
 or a contract MUST is violated (readable text/logos, photorealism, cut-off heads/hands,
 old-fashioned or babyish style, wrong job tools).`;
-  const cargs = ["exec", "--sandbox", "read-only", "--cd", ROOT, "--skip-git-repo-check", "--output-last-message", "/tmp/jc-artqa-reply.txt"];
+  // fresh reply file per invocation — a stale reply from a previous run can
+  // never be mistaken for this one's result, and a failed codex run is an error
+  const replyFile = join(mkdtempSync(join(tmpdir(), "jc-artqa-")), "reply.txt");
+  const cargs = ["exec", "--sandbox", "read-only", "--cd", ROOT, "--skip-git-repo-check", "--output-last-message", replyFile];
   for (const f of files) cargs.push("-i", resolve(ROOT, f));
   cargs.push("-");
   const r = spawnSync("codex", cargs, { input: prompt, encoding: "utf8", timeout: 600000 });
+  if (r.status !== 0) return { error: `vision critic codex exec exited ${r.status}` };
   let raw = "";
-  try { raw = readFileSync("/tmp/jc-artqa-reply.txt", "utf8"); } catch { /* none */ }
+  try { raw = readFileSync(replyFile, "utf8"); } catch { /* none */ }
   const start = raw.indexOf("{");
   if (start < 0) return { error: `vision critic produced no JSON (exit ${r.status})` };
   for (let end = raw.length; end > start; end--) {
     try { return JSON.parse(raw.slice(start, end)); } catch { /* shrink */ }
   }
   return { error: "vision critic JSON unparsable" };
+}
+
+const CATEGORIES = ["STYLE_CONSISTENCY","COMPOSITION","CROP_SAFETY","READABILITY","OBJECT_COMPLETENESS","CHARACTER_ANATOMY","SERIES_CONSISTENCY","BEFORE_AFTER_CONSISTENCY","JOB_ACCURACY","MOBILE_USABILITY"];
+// Fail-closed: the harness computes the verdict from the scores itself.
+// Missing or non-numeric scores are a FAIL, regardless of the critic's own verdict.
+function enforceVerdict(vis, mechIssues) {
+  const problems = [];
+  if (!vis.scores || typeof vis.scores !== "object") return { verdict: "FAIL", problems: ["vision critic returned no scores"] };
+  // Bidirectional fail-closed: a critic FAIL (e.g. a style-contract MUST
+  // violation that numeric scores do not capture) can never be overridden.
+  if (vis.verdict !== "PASS") problems.push(`vision critic verdict: ${vis.verdict} (MUST violation or unstated failure)`);
+  for (const c of CATEGORIES) {
+    const v = vis.scores[c];
+    if (typeof v !== "number" || v < 0 || v > 100) problems.push(`invalid score for ${c}: ${v}`);
+    else if (v < 70) problems.push(`${c} below threshold: ${v}`);
+  }
+  if (mechIssues.length) problems.push(...mechIssues);
+  return { verdict: problems.length ? "FAIL" : "PASS", problems };
 }
 
 if (mode === "asset") {
@@ -89,10 +112,10 @@ if (mode === "asset") {
     console.log(JSON.stringify({ ok: false, verdict: "FAIL", mechanical: mech, issues: [...mech.issues, `VISION_QA_UNAVAILABLE: ${vis.error}`] }));
     process.exit(1);
   }
-  const issues = [...mech.issues, ...(vis.issues || [])];
-  const verdict = mech.issues.length === 0 && vis.verdict === "PASS" ? "PASS" : "FAIL";
-  console.log(JSON.stringify({ ok: true, verdict, scores: vis.scores, issues, mechanical: mech }, null, 1));
-  process.exit(verdict === "PASS" ? 0 : 1);
+  const gate = enforceVerdict(vis, mech.issues);
+  const issues = [...new Set([...(vis.issues || []), ...gate.problems])];
+  console.log(JSON.stringify({ ok: true, verdict: gate.verdict, critic_verdict: vis.verdict, scores: vis.scores, issues, mechanical: mech }, null, 1));
+  process.exit(gate.verdict === "PASS" ? 0 : 1);
 } else if (mode === "pair") {
   const before = argOf("--before") || die("--before required");
   const after = argOf("--after") || die("--after required");
@@ -109,10 +132,10 @@ strictly, plus all other categories for both images.`,
     console.log(JSON.stringify({ ok: false, verdict: "FAIL", issues: [`VISION_QA_UNAVAILABLE: ${vis.error}`] }));
     process.exit(1);
   }
-  const issues = [...mb.issues, ...ma.issues, ...(vis.issues || [])];
-  const verdict = mb.issues.length === 0 && ma.issues.length === 0 && vis.verdict === "PASS" ? "PASS" : "FAIL";
-  console.log(JSON.stringify({ ok: true, verdict, scores: vis.scores, issues, mechanical: { before: mb, after: ma } }, null, 1));
-  process.exit(verdict === "PASS" ? 0 : 1);
+  const gate = enforceVerdict(vis, [...mb.issues, ...ma.issues]);
+  const issues = [...new Set([...(vis.issues || []), ...gate.problems])];
+  console.log(JSON.stringify({ ok: true, verdict: gate.verdict, critic_verdict: vis.verdict, scores: vis.scores, issues, mechanical: { before: mb, after: ma } }, null, 1));
+  process.exit(gate.verdict === "PASS" ? 0 : 1);
 } else {
   die("modes: asset | pair");
 }

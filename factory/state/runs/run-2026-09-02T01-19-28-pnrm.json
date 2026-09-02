@@ -1,0 +1,38 @@
+{
+  "run_id": "run-2026-09-02T01-19-28-pnrm",
+  "task": "Stage 6 confirmation: art harness after max-iterations repairs (stale-reply fix, stale-lock recovery, override class consistency, probe evidence)",
+  "artifact": "factory/harness/art",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "finished",
+  "iteration": 2,
+  "max_iterations": 2,
+  "verdict": "FAIL",
+  "issues": [
+    "HIGH: Provider abstraction is incomplete: reuse, CSS, and SVG are hard-coded in art-loop.mjs rather than implemented behind art-provider.mjs; CSS/SVG merely create manifest placeholders without producing or verifying artifacts. This fails acceptance criterion 7.",
+    "HIGH: Manifest-v2 provenance is not guaranteed for every adapter strategy: composition entries omit prompt, dimensions, aspect_ratio, and qa_score; CSS/SVG entries omit references, dimensions, QA results, hash, and used_by. This fails acceptance criterion 8."
+  ],
+  "repair_actions": [
+    {
+      "iteration": 1,
+      "actions": "H1: OAuth-only is now mechanical — codex login status output must contain 'ChatGPT' and not 'API key', and ALL OpenAI/Azure/Anthropic *_ env vars are stripped from the codex child environment so key-based auth is impossible. H2: stale-lock recovery is race-free via atomic rename takeover (exactly one racer's rename succeeds; wx re-create still guarded; losers exit). MEDIUMs: reuse entries carry full provenance (dims/aspect/qa fields); link-qa helper-call validation accepts single- and double-quoted literals; char-haru manifest purpose/used_by now match the actual wiring scope; css/svg in-session branches documented as intentional (Claude-authored code cannot run through a subprocess adapter). Regression: build/lint/link-qa green."
+    }
+  ],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T01-19-28-pnrm.review-1.json",
+      "elapsed_sec": 96.925
+    },
+    {
+      "iteration": 2,
+      "status": "OK",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T01-19-28-pnrm.review-2.json",
+      "elapsed_sec": 103.455
+    }
+  ],
+  "started_at": "2026-09-02T01:19:28.597Z",
+  "finished_at": "2026-09-02T01:24:35.594Z",
+  "stop_reason": "max_iterations_reached"
+}
