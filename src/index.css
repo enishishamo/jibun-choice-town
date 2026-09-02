@@ -4979,3 +4979,211 @@ img {
 .tool-panel.slim p { margin: 3px 0; font-size: 0.8rem; }
 .sched-issues.ok-issues { background: #eef6e7; }
 .sched-issues.ok-issues p { color: #3f6b32; }
+
+/* ================= Region map (生きた町のアトラス) ================= */
+.region-viewport {
+  position: relative;
+  width: 100%;
+  height: min(100vw, 560px);
+  min-height: 340px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #cfe3ef;
+  box-shadow: var(--shadow);
+}
+.region-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.region-terrain { position: absolute; left: 0; top: 0; }
+.town-tile {
+  position: absolute;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px rgba(60, 50, 30, 0.25);
+  cursor: pointer;
+  object-fit: cover;
+}
+.district-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+.district-emoji {
+  font-size: 58px;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.25));
+}
+.district-node.foggy .district-emoji { opacity: 0.75; animation: mist 3.2s ease-in-out infinite; }
+.district-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4c4434;
+  background: rgba(255, 253, 245, 0.9);
+  border-radius: 12px;
+  padding: 2px 12px;
+  box-shadow: var(--shadow);
+}
+.district-node.foggy .district-name { color: #7d858d; }
+@keyframes mist { 0%,100% { transform: translateX(0); opacity: 0.75; } 50% { transform: translateX(6px); opacity: 0.5; } }
+
+.world-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 4;
+}
+.world-marker .marker-face {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ivory);
+  border: 2.5px solid var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+.world-marker .marker-fire { font-size: 17px; }
+.world-marker .marker-state {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  font-size: 14px;
+}
+.world-marker .marker-label {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #4c4434;
+  background: rgba(255, 253, 245, 0.92);
+  border-radius: 10px;
+  padding: 1px 8px;
+  max-width: 150px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.world-marker.in-focus .marker-label { opacity: 1; transform: scale(1); }
+.world-marker.far .marker-face { width: 22px; height: 22px; border-width: 2px; }
+.world-marker.far .marker-fire { font-size: 11px; }
+.world-marker.far .marker-state { font-size: 10px; top: -6px; right: -6px; }
+/* state looks */
+.world-marker.st-completed .marker-face { border-color: #7fae6a; background: #eef5e4; }
+.world-marker.st-completed .marker-fire { filter: grayscale(0.7); opacity: 0.7; }
+.world-marker.st-in_progress .marker-face { border-color: #d9a84a; }
+.world-marker.st-visited .marker-face { border-color: #c9b995; }
+/* living signal: people gathered + gentle bounce (replaces NEW badges) */
+.world-marker.signal .marker-face { animation: beckon 1.7s ease-in-out infinite; }
+.marker-crowd {
+  position: absolute;
+  top: -20px;
+  font-size: 15px;
+  animation: crowd-bob 1.7s ease-in-out infinite;
+}
+@keyframes beckon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes crowd-bob { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-3px) scale(1.08); } }
+
+.region-back {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 6;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 253, 245, 0.95);
+  font-size: 14px;
+  font-weight: bold;
+  color: #4c4434;
+  padding: 8px 14px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.fog-teaser {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 6;
+  background: rgba(60, 64, 72, 0.92);
+  color: #f2f4f6;
+  font-size: 13px;
+  border-radius: 14px;
+  padding: 8px 16px;
+  max-width: 88%;
+  animation: teaser-in 0.3s ease-out;
+}
+@keyframes teaser-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+.district-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 2px 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.district-chip {
+  flex: 0 0 auto;
+  border: 2px solid #e3d9bd;
+  background: var(--ivory);
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #4c4434;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.district-chip.active { border-color: var(--orange); background: #fff3e2; }
+.district-chip.foggy { color: #8b929a; border-style: dashed; }
+
+.quiet-dot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  color: #6d6350;
+  background: rgba(255, 253, 245, 0.85);
+  border-radius: 10px;
+  padding: 2px 8px;
+  z-index: 3;
+  pointer-events: none;
+}
+.region-viewport.is-region { cursor: grab; touch-action: none; }
+.region-viewport.is-region:active { cursor: grabbing; }
+.world-marker.label-up { flex-direction: column-reverse; }
+.world-marker.label-up .marker-label { margin-top: 0; margin-bottom: 3px; }
+.region-canvas.no-anim { transition: none; }
+.pan-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 6;
+  background: rgba(255, 253, 245, 0.92);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #6d6350;
+  padding: 6px 12px;
+  box-shadow: var(--shadow);
+  animation: hint-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes hint-pulse { 0%,100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+@media (min-width: 980px) {
+  .world-screen .world { max-width: 960px; }
+  .region-viewport { height: 600px; }
+}

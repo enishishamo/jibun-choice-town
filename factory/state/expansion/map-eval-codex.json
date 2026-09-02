@@ -1,0 +1,323 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "scores": {
+      "A": {
+        "exploration_fun": {
+          "score": 8,
+          "reason": "Dragging through one uninterrupted miniature world feels playful and spatial."
+        },
+        "scalability_to_50": {
+          "score": 3,
+          "reason": "The surface and travel distances become unwieldy while hotspot density keeps rising."
+        },
+        "discovery": {
+          "score": 7,
+          "reason": "Edge peeks and manual roaming create natural discovery."
+        },
+        "surprise": {
+          "score": 6,
+          "reason": "Unexpected places can appear during panning, but the whole world is fundamentally exposed."
+        },
+        "mobile_usability": {
+          "score": 4,
+          "reason": "Large drag surfaces cause orientation, reachability, and accidental-tap problems."
+        },
+        "cognitive_load_for_kids": {
+          "score": 5,
+          "reason": "The model is simple, but remembering off-screen locations is demanding."
+        },
+        "implementation_cost_react_css": {
+          "score": 6,
+          "reason": "Basic panning is feasible, though bounds, responsive scaling, and hotspot placement require care."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 9,
+          "reason": "The existing town and hotspots can remain almost unchanged."
+        },
+        "child_friendliness": {
+          "score": 7,
+          "reason": "Direct manipulation is inviting, but children may become lost or overlook content."
+        },
+        "job_encyclopedia_risk": {
+          "score": 9,
+          "reason": "Places remain spatial events rather than occupational categories."
+        }
+      },
+      "B": {
+        "exploration_fun": {
+          "score": 7,
+          "reason": "Entering distinct illustrated districts provides clear destinations and varied scenes."
+        },
+        "scalability_to_50": {
+          "score": 9,
+          "reason": "Five to eight districts can each hold a manageable number of worlds."
+        },
+        "discovery": {
+          "score": 7,
+          "reason": "District previews and local hotspots support staged discovery."
+        },
+        "surprise": {
+          "score": 7,
+          "reason": "Each district can reveal a visually different environment and event set."
+        },
+        "mobile_usability": {
+          "score": 9,
+          "reason": "Each screen can stay bounded, legible, and touch-friendly."
+        },
+        "cognitive_load_for_kids": {
+          "score": 8,
+          "reason": "A shallow overview-to-scene hierarchy is easy to learn when districts are visually distinctive."
+        },
+        "implementation_cost_react_css": {
+          "score": 7,
+          "reason": "Separate scenes and transitions are conventional React, CSS, and SVG work."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 8,
+          "reason": "The current town can become the first district without regeneration."
+        },
+        "child_friendliness": {
+          "score": 8,
+          "reason": "Large illustrated choices and predictable back navigation suit children."
+        },
+        "job_encyclopedia_risk": {
+          "score": 7,
+          "reason": "Risk stays low if districts are geographic and story-based rather than job-based."
+        }
+      },
+      "C": {
+        "exploration_fun": {
+          "score": 9,
+          "reason": "Sailing toward newly appearing islands gives expansion a strong adventure metaphor."
+        },
+        "scalability_to_50": {
+          "score": 9,
+          "reason": "New clusters can be added without enlarging or overcrowding existing scenes."
+        },
+        "discovery": {
+          "score": 9,
+          "reason": "Island emergence makes discovering new clusters an explicit part of play."
+        },
+        "surprise": {
+          "score": 9,
+          "reason": "Unknown silhouettes and newly formed islands create memorable reveals."
+        },
+        "mobile_usability": {
+          "score": 8,
+          "reason": "A bounded island overview and compact close-ups can work well on narrow screens."
+        },
+        "cognitive_load_for_kids": {
+          "score": 8,
+          "reason": "Detached shapes are recognizable, although too many islands would still need grouping."
+        },
+        "implementation_cost_react_css": {
+          "score": 6,
+          "reason": "Multiple scenes are straightforward, but island growth states and transitions add asset work."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 6,
+          "reason": "The existing continuous town needs a convincing role as a mainland or first island."
+        },
+        "child_friendliness": {
+          "score": 9,
+          "reason": "Islands, voyages, silhouettes, and reveals offer a strong child-readable fantasy."
+        },
+        "job_encyclopedia_risk": {
+          "score": 8,
+          "reason": "Geographic clusters avoid categories, provided each island is not assigned to one profession sector."
+        }
+      },
+      "D": {
+        "exploration_fun": {
+          "score": 9,
+          "reason": "Continuous camera travel preserves the feeling of exploring one growing world."
+        },
+        "scalability_to_50": {
+          "score": 7,
+          "reason": "District clustering helps, but one-axis travel and total surface length eventually become limiting."
+        },
+        "discovery": {
+          "score": 9,
+          "reason": "Attached outskirts, edge silhouettes, and jump chips support both wandering and directed discovery."
+        },
+        "surprise": {
+          "score": 8,
+          "reason": "New terrain can emerge beyond familiar boundaries without breaking continuity."
+        },
+        "mobile_usability": {
+          "score": 7,
+          "reason": "One-axis movement is manageable, though long travel and competing swipe gestures need careful design."
+        },
+        "cognitive_load_for_kids": {
+          "score": 7,
+          "reason": "A stable center anchors orientation, while chips reduce the need to memorize distances."
+        },
+        "implementation_cost_react_css": {
+          "score": 5,
+          "reason": "Camera interpolation, responsive coordinates, scene stitching, and stateful fog require substantial polish."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 10,
+          "reason": "The existing town remains the intact visual and geographic center."
+        },
+        "child_friendliness": {
+          "score": 9,
+          "reason": "The world visibly grows from a familiar home and never abruptly cuts away."
+        },
+        "job_encyclopedia_risk": {
+          "score": 9,
+          "reason": "Contiguous geographic places keep events, not professions, as the organizing idea."
+        }
+      },
+      "E": {
+        "exploration_fun": {
+          "score": 8,
+          "reason": "Diving smoothly from region to event can feel magical when animation is excellent."
+        },
+        "scalability_to_50": {
+          "score": 10,
+          "reason": "Level-dependent representations can accommodate many districts, places, and events."
+        },
+        "discovery": {
+          "score": 8,
+          "reason": "Each zoom level can disclose progressively richer information."
+        },
+        "surprise": {
+          "score": 8,
+          "reason": "Visual transformations between levels can produce strong reveal moments."
+        },
+        "mobile_usability": {
+          "score": 5,
+          "reason": "Pinch zoom, small controls, gesture conflicts, and viewport management are difficult on phones."
+        },
+        "cognitive_load_for_kids": {
+          "score": 4,
+          "reason": "Children must understand scale changes, navigation levels, and changing symbol meanings."
+        },
+        "implementation_cost_react_css": {
+          "score": 2,
+          "reason": "True semantic zoom requires several coordinated representations, transforms, assets, and interaction systems."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 6,
+          "reason": "The town can be reused at one level but needs new overview and close-range representations."
+        },
+        "child_friendliness": {
+          "score": 6,
+          "reason": "The spectacle is appealing, but reliable independent navigation may be difficult for younger children."
+        },
+        "job_encyclopedia_risk": {
+          "score": 8,
+          "reason": "Spatial zoom avoids job categories, though far-level labels could drift toward taxonomy."
+        }
+      },
+      "F": {
+        "exploration_fun": {
+          "score": 8,
+          "reason": "Clearing fog gives actions visible consequences and makes return visits rewarding."
+        },
+        "scalability_to_50": {
+          "score": 6,
+          "reason": "Reveal state controls visibility but does not itself solve layout, clustering, or navigation."
+        },
+        "discovery": {
+          "score": 10,
+          "reason": "Progressive revelation is the architecture's central interaction."
+        },
+        "surprise": {
+          "score": 10,
+          "reason": "Silhouette-to-full-scene transformations provide strong anticipation and payoff."
+        },
+        "mobile_usability": {
+          "score": 7,
+          "reason": "It can work well if the underlying map is bounded and unlocked targets remain easy to find."
+        },
+        "cognitive_load_for_kids": {
+          "score": 6,
+          "reason": "Fog is intuitive, but distinctions among locked, unseen, discovered, and unavailable can blur."
+        },
+        "implementation_cost_react_css": {
+          "score": 6,
+          "reason": "Masks and state-driven artwork are feasible, but every reveal state needs visual design and testing."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 7,
+          "reason": "Existing worlds can remain visible while future surroundings gain fog layers."
+        },
+        "child_friendliness": {
+          "score": 8,
+          "reason": "Mystery is motivating, provided the interface never resembles punishment or inaccessible content."
+        },
+        "job_encyclopedia_risk": {
+          "score": 9,
+          "reason": "Progress is expressed through exploration rather than profession classification."
+        }
+      }
+    },
+    "own_option": {
+      "name": "G. Living Event Atlas",
+      "desc": "A stable illustrated regional overview contains 5–8 memorable geographic neighborhoods. Animated event signals—not permanent world balloons—show where something is happening now; tapping one enters a compact neighborhood scene containing 3–8 event worlds. Completed and inactive events remain reachable through an in-world memories trail, while new neighborhoods appear at the overview edges.",
+      "scores": {
+        "exploration_fun": {
+          "score": 9,
+          "reason": "Kids follow visible happenings across a living region and then explore a detailed local scene."
+        },
+        "scalability_to_50": {
+          "score": 10,
+          "reason": "Neighborhoods bound spatial density while active signals and memories prevent all 50 events competing at once."
+        },
+        "discovery": {
+          "score": 9,
+          "reason": "New signals, changed landmarks, and emerging neighborhoods provide several layers of discovery."
+        },
+        "surprise": {
+          "score": 9,
+          "reason": "The map can visibly react to births, emergencies, deliveries, festivals, and other unfolding events."
+        },
+        "mobile_usability": {
+          "score": 9,
+          "reason": "The overview stays sparse and each local scene has a controlled number of large targets."
+        },
+        "cognitive_load_for_kids": {
+          "score": 9,
+          "reason": "Children answer two concrete questions: where is something happening, and what is happening there."
+        },
+        "implementation_cost_react_css": {
+          "score": 6,
+          "reason": "It uses conventional scene navigation but requires event rotation, state signals, and a memories interface."
+        },
+        "compatibility_with_current_worlds": {
+          "score": 9,
+          "reason": "The current town becomes the first neighborhood and its existing illustration remains intact."
+        },
+        "child_friendliness": {
+          "score": 10,
+          "reason": "Movement is motivated by stories and visible change rather than menus or abstract categories."
+        },
+        "job_encyclopedia_risk": {
+          "score": 10,
+          "reason": "Geography answers where while event signals answer why, leaving jobs to be encountered inside stories."
+        }
+      }
+    },
+    "tap_desire": {
+      "G": "A concrete change is visibly underway: a zoo nest shakes, an ambulance light flashes, smoke rises near the waste facility, or a delivery convoy arrives. The child taps to learn what happened, who needs help, and what role they can play; the signal then changes according to DISCOVERED, IN_PROGRESS, COMPLETED, or UPDATED state.",
+      "D": "Something unfamiliar is partly visible beyond the known town—a lighthouse beam, train entering a tunnel, forest silhouette, or crowd sound marker. Moving there promises both a new place and an answer to the visible mystery, while the familiar town remains spatially connected behind the child."
+    },
+    "recommendation": {
+      "architecture": "G. Living Event Atlas with progressive fog-of-war reveal",
+      "elements": [
+        "Living Event Atlas",
+        "World → District → Place",
+        "Fog-of-war reveal"
+      ],
+      "why": "It best preserves the product's event-first philosophy while scaling from 9 to 50 without turning the home into either a balloon wall or a career catalog. At 9 worlds, the existing town remains the first detailed neighborhood. At 14, one or two new geographic neighborhoods appear around the regional overview. Toward 50, 5–8 neighborhoods contain bounded local scenes, while the home foregrounds only current, unseen, updated, or in-progress event signals. The hierarchy supplies navigational capacity; the living signals supply motivation; progressive reveal supplies discovery and surprise.",
+      "risks": "The largest risk is that rotating or hidden event signals make children believe older worlds disappeared, lose their progress, or become inaccessible. A secondary manifestation is that the overview starts feeling like a notification dashboard instead of a place.",
+      "mitigations": "Keep every discovered neighborhood permanently visible and give each a stable visual landmark. Use fog only for genuinely undiscovered territory, never for completed content. Show at most a few animated event signals, but provide a clearly illustrated memories trail inside each neighborhood containing all DISCOVERED, VISITED, IN_PROGRESS, COMPLETED, and UPDATED worlds. Encode state consistently through character activity and environmental changes, with badges as secondary reinforcement. Preserve free exploration by allowing neighborhood entry even when no event signal is active."
+    }
+  },
+  "output": "{\n  \"scores\": {\n    \"A\": {\n      \"exploration_fun\": {\"score\": 8, \"reason\": \"Dragging through one uninterrupted miniature world feels playful and spatial.\"},\n      \"scalability_to_50\": {\"score\": 3, \"reason\": \"The surface and travel distances become unwieldy while hotspot density keeps rising.\"},\n      \"discovery\": {\"score\": 7, \"reason\": \"Edge peeks and manual roaming create natural discovery.\"},\n      \"surprise\": {\"score\": 6, \"reason\": \"Unexpected places can appear during panning, but the whole world is fundamentally exposed.\"},\n      \"mobile_usability\": {\"score\": 4, \"reason\": \"Large drag surfaces cause orientation, reachability, and accidental-tap problems.\"},\n      \"cognitive_load_for_kids\": {\"score\": 5, \"reason\": \"The model is simple, but remembering off-screen locations is demanding.\"},\n      \"implementation_cost_react_css\": {\"score\": 6, \"reason\": \"Basic panning is feasible, though bounds, responsive scaling, and hotspot placement require care.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 9, \"reason\": \"The existing town and hotspots can remain almost unchanged.\"},\n      \"child_friendliness\": {\"score\": 7, \"reason\": \"Direct manipulation is inviting, but children may become lost or overlook content.\"},\n      \"job_encyclopedia_risk\": {\"score\": 9, \"reason\": \"Places remain spatial events rather than occupational categories.\"}\n    },\n    \"B\": {\n      \"exploration_fun\": {\"score\": 7, \"reason\": \"Entering distinct illustrated districts provides clear destinations and varied scenes.\"},\n      \"scalability_to_50\": {\"score\": 9, \"reason\": \"Five to eight districts can each hold a manageable number of worlds.\"},\n      \"discovery\": {\"score\": 7, \"reason\": \"District previews and local hotspots support staged discovery.\"},\n      \"surprise\": {\"score\": 7, \"reason\": \"Each district can reveal a visually different environment and event set.\"},\n      \"mobile_usability\": {\"score\": 9, \"reason\": \"Each screen can stay bounded, legible, and touch-friendly.\"},\n      \"cognitive_load_for_kids\": {\"score\": 8, \"reason\": \"A shallow overview-to-scene hierarchy is easy to learn when districts are visually distinctive.\"},\n      \"implementation_cost_react_css\": {\"score\": 7, \"reason\": \"Separate scenes and transitions are conventional React, CSS, and SVG work.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 8, \"reason\": \"The current town can become the first district without regeneration.\"},\n      \"child_friendliness\": {\"score\": 8, \"reason\": \"Large illustrated choices and predictable back navigation suit children.\"},\n      \"job_encyclopedia_risk\": {\"score\": 7, \"reason\": \"Risk stays low if districts are geographic and story-based rather than job-based.\"}\n    },\n    \"C\": {\n      \"exploration_fun\": {\"score\": 9, \"reason\": \"Sailing toward newly appearing islands gives expansion a strong adventure metaphor.\"},\n      \"scalability_to_50\": {\"score\": 9, \"reason\": \"New clusters can be added without enlarging or overcrowding existing scenes.\"},\n      \"discovery\": {\"score\": 9, \"reason\": \"Island emergence makes discovering new clusters an explicit part of play.\"},\n      \"surprise\": {\"score\": 9, \"reason\": \"Unknown silhouettes and newly formed islands create memorable reveals.\"},\n      \"mobile_usability\": {\"score\": 8, \"reason\": \"A bounded island overview and compact close-ups can work well on narrow screens.\"},\n      \"cognitive_load_for_kids\": {\"score\": 8, \"reason\": \"Detached shapes are recognizable, although too many islands would still need grouping.\"},\n      \"implementation_cost_react_css\": {\"score\": 6, \"reason\": \"Multiple scenes are straightforward, but island growth states and transitions add asset work.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 6, \"reason\": \"The existing continuous town needs a convincing role as a mainland or first island.\"},\n      \"child_friendliness\": {\"score\": 9, \"reason\": \"Islands, voyages, silhouettes, and reveals offer a strong child-readable fantasy.\"},\n      \"job_encyclopedia_risk\": {\"score\": 8, \"reason\": \"Geographic clusters avoid categories, provided each island is not assigned to one profession sector.\"}\n    },\n    \"D\": {\n      \"exploration_fun\": {\"score\": 9, \"reason\": \"Continuous camera travel preserves the feeling of exploring one growing world.\"},\n      \"scalability_to_50\": {\"score\": 7, \"reason\": \"District clustering helps, but one-axis travel and total surface length eventually become limiting.\"},\n      \"discovery\": {\"score\": 9, \"reason\": \"Attached outskirts, edge silhouettes, and jump chips support both wandering and directed discovery.\"},\n      \"surprise\": {\"score\": 8, \"reason\": \"New terrain can emerge beyond familiar boundaries without breaking continuity.\"},\n      \"mobile_usability\": {\"score\": 7, \"reason\": \"One-axis movement is manageable, though long travel and competing swipe gestures need careful design.\"},\n      \"cognitive_load_for_kids\": {\"score\": 7, \"reason\": \"A stable center anchors orientation, while chips reduce the need to memorize distances.\"},\n      \"implementation_cost_react_css\": {\"score\": 5, \"reason\": \"Camera interpolation, responsive coordinates, scene stitching, and stateful fog require substantial polish.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 10, \"reason\": \"The existing town remains the intact visual and geographic center.\"},\n      \"child_friendliness\": {\"score\": 9, \"reason\": \"The world visibly grows from a familiar home and never abruptly cuts away.\"},\n      \"job_encyclopedia_risk\": {\"score\": 9, \"reason\": \"Contiguous geographic places keep events, not professions, as the organizing idea.\"}\n    },\n    \"E\": {\n      \"exploration_fun\": {\"score\": 8, \"reason\": \"Diving smoothly from region to event can feel magical when animation is excellent.\"},\n      \"scalability_to_50\": {\"score\": 10, \"reason\": \"Level-dependent representations can accommodate many districts, places, and events.\"},\n      \"discovery\": {\"score\": 8, \"reason\": \"Each zoom level can disclose progressively richer information.\"},\n      \"surprise\": {\"score\": 8, \"reason\": \"Visual transformations between levels can produce strong reveal moments.\"},\n      \"mobile_usability\": {\"score\": 5, \"reason\": \"Pinch zoom, small controls, gesture conflicts, and viewport management are difficult on phones.\"},\n      \"cognitive_load_for_kids\": {\"score\": 4, \"reason\": \"Children must understand scale changes, navigation levels, and changing symbol meanings.\"},\n      \"implementation_cost_react_css\": {\"score\": 2, \"reason\": \"True semantic zoom requires several coordinated representations, transforms, assets, and interaction systems.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 6, \"reason\": \"The town can be reused at one level but needs new overview and close-range representations.\"},\n      \"child_friendliness\": {\"score\": 6, \"reason\": \"The spectacle is appealing, but reliable independent navigation may be difficult for younger children.\"},\n      \"job_encyclopedia_risk\": {\"score\": 8, \"reason\": \"Spatial zoom avoids job categories, though far-level labels could drift toward taxonomy.\"}\n    },\n    \"F\": {\n      \"exploration_fun\": {\"score\": 8, \"reason\": \"Clearing fog gives actions visible consequences and makes return visits rewarding.\"},\n      \"scalability_to_50\": {\"score\": 6, \"reason\": \"Reveal state controls visibility but does not itself solve layout, clustering, or navigation.\"},\n      \"discovery\": {\"score\": 10, \"reason\": \"Progressive revelation is the architecture's central interaction.\"},\n      \"surprise\": {\"score\": 10, \"reason\": \"Silhouette-to-full-scene transformations provide strong anticipation and payoff.\"},\n      \"mobile_usability\": {\"score\": 7, \"reason\": \"It can work well if the underlying map is bounded and unlocked targets remain easy to find.\"},\n      \"cognitive_load_for_kids\": {\"score\": 6, \"reason\": \"Fog is intuitive, but distinctions among locked, unseen, discovered, and unavailable can blur.\"},\n      \"implementation_cost_react_css\": {\"score\": 6, \"reason\": \"Masks and state-driven artwork are feasible, but every reveal state needs visual design and testing.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 7, \"reason\": \"Existing worlds can remain visible while future surroundings gain fog layers.\"},\n      \"child_friendliness\": {\"score\": 8, \"reason\": \"Mystery is motivating, provided the interface never resembles punishment or inaccessible content.\"},\n      \"job_encyclopedia_risk\": {\"score\": 9, \"reason\": \"Progress is expressed through exploration rather than profession classification.\"}\n    }\n  },\n  \"own_option\": {\n    \"name\": \"G. Living Event Atlas\",\n    \"desc\": \"A stable illustrated regional overview contains 5–8 memorable geographic neighborhoods. Animated event signals—not permanent world balloons—show where something is happening now; tapping one enters a compact neighborhood scene containing 3–8 event worlds. Completed and inactive events remain reachable through an in-world memories trail, while new neighborhoods appear at the overview edges.\",\n    \"scores\": {\n      \"exploration_fun\": {\"score\": 9, \"reason\": \"Kids follow visible happenings across a living region and then explore a detailed local scene.\"},\n      \"scalability_to_50\": {\"score\": 10, \"reason\": \"Neighborhoods bound spatial density while active signals and memories prevent all 50 events competing at once.\"},\n      \"discovery\": {\"score\": 9, \"reason\": \"New signals, changed landmarks, and emerging neighborhoods provide several layers of discovery.\"},\n      \"surprise\": {\"score\": 9, \"reason\": \"The map can visibly react to births, emergencies, deliveries, festivals, and other unfolding events.\"},\n      \"mobile_usability\": {\"score\": 9, \"reason\": \"The overview stays sparse and each local scene has a controlled number of large targets.\"},\n      \"cognitive_load_for_kids\": {\"score\": 9, \"reason\": \"Children answer two concrete questions: where is something happening, and what is happening there.\"},\n      \"implementation_cost_react_css\": {\"score\": 6, \"reason\": \"It uses conventional scene navigation but requires event rotation, state signals, and a memories interface.\"},\n      \"compatibility_with_current_worlds\": {\"score\": 9, \"reason\": \"The current town becomes the first neighborhood and its existing illustration remains intact.\"},\n      \"child_friendliness\": {\"score\": 10, \"reason\": \"Movement is motivated by stories and visible change rather than menus or abstract categories.\"},\n      \"job_encyclopedia_risk\": {\"score\": 10, \"reason\": \"Geography answers where while event signals answer why, leaving jobs to be encountered inside stories.\"}\n    }\n  },\n  \"tap_desire\": {\n    \"G\": \"A concrete change is visibly underway: a zoo nest shakes, an ambulance light flashes, smoke rises near the waste facility, or a delivery convoy arrives. The child taps to learn what happened, who needs help, and what role they can play; the signal then changes according to DISCOVERED, IN_PROGRESS, COMPLETED, or UPDATED state.\",\n    \"D\": \"Something unfamiliar is partly visible beyond the known town—a lighthouse beam, train entering a tunnel, forest silhouette, or crowd sound marker. Moving there promises both a new place and an answer to the visible mystery, while the familiar town remains spatially connected behind the child.\"\n  },\n  \"recommendation\": {\n    \"architecture\": \"G. Living Event Atlas with progressive fog-of-war reveal\",\n    \"elements\": [\n      \"Living Event Atlas\",\n      \"World → District → Place\",\n      \"Fog-of-war reveal\"\n    ],\n    \"why\": \"It best preserves the product's event-first philosophy while scaling from 9 to 50 without turning the home into either a balloon wall or a career catalog. At 9 worlds, the existing town remains the first detailed neighborhood. At 14, one or two new geographic neighborhoods appear around the regional overview. Toward 50, 5–8 neighborhoods contain bounded local scenes, while the home foregrounds only current, unseen, updated, or in-progress event signals. The hierarchy supplies navigational capacity; the living signals supply motivation; progressive reveal supplies discovery and surprise.\",\n    \"risks\": \"The largest risk is that rotating or hidden event signals make children believe older worlds disappeared, lose their progress, or become inaccessible. A secondary manifestation is that the overview starts feeling like a notification dashboard instead of a place.\",\n    \"mitigations\": \"Keep every discovered neighborhood permanently visible and give each a stable visual landmark. Use fog only for genuinely undiscovered territory, never for completed content. Show at most a few animated event signals, but provide a clearly illustrated memories trail inside each neighborhood containing all DISCOVERED, VISITED, IN_PROGRESS, COMPLETED, and UPDATED worlds. Encode state consistently through character activity and environmental changes, with badges as secondary reinforcement. Preserve free exploration by allowing neighborhood entry even when no event signal is active.\"\n  }\n}",
+  "elapsed_sec": 131.106
+}

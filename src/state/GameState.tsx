@@ -4,6 +4,7 @@
 // (e.g. the recycle ending mentions "the farm you visited").
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { experiences } from "../data";
 
 export type Screen =
   | { name: "home" }
@@ -17,6 +18,8 @@ interface Progress {
   completed: string[];
   /** Professions revealed on a discovery card (unlocked in the zukan). */
   discovered: string[];
+  /** Worlds (event ids) the child has entered at least once. */
+  visitedEvents: string[];
   /**
    * 「好きの種」: which actions the child said felt interesting, per
    * experience (multiple choice). Accumulated quietly for the future —
@@ -36,7 +39,12 @@ interface GameStateValue {
   /** Record the child's 「好きの種」 answers (multiple) for an experience. */
   recordSeed: (experienceId: string, seeds: string[]) => void;
   resetProgress: () => void;
+  /** Region-map world state (§16): derived from progress, never stored raw. */
+  worldState: (eventId: string) => WorldState;
 }
+
+/** §16 world states. UNSEEN is decided by the map (foggy district), not here. */
+export type WorldState = "DISCOVERED" | "VISITED" | "IN_PROGRESS" | "COMPLETED" | "UPDATED";
 
 const STORAGE_KEY = "jibun-choice-progress-v1";
 
@@ -46,13 +54,15 @@ const load = (): Progress => {
     if (raw) {
       const p = JSON.parse(raw);
       if (Array.isArray(p.completed) && Array.isArray(p.discovered)) {
-        return { seeds: {}, ...p };
+        // older saves have no visitedEvents — derive a sensible baseline so a
+        // returning child does not see everything reset to "unvisited"
+        return { seeds: {}, visitedEvents: [], ...p };
       }
     }
   } catch {
     /* corrupted storage -> start fresh */
   }
-  return { completed: [], discovered: [], seeds: {} };
+  return { completed: [], discovered: [], seeds: {}, visitedEvents: [] };
 };
 
 const Ctx = createContext<GameStateValue | null>(null);
@@ -74,6 +84,12 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
       screen,
       navigate: (s) => {
         setScreen(s);
+        if (s.name === "area") {
+          const id = s.eventId;
+          setProgress((p) =>
+            p.visitedEvents.includes(id) ? p : { ...p, visitedEvents: [...p.visitedEvents, id] },
+          );
+        }
         window.scrollTo(0, 0);
       },
       progress,
@@ -91,7 +107,15 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
       hasDiscovered: (id) => progress.discovered.includes(id),
       recordSeed: (experienceId, seeds) =>
         setProgress((p) => ({ ...p, seeds: { ...p.seeds, [experienceId]: seeds } })),
-      resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {} }),
+      resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {}, visitedEvents: [] }),
+      worldState: (eventId) => {
+        const xs = experiences.filter((x) => x.eventId === eventId);
+        const done = xs.filter((x) => progress.completed.includes(x.id)).length;
+        if (xs.length > 0 && done === xs.length) return "COMPLETED";
+        if (done > 0) return "IN_PROGRESS";
+        if (progress.visitedEvents.includes(eventId)) return "VISITED";
+        return "DISCOVERED";
+      },
     }),
     [screen, progress],
   );

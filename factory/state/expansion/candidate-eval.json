@@ -1,0 +1,360 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "scores": {
+      "night-port": {
+        "child_proximity": 94,
+        "surprise": 91,
+        "job_diversity_value": 96,
+        "mechanic_potential": 94,
+        "visual_potential": 96,
+        "overlap_penalty": 94,
+        "age_fit": 92,
+        "total": 94,
+        "one_line": "荷物への近さと夜間港湾の意外性が強く、積載順決定・通関書類照合・クレーン配置・遅延時の陸送再手配を別ループにできる。"
+      },
+      "typhoon-watch": {
+        "child_proximity": 89,
+        "surprise": 86,
+        "job_diversity_value": 91,
+        "mechanic_potential": 94,
+        "visual_potential": 92,
+        "overlap_penalty": 78,
+        "age_fit": 91,
+        "total": 89,
+        "one_line": "身近な台風を発生前の仕事として描け、水位監視・避難所開設判断・情報発信・限られた人員の配置を独立した判断にできる。"
+      },
+      "library-detective": {
+        "child_proximity": 91,
+        "surprise": 88,
+        "job_diversity_value": 91,
+        "mechanic_potential": 94,
+        "visual_potential": 91,
+        "overlap_penalty": 96,
+        "age_fit": 95,
+        "total": 92,
+        "one_line": "身近な図書館が調査拠点に変わり、写真の手掛かり比較・古地図照合・証言の信頼度判定・資料保存方法の選択が成立する。"
+      },
+      "fire-station-day": {
+        "child_proximity": 83,
+        "surprise": 74,
+        "job_diversity_value": 72,
+        "mechanic_potential": 88,
+        "visual_potential": 90,
+        "overlap_penalty": 48,
+        "age_fit": 94,
+        "total": 78,
+        "one_line": "非出動時への視点は良いが救急との重なりがあり、訓練計画・装備点検・査察箇所発見・指令優先順位づけが主なループになる。"
+      },
+      "train-control": {
+        "child_proximity": 94,
+        "surprise": 91,
+        "job_diversity_value": 96,
+        "mechanic_potential": 97,
+        "visual_potential": 95,
+        "overlap_penalty": 96,
+        "age_fit": 91,
+        "total": 94,
+        "one_line": "日常の2分遅延から見えない鉄道運行へ入り、列車間隔調整・接続判断・ホーム変更・車両差し替えを異なる制約ゲームにできる。"
+      },
+      "river-health": {
+        "child_proximity": 88,
+        "surprise": 92,
+        "job_diversity_value": 94,
+        "mechanic_potential": 96,
+        "visual_potential": 94,
+        "overlap_penalty": 88,
+        "age_fit": 92,
+        "total": 92,
+        "one_line": "魚が戻る明るい変化を入口に、水質データ比較・汚濁源推理・護岸改善案選択・住民活動の調整を別々に遊べる。"
+      },
+      "tv-newsroom": {
+        "child_proximity": 92,
+        "surprise": 82,
+        "job_diversity_value": 91,
+        "mechanic_potential": 96,
+        "visual_potential": 95,
+        "overlap_penalty": 78,
+        "age_fit": 94,
+        "total": 90,
+        "one_line": "毎日見るニュースの裏側として、取材先選定・事実確認・尺編集・見出し判断・字幕修正を性質の違うループにできる。"
+      },
+      "bakery-dawn": {
+        "child_proximity": 93,
+        "surprise": 76,
+        "job_diversity_value": 73,
+        "mechanic_potential": 90,
+        "visual_potential": 93,
+        "overlap_penalty": 55,
+        "age_fit": 97,
+        "total": 82,
+        "one_line": "朝食との近さは抜群だが食領域が既存作と近く、発酵時間管理・窯順序決定・需要予測・衛生異常発見が中心になる。"
+      },
+      "water-underground": {
+        "child_proximity": 98,
+        "surprise": 91,
+        "job_diversity_value": 96,
+        "mechanic_potential": 97,
+        "visual_potential": 95,
+        "overlap_penalty": 82,
+        "age_fit": 94,
+        "total": 93,
+        "one_line": "蛇口から地下網へ直結し、漏水音の特定・配水バルブ操作・水質判定・断水範囲を抑える工事順決定を明確に分けられる。"
+      },
+      "museum-backyard": {
+        "child_proximity": 85,
+        "surprise": 88,
+        "job_diversity_value": 88,
+        "mechanic_potential": 94,
+        "visual_potential": 96,
+        "overlap_penalty": 80,
+        "age_fit": 91,
+        "total": 89,
+        "one_line": "展示前の仕事は新鮮で、化石クリーニング・真贋手掛かり比較・温湿度管理・展示動線と照明の設計が成立する。"
+      },
+      "harbor-fish": {
+        "child_proximity": 88,
+        "surprise": 86,
+        "job_diversity_value": 86,
+        "mechanic_potential": 93,
+        "visual_potential": 96,
+        "overlap_penalty": 87,
+        "age_fit": 91,
+        "total": 90,
+        "one_line": "食卓と港を結び、魚種・鮮度判定、競り値判断、氷と箱の配分、出荷先決定を別ループにできる。"
+      },
+      "road-night": {
+        "child_proximity": 90,
+        "surprise": 89,
+        "job_diversity_value": 90,
+        "mechanic_potential": 93,
+        "visual_potential": 94,
+        "overlap_penalty": 78,
+        "age_fit": 94,
+        "total": 90,
+        "one_line": "翌朝直った道路という魔法の種明かしが強く、規制線設計・舗装順序・重機誘導・平坦度検査を遊び分けられる。"
+      },
+      "vote-day": {
+        "child_proximity": 75,
+        "surprise": 88,
+        "job_diversity_value": 94,
+        "mechanic_potential": 90,
+        "visual_potential": 88,
+        "overlap_penalty": 98,
+        "age_fit": 78,
+        "total": 87,
+        "one_line": "行政領域は非常に新しいが低学年には説明負荷があり、会場配置・本人確認・無効票判定・開票集計のループが可能。"
+      },
+      "game-studio": {
+        "child_proximity": 98,
+        "surprise": 88,
+        "job_diversity_value": 96,
+        "mechanic_potential": 98,
+        "visual_potential": 98,
+        "overlap_penalty": 97,
+        "age_fit": 98,
+        "total": 96,
+        "one_line": "遊ぶ側に極めて近く制作職は未開拓で、バグ再現・難易度調整・UI選択・音の演出・テスト意見の優先順位づけを別ゲームにできる。"
+      },
+      "snow-city": {
+        "child_proximity": 82,
+        "surprise": 84,
+        "job_diversity_value": 86,
+        "mechanic_potential": 91,
+        "visual_potential": 96,
+        "overlap_penalty": 71,
+        "age_fit": 94,
+        "total": 86,
+        "one_line": "雪国では近い一方で防災候補と似ており、積雪予測・除雪優先路決定・車両配備・凍結材散布判断が成立する。"
+      },
+      "airport-turnaround": {
+        "child_proximity": 92,
+        "surprise": 93,
+        "job_diversity_value": 96,
+        "mechanic_potential": 98,
+        "visual_potential": 99,
+        "overlap_penalty": 88,
+        "age_fit": 92,
+        "total": 94,
+        "one_line": "窓越しの謎と時間制約が強く、荷物積載・給油量判断・清掃分担・重量バランス・出発順調整を異なるループにできる。"
+      },
+      "vegetable-factory": {
+        "child_proximity": 88,
+        "surprise": 95,
+        "job_diversity_value": 93,
+        "mechanic_potential": 95,
+        "visual_potential": 98,
+        "overlap_penalty": 88,
+        "age_fit": 93,
+        "total": 93,
+        "one_line": "野菜と工場の意外な組合せが強く、光量調整・病変発見・収穫時期判断・棚配置・出荷量計画が成立する。"
+      },
+      "zoo-night": {
+        "child_proximity": 91,
+        "surprise": 74,
+        "job_diversity_value": 50,
+        "mechanic_potential": 84,
+        "visual_potential": 94,
+        "overlap_penalty": 5,
+        "age_fit": 96,
+        "total": 71,
+        "one_line": "夜景は魅力的で、見回り・餌準備・設備異常発見は作れるが、場所も職域もzoo-babyと大きく重なる。"
+      },
+      "recycle-plaza": {
+        "child_proximity": 88,
+        "surprise": 70,
+        "job_diversity_value": 48,
+        "mechanic_potential": 85,
+        "visual_potential": 91,
+        "overlap_penalty": 3,
+        "age_fit": 95,
+        "total": 69,
+        "one_line": "分解分類・再利用案選択・安全検査・販売価格判断は可能だが、waste-journeyの工程と主題に強く重なる。"
+      },
+      "hotel-backstage": {
+        "child_proximity": 91,
+        "surprise": 81,
+        "job_diversity_value": 78,
+        "mechanic_potential": 94,
+        "visual_potential": 93,
+        "overlap_penalty": 57,
+        "age_fit": 95,
+        "total": 84,
+        "one_line": "客室リセットは分かりやすく、清掃順序・忘れ物判定・リネン配分・設備不良対応を作れるが修学旅行の宿領域と近い。"
+      },
+      "weather-station": {
+        "child_proximity": 94,
+        "surprise": 85,
+        "job_diversity_value": 91,
+        "mechanic_potential": 95,
+        "visual_potential": 94,
+        "overlap_penalty": 76,
+        "age_fit": 90,
+        "total": 89,
+        "one_line": "天気への近さが強く、観測値補正・雲の動き予測・予報モデル比較・警報文選択を遊べるが防災系候補と接点が多い。"
+      },
+      "bank-window": {
+        "child_proximity": 86,
+        "surprise": 80,
+        "job_diversity_value": 88,
+        "mechanic_potential": 87,
+        "visual_potential": 82,
+        "overlap_penalty": 74,
+        "age_fit": 84,
+        "total": 83,
+        "one_line": "お年玉は入口になるが金融は抽象的で、本人確認・現金照合・融資判断・相談内容に合う商品選択が主なループになる。"
+      },
+      "stadium-day": {
+        "child_proximity": 94,
+        "surprise": 84,
+        "job_diversity_value": 83,
+        "mechanic_potential": 97,
+        "visual_potential": 99,
+        "overlap_penalty": 59,
+        "age_fit": 96,
+        "total": 87,
+        "one_line": "観戦体験への近さと群衆表現は強く、入場動線・警備配置・売店在庫・芝状態判断・退場分散を作れるが祭り運営と近い。"
+      },
+      "forest-care": {
+        "child_proximity": 85,
+        "surprise": 96,
+        "job_diversity_value": 98,
+        "mechanic_potential": 97,
+        "visual_potential": 99,
+        "overlap_penalty": 98,
+        "age_fit": 92,
+        "total": 95,
+        "one_line": "切ることで守る逆説と未開拓の林業が際立ち、間伐木選定・伐倒方向判断・年輪読解・搬出路設計・植林配置を遊び分けられる。"
+      },
+      "ambulance-call": {
+        "child_proximity": 90,
+        "surprise": 79,
+        "job_diversity_value": 45,
+        "mechanic_potential": 88,
+        "visual_potential": 88,
+        "overlap_penalty": 2,
+        "age_fit": 91,
+        "total": 69,
+        "one_line": "通報分類・口頭指導・車両選択・搬送先調整は緊張感があるが、er-patientと消防救急領域がほぼ直結する。"
+      },
+      "post-sorting": {
+        "child_proximity": 89,
+        "surprise": 82,
+        "job_diversity_value": 80,
+        "mechanic_potential": 91,
+        "visual_potential": 92,
+        "overlap_penalty": 61,
+        "age_fit": 96,
+        "total": 84,
+        "one_line": "手紙の旅は理解しやすく、宛先読取・区分エラー発見・便への積載・遅延時の経路変更を作れるが夜間物流候補と近い。"
+      },
+      "school-build": {
+        "child_proximity": 97,
+        "surprise": 81,
+        "job_diversity_value": 84,
+        "mechanic_potential": 96,
+        "visual_potential": 99,
+        "overlap_penalty": 72,
+        "age_fit": 98,
+        "total": 90,
+        "one_line": "自分の校舎への近さが強く、図面照合・資材搬入順序・クレーン配置・施工品質検査・工程調整を明確に遊べる。"
+      },
+      "dam-guard": {
+        "child_proximity": 76,
+        "surprise": 93,
+        "job_diversity_value": 94,
+        "mechanic_potential": 96,
+        "visual_potential": 99,
+        "overlap_penalty": 73,
+        "age_fit": 82,
+        "total": 88,
+        "one_line": "雨前に水を減らす逆説は秀逸で、流入予測・放流量調整・発電配分・下流連絡判断を作れるが水防系候補と近く概念も難しい。"
+      },
+      "care-robot": {
+        "child_proximity": 86,
+        "surprise": 77,
+        "job_diversity_value": 55,
+        "mechanic_potential": 91,
+        "visual_potential": 85,
+        "overlap_penalty": 42,
+        "age_fit": 88,
+        "total": 75,
+        "one_line": "家族との接点はあるが医療隣接度が高く、用具選択・動作支援量調整・生活目標設計・チーム連携が中心になる。"
+      },
+      "space-watch": {
+        "child_proximity": 94,
+        "surprise": 98,
+        "job_diversity_value": 98,
+        "mechanic_potential": 96,
+        "visual_potential": 99,
+        "overlap_penalty": 98,
+        "age_fit": 71,
+        "total": 93,
+        "one_line": "地図や天気と宇宙を結ぶ新鮮さは最大級で、軌道修正・通信時間割・異常値判定・観測対象選択を作れるが低学年には抽象度が高い。"
+      }
+    },
+    "selected": [
+      "night-port",
+      "library-detective",
+      "game-studio",
+      "forest-care",
+      "river-health"
+    ],
+    "selection_rationale": "港×届ける、図書館×見つける、開発スタジオ×楽しませる、森林×守る、川×良くするで、主場所も主動詞も全件異なる。夜間物流・資料保存・水質管理など、子どもから見えにくい仕事を複数含みつつ、ゲーム制作という高近接領域も置いた。事故対応一色ではなく、歴史写真の探索、作品改善、森の手入れ、魚が戻った理由の解明という非トラブル／0→+型が中心で、海・文化・デジタル・山・川を横断する。医療中心候補と重複(高)候補は除外した。",
+    "runner_ups": [
+      "train-control",
+      "airport-turnaround",
+      "water-underground",
+      "vegetable-factory",
+      "space-watch"
+    ],
+    "rejected_for_overlap": [
+      "zoo-night",
+      "recycle-plaza",
+      "ambulance-call"
+    ]
+  },
+  "output": "{\"scores\":{\"night-port\":{\"child_proximity\":94,\"surprise\":91,\"job_diversity_value\":96,\"mechanic_potential\":94,\"visual_potential\":96,\"overlap_penalty\":94,\"age_fit\":92,\"total\":94,\"one_line\":\"荷物への近さと夜間港湾の意外性が強く、積載順決定・通関書類照合・クレーン配置・遅延時の陸送再手配を別ループにできる。\"},\"typhoon-watch\":{\"child_proximity\":89,\"surprise\":86,\"job_diversity_value\":91,\"mechanic_potential\":94,\"visual_potential\":92,\"overlap_penalty\":78,\"age_fit\":91,\"total\":89,\"one_line\":\"身近な台風を発生前の仕事として描け、水位監視・避難所開設判断・情報発信・限られた人員の配置を独立した判断にできる。\"},\"library-detective\":{\"child_proximity\":91,\"surprise\":88,\"job_diversity_value\":91,\"mechanic_potential\":94,\"visual_potential\":91,\"overlap_penalty\":96,\"age_fit\":95,\"total\":92,\"one_line\":\"身近な図書館が調査拠点に変わり、写真の手掛かり比較・古地図照合・証言の信頼度判定・資料保存方法の選択が成立する。\"},\"fire-station-day\":{\"child_proximity\":83,\"surprise\":74,\"job_diversity_value\":72,\"mechanic_potential\":88,\"visual_potential\":90,\"overlap_penalty\":48,\"age_fit\":94,\"total\":78,\"one_line\":\"非出動時への視点は良いが救急との重なりがあり、訓練計画・装備点検・査察箇所発見・指令優先順位づけが主なループになる。\"},\"train-control\":{\"child_proximity\":94,\"surprise\":91,\"job_diversity_value\":96,\"mechanic_potential\":97,\"visual_potential\":95,\"overlap_penalty\":96,\"age_fit\":91,\"total\":94,\"one_line\":\"日常の2分遅延から見えない鉄道運行へ入り、列車間隔調整・接続判断・ホーム変更・車両差し替えを異なる制約ゲームにできる。\"},\"river-health\":{\"child_proximity\":88,\"surprise\":92,\"job_diversity_value\":94,\"mechanic_potential\":96,\"visual_potential\":94,\"overlap_penalty\":88,\"age_fit\":92,\"total\":92,\"one_line\":\"魚が戻る明るい変化を入口に、水質データ比較・汚濁源推理・護岸改善案選択・住民活動の調整を別々に遊べる。\"},\"tv-newsroom\":{\"child_proximity\":92,\"surprise\":82,\"job_diversity_value\":91,\"mechanic_potential\":96,\"visual_potential\":95,\"overlap_penalty\":78,\"age_fit\":94,\"total\":90,\"one_line\":\"毎日見るニュースの裏側として、取材先選定・事実確認・尺編集・見出し判断・字幕修正を性質の違うループにできる。\"},\"bakery-dawn\":{\"child_proximity\":93,\"surprise\":76,\"job_diversity_value\":73,\"mechanic_potential\":90,\"visual_potential\":93,\"overlap_penalty\":55,\"age_fit\":97,\"total\":82,\"one_line\":\"朝食との近さは抜群だが食領域が既存作と近く、発酵時間管理・窯順序決定・需要予測・衛生異常発見が中心になる。\"},\"water-underground\":{\"child_proximity\":98,\"surprise\":91,\"job_diversity_value\":96,\"mechanic_potential\":97,\"visual_potential\":95,\"overlap_penalty\":82,\"age_fit\":94,\"total\":93,\"one_line\":\"蛇口から地下網へ直結し、漏水音の特定・配水バルブ操作・水質判定・断水範囲を抑える工事順決定を明確に分けられる。\"},\"museum-backyard\":{\"child_proximity\":85,\"surprise\":88,\"job_diversity_value\":88,\"mechanic_potential\":94,\"visual_potential\":96,\"overlap_penalty\":80,\"age_fit\":91,\"total\":89,\"one_line\":\"展示前の仕事は新鮮で、化石クリーニング・真贋手掛かり比較・温湿度管理・展示動線と照明の設計が成立する。\"},\"harbor-fish\":{\"child_proximity\":88,\"surprise\":86,\"job_diversity_value\":86,\"mechanic_potential\":93,\"visual_potential\":96,\"overlap_penalty\":87,\"age_fit\":91,\"total\":90,\"one_line\":\"食卓と港を結び、魚種・鮮度判定、競り値判断、氷と箱の配分、出荷先決定を別ループにできる。\"},\"road-night\":{\"child_proximity\":90,\"surprise\":89,\"job_diversity_value\":90,\"mechanic_potential\":93,\"visual_potential\":94,\"overlap_penalty\":78,\"age_fit\":94,\"total\":90,\"one_line\":\"翌朝直った道路という魔法の種明かしが強く、規制線設計・舗装順序・重機誘導・平坦度検査を遊び分けられる。\"},\"vote-day\":{\"child_proximity\":75,\"surprise\":88,\"job_diversity_value\":94,\"mechanic_potential\":90,\"visual_potential\":88,\"overlap_penalty\":98,\"age_fit\":78,\"total\":87,\"one_line\":\"行政領域は非常に新しいが低学年には説明負荷があり、会場配置・本人確認・無効票判定・開票集計のループが可能。\"},\"game-studio\":{\"child_proximity\":98,\"surprise\":88,\"job_diversity_value\":96,\"mechanic_potential\":98,\"visual_potential\":98,\"overlap_penalty\":97,\"age_fit\":98,\"total\":96,\"one_line\":\"遊ぶ側に極めて近く制作職は未開拓で、バグ再現・難易度調整・UI選択・音の演出・テスト意見の優先順位づけを別ゲームにできる。\"},\"snow-city\":{\"child_proximity\":82,\"surprise\":84,\"job_diversity_value\":86,\"mechanic_potential\":91,\"visual_potential\":96,\"overlap_penalty\":71,\"age_fit\":94,\"total\":86,\"one_line\":\"雪国では近い一方で防災候補と似ており、積雪予測・除雪優先路決定・車両配備・凍結材散布判断が成立する。\"},\"airport-turnaround\":{\"child_proximity\":92,\"surprise\":93,\"job_diversity_value\":96,\"mechanic_potential\":98,\"visual_potential\":99,\"overlap_penalty\":88,\"age_fit\":92,\"total\":94,\"one_line\":\"窓越しの謎と時間制約が強く、荷物積載・給油量判断・清掃分担・重量バランス・出発順調整を異なるループにできる。\"},\"vegetable-factory\":{\"child_proximity\":88,\"surprise\":95,\"job_diversity_value\":93,\"mechanic_potential\":95,\"visual_potential\":98,\"overlap_penalty\":88,\"age_fit\":93,\"total\":93,\"one_line\":\"野菜と工場の意外な組合せが強く、光量調整・病変発見・収穫時期判断・棚配置・出荷量計画が成立する。\"},\"zoo-night\":{\"child_proximity\":91,\"surprise\":74,\"job_diversity_value\":50,\"mechanic_potential\":84,\"visual_potential\":94,\"overlap_penalty\":5,\"age_fit\":96,\"total\":71,\"one_line\":\"夜景は魅力的で、見回り・餌準備・設備異常発見は作れるが、場所も職域もzoo-babyと大きく重なる。\"},\"recycle-plaza\":{\"child_proximity\":88,\"surprise\":70,\"job_diversity_value\":48,\"mechanic_potential\":85,\"visual_potential\":91,\"overlap_penalty\":3,\"age_fit\":95,\"total\":69,\"one_line\":\"分解分類・再利用案選択・安全検査・販売価格判断は可能だが、waste-journeyの工程と主題に強く重なる。\"},\"hotel-backstage\":{\"child_proximity\":91,\"surprise\":81,\"job_diversity_value\":78,\"mechanic_potential\":94,\"visual_potential\":93,\"overlap_penalty\":57,\"age_fit\":95,\"total\":84,\"one_line\":\"客室リセットは分かりやすく、清掃順序・忘れ物判定・リネン配分・設備不良対応を作れるが修学旅行の宿領域と近い。\"},\"weather-station\":{\"child_proximity\":94,\"surprise\":85,\"job_diversity_value\":91,\"mechanic_potential\":95,\"visual_potential\":94,\"overlap_penalty\":76,\"age_fit\":90,\"total\":89,\"one_line\":\"天気への近さが強く、観測値補正・雲の動き予測・予報モデル比較・警報文選択を遊べるが防災系候補と接点が多い。\"},\"bank-window\":{\"child_proximity\":86,\"surprise\":80,\"job_diversity_value\":88,\"mechanic_potential\":87,\"visual_potential\":82,\"overlap_penalty\":74,\"age_fit\":84,\"total\":83,\"one_line\":\"お年玉は入口になるが金融は抽象的で、本人確認・現金照合・融資判断・相談内容に合う商品選択が主なループになる。\"},\"stadium-day\":{\"child_proximity\":94,\"surprise\":84,\"job_diversity_value\":83,\"mechanic_potential\":97,\"visual_potential\":99,\"overlap_penalty\":59,\"age_fit\":96,\"total\":87,\"one_line\":\"観戦体験への近さと群衆表現は強く、入場動線・警備配置・売店在庫・芝状態判断・退場分散を作れるが祭り運営と近い。\"},\"forest-care\":{\"child_proximity\":85,\"surprise\":96,\"job_diversity_value\":98,\"mechanic_potential\":97,\"visual_potential\":99,\"overlap_penalty\":98,\"age_fit\":92,\"total\":95,\"one_line\":\"切ることで守る逆説と未開拓の林業が際立ち、間伐木選定・伐倒方向判断・年輪読解・搬出路設計・植林配置を遊び分けられる。\"},\"ambulance-call\":{\"child_proximity\":90,\"surprise\":79,\"job_diversity_value\":45,\"mechanic_potential\":88,\"visual_potential\":88,\"overlap_penalty\":2,\"age_fit\":91,\"total\":69,\"one_line\":\"通報分類・口頭指導・車両選択・搬送先調整は緊張感があるが、er-patientと消防救急領域がほぼ直結する。\"},\"post-sorting\":{\"child_proximity\":89,\"surprise\":82,\"job_diversity_value\":80,\"mechanic_potential\":91,\"visual_potential\":92,\"overlap_penalty\":61,\"age_fit\":96,\"total\":84,\"one_line\":\"手紙の旅は理解しやすく、宛先読取・区分エラー発見・便への積載・遅延時の経路変更を作れるが夜間物流候補と近い。\"},\"school-build\":{\"child_proximity\":97,\"surprise\":81,\"job_diversity_value\":84,\"mechanic_potential\":96,\"visual_potential\":99,\"overlap_penalty\":72,\"age_fit\":98,\"total\":90,\"one_line\":\"自分の校舎への近さが強く、図面照合・資材搬入順序・クレーン配置・施工品質検査・工程調整を明確に遊べる。\"},\"dam-guard\":{\"child_proximity\":76,\"surprise\":93,\"job_diversity_value\":94,\"mechanic_potential\":96,\"visual_potential\":99,\"overlap_penalty\":73,\"age_fit\":82,\"total\":88,\"one_line\":\"雨前に水を減らす逆説は秀逸で、流入予測・放流量調整・発電配分・下流連絡判断を作れるが水防系候補と近く概念も難しい。\"},\"care-robot\":{\"child_proximity\":86,\"surprise\":77,\"job_diversity_value\":55,\"mechanic_potential\":91,\"visual_potential\":85,\"overlap_penalty\":42,\"age_fit\":88,\"total\":75,\"one_line\":\"家族との接点はあるが医療隣接度が高く、用具選択・動作支援量調整・生活目標設計・チーム連携が中心になる。\"},\"space-watch\":{\"child_proximity\":94,\"surprise\":98,\"job_diversity_value\":98,\"mechanic_potential\":96,\"visual_potential\":99,\"overlap_penalty\":98,\"age_fit\":71,\"total\":93,\"one_line\":\"地図や天気と宇宙を結ぶ新鮮さは最大級で、軌道修正・通信時間割・異常値判定・観測対象選択を作れるが低学年には抽象度が高い。\"}},\"selected\":[\"night-port\",\"library-detective\",\"game-studio\",\"forest-care\",\"river-health\"],\"selection_rationale\":\"港×届ける、図書館×見つける、開発スタジオ×楽しませる、森林×守る、川×良くするで、主場所も主動詞も全件異なる。夜間物流・資料保存・水質管理など、子どもから見えにくい仕事を複数含みつつ、ゲーム制作という高近接領域も置いた。事故対応一色ではなく、歴史写真の探索、作品改善、森の手入れ、魚が戻った理由の解明という非トラブル／0→+型が中心で、海・文化・デジタル・山・川を横断する。医療中心候補と重複(高)候補は除外した。\",\"runner_ups\":[\"train-control\",\"airport-turnaround\",\"water-underground\",\"vegetable-factory\",\"space-watch\"],\"rejected_for_overlap\":[\"zoo-night\",\"recycle-plaza\",\"ambulance-call\"]}",
+  "elapsed_sec": 90.842
+}

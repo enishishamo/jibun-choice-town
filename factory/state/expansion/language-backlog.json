@@ -1,0 +1,515 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "scanned_files": 63,
+    "items": [
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 139,
+        "class": "TOO_LONG",
+        "text": "患者さんの話を聞き、からだを診て、必要な検査を考えて、何が起きているかを見きわめます（診断）。",
+        "suggestion": "二文に分けるか、手順を短い箇条書きにする。"
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 203,
+        "class": "TOO_LONG",
+        "text": "同じ薬でも、その人の体重・年齢・腎臓や肝臓のはたらきによって、ちょうどよい量がちがうことがあります。",
+        "suggestion": "条件の列挙と結論を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 125,
+        "class": "TOO_LONG",
+        "text": "1社にまとめて頼むと安くなることもありますが、その会社が届けられなくなったとき、商品が作れなくなります。",
+        "suggestion": "安くなる利点と作れなくなる危険を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 191,
+        "class": "TOO_LONG",
+        "text": "パッケージには、商品名・原材料・賞味期限・アレルゲンなど、書かなければいけない表示もあります。",
+        "suggestion": "表示項目を箇条書きにする。"
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 230,
+        "class": "TOO_LONG",
+        "text": "工場のラインが、止まらず・ムダなく・安全に動くように考えます（生産技術・設備保全などと呼ばれます）。",
+        "suggestion": "仕事の説明と職種名を別の文にする。"
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 231,
+        "class": "TOO_LONG",
+        "text": "どこで詰まっているか、どこでロスが出ているかをデータで確かめて、機械の設定や流し方を直していきます。",
+        "suggestion": "調査と改善を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 116,
+        "class": "TOO_LONG",
+        "text": "「料理ができる」だけでなく、安全のルールを守りながら大量の料理を同じ時間までに完成させることが専門性です。",
+        "suggestion": "専門性の要素を二つの短文に分ける。"
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 162,
+        "class": "TOO_LONG",
+        "text": "アレルギーのある子には、みんなの献立とは別に、その子が安全に食べられる方法を個別に考えます。",
+        "suggestion": "献立との違いと対応内容を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 345,
+        "class": "TOO_LONG",
+        "text": "さっき、トレーの料理を入れかえながら、栄養・お金・調達のバランスが合う組み合わせを探したよね。",
+        "suggestion": "振り返りと三条件の説明を分ける。"
+      },
+      {
+        "file": "src/data/content/schoolLunch.ts",
+        "line": 379,
+        "class": "TOO_LONG",
+        "text": "農家・生産者は、品種や天候を読みながら、何か月も先の「必要な時期」から逆算して育てています。",
+        "suggestion": "予測することと育て方を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 141,
+        "class": "TOO_LONG",
+        "text": "旅行会社などに就職し、添乗の実務経験を積んで、旅程管理主任者などの資格をとることが多い仕事です。",
+        "suggestion": "就職・経験・資格を短い段階表示にする。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 105,
+        "class": "TOO_LONG",
+        "text": "木を植える、日よけをつくる、地面の素材を変える、ミストを置く…場所に合わせて組み合わせます。",
+        "suggestion": "対策例を箇条書きにする。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 144,
+        "class": "TOO_LONG",
+        "text": "電気は、たくさん貯めておくことがむずかしいので、使う量と作る量をいつも合わせ続ける必要があります。",
+        "suggestion": "理由と必要な対応を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 184,
+        "class": "TOO_LONG",
+        "text": "工事現場で、作業の順番・人の配置・安全の管理などを考えます（施工管理・安全管理と呼ばれます）。",
+        "suggestion": "仕事内容と職種名を別の文にする。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 321,
+        "class": "TOO_LONG",
+        "text": "日差しや地面の温度、風を調べて、どこに木や日よけを置けば公園が過ごしやすくなるか考えたよね。",
+        "suggestion": "調べた情報と考えたことを二文に分ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 348,
+        "class": "TOO_LONG",
+        "text": "さっき、気温の予報を見て「このあとどれくらい電気が使われるか」を予測して、前もって備えたよね。",
+        "suggestion": "予測と備えを二文に分ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 368,
+        "class": "TOO_LONG",
+        "text": "実際の工事現場でも、暑さや作業内容を見ながら、働く人を守れるように工程を調整する人がいます。",
+        "suggestion": "見る情報と行う仕事を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 388,
+        "class": "TOO_LONG",
+        "text": "実際には、こうした調整をひとりで決めるのではなく、関係する人たちが集まって、影響を見ながら話し合って決めていきます。",
+        "suggestion": "誰が決めるかと決め方を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 408,
+        "class": "TOO_LONG",
+        "text": "実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。",
+        "suggestion": "分析と対策づくりを二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 135,
+        "class": "TOO_LONG",
+        "text": "所有者さんに貸してもらう相談から始まって、どんなお店が来ると商店街ぜんたいが元気になるかも考えます。",
+        "suggestion": "相談と商店街全体の検討を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 151,
+        "class": "TOO_LONG",
+        "text": "空き店舗が埋まらない理由をたずねた調査では、約4割で「所有者に貸す意思がない」が挙がっています。",
+        "suggestion": "調査の説明と結果を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 199,
+        "class": "TOO_LONG",
+        "text": "ふつうの銀行ではお金を借りにくいことも多いので、国がつくった金融機関が「返せる計画か」を確かめて貸します。",
+        "suggestion": "背景と金融機関の役割を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 231,
+        "class": "TOO_LONG",
+        "text": "かっこよさだけではなく、衛生の基準・料理を運ぶ動線・席の数（売上）を、ぜんぶ同時に成り立たせます。",
+        "suggestion": "三つの条件を箇条書きにする。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 305,
+        "class": "TOO_LONG",
+        "text": "空き店舗が埋まらない理由をたずねた調査では、約4割で「所有者に貸す意思がない」が挙がっているんだ。",
+        "suggestion": "調査の説明と結果を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 309,
+        "class": "TOO_LONG",
+        "text": "きみがさっき、空き店舗のカルテを開いて、所有者さんの気持ちや商店街の業種バランスを見ながら、だれをどの店に迎えるか考えたよね。",
+        "suggestion": "操作の振り返りと判断内容を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 345,
+        "class": "TOO_LONG",
+        "text": "きみがさっき、ハルさんに質問して、売上の計算のあやしいところを見つけて、直し方をいっしょに考えたよね。",
+        "suggestion": "質問・発見・改善を短い文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 416,
+        "class": "TOO_LONG",
+        "text": "きみがさっき、基準で決まっている設備を先に置いてから、残りのスペースで席の数と動線を考えたよね。",
+        "suggestion": "設備配置と残りの設計を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 416,
+        "class": "TOO_LONG",
+        "text": "かっこよさだけじゃなく、衛生の基準と、働きやすさと、売上を、1枚の図面で同時に成り立たせるんだ。",
+        "suggestion": "三条件を箇条書きか短文にする。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 453,
+        "class": "TOO_LONG",
+        "text": "きみがさっき、チェックリストを持ってお店の中を見て回って、直すところを見つけて、再検査までしたよね。",
+        "suggestion": "検査・修正・再検査を段階表示にする。"
+      },
+      {
+        "file": "src/data/content/zoo.ts",
+        "line": 126,
+        "class": "TOO_LONG",
+        "text": "野生動物は不調をかくすことがあるので、昨日との小さな違いのメモが、獣医さんの診察の手がかりになるんです。",
+        "suggestion": "理由とメモの役割を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/zoo.ts",
+        "line": 147,
+        "class": "TOO_LONG",
+        "text": "だから日誌・カメラ映像・落ちたうんちなど、動物がふだん通り暮らしたまま得られる情報から調べ、「その検査で方針が変わるか」を考えて検査を選びます。",
+        "suggestion": "情報源と検査選択を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/zoo.ts",
+        "line": 174,
+        "class": "TOO_LONG",
+        "text": "授乳中のおかあさんには増量、赤ちゃんは体重に合わせてミルクの量を変える——規則を毎日のデータに当てはめるのが腕の見せどころです。",
+        "suggestion": "二つの例と結論を分ける。"
+      },
+      {
+        "file": "src/data/content/zoo.ts",
+        "line": 201,
+        "class": "TOO_LONG",
+        "text": "当日もストレスサイン（行ったり来たり・隠れがち・食べるのをやめる）を見て、縮小や中止をためらわずに判断します。",
+        "suggestion": "サインの例と判断を別表示にする。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 122,
+        "class": "TOO_LONG",
+        "text": "分別ちがい・指定袋でない袋・危険物がまざった袋は、理由を示して残したり、営業所へ連絡したりします。",
+        "suggestion": "袋の種類と対応を箇条書きにする。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 176,
+        "class": "TOO_LONG",
+        "text": "本当の上昇か、計器の異常か、薬剤切れかを切り分けてから、保全担当や運転員へ正しく依頼します。",
+        "suggestion": "原因確認と依頼を二文に分ける。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 213,
+        "class": "TOO_LONG",
+        "text": "「25年後まで安心」ではなく、新しい処分場づくりには長い準備が必要だからこそ、今からごみを減らす提案を続けています。",
+        "suggestion": "誤解の訂正と提案の理由を二文に分ける。"
+      },
+      {
+        "file": "src/q1/PlanEventGame.tsx",
+        "line": 188,
+        "class": "TOO_LONG",
+        "text": "家族連れが中心なのに、小さい子が楽しめるものが少ないかも…👨‍👩‍👧来てほしい人を見てみよう。",
+        "suggestion": "状況説明と促しを別行にする。"
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 203,
+        "class": "HARD_KANJI",
+        "text": "腎臓や肝臓のはたらき",
+        "suggestion": "「じんぞう」「かんぞう」の読みか短い臓器説明を添える。"
+      },
+      {
+        "file": "src/data/content/medical.ts",
+        "line": 283,
+        "class": "HARD_KANJI",
+        "text": "社会福祉士などの資格をとって働く人が多い仕事です",
+        "suggestion": "職名に読み仮名を付ける。"
+      },
+      {
+        "file": "src/data/content/schoolTrip.ts",
+        "line": 141,
+        "class": "HARD_KANJI",
+        "text": "添乗の実務経験を積んで、旅程管理主任者などの資格をとる",
+        "suggestion": "「添乗」「旅程管理主任者」に読み仮名を付ける。"
+      },
+      {
+        "file": "src/data/content/extremeHeat.ts",
+        "line": 205,
+        "class": "HARD_KANJI",
+        "text": "経験を積んで施工管理技士などの資格を取る人もいます。",
+        "suggestion": "「施工管理技士」に読み仮名を付ける。"
+      },
+      {
+        "file": "src/data/content/townEvent.ts",
+        "line": 250,
+        "class": "HARD_KANJI",
+        "text": "ステージや看板をつくる人（施工）",
+        "suggestion": "「施工」に読み仮名か、何をすることかの短い注釈を付ける。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 154,
+        "class": "HARD_KANJI",
+        "text": "搬入の予定と量／クレーンの荷重",
+        "suggestion": "「搬入」「荷重」に読み仮名を付ける。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 181,
+        "class": "HARD_KANJI",
+        "text": "ばいじん・塩化水素・ダイオキシン類などは定期測定",
+        "suggestion": "「塩化水素」「定期測定」に読みか短い補助を付ける。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 202,
+        "class": "HARD_KANJI",
+        "text": "焼却灰や不燃残さを受け入れて、区画に埋め",
+        "suggestion": "「焼却灰」「不燃残さ」「区画」に読み仮名を付ける。"
+      },
+      {
+        "file": "src/q1/DelayRecoverGame.tsx",
+        "line": 20,
+        "class": "HARD_KANJI",
+        "text": "学校の承認を得る",
+        "suggestion": "「承認」に読み仮名か「学校にOKをもらう」の補助を付ける。"
+      },
+      {
+        "file": "src/q1/DelayRecoverGame.tsx",
+        "line": 21,
+        "class": "HARD_KANJI",
+        "text": "全員へ確定内容を共有する",
+        "suggestion": "「確定」「共有」に読み仮名か平易な補助を付ける。"
+      },
+      {
+        "file": "src/data/content/priceHike.ts",
+        "line": 191,
+        "class": "TERM_NO_SUPPORT",
+        "text": "賞味期限・アレルゲン",
+        "suggestion": "各用語に一言の意味説明か表示例の画像を添える。"
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 231,
+        "class": "TERM_NO_SUPPORT",
+        "text": "料理を運ぶ動線",
+        "suggestion": "「動線」を人や料理が通る道と示す図を添える。"
+      },
+      {
+        "file": "src/data/content/zoo.ts",
+        "line": 201,
+        "class": "TERM_NO_SUPPORT",
+        "text": "ストレスサイン",
+        "suggestion": "用語と例の関係が一目で分かるラベルや図を添える。"
+      },
+      {
+        "file": "src/data/content/waste.ts",
+        "line": 181,
+        "class": "TERM_NO_SUPPORT",
+        "text": "ばいじん・塩化水素・ダイオキシン類",
+        "suggestion": "何を表す測定項目か、一言ずつ説明を添える。"
+      },
+      {
+        "file": "src/q1/PitCraneGame.tsx",
+        "line": 163,
+        "class": "TERM_NO_SUPPORT",
+        "text": "まぜるモード：となり合う「かわき」と「しめり」を2つ選ぶ",
+        "suggestion": "「ターン」「投入」と操作の関係が分かる図解を添える。"
+      },
+      {
+        "file": "src/q1/PowerGame.tsx",
+        "line": 5,
+        "class": "TERM_NO_SUPPORT",
+        "text": "需給バランスが変化",
+        "suggestion": "画面上では「使う量と作る量」の対応図を常設する。"
+      },
+      {
+        "file": "src/q1/MoveTryGame.tsx",
+        "line": 80,
+        "class": "BUTTON_IS_SENTENCE",
+        "text": "退院にむけて相談する",
+        "suggestion": "名詞中心の短いラベルにする。"
+      },
+      {
+        "file": "src/q1/FarmGame.tsx",
+        "line": 188,
+        "class": "BUTTON_IS_SENTENCE",
+        "text": "300kgを収穫して箱づめ！",
+        "suggestion": "操作名だけの短いラベルにする。"
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "line": 148,
+        "class": "BUTTON_IS_SENTENCE",
+        "text": "図面をハルさんにわたす",
+        "suggestion": "「図面を提出」など短い動作名にする。"
+      },
+      {
+        "file": "src/q1/LifePlanGame.tsx",
+        "line": 236,
+        "class": "BUTTON_IS_SENTENCE",
+        "text": "この形で、退院の準備をする",
+        "suggestion": "「退院準備へ」など短いラベルにする。"
+      },
+      {
+        "file": "src/q1/ParkHeatGame.tsx",
+        "line": 280,
+        "class": "BUTTON_IS_SENTENCE",
+        "text": "公園に対策を置いてみよう",
+        "suggestion": "未選択時も「対策を選ぶ」など短いラベルにする。"
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 33,
+        "class": "ANSWER_LEAK",
+        "text": "金属だけを確実に取れる道具は？",
+        "suggestion": "正解素材を名指しせず、観察できる違いへ戻す。"
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 34,
+        "class": "ANSWER_LEAK",
+        "text": "🧲金属をまとめて吸い付けられる機械があったはず。",
+        "suggestion": "磁石アイコンと正解原理を直接示さない。"
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "line": 44,
+        "class": "ANSWER_LEAK",
+        "text": "🕸大きさで分けられる道具があったはず。",
+        "suggestion": "網の正解を示さず、対象の大きさを見直させる。"
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "line": 201,
+        "class": "ANSWER_LEAK",
+        "text": "🥗栄養の基準をひらいて確かめてみよう。",
+        "suggestion": "参照文書を指定せず、不足している観点だけ促す。"
+      },
+      {
+        "file": "src/q1/FarmGame.tsx",
+        "line": 42,
+        "class": "ANSWER_LEAK",
+        "text": "🌡気象情報と種袋を見比べてみよう。",
+        "suggestion": "見る資料を指定せず、失敗した条件の観察を促す。"
+      },
+      {
+        "file": "src/q1/FarmGame.tsx",
+        "line": 51,
+        "class": "ANSWER_LEAK",
+        "text": "📅注文の時期と「収穫までの日数」を見比べてみよう。",
+        "suggestion": "参照項目を特定せず、時期のずれに気づかせる。"
+      },
+      {
+        "file": "src/q1/TimetableGame.tsx",
+        "line": 192,
+        "class": "ANSWER_LEAK",
+        "text": "演目を減らすか、同じ作りの演目を続けて転換をへらしてみよう（🔁の資料）。",
+        "suggestion": "具体的な解法と参照資料を伏せ、超過時間だけ返す。"
+      },
+      {
+        "file": "src/q1/PlanEventGame.tsx",
+        "line": 159,
+        "class": "ANSWER_LEAK",
+        "text": "🗺会場の条件を見てみよう。",
+        "suggestion": "参照先を指定せず、選択が成立しない結果だけ示す。"
+      },
+      {
+        "file": "src/q1/PlanEventGame.tsx",
+        "line": 184,
+        "class": "ANSWER_LEAK",
+        "text": "使える時間を見てみよう。",
+        "suggestion": "資料を指さず、超過した分数だけ返す。"
+      },
+      {
+        "file": "src/q1/SceneAuditGame.tsx",
+        "line": 52,
+        "class": "ANSWER_LEAK",
+        "text": "水栓の「構造」の話みたいだ。もう一度、基準を見てみよう。",
+        "suggestion": "正解観点と参照文書を明かさず、観察を促す。"
+      },
+      {
+        "file": "src/q1/LoanScreenGame.tsx",
+        "line": 52,
+        "class": "ANSWER_LEAK",
+        "text": "自己資金は「額」だけじゃなく「貯まり方」を見るんだ。通帳を最後までめくってみよう。",
+        "suggestion": "判定規則と参照書類を直接示さず、情報不足だけ伝える。"
+      },
+      {
+        "file": "src/q1/CookGame.tsx",
+        "line": 92,
+        "class": "ANSWER_LEAK",
+        "text": "衛生ルールを見てみよう。「厚いところをふくめて3か所以上」「75℃以上・1分以上」。",
+        "suggestion": "数値ルールと参照先を答えとして再掲しない。"
+      }
+    ],
+    "counts_by_class": {
+      "TOO_LONG": 37,
+      "HARD_KANJI": 10,
+      "BUTTON_IS_SENTENCE": 5,
+      "TERM_NO_SUPPORT": 6,
+      "ANSWER_LEAK": 12
+    },
+    "worst_files": [
+      "src/data/content/shopOpening.ts",
+      "src/data/content/extremeHeat.ts",
+      "src/data/content/waste.ts",
+      "src/data/content/medical.ts",
+      "src/data/content/priceHike.ts"
+    ]
+  },
+  "output": "{\"scanned_files\":63,\"items\":[{\"file\":\"src/data/content/medical.ts\",\"line\":139,\"class\":\"TOO_LONG\",\"text\":\"患者さんの話を聞き、からだを診て、必要な検査を考えて、何が起きているかを見きわめます（診断）。\",\"suggestion\":\"二文に分けるか、手順を短い箇条書きにする。\"},{\"file\":\"src/data/content/medical.ts\",\"line\":203,\"class\":\"TOO_LONG\",\"text\":\"同じ薬でも、その人の体重・年齢・腎臓や肝臓のはたらきによって、ちょうどよい量がちがうことがあります。\",\"suggestion\":\"条件の列挙と結論を二文に分ける。\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":125,\"class\":\"TOO_LONG\",\"text\":\"1社にまとめて頼むと安くなることもありますが、その会社が届けられなくなったとき、商品が作れなくなります。\",\"suggestion\":\"安くなる利点と作れなくなる危険を二文に分ける。\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":191,\"class\":\"TOO_LONG\",\"text\":\"パッケージには、商品名・原材料・賞味期限・アレルゲンなど、書かなければいけない表示もあります。\",\"suggestion\":\"表示項目を箇条書きにする。\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":230,\"class\":\"TOO_LONG\",\"text\":\"工場のラインが、止まらず・ムダなく・安全に動くように考えます（生産技術・設備保全などと呼ばれます）。\",\"suggestion\":\"仕事の説明と職種名を別の文にする。\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":231,\"class\":\"TOO_LONG\",\"text\":\"どこで詰まっているか、どこでロスが出ているかをデータで確かめて、機械の設定や流し方を直していきます。\",\"suggestion\":\"調査と改善を二文に分ける。\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":116,\"class\":\"TOO_LONG\",\"text\":\"「料理ができる」だけでなく、安全のルールを守りながら大量の料理を同じ時間までに完成させることが専門性です。\",\"suggestion\":\"専門性の要素を二つの短文に分ける。\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":162,\"class\":\"TOO_LONG\",\"text\":\"アレルギーのある子には、みんなの献立とは別に、その子が安全に食べられる方法を個別に考えます。\",\"suggestion\":\"献立との違いと対応内容を二文に分ける。\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":345,\"class\":\"TOO_LONG\",\"text\":\"さっき、トレーの料理を入れかえながら、栄養・お金・調達のバランスが合う組み合わせを探したよね。\",\"suggestion\":\"振り返りと三条件の説明を分ける。\"},{\"file\":\"src/data/content/schoolLunch.ts\",\"line\":379,\"class\":\"TOO_LONG\",\"text\":\"農家・生産者は、品種や天候を読みながら、何か月も先の「必要な時期」から逆算して育てています。\",\"suggestion\":\"予測することと育て方を二文に分ける。\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":141,\"class\":\"TOO_LONG\",\"text\":\"旅行会社などに就職し、添乗の実務経験を積んで、旅程管理主任者などの資格をとることが多い仕事です。\",\"suggestion\":\"就職・経験・資格を短い段階表示にする。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":105,\"class\":\"TOO_LONG\",\"text\":\"木を植える、日よけをつくる、地面の素材を変える、ミストを置く…場所に合わせて組み合わせます。\",\"suggestion\":\"対策例を箇条書きにする。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":144,\"class\":\"TOO_LONG\",\"text\":\"電気は、たくさん貯めておくことがむずかしいので、使う量と作る量をいつも合わせ続ける必要があります。\",\"suggestion\":\"理由と必要な対応を二文に分ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":184,\"class\":\"TOO_LONG\",\"text\":\"工事現場で、作業の順番・人の配置・安全の管理などを考えます（施工管理・安全管理と呼ばれます）。\",\"suggestion\":\"仕事内容と職種名を別の文にする。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":321,\"class\":\"TOO_LONG\",\"text\":\"日差しや地面の温度、風を調べて、どこに木や日よけを置けば公園が過ごしやすくなるか考えたよね。\",\"suggestion\":\"調べた情報と考えたことを二文に分ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":348,\"class\":\"TOO_LONG\",\"text\":\"さっき、気温の予報を見て「このあとどれくらい電気が使われるか」を予測して、前もって備えたよね。\",\"suggestion\":\"予測と備えを二文に分ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":368,\"class\":\"TOO_LONG\",\"text\":\"実際の工事現場でも、暑さや作業内容を見ながら、働く人を守れるように工程を調整する人がいます。\",\"suggestion\":\"見る情報と行う仕事を二文に分ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":388,\"class\":\"TOO_LONG\",\"text\":\"実際には、こうした調整をひとりで決めるのではなく、関係する人たちが集まって、影響を見ながら話し合って決めていきます。\",\"suggestion\":\"誰が決めるかと決め方を二文に分ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":408,\"class\":\"TOO_LONG\",\"text\":\"実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。\",\"suggestion\":\"分析と対策づくりを二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":135,\"class\":\"TOO_LONG\",\"text\":\"所有者さんに貸してもらう相談から始まって、どんなお店が来ると商店街ぜんたいが元気になるかも考えます。\",\"suggestion\":\"相談と商店街全体の検討を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":151,\"class\":\"TOO_LONG\",\"text\":\"空き店舗が埋まらない理由をたずねた調査では、約4割で「所有者に貸す意思がない」が挙がっています。\",\"suggestion\":\"調査の説明と結果を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":199,\"class\":\"TOO_LONG\",\"text\":\"ふつうの銀行ではお金を借りにくいことも多いので、国がつくった金融機関が「返せる計画か」を確かめて貸します。\",\"suggestion\":\"背景と金融機関の役割を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":231,\"class\":\"TOO_LONG\",\"text\":\"かっこよさだけではなく、衛生の基準・料理を運ぶ動線・席の数（売上）を、ぜんぶ同時に成り立たせます。\",\"suggestion\":\"三つの条件を箇条書きにする。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":305,\"class\":\"TOO_LONG\",\"text\":\"空き店舗が埋まらない理由をたずねた調査では、約4割で「所有者に貸す意思がない」が挙がっているんだ。\",\"suggestion\":\"調査の説明と結果を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":309,\"class\":\"TOO_LONG\",\"text\":\"きみがさっき、空き店舗のカルテを開いて、所有者さんの気持ちや商店街の業種バランスを見ながら、だれをどの店に迎えるか考えたよね。\",\"suggestion\":\"操作の振り返りと判断内容を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":345,\"class\":\"TOO_LONG\",\"text\":\"きみがさっき、ハルさんに質問して、売上の計算のあやしいところを見つけて、直し方をいっしょに考えたよね。\",\"suggestion\":\"質問・発見・改善を短い文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":416,\"class\":\"TOO_LONG\",\"text\":\"きみがさっき、基準で決まっている設備を先に置いてから、残りのスペースで席の数と動線を考えたよね。\",\"suggestion\":\"設備配置と残りの設計を二文に分ける。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":416,\"class\":\"TOO_LONG\",\"text\":\"かっこよさだけじゃなく、衛生の基準と、働きやすさと、売上を、1枚の図面で同時に成り立たせるんだ。\",\"suggestion\":\"三条件を箇条書きか短文にする。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":453,\"class\":\"TOO_LONG\",\"text\":\"きみがさっき、チェックリストを持ってお店の中を見て回って、直すところを見つけて、再検査までしたよね。\",\"suggestion\":\"検査・修正・再検査を段階表示にする。\"},{\"file\":\"src/data/content/zoo.ts\",\"line\":126,\"class\":\"TOO_LONG\",\"text\":\"野生動物は不調をかくすことがあるので、昨日との小さな違いのメモが、獣医さんの診察の手がかりになるんです。\",\"suggestion\":\"理由とメモの役割を二文に分ける。\"},{\"file\":\"src/data/content/zoo.ts\",\"line\":147,\"class\":\"TOO_LONG\",\"text\":\"だから日誌・カメラ映像・落ちたうんちなど、動物がふだん通り暮らしたまま得られる情報から調べ、「その検査で方針が変わるか」を考えて検査を選びます。\",\"suggestion\":\"情報源と検査選択を二文に分ける。\"},{\"file\":\"src/data/content/zoo.ts\",\"line\":174,\"class\":\"TOO_LONG\",\"text\":\"授乳中のおかあさんには増量、赤ちゃんは体重に合わせてミルクの量を変える——規則を毎日のデータに当てはめるのが腕の見せどころです。\",\"suggestion\":\"二つの例と結論を分ける。\"},{\"file\":\"src/data/content/zoo.ts\",\"line\":201,\"class\":\"TOO_LONG\",\"text\":\"当日もストレスサイン（行ったり来たり・隠れがち・食べるのをやめる）を見て、縮小や中止をためらわずに判断します。\",\"suggestion\":\"サインの例と判断を別表示にする。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":122,\"class\":\"TOO_LONG\",\"text\":\"分別ちがい・指定袋でない袋・危険物がまざった袋は、理由を示して残したり、営業所へ連絡したりします。\",\"suggestion\":\"袋の種類と対応を箇条書きにする。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":176,\"class\":\"TOO_LONG\",\"text\":\"本当の上昇か、計器の異常か、薬剤切れかを切り分けてから、保全担当や運転員へ正しく依頼します。\",\"suggestion\":\"原因確認と依頼を二文に分ける。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":213,\"class\":\"TOO_LONG\",\"text\":\"「25年後まで安心」ではなく、新しい処分場づくりには長い準備が必要だからこそ、今からごみを減らす提案を続けています。\",\"suggestion\":\"誤解の訂正と提案の理由を二文に分ける。\"},{\"file\":\"src/q1/PlanEventGame.tsx\",\"line\":188,\"class\":\"TOO_LONG\",\"text\":\"家族連れが中心なのに、小さい子が楽しめるものが少ないかも…👨‍👩‍👧来てほしい人を見てみよう。\",\"suggestion\":\"状況説明と促しを別行にする。\"},{\"file\":\"src/data/content/medical.ts\",\"line\":203,\"class\":\"HARD_KANJI\",\"text\":\"腎臓や肝臓のはたらき\",\"suggestion\":\"「じんぞう」「かんぞう」の読みか短い臓器説明を添える。\"},{\"file\":\"src/data/content/medical.ts\",\"line\":283,\"class\":\"HARD_KANJI\",\"text\":\"社会福祉士などの資格をとって働く人が多い仕事です\",\"suggestion\":\"職名に読み仮名を付ける。\"},{\"file\":\"src/data/content/schoolTrip.ts\",\"line\":141,\"class\":\"HARD_KANJI\",\"text\":\"添乗の実務経験を積んで、旅程管理主任者などの資格をとる\",\"suggestion\":\"「添乗」「旅程管理主任者」に読み仮名を付ける。\"},{\"file\":\"src/data/content/extremeHeat.ts\",\"line\":205,\"class\":\"HARD_KANJI\",\"text\":\"経験を積んで施工管理技士などの資格を取る人もいます。\",\"suggestion\":\"「施工管理技士」に読み仮名を付ける。\"},{\"file\":\"src/data/content/townEvent.ts\",\"line\":250,\"class\":\"HARD_KANJI\",\"text\":\"ステージや看板をつくる人（施工）\",\"suggestion\":\"「施工」に読み仮名か、何をすることかの短い注釈を付ける。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":154,\"class\":\"HARD_KANJI\",\"text\":\"搬入の予定と量／クレーンの荷重\",\"suggestion\":\"「搬入」「荷重」に読み仮名を付ける。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":181,\"class\":\"HARD_KANJI\",\"text\":\"ばいじん・塩化水素・ダイオキシン類などは定期測定\",\"suggestion\":\"「塩化水素」「定期測定」に読みか短い補助を付ける。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":202,\"class\":\"HARD_KANJI\",\"text\":\"焼却灰や不燃残さを受け入れて、区画に埋め\",\"suggestion\":\"「焼却灰」「不燃残さ」「区画」に読み仮名を付ける。\"},{\"file\":\"src/q1/DelayRecoverGame.tsx\",\"line\":20,\"class\":\"HARD_KANJI\",\"text\":\"学校の承認を得る\",\"suggestion\":\"「承認」に読み仮名か「学校にOKをもらう」の補助を付ける。\"},{\"file\":\"src/q1/DelayRecoverGame.tsx\",\"line\":21,\"class\":\"HARD_KANJI\",\"text\":\"全員へ確定内容を共有する\",\"suggestion\":\"「確定」「共有」に読み仮名か平易な補助を付ける。\"},{\"file\":\"src/data/content/priceHike.ts\",\"line\":191,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"賞味期限・アレルゲン\",\"suggestion\":\"各用語に一言の意味説明か表示例の画像を添える。\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":231,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"料理を運ぶ動線\",\"suggestion\":\"「動線」を人や料理が通る道と示す図を添える。\"},{\"file\":\"src/data/content/zoo.ts\",\"line\":201,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"ストレスサイン\",\"suggestion\":\"用語と例の関係が一目で分かるラベルや図を添える。\"},{\"file\":\"src/data/content/waste.ts\",\"line\":181,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"ばいじん・塩化水素・ダイオキシン類\",\"suggestion\":\"何を表す測定項目か、一言ずつ説明を添える。\"},{\"file\":\"src/q1/PitCraneGame.tsx\",\"line\":163,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"まぜるモード：となり合う「かわき」と「しめり」を2つ選ぶ\",\"suggestion\":\"「ターン」「投入」と操作の関係が分かる図解を添える。\"},{\"file\":\"src/q1/PowerGame.tsx\",\"line\":5,\"class\":\"TERM_NO_SUPPORT\",\"text\":\"需給バランスが変化\",\"suggestion\":\"画面上では「使う量と作る量」の対応図を常設する。\"},{\"file\":\"src/q1/MoveTryGame.tsx\",\"line\":80,\"class\":\"BUTTON_IS_SENTENCE\",\"text\":\"退院にむけて相談する\",\"suggestion\":\"名詞中心の短いラベルにする。\"},{\"file\":\"src/q1/FarmGame.tsx\",\"line\":188,\"class\":\"BUTTON_IS_SENTENCE\",\"text\":\"300kgを収穫して箱づめ！\",\"suggestion\":\"操作名だけの短いラベルにする。\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"line\":148,\"class\":\"BUTTON_IS_SENTENCE\",\"text\":\"図面をハルさんにわたす\",\"suggestion\":\"「図面を提出」など短い動作名にする。\"},{\"file\":\"src/q1/LifePlanGame.tsx\",\"line\":236,\"class\":\"BUTTON_IS_SENTENCE\",\"text\":\"この形で、退院の準備をする\",\"suggestion\":\"「退院準備へ」など短いラベルにする。\"},{\"file\":\"src/q1/ParkHeatGame.tsx\",\"line\":280,\"class\":\"BUTTON_IS_SENTENCE\",\"text\":\"公園に対策を置いてみよう\",\"suggestion\":\"未選択時も「対策を選ぶ」など短いラベルにする。\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":33,\"class\":\"ANSWER_LEAK\",\"text\":\"金属だけを確実に取れる道具は？\",\"suggestion\":\"正解素材を名指しせず、観察できる違いへ戻す。\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":34,\"class\":\"ANSWER_LEAK\",\"text\":\"🧲金属をまとめて吸い付けられる機械があったはず。\",\"suggestion\":\"磁石アイコンと正解原理を直接示さない。\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"line\":44,\"class\":\"ANSWER_LEAK\",\"text\":\"🕸大きさで分けられる道具があったはず。\",\"suggestion\":\"網の正解を示さず、対象の大きさを見直させる。\"},{\"file\":\"src/q1/MenuGame.tsx\",\"line\":201,\"class\":\"ANSWER_LEAK\",\"text\":\"🥗栄養の基準をひらいて確かめてみよう。\",\"suggestion\":\"参照文書を指定せず、不足している観点だけ促す。\"},{\"file\":\"src/q1/FarmGame.tsx\",\"line\":42,\"class\":\"ANSWER_LEAK\",\"text\":\"🌡気象情報と種袋を見比べてみよう。\",\"suggestion\":\"見る資料を指定せず、失敗した条件の観察を促す。\"},{\"file\":\"src/q1/FarmGame.tsx\",\"line\":51,\"class\":\"ANSWER_LEAK\",\"text\":\"📅注文の時期と「収穫までの日数」を見比べてみよう。\",\"suggestion\":\"参照項目を特定せず、時期のずれに気づかせる。\"},{\"file\":\"src/q1/TimetableGame.tsx\",\"line\":192,\"class\":\"ANSWER_LEAK\",\"text\":\"演目を減らすか、同じ作りの演目を続けて転換をへらしてみよう（🔁の資料）。\",\"suggestion\":\"具体的な解法と参照資料を伏せ、超過時間だけ返す。\"},{\"file\":\"src/q1/PlanEventGame.tsx\",\"line\":159,\"class\":\"ANSWER_LEAK\",\"text\":\"🗺会場の条件を見てみよう。\",\"suggestion\":\"参照先を指定せず、選択が成立しない結果だけ示す。\"},{\"file\":\"src/q1/PlanEventGame.tsx\",\"line\":184,\"class\":\"ANSWER_LEAK\",\"text\":\"使える時間を見てみよう。\",\"suggestion\":\"資料を指さず、超過した分数だけ返す。\"},{\"file\":\"src/q1/SceneAuditGame.tsx\",\"line\":52,\"class\":\"ANSWER_LEAK\",\"text\":\"水栓の「構造」の話みたいだ。もう一度、基準を見てみよう。\",\"suggestion\":\"正解観点と参照文書を明かさず、観察を促す。\"},{\"file\":\"src/q1/LoanScreenGame.tsx\",\"line\":52,\"class\":\"ANSWER_LEAK\",\"text\":\"自己資金は「額」だけじゃなく「貯まり方」を見るんだ。通帳を最後までめくってみよう。\",\"suggestion\":\"判定規則と参照書類を直接示さず、情報不足だけ伝える。\"},{\"file\":\"src/q1/CookGame.tsx\",\"line\":92,\"class\":\"ANSWER_LEAK\",\"text\":\"衛生ルールを見てみよう。「厚いところをふくめて3か所以上」「75℃以上・1分以上」。\",\"suggestion\":\"数値ルールと参照先を答えとして再掲しない。\"}],\"counts_by_class\":{\"TOO_LONG\":37,\"HARD_KANJI\":10,\"BUTTON_IS_SENTENCE\":5,\"TERM_NO_SUPPORT\":6,\"ANSWER_LEAK\":12},\"worst_files\":[\"src/data/content/shopOpening.ts\",\"src/data/content/extremeHeat.ts\",\"src/data/content/waste.ts\",\"src/data/content/medical.ts\",\"src/data/content/priceHike.ts\"]}",
+  "elapsed_sec": 149.65
+}

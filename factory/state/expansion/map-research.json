@@ -1,0 +1,892 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "titles": [
+      {
+        "title": "ゼルダの伝説 ブレス オブ ザ ワイルド",
+        "map_structure": "広大な連続世界を地形と地域で分け、塔、祠、集落をランドマークとして重ねる",
+        "discovery_method": "塔から地図を開示し、高所から目視して自分で目的地を決める",
+        "movement_model": "徒歩、登攀、滑空、馬、ワープ",
+        "zoom_model": "世界地図から地域、アイコン配置へ連続ズーム",
+        "progression_model": "中心目標はあるが、地域と課題の攻略順はほぼ自由",
+        "new_content_signaling": "未開示地図、遠景の塔、煙、光、巨大なシルエット",
+        "visited_state": "地図開示、発見済み地名、祠の色、プレイヤー設置ピン",
+        "locked_state": "強敵、気候、地形などのソフトロックが中心",
+        "event_refresh": "ブラッドムーンで敵や資源が復活する",
+        "exploration_motivation": "見えている不思議な地形や建造物を、自分の仮説で確かめられる",
+        "collection_motivation": "祠、コログ、装備、図鑑",
+        "scale_strategy": "地形による自然な地域分割と、高所からの段階的な可視化",
+        "mobile_applicability": "中。完全自由移動は重いが、地域ズームとランドマーク誘導は有効",
+        "useful_principles": [
+          "遠くから次の目的物を見せる",
+          "ロック表示より環境によるソフトゲートを使う",
+          "発見を地図上に永続化する"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "遠くに光る塔や奇妙な地形が見え、その正体を確かめたくなる。到達経路自体にも小さな発見が連鎖する。"
+      },
+      {
+        "title": "Super Mario World",
+        "map_structure": "地域ごとのノードと経路で構成された一枚のオーバーワールド",
+        "discovery_method": "ステージクリアで隣接経路が出現し、秘密出口で隠しルートが開く",
+        "movement_model": "開通済み経路上をノード間移動",
+        "zoom_model": "固定縮尺。地域間移動時に画面がスクロール",
+        "progression_model": "主経路、分岐、近道、秘密地域の多層進行",
+        "new_content_signaling": "道が地面から出現し、橋や丘など地図そのものが変形する",
+        "visited_state": "クリア済みノードと開通済み経路",
+        "locked_state": "未出現の経路として隠し、鍵アイコンを多用しない",
+        "event_refresh": "再挑戦可能だが、基本的に恒常ステージ",
+        "exploration_motivation": "怪しい分岐や未接続の地形から秘密出口を推測できる",
+        "collection_motivation": "ドラゴンコイン、隠し出口、全ルート開通",
+        "scale_strategy": "地域チャンクと分岐路。秘密ルートが既存地図を再解釈させる",
+        "mobile_applicability": "高。ノードが大きく、移動方向を限定できる",
+        "useful_principles": [
+          "クリア報酬として地図を変形させる",
+          "秘密出口で古い場所に新しい意味を与える",
+          "地域ごとに強い視覚テーマを持たせる"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次のノードが道の出現アニメーションとともに現れるため、自分が世界を広げた実感がある。分岐の先に何があるかも地形から少しだけ予想できる。"
+      },
+      {
+        "title": "New Super Mario Bros. U",
+        "map_structure": "複数地域を連結したノード式オーバーワールド",
+        "discovery_method": "ステージ攻略で隣接ノードを順次開放",
+        "movement_model": "開通経路上を歩き、分岐で行き先を選ぶ",
+        "zoom_model": "地域画面中心で、世界全体表示へ切り替え可能",
+        "progression_model": "線形を基本に、分岐、秘密出口、ショートカットを配置",
+        "new_content_signaling": "新しい道の出現、次ノードのアニメーション、敵アイコンの徘徊",
+        "visited_state": "旗、クリア表示、取得済みスターコイン",
+        "locked_state": "閉じた道、砦、未到達地域",
+        "event_refresh": "マップ上の敵やキノピオ関連イベントが変化する",
+        "exploration_motivation": "分岐と移動する敵により、静的なステージ一覧にならない",
+        "collection_motivation": "スターコイン、秘密出口、隠しステージ",
+        "scale_strategy": "世界をテーマ地域に分割し、地域内だけを読みやすく表示",
+        "mobile_applicability": "高。375pxでは現在地域のみを表示しやすい",
+        "useful_principles": [
+          "地図上に動く存在を置く",
+          "地域単位で情報密度を制御する",
+          "収集状況をノードに直接結び付ける"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次の場所は大きな絵付きノードとして見え、道の先に城や特徴的な地形が待っている。近くを動く敵も、小さな出来事を予告する。"
+      },
+      {
+        "title": "スーパーマリオブラザーズ ワンダー",
+        "map_structure": "花王国を複数ワールドに分け、地域内に自由歩行エリアとコース入口を置く",
+        "discovery_method": "ワンダーシードの獲得でゲートや新地域を開放",
+        "movement_model": "地域マップ内を比較的自由に歩き、コースを選択",
+        "zoom_model": "ワールド選択と地域マップの階層切り替え",
+        "progression_model": "必要数の資源を集めながら、複数候補から次を選ぶ",
+        "new_content_signaling": "花の会話、動くコースアイコン、ゲート、地形の解放演出",
+        "visited_state": "達成マーク、シード数、収集物の状態",
+        "locked_state": "必要シード数が見えるゲート",
+        "event_refresh": "恒常コース中心。オンラインの他プレイヤー表示が地図に生命感を足す",
+        "exploration_motivation": "コースアイコン自体が内容や難度の個性を視覚的に予告する",
+        "collection_motivation": "ワンダーシード、10フラワーコイン、旗頂上",
+        "scale_strategy": "ワールド階層化と、地域ごとの自由選択",
+        "mobile_applicability": "高。少数の大きな選択肢と階層分割がタッチ向き",
+        "useful_principles": [
+          "必要条件を具体的な収集数で示す",
+          "ノードを均一な丸ではなく内容を語る小景観にする",
+          "案内役を地図世界の住人にする"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "入口が生き物のように動き、コースで起こる驚きを少しだけ予告する。複数候補から今の気分に合う場所を選べる。"
+      },
+      {
+        "title": "Pokémon Scarlet / Violet",
+        "map_structure": "連続した地方に町、野外、生息地、複数系統の目標を重ねる",
+        "discovery_method": "視界、地図アイコン、NPC情報、野生ポケモンとの遭遇",
+        "movement_model": "徒歩とライドによる自由移動、発見地点へのファストトラベル",
+        "zoom_model": "地方全体から町・施設レベルまでズーム",
+        "progression_model": "三つの物語ルートを並行し、攻略順を選べる",
+        "new_content_signaling": "目的アイコン、未遭遇ポケモン、遠景の建物、マップ上の大量発生",
+        "visited_state": "発見済み飛行地点、図鑑、攻略済み目標",
+        "locked_state": "ライド能力、強敵レベル、地形によるソフトロック",
+        "event_refresh": "大量発生、テラレイド、期間イベント",
+        "exploration_motivation": "地域ごとに出会える種類が変わり、寄り道が即座に遭遇へつながる",
+        "collection_motivation": "図鑑完成、捕獲、育成、色違い",
+        "scale_strategy": "共通の地理上に物語、収集、生態という複数レイヤーを載せる",
+        "mobile_applicability": "中。自由移動より、フィルター可能なレイヤー構造が応用しやすい",
+        "useful_principles": [
+          "同じ場所に物語と収集の複数目的を置く",
+          "地域ごとに出会える対象を変える",
+          "攻略順の選択を許す"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "新しい町だけでなく、そこへ向かう途中に未知の仲間がいる。場所の選択が物語進行とコレクション拡大を同時に約束する。"
+      },
+      {
+        "title": "Animal Crossing: New Horizons",
+        "map_structure": "小さな連続島に住宅、施設、自然、公共物をプレイヤーが配置する",
+        "discovery_method": "歩き回り、住民の反応、季節変化、建設の解放で発見",
+        "movement_model": "島内徒歩、橋や坂、空港・船による別島移動",
+        "zoom_model": "固定された島内視点と簡略化された島地図",
+        "progression_model": "施設建設、住民増加、島評価、個人目標",
+        "new_content_signaling": "工事区画、来訪者、テント、季節装飾、掲示板",
+        "visited_state": "地図上の住民宅と施設、自作した景観そのもの",
+        "locked_state": "建設予定地、未整備の川や崖、未開放施設",
+        "event_refresh": "時間帯、曜日、季節、訪問NPC、虫や魚が変化",
+        "exploration_motivation": "よく知る場所が時間と住民行動によって少しずつ変わる",
+        "collection_motivation": "博物館、家具、服、生き物、住民との関係",
+        "scale_strategy": "面積を増やさず、時間、季節、住民、装飾で同じ空間の状態数を増やす",
+        "mobile_applicability": "高。少数地点を繰り返し更新する設計は軽量",
+        "useful_principles": [
+          "新規地点だけでなく既存地点の状態を増やす",
+          "工事中の姿で未来を予告する",
+          "住民の行動を再訪理由にする"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "昨日と同じ広場でも、今日は別の住民や季節イベントがいるかもしれない。自分の過去の選択で景観が育つため、確認したくなる。"
+      },
+      {
+        "title": "SimCity (2013)",
+        "map_structure": "地域内に複数の都市区画を置き、各都市が専門化しながら相互作用する",
+        "discovery_method": "都市成長と需要の発生によって新しい施設や問題が現れる",
+        "movement_model": "直接移動ではなく、都市・地域ビューを選択して管理",
+        "zoom_model": "地域俯瞰から街路、建物、住民データへズーム",
+        "progression_model": "人口、富、サービス、専門産業、大事業の発達",
+        "new_content_signaling": "建設、密度上昇、吹き出し、警告、道路交通の変化",
+        "visited_state": "完成した建物、都市統計、恒久的な都市形状",
+        "locked_state": "人口条件、資金、地域大事業の段階",
+        "event_refresh": "災害、需要変化、交通、近隣都市との資源変動",
+        "exploration_motivation": "自分が作ったシステムの結果を地区ごとに観察できる",
+        "collection_motivation": "都市専門化、施設、実績",
+        "scale_strategy": "単一巨大都市ではなく、役割の異なる都市を地域で束ねる",
+        "mobile_applicability": "中。地域カードと地区の役割分担は有効だが細かなデータ表示は不向き",
+        "useful_principles": [
+          "場所同士に資源や役割の関係を持たせる",
+          "成長を建物の外見で示す",
+          "地域全体の共同目標を置く"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "その都市で新しい建物が育ったり問題が発生したりしていることが外見から分かる。別地区の仕事が町全体へどう影響したか確認したくなる。"
+      },
+      {
+        "title": "Cities: Skylines",
+        "map_structure": "タイル単位で拡張する連続都市と、道路・交通網による地区接続",
+        "discovery_method": "人口到達でサービスが開放され、隣接土地を購入して領域を広げる",
+        "movement_model": "カメラ自由移動と管理対象の直接選択",
+        "zoom_model": "地域俯瞰から個々の住民・車両まで連続ズーム",
+        "progression_model": "マイルストーン、人口増加、土地拡張、交通最適化",
+        "new_content_signaling": "新タイル、建設クレーン、建物の成長、情報ビューの警告",
+        "visited_state": "建設済み都市、地区指定、交通網",
+        "locked_state": "購入前タイルとマイルストーン未達施設",
+        "event_refresh": "交通、需要、住民移動、都市問題が継続的に変化",
+        "exploration_motivation": "都市の局所的な出来事をズームして観察できる",
+        "collection_motivation": "ユニーク施設、交通方式、地区タイプ",
+        "scale_strategy": "隣接タイル拡張と、用途別情報レイヤー",
+        "mobile_applicability": "中。段階的な土地開放とレイヤー切替は有効",
+        "useful_principles": [
+          "次に広げられる境界を見せる",
+          "全体地図と局所の物語をズームで接続する",
+          "役割別フィルターで密度を制御する"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "新しい地区が町の形を変え、交通や住民の流れにも影響する。遠景の成長を見て、そこで何が起きたか詳しく見たくなる。"
+      },
+      {
+        "title": "Sid Meier's Civilization VI",
+        "map_structure": "六角形タイルの世界を都市、地形、資源、勢力圏で構成",
+        "discovery_method": "ユニットの視界で霧を除去し、地形と他文明を発見する",
+        "movement_model": "ターン制タイル移動",
+        "zoom_model": "戦略全体から都市・ユニット配置への連続ズーム",
+        "progression_model": "探索、入植、技術・社会制度、領土拡張",
+        "new_content_signaling": "霧の境界、探索報告、蛮族、自然遺産、資源の発見",
+        "visited_state": "一度見た地形は暗い記憶地図として残り、現視界と区別される",
+        "locked_state": "未探索の霧、技術不足で未利用の資源や地形",
+        "event_refresh": "外交、都市国家クエスト、蛮族、世界会議などが状況を更新",
+        "exploration_motivation": "霧の一マス先に資源、競争相手、好立地がある可能性",
+        "collection_motivation": "都市、資源、偉人、技術、遺産",
+        "scale_strategy": "均一タイル、霧、情報レイヤーにより巨大世界を段階公開",
+        "mobile_applicability": "高。タイルを地区カードへ置換すれば段階公開に適する",
+        "useful_principles": [
+          "未訪問と過去に見た状態を分ける",
+          "不完全な境界で続きを想像させる",
+          "探索が次の戦略選択を生むようにする"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "地図の端が途中で切れ、そこに何があるかだけが分からない。新しい場所の発見が、その後の進み方まで変える。"
+      },
+      {
+        "title": "Mini Metro",
+        "map_structure": "駅ノードとプレイヤーが引く路線だけで都市を抽象化",
+        "discovery_method": "時間経過で新駅や新しい形状の駅が出現",
+        "movement_model": "列車が路線上を自動移動し、プレイヤーは接続を編集",
+        "zoom_model": "基本固定。都市規模に応じて表示範囲が調整される",
+        "progression_model": "駅増加に対応して路線、車両、トンネルを拡張",
+        "new_content_signaling": "新駅のポップ出現と、待客の形・混雑表示",
+        "visited_state": "接続済み路線と運行中の車両",
+        "locked_state": "未獲得の路線、車両、橋・トンネル資源",
+        "event_refresh": "駅と乗客が継続生成され、既存ネットワークの意味が変わる",
+        "exploration_motivation": "探索より、新ノードを既存構造へどう組み込むかが動機",
+        "collection_motivation": "都市、実績、より長い運行記録",
+        "scale_strategy": "地理を捨て、意味のあるノード、線、形だけを残す",
+        "mobile_applicability": "非常に高。小画面でも関係性が読みやすい",
+        "useful_principles": [
+          "縮小時は建物ではなく関係だけを表示する",
+          "新地点を既存地点との接続問題にする",
+          "形と色で文字なしに役割を区別する"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "新しい駅は単なる追加項目ではなく、町全体のつながりを変える問題として現れる。どの線につなぐべきか考えたくなる。"
+      },
+      {
+        "title": "Minecraft",
+        "map_structure": "手続き生成される連続世界をバイオーム、構造物、高低差、異次元で構成",
+        "discovery_method": "移動、採掘、地図作成、環境の手掛かり",
+        "movement_model": "徒歩、船、騎乗、飛行、ポータル",
+        "zoom_model": "身体視点と段階縮尺の地図アイテム",
+        "progression_model": "資源と知識による自己設定型進行",
+        "new_content_signaling": "地平線の地形変化、構造物の一部、音、特殊ブロック",
+        "visited_state": "建築物、たいまつ、道、埋まっていく地図",
+        "locked_state": "装備や知識不足によるソフトロック。明示ロックは少ない",
+        "event_refresh": "昼夜、敵スポーン、村人、襲撃、資源活動",
+        "exploration_motivation": "次の地形や希少構造が予測不能で、発見を自分の物語にできる",
+        "collection_motivation": "素材、装備、生物、建築用ブロック、実績",
+        "scale_strategy": "生成世界、バイオーム差、プレイヤーの自作ランドマーク",
+        "mobile_applicability": "低から中。無限移動は重いが、自分で印を残す原則は強い",
+        "useful_principles": [
+          "訪問記録をユーザーの行動で世界に残す",
+          "シルエットや素材差で次の地域を示す",
+          "正解の順序を一つにしない"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "地平線の向こうに今までと違う地形や建物の一部が見える。そこへ行けば新素材だけでなく、自分だけの出来事が起こり得る。"
+      },
+      {
+        "title": "LEGO City Undercover",
+        "map_structure": "連続都市を特徴的な地区、乗り物、ミッション入口、収集物で満たす",
+        "discovery_method": "物語進行、街中の視覚ギャグ、能力で反応するLEGOオブジェクト",
+        "movement_model": "徒歩、車両、乗り物乗っ取り、ファストトラベル",
+        "zoom_model": "都市地図と三人称の現地探索",
+        "progression_model": "物語ミッションで変装能力を獲得し、過去地区の障害を解除",
+        "new_content_signaling": "壊せる物、色付きギミック、キャラクター、乗り物、建設地点",
+        "visited_state": "収集済みアイテム、完成したスーパー・ビルド、地区達成率",
+        "locked_state": "特定変装や能力を要求する視覚的ギミック",
+        "event_refresh": "恒常世界中心。新能力獲得で既存地区の意味が更新される",
+        "exploration_motivation": "街角ごとのユーモアと、後で解けそうな仕掛け",
+        "collection_motivation": "キャラクター、車両、ブロック、地区達成率",
+        "scale_strategy": "都市を視覚テーマの強い地区に分け、能力ゲートで再利用",
+        "mobile_applicability": "高。地区と能力アイコンの組み合わせは文字を減らせる",
+        "useful_principles": [
+          "ロックを鍵ではなく意味のある道具で表す",
+          "新能力で古い場所を再訪可能にする",
+          "収集率を地区単位で示す"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "新しい仕事の能力なら、以前見かけた仕掛けを動かせそうだと分かる。場所ごとのコミカルな出来事も次の驚きを期待させる。"
+      },
+      {
+        "title": "Duolingo",
+        "map_structure": "単元を短いノード列にし、セクションとユニットで階層化した一本道",
+        "discovery_method": "直前ノードの完了で次のノードが開く",
+        "movement_model": "スクロールしてノードを直接選択",
+        "zoom_model": "単一縮尺。セクション選択で長距離ジャンプ",
+        "progression_model": "順序制御された小課題、節目の宝箱や物語",
+        "new_content_signaling": "次ノードの強調、キャラクター、宝箱、節目の異形ノード",
+        "visited_state": "完了色、進行位置、単元の達成状態",
+        "locked_state": "灰色の後続ノード",
+        "event_refresh": "復習対象や練習内容が更新される",
+        "exploration_motivation": "限定的。先の節目と経路の見通しが継続動機",
+        "collection_motivation": "単元達成、物語、報酬資源",
+        "scale_strategy": "長い道をセクションとユニットに折り畳み、現在地へ自動復帰",
+        "mobile_applicability": "非常に高。ただし自由探索感は弱い",
+        "useful_principles": [
+          "現在地を常に一操作で復元する",
+          "長い列を章へ分割する",
+          "一定間隔で形の違う節目を置く"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次の一歩が一つに絞られ、短時間で終わることが見た目から分かる。少し先の宝箱や物語が中距離目標になる。"
+      },
+      {
+        "title": "Candy Crush Saga",
+        "map_structure": "非常に長い曲線状のレベル経路をエピソード単位の景観で連結",
+        "discovery_method": "直前レベルをクリアして次を順番に開く",
+        "movement_model": "縦方向にスクロールし、レベルノードをタップ",
+        "zoom_model": "固定縮尺と高速な現在地復帰",
+        "progression_model": "一本道のレベル番号と、定期的な区切り",
+        "new_content_signaling": "次ノードの強調、障害物アイコン、イベント入口、キャラクター",
+        "visited_state": "星、スコア、クリア済み色",
+        "locked_state": "未到達ノードと区切りゲート",
+        "event_refresh": "期間イベントやサイド活動が通常経路に重なる",
+        "exploration_motivation": "地理探索は弱いが、次々に変わる背景が長距離進行を可視化する",
+        "collection_motivation": "星、報酬、イベント進捗",
+        "scale_strategy": "無限に近い一本道を景観チャンクと現在地ジャンプで管理",
+        "mobile_applicability": "非常に高。50地点の直列表示には適するが、カタログ感に注意",
+        "useful_principles": [
+          "長大経路では現在地へ即復帰させる",
+          "背景テーマを定期的に変える",
+          "本線に短期の横道を重ねる"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次のレベルだけが明確に前へ出ており、背景の先には新しい景観が見える。ただし場所自体よりクリア継続が主な動機になる。"
+      },
+      {
+        "title": "妖怪ウォッチ",
+        "map_structure": "住宅街、商店街、学校、山など、子どもの生活圏に近い町地区で構成",
+        "discovery_method": "NPC依頼、妖怪レーダー、時間帯、怪しい物陰の調査",
+        "movement_model": "徒歩、自転車、地区間移動、施設への出入り",
+        "zoom_model": "地区地図と現地探索の切り替え",
+        "progression_model": "物語で地区を広げつつ、依頼と妖怪収集を並行",
+        "new_content_signaling": "レーダー反応、クエスト人物、怪しい場所、時間帯変化",
+        "visited_state": "発見地点、クエスト状態、妖怪大辞典",
+        "locked_state": "物語条件、ウォッチランク、時間帯や鍵付き場所",
+        "event_refresh": "昼夜、天候、一部NPCや妖怪の出現条件が変化",
+        "exploration_motivation": "日常的な町の隙間に見えない妖怪が潜んでいる",
+        "collection_motivation": "妖怪大辞典、仲間、メダル、依頼",
+        "scale_strategy": "一つの巨大地図ではなく、意味の明確な生活地区へ分割",
+        "mobile_applicability": "高。学校、駅、公園など子どもが絵で識別できる",
+        "useful_principles": [
+          "身近な場所に秘密のレイヤーを重ねる",
+          "探知反応で近さを伝える",
+          "時間帯で同じ地区の登場人物を変える"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "学校や公園という知っている場所に、見えない妖怪が隠れているかもしれない。レーダーの反応が、あと少し探したい気持ちを作る。"
+      },
+      {
+        "title": "Splatoon 3",
+        "map_structure": "歩ける中央広場を、対戦、協力、ショップ、物語へのハブとして使う",
+        "discovery_method": "看板、店構え、NPC、入口の造形、広場の変化",
+        "movement_model": "ハブ内徒歩とメニューによる各モードへの移動",
+        "zoom_model": "現地視点中心。全体地図への依存が小さい",
+        "progression_model": "複数モードが中央ハブから独立進行",
+        "new_content_signaling": "フェス装飾、ステージ情報、NPC、照明、音楽、巨大看板",
+        "visited_state": "モード別ランク、ショップ在庫、装備状態",
+        "locked_state": "ランク条件や未解放モード",
+        "event_refresh": "ステージローテーション、フェス、ショップ、広場投稿",
+        "exploration_motivation": "中央広場の雰囲気がイベントに応じて大きく変わる",
+        "collection_motivation": "ギア、バッジ、ロッカー装飾、カタログ報酬",
+        "scale_strategy": "機能を一つの歩けるハブへ集約し、入口ごとに別コンテンツへ分岐",
+        "mobile_applicability": "高。50地点すべてを同時表示せず、ハブから地区へ分けられる",
+        "useful_principles": [
+          "入口の外観だけで活動内容を伝える",
+          "イベント時はハブ全体の状態を変える",
+          "複数系統の進行を一つの帰還地点で束ねる"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "建物の形、音、集まるキャラクターから、中で何が起こるか想像できる。イベント時には町全体が変わり、以前の入口も新鮮に見える。"
+      },
+      {
+        "title": "Kirby and the Forgotten Land",
+        "map_structure": "大陸状のワールドマップにテーマ地域とステージ、救出施設を配置",
+        "discovery_method": "ステージクリアで次の道が開き、隠しステージはマップ上の探索で発見",
+        "movement_model": "ワールドマップ上を自由に飛び、入口へ着地",
+        "zoom_model": "大陸俯瞰と各ステージ内部の切り替え",
+        "progression_model": "地域ごとの主ステージとボス、救出数による施設成長",
+        "new_content_signaling": "新ステージの出現、光る探索地点、町の建物増築",
+        "visited_state": "救出数、ミッション達成、完成した町",
+        "locked_state": "救出数条件、未開通地域、ボスゲート",
+        "event_refresh": "町の施設と会話が進行に応じて増える",
+        "exploration_motivation": "ステージ外の地図にも隠し入口があり、マップを触る意味がある",
+        "collection_motivation": "ワドルディ救出、フィギュア、設計図、ミッション",
+        "scale_strategy": "地域チャンクと、成長する帰還ハブの組み合わせ",
+        "mobile_applicability": "非常に高。大きな絵付き地点と自由なポインター移動が子ども向き",
+        "useful_principles": [
+          "マップ背景にも触れる発見を置く",
+          "活動の成果を中央の町の成長へ返す",
+          "一地点に複数の小ミッションを持たせる"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次の入口は、その場所で起きる出来事をミニチュア景観として見せる。遊んだ成果で中央の町も育つため、進むことと帰ることの両方が楽しみになる。"
+      },
+      {
+        "title": "Professor Layton and the Curious Village",
+        "map_structure": "町を背景画の場面ノードとして分割し、隣接場面を矢印で接続",
+        "discovery_method": "人物との会話と、背景中の怪しい部分へのタップ",
+        "movement_model": "画面端や矢印を選ぶ場面間移動",
+        "zoom_model": "固定背景。町地図から場面へジャンプする補助機能",
+        "progression_model": "物語上の目的地へ進みつつ、任意の謎を発見",
+        "new_content_signaling": "新しい人物、目的地の印、視覚的に怪しい背景物",
+        "visited_state": "地名、解いた謎、発見済み収集物",
+        "locked_state": "物語条件で通れない道や閉じた建物",
+        "event_refresh": "物語進行に応じて人物配置や会話が変わる",
+        "exploration_motivation": "背景のどこに謎やヒントコインが潜むか分からない",
+        "collection_motivation": "謎、ヒントコイン、物語断片",
+        "scale_strategy": "連続空間を少数の高密度な場面へ圧縮",
+        "mobile_applicability": "高。ただし375pxではタップ対象を十分大きくする必要がある",
+        "useful_principles": [
+          "一枚絵を探索面として使う",
+          "場面間の隣接関係を単純にする",
+          "背景の細部へ任意の発見を埋める"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次の場面には新しい人物や物語の手掛かりがいる。同時に、背景そのものにも隠れた謎があるため、到着後すぐ観察したくなる。"
+      },
+      {
+        "title": "Township",
+        "map_structure": "成長する町の建設面と、注文、農業、生産、期間イベントを重ねる",
+        "discovery_method": "レベル上昇、建設、注文達成で施設と活動を開放",
+        "movement_model": "町をパンし、建物やイベント入口を直接タップ",
+        "zoom_model": "町全体から個別施設までのピンチズーム",
+        "progression_model": "生産チェーン、人口、レベル、土地拡張",
+        "new_content_signaling": "建設中の建物、吹き出し、車両、装飾されたイベント区域",
+        "visited_state": "完成施設、拡張済み土地、町の配置",
+        "locked_state": "レベル条件、未拡張土地、建設資材不足",
+        "event_refresh": "注文、列車、イベント、町の依頼が更新される",
+        "exploration_motivation": "町の各施設が動き、現在の生産や依頼を視覚的に示す",
+        "collection_motivation": "建物、装飾、動物、土地、イベント報酬",
+        "scale_strategy": "土地を段階拡張し、恒常施設に期間活動を差し込む",
+        "mobile_applicability": "高。モバイル実績があるが、アイコン過密化には注意",
+        "useful_principles": [
+          "完成前の建設姿で未来を見せる",
+          "施設の動きで状態を知らせる",
+          "町の縁を次の拡張候補として残す"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "煙、車両、作業中の建物から、今その場所で何かが進んでいると分かる。新施設の建設途中も、完成後を見たいという期待を作る。"
+      },
+      {
+        "title": "Idle Miner Tycoon",
+        "map_structure": "複数の大陸に鉱山ノードをまとめ、各鉱山内を縦方向の坑道階層にする",
+        "discovery_method": "資金と進行条件で次の坑道、鉱山、大陸を開放",
+        "movement_model": "世界マップで鉱山を選び、内部では縦スクロール",
+        "zoom_model": "大陸マップ、鉱山、坑道の三階層",
+        "progression_model": "生産量増加、管理者、坑道開放、地域アンロック",
+        "new_content_signaling": "未開通坑道、建設演出、大陸シルエット、イベント鉱山入口",
+        "visited_state": "レベル、収益、開通済み坑道、管理者配置",
+        "locked_state": "資金条件、進行条件、未開放大陸",
+        "event_refresh": "期間限定鉱山やイベント島が追加される",
+        "exploration_motivation": "新地域では生産の見た目と成長曲線が切り替わる",
+        "collection_motivation": "管理者、鉱山、収益段階、イベント報酬",
+        "scale_strategy": "大陸、鉱山、坑道という三段階の入れ子",
+        "mobile_applicability": "非常に高。50ワールドを地域グループへ圧縮できる",
+        "useful_principles": [
+          "全体、地区、場所の三階層にする",
+          "次の地域をシルエットで予告する",
+          "期間コンテンツを本線と別の島に置く"
+        ],
+        "why_do_i_want_to_tap_the_next_place": "次の鉱山は新しい景観と成長の仕組みを約束し、外形だけ先に見える。現在地で得た力が新地域でどこまで通用するか試したくなる。"
+      }
+    ],
+    "scale_patterns": [
+      {
+        "pattern": "テーマ地域・地区への分割",
+        "which_titles": [
+          "Super Mario World",
+          "New Super Mario Bros. U",
+          "スーパーマリオブラザーズ ワンダー",
+          "妖怪ウォッチ",
+          "Kirby and the Forgotten Land",
+          "Cities: Skylines"
+        ],
+        "strengths": "一度に見せる選択肢を減らし、背景色やランドマークだけで現在地を理解させられる",
+        "costs": "地区間の関係が弱いと、単なるカテゴリ分けになる",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "15〜20地点。30地点以上ではほぼ必須"
+      },
+      {
+        "pattern": "世界、地区、地点の階層ズーム",
+        "which_titles": [
+          "Pokémon Scarlet / Violet",
+          "Cities: Skylines",
+          "Idle Miner Tycoon",
+          "SimCity (2013)"
+        ],
+        "strengths": "50地点を一画面に詰めず、全体感とタップ精度を両立できる",
+        "costs": "階層が深すぎると目的地までの操作数と迷子が増える",
+        "mobile_fit": "高。最大三階層が適切",
+        "starts_to_shine_at": "20〜25地点"
+      },
+      {
+        "pattern": "章マップ・エピソード単位の折り畳み",
+        "which_titles": [
+          "Duolingo",
+          "Candy Crush Saga",
+          "Idle Miner Tycoon"
+        ],
+        "strengths": "数百件まで拡張でき、現在章だけに集中させられる",
+        "costs": "自由探索感が弱く、教材の目次に近づきやすい",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "30地点。100地点以上で特に強い"
+      },
+      {
+        "pattern": "霧・不完全な地図端による段階公開",
+        "which_titles": [
+          "Sid Meier's Civilization VI",
+          "ゼルダの伝説 ブレス オブ ザ ワイルド",
+          "Minecraft"
+        ],
+        "strengths": "未公開量を圧迫感なく隠し、境界そのものを好奇心へ変える",
+        "costs": "子どもが開放条件を理解できないと、単なる空白に見える",
+        "mobile_fit": "高。タップ可能な境界と短い開放演出が必要",
+        "starts_to_shine_at": "12〜15地点"
+      },
+      {
+        "pattern": "隣接タイル・島の追加による外向き成長",
+        "which_titles": [
+          "Cities: Skylines",
+          "Animal Crossing: New Horizons",
+          "Township",
+          "Idle Miner Tycoon"
+        ],
+        "strengths": "追加コンテンツが世界の面積拡大として理解され、自分の町が育つ",
+        "costs": "端へ伸び続けると移動距離が増え、古い中心部が死にやすい",
+        "mobile_fit": "高。地区ジャンプと現在地復帰が必要",
+        "starts_to_shine_at": "15地点"
+      },
+      {
+        "pattern": "中央ハブと複数の枝",
+        "which_titles": [
+          "Splatoon 3",
+          "Kirby and the Forgotten Land",
+          "スーパーマリオブラザーズ ワンダー"
+        ],
+        "strengths": "帰る場所が記憶の基準になり、異なる活動系統を混乱なく束ねられる",
+        "costs": "毎回ハブ経由だと操作が増える。ハブがメニュー化すると魅力を失う",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "9〜12地点。20地点以上では複数ハブも有効"
+      },
+      {
+        "pattern": "一本の進行路と視覚的な節目",
+        "which_titles": [
+          "Super Mario World",
+          "Duolingo",
+          "Candy Crush Saga"
+        ],
+        "strengths": "次に何をするか明快で、学齢の低い子どもでも迷いにくい",
+        "costs": "選択感が薄く、50地点では作業リストに見えやすい",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "10地点。30地点以上では章分けが必要"
+      },
+      {
+        "pattern": "複数の進行路を同じ地理へ重ねる",
+        "which_titles": [
+          "Pokémon Scarlet / Violet",
+          "Sid Meier's Civilization VI",
+          "LEGO City Undercover"
+        ],
+        "strengths": "同じ場所が物語、仕事、収集で別の意味を持ち、コンテンツ密度が増す",
+        "costs": "アイコン過密と、どれが主目的か分からない問題が起きる",
+        "mobile_fit": "中から高。目的別フィルターが必要",
+        "starts_to_shine_at": "15〜20地点"
+      },
+      {
+        "pattern": "地理ではなく接続関係を表示する抽象マップ",
+        "which_titles": [
+          "Mini Metro",
+          "Super Mario World",
+          "New Super Mario Bros. U"
+        ],
+        "strengths": "小画面でも場所同士の関係が読みやすく、SVGで軽量に実装できる",
+        "costs": "町らしさや現地の生活感は別の場面で補う必要がある",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "20地点"
+      },
+      {
+        "pattern": "面積を増やさず同じ場所の状態を増やす",
+        "which_titles": [
+          "Animal Crossing: New Horizons",
+          "Splatoon 3",
+          "妖怪ウォッチ",
+          "Professor Layton and the Curious Village"
+        ],
+        "strengths": "親しみのある場所へ新鮮さを足し、制作済み背景を長く活用できる",
+        "costs": "変化が小さいと更新に気づかれない。状態管理も複雑になる",
+        "mobile_fit": "非常に高",
+        "starts_to_shine_at": "9地点から有効。地点追加が遅い時に特に強い"
+      }
+    ],
+    "new_content_signaling_patterns": [
+      {
+        "pattern": "地図そのものが伸びる・変形する",
+        "examples": [
+          "Super Mario World",
+          "New Super Mario Bros. U",
+          "Township"
+        ],
+        "when_it_works": "プレイヤーの達成が新地点を直接生んだ時。因果関係を最も強く伝えられる"
+      },
+      {
+        "pattern": "工事中の建物や足場",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "Township",
+          "SimCity (2013)"
+        ],
+        "when_it_works": "近日開放される場所を事前に見せ、完成を待つ期待を作りたい時"
+      },
+      {
+        "pattern": "煙、灯り、音、動く機械",
+        "examples": [
+          "ゼルダの伝説 ブレス オブ ザ ワイルド",
+          "Splatoon 3",
+          "Township"
+        ],
+        "when_it_works": "文字を読まずに、遠くで何かが起きていると伝えたい時"
+      },
+      {
+        "pattern": "人だかり、来訪NPC、呼び掛け",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "妖怪ウォッチ",
+          "Splatoon 3"
+        ],
+        "when_it_works": "社会イベントを主役にする時。場所ではなく人の変化が誘因になる"
+      },
+      {
+        "pattern": "未完成の地図端・霧",
+        "examples": [
+          "Sid Meier's Civilization VI",
+          "Minecraft",
+          "ゼルダの伝説 ブレス オブ ザ ワイルド"
+        ],
+        "when_it_works": "追加地点の詳細を伏せ、発見行為そのものを報酬にしたい時"
+      },
+      {
+        "pattern": "遠景のシルエット",
+        "examples": [
+          "ゼルダの伝説 ブレス オブ ザ ワイルド",
+          "Idle Miner Tycoon",
+          "Minecraft"
+        ],
+        "when_it_works": "次地域のテーマだけを予告し、中身は隠したい時"
+      },
+      {
+        "pattern": "キラキラ、脈動、レーダー反応",
+        "examples": [
+          "Kirby and the Forgotten Land",
+          "妖怪ウォッチ",
+          "スーパーマリオブラザーズ ワンダー"
+        ],
+        "when_it_works": "375px画面で小さな変化を確実に気づかせたい時。常時使用するとノイズになる"
+      },
+      {
+        "pattern": "新しい道や交通線が接続される",
+        "examples": [
+          "Super Mario World",
+          "Mini Metro",
+          "New Super Mario Bros. U"
+        ],
+        "when_it_works": "新地点が既存の町との関係を持つことを示したい時"
+      },
+      {
+        "pattern": "建物や入口の外観が変わる",
+        "examples": [
+          "Kirby and the Forgotten Land",
+          "Splatoon 3",
+          "Cities: Skylines"
+        ],
+        "when_it_works": "既訪問地点へ新しい活動が追加された時"
+      },
+      {
+        "pattern": "生き物・車両・敵が地図上を移動する",
+        "examples": [
+          "New Super Mario Bros. U",
+          "Township",
+          "Cities: Skylines"
+        ],
+        "when_it_works": "静的な地図に現在進行中の出来事を感じさせたい時"
+      },
+      {
+        "pattern": "背景全体の季節・祭り化",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "Splatoon 3"
+        ],
+        "when_it_works": "複数地点へ同時に新しい意味を与えたい時"
+      }
+    ],
+    "return_motivation_patterns": [
+      {
+        "pattern": "過去の行動で場所が成長する",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "Kirby and the Forgotten Land",
+          "Township"
+        ],
+        "mechanism": "救出、建設、選択の結果が景観へ残り、完成後の姿を確認したくなる"
+      },
+      {
+        "pattern": "新能力で古い障害を解ける",
+        "examples": [
+          "LEGO City Undercover",
+          "ゼルダの伝説 ブレス オブ ザ ワイルド",
+          "Minecraft"
+        ],
+        "mechanism": "以前見た未解決物を記憶させ、新しい仕事道具や能力を再訪の鍵にする"
+      },
+      {
+        "pattern": "住民と社会イベントが入れ替わる",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "妖怪ウォッチ",
+          "Splatoon 3"
+        ],
+        "mechanism": "同じ場所でも会える人、会話、集団行動が変わる"
+      },
+      {
+        "pattern": "時間・季節で生態や景観が変わる",
+        "examples": [
+          "Animal Crossing: New Horizons",
+          "妖怪ウォッチ",
+          "Minecraft"
+        ],
+        "mechanism": "地点追加なしで、発見対象と雰囲気を更新する"
+      },
+      {
+        "pattern": "未完の地区別コレクション",
+        "examples": [
+          "LEGO City Undercover",
+          "Kirby and the Forgotten Land",
+          "Pokémon Scarlet / Violet"
+        ],
+        "mechanism": "地域ごとに空欄や未達成の小目標を残し、あと一つを探したくさせる"
+      },
+      {
+        "pattern": "世界が継続的に動く",
+        "examples": [
+          "Mini Metro",
+          "Cities: Skylines",
+          "SimCity (2013)"
+        ],
+        "mechanism": "新しい交通、混雑、需要、問題が既存地点の役割を変える"
+      },
+      {
+        "pattern": "秘密出口・隠し接続",
+        "examples": [
+          "Super Mario World",
+          "New Super Mario Bros. U",
+          "Kirby and the Forgotten Land"
+        ],
+        "mechanism": "クリア済み地点が別の道を持つと分かり、地図全体を再解釈させる"
+      },
+      {
+        "pattern": "中央ハブへの成果還元",
+        "examples": [
+          "Kirby and the Forgotten Land",
+          "Splatoon 3",
+          "Animal Crossing: New Horizons"
+        ],
+        "mechanism": "外で得た成果が、頻繁に見る町の住民、施設、装飾へ反映される"
+      }
+    ],
+    "kids_specific": [
+      {
+        "finding": "大きなランドマークで地区を識別する",
+        "evidence_from_titles": [
+          "妖怪ウォッチの学校・駅・商店街",
+          "Kirby and the Forgotten Landの遊園地・雪原・町",
+          "Splatoon 3の特徴的な店舗入口"
+        ],
+        "application": "地区名を読ませず、学校、公園、病院、港などの大きなシルエットをナビゲーションにする"
+      },
+      {
+        "finding": "線と隣接で次の行き先を理解する",
+        "evidence_from_titles": [
+          "Super Mario World",
+          "New Super Mario Bros. U",
+          "Candy Crush Saga"
+        ],
+        "application": "現在地から選べる道だけを明るくし、全50地点を同時に選択可能にしない"
+      },
+      {
+        "finding": "色、形、動きで場所の種類を区別する",
+        "evidence_from_titles": [
+          "Mini Metro",
+          "スーパーマリオブラザーズ ワンダー",
+          "Kirby and the Forgotten Land"
+        ],
+        "application": "仕事カテゴリを文字ラベルだけにせず、形状と短いループアニメーションにも割り当てる"
+      },
+      {
+        "finding": "キャラクターが目的地を指すと文章説明が不要になる",
+        "evidence_from_titles": [
+          "妖怪ウォッチ",
+          "Animal Crossing: New Horizons",
+          "Splatoon 3"
+        ],
+        "application": "困っている住民を地点の外に見せ、吹き出しには物や感情の絵を使う"
+      },
+      {
+        "finding": "触った時に世界が反応すると探索対象を学習できる",
+        "evidence_from_titles": [
+          "Professor Layton and the Curious Village",
+          "Kirby and the Forgotten Land",
+          "LEGO City Undercover"
+        ],
+        "application": "背景の重要物は揺れる、鳴る、表情が変わるなど即時反応を返す"
+      },
+      {
+        "finding": "ロック理由は道具や人数の絵で示せる",
+        "evidence_from_titles": [
+          "LEGO City Undercover",
+          "Kirby and the Forgotten Land",
+          "スーパーマリオブラザーズ ワンダー"
+        ],
+        "application": "南京錠だけでなく、必要な仕事道具、助ける人数、橋の未完成状態を表示する"
+      },
+      {
+        "finding": "安全な帰還地点が空間理解を助ける",
+        "evidence_from_titles": [
+          "Kirby and the Forgotten Land",
+          "Splatoon 3",
+          "Animal Crossing: New Horizons"
+        ],
+        "application": "迷った時に一操作で中央広場へ戻し、広場のランドマークを常に同じ位置関係に保つ"
+      },
+      {
+        "finding": "短い選択範囲なら自由に見えて迷いにくい",
+        "evidence_from_titles": [
+          "スーパーマリオブラザーズ ワンダー",
+          "Kirby and the Forgotten Land",
+          "Super Mario World"
+        ],
+        "application": "各地区で同時に見せる未完了候補を3〜7地点程度に抑える"
+      }
+    ],
+    "anti_catalog": [
+      {
+        "structure": "場所同士を道、川、交通、視線で結ぶ",
+        "effect": "各項目が独立カードではなく、一つの町の一部になる"
+      },
+      {
+        "structure": "均一なアイコンの代わりにミニチュア景観を使う",
+        "effect": "場所を番号ではなく、そこで起こる出来事として予告できる"
+      },
+      {
+        "structure": "新地点開放時に地図を物理的に変化させる",
+        "effect": "項目追加がリスト更新ではなく、世界への働き掛けになる"
+      },
+      {
+        "structure": "主経路に秘密の横道と戻り道を混ぜる",
+        "effect": "目次の上から順に消化する感覚を弱める"
+      },
+      {
+        "structure": "地図上でNPC、車両、動物を動かす",
+        "effect": "場所一覧ではなく、出来事が進行する町に見える"
+      },
+      {
+        "structure": "同じ地点に複数の人物、仕事、収集目的を持たせる",
+        "effect": "一地点一レッスンの対応を崩し、場所に厚みを作る"
+      },
+      {
+        "structure": "未訪問地点を完全なカードとして先に並べない",
+        "effect": "霧、遠景、工事現場、シルエットで存在だけを予告し、発見余地を残す"
+      },
+      {
+        "structure": "成果を中央広場や既存地区の景観へ還元する",
+        "effect": "進行がチェックマークの増加ではなく、町の成長として見える"
+      },
+      {
+        "structure": "地区ごとに異なる空間文法を使う",
+        "effect": "すべてを同じグリッドや縦リストへ押し込まず、公園は広場、港は桟橋、商店街は通りとして表現できる"
+      },
+      {
+        "structure": "現在進行中の社会イベントを最上位に置く",
+        "effect": "場所名から探すのではなく、誰が何をしているかを見て行き先を選べる"
+      }
+    ],
+    "principles_for_jibun_choice": [
+      "50ワールドを一枚に並べず、5〜7地区、各地区5〜10地点の二階層を基本にする",
+      "モバイルでは世界全体を抽象SVG、地区内を大きなミニチュア景観として描き分ける",
+      "中央広場を常設し、各地区で得た成果が住民、建物、飾りとして広場へ戻る構造にする",
+      "地区は学校、公園、駅、商店街、港など、文字なしでも区別できる一つの巨大ランドマークを持つ",
+      "各ワールドを単独カードにせず、道、交通、人の移動、必要な品物で最低一つ他ワールドと関係付ける",
+      "新規ワールドはNEWバッジではなく、工事、煙、灯り、人だかり、新しい道の順で世界内に出現させる",
+      "未開放地区は灰色カードにせず、町の端にある橋、霧、船、丘の向こうのシルエットとして予告する",
+      "ロック条件は『あと3』だけでなく、必要な道具、助ける人、直す橋を絵で示す",
+      "各地区で今選べる未完了地点は3〜7個に制限し、それ以外は背景化またはサブズームに送る",
+      "世界、地区、地点の三階層を上限とし、どこからでも一操作で中央広場と現在イベントへ戻せるようにする",
+      "地点ノードは同じ丸で統一せず、仕事と社会イベントを表す小景観にする",
+      "次の地点は内容を全部説明せず、困っている人物、届いていない荷物、消えた灯りなど未解決状態を一つ見せる",
+      "訪問済みはチェックマークだけでなく、修理済みの建物、増えた住民、完成した道として地図に残す",
+      "一つの地点に初回物語、別の仕事役割、収集対象、後日変化の少なくとも二層を持たせる",
+      "新しい仕事道具を得たら、過去地区の1〜2地点にも新しい反応を追加して再訪を生む",
+      "社会イベントは一定期間後に消すだけでなく、終了後の町に看板、飾り、住民の会話など結果を残す",
+      "地図フィルターは『仕事』『困っている人』『集めもの』など最大3種にし、初期状態では現在の物語だけを強調する",
+      "デスクトップでは複数地区を同時に見せても、モバイルでは現在地区を主役にし、隣接地区は画面端のランドマークとして見せる",
+      "SVGの接続線、CSSの短いループアニメーション、Reactの地点状態データを分離し、9から50への増加をレイアウト変更ではなくデータ追加で処理する",
+      "コンテンツ追加のたびに地図の面積を広げず、既存地点の時間帯、登場人物、仕事役割、結果状態も増やす",
+      "探索の基本ループを『遠くの変化に気づく→地区へ入る→人物の困り事を見る→仕事を体験する→町の変化を確認する』にする",
+      "完了率は主画面の中心に置かず、地区詳細でだけ確認可能にし、町の見た目そのものを主要な進捗表示にする"
+    ]
+  },
+  "output": "{\n  \"titles\": [\n    {\n      \"title\": \"ゼルダの伝説 ブレス オブ ザ ワイルド\",\n      \"map_structure\": \"広大な連続世界を地形と地域で分け、塔、祠、集落をランドマークとして重ねる\",\n      \"discovery_method\": \"塔から地図を開示し、高所から目視して自分で目的地を決める\",\n      \"movement_model\": \"徒歩、登攀、滑空、馬、ワープ\",\n      \"zoom_model\": \"世界地図から地域、アイコン配置へ連続ズーム\",\n      \"progression_model\": \"中心目標はあるが、地域と課題の攻略順はほぼ自由\",\n      \"new_content_signaling\": \"未開示地図、遠景の塔、煙、光、巨大なシルエット\",\n      \"visited_state\": \"地図開示、発見済み地名、祠の色、プレイヤー設置ピン\",\n      \"locked_state\": \"強敵、気候、地形などのソフトロックが中心\",\n      \"event_refresh\": \"ブラッドムーンで敵や資源が復活する\",\n      \"exploration_motivation\": \"見えている不思議な地形や建造物を、自分の仮説で確かめられる\",\n      \"collection_motivation\": \"祠、コログ、装備、図鑑\",\n      \"scale_strategy\": \"地形による自然な地域分割と、高所からの段階的な可視化\",\n      \"mobile_applicability\": \"中。完全自由移動は重いが、地域ズームとランドマーク誘導は有効\",\n      \"useful_principles\": [\n        \"遠くから次の目的物を見せる\",\n        \"ロック表示より環境によるソフトゲートを使う\",\n        \"発見を地図上に永続化する\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"遠くに光る塔や奇妙な地形が見え、その正体を確かめたくなる。到達経路自体にも小さな発見が連鎖する。\"\n    },\n    {\n      \"title\": \"Super Mario World\",\n      \"map_structure\": \"地域ごとのノードと経路で構成された一枚のオーバーワールド\",\n      \"discovery_method\": \"ステージクリアで隣接経路が出現し、秘密出口で隠しルートが開く\",\n      \"movement_model\": \"開通済み経路上をノード間移動\",\n      \"zoom_model\": \"固定縮尺。地域間移動時に画面がスクロール\",\n      \"progression_model\": \"主経路、分岐、近道、秘密地域の多層進行\",\n      \"new_content_signaling\": \"道が地面から出現し、橋や丘など地図そのものが変形する\",\n      \"visited_state\": \"クリア済みノードと開通済み経路\",\n      \"locked_state\": \"未出現の経路として隠し、鍵アイコンを多用しない\",\n      \"event_refresh\": \"再挑戦可能だが、基本的に恒常ステージ\",\n      \"exploration_motivation\": \"怪しい分岐や未接続の地形から秘密出口を推測できる\",\n      \"collection_motivation\": \"ドラゴンコイン、隠し出口、全ルート開通\",\n      \"scale_strategy\": \"地域チャンクと分岐路。秘密ルートが既存地図を再解釈させる\",\n      \"mobile_applicability\": \"高。ノードが大きく、移動方向を限定できる\",\n      \"useful_principles\": [\n        \"クリア報酬として地図を変形させる\",\n        \"秘密出口で古い場所に新しい意味を与える\",\n        \"地域ごとに強い視覚テーマを持たせる\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次のノードが道の出現アニメーションとともに現れるため、自分が世界を広げた実感がある。分岐の先に何があるかも地形から少しだけ予想できる。\"\n    },\n    {\n      \"title\": \"New Super Mario Bros. U\",\n      \"map_structure\": \"複数地域を連結したノード式オーバーワールド\",\n      \"discovery_method\": \"ステージ攻略で隣接ノードを順次開放\",\n      \"movement_model\": \"開通経路上を歩き、分岐で行き先を選ぶ\",\n      \"zoom_model\": \"地域画面中心で、世界全体表示へ切り替え可能\",\n      \"progression_model\": \"線形を基本に、分岐、秘密出口、ショートカットを配置\",\n      \"new_content_signaling\": \"新しい道の出現、次ノードのアニメーション、敵アイコンの徘徊\",\n      \"visited_state\": \"旗、クリア表示、取得済みスターコイン\",\n      \"locked_state\": \"閉じた道、砦、未到達地域\",\n      \"event_refresh\": \"マップ上の敵やキノピオ関連イベントが変化する\",\n      \"exploration_motivation\": \"分岐と移動する敵により、静的なステージ一覧にならない\",\n      \"collection_motivation\": \"スターコイン、秘密出口、隠しステージ\",\n      \"scale_strategy\": \"世界をテーマ地域に分割し、地域内だけを読みやすく表示\",\n      \"mobile_applicability\": \"高。375pxでは現在地域のみを表示しやすい\",\n      \"useful_principles\": [\n        \"地図上に動く存在を置く\",\n        \"地域単位で情報密度を制御する\",\n        \"収集状況をノードに直接結び付ける\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次の場所は大きな絵付きノードとして見え、道の先に城や特徴的な地形が待っている。近くを動く敵も、小さな出来事を予告する。\"\n    },\n    {\n      \"title\": \"スーパーマリオブラザーズ ワンダー\",\n      \"map_structure\": \"花王国を複数ワールドに分け、地域内に自由歩行エリアとコース入口を置く\",\n      \"discovery_method\": \"ワンダーシードの獲得でゲートや新地域を開放\",\n      \"movement_model\": \"地域マップ内を比較的自由に歩き、コースを選択\",\n      \"zoom_model\": \"ワールド選択と地域マップの階層切り替え\",\n      \"progression_model\": \"必要数の資源を集めながら、複数候補から次を選ぶ\",\n      \"new_content_signaling\": \"花の会話、動くコースアイコン、ゲート、地形の解放演出\",\n      \"visited_state\": \"達成マーク、シード数、収集物の状態\",\n      \"locked_state\": \"必要シード数が見えるゲート\",\n      \"event_refresh\": \"恒常コース中心。オンラインの他プレイヤー表示が地図に生命感を足す\",\n      \"exploration_motivation\": \"コースアイコン自体が内容や難度の個性を視覚的に予告する\",\n      \"collection_motivation\": \"ワンダーシード、10フラワーコイン、旗頂上\",\n      \"scale_strategy\": \"ワールド階層化と、地域ごとの自由選択\",\n      \"mobile_applicability\": \"高。少数の大きな選択肢と階層分割がタッチ向き\",\n      \"useful_principles\": [\n        \"必要条件を具体的な収集数で示す\",\n        \"ノードを均一な丸ではなく内容を語る小景観にする\",\n        \"案内役を地図世界の住人にする\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"入口が生き物のように動き、コースで起こる驚きを少しだけ予告する。複数候補から今の気分に合う場所を選べる。\"\n    },\n    {\n      \"title\": \"Pokémon Scarlet / Violet\",\n      \"map_structure\": \"連続した地方に町、野外、生息地、複数系統の目標を重ねる\",\n      \"discovery_method\": \"視界、地図アイコン、NPC情報、野生ポケモンとの遭遇\",\n      \"movement_model\": \"徒歩とライドによる自由移動、発見地点へのファストトラベル\",\n      \"zoom_model\": \"地方全体から町・施設レベルまでズーム\",\n      \"progression_model\": \"三つの物語ルートを並行し、攻略順を選べる\",\n      \"new_content_signaling\": \"目的アイコン、未遭遇ポケモン、遠景の建物、マップ上の大量発生\",\n      \"visited_state\": \"発見済み飛行地点、図鑑、攻略済み目標\",\n      \"locked_state\": \"ライド能力、強敵レベル、地形によるソフトロック\",\n      \"event_refresh\": \"大量発生、テラレイド、期間イベント\",\n      \"exploration_motivation\": \"地域ごとに出会える種類が変わり、寄り道が即座に遭遇へつながる\",\n      \"collection_motivation\": \"図鑑完成、捕獲、育成、色違い\",\n      \"scale_strategy\": \"共通の地理上に物語、収集、生態という複数レイヤーを載せる\",\n      \"mobile_applicability\": \"中。自由移動より、フィルター可能なレイヤー構造が応用しやすい\",\n      \"useful_principles\": [\n        \"同じ場所に物語と収集の複数目的を置く\",\n        \"地域ごとに出会える対象を変える\",\n        \"攻略順の選択を許す\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"新しい町だけでなく、そこへ向かう途中に未知の仲間がいる。場所の選択が物語進行とコレクション拡大を同時に約束する。\"\n    },\n    {\n      \"title\": \"Animal Crossing: New Horizons\",\n      \"map_structure\": \"小さな連続島に住宅、施設、自然、公共物をプレイヤーが配置する\",\n      \"discovery_method\": \"歩き回り、住民の反応、季節変化、建設の解放で発見\",\n      \"movement_model\": \"島内徒歩、橋や坂、空港・船による別島移動\",\n      \"zoom_model\": \"固定された島内視点と簡略化された島地図\",\n      \"progression_model\": \"施設建設、住民増加、島評価、個人目標\",\n      \"new_content_signaling\": \"工事区画、来訪者、テント、季節装飾、掲示板\",\n      \"visited_state\": \"地図上の住民宅と施設、自作した景観そのもの\",\n      \"locked_state\": \"建設予定地、未整備の川や崖、未開放施設\",\n      \"event_refresh\": \"時間帯、曜日、季節、訪問NPC、虫や魚が変化\",\n      \"exploration_motivation\": \"よく知る場所が時間と住民行動によって少しずつ変わる\",\n      \"collection_motivation\": \"博物館、家具、服、生き物、住民との関係\",\n      \"scale_strategy\": \"面積を増やさず、時間、季節、住民、装飾で同じ空間の状態数を増やす\",\n      \"mobile_applicability\": \"高。少数地点を繰り返し更新する設計は軽量\",\n      \"useful_principles\": [\n        \"新規地点だけでなく既存地点の状態を増やす\",\n        \"工事中の姿で未来を予告する\",\n        \"住民の行動を再訪理由にする\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"昨日と同じ広場でも、今日は別の住民や季節イベントがいるかもしれない。自分の過去の選択で景観が育つため、確認したくなる。\"\n    },\n    {\n      \"title\": \"SimCity (2013)\",\n      \"map_structure\": \"地域内に複数の都市区画を置き、各都市が専門化しながら相互作用する\",\n      \"discovery_method\": \"都市成長と需要の発生によって新しい施設や問題が現れる\",\n      \"movement_model\": \"直接移動ではなく、都市・地域ビューを選択して管理\",\n      \"zoom_model\": \"地域俯瞰から街路、建物、住民データへズーム\",\n      \"progression_model\": \"人口、富、サービス、専門産業、大事業の発達\",\n      \"new_content_signaling\": \"建設、密度上昇、吹き出し、警告、道路交通の変化\",\n      \"visited_state\": \"完成した建物、都市統計、恒久的な都市形状\",\n      \"locked_state\": \"人口条件、資金、地域大事業の段階\",\n      \"event_refresh\": \"災害、需要変化、交通、近隣都市との資源変動\",\n      \"exploration_motivation\": \"自分が作ったシステムの結果を地区ごとに観察できる\",\n      \"collection_motivation\": \"都市専門化、施設、実績\",\n      \"scale_strategy\": \"単一巨大都市ではなく、役割の異なる都市を地域で束ねる\",\n      \"mobile_applicability\": \"中。地域カードと地区の役割分担は有効だが細かなデータ表示は不向き\",\n      \"useful_principles\": [\n        \"場所同士に資源や役割の関係を持たせる\",\n        \"成長を建物の外見で示す\",\n        \"地域全体の共同目標を置く\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"その都市で新しい建物が育ったり問題が発生したりしていることが外見から分かる。別地区の仕事が町全体へどう影響したか確認したくなる。\"\n    },\n    {\n      \"title\": \"Cities: Skylines\",\n      \"map_structure\": \"タイル単位で拡張する連続都市と、道路・交通網による地区接続\",\n      \"discovery_method\": \"人口到達でサービスが開放され、隣接土地を購入して領域を広げる\",\n      \"movement_model\": \"カメラ自由移動と管理対象の直接選択\",\n      \"zoom_model\": \"地域俯瞰から個々の住民・車両まで連続ズーム\",\n      \"progression_model\": \"マイルストーン、人口増加、土地拡張、交通最適化\",\n      \"new_content_signaling\": \"新タイル、建設クレーン、建物の成長、情報ビューの警告\",\n      \"visited_state\": \"建設済み都市、地区指定、交通網\",\n      \"locked_state\": \"購入前タイルとマイルストーン未達施設\",\n      \"event_refresh\": \"交通、需要、住民移動、都市問題が継続的に変化\",\n      \"exploration_motivation\": \"都市の局所的な出来事をズームして観察できる\",\n      \"collection_motivation\": \"ユニーク施設、交通方式、地区タイプ\",\n      \"scale_strategy\": \"隣接タイル拡張と、用途別情報レイヤー\",\n      \"mobile_applicability\": \"中。段階的な土地開放とレイヤー切替は有効\",\n      \"useful_principles\": [\n        \"次に広げられる境界を見せる\",\n        \"全体地図と局所の物語をズームで接続する\",\n        \"役割別フィルターで密度を制御する\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"新しい地区が町の形を変え、交通や住民の流れにも影響する。遠景の成長を見て、そこで何が起きたか詳しく見たくなる。\"\n    },\n    {\n      \"title\": \"Sid Meier's Civilization VI\",\n      \"map_structure\": \"六角形タイルの世界を都市、地形、資源、勢力圏で構成\",\n      \"discovery_method\": \"ユニットの視界で霧を除去し、地形と他文明を発見する\",\n      \"movement_model\": \"ターン制タイル移動\",\n      \"zoom_model\": \"戦略全体から都市・ユニット配置への連続ズーム\",\n      \"progression_model\": \"探索、入植、技術・社会制度、領土拡張\",\n      \"new_content_signaling\": \"霧の境界、探索報告、蛮族、自然遺産、資源の発見\",\n      \"visited_state\": \"一度見た地形は暗い記憶地図として残り、現視界と区別される\",\n      \"locked_state\": \"未探索の霧、技術不足で未利用の資源や地形\",\n      \"event_refresh\": \"外交、都市国家クエスト、蛮族、世界会議などが状況を更新\",\n      \"exploration_motivation\": \"霧の一マス先に資源、競争相手、好立地がある可能性\",\n      \"collection_motivation\": \"都市、資源、偉人、技術、遺産\",\n      \"scale_strategy\": \"均一タイル、霧、情報レイヤーにより巨大世界を段階公開\",\n      \"mobile_applicability\": \"高。タイルを地区カードへ置換すれば段階公開に適する\",\n      \"useful_principles\": [\n        \"未訪問と過去に見た状態を分ける\",\n        \"不完全な境界で続きを想像させる\",\n        \"探索が次の戦略選択を生むようにする\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"地図の端が途中で切れ、そこに何があるかだけが分からない。新しい場所の発見が、その後の進み方まで変える。\"\n    },\n    {\n      \"title\": \"Mini Metro\",\n      \"map_structure\": \"駅ノードとプレイヤーが引く路線だけで都市を抽象化\",\n      \"discovery_method\": \"時間経過で新駅や新しい形状の駅が出現\",\n      \"movement_model\": \"列車が路線上を自動移動し、プレイヤーは接続を編集\",\n      \"zoom_model\": \"基本固定。都市規模に応じて表示範囲が調整される\",\n      \"progression_model\": \"駅増加に対応して路線、車両、トンネルを拡張\",\n      \"new_content_signaling\": \"新駅のポップ出現と、待客の形・混雑表示\",\n      \"visited_state\": \"接続済み路線と運行中の車両\",\n      \"locked_state\": \"未獲得の路線、車両、橋・トンネル資源\",\n      \"event_refresh\": \"駅と乗客が継続生成され、既存ネットワークの意味が変わる\",\n      \"exploration_motivation\": \"探索より、新ノードを既存構造へどう組み込むかが動機\",\n      \"collection_motivation\": \"都市、実績、より長い運行記録\",\n      \"scale_strategy\": \"地理を捨て、意味のあるノード、線、形だけを残す\",\n      \"mobile_applicability\": \"非常に高。小画面でも関係性が読みやすい\",\n      \"useful_principles\": [\n        \"縮小時は建物ではなく関係だけを表示する\",\n        \"新地点を既存地点との接続問題にする\",\n        \"形と色で文字なしに役割を区別する\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"新しい駅は単なる追加項目ではなく、町全体のつながりを変える問題として現れる。どの線につなぐべきか考えたくなる。\"\n    },\n    {\n      \"title\": \"Minecraft\",\n      \"map_structure\": \"手続き生成される連続世界をバイオーム、構造物、高低差、異次元で構成\",\n      \"discovery_method\": \"移動、採掘、地図作成、環境の手掛かり\",\n      \"movement_model\": \"徒歩、船、騎乗、飛行、ポータル\",\n      \"zoom_model\": \"身体視点と段階縮尺の地図アイテム\",\n      \"progression_model\": \"資源と知識による自己設定型進行\",\n      \"new_content_signaling\": \"地平線の地形変化、構造物の一部、音、特殊ブロック\",\n      \"visited_state\": \"建築物、たいまつ、道、埋まっていく地図\",\n      \"locked_state\": \"装備や知識不足によるソフトロック。明示ロックは少ない\",\n      \"event_refresh\": \"昼夜、敵スポーン、村人、襲撃、資源活動\",\n      \"exploration_motivation\": \"次の地形や希少構造が予測不能で、発見を自分の物語にできる\",\n      \"collection_motivation\": \"素材、装備、生物、建築用ブロック、実績\",\n      \"scale_strategy\": \"生成世界、バイオーム差、プレイヤーの自作ランドマーク\",\n      \"mobile_applicability\": \"低から中。無限移動は重いが、自分で印を残す原則は強い\",\n      \"useful_principles\": [\n        \"訪問記録をユーザーの行動で世界に残す\",\n        \"シルエットや素材差で次の地域を示す\",\n        \"正解の順序を一つにしない\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"地平線の向こうに今までと違う地形や建物の一部が見える。そこへ行けば新素材だけでなく、自分だけの出来事が起こり得る。\"\n    },\n    {\n      \"title\": \"LEGO City Undercover\",\n      \"map_structure\": \"連続都市を特徴的な地区、乗り物、ミッション入口、収集物で満たす\",\n      \"discovery_method\": \"物語進行、街中の視覚ギャグ、能力で反応するLEGOオブジェクト\",\n      \"movement_model\": \"徒歩、車両、乗り物乗っ取り、ファストトラベル\",\n      \"zoom_model\": \"都市地図と三人称の現地探索\",\n      \"progression_model\": \"物語ミッションで変装能力を獲得し、過去地区の障害を解除\",\n      \"new_content_signaling\": \"壊せる物、色付きギミック、キャラクター、乗り物、建設地点\",\n      \"visited_state\": \"収集済みアイテム、完成したスーパー・ビルド、地区達成率\",\n      \"locked_state\": \"特定変装や能力を要求する視覚的ギミック\",\n      \"event_refresh\": \"恒常世界中心。新能力獲得で既存地区の意味が更新される\",\n      \"exploration_motivation\": \"街角ごとのユーモアと、後で解けそうな仕掛け\",\n      \"collection_motivation\": \"キャラクター、車両、ブロック、地区達成率\",\n      \"scale_strategy\": \"都市を視覚テーマの強い地区に分け、能力ゲートで再利用\",\n      \"mobile_applicability\": \"高。地区と能力アイコンの組み合わせは文字を減らせる\",\n      \"useful_principles\": [\n        \"ロックを鍵ではなく意味のある道具で表す\",\n        \"新能力で古い場所を再訪可能にする\",\n        \"収集率を地区単位で示す\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"新しい仕事の能力なら、以前見かけた仕掛けを動かせそうだと分かる。場所ごとのコミカルな出来事も次の驚きを期待させる。\"\n    },\n    {\n      \"title\": \"Duolingo\",\n      \"map_structure\": \"単元を短いノード列にし、セクションとユニットで階層化した一本道\",\n      \"discovery_method\": \"直前ノードの完了で次のノードが開く\",\n      \"movement_model\": \"スクロールしてノードを直接選択\",\n      \"zoom_model\": \"単一縮尺。セクション選択で長距離ジャンプ\",\n      \"progression_model\": \"順序制御された小課題、節目の宝箱や物語\",\n      \"new_content_signaling\": \"次ノードの強調、キャラクター、宝箱、節目の異形ノード\",\n      \"visited_state\": \"完了色、進行位置、単元の達成状態\",\n      \"locked_state\": \"灰色の後続ノード\",\n      \"event_refresh\": \"復習対象や練習内容が更新される\",\n      \"exploration_motivation\": \"限定的。先の節目と経路の見通しが継続動機\",\n      \"collection_motivation\": \"単元達成、物語、報酬資源\",\n      \"scale_strategy\": \"長い道をセクションとユニットに折り畳み、現在地へ自動復帰\",\n      \"mobile_applicability\": \"非常に高。ただし自由探索感は弱い\",\n      \"useful_principles\": [\n        \"現在地を常に一操作で復元する\",\n        \"長い列を章へ分割する\",\n        \"一定間隔で形の違う節目を置く\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次の一歩が一つに絞られ、短時間で終わることが見た目から分かる。少し先の宝箱や物語が中距離目標になる。\"\n    },\n    {\n      \"title\": \"Candy Crush Saga\",\n      \"map_structure\": \"非常に長い曲線状のレベル経路をエピソード単位の景観で連結\",\n      \"discovery_method\": \"直前レベルをクリアして次を順番に開く\",\n      \"movement_model\": \"縦方向にスクロールし、レベルノードをタップ\",\n      \"zoom_model\": \"固定縮尺と高速な現在地復帰\",\n      \"progression_model\": \"一本道のレベル番号と、定期的な区切り\",\n      \"new_content_signaling\": \"次ノードの強調、障害物アイコン、イベント入口、キャラクター\",\n      \"visited_state\": \"星、スコア、クリア済み色\",\n      \"locked_state\": \"未到達ノードと区切りゲート\",\n      \"event_refresh\": \"期間イベントやサイド活動が通常経路に重なる\",\n      \"exploration_motivation\": \"地理探索は弱いが、次々に変わる背景が長距離進行を可視化する\",\n      \"collection_motivation\": \"星、報酬、イベント進捗\",\n      \"scale_strategy\": \"無限に近い一本道を景観チャンクと現在地ジャンプで管理\",\n      \"mobile_applicability\": \"非常に高。50地点の直列表示には適するが、カタログ感に注意\",\n      \"useful_principles\": [\n        \"長大経路では現在地へ即復帰させる\",\n        \"背景テーマを定期的に変える\",\n        \"本線に短期の横道を重ねる\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次のレベルだけが明確に前へ出ており、背景の先には新しい景観が見える。ただし場所自体よりクリア継続が主な動機になる。\"\n    },\n    {\n      \"title\": \"妖怪ウォッチ\",\n      \"map_structure\": \"住宅街、商店街、学校、山など、子どもの生活圏に近い町地区で構成\",\n      \"discovery_method\": \"NPC依頼、妖怪レーダー、時間帯、怪しい物陰の調査\",\n      \"movement_model\": \"徒歩、自転車、地区間移動、施設への出入り\",\n      \"zoom_model\": \"地区地図と現地探索の切り替え\",\n      \"progression_model\": \"物語で地区を広げつつ、依頼と妖怪収集を並行\",\n      \"new_content_signaling\": \"レーダー反応、クエスト人物、怪しい場所、時間帯変化\",\n      \"visited_state\": \"発見地点、クエスト状態、妖怪大辞典\",\n      \"locked_state\": \"物語条件、ウォッチランク、時間帯や鍵付き場所\",\n      \"event_refresh\": \"昼夜、天候、一部NPCや妖怪の出現条件が変化\",\n      \"exploration_motivation\": \"日常的な町の隙間に見えない妖怪が潜んでいる\",\n      \"collection_motivation\": \"妖怪大辞典、仲間、メダル、依頼\",\n      \"scale_strategy\": \"一つの巨大地図ではなく、意味の明確な生活地区へ分割\",\n      \"mobile_applicability\": \"高。学校、駅、公園など子どもが絵で識別できる\",\n      \"useful_principles\": [\n        \"身近な場所に秘密のレイヤーを重ねる\",\n        \"探知反応で近さを伝える\",\n        \"時間帯で同じ地区の登場人物を変える\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"学校や公園という知っている場所に、見えない妖怪が隠れているかもしれない。レーダーの反応が、あと少し探したい気持ちを作る。\"\n    },\n    {\n      \"title\": \"Splatoon 3\",\n      \"map_structure\": \"歩ける中央広場を、対戦、協力、ショップ、物語へのハブとして使う\",\n      \"discovery_method\": \"看板、店構え、NPC、入口の造形、広場の変化\",\n      \"movement_model\": \"ハブ内徒歩とメニューによる各モードへの移動\",\n      \"zoom_model\": \"現地視点中心。全体地図への依存が小さい\",\n      \"progression_model\": \"複数モードが中央ハブから独立進行\",\n      \"new_content_signaling\": \"フェス装飾、ステージ情報、NPC、照明、音楽、巨大看板\",\n      \"visited_state\": \"モード別ランク、ショップ在庫、装備状態\",\n      \"locked_state\": \"ランク条件や未解放モード\",\n      \"event_refresh\": \"ステージローテーション、フェス、ショップ、広場投稿\",\n      \"exploration_motivation\": \"中央広場の雰囲気がイベントに応じて大きく変わる\",\n      \"collection_motivation\": \"ギア、バッジ、ロッカー装飾、カタログ報酬\",\n      \"scale_strategy\": \"機能を一つの歩けるハブへ集約し、入口ごとに別コンテンツへ分岐\",\n      \"mobile_applicability\": \"高。50地点すべてを同時表示せず、ハブから地区へ分けられる\",\n      \"useful_principles\": [\n        \"入口の外観だけで活動内容を伝える\",\n        \"イベント時はハブ全体の状態を変える\",\n        \"複数系統の進行を一つの帰還地点で束ねる\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"建物の形、音、集まるキャラクターから、中で何が起こるか想像できる。イベント時には町全体が変わり、以前の入口も新鮮に見える。\"\n    },\n    {\n      \"title\": \"Kirby and the Forgotten Land\",\n      \"map_structure\": \"大陸状のワールドマップにテーマ地域とステージ、救出施設を配置\",\n      \"discovery_method\": \"ステージクリアで次の道が開き、隠しステージはマップ上の探索で発見\",\n      \"movement_model\": \"ワールドマップ上を自由に飛び、入口へ着地\",\n      \"zoom_model\": \"大陸俯瞰と各ステージ内部の切り替え\",\n      \"progression_model\": \"地域ごとの主ステージとボス、救出数による施設成長\",\n      \"new_content_signaling\": \"新ステージの出現、光る探索地点、町の建物増築\",\n      \"visited_state\": \"救出数、ミッション達成、完成した町\",\n      \"locked_state\": \"救出数条件、未開通地域、ボスゲート\",\n      \"event_refresh\": \"町の施設と会話が進行に応じて増える\",\n      \"exploration_motivation\": \"ステージ外の地図にも隠し入口があり、マップを触る意味がある\",\n      \"collection_motivation\": \"ワドルディ救出、フィギュア、設計図、ミッション\",\n      \"scale_strategy\": \"地域チャンクと、成長する帰還ハブの組み合わせ\",\n      \"mobile_applicability\": \"非常に高。大きな絵付き地点と自由なポインター移動が子ども向き\",\n      \"useful_principles\": [\n        \"マップ背景にも触れる発見を置く\",\n        \"活動の成果を中央の町の成長へ返す\",\n        \"一地点に複数の小ミッションを持たせる\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次の入口は、その場所で起きる出来事をミニチュア景観として見せる。遊んだ成果で中央の町も育つため、進むことと帰ることの両方が楽しみになる。\"\n    },\n    {\n      \"title\": \"Professor Layton and the Curious Village\",\n      \"map_structure\": \"町を背景画の場面ノードとして分割し、隣接場面を矢印で接続\",\n      \"discovery_method\": \"人物との会話と、背景中の怪しい部分へのタップ\",\n      \"movement_model\": \"画面端や矢印を選ぶ場面間移動\",\n      \"zoom_model\": \"固定背景。町地図から場面へジャンプする補助機能\",\n      \"progression_model\": \"物語上の目的地へ進みつつ、任意の謎を発見\",\n      \"new_content_signaling\": \"新しい人物、目的地の印、視覚的に怪しい背景物\",\n      \"visited_state\": \"地名、解いた謎、発見済み収集物\",\n      \"locked_state\": \"物語条件で通れない道や閉じた建物\",\n      \"event_refresh\": \"物語進行に応じて人物配置や会話が変わる\",\n      \"exploration_motivation\": \"背景のどこに謎やヒントコインが潜むか分からない\",\n      \"collection_motivation\": \"謎、ヒントコイン、物語断片\",\n      \"scale_strategy\": \"連続空間を少数の高密度な場面へ圧縮\",\n      \"mobile_applicability\": \"高。ただし375pxではタップ対象を十分大きくする必要がある\",\n      \"useful_principles\": [\n        \"一枚絵を探索面として使う\",\n        \"場面間の隣接関係を単純にする\",\n        \"背景の細部へ任意の発見を埋める\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次の場面には新しい人物や物語の手掛かりがいる。同時に、背景そのものにも隠れた謎があるため、到着後すぐ観察したくなる。\"\n    },\n    {\n      \"title\": \"Township\",\n      \"map_structure\": \"成長する町の建設面と、注文、農業、生産、期間イベントを重ねる\",\n      \"discovery_method\": \"レベル上昇、建設、注文達成で施設と活動を開放\",\n      \"movement_model\": \"町をパンし、建物やイベント入口を直接タップ\",\n      \"zoom_model\": \"町全体から個別施設までのピンチズーム\",\n      \"progression_model\": \"生産チェーン、人口、レベル、土地拡張\",\n      \"new_content_signaling\": \"建設中の建物、吹き出し、車両、装飾されたイベント区域\",\n      \"visited_state\": \"完成施設、拡張済み土地、町の配置\",\n      \"locked_state\": \"レベル条件、未拡張土地、建設資材不足\",\n      \"event_refresh\": \"注文、列車、イベント、町の依頼が更新される\",\n      \"exploration_motivation\": \"町の各施設が動き、現在の生産や依頼を視覚的に示す\",\n      \"collection_motivation\": \"建物、装飾、動物、土地、イベント報酬\",\n      \"scale_strategy\": \"土地を段階拡張し、恒常施設に期間活動を差し込む\",\n      \"mobile_applicability\": \"高。モバイル実績があるが、アイコン過密化には注意\",\n      \"useful_principles\": [\n        \"完成前の建設姿で未来を見せる\",\n        \"施設の動きで状態を知らせる\",\n        \"町の縁を次の拡張候補として残す\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"煙、車両、作業中の建物から、今その場所で何かが進んでいると分かる。新施設の建設途中も、完成後を見たいという期待を作る。\"\n    },\n    {\n      \"title\": \"Idle Miner Tycoon\",\n      \"map_structure\": \"複数の大陸に鉱山ノードをまとめ、各鉱山内を縦方向の坑道階層にする\",\n      \"discovery_method\": \"資金と進行条件で次の坑道、鉱山、大陸を開放\",\n      \"movement_model\": \"世界マップで鉱山を選び、内部では縦スクロール\",\n      \"zoom_model\": \"大陸マップ、鉱山、坑道の三階層\",\n      \"progression_model\": \"生産量増加、管理者、坑道開放、地域アンロック\",\n      \"new_content_signaling\": \"未開通坑道、建設演出、大陸シルエット、イベント鉱山入口\",\n      \"visited_state\": \"レベル、収益、開通済み坑道、管理者配置\",\n      \"locked_state\": \"資金条件、進行条件、未開放大陸\",\n      \"event_refresh\": \"期間限定鉱山やイベント島が追加される\",\n      \"exploration_motivation\": \"新地域では生産の見た目と成長曲線が切り替わる\",\n      \"collection_motivation\": \"管理者、鉱山、収益段階、イベント報酬\",\n      \"scale_strategy\": \"大陸、鉱山、坑道という三段階の入れ子\",\n      \"mobile_applicability\": \"非常に高。50ワールドを地域グループへ圧縮できる\",\n      \"useful_principles\": [\n        \"全体、地区、場所の三階層にする\",\n        \"次の地域をシルエットで予告する\",\n        \"期間コンテンツを本線と別の島に置く\"\n      ],\n      \"why_do_i_want_to_tap_the_next_place\": \"次の鉱山は新しい景観と成長の仕組みを約束し、外形だけ先に見える。現在地で得た力が新地域でどこまで通用するか試したくなる。\"\n    }\n  ],\n  \"scale_patterns\": [\n    {\n      \"pattern\": \"テーマ地域・地区への分割\",\n      \"which_titles\": [\n        \"Super Mario World\",\n        \"New Super Mario Bros. U\",\n        \"スーパーマリオブラザーズ ワンダー\",\n        \"妖怪ウォッチ\",\n        \"Kirby and the Forgotten Land\",\n        \"Cities: Skylines\"\n      ],\n      \"strengths\": \"一度に見せる選択肢を減らし、背景色やランドマークだけで現在地を理解させられる\",\n      \"costs\": \"地区間の関係が弱いと、単なるカテゴリ分けになる\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"15〜20地点。30地点以上ではほぼ必須\"\n    },\n    {\n      \"pattern\": \"世界、地区、地点の階層ズーム\",\n      \"which_titles\": [\n        \"Pokémon Scarlet / Violet\",\n        \"Cities: Skylines\",\n        \"Idle Miner Tycoon\",\n        \"SimCity (2013)\"\n      ],\n      \"strengths\": \"50地点を一画面に詰めず、全体感とタップ精度を両立できる\",\n      \"costs\": \"階層が深すぎると目的地までの操作数と迷子が増える\",\n      \"mobile_fit\": \"高。最大三階層が適切\",\n      \"starts_to_shine_at\": \"20〜25地点\"\n    },\n    {\n      \"pattern\": \"章マップ・エピソード単位の折り畳み\",\n      \"which_titles\": [\n        \"Duolingo\",\n        \"Candy Crush Saga\",\n        \"Idle Miner Tycoon\"\n      ],\n      \"strengths\": \"数百件まで拡張でき、現在章だけに集中させられる\",\n      \"costs\": \"自由探索感が弱く、教材の目次に近づきやすい\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"30地点。100地点以上で特に強い\"\n    },\n    {\n      \"pattern\": \"霧・不完全な地図端による段階公開\",\n      \"which_titles\": [\n        \"Sid Meier's Civilization VI\",\n        \"ゼルダの伝説 ブレス オブ ザ ワイルド\",\n        \"Minecraft\"\n      ],\n      \"strengths\": \"未公開量を圧迫感なく隠し、境界そのものを好奇心へ変える\",\n      \"costs\": \"子どもが開放条件を理解できないと、単なる空白に見える\",\n      \"mobile_fit\": \"高。タップ可能な境界と短い開放演出が必要\",\n      \"starts_to_shine_at\": \"12〜15地点\"\n    },\n    {\n      \"pattern\": \"隣接タイル・島の追加による外向き成長\",\n      \"which_titles\": [\n        \"Cities: Skylines\",\n        \"Animal Crossing: New Horizons\",\n        \"Township\",\n        \"Idle Miner Tycoon\"\n      ],\n      \"strengths\": \"追加コンテンツが世界の面積拡大として理解され、自分の町が育つ\",\n      \"costs\": \"端へ伸び続けると移動距離が増え、古い中心部が死にやすい\",\n      \"mobile_fit\": \"高。地区ジャンプと現在地復帰が必要\",\n      \"starts_to_shine_at\": \"15地点\"\n    },\n    {\n      \"pattern\": \"中央ハブと複数の枝\",\n      \"which_titles\": [\n        \"Splatoon 3\",\n        \"Kirby and the Forgotten Land\",\n        \"スーパーマリオブラザーズ ワンダー\"\n      ],\n      \"strengths\": \"帰る場所が記憶の基準になり、異なる活動系統を混乱なく束ねられる\",\n      \"costs\": \"毎回ハブ経由だと操作が増える。ハブがメニュー化すると魅力を失う\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"9〜12地点。20地点以上では複数ハブも有効\"\n    },\n    {\n      \"pattern\": \"一本の進行路と視覚的な節目\",\n      \"which_titles\": [\n        \"Super Mario World\",\n        \"Duolingo\",\n        \"Candy Crush Saga\"\n      ],\n      \"strengths\": \"次に何をするか明快で、学齢の低い子どもでも迷いにくい\",\n      \"costs\": \"選択感が薄く、50地点では作業リストに見えやすい\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"10地点。30地点以上では章分けが必要\"\n    },\n    {\n      \"pattern\": \"複数の進行路を同じ地理へ重ねる\",\n      \"which_titles\": [\n        \"Pokémon Scarlet / Violet\",\n        \"Sid Meier's Civilization VI\",\n        \"LEGO City Undercover\"\n      ],\n      \"strengths\": \"同じ場所が物語、仕事、収集で別の意味を持ち、コンテンツ密度が増す\",\n      \"costs\": \"アイコン過密と、どれが主目的か分からない問題が起きる\",\n      \"mobile_fit\": \"中から高。目的別フィルターが必要\",\n      \"starts_to_shine_at\": \"15〜20地点\"\n    },\n    {\n      \"pattern\": \"地理ではなく接続関係を表示する抽象マップ\",\n      \"which_titles\": [\n        \"Mini Metro\",\n        \"Super Mario World\",\n        \"New Super Mario Bros. U\"\n      ],\n      \"strengths\": \"小画面でも場所同士の関係が読みやすく、SVGで軽量に実装できる\",\n      \"costs\": \"町らしさや現地の生活感は別の場面で補う必要がある\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"20地点\"\n    },\n    {\n      \"pattern\": \"面積を増やさず同じ場所の状態を増やす\",\n      \"which_titles\": [\n        \"Animal Crossing: New Horizons\",\n        \"Splatoon 3\",\n        \"妖怪ウォッチ\",\n        \"Professor Layton and the Curious Village\"\n      ],\n      \"strengths\": \"親しみのある場所へ新鮮さを足し、制作済み背景を長く活用できる\",\n      \"costs\": \"変化が小さいと更新に気づかれない。状態管理も複雑になる\",\n      \"mobile_fit\": \"非常に高\",\n      \"starts_to_shine_at\": \"9地点から有効。地点追加が遅い時に特に強い\"\n    }\n  ],\n  \"new_content_signaling_patterns\": [\n    {\n      \"pattern\": \"地図そのものが伸びる・変形する\",\n      \"examples\": [\n        \"Super Mario World\",\n        \"New Super Mario Bros. U\",\n        \"Township\"\n      ],\n      \"when_it_works\": \"プレイヤーの達成が新地点を直接生んだ時。因果関係を最も強く伝えられる\"\n    },\n    {\n      \"pattern\": \"工事中の建物や足場\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"Township\",\n        \"SimCity (2013)\"\n      ],\n      \"when_it_works\": \"近日開放される場所を事前に見せ、完成を待つ期待を作りたい時\"\n    },\n    {\n      \"pattern\": \"煙、灯り、音、動く機械\",\n      \"examples\": [\n        \"ゼルダの伝説 ブレス オブ ザ ワイルド\",\n        \"Splatoon 3\",\n        \"Township\"\n      ],\n      \"when_it_works\": \"文字を読まずに、遠くで何かが起きていると伝えたい時\"\n    },\n    {\n      \"pattern\": \"人だかり、来訪NPC、呼び掛け\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"妖怪ウォッチ\",\n        \"Splatoon 3\"\n      ],\n      \"when_it_works\": \"社会イベントを主役にする時。場所ではなく人の変化が誘因になる\"\n    },\n    {\n      \"pattern\": \"未完成の地図端・霧\",\n      \"examples\": [\n        \"Sid Meier's Civilization VI\",\n        \"Minecraft\",\n        \"ゼルダの伝説 ブレス オブ ザ ワイルド\"\n      ],\n      \"when_it_works\": \"追加地点の詳細を伏せ、発見行為そのものを報酬にしたい時\"\n    },\n    {\n      \"pattern\": \"遠景のシルエット\",\n      \"examples\": [\n        \"ゼルダの伝説 ブレス オブ ザ ワイルド\",\n        \"Idle Miner Tycoon\",\n        \"Minecraft\"\n      ],\n      \"when_it_works\": \"次地域のテーマだけを予告し、中身は隠したい時\"\n    },\n    {\n      \"pattern\": \"キラキラ、脈動、レーダー反応\",\n      \"examples\": [\n        \"Kirby and the Forgotten Land\",\n        \"妖怪ウォッチ\",\n        \"スーパーマリオブラザーズ ワンダー\"\n      ],\n      \"when_it_works\": \"375px画面で小さな変化を確実に気づかせたい時。常時使用するとノイズになる\"\n    },\n    {\n      \"pattern\": \"新しい道や交通線が接続される\",\n      \"examples\": [\n        \"Super Mario World\",\n        \"Mini Metro\",\n        \"New Super Mario Bros. U\"\n      ],\n      \"when_it_works\": \"新地点が既存の町との関係を持つことを示したい時\"\n    },\n    {\n      \"pattern\": \"建物や入口の外観が変わる\",\n      \"examples\": [\n        \"Kirby and the Forgotten Land\",\n        \"Splatoon 3\",\n        \"Cities: Skylines\"\n      ],\n      \"when_it_works\": \"既訪問地点へ新しい活動が追加された時\"\n    },\n    {\n      \"pattern\": \"生き物・車両・敵が地図上を移動する\",\n      \"examples\": [\n        \"New Super Mario Bros. U\",\n        \"Township\",\n        \"Cities: Skylines\"\n      ],\n      \"when_it_works\": \"静的な地図に現在進行中の出来事を感じさせたい時\"\n    },\n    {\n      \"pattern\": \"背景全体の季節・祭り化\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"Splatoon 3\"\n      ],\n      \"when_it_works\": \"複数地点へ同時に新しい意味を与えたい時\"\n    }\n  ],\n  \"return_motivation_patterns\": [\n    {\n      \"pattern\": \"過去の行動で場所が成長する\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"Kirby and the Forgotten Land\",\n        \"Township\"\n      ],\n      \"mechanism\": \"救出、建設、選択の結果が景観へ残り、完成後の姿を確認したくなる\"\n    },\n    {\n      \"pattern\": \"新能力で古い障害を解ける\",\n      \"examples\": [\n        \"LEGO City Undercover\",\n        \"ゼルダの伝説 ブレス オブ ザ ワイルド\",\n        \"Minecraft\"\n      ],\n      \"mechanism\": \"以前見た未解決物を記憶させ、新しい仕事道具や能力を再訪の鍵にする\"\n    },\n    {\n      \"pattern\": \"住民と社会イベントが入れ替わる\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"妖怪ウォッチ\",\n        \"Splatoon 3\"\n      ],\n      \"mechanism\": \"同じ場所でも会える人、会話、集団行動が変わる\"\n    },\n    {\n      \"pattern\": \"時間・季節で生態や景観が変わる\",\n      \"examples\": [\n        \"Animal Crossing: New Horizons\",\n        \"妖怪ウォッチ\",\n        \"Minecraft\"\n      ],\n      \"mechanism\": \"地点追加なしで、発見対象と雰囲気を更新する\"\n    },\n    {\n      \"pattern\": \"未完の地区別コレクション\",\n      \"examples\": [\n        \"LEGO City Undercover\",\n        \"Kirby and the Forgotten Land\",\n        \"Pokémon Scarlet / Violet\"\n      ],\n      \"mechanism\": \"地域ごとに空欄や未達成の小目標を残し、あと一つを探したくさせる\"\n    },\n    {\n      \"pattern\": \"世界が継続的に動く\",\n      \"examples\": [\n        \"Mini Metro\",\n        \"Cities: Skylines\",\n        \"SimCity (2013)\"\n      ],\n      \"mechanism\": \"新しい交通、混雑、需要、問題が既存地点の役割を変える\"\n    },\n    {\n      \"pattern\": \"秘密出口・隠し接続\",\n      \"examples\": [\n        \"Super Mario World\",\n        \"New Super Mario Bros. U\",\n        \"Kirby and the Forgotten Land\"\n      ],\n      \"mechanism\": \"クリア済み地点が別の道を持つと分かり、地図全体を再解釈させる\"\n    },\n    {\n      \"pattern\": \"中央ハブへの成果還元\",\n      \"examples\": [\n        \"Kirby and the Forgotten Land\",\n        \"Splatoon 3\",\n        \"Animal Crossing: New Horizons\"\n      ],\n      \"mechanism\": \"外で得た成果が、頻繁に見る町の住民、施設、装飾へ反映される\"\n    }\n  ],\n  \"kids_specific\": [\n    {\n      \"finding\": \"大きなランドマークで地区を識別する\",\n      \"evidence_from_titles\": [\n        \"妖怪ウォッチの学校・駅・商店街\",\n        \"Kirby and the Forgotten Landの遊園地・雪原・町\",\n        \"Splatoon 3の特徴的な店舗入口\"\n      ],\n      \"application\": \"地区名を読ませず、学校、公園、病院、港などの大きなシルエットをナビゲーションにする\"\n    },\n    {\n      \"finding\": \"線と隣接で次の行き先を理解する\",\n      \"evidence_from_titles\": [\n        \"Super Mario World\",\n        \"New Super Mario Bros. U\",\n        \"Candy Crush Saga\"\n      ],\n      \"application\": \"現在地から選べる道だけを明るくし、全50地点を同時に選択可能にしない\"\n    },\n    {\n      \"finding\": \"色、形、動きで場所の種類を区別する\",\n      \"evidence_from_titles\": [\n        \"Mini Metro\",\n        \"スーパーマリオブラザーズ ワンダー\",\n        \"Kirby and the Forgotten Land\"\n      ],\n      \"application\": \"仕事カテゴリを文字ラベルだけにせず、形状と短いループアニメーションにも割り当てる\"\n    },\n    {\n      \"finding\": \"キャラクターが目的地を指すと文章説明が不要になる\",\n      \"evidence_from_titles\": [\n        \"妖怪ウォッチ\",\n        \"Animal Crossing: New Horizons\",\n        \"Splatoon 3\"\n      ],\n      \"application\": \"困っている住民を地点の外に見せ、吹き出しには物や感情の絵を使う\"\n    },\n    {\n      \"finding\": \"触った時に世界が反応すると探索対象を学習できる\",\n      \"evidence_from_titles\": [\n        \"Professor Layton and the Curious Village\",\n        \"Kirby and the Forgotten Land\",\n        \"LEGO City Undercover\"\n      ],\n      \"application\": \"背景の重要物は揺れる、鳴る、表情が変わるなど即時反応を返す\"\n    },\n    {\n      \"finding\": \"ロック理由は道具や人数の絵で示せる\",\n      \"evidence_from_titles\": [\n        \"LEGO City Undercover\",\n        \"Kirby and the Forgotten Land\",\n        \"スーパーマリオブラザーズ ワンダー\"\n      ],\n      \"application\": \"南京錠だけでなく、必要な仕事道具、助ける人数、橋の未完成状態を表示する\"\n    },\n    {\n      \"finding\": \"安全な帰還地点が空間理解を助ける\",\n      \"evidence_from_titles\": [\n        \"Kirby and the Forgotten Land\",\n        \"Splatoon 3\",\n        \"Animal Crossing: New Horizons\"\n      ],\n      \"application\": \"迷った時に一操作で中央広場へ戻し、広場のランドマークを常に同じ位置関係に保つ\"\n    },\n    {\n      \"finding\": \"短い選択範囲なら自由に見えて迷いにくい\",\n      \"evidence_from_titles\": [\n        \"スーパーマリオブラザーズ ワンダー\",\n        \"Kirby and the Forgotten Land\",\n        \"Super Mario World\"\n      ],\n      \"application\": \"各地区で同時に見せる未完了候補を3〜7地点程度に抑える\"\n    }\n  ],\n  \"anti_catalog\": [\n    {\n      \"structure\": \"場所同士を道、川、交通、視線で結ぶ\",\n      \"effect\": \"各項目が独立カードではなく、一つの町の一部になる\"\n    },\n    {\n      \"structure\": \"均一なアイコンの代わりにミニチュア景観を使う\",\n      \"effect\": \"場所を番号ではなく、そこで起こる出来事として予告できる\"\n    },\n    {\n      \"structure\": \"新地点開放時に地図を物理的に変化させる\",\n      \"effect\": \"項目追加がリスト更新ではなく、世界への働き掛けになる\"\n    },\n    {\n      \"structure\": \"主経路に秘密の横道と戻り道を混ぜる\",\n      \"effect\": \"目次の上から順に消化する感覚を弱める\"\n    },\n    {\n      \"structure\": \"地図上でNPC、車両、動物を動かす\",\n      \"effect\": \"場所一覧ではなく、出来事が進行する町に見える\"\n    },\n    {\n      \"structure\": \"同じ地点に複数の人物、仕事、収集目的を持たせる\",\n      \"effect\": \"一地点一レッスンの対応を崩し、場所に厚みを作る\"\n    },\n    {\n      \"structure\": \"未訪問地点を完全なカードとして先に並べない\",\n      \"effect\": \"霧、遠景、工事現場、シルエットで存在だけを予告し、発見余地を残す\"\n    },\n    {\n      \"structure\": \"成果を中央広場や既存地区の景観へ還元する\",\n      \"effect\": \"進行がチェックマークの増加ではなく、町の成長として見える\"\n    },\n    {\n      \"structure\": \"地区ごとに異なる空間文法を使う\",\n      \"effect\": \"すべてを同じグリッドや縦リストへ押し込まず、公園は広場、港は桟橋、商店街は通りとして表現できる\"\n    },\n    {\n      \"structure\": \"現在進行中の社会イベントを最上位に置く\",\n      \"effect\": \"場所名から探すのではなく、誰が何をしているかを見て行き先を選べる\"\n    }\n  ],\n  \"principles_for_jibun_choice\": [\n    \"50ワールドを一枚に並べず、5〜7地区、各地区5〜10地点の二階層を基本にする\",\n    \"モバイルでは世界全体を抽象SVG、地区内を大きなミニチュア景観として描き分ける\",\n    \"中央広場を常設し、各地区で得た成果が住民、建物、飾りとして広場へ戻る構造にする\",\n    \"地区は学校、公園、駅、商店街、港など、文字なしでも区別できる一つの巨大ランドマークを持つ\",\n    \"各ワールドを単独カードにせず、道、交通、人の移動、必要な品物で最低一つ他ワールドと関係付ける\",\n    \"新規ワールドはNEWバッジではなく、工事、煙、灯り、人だかり、新しい道の順で世界内に出現させる\",\n    \"未開放地区は灰色カードにせず、町の端にある橋、霧、船、丘の向こうのシルエットとして予告する\",\n    \"ロック条件は『あと3』だけでなく、必要な道具、助ける人、直す橋を絵で示す\",\n    \"各地区で今選べる未完了地点は3〜7個に制限し、それ以外は背景化またはサブズームに送る\",\n    \"世界、地区、地点の三階層を上限とし、どこからでも一操作で中央広場と現在イベントへ戻せるようにする\",\n    \"地点ノードは同じ丸で統一せず、仕事と社会イベントを表す小景観にする\",\n    \"次の地点は内容を全部説明せず、困っている人物、届いていない荷物、消えた灯りなど未解決状態を一つ見せる\",\n    \"訪問済みはチェックマークだけでなく、修理済みの建物、増えた住民、完成した道として地図に残す\",\n    \"一つの地点に初回物語、別の仕事役割、収集対象、後日変化の少なくとも二層を持たせる\",\n    \"新しい仕事道具を得たら、過去地区の1〜2地点にも新しい反応を追加して再訪を生む\",\n    \"社会イベントは一定期間後に消すだけでなく、終了後の町に看板、飾り、住民の会話など結果を残す\",\n    \"地図フィルターは『仕事』『困っている人』『集めもの』など最大3種にし、初期状態では現在の物語だけを強調する\",\n    \"デスクトップでは複数地区を同時に見せても、モバイルでは現在地区を主役にし、隣接地区は画面端のランドマークとして見せる\",\n    \"SVGの接続線、CSSの短いループアニメーション、Reactの地点状態データを分離し、9から50への増加をレイアウト変更ではなくデータ追加で処理する\",\n    \"コンテンツ追加のたびに地図の面積を広げず、既存地点の時間帯、登場人物、仕事役割、結果状態も増やす\",\n    \"探索の基本ループを『遠くの変化に気づく→地区へ入る→人物の困り事を見る→仕事を体験する→町の変化を確認する』にする\",\n    \"完了率は主画面の中心に置かず、地区詳細でだけ確認可能にし、町の見た目そのものを主要な進捗表示にする\"\n  ]\n}",
+  "elapsed_sec": 274.712
+}

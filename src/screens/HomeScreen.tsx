@@ -1,15 +1,164 @@
-// HOME: the world itself is the screen. The town illustration is the
-// hero; the event lives inside it. No profession lists, no button rows.
-import { useState } from "react";
+// HOME: 「生きた町のアトラス」 (factory/state/expansion/map-architecture-decision.md)
+// ONE continuous region canvas — the existing town illustration stays as the
+// center tile, new districts attach around it, foggy silhouettes tease what is
+// not open yet. The camera ZOOMS (CSS transform, no screen cuts) from the
+// region view into a district; worlds are tapped inside a district.
+// No profession lists. No NEW-badge walls: a capped set of living signals
+// (people gathering / sparks) marks where something is happening right now.
+import { useEffect, useMemo, useRef, useState } from "react";
 import { events, places } from "../data";
+import {
+  DISTRICTS, TOWN_TILE, WORLD_DISTRICT, districtSlot, getDistrict,
+} from "../data/districts";
+import type { District } from "../data/districts";
 import { useGame } from "../state/GameState";
+import type { WorldState } from "../state/GameState";
 
 const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
+const CANVAS_W = 1200;
+const CANVAS_H = 820;
+/** at most this many "something is happening" signals on the region view (§15) */
+const MAX_SIGNALS = 5;
+
+interface WorldMarker {
+  eventId: string;
+  label: string;
+  districtId: string;
+  x: number;
+  y: number;
+  state: WorldState;
+}
+
+const STATE_ICON: Record<WorldState, string> = {
+  DISCOVERED: "❔",
+  VISITED: "",
+  IN_PROGRESS: "🔨",
+  COMPLETED: "🚩",
+  UPDATED: "✨",
+};
 
 export default function HomeScreen() {
-  const { navigate, progress } = useGame();
-  const [peek, setPeek] = useState<string | null>(null);
-  const activePlaces = places.filter((p) => p.eventId);
+  const { navigate, progress, worldState } = useGame();
+  const [focus, setFocus] = useState<string | null>(null); // district id or null = region
+  const [teaser, setTeaser] = useState<string | null>(null);
+  const [pan, setPan] = useState({ x: 0, y: 0 }); // region-mode drag offset
+  const drag = useRef<{ x: number; y: number; px: number; py: number; moved: boolean } | null>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [vp, setVp] = useState({ w: 375, h: 480 });
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const update = () => setVp({ w: el.clientWidth, h: el.clientHeight });
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // ---- world markers (positions are DERIVED, never hand-tuned per world) ---
+  const markers = useMemo<WorldMarker[]>(() => {
+    const byDistrict: Record<string, string[]> = {};
+    for (const ev of events) {
+      const d = WORLD_DISTRICT[ev.id] ?? "center";
+      (byDistrict[d] ??= []).push(ev.id);
+    }
+    const out: WorldMarker[] = [];
+    for (const [districtId, ids] of Object.entries(byDistrict)) {
+      const d = getDistrict(districtId);
+      if (!d) continue;
+      ids.forEach((eventId, i) => {
+        const ev = events.find((e) => e.id === eventId)!;
+        let x: number, y: number;
+        const place = places.find((p) => p.eventId === eventId);
+        if (districtId === "center" && place?.mapPos) {
+          // existing worlds keep their authored positions on the town tile
+          x = TOWN_TILE.x + (parseFloat(place.mapPos.left) / 100) * TOWN_TILE.w;
+          y = TOWN_TILE.y + (parseFloat(place.mapPos.top) / 100) * TOWN_TILE.h;
+        } else {
+          const s = districtSlot(d, i, ids.length);
+          x = s.x;
+          y = s.y;
+        }
+        out.push({ eventId, label: ev.shortLabel ?? ev.title.split("\n")[0], districtId, x, y, state: worldState(eventId) });
+      });
+    }
+    return out;
+  }, [worldState]);
+
+  // living signals: worlds never visited yet, newest (registry order) first
+  const signalIds = useMemo(() => {
+    const fresh = markers.filter((m) => m.state === "DISCOVERED" || m.state === "UPDATED");
+    return new Set(fresh.slice(-MAX_SIGNALS).map((m) => m.eventId));
+  }, [markers]);
+
+  // ---- camera --------------------------------------------------------------
+  // region mode fills the viewport height and is PANNABLE (the map is a place,
+  // not a thumbnail); district mode zooms the camera onto the district.
+  // mobile: show a generous ~840px slice (all open districts peek in, fog
+  // teases at the edges, pan reaches the rest). wide screens: fit the atlas.
+  const regionScale = vp.w < 700 ? vp.w / 840 : Math.min(vp.w / CANVAS_W, vp.h / CANVAS_H);
+  const clampPan = (tx: number, ty: number, s: number) => ({
+    tx: Math.min(0, Math.max(vp.w - CANVAS_W * s, tx)),
+    ty: Math.min(0, Math.max(vp.h - CANVAS_H * s, ty)),
+  });
+  const cam = useMemo(() => {
+    if (!focus) {
+      const s = regionScale;
+      const center = getDistrict("center")!;
+      const base = clampPan(vp.w / 2 - center.cx * s, vp.h / 2 - center.cy * s, s);
+      const c = clampPan(base.tx + pan.x, base.ty + pan.y, s);
+      return { s, tx: c.tx, ty: c.ty };
+    }
+    const d = getDistrict(focus)!;
+    const s = Math.min(Math.max((Math.min(vp.w, vp.h) * 0.92) / (d.r * 2), regionScale * 1.5), 2.2);
+    return { s, tx: vp.w / 2 - d.cx * s, ty: vp.h / 2 - d.cy * s };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus, vp, regionScale, pan]);
+
+  // drag-to-pan (region mode only); a real drag suppresses the tap
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (focus) return;
+    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y, moved: false };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    if (Math.abs(dx) + Math.abs(dy) > 6) d.moved = true;
+    if (d.moved) { setPan({ x: d.px + dx, y: d.py + dy }); setDragging(true); setHasPanned(true); }
+  };
+  const onPointerUp = () => {
+    const d = drag.current;
+    drag.current = null;
+    setDragging(false);
+    if (d?.moved) suppressTap.current = true;
+    window.setTimeout(() => (suppressTap.current = false), 80);
+  };
+  const suppressTap = useRef(false);
+  const [dragging, setDragging] = useState(false);
+  const [hasPanned, setHasPanned] = useState(false);
+
+  // first-visit sweep: the camera starts a little west and glides home,
+  // showing that the map continues beyond the screen
+  useEffect(() => {
+    setPan({ x: 140, y: 30 });
+    const t = window.setTimeout(() => setPan({ x: 0, y: 0 }), 450);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const openDistrict = (d: District) => {
+    if (d.foggy) {
+      setTeaser(d.teaser ?? "まだ、もやの向こう。");
+      window.setTimeout(() => setTeaser(null), 3200);
+      return;
+    }
+    setPan({ x: 0, y: 0 });
+    setFocus(d.id);
+  };
+
+  const focused = focus ? getDistrict(focus) : null;
   const quietPlaces = places.filter((p) => !p.eventId && p.mapPos);
 
   return (
@@ -29,58 +178,161 @@ export default function HomeScreen() {
         </header>
 
         <p className="world-lead">
-          いま、どこかで何かが起きてる！
-          <br />
-          気になる場所をタップしてみよう
+          {focused
+            ? focused.lead
+            : "きらきらしている場所で、いま何かが起きている。気になったところへ行ってみよう。"}
         </p>
 
-        <div className="town-stage">
-          {/* quiet places: clearly marked as not-yet-open, but not dead */}
-          {quietPlaces.map((p) => (
-            <button
-              key={p.id}
-              className="quiet-pin"
-              style={{ left: p.mapPos!.left, top: p.mapPos!.top }}
-              onClick={() => setPeek(peek === p.id ? null : p.id)}
-            >
-              <span className="quiet-name">{p.name}</span>
-              <small>じゅんびちゅう</small>
-              {peek === p.id && <small className="quiet-peek">もうすぐ遊べるよ！</small>}
-            </button>
-          ))}
+        <div
+          className={`region-viewport ${focus ? "is-district" : "is-region"}`}
+          ref={viewportRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerUp}
+        >
+          <div
+            className={`region-canvas ${dragging ? "no-anim" : ""}`}
+            style={{ width: CANVAS_W, height: CANVAS_H, transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})` }}
+          >
+            {/* terrain */}
+            <svg className="region-terrain" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} width={CANVAS_W} height={CANVAS_H}>
+              <rect width={CANVAS_W} height={CANVAS_H} fill="#dcead0" />
+              {/* sea (harbor corner) */}
+              <path d="M0,540 C170,530 250,600 300,820 L0,820 Z" fill="#a8cfe3" />
+              <path d="M0,585 C160,575 235,640 275,820 L0,820 Z" fill="#8fbfda" opacity="0.7" />
+              {/* river: forest -> town -> sea */}
+              <path d="M950,140 C880,250 760,300 640,330 C480,370 340,470 250,660" fill="none" stroke="#9fc8de" strokeWidth="26" strokeLinecap="round" opacity="0.85" />
+              {/* forest ground */}
+              <ellipse cx="950" cy="185" rx="185" ry="135" fill="#bcd9a8" />
+              {/* hill ground */}
+              <ellipse cx="245" cy="165" rx="150" ry="108" fill="#d4e3b4" />
+              {/* station ground */}
+              <ellipse cx="930" cy="600" rx="165" ry="118" fill="#e3ddc8" />
+              {/* harbor ground */}
+              <ellipse cx="255" cy="670" rx="165" ry="108" fill="#e0d9bd" />
+              {/* roads: center to districts */}
+              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
+                <path
+                  key={d.id}
+                  d={`M${TOWN_TILE.x + TOWN_TILE.w / 2},${TOWN_TILE.y + TOWN_TILE.h / 2} Q${(TOWN_TILE.x + TOWN_TILE.w / 2 + d.cx) / 2 + 40},${(TOWN_TILE.y + TOWN_TILE.h / 2 + d.cy) / 2 - 40} ${d.cx},${d.cy}`}
+                  fill="none"
+                  stroke="#e9e0c8"
+                  strokeWidth="16"
+                  strokeDasharray="2 22"
+                  strokeLinecap="round"
+                />
+              ))}
+              {/* fog patches */}
+              {DISTRICTS.filter((d) => d.foggy).map((d) => (
+                <g key={d.id} opacity="0.9">
+                  <ellipse cx={d.cx} cy={d.cy} rx={d.r + 30} ry={d.r * 0.7} fill="#cfd4d9" />
+                  <ellipse cx={d.cx - 30} cy={d.cy + 10} rx={d.r * 0.7} ry={d.r * 0.45} fill="#dde1e4" />
+                </g>
+              ))}
+            </svg>
 
-          <img className="town-img" src={A("town-hero")} alt="バーチャル社会の街" />
+            {/* the existing town — untouched, still the heart of the region */}
+            <img
+              className="town-tile"
+              src={A("town-hero")}
+              alt="まちの中心"
+              style={{ left: TOWN_TILE.x, top: TOWN_TILE.y, width: TOWN_TILE.w, height: TOWN_TILE.h }}
+              onClick={() => { if (!suppressTap.current && !focus) setFocus("center"); }}
+            />
 
-          {activePlaces.map((p) => {
-            const ev = events.find((e) => e.id === p.eventId);
-            if (!ev) return null;
-            return (
+            {/* district landmarks + names */}
+            {DISTRICTS.filter((d) => d.id !== "center").map((d) => (
               <button
-                key={p.id}
-                className="event-balloon"
-                style={p.mapPos ? {
-                  // clamp so a balloon anchored near the map edge is never
-                  // clipped by the viewport (balloon max-width/2 ~= 100px)
-                  left: `clamp(100px, ${p.mapPos.left}, calc(100% - 100px))`,
-                  top: p.mapPos.top,
-                } : undefined}
-                onClick={() => navigate({ name: "area", eventId: ev.id })}
+                key={d.id}
+                className={`district-node ${d.foggy ? "foggy" : ""}`}
+                style={{ left: d.cx, top: d.cy - (d.foggy ? 0 : d.r * 0.55) }}
+                onClick={() => { if (!suppressTap.current) openDistrict(d); }}
               >
-                {/* Manual flag for the newest event only — not a general
-                    "isNew" data field yet, on purpose (see PR notes). */}
-                {ev.id === "school-trip" && (
-                  <img className="balloon-new-badge" src={A("ui-new")} alt="NEW" />
-                )}
-                <img src={A("ui-fire")} alt="" />
-                <span className="balloon-text">
-                  {ev.shortLabel ?? ev.title.split("\n").join("")}
-                </span>
+                <span className="district-emoji">{d.foggy ? "🌫" : d.landmarkEmoji}</span>
+                <span className="district-name">{d.foggy ? "？？？" : d.name}</span>
               </button>
-            );
-          })}
+            ))}
+
+            {/* quiet places on the town tile (under preparation) */}
+            {focus === "center" &&
+              quietPlaces.map((p) => (
+                <span
+                  key={p.id}
+                  className="quiet-dot"
+                  style={{
+                    left: TOWN_TILE.x + (parseFloat(p.mapPos!.left) / 100) * TOWN_TILE.w,
+                    top: TOWN_TILE.y + (parseFloat(p.mapPos!.top) / 100) * TOWN_TILE.h,
+                  }}
+                >
+                  {p.name}・じゅんびちゅう
+                </span>
+              ))}
+
+            {/* world markers */}
+            {markers.map((m, idx) => {
+              const inFocus = focus === m.districtId;
+              const signal = signalIds.has(m.eventId);
+              return (
+                <button
+                  key={m.eventId}
+                  className={[
+                    "world-marker",
+                    `st-${m.state.toLowerCase()}`,
+                    inFocus ? "in-focus" : "far",
+                    signal ? "signal" : "",
+                    idx % 2 === 1 ? "label-up" : "",
+                  ].join(" ")}
+                  style={{ left: m.x, top: m.y }}
+                  onClick={() => {
+                    if (suppressTap.current) return;
+                    if (!inFocus) {
+                      setFocus(m.districtId);
+                      return; // first zoom in — the world never cuts
+                    }
+                    navigate({ name: "area", eventId: m.eventId });
+                  }}
+                >
+                  {signal && <span className="marker-crowd">👥</span>}
+                  <span className="marker-face">
+                    {STATE_ICON[m.state] && <span className="marker-state">{STATE_ICON[m.state]}</span>}
+                    <span className="marker-fire">🔥</span>
+                  </span>
+                  <span className="marker-label">{m.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* teaser toast for foggy districts */}
+          {teaser && <div className="fog-teaser">{teaser}</div>}
+
+          {focus && (
+            <button className="region-back" onClick={() => setFocus(null)}>
+              🗺 ちいき全体
+            </button>
+          )}
+          {!focus && !hasPanned && <div className="pan-hint">👆 地図は うごかせる</div>}
         </div>
 
-        <div className="world-ground" />
+        {/* district chips: always reachable, never lost (§ anti-迷子) */}
+        <div className="district-chips">
+          {DISTRICTS.map((d) => (
+            <button
+              key={d.id}
+              className={`district-chip ${focus === d.id ? "active" : ""} ${d.foggy ? "foggy" : ""}`}
+              onClick={() => (d.foggy ? openDistrict(d) : setFocus(focus === d.id ? null : d.id))}
+            >
+              {d.foggy ? "🌫" : d.landmarkEmoji} {d.foggy ? "？？？" : d.name}
+            </button>
+          ))}
+        </div>
+
+        <p className="town-hint">
+          {focus
+            ? "気になる出来事をタップ。ぜんぶ回らなくてもいい。"
+            : "地図はこれからも広がっていく。もやの向こうは、まだひみつ。"}
+        </p>
       </div>
     </div>
   );
