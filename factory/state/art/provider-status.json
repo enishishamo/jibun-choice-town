@@ -1,0 +1,102 @@
+{
+ "note": "Stage 6 provider probe results. Probed for real (generation executed, file obtained, visually verified) on 2026-09-02.",
+ "probed_at": "2026-09-02",
+ "providers": [
+  {
+   "provider": "existing_asset_reuse",
+   "available": true,
+   "auth_mode": "none",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": false,
+   "can_save_file": true,
+   "repo_accessible": true,
+   "test_result": "inventory built: 152 assets indexed",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "css",
+   "available": true,
+   "auth_mode": "none",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": true,
+   "can_save_file": true,
+   "repo_accessible": true,
+   "test_result": "existing worlds ship CSS visuals (17 components)",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "svg",
+   "available": true,
+   "auth_mode": "none",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": true,
+   "can_save_file": true,
+   "repo_accessible": true,
+   "test_result": "Claude writes deterministic SVG (BodyInsideView precedent)",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "composition",
+   "available": true,
+   "auth_mode": "none",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": true,
+   "can_save_file": true,
+   "repo_accessible": true,
+   "test_result": "sips available for crop/resize/composite prep",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "codex_imagegen",
+   "available": true,
+   "auth_mode": "chatgpt_oauth",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": true,
+   "can_save_file": true,
+   "repo_accessible": true,
+   "test_result": "REAL PROBE PASSED: codex exec --sandbox workspace-write generated probe.png (1254x1254 PNG, red circle verified visually) via built-in image_gen.imagegen; no API key exists in env (~/.codex OAuth only), no billing mechanism, usage drawn from ChatGPT plan limits",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "codex_vision_qa",
+   "available": true,
+   "auth_mode": "chatgpt_oauth",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": false,
+   "can_save_file": false,
+   "repo_accessible": true,
+   "test_result": "REAL PROBE PASSED: codex exec -i town-hero.png correctly described clay-diorama style",
+   "safe_for_automation": true
+  },
+  {
+   "provider": "openai_image_api",
+   "available": false,
+   "auth_mode": "api_key",
+   "api_key_required": true,
+   "extra_cost_status": "paid",
+   "can_generate": false,
+   "can_save_file": false,
+   "repo_accessible": false,
+   "test_result": "NOT PROBED (paid). enabled=false, mechanically blocked in art-provider.mjs",
+   "safe_for_automation": false
+  },
+  {
+   "provider": "local_model",
+   "available": false,
+   "auth_mode": "none",
+   "api_key_required": false,
+   "extra_cost_status": "subscription_included_confirmed",
+   "can_generate": false,
+   "can_save_file": false,
+   "repo_accessible": false,
+   "test_result": "probed: no ollama, no ComfyUI/DrawThings/diffusers on this machine",
+   "safe_for_automation": false
+  }
+ ]
+}

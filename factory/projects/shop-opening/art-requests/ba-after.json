@@ -1,0 +1,17 @@
+{
+  "asset_id": "shop_ba_after",
+  "filename": "ba-after.png",
+  "world": "shop",
+  "use": "before_after",
+  "purpose": "商店街・開店編の After（シャッターが1枚開いた）。wrapUp の After",
+  "scene": "THE SAME small Japanese shopping street as the reference image: same three shopfronts, same camera, same composition, same weather and palette. The ONLY change: the middle former-diner shop is now OPEN as a warm small teishoku diner — shutter up, warm light from inside, a simple noren curtain (no readable text), a small potted plant by the door, and two or three happy customers near the entrance. The two neighboring shops still have closed shutters.",
+  "composition": "Identical camera and framing to the reference BEFORE image. Do not move, redesign or recolor the buildings; only open the middle shop and add the life around it.",
+  "required_objects": ["same three shopfronts as reference", "middle shop open with warm interior light", "plain noren curtain without text", "2-3 customers (varied ages, no gender stereotype)", "closed shutters on both neighbors"],
+  "forbidden_objects": ["readable text or letters", "changing the neighboring shops", "different camera angle", "night scene"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "pair_change": "中央の元・食堂のシャッターが開き、あたたかい定食屋として開店。人が少し集まる。両隣と街並み・カメラは不変",
+  "reference_assets": [],
+  "output_path": "public/assets/shop/ba-after.png",
+  "used_by": ["src/data/content/shopOpening.ts"]
+}

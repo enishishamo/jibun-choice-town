@@ -1,0 +1,16 @@
+{
+  "asset_id": "shop_ba_before",
+  "filename": "ba-before.png",
+  "world": "shop",
+  "use": "before_after",
+  "purpose": "商店街・開店編の Before（シャッター通り）。wrapUp の Before / エリア背景 / ch1 ヘッダの3役",
+  "scene": "A small quiet Japanese shopping street (shotengai). A row of three small shopfronts seen straight-on: the middle one is a slightly larger former diner, ALL THREE have their roller shutters fully closed. The street is clean but lonely and quiet, no people or just one distant figure. Daytime, soft warm light, but the mood is a bit wistful.",
+  "composition": "Eye-level street view, the three-shop row fills the frame width, entire facades visible with sky strip above and street strip below. Leave 8% safe margin all around. This image will be compared to an AFTER image later, so keep the architecture simple and memorable.",
+  "required_objects": ["three adjacent small shopfronts", "closed roller shutters on all three", "the middle shop slightly larger with a small awning (former diner)", "paved shotengai street"],
+  "forbidden_objects": ["readable text or letters on any sign", "cars blocking the buildings", "people crowds", "rain or night"],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "reference_assets": ["public/assets/town-hero.png", "public/assets/medical/er_arrival.jpg"],
+  "output_path": "public/assets/shop/ba-before.png",
+  "used_by": ["src/data/content/shopOpening.ts"]
+}

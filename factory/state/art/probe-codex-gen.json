@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "can_generate_raster_images_with_builtin_tool": true,
+    "tools_available": [
+      "image_gen.imagegen",
+      "view_image"
+    ],
+    "notes": "image_gen.imagegen can create new raster images through the built-in image-generation model without custom drawing code."
+  },
+  "output": "{\"can_generate_raster_images_with_builtin_tool\":true,\"tools_available\":[\"image_gen.imagegen\",\"view_image\"],\"notes\":\"image_gen.imagegen can create new raster images through the built-in image-generation model without custom drawing code.\"}",
+  "elapsed_sec": 7.658
+}

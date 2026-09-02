@@ -1,0 +1,3 @@
+{"at":"2026-09-02T00:58:56.379Z","type":"start","task":"Stage 6: Art Harness / Art Loop (inventory, style contract, need detector, provider probe+adapter, manifest v2, QA, regen loop, practical shop-opening run)","artifact":"factory/harness/art"}
+{"at":"2026-09-02T00:58:56.411Z","type":"produce-done","iteration":1,"notes":"3 assets generated via codex_imagegen (all QA PASS iter1), wired into shopOpening.ts, browser visual QA mobile+desktop passed, link QA 0 errors"}
+{"at":"2026-09-02T00:58:56.474Z","type":"review-start","iteration":1,"promptFile":"factory/lab/stage6-review-prompt.md"}

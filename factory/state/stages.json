@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T00:18:47.123Z",
+  "updated_at": "2026-09-02T00:58:56.441Z",
   "stages": [
     {
       "id": 0,
@@ -161,7 +161,7 @@
     {
       "id": 6,
       "name": "Art Harness / Art Loop",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         5
       ],
@@ -172,7 +172,9 @@
       ],
       "repair_count": 0,
       "stop_reason": null,
-      "runs": [],
+      "runs": [
+        "run-2026-09-02T00-58-56-yzf4"
+      ],
       "notes": []
     },
     {

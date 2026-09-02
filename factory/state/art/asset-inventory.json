@@ -1,0 +1,2545 @@
+{
+ "note": "Mechanical asset inventory (Stage 6). Regenerate: node factory/harness/art/asset-inventory.mjs",
+ "generated_at": "2026-09-02T00:55:08.988Z",
+ "totals": {
+  "assets": 155,
+  "orphans": 42,
+  "duplicates_groups": 0,
+  "oversized": 4,
+  "total_bytes": 22580747
+ },
+ "duplicate_groups": [],
+ "missing_references": [],
+ "assets": [
+  {
+   "asset_id": "public_assets_bg_farm_png",
+   "path": "public/assets/bg-farm.png",
+   "world": "shared",
+   "format": "png",
+   "width": 88,
+   "height": 92,
+   "aspect_ratio": 0.957,
+   "file_size": 16059,
+   "referenced_by": [],
+   "hash": "6a8c3cf6c365",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_bg_kitchen_png",
+   "path": "public/assets/bg-kitchen.png",
+   "world": "shared",
+   "format": "png",
+   "width": 98,
+   "height": 92,
+   "aspect_ratio": 1.065,
+   "file_size": 17741,
+   "referenced_by": [],
+   "hash": "02f9fcc7957f",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_bg_recycle_png",
+   "path": "public/assets/bg-recycle.png",
+   "world": "shared",
+   "format": "png",
+   "width": 94,
+   "height": 92,
+   "aspect_ratio": 1.022,
+   "file_size": 14703,
+   "referenced_by": [],
+   "hash": "54aa5f2a5815",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_bg_road_png",
+   "path": "public/assets/bg-road.png",
+   "world": "shared",
+   "format": "png",
+   "width": 74,
+   "height": 92,
+   "aspect_ratio": 0.804,
+   "file_size": 13510,
+   "referenced_by": [],
+   "hash": "cc331fbfa610",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_bg_school_png",
+   "path": "public/assets/bg-school.png",
+   "world": "shared",
+   "format": "png",
+   "width": 90,
+   "height": 92,
+   "aspect_ratio": 0.978,
+   "file_size": 15429,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/screens/AreaScreen.tsx"
+   ],
+   "hash": "4a3f92b9f385",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_bg_warehouse_png",
+   "path": "public/assets/bg-warehouse.png",
+   "world": "shared",
+   "format": "png",
+   "width": 90,
+   "height": 92,
+   "aspect_ratio": 0.978,
+   "file_size": 14634,
+   "referenced_by": [],
+   "hash": "9f7f4bca8f3f",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_char_cook_png",
+   "path": "public/assets/char-cook.png",
+   "world": "shared",
+   "format": "png",
+   "width": 94,
+   "height": 102,
+   "aspect_ratio": 0.922,
+   "file_size": 17414,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "5aa2b658d8f9",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_char_farmer_png",
+   "path": "public/assets/char-farmer.png",
+   "world": "shared",
+   "format": "png",
+   "width": 84,
+   "height": 102,
+   "aspect_ratio": 0.824,
+   "file_size": 19435,
+   "referenced_by": [],
+   "hash": "dde661ef2410",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_char_logistics_png",
+   "path": "public/assets/char-logistics.png",
+   "world": "shared",
+   "format": "png",
+   "width": 82,
+   "height": 100,
+   "aspect_ratio": 0.82,
+   "file_size": 16568,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "2f2b83cce9ba",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_char_nutrition_png",
+   "path": "public/assets/char-nutrition.png",
+   "world": "shared",
+   "format": "png",
+   "width": 83,
+   "height": 100,
+   "aspect_ratio": 0.83,
+   "file_size": 17069,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "f6429cd2fa5b",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_char_recycle_png",
+   "path": "public/assets/char-recycle.png",
+   "world": "shared",
+   "format": "png",
+   "width": 84,
+   "height": 100,
+   "aspect_ratio": 0.84,
+   "file_size": 18335,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "7beacc7f255c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_dancer_png",
+   "path": "public/assets/event/a_dancer.png",
+   "world": "event",
+   "format": "png",
+   "width": 116,
+   "height": 137,
+   "aspect_ratio": 0.847,
+   "file_size": 31290,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "84c50decc27f",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_magician_png",
+   "path": "public/assets/event/a_magician.png",
+   "world": "event",
+   "format": "png",
+   "width": 98,
+   "height": 156,
+   "aspect_ratio": 0.628,
+   "file_size": 30198,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "d2fa36823d72",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_mascot_png",
+   "path": "public/assets/event/a_mascot.png",
+   "world": "event",
+   "format": "png",
+   "width": 115,
+   "height": 158,
+   "aspect_ratio": 0.728,
+   "file_size": 33912,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "c0f00876eabc",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_mc_png",
+   "path": "public/assets/event/a_mc.png",
+   "world": "event",
+   "format": "png",
+   "width": 98,
+   "height": 156,
+   "aspect_ratio": 0.628,
+   "file_size": 29681,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "2470eafafcba",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_musician_png",
+   "path": "public/assets/event/a_musician.png",
+   "world": "event",
+   "format": "png",
+   "width": 94,
+   "height": 148,
+   "aspect_ratio": 0.635,
+   "file_size": 28700,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "fe85aae7e636",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_a_singer_png",
+   "path": "public/assets/event/a_singer.png",
+   "world": "event",
+   "format": "png",
+   "width": 74,
+   "height": 148,
+   "aspect_ratio": 0.5,
+   "file_size": 23385,
+   "referenced_by": [
+    "src/q1/TimetableGame.tsx"
+   ],
+   "hash": "eb307d72ef7c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_banner_png",
+   "path": "public/assets/event/m_banner.png",
+   "world": "event",
+   "format": "png",
+   "width": 175,
+   "height": 335,
+   "aspect_ratio": 0.522,
+   "file_size": 103874,
+   "referenced_by": [],
+   "hash": "338bb99d9874",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_m_board_png",
+   "path": "public/assets/event/m_board.png",
+   "world": "event",
+   "format": "png",
+   "width": 240,
+   "height": 162,
+   "aspect_ratio": 1.481,
+   "file_size": 79742,
+   "referenced_by": [
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "f66fbd305743",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_flyer_png",
+   "path": "public/assets/event/m_flyer.png",
+   "world": "event",
+   "format": "png",
+   "width": 240,
+   "height": 257,
+   "aspect_ratio": 0.934,
+   "file_size": 92042,
+   "referenced_by": [
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "2e61ed560b42",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_mail_png",
+   "path": "public/assets/event/m_mail.png",
+   "world": "event",
+   "format": "png",
+   "width": 230,
+   "height": 330,
+   "aspect_ratio": 0.697,
+   "file_size": 146098,
+   "referenced_by": [
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "d7e03e85c11e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_poster_png",
+   "path": "public/assets/event/m_poster.png",
+   "world": "event",
+   "format": "png",
+   "width": 240,
+   "height": 351,
+   "aspect_ratio": 0.684,
+   "file_size": 186212,
+   "referenced_by": [
+    "src/data/content/townEvent.ts"
+   ],
+   "hash": "540a57d18d9d",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_sns_png",
+   "path": "public/assets/event/m_sns.png",
+   "world": "event",
+   "format": "png",
+   "width": 230,
+   "height": 410,
+   "aspect_ratio": 0.561,
+   "file_size": 180633,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "d650e9e88bf7",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_story_png",
+   "path": "public/assets/event/m_story.png",
+   "world": "event",
+   "format": "png",
+   "width": 212,
+   "height": 395,
+   "aspect_ratio": 0.537,
+   "file_size": 155862,
+   "referenced_by": [],
+   "hash": "01736c16e081",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_m_street_png",
+   "path": "public/assets/event/m_street.png",
+   "world": "event",
+   "format": "png",
+   "width": 240,
+   "height": 356,
+   "aspect_ratio": 0.674,
+   "file_size": 161953,
+   "referenced_by": [
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "6e2534df7e0a",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_m_web_png",
+   "path": "public/assets/event/m_web.png",
+   "world": "event",
+   "format": "png",
+   "width": 240,
+   "height": 205,
+   "aspect_ratio": 1.171,
+   "file_size": 94544,
+   "referenced_by": [
+    "src/q1/PromoGame.tsx"
+   ],
+   "hash": "4be9453e90b0",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_bar_png",
+   "path": "public/assets/event/p_bar.png",
+   "world": "event",
+   "format": "png",
+   "width": 160,
+   "height": 80,
+   "aspect_ratio": 2,
+   "file_size": 22378,
+   "referenced_by": [],
+   "hash": "40f9394ac091",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_bins_png",
+   "path": "public/assets/event/p_bins.png",
+   "world": "event",
+   "format": "png",
+   "width": 195,
+   "height": 125,
+   "aspect_ratio": 1.56,
+   "file_size": 46106,
+   "referenced_by": [],
+   "hash": "4a9cee75429a",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_booth_food_png",
+   "path": "public/assets/event/p_booth_food.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 225,
+   "aspect_ratio": 0.889,
+   "file_size": 80962,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "bc39c15a50c3",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_booth_goods_png",
+   "path": "public/assets/event/p_booth_goods.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 218,
+   "aspect_ratio": 0.917,
+   "file_size": 77438,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx",
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "7bd8cfb8a03a",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_cone_png",
+   "path": "public/assets/event/p_cone.png",
+   "world": "event",
+   "format": "png",
+   "width": 115,
+   "height": 90,
+   "aspect_ratio": 1.278,
+   "file_size": 18871,
+   "referenced_by": [
+    "src/q1/CrowdFlowGame.tsx"
+   ],
+   "hash": "5f374e44a3ac",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_fence_png",
+   "path": "public/assets/event/p_fence.png",
+   "world": "event",
+   "format": "png",
+   "width": 165,
+   "height": 110,
+   "aspect_ratio": 1.5,
+   "file_size": 31075,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/CrowdFlowGame.tsx"
+   ],
+   "hash": "328c71275953",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_flag_png",
+   "path": "public/assets/event/p_flag.png",
+   "world": "event",
+   "format": "png",
+   "width": 73,
+   "height": 170,
+   "aspect_ratio": 0.429,
+   "file_size": 23138,
+   "referenced_by": [
+    "src/q1/PlanEventGame.tsx"
+   ],
+   "hash": "bf671f391077",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_flower_png",
+   "path": "public/assets/event/p_flower.png",
+   "world": "event",
+   "format": "png",
+   "width": 190,
+   "height": 110,
+   "aspect_ratio": 1.727,
+   "file_size": 43611,
+   "referenced_by": [],
+   "hash": "0f43d8c72e14",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_gate_png",
+   "path": "public/assets/event/p_gate.png",
+   "world": "event",
+   "format": "png",
+   "width": 195,
+   "height": 158,
+   "aspect_ratio": 1.234,
+   "file_size": 57028,
+   "referenced_by": [],
+   "hash": "211f67382b27",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_infomap_png",
+   "path": "public/assets/event/p_infomap.png",
+   "world": "event",
+   "format": "png",
+   "width": 195,
+   "height": 160,
+   "aspect_ratio": 1.219,
+   "file_size": 58310,
+   "referenced_by": [
+    "src/q1/CrowdFlowGame.tsx"
+   ],
+   "hash": "3a102fd25875",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_light_png",
+   "path": "public/assets/event/p_light.png",
+   "world": "event",
+   "format": "png",
+   "width": 169,
+   "height": 115,
+   "aspect_ratio": 1.47,
+   "file_size": 39425,
+   "referenced_by": [],
+   "hash": "237c831b4218",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_mic_png",
+   "path": "public/assets/event/p_mic.png",
+   "world": "event",
+   "format": "png",
+   "width": 59,
+   "height": 125,
+   "aspect_ratio": 0.472,
+   "file_size": 13986,
+   "referenced_by": [],
+   "hash": "1a95b4badf3c",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan",
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_mixer_png",
+   "path": "public/assets/event/p_mixer.png",
+   "world": "event",
+   "format": "png",
+   "width": 145,
+   "height": 85,
+   "aspect_ratio": 1.706,
+   "file_size": 27079,
+   "referenced_by": [],
+   "hash": "a551c08bca95",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_rack_png",
+   "path": "public/assets/event/p_rack.png",
+   "world": "event",
+   "format": "png",
+   "width": 125,
+   "height": 100,
+   "aspect_ratio": 1.25,
+   "file_size": 25504,
+   "referenced_by": [],
+   "hash": "c7c1045d4aed",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_rest_bench_png",
+   "path": "public/assets/event/p_rest_bench.png",
+   "world": "event",
+   "format": "png",
+   "width": 140,
+   "height": 101,
+   "aspect_ratio": 1.386,
+   "file_size": 26477,
+   "referenced_by": [],
+   "hash": "fd1901396477",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_rest_table_png",
+   "path": "public/assets/event/p_rest_table.png",
+   "world": "event",
+   "format": "png",
+   "width": 160,
+   "height": 177,
+   "aspect_ratio": 0.904,
+   "file_size": 49551,
+   "referenced_by": [
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "c9750a9a8dfd",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_rope_png",
+   "path": "public/assets/event/p_rope.png",
+   "world": "event",
+   "format": "png",
+   "width": 170,
+   "height": 90,
+   "aspect_ratio": 1.889,
+   "file_size": 26338,
+   "referenced_by": [],
+   "hash": "73ca4806b895",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_sign_in_png",
+   "path": "public/assets/event/p_sign_in.png",
+   "world": "event",
+   "format": "png",
+   "width": 96,
+   "height": 141,
+   "aspect_ratio": 0.681,
+   "file_size": 26916,
+   "referenced_by": [],
+   "hash": "d24681cdb056",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_sign_out_png",
+   "path": "public/assets/event/p_sign_out.png",
+   "world": "event",
+   "format": "png",
+   "width": 100,
+   "height": 138,
+   "aspect_ratio": 0.725,
+   "file_size": 26943,
+   "referenced_by": [],
+   "hash": "a21eb05f5c5e",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_signpost_png",
+   "path": "public/assets/event/p_signpost.png",
+   "world": "event",
+   "format": "png",
+   "width": 125,
+   "height": 135,
+   "aspect_ratio": 0.926,
+   "file_size": 35820,
+   "referenced_by": [
+    "src/q1/CrowdFlowGame.tsx"
+   ],
+   "hash": "9fb254eed7ee",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_speaker_png",
+   "path": "public/assets/event/p_speaker.png",
+   "world": "event",
+   "format": "png",
+   "width": 81,
+   "height": 115,
+   "aspect_ratio": 0.704,
+   "file_size": 17709,
+   "referenced_by": [],
+   "hash": "97b2c4db117e",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_p_stage_png",
+   "path": "public/assets/event/p_stage.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 121,
+   "aspect_ratio": 1.653,
+   "file_size": 47757,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "3cfe66d2d44d",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_p_tent_png",
+   "path": "public/assets/event/p_tent.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 219,
+   "aspect_ratio": 0.913,
+   "file_size": 65099,
+   "referenced_by": [],
+   "hash": "5875ea8b8f01",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_cable_png",
+   "path": "public/assets/event/s_cable.png",
+   "world": "event",
+   "format": "png",
+   "width": 180,
+   "height": 129,
+   "aspect_ratio": 1.395,
+   "file_size": 49643,
+   "referenced_by": [],
+   "hash": "efb6e98f8f34",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_lights_png",
+   "path": "public/assets/event/s_lights.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 137,
+   "aspect_ratio": 1.46,
+   "file_size": 53395,
+   "referenced_by": [],
+   "hash": "374609135839",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_meter_png",
+   "path": "public/assets/event/s_meter.png",
+   "world": "event",
+   "format": "png",
+   "width": 109,
+   "height": 160,
+   "aspect_ratio": 0.681,
+   "file_size": 31850,
+   "referenced_by": [],
+   "hash": "103cea27d223",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_mic_png",
+   "path": "public/assets/event/s_mic.png",
+   "world": "event",
+   "format": "png",
+   "width": 137,
+   "height": 235,
+   "aspect_ratio": 0.583,
+   "file_size": 63708,
+   "referenced_by": [],
+   "hash": "781a959d15d5",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_micstand_png",
+   "path": "public/assets/event/s_micstand.png",
+   "world": "event",
+   "format": "png",
+   "width": 142,
+   "height": 286,
+   "aspect_ratio": 0.497,
+   "file_size": 66486,
+   "referenced_by": [],
+   "hash": "56c07279e9f2",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_event_s_mixer_png",
+   "path": "public/assets/event/s_mixer.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 121,
+   "aspect_ratio": 1.653,
+   "file_size": 52326,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/SoundCheckGame.tsx"
+   ],
+   "hash": "429f9eee13b4",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_s_monitor_png",
+   "path": "public/assets/event/s_monitor.png",
+   "world": "event",
+   "format": "png",
+   "width": 200,
+   "height": 169,
+   "aspect_ratio": 1.183,
+   "file_size": 66419,
+   "referenced_by": [
+    "src/q1/SoundCheckGame.tsx"
+   ],
+   "hash": "106cbbc9f504",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_s_speaker_png",
+   "path": "public/assets/event/s_speaker.png",
+   "world": "event",
+   "format": "png",
+   "width": 150,
+   "height": 255,
+   "aspect_ratio": 0.588,
+   "file_size": 72424,
+   "referenced_by": [
+    "src/q1/SoundCheckGame.tsx"
+   ],
+   "hash": "59d133e80f0b",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_venue_busy_jpg",
+   "path": "public/assets/event/venue_busy.jpg",
+   "world": "event",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 247040,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/CrowdFlowGame.tsx"
+   ],
+   "hash": "b6f37d43557c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_venue_empty_jpg",
+   "path": "public/assets/event/venue_empty.jpg",
+   "world": "event",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 194322,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "80fafce96ee6",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_venue_map_jpg",
+   "path": "public/assets/event/venue_map.jpg",
+   "world": "event",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 245666,
+   "referenced_by": [
+    "src/data/content/townEvent.ts",
+    "src/q1/CrowdFlowGame.tsx",
+    "src/q1/VenueLayoutGame.tsx"
+   ],
+   "hash": "15e7a47c5780",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_event_venue_success_jpg",
+   "path": "public/assets/event/venue_success.jpg",
+   "world": "event",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 219687,
+   "referenced_by": [
+    "src/data/content/townEvent.ts"
+   ],
+   "hash": "621d512d7a01",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_after_mist_png",
+   "path": "public/assets/heat/after-mist.png",
+   "world": "heat",
+   "format": "png",
+   "width": 531,
+   "height": 490,
+   "aspect_ratio": 1.084,
+   "file_size": 511709,
+   "referenced_by": [],
+   "hash": "a1c411c1229f",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_after_pavement_png",
+   "path": "public/assets/heat/after-pavement.png",
+   "world": "heat",
+   "format": "png",
+   "width": 531,
+   "height": 490,
+   "aspect_ratio": 1.084,
+   "file_size": 525937,
+   "referenced_by": [],
+   "hash": "2f426bb17591",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_after_shade_png",
+   "path": "public/assets/heat/after-shade.png",
+   "world": "heat",
+   "format": "png",
+   "width": 531,
+   "height": 490,
+   "aspect_ratio": 1.084,
+   "file_size": 510882,
+   "referenced_by": [],
+   "hash": "946be8c90523",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_after_tree_png",
+   "path": "public/assets/heat/after-tree.png",
+   "world": "heat",
+   "format": "png",
+   "width": 531,
+   "height": 490,
+   "aspect_ratio": 1.084,
+   "file_size": 515863,
+   "referenced_by": [],
+   "hash": "dd7ac9bba0bc",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_char_park_png",
+   "path": "public/assets/heat/char-park.png",
+   "world": "heat",
+   "format": "png",
+   "width": 110,
+   "height": 181,
+   "aspect_ratio": 0.608,
+   "file_size": 38964,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "cde55d78e010",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_char_power_png",
+   "path": "public/assets/heat/char-power.png",
+   "world": "heat",
+   "format": "png",
+   "width": 105,
+   "height": 183,
+   "aspect_ratio": 0.574,
+   "file_size": 36910,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "cd4280c9b760",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_char_site_png",
+   "path": "public/assets/heat/char-site.png",
+   "world": "heat",
+   "format": "png",
+   "width": 100,
+   "height": 183,
+   "aspect_ratio": 0.546,
+   "file_size": 35797,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "54d7452ba111",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_char_urban_png",
+   "path": "public/assets/heat/char-urban.png",
+   "world": "heat",
+   "format": "png",
+   "width": 111,
+   "height": 183,
+   "aspect_ratio": 0.607,
+   "file_size": 42481,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "e302b5b943d1",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_char_water_png",
+   "path": "public/assets/heat/char-water.png",
+   "world": "heat",
+   "format": "png",
+   "width": 103,
+   "height": 186,
+   "aspect_ratio": 0.554,
+   "file_size": 37351,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "44f87034e562",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_data_shade_png",
+   "path": "public/assets/heat/data-shade.png",
+   "world": "heat",
+   "format": "png",
+   "width": 124,
+   "height": 99,
+   "aspect_ratio": 1.253,
+   "file_size": 19571,
+   "referenced_by": [],
+   "hash": "4355a8c4d62b",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_data_sun_png",
+   "path": "public/assets/heat/data-sun.png",
+   "world": "heat",
+   "format": "png",
+   "width": 126,
+   "height": 99,
+   "aspect_ratio": 1.273,
+   "file_size": 19782,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "cdccf003a580",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_data_surface_png",
+   "path": "public/assets/heat/data-surface.png",
+   "world": "heat",
+   "format": "png",
+   "width": 125,
+   "height": 99,
+   "aspect_ratio": 1.263,
+   "file_size": 17247,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "72500df9b951",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_data_wind_png",
+   "path": "public/assets/heat/data-wind.png",
+   "world": "heat",
+   "format": "png",
+   "width": 120,
+   "height": 99,
+   "aspect_ratio": 1.212,
+   "file_size": 22014,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "0d790a44a259",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_icon_bad_png",
+   "path": "public/assets/heat/icon-bad.png",
+   "world": "heat",
+   "format": "png",
+   "width": 70,
+   "height": 74,
+   "aspect_ratio": 0.946,
+   "file_size": 10137,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "2914049f6b0e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_icon_good_png",
+   "path": "public/assets/heat/icon-good.png",
+   "world": "heat",
+   "format": "png",
+   "width": 64,
+   "height": 75,
+   "aspect_ratio": 0.853,
+   "file_size": 9442,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "60730fa64e04",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_icon_people_png",
+   "path": "public/assets/heat/icon-people.png",
+   "world": "heat",
+   "format": "png",
+   "width": 65,
+   "height": 77,
+   "aspect_ratio": 0.844,
+   "file_size": 9025,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "97fcd9cc4eb4",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_icon_warn_png",
+   "path": "public/assets/heat/icon-warn.png",
+   "world": "heat",
+   "format": "png",
+   "width": 62,
+   "height": 73,
+   "aspect_ratio": 0.849,
+   "file_size": 8406,
+   "referenced_by": [],
+   "hash": "4278825da49e",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan",
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_park_base_png",
+   "path": "public/assets/heat/park-base.png",
+   "world": "heat",
+   "format": "png",
+   "width": 1024,
+   "height": 1536,
+   "aspect_ratio": 0.667,
+   "file_size": 2793609,
+   "referenced_by": [
+    "src/q1/ParkHeatGame.tsx"
+   ],
+   "hash": "cc804ef5636a",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_part_mist_png",
+   "path": "public/assets/heat/part-mist.png",
+   "world": "heat",
+   "format": "png",
+   "width": 94,
+   "height": 92,
+   "aspect_ratio": 1.022,
+   "file_size": 14343,
+   "referenced_by": [],
+   "hash": "6a725f39d3d5",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_part_pavement_png",
+   "path": "public/assets/heat/part-pavement.png",
+   "world": "heat",
+   "format": "png",
+   "width": 93,
+   "height": 69,
+   "aspect_ratio": 1.348,
+   "file_size": 11010,
+   "referenced_by": [],
+   "hash": "1ac6a7fd30de",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_part_shade_png",
+   "path": "public/assets/heat/part-shade.png",
+   "world": "heat",
+   "format": "png",
+   "width": 89,
+   "height": 90,
+   "aspect_ratio": 0.989,
+   "file_size": 14991,
+   "referenced_by": [],
+   "hash": "0ba8a7678aa5",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_part_tree_png",
+   "path": "public/assets/heat/part-tree.png",
+   "world": "heat",
+   "format": "png",
+   "width": 75,
+   "height": 97,
+   "aspect_ratio": 0.773,
+   "file_size": 15646,
+   "referenced_by": [],
+   "hash": "09a5a8e2f6a2",
+   "likely_reusable": true,
+   "quality_flags": [
+    "dynamic_ref_possible"
+   ]
+  },
+  {
+   "asset_id": "public_assets_heat_place_city_png",
+   "path": "public/assets/heat/place-city.png",
+   "world": "heat",
+   "format": "png",
+   "width": 141,
+   "height": 193,
+   "aspect_ratio": 0.731,
+   "file_size": 49640,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "06ff20ea0d49",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_place_dam_png",
+   "path": "public/assets/heat/place-dam.png",
+   "world": "heat",
+   "format": "png",
+   "width": 140,
+   "height": 193,
+   "aspect_ratio": 0.725,
+   "file_size": 47926,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "701c24d33fc2",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_place_park_png",
+   "path": "public/assets/heat/place-park.png",
+   "world": "heat",
+   "format": "png",
+   "width": 178,
+   "height": 193,
+   "aspect_ratio": 0.922,
+   "file_size": 67745,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "a7764b02abf6",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_place_site_png",
+   "path": "public/assets/heat/place-site.png",
+   "world": "heat",
+   "format": "png",
+   "width": 138,
+   "height": 193,
+   "aspect_ratio": 0.715,
+   "file_size": 53015,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "1a3b3df76034",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_heat_place_town_png",
+   "path": "public/assets/heat/place-town.png",
+   "world": "heat",
+   "format": "png",
+   "width": 137,
+   "height": 193,
+   "aspect_ratio": 0.71,
+   "file_size": 47755,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "15392315ffdd",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_item_alert_png",
+   "path": "public/assets/item-alert.png",
+   "world": "shared",
+   "format": "png",
+   "width": 77,
+   "height": 70,
+   "aspect_ratio": 1.1,
+   "file_size": 8140,
+   "referenced_by": [],
+   "hash": "89cf0fe24cc5",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_carrot_png",
+   "path": "public/assets/item-carrot.png",
+   "world": "shared",
+   "format": "png",
+   "width": 65,
+   "height": 68,
+   "aspect_ratio": 0.956,
+   "file_size": 7238,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "b713f7e5c13c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_item_compost_png",
+   "path": "public/assets/item-compost.png",
+   "world": "shared",
+   "format": "png",
+   "width": 86,
+   "height": 67,
+   "aspect_ratio": 1.284,
+   "file_size": 9639,
+   "referenced_by": [],
+   "hash": "77b3c8b09c78",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_fish_png",
+   "path": "public/assets/item-fish.png",
+   "world": "shared",
+   "format": "png",
+   "width": 96,
+   "height": 55,
+   "aspect_ratio": 1.745,
+   "file_size": 8831,
+   "referenced_by": [],
+   "hash": "2aad30b7db6a",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan",
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_leftover_png",
+   "path": "public/assets/item-leftover.png",
+   "world": "shared",
+   "format": "png",
+   "width": 85,
+   "height": 67,
+   "aspect_ratio": 1.269,
+   "file_size": 9290,
+   "referenced_by": [],
+   "hash": "76f114172ee7",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_map_png",
+   "path": "public/assets/item-map.png",
+   "world": "shared",
+   "format": "png",
+   "width": 89,
+   "height": 72,
+   "aspect_ratio": 1.236,
+   "file_size": 11263,
+   "referenced_by": [],
+   "hash": "64d355b2ed60",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_recyclebag_png",
+   "path": "public/assets/item-recyclebag.png",
+   "world": "shared",
+   "format": "png",
+   "width": 68,
+   "height": 70,
+   "aspect_ratio": 0.971,
+   "file_size": 8360,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "3117aa0554a5",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_item_seedling_png",
+   "path": "public/assets/item-seedling.png",
+   "world": "shared",
+   "format": "png",
+   "width": 108,
+   "height": 67,
+   "aspect_ratio": 1.612,
+   "file_size": 13347,
+   "referenced_by": [],
+   "hash": "4372ab9dbaec",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_item_truck_png",
+   "path": "public/assets/item-truck.png",
+   "world": "shared",
+   "format": "png",
+   "width": 103,
+   "height": 68,
+   "aspect_ratio": 1.515,
+   "file_size": 11844,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "900736ee4d0e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_item_veggies_png",
+   "path": "public/assets/item-veggies.png",
+   "world": "shared",
+   "format": "png",
+   "width": 87,
+   "height": 69,
+   "aspect_ratio": 1.261,
+   "file_size": 11307,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "cf1dca62b849",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kids_walking_png",
+   "path": "public/assets/kids-walking.png",
+   "world": "shared",
+   "format": "png",
+   "width": 311,
+   "height": 190,
+   "aspect_ratio": 1.637,
+   "file_size": 117102,
+   "referenced_by": [],
+   "hash": "f55afa3c3067",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_kyushoku_classroom_lunch_jpg",
+   "path": "public/assets/kyushoku/classroom_lunch.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 1000,
+   "height": 750,
+   "aspect_ratio": 1.333,
+   "file_size": 172375,
+   "referenced_by": [
+    "src/q1/CookGame.tsx"
+   ],
+   "hash": "96467b745e2f",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_compost_to_farm_jpg",
+   "path": "public/assets/kyushoku/compost_to_farm.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 220918,
+   "referenced_by": [
+    "src/q1/RecycleGame.tsx"
+   ],
+   "hash": "850ba7ad22af",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_delivery_center_jpg",
+   "path": "public/assets/kyushoku/delivery_center.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 1000,
+   "height": 800,
+   "aspect_ratio": 1.25,
+   "file_size": 181443,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/q1/LogisticsGame.tsx"
+   ],
+   "hash": "174b0296c797",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_delivery_check_jpg",
+   "path": "public/assets/kyushoku/delivery_check.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 900,
+   "height": 1125,
+   "aspect_ratio": 0.8,
+   "file_size": 201642,
+   "referenced_by": [
+    "src/q1/LogisticsGame.tsx"
+   ],
+   "hash": "ed41d3b391a7",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_farm_field_jpg",
+   "path": "public/assets/kyushoku/farm_field.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 900,
+   "height": 1350,
+   "aspect_ratio": 0.667,
+   "file_size": 324295,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/q1/FarmGame.tsx"
+   ],
+   "hash": "1441a5a34602",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_farmer_char_png",
+   "path": "public/assets/kyushoku/farmer_char.png",
+   "world": "kyushoku",
+   "format": "png",
+   "width": 620,
+   "height": 1027,
+   "aspect_ratio": 0.604,
+   "file_size": 661757,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "65d3561323e8",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_food_waste_jpg",
+   "path": "public/assets/kyushoku/food_waste.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 1000,
+   "height": 800,
+   "aspect_ratio": 1.25,
+   "file_size": 184778,
+   "referenced_by": [
+    "src/q1/RecycleGame.tsx"
+   ],
+   "hash": "03e3e67dbb89",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_recycle_sorting_jpg",
+   "path": "public/assets/kyushoku/recycle_sorting.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 1000,
+   "height": 800,
+   "aspect_ratio": 1.25,
+   "file_size": 182718,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "be6e4f9960e7",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_kyushoku_school_kitchen_jpg",
+   "path": "public/assets/kyushoku/school_kitchen.jpg",
+   "world": "kyushoku",
+   "format": "jpg",
+   "width": 900,
+   "height": 982,
+   "aspect_ratio": 0.916,
+   "file_size": 171622,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/q1/CookGame.tsx"
+   ],
+   "hash": "dd3f87f50018",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_back_home_jpg",
+   "path": "public/assets/medical/back_home.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 242763,
+   "referenced_by": [],
+   "hash": "64e0fd6c753d",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_medical_er_arrival_jpg",
+   "path": "public/assets/medical/er_arrival.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 1000,
+   "height": 800,
+   "aspect_ratio": 1.25,
+   "file_size": 138044,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "e10862a37844",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_er_bed_jpg",
+   "path": "public/assets/medical/er_bed.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 1000,
+   "height": 667,
+   "aspect_ratio": 1.499,
+   "file_size": 129151,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "9ff103fbea2d",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_er_exam_jpg",
+   "path": "public/assets/medical/er_exam.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 1000,
+   "height": 800,
+   "aspect_ratio": 1.25,
+   "file_size": 166206,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "ba477e7b9c8c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_home_after_jpg",
+   "path": "public/assets/medical/home_after.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 380,
+   "height": 300,
+   "aspect_ratio": 1.267,
+   "file_size": 38573,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "a91562b78442",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_home_before_jpg",
+   "path": "public/assets/medical/home_before.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 320,
+   "height": 302,
+   "aspect_ratio": 1.06,
+   "file_size": 35107,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "eb841ffd8f95",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_lab_jpg",
+   "path": "public/assets/medical/lab.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 659,
+   "height": 526,
+   "aspect_ratio": 1.253,
+   "file_size": 56960,
+   "referenced_by": [
+    "src/data/content/medical.ts",
+    "src/data/content/priceHike.ts",
+    "src/q1/DiagnoseGame.tsx",
+    "src/q1/RxCheckGame.tsx"
+   ],
+   "hash": "53fc886d026e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_msw_room_jpg",
+   "path": "public/assets/medical/msw_room.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 683,
+   "height": 537,
+   "aspect_ratio": 1.272,
+   "file_size": 92906,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "88344b52cbe7",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_pharmacy_jpg",
+   "path": "public/assets/medical/pharmacy.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 539,
+   "height": 601,
+   "aspect_ratio": 0.897,
+   "file_size": 63308,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "8e04f231fa90",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_rehab_jpg",
+   "path": "public/assets/medical/rehab.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 718,
+   "height": 430,
+   "aspect_ratio": 1.67,
+   "file_size": 67555,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "f7324b0b4e2f",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_ward_jpg",
+   "path": "public/assets/medical/ward.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 571,
+   "height": 684,
+   "aspect_ratio": 0.835,
+   "file_size": 81532,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "27bcf79988bd",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_dietitian_jpg",
+   "path": "public/assets/medical/who_dietitian.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 5939,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "8e4609db95ee",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_doctor_jpg",
+   "path": "public/assets/medical/who_doctor.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 5936,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "024fae9dba27",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_labtech_jpg",
+   "path": "public/assets/medical/who_labtech.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 6430,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "bb984c7e83c6",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_msw_jpg",
+   "path": "public/assets/medical/who_msw.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 5735,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "5fe0b424dbdc",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_nurse_jpg",
+   "path": "public/assets/medical/who_nurse.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 5024,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "100bfe71d0e9",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_pharmacist_jpg",
+   "path": "public/assets/medical/who_pharmacist.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 5746,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "68822bd8c3b2",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_pt_jpg",
+   "path": "public/assets/medical/who_pt.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 6711,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "12cebea58ede",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_who_radtech_jpg",
+   "path": "public/assets/medical/who_radtech.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 168,
+   "height": 105,
+   "aspect_ratio": 1.6,
+   "file_size": 6849,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "dc7800bd39b8",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_medical_xray_room_jpg",
+   "path": "public/assets/medical/xray_room.jpg",
+   "world": "medical",
+   "format": "jpg",
+   "width": 645,
+   "height": 691,
+   "aspect_ratio": 0.933,
+   "file_size": 83475,
+   "referenced_by": [
+    "src/data/content/medical.ts"
+   ],
+   "hash": "6fd546da5806",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_factory_jpg",
+   "path": "public/assets/price/factory.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 900,
+   "height": 1200,
+   "aspect_ratio": 0.75,
+   "file_size": 262356,
+   "referenced_by": [
+    "src/data/content/priceHike.ts",
+    "src/q1/WaterGame.tsx"
+   ],
+   "hash": "3386ad3cad6d",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_lab_jpg",
+   "path": "public/assets/price/lab.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 900,
+   "height": 1200,
+   "aspect_ratio": 0.75,
+   "file_size": 217037,
+   "referenced_by": [
+    "src/data/content/medical.ts",
+    "src/data/content/priceHike.ts",
+    "src/q1/DiagnoseGame.tsx",
+    "src/q1/RxCheckGame.tsx"
+   ],
+   "hash": "e4ffd87b4457",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_overview_jpg",
+   "path": "public/assets/price/overview.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 275484,
+   "referenced_by": [
+    "src/data/content/priceHike.ts"
+   ],
+   "hash": "72de71632a65",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_package_jpg",
+   "path": "public/assets/price/package.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 900,
+   "height": 1200,
+   "aspect_ratio": 0.75,
+   "file_size": 249947,
+   "referenced_by": [
+    "src/data/content/priceHike.ts"
+   ],
+   "hash": "5534c47bf8c9",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_shop_jpg",
+   "path": "public/assets/price/shop.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 900,
+   "height": 1350,
+   "aspect_ratio": 0.667,
+   "file_size": 243036,
+   "referenced_by": [
+    "src/data/content/priceHike.ts",
+    "src/q1/LifePlanGame.tsx"
+   ],
+   "hash": "3c79f4f99fb2",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_price_warehouse_jpg",
+   "path": "public/assets/price/warehouse.jpg",
+   "world": "price",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 195040,
+   "referenced_by": [
+    "src/data/content/priceHike.ts"
+   ],
+   "hash": "f107df031485",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_bus_manager_jpg",
+   "path": "public/assets/schooltrip/school-trip-bus-manager.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 133708,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "f8d170b64793",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_hotel_jpg",
+   "path": "public/assets/schooltrip/school-trip-hotel.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 619,
+   "aspect_ratio": 1.777,
+   "file_size": 113404,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "fe028269d20c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_opening_jpg",
+   "path": "public/assets/schooltrip/school-trip-opening.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 165909,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "722aacf1551e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_planner_jpg",
+   "path": "public/assets/schooltrip/school-trip-planner.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 192544,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "0996a6e62a59",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_success_jpg",
+   "path": "public/assets/schooltrip/school-trip-success.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 619,
+   "aspect_ratio": 1.777,
+   "file_size": 129426,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "aaa637c40a30",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_teacher_jpg",
+   "path": "public/assets/schooltrip/school-trip-teacher.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 733,
+   "aspect_ratio": 1.501,
+   "file_size": 197307,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "9618c6ead51a",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_schooltrip_school_trip_tour_conductor_jpg",
+   "path": "public/assets/schooltrip/school-trip-tour-conductor.jpg",
+   "world": "schooltrip",
+   "format": "jpg",
+   "width": 1100,
+   "height": 619,
+   "aspect_ratio": 1.777,
+   "file_size": 106695,
+   "referenced_by": [
+    "src/data/content/schoolTrip.ts"
+   ],
+   "hash": "661acc56d31b",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_shop_ba_after_png",
+   "path": "public/assets/shop/ba-after.png",
+   "world": "shop",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1574123,
+   "referenced_by": [
+    "src/data/content/shopOpening.ts"
+   ],
+   "hash": "137110cc0788",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_shop_ba_before_png",
+   "path": "public/assets/shop/ba-before.png",
+   "world": "shop",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1556799,
+   "referenced_by": [
+    "src/data/content/shopOpening.ts"
+   ],
+   "hash": "17784a5d0e3e",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_shop_char_haru_png",
+   "path": "public/assets/shop/char-haru.png",
+   "world": "shop",
+   "format": "png",
+   "width": 800,
+   "height": 800,
+   "aspect_ratio": 1,
+   "file_size": 775863,
+   "referenced_by": [
+    "src/data/content/shopOpening.ts"
+   ],
+   "hash": "68559791aa1c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_tool_kama_png",
+   "path": "public/assets/tool-kama.png",
+   "world": "shared",
+   "format": "png",
+   "width": 92,
+   "height": 77,
+   "aspect_ratio": 1.195,
+   "file_size": 12596,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "728eea6ad310",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_tool_knife_png",
+   "path": "public/assets/tool-knife.png",
+   "world": "shared",
+   "format": "png",
+   "width": 110,
+   "height": 77,
+   "aspect_ratio": 1.429,
+   "file_size": 12800,
+   "referenced_by": [],
+   "hash": "6f11417432d3",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_tool_oven_png",
+   "path": "public/assets/tool-oven.png",
+   "world": "shared",
+   "format": "png",
+   "width": 91,
+   "height": 83,
+   "aspect_ratio": 1.096,
+   "file_size": 12036,
+   "referenced_by": [],
+   "hash": "277094613fba",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_tool_thermo_png",
+   "path": "public/assets/tool-thermo.png",
+   "world": "shared",
+   "format": "png",
+   "width": 47,
+   "height": 84,
+   "aspect_ratio": 0.56,
+   "file_size": 6271,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts"
+   ],
+   "hash": "f5483461379c",
+   "likely_reusable": true,
+   "quality_flags": [
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_tool_tray_png",
+   "path": "public/assets/tool-tray.png",
+   "world": "shared",
+   "format": "png",
+   "width": 95,
+   "height": 85,
+   "aspect_ratio": 1.118,
+   "file_size": 15663,
+   "referenced_by": [],
+   "hash": "6caf64785b8c",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_town_hero_png",
+   "path": "public/assets/town-hero.png",
+   "world": "shared",
+   "format": "png",
+   "width": 1536,
+   "height": 1024,
+   "aspect_ratio": 1.5,
+   "file_size": 3039368,
+   "referenced_by": [
+    "src/screens/HomeScreen.tsx"
+   ],
+   "hash": "0e3ed39d0af9",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_ui_balloon_png",
+   "path": "public/assets/ui-balloon.png",
+   "world": "shared",
+   "format": "png",
+   "width": 116,
+   "height": 74,
+   "aspect_ratio": 1.568,
+   "file_size": 8749,
+   "referenced_by": [],
+   "hash": "59875fa41e54",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_ui_fire_png",
+   "path": "public/assets/ui-fire.png",
+   "world": "shared",
+   "format": "png",
+   "width": 54,
+   "height": 62,
+   "aspect_ratio": 0.871,
+   "file_size": 5287,
+   "referenced_by": [
+    "src/screens/AreaScreen.tsx",
+    "src/screens/HomeScreen.tsx",
+    "src/screens/Q1Screen.tsx",
+    "index.html"
+   ],
+   "hash": "a02fdba6368e",
+   "likely_reusable": true,
+   "quality_flags": [
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_ui_new_png",
+   "path": "public/assets/ui-new.png",
+   "world": "shared",
+   "format": "png",
+   "width": 79,
+   "height": 59,
+   "aspect_ratio": 1.339,
+   "file_size": 7246,
+   "referenced_by": [
+    "src/index.css",
+    "src/screens/HomeScreen.tsx",
+    "src/screens/Q1Screen.tsx"
+   ],
+   "hash": "295a3eb98a28",
+   "likely_reusable": true,
+   "quality_flags": [
+    "tiny"
+   ]
+  },
+  {
+   "asset_id": "public_assets_ui_sparkle_png",
+   "path": "public/assets/ui-sparkle.png",
+   "world": "shared",
+   "format": "png",
+   "width": 72,
+   "height": 65,
+   "aspect_ratio": 1.108,
+   "file_size": 6422,
+   "referenced_by": [
+    "src/screens/Q1Screen.tsx"
+   ],
+   "hash": "451255535a5c",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_ui_timer_png",
+   "path": "public/assets/ui-timer.png",
+   "world": "shared",
+   "format": "png",
+   "width": 92,
+   "height": 49,
+   "aspect_ratio": 1.878,
+   "file_size": 7064,
+   "referenced_by": [],
+   "hash": "81adf33ebdcd",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan",
+    "tiny"
+   ]
+  }
+ ]
+}

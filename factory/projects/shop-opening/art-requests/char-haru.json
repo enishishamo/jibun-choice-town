@@ -1,0 +1,17 @@
+{
+  "asset_id": "shop_char_haru",
+  "filename": "char-haru.png",
+  "world": "shop",
+  "use": "character",
+  "purpose": "5章を貫くNPCハルさん（定食屋を開きたい人）の立ち絵。会話・discovery・E画面で反復登場",
+  "scene": "A friendly Japanese adult in their early 30s who dreams of opening a small teishoku diner. Warm, hopeful, slightly nervous smile. Wearing a clean modern apron over casual clothes, holding a small recipe notebook. Gender-ambiguous styling (avoid strongly gendered stereotypes), short neat hair.",
+  "composition": "Upper body, facing slightly toward the viewer, centered, plain very light warm background (soft cream), generous head room, nothing cropped. Same clay-figure proportions as the series (about 3 heads tall, simplified hands).",
+  "required_objects": ["clean apron", "small notebook", "warm hopeful expression"],
+  "forbidden_objects": ["readable text", "brand logos", "kitchen background clutter", "photorealistic skin"],
+  "aspect_ratio": "1:1",
+  "size": "800x800",
+  "character_constraints": "modern, kind, believable adult; NOT childish; no gender-stereotyped exaggeration",
+  "reference_assets": ["public/assets/medical/who_doctor.jpg", "public/assets/town-hero.png"],
+  "output_path": "public/assets/shop/char-haru.png",
+  "used_by": ["src/data/content/shopOpening.ts"]
+}

@@ -1,0 +1,152 @@
+{
+ "note": "Art needs after reuse-reduction (Stage 6). ESSENTIAL first; OPTIONAL is skipped by policy.",
+ "generated_at": "2026-09-02T00:51:44.883Z",
+ "todo_art": [
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 12,
+   "ask": "Add a shop-opening sceneMap using area-street and a wrap-up before/after using ba-before and ba-after once the assets are placed."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 40,
+   "ask": "Replace the temporary bg-road sceneImage with area-street.png through sceneMap after that artwork is generated."
+  },
+  {
+   "file": "src/q1/TenantMatchGame.tsx",
+   "line": 7,
+   "ask": "Replace the CSS/emoji shopping-street cards with cropped views from board-street.png after it is generated."
+  }
+ ],
+ "emoji_placeholders": [
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 48,
+   "represents": "The vacant-store matching incident on the shopping-street scene."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 55,
+   "represents": "The business-plan consultation incident on the shopping-street scene."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 62,
+   "represents": "The startup-loan interview incident on the shopping-street scene."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 71,
+   "represents": "The shop interior-design incident on the shopping-street scene."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 80,
+   "represents": "The completed restaurant's hygiene-inspection incident on the shopping-street scene."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 113,
+   "represents": "Profession hero art for the vacant-store/tenant coordinator, rendered as an emoji inside an inline SVG."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 146,
+   "represents": "Profession hero art for the business adviser, rendered as an emoji inside an inline SVG."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 178,
+   "represents": "Profession hero art for the startup-loan screener, rendered as an emoji inside an inline SVG."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 210,
+   "represents": "Profession hero art for the shop/interior designer, rendered as an emoji inside an inline SVG."
+  },
+  {
+   "file": "src/data/content/shopOpening.ts",
+   "line": 242,
+   "represents": "Profession hero art for the food-sanitation inspector, rendered as an emoji inside an inline SVG."
+  },
+  {
+   "file": "src/q1/TenantMatchGame.tsx",
+   "line": 15,
+   "represents": "The three prospective tenants/businesses shown as food or product emoji instead of illustrated people/store concepts."
+  },
+  {
+   "file": "src/q1/TenantMatchGame.tsx",
+   "line": 28,
+   "represents": "The three vacant storefronts shown as merchandise/food emoji instead of storefront visuals."
+  },
+  {
+   "file": "src/q1/TenantMatchGame.tsx",
+   "line": 52,
+   "represents": "The current shopping-street storefront sequence and closed shutters, pending board-street artwork."
+  }
+ ],
+ "needs": [
+  {
+   "world": "shop",
+   "where": "src/data/content/shopOpening.ts / AreaScreen shopping-street scene",
+   "what": "A dedicated shuttered shopping-street overview is missing; the unrelated bg-road fallback cannot show which shutters are closed or visually anchor the five-step opening story.",
+   "class": "ESSENTIAL",
+   "existing_candidate": "/assets/bg-road.png",
+   "resolution": {
+    "strategy": "reuse",
+    "asset": "public/assets/bg-road.png"
+   }
+  },
+  {
+   "world": "shop",
+   "where": "src/q1/TenantMatchGame.tsx / TenantMatchGame",
+   "what": "An illustrated street/storefront board showing the three premises, their physical differences, and the surrounding business mix is missing. Those spatial and property differences are central to the matching decision.",
+   "class": "ESSENTIAL",
+   "existing_candidate": null,
+   "resolution": {
+    "strategy": "generate_or_compose",
+    "note": "no reusable asset — goes through the provider chain (css/svg/composition/codex_imagegen/human_boundary)"
+   }
+  },
+  {
+   "world": "shop",
+   "where": "src/q1/SceneAuditGame.tsx / SceneAuditGame",
+   "what": "A completed restaurant inspection scene with visible fixtures and defects is missing; a scene-observation task cannot presently be grounded in an actual shop interior.",
+   "class": "ESSENTIAL",
+   "existing_candidate": null,
+   "resolution": {
+    "strategy": "generate_or_compose",
+    "note": "no reusable asset — goes through the provider chain (css/svg/composition/codex_imagegen/human_boundary)"
+   }
+  },
+  {
+   "world": "shop",
+   "where": "src/data/content/shopOpening.ts / event wrapUp",
+   "what": "Before/after views of the shuttered street and the opened restaurant are missing, weakening the story's core state change from closed shutter to active shop.",
+   "class": "ESSENTIAL",
+   "existing_candidate": null,
+   "resolution": {
+    "strategy": "generate_or_compose",
+    "note": "no reusable asset — goes through the provider chain (css/svg/composition/codex_imagegen/human_boundary)"
+   }
+  },
+  {
+   "world": "shop",
+   "where": "src/data/content/shopOpening.ts / profession discovery heroes",
+   "what": "Five profession character portraits are still inline emoji SVG placeholders, so the people behind the opening process lack visual identity.",
+   "class": "SUPPORTING",
+   "existing_candidate": null,
+   "resolution": {
+    "strategy": "generate_or_compose",
+    "note": "no reusable asset — goes through the provider chain (css/svg/composition/codex_imagegen/human_boundary)"
+   }
+  }
+ ],
+ "summary": {
+  "essential": 4,
+  "supporting": 1,
+  "optional_skipped": 0,
+  "resolved_by_reuse": 1,
+  "require_generation": 4
+ }
+}

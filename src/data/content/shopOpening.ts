@@ -4,14 +4,13 @@
 // each seeing completely different information (matching / coaching /
 // loan screening / interior design / hygiene inspection).
 //
-// Art status: images are not generated yet (see factory/projects/
-// shop-opening/art-manifest.json, all "pending"). Until they land:
-//  - incidents / tools use emoji, places have no image
-//  - profession heroes use an inline SVG placeholder (swap to
-//    assets/shop/char-*.png when generated)
-//  - TODO(art): add sceneMap { image: S("area-street") } + wrapUp
-//    beforeAfter { S("ba-before"), S("ba-after") } when assets are placed.
+// Art status (Stage 6): ba-before / ba-after / char-haru generated via the
+// Art Harness (codex_imagegen, QA passed — factory/state/art/manifest-v2.json).
+// Remaining by design: incidents / tools stay emoji, profession heroes keep
+// the inline SVG placeholder (optional per art-plan-v2; upgrade later).
 import type { ContentModule } from "../types";
+
+const S = (n: string) => `${import.meta.env.BASE_URL}assets/shop/${n}.png`;
 
 // Interim discovery-hero until the character art is generated.
 const hero = (emoji: string, bg: string) =>
@@ -37,8 +36,17 @@ export const shopOpening: ContentModule = {
       title: "シャッターだらけの商店街に、\n「お店を開きたい」人が来た",
       shortLabel: "商店街に新しい店？",
       areaName: "商店街のうらがわ",
-      // TODO(art): area-street.png 生成後に sceneMap へ移行。それまでの暫定背景。
-      sceneImage: `${import.meta.env.BASE_URL}assets/bg-road.png`,
+      sceneMap: {
+        image: S("ba-before"),
+        opening: {
+          image: S("char-haru"),
+          lines: [
+            "「ここで、じぶんのお店を開きたいんです」",
+            "シャッターの下りた商店街に、ハルさんがやって来た。",
+          ],
+          cta: "ハルさんの夢を、追いかけてみる",
+        },
+      },
       areaLead:
         "「ここで、じぶんのお店を開きたいんです」\nハルさんの夢がかなうまでを、追いかけてみよう。",
       incidents: [
@@ -95,6 +103,12 @@ export const shopOpening: ContentModule = {
         ],
       },
       wrapUp: {
+        beforeAfter: {
+          before: S("ba-before"),
+          after: S("ba-after"),
+          beforeLabel: "はじまり：シャッター通り",
+          afterLabel: "いま：1枚だけ、開いた",
+        },
         title: "シャッターが1枚、開きました。",
         lines: [
           "お店を開いたのはハルさん。でも、開くまでには、ぜんぜんちがう見方をする人たちがいた。",

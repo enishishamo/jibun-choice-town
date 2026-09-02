@@ -1,0 +1,835 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "asset_references": [
+      {
+        "path": "/assets/bg-road.png",
+        "referenced_by": [
+          "src/data/content/shopOpening.ts"
+        ]
+      },
+      {
+        "path": "/assets/bg-school.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts",
+          "src/screens/AreaScreen.tsx"
+        ]
+      },
+      {
+        "path": "/assets/char-cook.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/char-logistics.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/char-nutrition.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/char-recycle.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/item-carrot.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/item-recyclebag.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/item-truck.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/item-veggies.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/tool-kama.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/tool-thermo.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/town-hero.png",
+        "referenced_by": [
+          "src/screens/HomeScreen.tsx"
+        ]
+      },
+      {
+        "path": "/assets/ui-fire.png",
+        "referenced_by": [
+          "src/screens/HomeScreen.tsx",
+          "src/screens/Q1Screen.tsx",
+          "src/screens/AreaScreen.tsx"
+        ]
+      },
+      {
+        "path": "/assets/ui-new.png",
+        "referenced_by": [
+          "src/screens/HomeScreen.tsx",
+          "src/screens/Q1Screen.tsx"
+        ]
+      },
+      {
+        "path": "/assets/ui-sparkle.png",
+        "referenced_by": [
+          "src/screens/Q1Screen.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/farmer_char.png",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/classroom_lunch.jpg",
+        "referenced_by": [
+          "src/q1/CookGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/compost_to_farm.jpg",
+        "referenced_by": [
+          "src/q1/RecycleGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/delivery_center.jpg",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts",
+          "src/q1/LogisticsGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/delivery_check.jpg",
+        "referenced_by": [
+          "src/q1/LogisticsGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/farm_field.jpg",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts",
+          "src/q1/FarmGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/food_waste.jpg",
+        "referenced_by": [
+          "src/q1/RecycleGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/recycle_sorting.jpg",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts"
+        ]
+      },
+      {
+        "path": "/assets/kyushoku/school_kitchen.jpg",
+        "referenced_by": [
+          "src/data/content/schoolLunch.ts",
+          "src/q1/CookGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/char-park.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/char-power.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/char-site.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/char-urban.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/char-water.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/data-sun.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/data-surface.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/data-wind.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/icon-good.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/icon-people.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/park-base.png",
+        "referenced_by": [
+          "src/q1/ParkHeatGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/heat/place-city.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/place-dam.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/place-park.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/place-site.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/heat/place-town.png",
+        "referenced_by": [
+          "src/data/content/extremeHeat.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/factory.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/lab.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/overview.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/package.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/shop.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/price/warehouse.jpg",
+        "referenced_by": [
+          "src/data/content/priceHike.ts"
+        ]
+      },
+      {
+        "path": "/assets/event/a-dancer.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/a-magician.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/a-mascot.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/a-mc.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/a-musician.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/a-singer.png",
+        "referenced_by": [
+          "src/q1/TimetableGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-board.png",
+        "referenced_by": [
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-flyer.png",
+        "referenced_by": [
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-mail.png",
+        "referenced_by": [
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-poster.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts"
+        ]
+      },
+      {
+        "path": "/assets/event/m-sns.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-street.png",
+        "referenced_by": [
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/m-web.png",
+        "referenced_by": [
+          "src/q1/PromoGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-booth-food.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-booth-goods.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx",
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-cone.png",
+        "referenced_by": [
+          "src/q1/CrowdFlowGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-fence.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/CrowdFlowGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-flag.png",
+        "referenced_by": [
+          "src/q1/PlanEventGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-infomap.png",
+        "referenced_by": [
+          "src/q1/CrowdFlowGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-rest-table.png",
+        "referenced_by": [
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-signpost.png",
+        "referenced_by": [
+          "src/q1/CrowdFlowGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/p-stage.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/s-mixer.png",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/SoundCheckGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/s-monitor.png",
+        "referenced_by": [
+          "src/q1/SoundCheckGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/s-speaker.png",
+        "referenced_by": [
+          "src/q1/SoundCheckGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/venue-busy.jpg",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/CrowdFlowGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/venue-empty.jpg",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/venue-map.jpg",
+        "referenced_by": [
+          "src/data/content/townEvent.ts",
+          "src/q1/CrowdFlowGame.tsx",
+          "src/q1/VenueLayoutGame.tsx"
+        ]
+      },
+      {
+        "path": "/assets/event/venue-success.jpg",
+        "referenced_by": [
+          "src/data/content/townEvent.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/er-arrival.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/er-bed.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/er-exam.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/home-after.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/home-before.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/lab.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/msw-room.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/pharmacy.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/rehab.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/ward.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-dietitian.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-doctor.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-labtech.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-msw.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-nurse.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-pharmacist.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-pt.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/who-radtech.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/medical/xray-room.jpg",
+        "referenced_by": [
+          "src/data/content/medical.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-bus-manager.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-hotel.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-opening.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-planner.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-success.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-teacher.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      },
+      {
+        "path": "/assets/schooltrip/school-trip-tour-conductor.jpg",
+        "referenced_by": [
+          "src/data/content/schoolTrip.ts"
+        ]
+      }
+    ],
+    "todo_art": [
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 12,
+        "ask": "Add a shop-opening sceneMap using area-street and a wrap-up before/after using ba-before and ba-after once the assets are placed."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 40,
+        "ask": "Replace the temporary bg-road sceneImage with area-street.png through sceneMap after that artwork is generated."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 7,
+        "ask": "Replace the CSS/emoji shopping-street cards with cropped views from board-street.png after it is generated."
+      }
+    ],
+    "emoji_placeholders": [
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 48,
+        "represents": "The vacant-store matching incident on the shopping-street scene."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 55,
+        "represents": "The business-plan consultation incident on the shopping-street scene."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 62,
+        "represents": "The startup-loan interview incident on the shopping-street scene."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 71,
+        "represents": "The shop interior-design incident on the shopping-street scene."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 80,
+        "represents": "The completed restaurant's hygiene-inspection incident on the shopping-street scene."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 113,
+        "represents": "Profession hero art for the vacant-store/tenant coordinator, rendered as an emoji inside an inline SVG."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 146,
+        "represents": "Profession hero art for the business adviser, rendered as an emoji inside an inline SVG."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 178,
+        "represents": "Profession hero art for the startup-loan screener, rendered as an emoji inside an inline SVG."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 210,
+        "represents": "Profession hero art for the shop/interior designer, rendered as an emoji inside an inline SVG."
+      },
+      {
+        "file": "src/data/content/shopOpening.ts",
+        "line": 242,
+        "represents": "Profession hero art for the food-sanitation inspector, rendered as an emoji inside an inline SVG."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 15,
+        "represents": "The three prospective tenants/businesses shown as food or product emoji instead of illustrated people/store concepts."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 28,
+        "represents": "The three vacant storefronts shown as merchandise/food emoji instead of storefront visuals."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "line": 52,
+        "represents": "The current shopping-street storefront sequence and closed shutters, pending board-street artwork."
+      }
+    ],
+    "css_visuals": [
+      {
+        "file": "src/q1/BodyInsideView.tsx",
+        "what": "Inline SVG human-body silhouette with lungs, heart, diaphragm, fracture/marker overlays, and reveal states used by the X-ray game."
+      },
+      {
+        "file": "src/q1/XrayGame.tsx",
+        "what": "CSS-positioned X-ray body stage, exposure frame, reveal animation, and selectable lung regions around BodyInsideView."
+      },
+      {
+        "file": "src/q1/WaterGame.tsx",
+        "what": "Animated dam/reservoir cross-section whose CSS water height communicates changing storage."
+      },
+      {
+        "file": "src/q1/UrbanHeatGame.tsx",
+        "what": "CSS city map with sun, wind, building, and tree layers plus before/after heat comparisons."
+      },
+      {
+        "file": "src/q1/PowerGame.tsx",
+        "what": "CSS city-lights state, demand/supply balance gauge, and hourly demand graph."
+      },
+      {
+        "file": "src/q1/FactoryLineGame.tsx",
+        "what": "CSS factory conveyor/production line with process stations, flow animation, bottleneck, and alert state."
+      },
+      {
+        "file": "src/q1/RecycleGame.tsx",
+        "what": "CSS conveyor and sorting-machine scene, supplemented by food emoji moving along the belt."
+      },
+      {
+        "file": "src/q1/ZoneFitGame.tsx",
+        "what": "CSS floor-plan grid for laying out kitchen, wash, toilet, seating, walls, and fixed building features."
+      },
+      {
+        "file": "src/q1/TenantMatchGame.tsx",
+        "what": "CSS shopping-street row of storefront cards with vacant, assigned, opened, and closed states."
+      },
+      {
+        "file": "src/q1/MenuGame.tsx",
+        "what": "CSS school-lunch tray and food-slot composition used to show the assembled meal."
+      },
+      {
+        "file": "src/q1/LogisticsGame.tsx",
+        "what": "CSS refrigerated-truck compartments and temperature zones used for loading food."
+      },
+      {
+        "file": "src/q1/VenueLayoutGame.tsx",
+        "what": "CSS venue grid and positioned event facilities layered over the venue background."
+      },
+      {
+        "file": "src/q1/CrowdFlowGame.tsx",
+        "what": "CSS crowd-flow board and movable safety/wayfinding objects layered over the venue map."
+      },
+      {
+        "file": "src/q1/SoundCheckGame.tsx",
+        "what": "CSS stage/hall layout, speaker direction states, audience zones, and sound-wave coverage around image objects."
+      },
+      {
+        "file": "src/q1/LifePlanGame.tsx",
+        "what": "CSS bedside conversation scene and home-life/support planning cards, with the patient represented by emoji."
+      },
+      {
+        "file": "src/q1/MoveTryGame.tsx",
+        "what": "CSS movement-test stage used to communicate rehabilitation actions and outcomes."
+      },
+      {
+        "file": "src/q1/ParkHeatGame.tsx",
+        "what": "CSS overlays, zones, placed countermeasures, people markers, and state tinting layered on one park illustration."
+      }
+    ],
+    "art_needs": [
+      {
+        "world": "shop",
+        "where": "src/data/content/shopOpening.ts / AreaScreen shopping-street scene",
+        "what": "A dedicated shuttered shopping-street overview is missing; the unrelated bg-road fallback cannot show which shutters are closed or visually anchor the five-step opening story.",
+        "class": "ESSENTIAL",
+        "existing_candidate": "/assets/bg-road.png"
+      },
+      {
+        "world": "shop",
+        "where": "src/q1/TenantMatchGame.tsx / TenantMatchGame",
+        "what": "An illustrated street/storefront board showing the three premises, their physical differences, and the surrounding business mix is missing. Those spatial and property differences are central to the matching decision.",
+        "class": "ESSENTIAL",
+        "existing_candidate": null
+      },
+      {
+        "world": "shop",
+        "where": "src/q1/SceneAuditGame.tsx / SceneAuditGame",
+        "what": "A completed restaurant inspection scene with visible fixtures and defects is missing; a scene-observation task cannot presently be grounded in an actual shop interior.",
+        "class": "ESSENTIAL",
+        "existing_candidate": null
+      },
+      {
+        "world": "shop",
+        "where": "src/data/content/shopOpening.ts / event wrapUp",
+        "what": "Before/after views of the shuttered street and the opened restaurant are missing, weakening the story's core state change from closed shutter to active shop.",
+        "class": "ESSENTIAL",
+        "existing_candidate": null
+      },
+      {
+        "world": "shop",
+        "where": "src/data/content/shopOpening.ts / profession discovery heroes",
+        "what": "Five profession character portraits are still inline emoji SVG placeholders, so the people behind the opening process lack visual identity.",
+        "class": "SUPPORTING",
+        "existing_candidate": null
+      }
+    ]
+  },
+  "output": "{\"asset_references\":[{\"path\":\"/assets/bg-road.png\",\"referenced_by\":[\"src/data/content/shopOpening.ts\"]},{\"path\":\"/assets/bg-school.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\",\"src/screens/AreaScreen.tsx\"]},{\"path\":\"/assets/char-cook.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/char-logistics.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/char-nutrition.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/char-recycle.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/item-carrot.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/item-recyclebag.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/item-truck.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/item-veggies.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/tool-kama.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/tool-thermo.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/town-hero.png\",\"referenced_by\":[\"src/screens/HomeScreen.tsx\"]},{\"path\":\"/assets/ui-fire.png\",\"referenced_by\":[\"src/screens/HomeScreen.tsx\",\"src/screens/Q1Screen.tsx\",\"src/screens/AreaScreen.tsx\"]},{\"path\":\"/assets/ui-new.png\",\"referenced_by\":[\"src/screens/HomeScreen.tsx\",\"src/screens/Q1Screen.tsx\"]},{\"path\":\"/assets/ui-sparkle.png\",\"referenced_by\":[\"src/screens/Q1Screen.tsx\"]},{\"path\":\"/assets/kyushoku/farmer_char.png\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/kyushoku/classroom_lunch.jpg\",\"referenced_by\":[\"src/q1/CookGame.tsx\"]},{\"path\":\"/assets/kyushoku/compost_to_farm.jpg\",\"referenced_by\":[\"src/q1/RecycleGame.tsx\"]},{\"path\":\"/assets/kyushoku/delivery_center.jpg\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\",\"src/q1/LogisticsGame.tsx\"]},{\"path\":\"/assets/kyushoku/delivery_check.jpg\",\"referenced_by\":[\"src/q1/LogisticsGame.tsx\"]},{\"path\":\"/assets/kyushoku/farm_field.jpg\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\",\"src/q1/FarmGame.tsx\"]},{\"path\":\"/assets/kyushoku/food_waste.jpg\",\"referenced_by\":[\"src/q1/RecycleGame.tsx\"]},{\"path\":\"/assets/kyushoku/recycle_sorting.jpg\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\"]},{\"path\":\"/assets/kyushoku/school_kitchen.jpg\",\"referenced_by\":[\"src/data/content/schoolLunch.ts\",\"src/q1/CookGame.tsx\"]},{\"path\":\"/assets/heat/char-park.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/char-power.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/char-site.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/char-urban.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/char-water.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/data-sun.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/data-surface.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/data-wind.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/icon-good.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/icon-people.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/park-base.png\",\"referenced_by\":[\"src/q1/ParkHeatGame.tsx\"]},{\"path\":\"/assets/heat/place-city.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/place-dam.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/place-park.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/place-site.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/heat/place-town.png\",\"referenced_by\":[\"src/data/content/extremeHeat.ts\"]},{\"path\":\"/assets/price/factory.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/price/lab.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/price/overview.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/price/package.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/price/shop.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/price/warehouse.jpg\",\"referenced_by\":[\"src/data/content/priceHike.ts\"]},{\"path\":\"/assets/event/a-dancer.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/a-magician.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/a-mascot.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/a-mc.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/a-musician.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/a-singer.png\",\"referenced_by\":[\"src/q1/TimetableGame.tsx\"]},{\"path\":\"/assets/event/m-board.png\",\"referenced_by\":[\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/m-flyer.png\",\"referenced_by\":[\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/m-mail.png\",\"referenced_by\":[\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/m-poster.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\"]},{\"path\":\"/assets/event/m-sns.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/m-street.png\",\"referenced_by\":[\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/m-web.png\",\"referenced_by\":[\"src/q1/PromoGame.tsx\"]},{\"path\":\"/assets/event/p-booth-food.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/p-booth-goods.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\",\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/p-cone.png\",\"referenced_by\":[\"src/q1/CrowdFlowGame.tsx\"]},{\"path\":\"/assets/event/p-fence.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/CrowdFlowGame.tsx\"]},{\"path\":\"/assets/event/p-flag.png\",\"referenced_by\":[\"src/q1/PlanEventGame.tsx\"]},{\"path\":\"/assets/event/p-infomap.png\",\"referenced_by\":[\"src/q1/CrowdFlowGame.tsx\"]},{\"path\":\"/assets/event/p-rest-table.png\",\"referenced_by\":[\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/p-signpost.png\",\"referenced_by\":[\"src/q1/CrowdFlowGame.tsx\"]},{\"path\":\"/assets/event/p-stage.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/s-mixer.png\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/SoundCheckGame.tsx\"]},{\"path\":\"/assets/event/s-monitor.png\",\"referenced_by\":[\"src/q1/SoundCheckGame.tsx\"]},{\"path\":\"/assets/event/s-speaker.png\",\"referenced_by\":[\"src/q1/SoundCheckGame.tsx\"]},{\"path\":\"/assets/event/venue-busy.jpg\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/CrowdFlowGame.tsx\"]},{\"path\":\"/assets/event/venue-empty.jpg\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/venue-map.jpg\",\"referenced_by\":[\"src/data/content/townEvent.ts\",\"src/q1/CrowdFlowGame.tsx\",\"src/q1/VenueLayoutGame.tsx\"]},{\"path\":\"/assets/event/venue-success.jpg\",\"referenced_by\":[\"src/data/content/townEvent.ts\"]},{\"path\":\"/assets/medical/er-arrival.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/er-bed.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/er-exam.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/home-after.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/home-before.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/lab.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/msw-room.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/pharmacy.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/rehab.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/ward.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-dietitian.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-doctor.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-labtech.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-msw.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-nurse.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-pharmacist.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-pt.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/who-radtech.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/medical/xray-room.jpg\",\"referenced_by\":[\"src/data/content/medical.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-bus-manager.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-hotel.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-opening.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-planner.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-success.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-teacher.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]},{\"path\":\"/assets/schooltrip/school-trip-tour-conductor.jpg\",\"referenced_by\":[\"src/data/content/schoolTrip.ts\"]}],\"todo_art\":[{\"file\":\"src/data/content/shopOpening.ts\",\"line\":12,\"ask\":\"Add a shop-opening sceneMap using area-street and a wrap-up before/after using ba-before and ba-after once the assets are placed.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":40,\"ask\":\"Replace the temporary bg-road sceneImage with area-street.png through sceneMap after that artwork is generated.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":7,\"ask\":\"Replace the CSS/emoji shopping-street cards with cropped views from board-street.png after it is generated.\"}],\"emoji_placeholders\":[{\"file\":\"src/data/content/shopOpening.ts\",\"line\":48,\"represents\":\"The vacant-store matching incident on the shopping-street scene.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":55,\"represents\":\"The business-plan consultation incident on the shopping-street scene.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":62,\"represents\":\"The startup-loan interview incident on the shopping-street scene.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":71,\"represents\":\"The shop interior-design incident on the shopping-street scene.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":80,\"represents\":\"The completed restaurant's hygiene-inspection incident on the shopping-street scene.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":113,\"represents\":\"Profession hero art for the vacant-store/tenant coordinator, rendered as an emoji inside an inline SVG.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":146,\"represents\":\"Profession hero art for the business adviser, rendered as an emoji inside an inline SVG.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":178,\"represents\":\"Profession hero art for the startup-loan screener, rendered as an emoji inside an inline SVG.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":210,\"represents\":\"Profession hero art for the shop/interior designer, rendered as an emoji inside an inline SVG.\"},{\"file\":\"src/data/content/shopOpening.ts\",\"line\":242,\"represents\":\"Profession hero art for the food-sanitation inspector, rendered as an emoji inside an inline SVG.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":15,\"represents\":\"The three prospective tenants/businesses shown as food or product emoji instead of illustrated people/store concepts.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":28,\"represents\":\"The three vacant storefronts shown as merchandise/food emoji instead of storefront visuals.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"line\":52,\"represents\":\"The current shopping-street storefront sequence and closed shutters, pending board-street artwork.\"}],\"css_visuals\":[{\"file\":\"src/q1/BodyInsideView.tsx\",\"what\":\"Inline SVG human-body silhouette with lungs, heart, diaphragm, fracture/marker overlays, and reveal states used by the X-ray game.\"},{\"file\":\"src/q1/XrayGame.tsx\",\"what\":\"CSS-positioned X-ray body stage, exposure frame, reveal animation, and selectable lung regions around BodyInsideView.\"},{\"file\":\"src/q1/WaterGame.tsx\",\"what\":\"Animated dam/reservoir cross-section whose CSS water height communicates changing storage.\"},{\"file\":\"src/q1/UrbanHeatGame.tsx\",\"what\":\"CSS city map with sun, wind, building, and tree layers plus before/after heat comparisons.\"},{\"file\":\"src/q1/PowerGame.tsx\",\"what\":\"CSS city-lights state, demand/supply balance gauge, and hourly demand graph.\"},{\"file\":\"src/q1/FactoryLineGame.tsx\",\"what\":\"CSS factory conveyor/production line with process stations, flow animation, bottleneck, and alert state.\"},{\"file\":\"src/q1/RecycleGame.tsx\",\"what\":\"CSS conveyor and sorting-machine scene, supplemented by food emoji moving along the belt.\"},{\"file\":\"src/q1/ZoneFitGame.tsx\",\"what\":\"CSS floor-plan grid for laying out kitchen, wash, toilet, seating, walls, and fixed building features.\"},{\"file\":\"src/q1/TenantMatchGame.tsx\",\"what\":\"CSS shopping-street row of storefront cards with vacant, assigned, opened, and closed states.\"},{\"file\":\"src/q1/MenuGame.tsx\",\"what\":\"CSS school-lunch tray and food-slot composition used to show the assembled meal.\"},{\"file\":\"src/q1/LogisticsGame.tsx\",\"what\":\"CSS refrigerated-truck compartments and temperature zones used for loading food.\"},{\"file\":\"src/q1/VenueLayoutGame.tsx\",\"what\":\"CSS venue grid and positioned event facilities layered over the venue background.\"},{\"file\":\"src/q1/CrowdFlowGame.tsx\",\"what\":\"CSS crowd-flow board and movable safety/wayfinding objects layered over the venue map.\"},{\"file\":\"src/q1/SoundCheckGame.tsx\",\"what\":\"CSS stage/hall layout, speaker direction states, audience zones, and sound-wave coverage around image objects.\"},{\"file\":\"src/q1/LifePlanGame.tsx\",\"what\":\"CSS bedside conversation scene and home-life/support planning cards, with the patient represented by emoji.\"},{\"file\":\"src/q1/MoveTryGame.tsx\",\"what\":\"CSS movement-test stage used to communicate rehabilitation actions and outcomes.\"},{\"file\":\"src/q1/ParkHeatGame.tsx\",\"what\":\"CSS overlays, zones, placed countermeasures, people markers, and state tinting layered on one park illustration.\"}],\"art_needs\":[{\"world\":\"shop\",\"where\":\"src/data/content/shopOpening.ts / AreaScreen shopping-street scene\",\"what\":\"A dedicated shuttered shopping-street overview is missing; the unrelated bg-road fallback cannot show which shutters are closed or visually anchor the five-step opening story.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":\"/assets/bg-road.png\"},{\"world\":\"shop\",\"where\":\"src/q1/TenantMatchGame.tsx / TenantMatchGame\",\"what\":\"An illustrated street/storefront board showing the three premises, their physical differences, and the surrounding business mix is missing. Those spatial and property differences are central to the matching decision.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":null},{\"world\":\"shop\",\"where\":\"src/q1/SceneAuditGame.tsx / SceneAuditGame\",\"what\":\"A completed restaurant inspection scene with visible fixtures and defects is missing; a scene-observation task cannot presently be grounded in an actual shop interior.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":null},{\"world\":\"shop\",\"where\":\"src/data/content/shopOpening.ts / event wrapUp\",\"what\":\"Before/after views of the shuttered street and the opened restaurant are missing, weakening the story's core state change from closed shutter to active shop.\",\"class\":\"ESSENTIAL\",\"existing_candidate\":null},{\"world\":\"shop\",\"where\":\"src/data/content/shopOpening.ts / profession discovery heroes\",\"what\":\"Five profession character portraits are still inline emoji SVG placeholders, so the people behind the opening process lack visual identity.\",\"class\":\"SUPPORTING\",\"existing_candidate\":null}]}",
+  "elapsed_sec": 138.623
+}
