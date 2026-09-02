@@ -824,5 +824,105 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ]
+  },
+  {
+    "id": "waste-collector",
+    "displayName": "ごみ収集作業員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "waste-journey"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "今日の収集ルール",
+      "おしらせシール",
+      "観察する目"
+    ],
+    "dPatterns": [
+      "curb_check"
+    ],
+    "mechanics": [
+      "curb_check"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/waste.ts"
+    ]
+  },
+  {
+    "id": "incinerator-operator",
+    "displayName": "清掃工場の焼却炉運転員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "waste-journey"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "運転マニュアル",
+      "ごみクレーン",
+      "炉温計"
+    ],
+    "dPatterns": [
+      "pit_crane"
+    ],
+    "mechanics": [
+      "pit_crane"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/waste.ts"
+    ]
+  },
+  {
+    "id": "env-measurer",
+    "displayName": "環境計測・排ガス管理の担当",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "waste-journey"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "連続計器",
+      "校正記録",
+      "内線電話"
+    ],
+    "dPatterns": [
+      "gas_watch"
+    ],
+    "mechanics": [
+      "gas_watch"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/waste.ts"
+    ]
+  },
+  {
+    "id": "landfill-manager",
+    "displayName": "最終処分場の管理者",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "waste-journey"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "処分場のきまり",
+      "天気予報",
+      "覆い材"
+    ],
+    "dPatterns": [
+      "landfill_ops"
+    ],
+    "mechanics": [
+      "landfill_ops"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/waste.ts"
+    ]
   }
 ]

@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 78,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "landfill_ops contradicts its own duty model: players may deliberately remove required covers and end the night even when sufficient material exists; lfNight validates only over-spending, so shirking can remain a successful tactic.",
+      "landfill_ops UI uses disabled cell buttons as an answer oracle. Illegal type/full placements cannot be attempted, making the implemented type_mismatch and cell_full feedback unreachable through normal UI and removing part of the required typed-intake judgment."
+    ],
+    "medium": [
+      "gas_watch has a dominant reusable opening: checking calibration produces three distinct texts, so one fixed first check uniquely identifies every cause; the crossed-out cause display then exposes the answer state. Replay variation changes the label but rarely the diagnostic strategy.",
+      "Leachate treatment is represented only by an automatic one-unit nightly drain. Children manage exposure and tank capacity, but never make a treatment-operation judgment despite the profession text presenting treatment as part of the work."
+    ],
+    "low": [
+      "curb_check permits completion after one incorrect bag decision and advances without requiring that case to be corrected, slightly weakening mastery of every-case judgment."
+    ],
+    "evidence": [
+      "src/q1/LandfillOpsGame.tsx:105 — every exposed cover can be toggled off regardless of whether material is actually short.",
+      "src/q1/wasteLogic.ts:405 — lfNight accepts any subset of exposed cells; it rejects only choices exceeding available soil.",
+      "src/q1/LandfillOpsGame.tsx:89 — placement buttons are disabled whenever lfCellAccepts is false, revealing legal destinations before commitment.",
+      "src/q1/LandfillOpsGame.tsx:93 — no_space_fail is checked only after clicking an enabled cell, while disabled-state filtering makes cell_full/type_mismatch branches unreachable in ordinary play.",
+      "src/q1/wasteLogic.ts:431 — leachate treatment is an unconditional automatic tank decrement rather than a player operation.",
+      "src/q1/wasteLogic.ts:226 — chemical-out calibration evidence has unique wording.",
+      "src/q1/wasteLogic.ts:233 — sensor-drift calibration evidence has unique wording.",
+      "src/q1/wasteLogic.ts:239 — incomplete-burn calibration evidence has unique wording, completing a one-check three-way discriminator.",
+      "src/q1/GasWatchGame.tsx:47 — exact evidence-text comparison drives the visible elimination oracle.",
+      "src/q1/CurbCheckGame.tsx:192 — a mistaken decision still advances permanently to the next bag.",
+      "src/q1/CurbCheckGame.tsx:86 — child-facing lithium-battery guidance correctly says not to touch it and to notify an adult or municipal contact.",
+      "src/q1/PitCraneGame.tsx:162 — 850℃ is connected to suppressing dioxins and the fictional facility's 1000℃ ceiling is explicitly labeled.",
+      "src/q1/LandfillOpsGame.tsx:153 — the ash/incomb separation simplification is explicitly labeled as this facility's rule.",
+      "src/q1/wasteLogic.ts:193 — pit actions causally produce costly overheat failure.",
+      "src/q1/wasteLogic.ts:267 — gas requests are one-shot and wrong requests consume the remaining response time.",
+      "src/q1/wasteLogic.ts:317 — landfill schedules and weather are regenerated for retries.",
+      "src/q1/PitCraneGame.tsx:72 — temperature range supports an explicit mastery distinction.",
+      "src/q1/GasWatchGame.tsx:68 — inspection efficiency supports an explicit mastery distinction.",
+      "src/data/content/waste.ts:87 — the world presents four distinct professional lenses and mechanics."
+    ],
+    "recommended_actions": [
+      "Enforce maximum feasible daily covering in lfNight: when soil covers all exposed cells, require all; when short, require exactly soil-count covers. Disable night advancement until that duty is satisfied.",
+      "Keep placement buttons enabled for non-full cells and let lfPlace return visible type_mismatch/cell_full consequences, or otherwise conceal legality until commitment while preserving accessible feedback.",
+      "Rebalance gas evidence so no single fixed check separates all three causes; make at least two context-dependent checks necessary and avoid exact-text-driven answer elimination.",
+      "Give the player a small leachate-treatment decision, such as scheduling limited pump/treatment capacity against forecast risk.",
+      "On a curb mistake, require correction of the same bag or explicitly frame the unresolved bag as handed to a supervisor with a concrete cost."
+    ]
+  },
+  "elapsed_sec": 105.282
+}

@@ -4,15 +4,16 @@
   "artifact": "factory/projects/waste/design.md",
   "producer": "claude",
   "reviewer": "codex",
-  "phase": "review",
+  "phase": "finished",
   "iteration": 2,
   "max_iterations": 2,
-  "verdict": "FAIL",
+  "verdict": "HUMAN_REQUIRED",
   "issues": [
     "HIGH: Q1-4 landfill_ops — 即日覆土を、晴天時には省略し悪天候時にもタンク・苦情余裕と引き換えに省略する攻略資源としている。研究が示す通常の覆土業務を意図的な安全・環境リスク受容へ変えており、職務上の判断として不誠実。",
     "HIGH: Q1-4 landfill_ops — 「焼却灰と不燃残さは同じ区画に入れない」を受入基準としてゲームの主要制約にしているが、research.result.jsonにはこの全国共通ルールの根拠がない。架空施設固有ルールとの明示もなく、mechanicを成立させるために事実を追加している。",
     "HIGH: Q1-1 curb_check — Cを無視した全積みが実行QAで106/500（21.2%）成功する。非危険違反が1件だけならミス許容によって完了でき、C_requiredを生成ケース単位で保証していない。design.md記載の10.4%とも不一致。",
-    "HIGH: 数値仕様/Q1-3 — 本文は「5コマの猶予」、数値仕様冒頭とコードはGAS_TIME=4、その直後には再び「時間5コマ」と記載される。対象年齢向けのルール説明と実装正本が一致していない。"
+    "HIGH: 数値仕様/Q1-3 — 本文は「5コマの猶予」、数値仕様冒頭とコードはGAS_TIME=4、その直後には再び「時間5コマ」と記載される。対象年齢向けのルール説明と実装正本が一致していない。",
+    "reviewer failure: CODEX_TIMEOUT — timed out after 600s"
   ],
   "repair_actions": [
     {
@@ -26,9 +27,15 @@
       "status": "OK",
       "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T05-52-50-2vrl.review-1.json",
       "elapsed_sec": 126.736
+    },
+    {
+      "iteration": 2,
+      "status": "CODEX_TIMEOUT",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T05-52-50-2vrl.review-2.json",
+      "elapsed_sec": 3436.558
     }
   ],
   "started_at": "2026-09-02T05:52:50.337Z",
-  "finished_at": null,
-  "stop_reason": null
+  "finished_at": "2026-09-02T06:56:53.121Z",
+  "stop_reason": "reviewer_failure:CODEX_TIMEOUT"
 }

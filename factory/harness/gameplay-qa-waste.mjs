@@ -168,6 +168,12 @@ function optimalPitPolicy(s) {
     const wrong = gasRequest(st, "stop_furnace");
     check("gas: wrong request ends the case (state machine)", wrong.outcome === "failed_wrong_request");
   }
+  // one fixed first check must NOT uniquely identify every cause
+  {
+    const texts = (chk) => ["chemical_out", "sensor_drift", "incomplete_burn"].map((cause) => inspect({ cause, alertMeter: "CO" }, chk).text);
+    const uniquelyIdentifies = (chk) => new Set(texts(chk)).size === 3;
+    check("gas: no single check identifies all causes", !["calib", "tank", "furnace", "filter"].some(uniquelyIdentifies));
+  }
   check("gas: evidence never contradicts (calib positive only for drift)", (() => {
     for (const cause of ["chemical_out", "sensor_drift", "incomplete_burn"]) {
       const c = { cause, alertMeter: "CO" };
@@ -236,13 +242,8 @@ function playLandfill(rand, placer, coverer) {
   // duty player: cover everything exposed while material lasts; when material
   // is running short, ration it for the remaining bad-weather nights (this is
   // the sanctioned scarcity judgment, not routine skipping)
-  const dutyCover = (s) => {
-    const exp = lfExposed(s);
-    const tonight = s.weather[s.day - 1];
-    const badNightsLeft = s.weather.slice(s.day).filter((w) => w !== "calm").length;
-    if (tonight === "calm" && s.soil < badNightsLeft * 2) return [];
-    return exp.slice(0, s.soil);
-  };
+  // duty is enforced by lfNight: always cover min(exposed, soil)
+  const dutyCover = (s) => lfExposed(s).slice(0, s.soil);
   // careless player: covers only when it already rained / complaints exist
   const lazyCover = (s) => (s.tank > 3 || s.complaints > 0 ? lfExposed(s).slice(0, s.soil) : []);
   const noCover = run(spreadPlacer, neverCover, N, 41);
@@ -253,6 +254,14 @@ function playLandfill(rand, placer, coverer) {
   const informed = run(concentratePlacer, dutyCover, N, 43);
   check("landfill: duty + CONCENTRATED placement reliably wins", (informed.cleared || 0) / N > 0.9, JSON.stringify(informed));
   check("landfill: duty with sloppy spread placement is worse (placement matters)", (informed.cleared || 0) - (sloppyDuty.cleared || 0) > N * 0.15, `${informed.cleared} vs ${sloppyDuty.cleared}`);
+  // duty enforcement: under-covering while material suffices is rejected
+  {
+    const r6 = rng(47);
+    let st = newLandfill(r6);
+    st = lfPlace(st, 0).state; // one exposed cell, plenty of soil
+    const n = lfNight(st, []);
+    check("landfill: skipping the duty while material suffices is rejected", n.note.includes("日課"), n.note);
+  }
   // variation
   const r5 = rng(44); const sigs = new Set();
   for (let i = 0; i < 30; i++) { const s = newLandfill(r5); sigs.add(s.schedule.map((d) => d.map((l) => l[0]).join("")).join(".") + "|" + s.weather.map((w) => w[0]).join("")); }

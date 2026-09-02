@@ -55,7 +55,7 @@ export const waste: ContentModule = {
         },
         {
           id: "ch2",
-          scenePos: { left: "47%", top: "30%" },
+          scenePos: { left: "45%", top: "36%" },
           emoji: "🏗️",
           title: "② 巨大クレーンは、なぜ混ぜる？",
           experienceId: "waste-incinerate",
@@ -64,7 +64,7 @@ export const waste: ContentModule = {
         },
         {
           id: "ch3",
-          scenePos: { left: "60%", top: "12%" },
+          scenePos: { left: "60%", top: "20%" },
           emoji: "📈",
           title: "③ 煙突の見はり番、アラートが鳴った",
           experienceId: "waste-measure",
@@ -73,7 +73,7 @@ export const waste: ContentModule = {
         },
         {
           id: "ch4",
-          scenePos: { left: "80%", top: "50%" },
+          scenePos: { left: "74%", top: "54%" },
           emoji: "⛰️",
           title: "④ 燃やしたあとの灰は、どこへ？",
           experienceId: "waste-landfill",

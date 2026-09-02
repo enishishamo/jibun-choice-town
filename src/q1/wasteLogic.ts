@@ -224,7 +224,7 @@ export function inspect(c: GasCase, check: GasCheck): { text: string; pointsTo: 
   const E: Record<GasCause, Record<GasCheck, { text: string; pointsTo: GasCause | null }>> = {
     chemical_out: {
       tank: { text: "薬剤タンクの残りが、ほとんど空だ！", pointsTo: "chemical_out" },
-      calib: { text: "計器の校正記録は先週済み。計器は信じてよさそう。", pointsTo: null },
+      calib: { text: "校正記録は問題なし。計器は信じてよさそうだ。", pointsTo: null },
       furnace: { text: "炉の燃焼は安定している。", pointsTo: null },
       filter: { text: "バグフィルタの差圧はふだん通り。", pointsTo: null },
     },
@@ -236,7 +236,7 @@ export function inspect(c: GasCase, check: GasCheck): { text: string; pointsTo: 
     },
     incomplete_burn: {
       tank: { text: "薬剤タンクは十分に残っている。", pointsTo: null },
-      calib: { text: "校正記録は問題なし。計器は本当の値を示していそうだ。", pointsTo: null },
+      calib: { text: "校正記録は問題なし。計器は信じてよさそうだ。", pointsTo: null },
       furnace: { text: "炉の温度が下がり気味で、燃え方にムラがある！", pointsTo: "incomplete_burn" },
       filter: { text: "差圧はふだんの範囲（ばいじん確認のための参考情報）。", pointsTo: null },
     },
@@ -293,7 +293,7 @@ export function gasActionCorrect(c: GasCase, a: GasAction): boolean {
 export const LF_DAYS = 5;
 export const LF_CELLS = 3;
 export const LF_CELL_CAP = 5;
-export const LF_SOIL = 7; // cover material for the whole week
+export const LF_SOIL = 8; // cover material for the whole week
 export const LF_TANK_CAP = 6;
 export const LF_TANK_DRAIN = 1;
 export const LF_WATER_PER_CELL = 2; // per EXPOSED dirty cell on a rain night
@@ -407,6 +407,12 @@ export function lfNight(s: LandfillState, coverChoice: number[]): LfNight {
   const wanted = coverChoice.filter((i) => exposed.includes(i));
   if (wanted.length > s.soil) {
     return { state: s, event: "ok", weather: "calm", waterAdded: 0, complaintsAdded: 0, note: "覆い材が足りない。かける区画をえらび直そう。" };
+  }
+  // Covering is a DUTY: while material suffices, every exposed face must be
+  // covered. Choice only exists on genuine shortage nights.
+  const required = Math.min(exposed.length, s.soil);
+  if (wanted.length < required) {
+    return { state: s, event: "ok", weather: "calm", waterAdded: 0, complaintsAdded: 0, note: "覆いは毎日の日課。材料があるかぎり、今日さわった区画には必ずかける。" };
   }
   const st: LandfillState = { ...s, fill: [...s.fill], cellType: [...s.cellType], covered: [...s.covered] };
   st.soil -= wanted.length;

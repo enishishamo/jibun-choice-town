@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-09-02T00:09:27.473Z",
+  "scannedAt": "2026-09-02T08:21:42.413Z",
   "sourceOfTruth": {
     "registry": "src/q1/registry.ts",
     "contentIndex": "src/data/index.ts",
@@ -317,6 +317,38 @@
       "componentExists": true,
       "description": "現場を見て回り、基準と照らして自分で判定を記入",
       "section": "商店街・開店編"
+    },
+    {
+      "id": "curb_check",
+      "component": "CurbCheckGame",
+      "componentPath": "src/q1/CurbCheckGame.tsx",
+      "componentExists": true,
+      "description": "袋を観察→ルール照合→積む/残す/隔離連絡を判定",
+      "section": "ごみのゆくえ編"
+    },
+    {
+      "id": "pit_crane",
+      "component": "PitCraneGame",
+      "componentPath": "src/q1/PitCraneGame.tsx",
+      "componentExists": true,
+      "description": "ごみ質を見てつかむ・混ぜる→炉温を帯に保つ",
+      "section": "ごみのゆくえ編"
+    },
+    {
+      "id": "gas_watch",
+      "component": "GasWatchGame",
+      "componentPath": "src/q1/GasWatchGame.tsx",
+      "componentExists": true,
+      "description": "点検で原因を切り分け→正しい相手に依頼",
+      "section": "ごみのゆくえ編"
+    },
+    {
+      "id": "landfill_ops",
+      "component": "LandfillOpsGame",
+      "componentPath": "src/q1/LandfillOpsGame.tsx",
+      "componentExists": true,
+      "description": "型別に区画へ埋め→天気で覆いの優先順位を決める",
+      "section": "ごみのゆくえ編"
     }
   ],
   "modules": [
@@ -2622,6 +2654,300 @@
             "混雑の原因を探す",
             "安全を考える",
             "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/waste.ts",
+      "exportName": "waste",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "waste-plant",
+          "name": "清掃工場",
+          "eventId": "waste-journey"
+        }
+      ],
+      "events": [
+        {
+          "id": "waste-journey",
+          "title": "けさ出した ごみ袋、\nそのあと どうなるか知ってる？",
+          "areaName": "ごみのゆくえ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① この袋、積んでいいの？",
+              "experienceId": "waste-collect",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② 巨大クレーンは、なぜ混ぜる？",
+              "experienceId": "waste-incinerate",
+              "requires": [
+                "waste-collect"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 煙突の見はり番、アラートが鳴った",
+              "experienceId": "waste-measure",
+              "requires": [
+                "waste-incinerate"
+              ]
+            },
+            {
+              "id": "ch4",
+              "title": "④ 燃やしたあとの灰は、どこへ？",
+              "experienceId": "waste-landfill",
+              "requires": [
+                "waste-measure"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "waste-collector",
+          "name": "ごみ収集作業員",
+          "catch": "積むかどうかを、現場で判断するプロ",
+          "discoveryLine": "袋を見て、積む・残す・連絡するを\nその場で判断する仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "リサイクル選別の仕事",
+            "清掃工場の運転員",
+            "市役所の環境担当"
+          ]
+        },
+        {
+          "id": "incinerator-operator",
+          "name": "清掃工場の焼却炉運転員",
+          "catch": "巨大クレーンで「燃料の質」をそろえ、安定して燃やしきる",
+          "discoveryLine": "ごみを混ぜて質をそろえ、\n炉の温度を守り続ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "プラントの保全担当",
+            "環境計測の担当",
+            "発電所の運転員"
+          ]
+        },
+        {
+          "id": "env-measurer",
+          "name": "環境計測・排ガス管理の担当",
+          "catch": "数字を確かめ、まちに説明できる状態を守る",
+          "discoveryLine": "計器の異常か本当の異常かを切り分けて、\n正しい相手に依頼する仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "環境分析の専門会社",
+            "プラント保全",
+            "市役所の環境担当"
+          ]
+        },
+        {
+          "id": "landfill-manager",
+          "name": "最終処分場の管理者",
+          "catch": "埋めたあとの水とにおいまで、何十年もあずかる",
+          "discoveryLine": "受け入れ、区画に埋め、覆いをかけ、\n水を処理して管理し続ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "環境コンサルタント",
+            "水処理の仕事",
+            "市役所の環境政策担当"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "waste-collect",
+          "professionId": "waste-collector",
+          "eventId": "waste-journey",
+          "gameType": "curb_check",
+          "componentPath": "src/q1/CurbCheckGame.tsx",
+          "A_place": "朝の集積所",
+          "B_mission": {
+            "title": "集積所の袋を、ぜんぶ正しくさばこう",
+            "lines": [
+              "収集車が着いた。袋は中身をよく見てから積む。",
+              "分別ちがいはシール。あぶないものは、はなれて連絡。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "rule",
+              "name": "今日の収集ルール",
+              "desc": "今日の区分・指定袋・積めないものの一覧"
+            },
+            {
+              "id": "seal",
+              "name": "おしらせシール",
+              "desc": "残す理由を住民に伝えるシール"
+            },
+            {
+              "id": "eye",
+              "name": "観察する目",
+              "desc": "半透明の袋ごしに中身の形を見る"
+            }
+          ],
+          "D_mechanic": "curb_check",
+          "E_resolution": {
+            "title": "この集積所、回収完了",
+            "lines": [
+              "収集車は次の集積所へ。積まれた袋は清掃工場に向かう。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「積む・残す・連絡」を判断したよね。あれを毎朝、何百袋もやっている仕事があるんだ。",
+          "interestSeeds": [
+            "現場でパッと判断するところ",
+            "ルールと照らし合わせるところ",
+            "あぶないものを見抜くところ",
+            "まちの人とやりとりするところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "waste-incinerate",
+          "professionId": "incinerator-operator",
+          "eventId": "waste-journey",
+          "gameType": "pit_crane",
+          "componentPath": "src/q1/PitCraneGame.tsx",
+          "A_place": "清掃工場のクレーン操作室",
+          "B_mission": {
+            "title": "炉の温度を守って、燃やしきろう",
+            "lines": [
+              "ピットのごみは、乾きも湿りもバラバラ。",
+              "クレーンで質をそろえながら、850℃を下回らせない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "manual",
+              "name": "運転マニュアル",
+              "desc": "温度の決まりとごみ質の効果"
+            },
+            {
+              "id": "crane",
+              "name": "ごみクレーン",
+              "desc": "つかんで投入する・混ぜて質をそろえる"
+            },
+            {
+              "id": "gauge",
+              "name": "炉温計",
+              "desc": "いまの炉の温度"
+            }
+          ],
+          "D_mechanic": "pit_crane",
+          "E_resolution": {
+            "title": "安定運転でシフト完了",
+            "lines": [
+              "熱は発電に。灰は約20分の1の体積になり、処分場へ向かう。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「どれをつかむか・いつ混ぜるか」を考えたよね。あの判断で、炉の安定も発電も決まるんだ。",
+          "interestSeeds": [
+            "大きな機械を操作するところ",
+            "先を読んで仕込むところ",
+            "温度と数字を見張るところ",
+            "混ぜて質をそろえる工夫"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "waste-measure",
+          "professionId": "env-measurer",
+          "eventId": "waste-journey",
+          "gameType": "gas_watch",
+          "componentPath": "src/q1/GasWatchGame.tsx",
+          "A_place": "中央制御室の計測パネル",
+          "B_mission": {
+            "title": "アラートの原因を、切り分けろ",
+            "lines": [
+              "計器の値が管理値に近づいている。",
+              "本当の異常か、計器の故障か、薬剤切れか——確かめてから動く。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "meters",
+              "name": "連続計器",
+              "desc": "CO・HClなどを24時間監視"
+            },
+            {
+              "id": "log",
+              "name": "校正記録",
+              "desc": "計器がいつ点検されたかの記録"
+            },
+            {
+              "id": "phone",
+              "name": "内線電話",
+              "desc": "保全・運転員への依頼と連絡"
+            }
+          ],
+          "D_mechanic": "gas_watch",
+          "E_resolution": {
+            "title": "原因を特定、正しく依頼できた",
+            "lines": [
+              "対応は記録され、測定結果はまちに公開される。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「どれを点検すれば絞れるか」を考えたよね。切り分けてから動くのが、この仕事の鉄則なんだ。",
+          "interestSeeds": [
+            "データから原因をさがすところ",
+            "あわてず切り分けるところ",
+            "正しい相手に依頼するところ",
+            "まちに説明する責任"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "waste-landfill",
+          "professionId": "landfill-manager",
+          "eventId": "waste-journey",
+          "gameType": "landfill_ops",
+          "componentPath": "src/q1/LandfillOpsGame.tsx",
+          "A_place": "最終処分場",
+          "B_mission": {
+            "title": "5日間、埋立地を回しきろう",
+            "lines": [
+              "灰と不燃は別の区画へ。夜は天気を見て覆いをかける。",
+              "雨は浸出水に、風は飛散に。覆い材は今週、足りない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "rule",
+              "name": "処分場のきまり",
+              "desc": "受入基準・覆いと浸出水の仕組み"
+            },
+            {
+              "id": "forecast",
+              "name": "天気予報",
+              "desc": "今夜と明日の天気"
+            },
+            {
+              "id": "sheet",
+              "name": "覆い材",
+              "desc": "夜のあいだの仮シート＋薄い土"
+            }
+          ],
+          "D_mechanic": "landfill_ops",
+          "E_resolution": {
+            "title": "今週も受け止めきった",
+            "lines": [
+              "埋めた分だけ、処分場の残りは減っていく。だから減らす提案も続く。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「どの区画に埋めて、どこに覆いをかけるか」を毎日決めたよね。埋めて終わりじゃない管理が、何十年も続くんだ。",
+          "interestSeeds": [
+            "天気を読んで備えるところ",
+            "限られた材料の使いどころ",
+            "埋めたあとまで管理するところ",
+            "ごみを減らす提案につながるところ"
           ],
           "retry": "unknown_lives_in_component"
         }

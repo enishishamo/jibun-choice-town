@@ -9,7 +9,7 @@ import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import {
   LF_DAYS, LF_CELL_CAP, LF_TANK_CAP, LF_COMPLAINT_LIMIT,
-  newLandfill, lfPlace, lfNight, lfGrade, lfNextLoad, lfCellAccepts, lfExposed,
+  newLandfill, lfPlace, lfNight, lfGrade, lfNextLoad, lfExposed,
 } from "./wasteLogic";
 import type { LandfillState, LfWeather, LfLoad } from "./wasteLogic";
 
@@ -86,7 +86,7 @@ export default function LandfillOpsGame({ onComplete }: Q1GameProps) {
       {s.fill.map((f, i) => (
         <button
           key={i}
-          disabled={clickable ? !nextLoad || !lfCellAccepts(s, i, nextLoad) : toggleMode ? !lfExposed(s).includes(i) : true}
+          disabled={clickable ? !nextLoad : toggleMode ? !lfExposed(s).includes(i) : true}
           onClick={() => {
             if (clickable) {
               const r = lfPlace(s, i);

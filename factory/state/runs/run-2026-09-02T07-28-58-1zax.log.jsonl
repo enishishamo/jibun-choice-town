@@ -1,0 +1,4 @@
+{"at":"2026-09-02T07:28:58.152Z","type":"start","task":"Stage 7 waste design confirmation retry (previous run lost to reviewer timeout)","artifact":"factory/projects/waste/design.md"}
+{"at":"2026-09-02T07:28:58.188Z","type":"produce-done","iteration":1,"notes":"same artifact as run 2vrl iteration 2 (duty-cover model, all specs synced, QA 24/24)"}
+{"at":"2026-09-02T07:28:58.257Z","type":"review-start","iteration":1,"promptFile":"factory/projects/waste/design-review-prompt.md"}
+{"at":"2026-09-02T08:17:01.801Z","type":"finish","stop_reason":"reviewer_failure:CODEX_TIMEOUT","verdict":"HUMAN_REQUIRED"}

@@ -5,8 +5,8 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
-import { CURB_MISTAKE_LIMIT, makeBags, judgeBag } from "./wasteLogic";
-import type { Bag, CurbAction } from "./wasteLogic";
+import { CURB_MISTAKE_LIMIT, makeBags, judgeBag, pickDayType } from "./wasteLogic";
+import type { Bag, CurbAction, DayType } from "./wasteLogic";
 
 type Step = "work" | "failed" | "done";
 
@@ -17,8 +17,24 @@ const ACTIONS: { id: CurbAction; label: string; sub?: string }[] = [
   { id: "reject_hazard", label: "⚠️ はなれて、営業所へ連絡", sub: "危険物かも" },
 ];
 
+const DAY_INFO: Record<DayType, { name: string; bag: string; ok: string; ng: string }> = {
+  burnable: {
+    name: "燃やすごみ",
+    bag: "まちの指定袋（半透明の青）",
+    ok: "生ごみ・紙くず・落ち葉など",
+    ng: "ビン・カン・われもの・プラ容器（分別ちがい）",
+  },
+  plastic: {
+    name: "プラスチック容器",
+    bag: "まちの指定袋（半透明の青）",
+    ok: "プラのカップ・トレー・レジ袋など",
+    ng: "生ごみ・ビン・カン（分別ちがい）",
+  },
+};
+
 export default function CurbCheckGame({ onComplete }: Q1GameProps) {
-  const [bags, setBags] = useState<Bag[]>(() => makeBags());
+  const [day, setDay] = useState<DayType>(() => pickDayType());
+  const [bags, setBags] = useState<Bag[]>(() => makeBags(Math.random, day));
   const [idx, setIdx] = useState(0);
   const [mistakes, setMistakes] = useState(0);
   const [step, setStep] = useState<Step>("work");
@@ -27,7 +43,9 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
   const [attempts, setAttempts] = useState(1);
 
   const restart = () => {
-    setBags(makeBags());
+    const d = pickDayType();
+    setDay(d);
+    setBags(makeBags(Math.random, d));
     setIdx(0);
     setMistakes(0);
     setNote(null);
@@ -118,8 +136,9 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
             title: "今日の収集ルール",
             body: (
               <>
-                <p><strong>今日は「燃やすごみ」の日。</strong>出せるのは、まちの指定袋（半透明の青）だけ。</p>
-                <p><strong>積めないもの：</strong>ビン・カン・われもの（分別ちがい）、指定袋でない袋。</p>
+                <p><strong>今日は「{DAY_INFO[day].name}」の日。</strong>出せるのは{DAY_INFO[day].bag}だけ。</p>
+                <p><strong>積めるもの：</strong>{DAY_INFO[day].ok}</p>
+                <p><strong>積めないもの：</strong>{DAY_INFO[day].ng}、指定袋でない袋。</p>
                 <p><strong>⚠️あぶないもの：</strong>スプレー缶・電池は収集車の中で火が出ることがある。
                   積まずに、はなれて営業所へ連絡する。</p>
               </>

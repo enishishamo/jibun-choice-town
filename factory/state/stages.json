@@ -1,6 +1,6 @@
 {
   "note": "Harness build roadmap. Managed by factory/harness/stage-manager.mjs — edit via CLI, not by hand. Each stage advances autonomously through IMPLEMENT -> SELF TEST -> INDEPENDENT REVIEW -> REPAIR -> RE-TEST -> PASS -> NEXT STAGE. Design principles: factory/harness/design-principles.md",
-  "updated_at": "2026-09-02T05:52:50.408Z",
+  "updated_at": "2026-09-02T08:36:25.389Z",
   "stages": [
     {
       "id": 0,
@@ -187,7 +187,7 @@
     {
       "id": 7,
       "name": "/new-world end-to-end integration",
-      "status": "in_progress",
+      "status": "passed",
       "depends_on": [
         5,
         6
@@ -197,13 +197,20 @@
         "Two-axis QA gates completion",
         "All artifacts and verdicts logged per project"
       ],
-      "repair_count": 0,
+      "repair_count": 1,
       "stop_reason": null,
       "runs": [
         "run-2026-09-02T05-13-19-h3f2",
-        "run-2026-09-02T05-52-50-2vrl"
+        "run-2026-09-02T05-52-50-2vrl",
+        "run-2026-09-02T07-28-58-1zax",
+        "run-2026-09-02T08-20-28-ckgl"
       ],
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-09-02T08:36:25.355Z",
+          "text": "PASS: waste world (ごみのゆくえ) complete end-to-end with zero human intervention. Selection: codex-judged 6 candidates. Design: 5 critic iterations (landfill redesigned twice for authenticity). Implementation: adversarial two-axis PASS 86 (CA91/GQ86, blockers/high 0) after 1 repair (duty enforcement, UI-oracle removal, evidence-matrix fix). Gameplay QA 26/26 (all-strategy sims + 300/300 solvability). Browser QA mobile+desktop full flow. Art: 4 generations 1 regen, all QA-passed, pair consistency held. READY_FOR_REPRODUCIBILITY_TEST=true"
+        }
+      ]
     },
     {
       "id": 8,

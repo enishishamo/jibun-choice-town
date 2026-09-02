@@ -1366,5 +1366,141 @@
         "src/q1/SceneAuditGame.tsx:110-120"
       ]
     }
+  },
+  {
+    "componentHash": "3bbcbe449439",
+    "reviewStale": false,
+    "id": "curb_check",
+    "label": "CurbCheckGame",
+    "componentPath": "src/q1/CurbCheckGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "waste-journey"
+    ],
+    "recentGames": [
+      "waste-collect"
+    ],
+    "description": "袋を観察→ルール照合→積む/残す/隔離連絡を判定",
+    "section": "ごみのゆくえ編",
+    "primaryMechanic": "measurement_inspection",
+    "secondaryMechanics": [
+      "tap_select",
+      "document_check"
+    ],
+    "interactionNotes": "収集区分（燃やす/プラの日がランダム）と袋の見た目（ランダム生成・違反2〜3保証）を突き合わせ、積む/分別違いシール/指定袋シール/危険物隔離連絡の4値を判定。危険物積載は検知停止で即失敗、ミスは1回まで。",
+    "semantic": {
+      "C_in_component": "今日の収集ルールカード（区分連動）・袋の視覚手がかり・危険物の知識",
+      "C_required": "yes — 区分が毎回変わるためルールカードを読まずに正答不能。違反≥2＋ミス予算1で全積み完走は不可能（QA 0/500）",
+      "action_changes_result": "yes — 判定ごとに正誤/発火/苦情が分岐、症例は毎回再抽選",
+      "retry": "yes — 失敗で新しい袋セット＋新しい区分",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 4値判定×ランダム症例",
+      "evidence": [
+        "src/q1/wasteLogic.ts:makeBags/judgeBag",
+        "factory/harness/gameplay-qa-waste.mjs curb section"
+      ]
+    }
+  },
+  {
+    "componentHash": "6784edcdbbd9",
+    "reviewStale": false,
+    "id": "pit_crane",
+    "label": "PitCraneGame",
+    "componentPath": "src/q1/PitCraneGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "waste-journey"
+    ],
+    "recentGames": [
+      "waste-incinerate"
+    ],
+    "description": "ごみ質を見てつかむ・混ぜる→炉温を帯に保つ",
+    "section": "ごみのゆくえ編",
+    "primaryMechanic": "simulation_run",
+    "secondaryMechanics": [
+      "spatial_placement",
+      "parameter_adjust"
+    ],
+    "interactionNotes": "3×3ピットの乾/湿/混合をクレーンで掴んで投入 or 隣接の乾+湿を撹拌。8ターン、炉温850以上/1000未満を維持。搬入で湿が増える動的環境。",
+    "semantic": {
+      "C_in_component": "運転マニュアル（850℃ダイオキシン則・施設固有上限を明示）・ごみ質の効果・搬入予告",
+      "C_required": "yes — 質と温度の対応を使わないと2ターンで失敗（無操作0%・乾連打0%）",
+      "action_changes_result": "yes — 投入質で温度分岐・tempMin/Max記録で安定度評価",
+      "retry": "yes — 配置と搬入を再抽選",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no",
+      "evidence": [
+        "src/q1/wasteLogic.ts:pitStep/newPit",
+        "gameplay-qa-waste.mjs pit section"
+      ]
+    }
+  },
+  {
+    "componentHash": "4362c79dd526",
+    "reviewStale": false,
+    "id": "gas_watch",
+    "label": "GasWatchGame",
+    "componentPath": "src/q1/GasWatchGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "waste-journey"
+    ],
+    "recentGames": [
+      "waste-measure"
+    ],
+    "description": "点検で原因を切り分け→正しい相手に依頼",
+    "section": "ごみのゆくえ編",
+    "primaryMechanic": "search_discovery",
+    "secondaryMechanics": [
+      "data_layer_compare",
+      "document_check"
+    ],
+    "interactionNotes": "アラート（原因3種ランダム・計器は原因従属）に対し、点検（時間4コマ・最大3回）で証拠を集め容疑を消し込み、職掌内の依頼4種から1回勝負で選ぶ。差圧はデコイ点検。",
+    "semantic": {
+      "C_in_component": "証拠マトリクス（矛盾症例なし）・切り分け手順・管理値",
+      "C_required": "yes — 無調査ランダム依頼は勝率23.6%どまり、全点検総当たりは時間構造で不可能",
+      "action_changes_result": "yes — 点検で証拠分岐、誤依頼は残時間喪失で失敗（状態機械）",
+      "retry": "yes — 原因・計器を再抽選",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no — 4対応×3原因、炉停止は常に過剰反応",
+      "evidence": [
+        "src/q1/wasteLogic.ts:newGasState/gasInspect/gasRequest",
+        "gameplay-qa-waste.mjs gas section"
+      ]
+    }
+  },
+  {
+    "componentHash": "9709c3b6ee2d",
+    "reviewStale": false,
+    "id": "landfill_ops",
+    "label": "LandfillOpsGame",
+    "componentPath": "src/q1/LandfillOpsGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "waste-journey"
+    ],
+    "recentGames": [
+      "waste-landfill"
+    ],
+    "description": "型別に区画へ埋め→天気で覆いの優先順位を決める",
+    "section": "ごみのゆくえ編",
+    "primaryMechanic": "resource_allocation",
+    "secondaryMechanics": [
+      "spatial_placement",
+      "simulation_run"
+    ],
+    "interactionNotes": "5日間、型付き搬入（灰/不燃は別区画=施設受入区分）を3区画へ配置し、夜は作業面への覆いが日課（覆いは持続）。材料不足の夜だけ天気を読んだ優先順位判断。雨=浸出水/風=苦情。",
+    "semantic": {
+      "C_in_component": "処分場のきまりカード（覆いの意味・浸出水の仕組み・受入区分）・天気予報・残量メーター",
+      "C_required": "yes — 覆い放棄4.2%/事後対応20%どまり。配置集約＋義務履行で100%（配置判断が成否を分ける: 散らかし配置は43.6%）",
+      "action_changes_result": "yes — 配置が覆い需要と受入可否を決め、覆い選択が水位/苦情を分岐",
+      "retry": "yes — 搬入と天気を再抽選",
+      "fixed_progression": "no",
+      "obvious_binary_choice": "no",
+      "evidence": [
+        "src/q1/wasteLogic.ts:lfPlace/lfNight/lfExposed",
+        "gameplay-qa-waste.mjs landfill section"
+      ]
+    }
   }
 ]

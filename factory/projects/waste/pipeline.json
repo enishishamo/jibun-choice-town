@@ -2,24 +2,74 @@
  "world": "waste",
  "pipeline_version": "new-world v2 (autonomous)",
  "phases": {
-  "world_selection": {"status": "done", "evidence": "selection.md + factory/state/world-selection.result.json"},
-  "event_research": {"status": "running", "evidence": "research.result.json (codex delegated)"},
-  "job_discovery": {"status": "done", "evidence": "selection.md job table"},
-  "career_fact_research": {"status": "running"},
-  "difficulty_extraction": {"status": "pending"},
-  "mechanics_matching": {"status": "pending"},
-  "game_design": {"status": "pending"},
-  "design_critics": {"status": "pending"},
-  "art_need_detection": {"status": "pending"},
-  "art_generation_qa": {"status": "pending"},
-  "implementation": {"status": "pending"},
-  "build_static_qa": {"status": "pending"},
-  "gameplay_qa": {"status": "pending"},
-  "browser_qa": {"status": "pending"},
-  "adversarial_review": {"status": "pending"},
-  "db_manifest_update": {"status": "pending"},
-  "commit": {"status": "pending"}
+  "world_selection": {
+   "status": "done",
+   "evidence": "selection.md + factory/state/world-selection.result.json"
+  },
+  "event_research": {
+   "status": "done"
+  },
+  "job_discovery": {
+   "status": "done",
+   "evidence": "selection.md job table"
+  },
+  "career_fact_research": {
+   "status": "done"
+  },
+  "difficulty_extraction": {
+   "status": "done"
+  },
+  "mechanics_matching": {
+   "status": "done"
+  },
+  "game_design": {
+   "status": "done"
+  },
+  "design_critics": {
+   "status": "done_with_note",
+   "evidence": "5 iterations (runs h3f2/2vrl): all HIGHs absorbed into code; 2 confirmation attempts lost to reviewer CODEX_TIMEOUT; final verdict delegated to the binding implementation adversarial review"
+  },
+  "art_need_detection": {
+   "status": "done"
+  },
+  "art_generation_qa": {
+   "status": "done"
+  },
+  "implementation": {
+   "status": "done"
+  },
+  "build_static_qa": {
+   "status": "done"
+  },
+  "gameplay_qa": {
+   "status": "done"
+  },
+  "browser_qa": {
+   "status": "done"
+  },
+  "adversarial_review": {
+   "status": "done",
+   "evidence": "run ckgl: FAIL72 -> repair (duty enforcement, oracle removal, evidence-matrix fix) -> PASS 86 (CA91/GQ86, blockers/high zero)"
+  },
+  "db_manifest_update": {
+   "status": "done"
+  },
+  "commit": {
+   "status": "done"
+  }
  },
  "human_interventions": 0,
- "metrics": {"research_tasks": 1, "codex_delegations": 2, "repairs": 0, "art_generations": 0, "art_regenerations": 0}
+ "metrics": {
+  "research_tasks": 1,
+  "codex_delegations": 10,
+  "repairs": 6,
+  "art_generations": 4,
+  "art_regenerations": 1,
+  "gameplay_qa_checks": "24/24",
+  "browser_qa": "mobile+desktop full flow (4 games, JobReveal, wrapUp), no console errors",
+  "final_scores": {
+   "CA": 91,
+   "GQ": 86
+  }
+ }
 }

@@ -1,0 +1,26 @@
+{
+  "run_id": "run-2026-09-02T07-28-58-1zax",
+  "task": "Stage 7 waste design confirmation retry (previous run lost to reviewer timeout)",
+  "artifact": "factory/projects/waste/design.md",
+  "producer": "claude",
+  "reviewer": "codex",
+  "phase": "finished",
+  "iteration": 1,
+  "max_iterations": 2,
+  "verdict": "HUMAN_REQUIRED",
+  "issues": [
+    "reviewer failure: CODEX_TIMEOUT — timed out after 900s"
+  ],
+  "repair_actions": [],
+  "reviews": [
+    {
+      "iteration": 1,
+      "status": "CODEX_TIMEOUT",
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/state/runs/run-2026-09-02T07-28-58-1zax.review-1.json",
+      "elapsed_sec": 2883.302
+    }
+  ],
+  "started_at": "2026-09-02T07:28:58.151Z",
+  "finished_at": "2026-09-02T08:17:01.800Z",
+  "stop_reason": "reviewer_failure:CODEX_TIMEOUT"
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "iter-2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 86,
+    "career_authenticity_score": 91,
+    "game_quality_score": 86,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "gas_watch permits a guaranteed but slower strategy of checking all three cause-bearing sources before acting; the two-check route still provides mastery, but inspection-order strategy is modest.",
+      "landfill_ops represents leachate treatment as an automatic daily drain rather than a player-operated decision; exposure prevention and treatment-capacity management remain causal and authentic."
+    ],
+    "low": [
+      "curb_check hazard silhouettes are intentionally indirect, but the spray-can case uses an emoji that may be interpreted as a plastic bottle; the accompanying metal-can hint prevents answer leakage while preserving solvability."
+    ],
+    "evidence": [
+      "src/q1/wasteLogic.ts:54 — curb_check randomizes six observable bags, collection day, violation count and order; each bag requires applying the current collection rule.",
+      "src/q1/wasteLogic.ts:84 — loading a hazard causes an immediate fire failure, while every rejection reason is independently judged against the bag truth.",
+      "src/q1/CurbCheckGame.tsx:130 — the InfoCard supplies collection-category, designated-bag and hazard rules without exposing the current bag's hidden truth.",
+      "src/q1/CurbCheckGame.tsx:142 — hazard guidance says not to load the item and to move away and contact the office.",
+      "src/q1/CurbCheckGame.tsx:85 — child-facing lithium-battery guidance explicitly says children must not touch it and should tell an adult or municipal office.",
+      "src/q1/CurbCheckGame.tsx:45 — retry re-randomizes both the collection day and bag set.",
+      "src/q1/wasteLogic.ts:121 — dry, wet, mixed and idle actions cause materially different temperature changes, creating predictive furnace-control play.",
+      "src/q1/wasteLogic.ts:166 — mixing requires adjacent wet and dry cells, consumes a turn and creates two stable-fuel cells; it is preparation rather than a cosmetic choice.",
+      "src/q1/PitCraneGame.tsx:159 — the manual connects the 850℃ threshold to dioxin control and explicitly labels 1000℃ as this facility's operating rule.",
+      "src/q1/PitCraneGame.tsx:71 — mastery is reported from the full-run temperature range, rewarding controlled swing rather than mere survival.",
+      "src/q1/wasteLogic.ts:215 — gas_watch randomizes among chemical shortage, sensor drift and incomplete combustion, with meter readings consistent with the case.",
+      "src/q1/wasteLogic.ts:258 — inspections consume limited time, duplicates yield no advantage, and one slot must remain for the final request.",
+      "src/q1/wasteLogic.ts:267 — a wrong one-shot request consumes all remaining time and fails while the true cause continues worsening.",
+      "src/q1/GasWatchGame.tsx:47 — the candidate display eliminates causes only from evidence already requested; it does not inspect hidden state or leak the answer through button availability.",
+      "src/q1/GasWatchGame.tsx:123 — inspection buttons are disabled solely when already used or when time must be reserved, so enabled state is not an answer oracle.",
+      "src/q1/wasteLogic.ts:317 — landfill schedules, load ordering and weather are regenerated for every week while remaining capacity is constrained.",
+      "src/q1/wasteLogic.ts:368 — placing a load causally consumes cell capacity, assigns its type and reopens the work face for nightly covering.",
+      "src/q1/wasteLogic.ts:402 — daily covering is enforced as a duty whenever material exists; prioritization appears only during a real shortage.",
+      "src/q1/wasteLogic.ts:424 — exposed cells under rain create leachate against a finite treatment tank, while wind creates cumulative complaints; both can halt operations.",
+      "src/q1/LandfillOpsGame.tsx:149 — the InfoCard explains daily cover, constrained material, weather consequences, treatment throughput and concentration strategy.",
+      "src/q1/LandfillOpsGame.tsx:153 — separating ash and incombustibles is explicitly labeled as this facility's acceptance rule, satisfying the facility-simplification requirement.",
+      "src/data/content/waste.ts:84 — the world summary distinguishes the four professional lenses: curb rules, fuel quality, alert diagnosis and long-term landfill management.",
+      "src/data/content/waste.ts:93 — wrapUp accurately connects collection, combustion, emissions monitoring and final disposal, including the approximately 25-year 2023 national figure.",
+      "factory/rules/game-critic-v2.md:25 — CORE LOOP is satisfiable: repeatedly observe current state, consult job-specific constraints, act, and interpret causal operational feedback.",
+      "factory/rules/game-critic-v2.md:26 — MASTERY is satisfiable: experts make zero-error curb judgments, stabilize furnace temperature, diagnose gas alerts in fewer checks and concentrate landfill work faces.",
+      "factory/rules/game-critic-v2.md:27 — REPLAY is satisfiable through randomized collection days and bags, pit layouts and deliveries, gas causes, and landfill schedules and weather.",
+      "factory/rules/game-critic-v2.md:28 — NOVICE-VS-EXPERT is satisfiable: experts predict consequences and conserve mistakes, time, temperature margin, cover material and treatment capacity."
+    ],
+    "recommended_actions": [
+      "For stronger gas_watch replay, vary evidence efficiency or case details so checking all three diagnostic sources is not always a guaranteed generic route.",
+      "For deeper landfill mastery, consider a small explicit leachate-treatment scheduling decision instead of applying the daily drain automatically.",
+      "Consider replacing the spray-can emoji with a more unmistakable can silhouette while retaining the non-revealing observation hint."
+    ]
+  },
+  "elapsed_sec": 656.73
+}
