@@ -81,7 +81,7 @@ export const studio: ContentModule = {
           before: R("ba-before"),
           after: R("ba-after"),
           beforeLabel: "3日前：💥の報告と、しかめっつらのテスター",
-          afterLabel: "発売日：まちの子が、夢中で遊んでいる",
+          afterLabel: "発売の夜：画面には💥のかわりに、明るいゲーム",
         },
         title: "「おもしろい」は、直した人たちの合作だった。",
         lines: [

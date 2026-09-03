@@ -70,7 +70,13 @@ export default function HomeScreen() {
         // onto the center tile
         console.warn(`[atlas] world "${ev.id}" has no WORLD_DISTRICT entry — defaulting to center`);
       }
-      const d = WORLD_DISTRICT[ev.id] ?? "center";
+      let d = WORLD_DISTRICT[ev.id] ?? "center";
+      if (!getDistrict(d)) {
+        // normalize HERE so no marker ever carries an invalid districtId
+        // (tapping one would otherwise focus a district that doesn't exist)
+        console.warn(`[atlas] unknown district "${d}" for world "${ev.id}" — falling back to center`);
+        d = "center";
+      }
       (byDistrict[d] ??= []).push(ev.id);
     }
     for (const [districtId, ids] of Object.entries(byDistrict)) {
@@ -80,12 +86,7 @@ export default function HomeScreen() {
     }
     const out: WorldMarker[] = [];
     for (const [districtId, ids] of Object.entries(byDistrict)) {
-      let d = getDistrict(districtId);
-      if (!d) {
-        // a typo'd district id must never make shipped worlds vanish
-        console.warn(`[atlas] unknown district "${districtId}" — falling back to center`);
-        d = getDistrict("center")!;
-      }
+      const d = getDistrict(districtId)!; // ids normalized above
       ids.forEach((eventId, i) => {
         const ev = events.find((e) => e.id === eventId)!;
         let x: number, y: number;

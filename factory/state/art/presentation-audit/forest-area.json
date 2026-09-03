@@ -1,0 +1,37 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 74,
+  "SUBJECT_OCCLUSION": 66,
+  "FOCAL_OBJECT_VISIBILITY": 84,
+  "BADGE_OVERLAP": 64,
+  "CONTAINER_FIT": 92,
+  "BACKGROUND_EDGE_QUALITY": 94,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 82,
+  "MOBILE_CROP": 64,
+  "DESKTOP_CROP": 96,
+  "ASSET_PRESENTATION_QUALITY": 77
+ },
+ "badge_collision": true,
+ "prototype_feel_reasons": [
+  "The mobile initial crop hides the right-side worker and much of the third job, weakening the intended three-job scene.",
+  "A translucent hotspot is placed directly over the logging machine/saw, obscuring a tool needed to understand the activity.",
+  "The partially clipped hotspot at the mobile right edge looks accidental rather than like a deliberate horizontal-navigation affordance.",
+  "Large unused space below the scene makes the screen composition feel unfinished despite the polished main illustration."
+ ],
+ "issues": [
+  "mobile/main forest scene — initial horizontal crop omits the right-side worker and most of the planting activity — reduce scene width, use a responsive object-position that keeps all three jobs legible, or add a clearer carousel preview/continuation treatment",
+  "desktop and mobile/logging-machine hotspot — translucent circular overlay covers the saw/machine that communicates the second job — move the hotspot into nearby negative space and use a leader line if needed",
+  "mobile/right-side hotspot — overlay is clipped by the viewport edge, creating an accidental-looking partial circle — reposition it inside the visible frame or hide off-screen hotspots until the user scrolls",
+  "screen/main composition — substantial empty lower area makes the scene and guidance feel provisionally placed — tighten the viewport layout or use the space for integrated progress/navigation content",
+  "SUBJECT_OCCLUSION below threshold: 66",
+  "BADGE_OVERLAP below threshold: 64",
+  "MOBILE_CROP below threshold: 64",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 77",
+  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
+  "presentation critic verdict: FAIL"
+ ]
+}

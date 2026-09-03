@@ -7,7 +7,7 @@
 //  - sceneMap: ONE wide illustration with hotspots placed on it, optionally
 //    preceded by a full opening image (物価高編のアイス売り場)
 // Once 2+ incidents are done, an event may show its "lens summary".
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { withRuby } from "../lib/ruby";
 import { getEvent } from "../data";
 import { useGame } from "../state/GameState";
@@ -50,6 +50,14 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
         .filter((x): x is NonNullable<typeof x> => !!x)
     : event.incidents;
   const showLenses = !!event.lensSummary && doneCount >= 2;
+
+  // the currently playable spot centers itself in the scene scroller so the
+  // initial mobile crop never hides the thing to do next (presentation audit)
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = scrollerRef.current?.querySelector<HTMLElement>(".map-spot.active");
+    if (el) el.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [chapterIdx, doneCount]);
   const allDone = doneCount === event.incidents.length;
   const wrapUp =
     allDone && event.wrapUp ? (
@@ -157,16 +165,18 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             ))}
           </p>
 
-          <div className="map-scroller">
+          <div className="map-frame">
+          <div className="map-scroller" ref={scrollerRef}>
             <div className="map-inner">
               <img className="map-img" src={chapter?.image ?? event.sceneMap.image} alt={event.areaName} />
               {spots.map((inc) => {
                 const done = hasCompleted(inc.experienceId);
                 const locked = !!inc.requires?.some((r) => !hasCompleted(r));
+                const active = !done && !locked;
                 return (
                   <button
                     key={inc.id}
-                    className={`map-spot ${done ? "done" : ""} ${locked ? "locked" : ""}`}
+                    className={`map-spot ${done ? "done" : ""} ${locked ? "locked" : ""} ${active ? "active" : ""}`}
                     style={inc.scenePos ? { left: inc.scenePos.left, top: inc.scenePos.top } : undefined}
                     onClick={() => {
                       if (locked) { setLockNote(`${inc.title}（${inc.requiresHint ?? "これは、もう少しあと"}）`); return; }
@@ -185,6 +195,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                 );
               })}
             </div>
+          </div>
           </div>
           <p className="scroll-hint">← 横にスワイプして見てみよう →</p>
           {lockNote && <p className="game-note map-note">{lockNote}</p>}

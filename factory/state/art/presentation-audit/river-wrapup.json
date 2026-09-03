@@ -1,0 +1,24 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 92,
+  "SUBJECT_OCCLUSION": 90,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 96,
+  "CONTAINER_FIT": 91,
+  "BACKGROUND_EDGE_QUALITY": 94,
+  "ASPECT_RATIO_FIT": 95,
+  "VISUAL_INTEGRATION": 90,
+  "MOBILE_CROP": 91,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 92
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
+ "issues": [
+  "wrapUp/before-after pair — the change from polluted gray canal to restored blue river is clear, and matching bridge, banks, and townscape make it read as the same place; no corrective action needed",
+  "wrapUp/main river scene — the partially visible right-edge navigation control is slightly tight against the viewport, though it works as a swipe affordance — add a little safe-area inset or slightly reduce the control size"
+ ]
+}

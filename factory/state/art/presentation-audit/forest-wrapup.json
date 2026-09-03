@@ -1,0 +1,21 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 96,
+  "SUBJECT_OCCLUSION": 91,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 90,
+  "CONTAINER_FIT": 91,
+  "BACKGROUND_EDGE_QUALITY": 94,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 93,
+  "MOBILE_CROP": 91,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 93
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
+ "issues": []
+}

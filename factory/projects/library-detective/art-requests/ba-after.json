@@ -4,16 +4,16 @@
  "world": "library",
  "use": "wrapup_after",
  "purpose": "wrapUpのAFTER。いま：同じカウンターの奥に、特定された写真が展示され、まちの記録になった",
- "scene": "The SAME library counter, from the SAME camera: the wooden counter, the green desk lamp at its left end and the tall bookshelf wall are UNCHANGED. Mood NOW: on the bookshelf wall hangs a small wooden display frame holding the same tiny sepia photograph beside a small blank caption card; the elderly woman and a child look up at it smiling; the librarian points gently with an open hand; a tiny potted flower now sits on the counter. Bright, warm, a little celebratory. No readable text anywhere.",
- "composition": "Identical framing to the BEFORE: same counter, same green lamp, same bookshelf wall. Change ONLY: the framed sepia photo with blank caption card on the wall, the child, the smiles, the potted flower.",
+ "scene": "The SAME library counter, from the SAME camera and angle as the BEFORE: the wooden counter along the lower third, the green desk lamp at its left end, the tall bookshelf wall behind, the SAME elderly woman and the SAME young librarian in the SAME positions. Change ONLY THIS: the small sepia photograph now stands on the counter in a small wooden display frame with a blank caption card beside it, and both people are smiling gently at it. The paper sleeve and white gloves still lie on the counter where they were. Nothing else moves.",
+ "composition": "Identical framing, camera height and angle to the BEFORE. Same counter, same lamp, same shelves, same two people in the same spots. ONLY the photo's framing on the counter and the two facial expressions change.",
  "required_objects": [
   "same wooden counter",
   "same green desk lamp",
   "same bookshelf wall",
-  "framed tiny sepia photo with blank caption card",
-  "elderly woman and child smiling",
-  "librarian pointing with open hand",
-  "potted flower"
+  "same two people in same positions",
+  "sepia photo in a small wooden frame ON the counter",
+  "blank caption card",
+  "paper sleeve and gloves unchanged"
  ],
  "forbidden_objects": [
   "readable text",

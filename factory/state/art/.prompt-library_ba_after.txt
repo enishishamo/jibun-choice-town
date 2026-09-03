@@ -9,9 +9,19 @@ buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplifie
 NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
 NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
 Keep every important element inside the central 70% (mobile crop safety).
-Scene: The SAME library counter, from the SAME camera: the wooden counter, the green desk lamp at its left end and the tall bookshelf wall are UNCHANGED. Mood NOW: on the bookshelf wall hangs a small wooden display frame holding the same tiny sepia photograph beside a small blank caption card; the elderly woman and a child look up at it smiling; the librarian points gently with an open hand; a tiny potted flower now sits on the counter. Bright, warm, a little celebratory. No readable text anywhere.
+Scene: The SAME library counter, from the SAME camera and angle as the BEFORE: the wooden counter along the lower third, the green desk lamp at its left end, the tall bookshelf wall behind, the SAME elderly woman and the SAME young librarian in the SAME positions. Change ONLY THIS: the small sepia photograph now stands on the counter in a small wooden display frame with a blank caption card beside it, and both people are smiling gently at it. The paper sleeve and white gloves still lie on the counter where they were. Nothing else moves.
 Role in game: wrapUpのAFTER。いま：同じカウンターの奥に、特定された写真が展示され、まちの記録になった
-Camera / composition: Identical framing to the BEFORE: same counter, same green lamp, same bookshelf wall. Change ONLY: the framed sepia photo with blank caption card on the wall, the child, the smiles, the potted flower.
-Must include: same wooden counter; same green desk lamp; same bookshelf wall; framed tiny sepia photo with blank caption card; elderly woman and child smiling; librarian pointing with open hand; potted flower
+Camera / composition: Identical framing, camera height and angle to the BEFORE. Same counter, same lamp, same shelves, same two people in the same spots. ONLY the photo's framing on the counter and the two facial expressions change.
+Must include: same wooden counter; same green desk lamp; same bookshelf wall; same two people in same positions; sepia photo in a small wooden frame ON the counter; blank caption card; paper sleeve and gloves unchanged
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補は参照セットより全体に暖色・オレンジの色かぶりがやや強く、陰影も少し濃い
+- Fix vs reference set: 人物の頭身、点状の目、単純化された顔、固形粘土風の髪と衣服は参照セットとよく一致している
+- BEFOREとAFTERで本棚の本の色・本数・配置が広範囲に変化しており、同一背景を固定した差分になっていない
+- 人物の位置・大きさ・輪郭が変わり、特に右人物の頭部と胴体、左人物の顔と腕の位置がずれているため、同一カメラ・同一構図の連続性が弱い
+- ランプの大きさと位置、手袋・封筒の位置、カウンター上の余白も変化しており、意図した『写真を展示する』以外の差分が多い
+- AFTERでは写真が額装されて立ち、まちの記録として展示されたこと自体は明確に伝わる
+- vision critic verdict: FAIL (MUST violation or unstated failure)
+- BEFORE_AFTER_CONSISTENCY below threshold: 64

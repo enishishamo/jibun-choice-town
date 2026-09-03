@@ -3244,13 +3244,39 @@ img {
 }
 .map-spot {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /* the badge floats ABOVE the subject (never covering it); the stem below
+     the ring points at the actual object (presentation audit 2026-09-04) */
+  transform: translate(-50%, calc(-100% - 8px));
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   gap: 4px;
   width: 116px;
 }
+.map-spot-ring::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--orange);
+}
+.map-spot.done .map-spot-ring::after { border-top-color: var(--green); }
+.map-spot.locked .map-spot-ring::after { border-top-color: #cbbfa9; }
+.map-frame { position: relative; }
+.map-frame::before,
+.map-frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  pointer-events: none;
+  z-index: 2;
+}
+.map-frame::before { left: 0; background: linear-gradient(90deg, var(--bg, #f6f1e3), transparent); }
+.map-frame::after { right: 0; background: linear-gradient(270deg, var(--bg, #f6f1e3), transparent); }
 .map-spot-ring {
   position: relative;
   width: 46px;
@@ -3288,7 +3314,7 @@ img {
 }
 .scroll-hint {
   text-align: center;
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--text-soft);
   margin: 2px 0 10px;
 }

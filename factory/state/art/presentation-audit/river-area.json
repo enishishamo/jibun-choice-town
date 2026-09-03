@@ -1,0 +1,35 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 78,
+  "SUBJECT_OCCLUSION": 55,
+  "FOCAL_OBJECT_VISIBILITY": 82,
+  "BADGE_OVERLAP": 48,
+  "CONTAINER_FIT": 94,
+  "BACKGROUND_EDGE_QUALITY": 95,
+  "ASPECT_RATIO_FIT": 93,
+  "VISUAL_INTEGRATION": 85,
+  "MOBILE_CROP": 76,
+  "DESKTOP_CROP": 94,
+  "ASSET_PRESENTATION_QUALITY": 77
+ },
+ "badge_collision": true,
+ "prototype_feel_reasons": [
+  "The white hotspot label overlaps the fisherman’s head, upper body, and fishing activity in both viewports.",
+  "On mobile, the horizontally cropped scene hides much of the right-side activity, leaving the visible composition weighted toward the obscured fisherman.",
+  "The translucent locked hotspots sit directly over structural details, making the scene feel marked up rather than fully composed.",
+  "The scene frame itself is otherwise polished, with consistent rounding, clean masking, and no visible stretching or raw source-image edges."
+ ],
+ "issues": [
+  "river scene/fisherman hotspot label — label covers the fisherman’s head, hands, and fishing context in both mobile and desktop — move the label above or left of the character and connect it with a short pointer line; reserve a clear subject-safe region.",
+  "river scene/mobile viewport — horizontal crop excludes most right-side workers and the building while the main visible subject is obscured by its label — adjust the initial object-position/pan to keep the fisherman and his tool unobstructed, or reduce the rendered scene scale slightly.",
+  "river scene/locked hotspots — translucent lock circles obscure pipe and roof details — move markers into nearby negative space or reduce their diameter and opacity while keeping the associated object readable.",
+  "SUBJECT_OCCLUSION below threshold: 55",
+  "BADGE_OVERLAP below threshold: 48",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 77",
+  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
+  "presentation critic verdict: FAIL"
+ ]
+}

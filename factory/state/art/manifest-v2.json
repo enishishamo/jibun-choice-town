@@ -3573,6 +3573,106 @@
    "used_by": [
     "src/data/content/river.ts"
    ]
+  },
+  {
+   "asset_id": "library_ba_after",
+   "filename": "ba-after.png",
+   "world": "library",
+   "purpose": "wrapUpのAFTER。いま：同じカウンターの奥に、特定された写真が展示され、まちの記録になった",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME library counter, from the SAME camera and angle as the BEFORE: the wooden counter along the lower third, the green desk lamp at its left end, the tall bookshelf wall behind, the SAME elderly woman and the SAME young librarian in the SAME positions. Change ONLY THIS: the small sepia photograph now stands on the counter in a small wooden display frame with a blank caption card beside it, and both people are smiling gently at it. The paper sleeve and white gloves still lie on the counter where they were. Nothing else moves.\nRole in game: wrapUpのAFTER。いま：同じカウンターの奥に、特定された写真が展示され、まちの記録になった\nCamera / composition: Identical framing, camera height and angle to the BEFORE. Same counter, same lamp, same shelves, same two people in the same spots. ONLY the photo's framing on the counter and the two facial expressions change.\nMust include: same wooden counter; same green desk lamp; same bookshelf wall; same two people in same positions; sepia photo in a small wooden frame ON the counter; blank caption card; paper sleeve and gloves unchanged\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照セットより全体に暖色・オレンジの色かぶりがやや強く、陰影も少し濃い\n- Fix vs reference set: 人物の頭身、点状の目、単純化された顔、固形粘土風の髪と衣服は参照セットとよく一致している\n- BEFOREとAFTERで本棚の本の色・本数・配置が広範囲に変化しており、同一背景を固定した差分になっていない\n- 人物の位置・大きさ・輪郭が変わり、特に右人物の頭部と胴体、左人物の顔と腕の位置がずれているため、同一カメラ・同一構図の連続性が弱い\n- ランプの大きさと位置、手袋・封筒の位置、カウンター上の余白も変化しており、意図した『写真を展示する』以外の差分が多い\n- AFTERでは写真が額装されて立ち、まちの記録として展示されたこと自体は明確に伝わる\n- vision critic verdict: FAIL (MUST violation or unstated failure)\n- BEFORE_AFTER_CONSISTENCY below threshold: 64",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/library/ba-before.png"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T16:56:31.558Z",
+   "iteration": 3,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 96,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 95,
+    "SERIES_CONSISTENCY": 94,
+    "BEFORE_AFTER_CONSISTENCY": 88,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 92,
+    "CHARACTER_SERIES_MATCH": 93
+   },
+   "qa_issues": [
+    "AFTERでは額縁化だけでなく写真の位置・大きさ・角度が変わり、手前の白いカードも追加されているため、出来事の結果以外の差分がわずかに多い",
+    "人物の顔・手・姿勢がBEFOREとAFTERで微妙に変化しており、完全な同一瞬間の比較には見えにくい",
+    "重要な額縁写真が画面下部にあるため、縦長モバイル表示でcoverクロップされる場合は意図が失われる可能性がある",
+    "file too large: 2.4MB (>2MB)",
+    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit."
+   ],
+   "file_hash": "ee493a68b43c",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_conditional_in_context"
+  },
+  {
+   "asset_id": "studio_ba_after",
+   "filename": "ba-after.png",
+   "world": "studio",
+   "purpose": "wrapUpのAFTER。発売日：同じフロアで、まちの子が夢中で遊ぶ",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME studio floor on release evening, from the SAME camera as the BEFORE: the round wall clock top-center, the big monitor on the left wall, the long desk row to the right, the whiteboard — all UNCHANGED in position and size, same warm lamplight, same night windows. Change ONLY THIS: the big monitor now shows a bright cheerful game scene (no crash symbol), the whiteboard is wiped clean with a single sticky note left, the tester figure now smiles holding the handheld, and a small garland of plain colored paper triangles hangs over the desk row. Everything else — furniture, cups, positions — stays exactly as in the BEFORE.\nRole in game: wrapUpのAFTER。発売日：同じフロアで、まちの子が夢中で遊ぶ\nCamera / composition: Identical framing, camera and lighting to the BEFORE (same night lamplight, same windows). Same clock, monitor, desk row, whiteboard, same figure positions. ONLY the monitor content, whiteboard state, the tester's expression, and the added garland change.\nMust include: same round wall clock; same big monitor now showing a bright game; same desk row and whiteboard positions; same night lamplight; smiling tester in same spot; small triangle garland; single sticky note on cleaned whiteboard\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補はreference setより陰影がやや強く、髪や机の表面が少し精密で、手作り粘土というより高品質な汎用3Dクレイ寄り\n- Fix vs reference set: 人物の頭身と小さな点状の目は概ね一致するが、候補の髪の造形はreference人物より細かな房が多い\n- Fix vs reference set: 夜景の濃い青と暗部のコントラストが、reference setの明るく淡い背景処理より強い\n- BEFOREとAFTERで同一カメラ・同一構図になっていない。AFTERでは左壁モニターが大幅に大きくなり、時計、掲示板、窓、机、人物の位置と縮尺も変化しているため、出来事の結果だけを変更したペアに見えない\n- AFTERで新たに旗飾りが追加され、掲示板の複数の付箋が消え、室内レイアウトの見え方まで変わっている。祝賀演出として許容できる追加はあるが、固定背景まで変化しており厳格なbefore/after要件に反する\n- AFTERの子どもたちは遊びに夢中な状況を概ね示すが、中央奥の人物は端末ではなく両手を上げており、意図した状態の一貫性がやや弱い\n- 両画像とも同じ部屋と人物群であることは認識でき、文字・ロゴ・透かしや人体破綻も見られないが、構図差がfail-closed条件を満たさない\n- vision critic verdict: FAIL (MUST violation or unstated failure)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/studio/ba-before.png"
+   ],
+   "dimensions": "1536x1023",
+   "aspect_ratio": 1.501,
+   "created_at": "2026-09-03T17:04:22.713Z",
+   "iteration": 3,
+   "qa_score": 64,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 86,
+    "CROP_SAFETY": 94,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 95,
+    "CHARACTER_ANATOMY": 92,
+    "SERIES_CONSISTENCY": 88,
+    "BEFORE_AFTER_CONSISTENCY": 64,
+    "JOB_ACCURACY": 78,
+    "MOBILE_USABILITY": 88,
+    "SERIES_STYLE_MATCH": 87,
+    "CHARACTER_SERIES_MATCH": 86
+   },
+   "qa_issues": [
+    "BEFOREとAFTERで壁面レイアウトの位置と寸法が変化している。左の画面、時計、掲示板、窓の大きさや間隔が一致せず、同一カメラ・同一構図の厳格条件を満たさない",
+    "机、椅子、人物、モニターもフレーム内の位置や縮尺がずれており、出来事の結果だけを変えた同一場面ではなく再生成した類似場面に見える",
+    "AFTERで追加された旗飾りや整理された掲示板は発売後の変化として許容できるが、建築的配置まで連動して変わっているため連続性を損なう",
+    "中央人物は楽しそうに遊んでいるが、周囲の人物は疲労・退屈・落胆したままで、発売日に同じフロアで子どもが夢中で遊ぶという達成感が弱い",
+    "登場人物の服装、体格、デスク環境がオフィスの成人スタッフを強く示し、意図された「まちの子」としての視認性が低い",
+    "vision critic verdict: FAIL (MUST violation or unstated failure)",
+    "BEFORE_AFTER_CONSISTENCY below threshold: 64",
+    "file too large: 2.3MB (>2MB)",
+    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit."
+   ],
+   "file_hash": "3fca7bd84b4c",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_conditional_in_context"
   }
  ]
 }

@@ -1,0 +1,32 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 92,
+  "SUBJECT_OCCLUSION": 68,
+  "FOCAL_OBJECT_VISIBILITY": 76,
+  "BADGE_OVERLAP": 62,
+  "CONTAINER_FIT": 91,
+  "BACKGROUND_EDGE_QUALITY": 94,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 88,
+  "MOBILE_CROP": 86,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 82
+ },
+ "badge_collision": true,
+ "prototype_feel_reasons": [
+  "The large hotspot badges obscure parts of the map, glove, and computer—the exact work objects players need to inspect.",
+  "The rightmost computer hotspot is clipped by the viewport, making the hero composition feel insufficiently adapted to mobile."
+ ],
+ "issues": [
+  "mobile/hero scene map hotspot — magnifying-glass badge covers a substantial part of the map evidence — move it into adjacent empty tabletop space or reduce its size",
+  "mobile/hero scene glove hotspot — hand badge overlaps the glove and nearby worker hand — position the badge beside the glove with a short pointer",
+  "mobile/hero scene computer hotspot — badge and workstation are cut off at the right edge — shift the image focal position left or use a mobile-specific crop so the full hotspot remains visible",
+  "SUBJECT_OCCLUSION below threshold: 68",
+  "BADGE_OVERLAP below threshold: 62",
+  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
+  "presentation critic verdict: FAIL"
+ ]
+}

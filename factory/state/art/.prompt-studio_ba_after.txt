@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: The SAME studio floor on release evening, from the SAME camera as the BEFORE: the round wall clock top-center, the big monitor on the left wall, the long desk row to the right, the whiteboard — all UNCHANGED in position and size, same warm lamplight, same night windows. Change ONLY THIS: the big monitor now shows a bright cheerful game scene (no crash symbol), the whiteboard is wiped clean with a single sticky note left, the tester figure now smiles holding the handheld, and a small garland of plain colored paper triangles hangs over the desk row. Everything else — furniture, cups, positions — stays exactly as in the BEFORE.
+Role in game: wrapUpのAFTER。発売日：同じフロアで、まちの子が夢中で遊ぶ
+Camera / composition: Identical framing, camera and lighting to the BEFORE (same night lamplight, same windows). Same clock, monitor, desk row, whiteboard, same figure positions. ONLY the monitor content, whiteboard state, the tester's expression, and the added garland change.
+Must include: same round wall clock; same big monitor now showing a bright game; same desk row and whiteboard positions; same night lamplight; smiling tester in same spot; small triangle garland; single sticky note on cleaned whiteboard
+Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補はreference setより陰影がやや強く、髪や机の表面が少し精密で、手作り粘土というより高品質な汎用3Dクレイ寄り
+- Fix vs reference set: 人物の頭身と小さな点状の目は概ね一致するが、候補の髪の造形はreference人物より細かな房が多い
+- Fix vs reference set: 夜景の濃い青と暗部のコントラストが、reference setの明るく淡い背景処理より強い
+- BEFOREとAFTERで同一カメラ・同一構図になっていない。AFTERでは左壁モニターが大幅に大きくなり、時計、掲示板、窓、机、人物の位置と縮尺も変化しているため、出来事の結果だけを変更したペアに見えない
+- AFTERで新たに旗飾りが追加され、掲示板の複数の付箋が消え、室内レイアウトの見え方まで変わっている。祝賀演出として許容できる追加はあるが、固定背景まで変化しており厳格なbefore/after要件に反する
+- AFTERの子どもたちは遊びに夢中な状況を概ね示すが、中央奥の人物は端末ではなく両手を上げており、意図した状態の一貫性がやや弱い
+- 両画像とも同じ部屋と人物群であることは認識でき、文字・ロゴ・透かしや人体破綻も見られないが、構図差がfail-closed条件を満たさない
+- vision critic verdict: FAIL (MUST violation or unstated failure)

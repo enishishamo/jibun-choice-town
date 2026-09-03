@@ -1,0 +1,38 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 68,
+  "SUBJECT_OCCLUSION": 62,
+  "FOCAL_OBJECT_VISIBILITY": 88,
+  "BADGE_OVERLAP": 60,
+  "CONTAINER_FIT": 90,
+  "BACKGROUND_EDGE_QUALITY": 94,
+  "ASPECT_RATIO_FIT": 93,
+  "VISUAL_INTEGRATION": 84,
+  "MOBILE_CROP": 66,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 73
+ },
+ "badge_collision": true,
+ "prototype_feel_reasons": [
+  "The mobile hero crop cuts the right-side worker through the body and clips the palette marker at the viewport edge.",
+  "The magnifying-glass badge overlaps the seated worker's head, competing with a primary character.",
+  "The hero image is visually crowded by multiple floating markers, while the comparison images are too small to make the before/after story immediately legible.",
+  "The before/after pair depicts the same place, but the small image area and subtle change weaken the single clear story change."
+ ],
+ "issues": [
+  "wrapUp/hero scene — right-side worker is cut mid-body by the mobile container — use object-fit: cover with a left-shifted object-position or viewport-specific source composition that keeps complete key characters visible",
+  "wrapUp/hero QA marker — magnifying-glass badge overlaps the seated worker's hair/head — move the marker into nearby negative space over the shelving or reduce its size",
+  "wrapUp/hero UI marker — palette bubble is partially clipped by the right viewport edge — inset the marker from the safe-area edge or constrain overlays within the image bounds",
+  "wrapUp/before-after pair — thumbnails are too small for users to confidently judge the changed display — enlarge the pair, tighten surrounding copy, or provide a swipe/zoom comparison while preserving identical framing",
+  "SUBJECT_CROP below threshold: 68",
+  "SUBJECT_OCCLUSION below threshold: 62",
+  "BADGE_OVERLAP below threshold: 60",
+  "MOBILE_CROP below threshold: 66",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 73",
+  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
+  "presentation critic verdict: FAIL"
+ ]
+}
