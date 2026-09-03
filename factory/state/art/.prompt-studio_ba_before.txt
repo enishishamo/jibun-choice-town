@@ -15,3 +15,12 @@ Camera / composition: Interior wide shot from a fixed vantage: wall clock top-ce
 Must include: round wall clock top-center; big monitor left with crash symbol; long desk row; sticky-note-covered whiteboard; frowning tester figure; coffee cups
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補は参照画像より全体の照明が暗くオレンジ寄りで、明るく柔らかなシリーズ標準からわずかに外れる
+- Fix vs reference set: 机上の報告書や付箋、モニターが密集しており、参照画像より背景の情報量が多い
+- Fix vs reference set: 中央人物の髪は参照人物より造形が細かく尖っているが、粘土の一体成形感は維持されている
+- 右端のモニターがフレームで切れている — 意味は損なわないが、端部の密集感を強めている
+- 中央人物の携帯ゲーム機と左右の大型モニターに同じ破損記号が出ており、テスト失敗は伝わる一方でゲーム開発現場という解釈にやや限定される
+- モバイル表示では机上の大量の報告書や小さなチェック記号が潰れやすいが、人物の困惑と障害発生という主要メッセージは中央領域で保持される
+- file too large: 2.2MB (>2MB)

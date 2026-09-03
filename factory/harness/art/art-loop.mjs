@@ -356,6 +356,20 @@ switch (cmd) {
     const ra = runOne(after, [before.output_path], before.output_path);
     process.exit(ra.status === "qa_passed" || ra.status === "reused_existing" ? 0 : 1);
   }
+  case "run-after": {
+    // Generate ONLY the AFTER of a pair against an existing accepted BEFORE
+    // image (e.g. a before accepted via in-context ruling after max_iterations).
+    acquireLock();
+    const before = JSON.parse(readFileSync(argOf("--before"), "utf8"));
+    const after = JSON.parse(readFileSync(argOf("--after"), "utf8"));
+    for (const rq of [before, after]) {
+      if (rq.output_path && !rq.output_path.endsWith("/" + rq.filename)) {
+        throw new Error(`request ${rq.asset_id}: output_path mismatch (${rq.output_path} vs filename ${rq.filename}) — copied request?`);
+      }
+    }
+    const ra = runOne(after, [before.output_path], before.output_path);
+    process.exit(ra.status === "qa_passed" || ra.status === "reused_existing" ? 0 : 1);
+  }
   case "status": {
     const m = loadManifest();
     const by = {};

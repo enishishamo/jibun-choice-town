@@ -3284,13 +3284,14 @@
     "CHARACTER_SERIES_MATCH": 95
    },
    "qa_issues": [
-    "generation produced no file"
+    "generation produced no file",
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
    ],
    "file_hash": "ae6ea8ae9992",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "generation_failed"
+   "status": "qa_conditional_in_context"
   },
   {
    "asset_id": "river_ba_before",
@@ -3390,10 +3391,104 @@
    "filename": "scene-library.png",
    "world": "library",
    "purpose": "エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The backyard of a warm town library as one continuous miniature clay diorama, left to right: a local-history reference desk where a tiny librarian compares an old sepia photograph against a big unfolded old map under a desk lamp; a conservation workroom with white gloves, a soft brush, acid-free boxes and a flat table holding fragile papers; a small digitization studio with a large flatbed scanner, a color chart card and a monitor showing a thumbnail grid. Tall bookshelves in the background connect all three areas. Cozy evening light through a round window, handcrafted clay look, tiny figures, quiet mystery mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous room band. Three work areas at roughly 22%/55%/80% width. At least 8% empty margin at both edges. Bookshelf band top 25%, no text on any spine or sign.\nMust include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Reference scenes generally use slightly brighter, more saturated accent colors; the candidate is more uniformly sepia and subdued.\n- Fix vs reference set: The candidate's deep, continuous bookshelves create a denser and flatter background than the softer, more selectively detailed backgrounds in several references.\n- Fix vs reference set: The three characters have slightly slimmer seated proportions than the strongest 2.5–3-head reference figures, though they still read clearly as matching clay figurines.\n- The three work zones are clearly differentiated and correctly positioned: document comparison at left, conservation work at center, and scanning/digitization at right.\n- The right-side digitization worker and scanner sit near the frame edge, leaving less crop tolerance than the left and center stations on narrow mobile presentations.\n- The warm brown palette reduces separation between furniture, documents, and shelving; slightly stronger localized color contrast would improve rapid hotspot recognition.\n- No readable text, numbers, logos, photorealistic materials, broken anatomy, or incomplete heads/hands are present.\n- file too large: 2.7MB (>2MB)",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The backyard of a warm town library as one continuous miniature clay diorama, left to right: a local-history reference desk where a tiny librarian compares an old sepia photograph against a big unfolded old map under a desk lamp; a conservation workroom with white gloves, a soft brush, acid-free boxes and a flat table holding fragile papers; a small digitization studio with a large flatbed scanner, a color chart card and a monitor showing a thumbnail grid. Tall bookshelves in the background connect all three areas. Cozy evening light through a round window, handcrafted clay look, tiny figures, quiet mystery mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous room band. Three work areas at roughly 22%/55%/80% width. At least 8% empty margin at both edges. Bookshelf band top 25%, no text on any spine or sign.\nMust include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Candidate is slightly warmer and more uniformly amber than the reference set, with less blue/green color contrast.\n- Fix vs reference set: Background shelves contain somewhat denser fine detail than comparable reference interiors.\n- The right-side digitalization worker sits close to the edge, so narrow mobile cropping could reduce recognition of the third hotspot.\n- The three work zones are visually clear, but the center preservation area dominates slightly; stronger spacing or subtle environmental separation would improve instant hotspot scanning on mobile.\n- file too large: 2.5MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T15:50:24.782Z",
+   "iteration": 3,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 84,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 94,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 84,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 91
+   },
+   "qa_issues": [
+    "The left identification desk and right digitization station sit close to the frame edges; aggressive mobile cropping could weaken the intended three-hotspot layout.",
+    "The overall brown palette provides less immediate color separation between the three activity zones than the reference set, though blue and green accents preserve adequate navigation cues.",
+    "The small monitor contains indistinct interface-like thumbnails; they are not readable text or logos, but should remain abstract at production resolution.",
+    "file too large: 2.3MB (>2MB)",
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+   ],
+   "file_hash": "68129bbbeb57",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_conditional_in_context"
+  },
+  {
+   "asset_id": "library_ba_before",
+   "filename": "ba-before.png",
+   "world": "library",
+   "purpose": "wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The front counter of the warm town library as a miniature clay diorama, full series color. ANCHORS that must persist into the AFTER image: the wooden counter running along the lower third, a green desk lamp at its left end, and a tall bookshelf wall behind. Mood NOW: an elderly woman in a cardigan gently places ONE small sepia-toned old photograph (a tiny aged rectangle, the only sepia element) on the counter; a young librarian leans in, curious; a small paper sleeve and white gloves lie ready. Quiet mystery, soft afternoon light. No readable text anywhere.\nRole in game: wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真\nCamera / composition: Interior medium shot from a fixed vantage: counter lower third, green lamp left, bookshelf wall behind. The SAME camera and anchors reappear in the AFTER image. The sepia photo is a small prop, everything else in bright series clay colors.\nMust include: wooden counter lower third; green desk lamp at left end; tall bookshelf wall; elderly woman placing a small sepia photo; curious librarian; paper sleeve and white gloves\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- 右端の白手袋がモバイルクロップで一部見切れる可能性があるが、物語の中心である古写真と二人の人物は中央70%以内に収まり、意味は損なわれない\n- 古写真内部は周囲より写真的だが、明確に作中の古い写真という小道具として表現され、現代の写真素材混在には見えない\n- file too large: 2.3MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T16:00:13.281Z",
+   "iteration": 3,
+   "qa_score": 89,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 92,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 93,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 95,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 94,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 89,
+    "CHARACTER_SERIES_MATCH": 90
+   },
+   "qa_issues": [
+    "The mysterious old photograph is small at mobile size, so its family image may not be immediately recognizable as the central story clue.",
+    "The photograph, booklet, and gloves sit near the lower portion of the frame and could lose prominence under aggressive responsive cropping.",
+    "The pronounced all-over clay texture adds visual noise to faces and clothing, slightly weakening the clean JIBUN CHOICE miniature finish.",
+    "file too large: 2.2MB (>2MB)",
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+   ],
+   "file_hash": "44ee7c403ffd",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_conditional_in_context"
+  },
+  {
+   "asset_id": "studio_scene",
+   "filename": "scene-studio.png",
+   "world": "studio",
+   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The floor of a small cozy game studio as one continuous miniature clay diorama, left to right: a test room corner with a rack of small game consoles, one monitor showing a tiny crash symbol and a clipboard; a planner's desk in the middle with a big wall chart of colorful bar graphs and sticky notes; a designer's desk at the right with a pen tablet, a large screen showing a simple game scene mock and color swatch cards. Tiny staff figures at each area, a whiteboard connecting the spaces, warm night lighting with desk lamps (crunch-before-release but hopeful). Handcrafted clay look, no readable text anywhere.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous studio floor. Three work areas at roughly 20%/52%/80% width. At least 8% empty margin at both edges. Wall band top 25%, no text.\nMust include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Candidate has a noticeably darker, more amber-brown color grade than the brighter and more colorful reference scenes.\n- Fix vs reference set: Interior shadows and corner falloff are slightly heavier than the references, reducing their characteristic soft, airy lighting.\n- Fix vs reference set: Characters are marginally smaller within the overall scene than in comparable reference group scenes, so facial-series traits are less immediately visible.\n- The tester at approximately 20% and designer at approximately 80% sit near the mobile-safe boundary; aggressive responsive cropping could weaken those two hotspots.\n- The strong brown palette makes the three work zones less differentiated than they could be, especially at small display sizes.\n- The right-side designer faces away from the viewer, making that role depend primarily on the monitor and drawing tablet; those objects must remain visible in every crop.\n- file too large: 2.3MB (>2MB)",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -3402,132 +3497,82 @@
    ],
    "dimensions": "1536x1023",
    "aspect_ratio": 1.501,
-   "created_at": "2026-09-03T14:44:54.166Z",
-   "iteration": 1,
-   "qa_score": 89,
+   "created_at": "2026-09-03T16:09:33.353Z",
+   "iteration": 3,
+   "qa_score": 84,
    "qa_scores": {
     "STYLE_CONSISTENCY": 92,
     "COMPOSITION": 94,
-    "CROP_SAFETY": 96,
-    "READABILITY": 91,
-    "OBJECT_COMPLETENESS": 97,
-    "CHARACTER_ANATOMY": 95,
-    "SERIES_CONSISTENCY": 90,
+    "CROP_SAFETY": 84,
+    "READABILITY": 93,
+    "OBJECT_COMPLETENESS": 94,
+    "CHARACTER_ANATOMY": 91,
+    "SERIES_CONSISTENCY": 91,
     "BEFORE_AFTER_CONSISTENCY": 100,
     "JOB_ACCURACY": 96,
-    "MOBILE_USABILITY": 90,
-    "SERIES_STYLE_MATCH": 89,
-    "CHARACTER_SERIES_MATCH": 91
+    "MOBILE_USABILITY": 86,
+    "SERIES_STYLE_MATCH": 90,
+    "CHARACTER_SERIES_MATCH": 92
    },
    "qa_issues": [
-    "codex exec exited 1"
+    "右端のデザイン席とモニターが画面端に近く、狭いモバイルクロップでは③ホットスポットの意味が弱くなる可能性がある",
+    "左モニター内の記号は文字ではないものの、UIのエラー表示に見えるためテストルームの意味が少し限定的になる",
+    "全体が暖色かつ低照度で、明るい青空や柔らかな自然光を多用する参照セットよりわずかに重い印象がある",
+    "file too large: 2.3MB (>2MB)",
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
    ],
-   "file_hash": "aee57526a487",
+   "file_hash": "e57b50f6848d",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "generation_failed"
-  },
-  {
-   "asset_id": "library_ba_before",
-   "filename": "ba-before.png",
-   "world": "library",
-   "purpose": "wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真",
-   "source_type": "codex_imagegen",
-   "provider": "codex_imagegen",
-   "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The front counter of the warm town library as a miniature clay diorama, full series color. ANCHORS that must persist into the AFTER image: the wooden counter running along the lower third, a green desk lamp at its left end, and a tall bookshelf wall behind. Mood NOW: an elderly woman in a cardigan gently places ONE small sepia-toned old photograph (a tiny aged rectangle, the only sepia element) on the counter; a young librarian leans in, curious; a small paper sleeve and white gloves lie ready. Quiet mystery, soft afternoon light. No readable text anywhere.\nRole in game: wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真\nCamera / composition: Interior medium shot from a fixed vantage: counter lower third, green lamp left, bookshelf wall behind. The SAME camera and anchors reappear in the AFTER image. The sepia photo is a small prop, everything else in bright series clay colors.\nMust include: wooden counter lower third; green desk lamp at left end; tall bookshelf wall; elderly woman placing a small sepia photo; curious librarian; paper sleeve and white gloves\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は基準画像より全体の色温度がやや黄褐色寄りで、背景の本棚も少し暗く重い\n- Fix vs reference set: 高齢者の眼鏡と髪の造形は基準人物よりわずかに細密だが、粘土人形の範囲内\n- 左端のランプが途中で切れているが、物語上の重要要素ではなく意味は損なわれない\n- 古写真が小さく、375px幅では写真の存在は分かっても内容までは判別しにくい\n- 重要要素は概ね中央に収まるが、横長構図のためモバイルで中央クロップすると両人物の外側がやや窮屈になる\n- file too large: 2.3MB (>2MB)",
-   "reference_assets": [
-    "public/assets/kyushoku/farmer_char.png",
-    "public/assets/schooltrip/school-trip-teacher.jpg",
-    "public/assets/town-hero.png",
-    "public/assets/price/shop.jpg"
-   ],
-   "dimensions": "1536x1024",
-   "aspect_ratio": 1.5,
-   "created_at": "2026-09-03T14:45:10.616Z",
-   "iteration": 1,
-   "qa_score": 91,
-   "qa_scores": {
-    "STYLE_CONSISTENCY": 94,
-    "COMPOSITION": 93,
-    "CROP_SAFETY": 94,
-    "READABILITY": 96,
-    "OBJECT_COMPLETENESS": 95,
-    "CHARACTER_ANATOMY": 96,
-    "SERIES_CONSISTENCY": 94,
-    "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 91,
-    "MOBILE_USABILITY": 92,
-    "SERIES_STYLE_MATCH": 94,
-    "CHARACTER_SERIES_MATCH": 95
-   },
-   "qa_issues": [
-    "codex exec exited 1"
-   ],
-   "file_hash": "89aef2f9cf8a",
-   "used_by": [
-    "src/data/content/river.ts"
-   ],
-   "status": "generation_failed"
-  },
-  {
-   "asset_id": "studio_scene",
-   "filename": "scene-studio.png",
-   "world": "studio",
-   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）",
-   "source_type": "codex_imagegen",
-   "provider": "codex_imagegen",
-   "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The floor of a small cozy game studio as one continuous miniature clay diorama, left to right: a test room corner with a rack of small game consoles, one monitor showing a tiny crash symbol and a clipboard; a planner's desk in the middle with a big wall chart of colorful bar graphs and sticky notes; a designer's desk at the right with a pen tablet, a large screen showing a simple game scene mock and color swatch cards. Tiny staff figures at each area, a whiteboard connecting the spaces, warm night lighting with desk lamps (crunch-before-release but hopeful). Handcrafted clay look, no readable text anywhere.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous studio floor. Three work areas at roughly 20%/52%/80% width. At least 8% empty margin at both edges. Wall band top 25%, no text.\nMust include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は夜間の暗い室内と強い周辺減光が支配的で、参照画像の明るく均一な色温度と柔らい斜光から大きく外れている\n- Fix vs reference set: 茶色と黒を中心とした低彩度の画面で、参照画像に共通する青・緑・黄を活かした明快で軽やかな配色より重く見える\n- Fix vs reference set: 人物や家具の粘土質感は近いが、候補は陰影と被写界深度が映画的で、参照画像の明るい玩具ジオラマ的なカメラ感よりシネマティック\n- Fix vs reference set: 人物の顔・小さな点状の目・固形粘土風の髪は参照に概ね一致するが、全体が暗いため肌と服のマットな粘土質感が埋もれている\n- Fix vs reference set: 参照の作業場シーンは各人物と道具を明瞭に見せるのに対し、候補の左端テスト席と右端デザイン席は暗部が強く、モバイル表示で役割の識別性が落ちる\n- 明るく柔らかい配色というMUST条件を満たさず、シリーズの教育ゲーム画面として暗く重い — 色温度と露出を参照画像の昼間の室内程度まで上げる必要がある\n- 強いビネットで四隅の棚・人物・机が沈む — 375px幅では3つのホットスポット、とくに左約20%と右約80%の視認性が不足する\n- 横長画面に情報が密集しており、中央70%外の左右人物は端末クロップ時に役割を示す機器ごと失われやすい",
-   "reference_assets": [
-    "public/assets/kyushoku/farmer_char.png",
-    "public/assets/schooltrip/school-trip-teacher.jpg",
-    "public/assets/town-hero.png",
-    "public/assets/price/shop.jpg"
-   ],
-   "dimensions": "1536x1024",
-   "aspect_ratio": 1.5,
-   "created_at": "2026-09-03T14:45:26.213Z",
-   "iteration": 1,
-   "qa_score": 87,
-   "qa_scores": {
-    "STYLE_CONSISTENCY": 89,
-    "COMPOSITION": 93,
-    "CROP_SAFETY": 92,
-    "READABILITY": 94,
-    "OBJECT_COMPLETENESS": 96,
-    "CHARACTER_ANATOMY": 91,
-    "SERIES_CONSISTENCY": 88,
-    "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 94,
-    "MOBILE_USABILITY": 90,
-    "SERIES_STYLE_MATCH": 87,
-    "CHARACTER_SERIES_MATCH": 88
-   },
-   "qa_issues": [
-    "codex exec exited 1"
-   ],
-   "file_hash": "0ffdb8f61e46",
-   "used_by": [
-    "src/data/content/river.ts"
-   ],
-   "status": "generation_failed"
+   "status": "qa_conditional_in_context"
   },
   {
    "asset_id": "studio_ba_before",
    "filename": "ba-before.png",
    "world": "studio",
    "purpose": "wrapUpのBEFORE。発売3日前の夜：💥報告の山と、しかめっつらのテスト",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
-   "iteration": 1,
+   "status": "qa_conditional_in_context",
+   "iteration": 3,
    "qa_issues": [
-    "codex exec exited 1"
+    "発売直前の夜、疲れたテスター、障害を示す画面という状況は明確だが、「報告の山」は付箋数枚だけで量感がやや弱い",
+    "中央人物の顔と端末が大きなモニターに一部遮られており、モバイル表示では主要人物の作業内容が少し読み取りにくい",
+    "画面の破裂マークは文字ではなく許容範囲だが、強いコントラストで視線を奪い、しかめっつらのテストという主題より目立つ",
+    "file too large: 2.2MB (>2MB)",
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
    ],
-   "created_at": "2026-09-03T14:45:42.371Z"
+   "created_at": "2026-09-03T16:18:03.982Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Inside the small game studio at night, three days before release, as a miniature clay diorama. ANCHORS that must persist into the AFTER image: the studio's round wall clock top-center, the big shared monitor on the left wall, and the long desk row running to the right. Mood NOW: the big monitor shows a tiny crash symbol, sticky notes pile on the whiteboard, a tester child-sized figure frowns at a handheld, coffee cups, one figure stretching tiredly. Warm but tense lamplight. No readable text.\nRole in game: wrapUpのBEFORE。発売3日前の夜：💥報告の山と、しかめっつらのテスト\nCamera / composition: Interior wide shot from a fixed vantage: wall clock top-center, big monitor left, desk row to the right. The SAME camera and anchors reappear in the AFTER image.\nMust include: round wall clock top-center; big monitor left with crash symbol; long desk row; sticky-note-covered whiteboard; frowning tester figure; coffee cups\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照画像より全体の照明が暗くオレンジ寄りで、明るく柔らかなシリーズ標準からわずかに外れる\n- Fix vs reference set: 机上の報告書や付箋、モニターが密集しており、参照画像より背景の情報量が多い\n- Fix vs reference set: 中央人物の髪は参照人物より造形が細かく尖っているが、粘土の一体成形感は維持されている\n- 右端のモニターがフレームで切れている — 意味は損なわないが、端部の密集感を強めている\n- 中央人物の携帯ゲーム機と左右の大型モニターに同じ破損記号が出ており、テスト失敗は伝わる一方でゲーム開発現場という解釈にやや限定される\n- モバイル表示では机上の大量の報告書や小さなチェック記号が潰れやすいが、人物の困惑と障害発生という主要メッセージは中央領域で保持される\n- file too large: 2.2MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "qa_score": 85,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 88,
+    "CROP_SAFETY": 90,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 92,
+    "CHARACTER_ANATOMY": 91,
+    "SERIES_CONSISTENCY": 88,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 92,
+    "MOBILE_USABILITY": 85,
+    "SERIES_STYLE_MATCH": 87,
+    "CHARACTER_SERIES_MATCH": 86
+   },
+   "file_hash": "9acad7e5eb00",
+   "used_by": [
+    "src/data/content/river.ts"
+   ]
   }
  ]
 }

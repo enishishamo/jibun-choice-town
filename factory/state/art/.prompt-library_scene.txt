@@ -15,3 +15,10 @@ Camera / composition: Wide horizontal interior, slight high angle, one continuou
 Must include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate is slightly warmer and more uniformly amber than the reference set, with less blue/green color contrast.
+- Fix vs reference set: Background shelves contain somewhat denser fine detail than comparable reference interiors.
+- The right-side digitalization worker sits close to the edge, so narrow mobile cropping could reduce recognition of the third hotspot.
+- The three work zones are visually clear, but the center preservation area dominates slightly; stronger spacing or subtle environmental separation would improve instant hotspot scanning on mobile.
+- file too large: 2.5MB (>2MB)

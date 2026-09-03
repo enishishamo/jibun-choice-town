@@ -54,7 +54,7 @@ const advance = async (needle, extra = "") => {
 // enter world
 await click("森と川"); await sleep(900);
 await click("森のなぞ"); await sleep(800);
-await click("森に入ってみる"); await sleep(700);
+await click("森へ入る"); await sleep(700);
 await shot("area");
 
 // ---- ① thinning_pick --------------------------------------------------------

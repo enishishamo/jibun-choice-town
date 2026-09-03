@@ -51,7 +51,7 @@ const advance = async (needle) => {
 // enter
 await click("森と川"); await sleep(900);
 await click("川に魚が！"); await sleep(800);
-await click("川ぞいを歩いてみる"); await sleep(700);
+await click("川ぞいへ"); await sleep(700);
 await shot("area");
 
 // ---- ① water_trace ----------------------------------------------------------

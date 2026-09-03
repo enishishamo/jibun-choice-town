@@ -43,7 +43,7 @@ const recoverHome = async () => {
 // enter world
 await click("駅前"); await sleep(900);
 await click("ゲームの3日間"); await sleep(800);
-await click("スタジオに入る"); await sleep(700);
+await click("中へ入る"); await sleep(700);
 await shot("area");
 
 // ---- ① bug_repro ------------------------------------------------------------

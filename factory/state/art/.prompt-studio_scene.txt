@@ -15,3 +15,12 @@ Camera / composition: Wide horizontal interior, slight high angle, one continuou
 Must include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate has a noticeably darker, more amber-brown color grade than the brighter and more colorful reference scenes.
+- Fix vs reference set: Interior shadows and corner falloff are slightly heavier than the references, reducing their characteristic soft, airy lighting.
+- Fix vs reference set: Characters are marginally smaller within the overall scene than in comparable reference group scenes, so facial-series traits are less immediately visible.
+- The tester at approximately 20% and designer at approximately 80% sit near the mobile-safe boundary; aggressive responsive cropping could weaken those two hotspots.
+- The strong brown palette makes the three work zones less differentiated than they could be, especially at small display sizes.
+- The right-side designer faces away from the viewer, making that role depend primarily on the monitor and drawing tablet; those objects must remain visible in every crop.
+- file too large: 2.3MB (>2MB)

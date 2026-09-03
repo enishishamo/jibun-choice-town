@@ -25,6 +25,8 @@ export interface District {
   teaser?: string;
   /** fog only: the ghosted silhouette shown IN the mist (a visible hint) */
   silhouette?: string;
+  /** fog only: rotating hints — every re-tap yields a NEW clue (§15) */
+  teasers?: string[];
 }
 
 export const TOWN_TILE = {
@@ -99,6 +101,11 @@ export const DISTRICTS: District[] = [
     foggy: true,
     silhouette: "📡",
     teaser: "山のむこうに、大きなアンテナのようなものが見える…",
+    teasers: [
+      "山のむこうに、大きなアンテナのようなものが見える…",
+      "夜、そのアンテナがゆっくり動いたのを見た人がいる。",
+      "まちの探検がすすめば、もやの晴れる日が来るらしい。",
+    ],
   },
   {
     id: "fog-yuki",
@@ -112,6 +119,11 @@ export const DISTRICTS: District[] = [
     foggy: true,
     silhouette: "🛩",
     teaser: "遠くの空から、白いものが飛んでくる季節があるらしい…",
+    teasers: [
+      "遠くの空から、白いものが飛んでくる季節があるらしい…",
+      "朝はやく、白い機体が音もなく降りていったって。",
+      "まちの探検がすすめば、もやの晴れる日が来るらしい。",
+    ],
   },
 ];
 
@@ -123,9 +135,9 @@ export const WORLD_DISTRICT: Record<string, string> = {
   "town-festival": "center",
   "er-patient": "center",
   "school-trip": "center",
-  "shop-opening": "center",
+  "shop-opening": "ekimae", // 商店街の新店 — 駅前の商圏へ再配置（capacity §12）
   "waste-journey": "center",
-  "zoo-baby": "center",
+  "zoo-baby": "mori-kawa", // 動物園 — 自然側の地区へ再配置（capacity §12）
   // Expansion v1 (new worlds register here as they ship)
   "night-port": "minato",
   "forest-care": "mori-kawa",

@@ -43,7 +43,7 @@ const recoverHome = async () => {
 // enter world: district chip → world marker → opening
 await click("丘の上"); await sleep(900);
 await click("写真のなぞ"); await sleep(800);
-await click("カウンターの奥へ"); await sleep(700);
+await click("奥へ入る"); await sleep(700);
 await shot("area");
 
 // ---- ① photo_clues ----------------------------------------------------------

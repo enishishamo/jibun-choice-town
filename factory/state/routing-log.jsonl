@@ -160,3 +160,32 @@
 {"ts":"2026-09-03T14:45:26.205Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/scene-studio.png","exit":1}
 {"ts":"2026-09-03T14:45:42.363Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":1}
 {"ts": "2026-09-03T23:47:26", "mode": "fable-task", "model": "fable-5", "task": "Home Quality Gate FAIL repair (worldState UPDATED path, generic terrain from registry, capacity enforcement, state-driven markers, fog silhouettes, district naming age-fit)", "why_fable": "post-FAIL repair requiring architecture decisions across GameState/districts/HomeScreen (state model + registry contract changes), affects all worlds"}
+{"ts":"2026-09-03T14:55:11.448Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":16.005}
+{"ts":"2026-09-03T15:15:28.207Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":16.42}
+{"ts":"2026-09-03T15:38:21.975Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":173.447}
+{"ts":"2026-09-03T15:41:09.797Z","tool":"codex-review","label":"review","prompt_file":"factory/state/child-critic-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":167.591}
+{"ts":"2026-09-03T15:44:19.213Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/scene-library.png","exit":0}
+{"ts":"2026-09-03T15:44:45.126Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/scene-library.png"],"exit":0}
+{"ts":"2026-09-03T15:47:15.228Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/scene-library.png","exit":0}
+{"ts":"2026-09-03T15:47:34.830Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/scene-library.png"],"exit":0}
+{"ts":"2026-09-03T15:50:02.559Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/scene-library.png","exit":0}
+{"ts":"2026-09-03T15:50:24.749Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/scene-library.png"],"exit":0}
+{"ts":"2026-09-03T15:52:06.853Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/ba-before.png","exit":0}
+{"ts":"2026-09-03T15:52:29.331Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/ba-before.png"],"exit":0}
+{"ts":"2026-09-03T15:54:33.144Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/ba-before.png","exit":0}
+{"ts":"2026-09-03T15:54:54.122Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/ba-before.png"],"exit":0}
+{"ts":"2026-09-03T15:59:51.959Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/ba-before.png","exit":0}
+{"ts":"2026-09-03T16:00:13.250Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/library/ba-before.png"],"exit":0}
+{"ts":"2026-09-03T16:02:13.262Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/scene-studio.png","exit":0}
+{"ts":"2026-09-03T16:02:36.904Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/scene-studio.png"],"exit":0}
+{"ts":"2026-09-03T16:05:00.249Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/scene-studio.png","exit":0}
+{"ts":"2026-09-03T16:05:22.792Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/scene-studio.png"],"exit":0}
+{"ts":"2026-09-03T16:09:06.765Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/scene-studio.png","exit":0}
+{"ts":"2026-09-03T16:09:33.321Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/scene-studio.png"],"exit":0}
+{"ts":"2026-09-03T16:11:40.817Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":0}
+{"ts":"2026-09-03T16:12:07.719Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/ba-before.png"],"exit":0}
+{"ts":"2026-09-03T16:14:21.005Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":0}
+{"ts":"2026-09-03T16:14:45.972Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/ba-before.png"],"exit":0}
+{"ts":"2026-09-03T16:17:38.471Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":0}
+{"ts":"2026-09-03T16:18:03.947Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/ba-before.png"],"exit":0}
+{"ts": "2026-09-04T01:20:31", "mode": "fable-task", "model": "fable-5", "task": "Home R2 FAIL + Child Critic HIGH repair (center capacity re-homing, unknown-district fallback, district-bounded relaxation, marker direct-open UX, fog teaser progression, age-fit copy)", "why_fable": "cross-cutting map architecture + UX flow decisions (camera/enter semantics), content re-homing judgment across worlds"}

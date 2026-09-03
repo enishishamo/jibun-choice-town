@@ -44,6 +44,8 @@ export default function HomeScreen() {
   const { navigate, progress, worldState } = useGame();
   const [focus, setFocus] = useState<string | null>(null); // district id or null = region
   const [teaser, setTeaser] = useState<string | null>(null);
+  const fogTapCount = useRef<Record<string, number>>({});
+  const enterTimer = useRef<number | null>(null);
   const [pan, setPan] = useState({ x: 0, y: 0 }); // region-mode drag offset
   const drag = useRef<{ x: number; y: number; px: number; py: number; moved: boolean } | null>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -72,14 +74,18 @@ export default function HomeScreen() {
       (byDistrict[d] ??= []).push(ev.id);
     }
     for (const [districtId, ids] of Object.entries(byDistrict)) {
-      if (districtId !== "center" && ids.length > DISTRICT_CAPACITY) {
+      if (ids.length > DISTRICT_CAPACITY) {
         console.warn(`[atlas] district "${districtId}" holds ${ids.length} worlds (capacity ${DISTRICT_CAPACITY}) — open a new district (§12/§30)`);
       }
     }
     const out: WorldMarker[] = [];
     for (const [districtId, ids] of Object.entries(byDistrict)) {
-      const d = getDistrict(districtId);
-      if (!d) continue;
+      let d = getDistrict(districtId);
+      if (!d) {
+        // a typo'd district id must never make shipped worlds vanish
+        console.warn(`[atlas] unknown district "${districtId}" — falling back to center`);
+        d = getDistrict("center")!;
+      }
       ids.forEach((eventId, i) => {
         const ev = events.find((e) => e.id === eventId)!;
         let x: number, y: number;
@@ -120,11 +126,18 @@ export default function HomeScreen() {
           }
         }
       }
+      // clamp within each marker's district every pass, so growth in one
+      // district can never push markers into a neighbour or off the canvas
+      for (const m of out) {
+        const d = getDistrict(m.districtId);
+        if (d && m.districtId !== "center") {
+          m.x = Math.min(Math.max(m.x, d.cx - d.r - 40), d.cx + d.r + 40);
+          m.y = Math.min(Math.max(m.y, d.cy - d.r * 0.85 - 20), d.cy + d.r * 0.85 + 30);
+        }
+        m.x = Math.min(Math.max(m.x, 48), CANVAS_W - 48);
+        m.y = Math.min(Math.max(m.y, 30), CANVAS_H - 24);
+      }
       if (!moved) break;
-    }
-    for (const m of out) {
-      m.x = Math.min(Math.max(m.x, 48), CANVAS_W - 48);
-      m.y = Math.min(Math.max(m.y, 30), CANVAS_H - 24);
     }
     return out;
   }, [worldState]);
@@ -191,9 +204,15 @@ export default function HomeScreen() {
     return () => window.clearTimeout(t);
   }, []);
 
+  useEffect(() => () => { if (enterTimer.current) window.clearTimeout(enterTimer.current); }, []);
+
   const openDistrict = (d: District) => {
+    if (enterTimer.current) { window.clearTimeout(enterTimer.current); enterTimer.current = null; }
     if (d.foggy) {
-      setTeaser(d.teaser ?? "まだ、もやの向こう。");
+      // every re-tap yields the NEXT clue — curiosity is answered, honestly
+      const hints = d.teasers ?? [d.teaser ?? "まだ、もやの向こう。"];
+      const n = (fogTapCount.current[d.id] = (fogTapCount.current[d.id] ?? 0) + 1);
+      setTeaser(hints[(n - 1) % hints.length]);
       window.setTimeout(() => setTeaser(null), 3200);
       return;
     }
@@ -311,7 +330,7 @@ export default function HomeScreen() {
                     top: TOWN_TILE.y + (parseFloat(p.mapPos!.top) / 100) * TOWN_TILE.h,
                   }}
                 >
-                  {p.name}・じゅんびちゅう
+                  {p.name}・準備中
                 </span>
               ))}
 
@@ -333,8 +352,15 @@ export default function HomeScreen() {
                   onClick={() => {
                     if (suppressTap.current) return;
                     if (!inFocus) {
+                      // a WORLD marker tap is never a dead tap: the camera
+                      // glides in, then the world opens (one continuous move)
                       setFocus(m.districtId);
-                      return; // first zoom in — the world never cuts
+                      if (enterTimer.current) window.clearTimeout(enterTimer.current);
+                      enterTimer.current = window.setTimeout(
+                        () => navigate({ name: "area", eventId: m.eventId }),
+                        680,
+                      );
+                      return;
                     }
                     navigate({ name: "area", eventId: m.eventId });
                   }}
@@ -354,10 +380,10 @@ export default function HomeScreen() {
 
           {focus && (
             <button className="region-back" onClick={() => setFocus(null)}>
-              🗺 ちいき全体
+              🗺 地域全体
             </button>
           )}
-          {!focus && !hasPanned && <div className="pan-hint">👆 地図は うごかせる</div>}
+          {!focus && !hasPanned && <div className="pan-hint">👆 地図は動かせる</div>}
         </div>
 
         {/* district chips: always reachable, never lost (§ anti-迷子) */}
@@ -375,8 +401,8 @@ export default function HomeScreen() {
 
         <p className="town-hint">
           {focus
-            ? "気になる出来事をタップ。ぜんぶ回らなくてもいい。"
-            : "地図はこれからも広がっていく。もやの向こうは、まだひみつ。"}
+            ? "気になる出来事をタップ。全部回らなくてもいい。"
+            : "地図はこれからも広がっていく。もやの向こうで、何かが動いている。"}
         </p>
       </div>
     </div>

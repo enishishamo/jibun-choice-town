@@ -35,7 +35,7 @@ const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mo
 // enter the port world: minato district chip -> world marker
 await click("港"); await sleep(900);
 await click("夜のみなと"); await sleep(800);
-await click("のぞいてみる"); await sleep(700);
+await click("ふ頭へ"); await sleep(700);
 await shot("area");
 
 // ---- ① yard_plan -----------------------------------------------------------

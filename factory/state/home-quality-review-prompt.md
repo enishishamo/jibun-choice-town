@@ -57,3 +57,19 @@ ITERATION 2 CONTEXT (fixes since your R1 FAIL — verify in code):
 - The canvas comment now matches the rendered 1200x820.
 Machine re-checks: 14-world map zero overlaps (mobile/desktop), all 5 new-world
 flow bots pass with the kanji chips, tsc clean.
+
+ITERATION 3 CONTEXT (fixes since your R2 FAIL — verify in code):
+- Center capacity RESOLVED by re-homing, not by exempting: shop-opening →
+  駅前 (commercial fit), zoo-baby → 森と川 (nature fit); center now holds 7/8.
+  The capacity warning covers EVERY district including center.
+- Unknown district ids no longer drop worlds: markers fall back to center with
+  a loud console.warn (typo-safe).
+- The de-collision pass is district-bounded: every relaxation pass clamps
+  non-center markers into their own district's bounds, so growth in one
+  district can never push markers into a neighbour or off-canvas.
+- Age-fit copy: 準備中・地域全体・地図は動かせる・全部回らなくてもいい・
+  「もやの向こうで、何かが動いている。」(ひみつ表記を廃止).
+- Child-critic HIGHs also addressed (context): world-marker taps are never dead
+  taps (camera glides in, then the world opens in one continuous move); fog
+  districts rotate through NEW clues on every re-tap (teasers[] in registry).
+Machine re-checks: 14-world map zero overlaps, all 5 flow bots pass, tsc clean.
