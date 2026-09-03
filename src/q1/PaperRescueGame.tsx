@@ -154,7 +154,7 @@ export default function PaperRescueGame({ onComplete }: Q1GameProps) {
               if (r.state.idx === rs.idx) {
                 // the item visibly stays, now carrying a returned-work sticky
                 setStickies((n) => n + 1);
-                setNote("…資料は作業だいに残ったまま。付せん🔖が1枚はられ、先輩が状態のメモを指さした。");
+                setNote("…資料は作業だいに残ったまま。付せん🔖が1枚、はられた。");
               } else {
                 setStickies(0);
                 setNote(null);

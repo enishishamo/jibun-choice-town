@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 72,
+    "game_quality_score": 81,
+    "language": {
+      "LANGUAGE_AGE_FIT": 86,
+      "FURIGANA_SUPPORT": 74,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 83,
+      "TECHNICAL_TERM_SUPPORT": 82,
+      "VISUAL_LANGUAGE_SUPPORT": 85
+    },
+    "blockers": [],
+    "high": [
+      "photo_cluesは、確認した2項目のうち一致が1つだけでも、正解地点に「推定」を付ければ成功する。表示規則の「2つなら推定」と矛盾し、単独手掛かりによる場所判断を成功扱いする。",
+      "3ゲームすべてで最初の誤答直後から文章ヒントを表示している。拘束規則の「1回目は視覚的結果のみ」を満たさず、photo_cluesでは「根拠の数」と誤りの理由まで直接示している。"
+    ],
+    "medium": [
+      "digi_archiveの棚は「公開だな」と表示される一方、公開保留資料も同じ棚へ登録される。鍵表示はあるが、登録と公開を分ける職業判断の視覚モデルとして曖昧。"
+    ],
+    "low": [
+      "R3で2〜6文字にしたとされるボタン修正は不完全。「別の持ちこみで」「状態調査票を書く」は6文字を超える。",
+      "「稜線」「閲覧」「仕様」など、高学年には難しい語が画面初出時にルビや短い言い換えなしで現れる箇所が残る。"
+    ],
+    "evidence": [
+      "src/q1/libraryLogic.ts:94 — probableの成功条件がv >= 1 && v < 3であり、規則上必要な一致2件を要求していない。",
+      "src/q1/PhotoCluesGame.tsx:161 — UI上の職業規則は「1つの手がかりで断定しない」と明示している。",
+      "src/q1/PhotoCluesGame.tsx:163 — UIは「2つなら推定」と明示しており、実装条件v >= 1と自己矛盾する。",
+      "src/q1/PhotoCluesGame.tsx:197 — 最初の誤答で候補と盤面に📄↩を付ける視覚結果は実装されている。",
+      "src/q1/PhotoCluesGame.tsx:199 — 同じ最初の誤答で「根拠の数を、もう一度」と理由を示す文章ヒントも即時表示する。",
+      "src/q1/PaperRescueGame.tsx:154 — 誤処置時に対象が机上へ残る視覚結果を判定している。",
+      "src/q1/PaperRescueGame.tsx:157 — 最初の誤処置から「状態のメモを指さした」と見る場所を文章で教える。",
+      "src/q1/DigiArchiveGame.tsx:176 — 誤登録時に棚スロットを差し戻し表示へ変える。",
+      "src/q1/DigiArchiveGame.tsx:177 — 最初の誤登録から「手引きと調査メモを、もう一度」と資料を直接指定する。",
+      "factory/rules/language-style.md:55 — 失敗1回目は視覚的結果のみ、2回目から汎用ヒントという拘束段階を規定する。",
+      "src/q1/DigiArchiveGame.tsx:42 — アーカイブ棚を「公開だな」と命名している。",
+      "src/q1/DigiArchiveGame.tsx:54 — 公開保留資料もその公開棚内に表示される。",
+      "src/q1/PaperRescueGame.tsx:96 — 「別の持ちこみで」はボタン文字数規則を超える。",
+      "src/q1/PaperRescueGame.tsx:113 — 「状態調査票を書く」はボタン文字数規則を超える。",
+      "src/q1/PhotoCluesGame.tsx:15 — 「稜線」がルビなしで表示される。",
+      "src/q1/DigiArchiveGame.tsx:108 — 「閲覧用」が画面初出でルビなし。"
+    ],
+    "recommended_actions": [
+      "photoConcludeの推定条件をv === 2へ変更し、一致1件での推定成功を禁止する。",
+      "各ゲームの最初の誤答では視覚的差し戻しだけを表示し、文章ヒントは2回目以降に段階化する。photo_cluesの初回文言から誤答理由を除く。",
+      "公開保留資料を「公開だな」ではなく非公開の登録領域または権利確認待ち領域へ視覚的に分離する。",
+      "長いボタンを「別の資料」「調査票へ」など2〜6文字へ短縮する。",
+      "難読語・専門語の画面初出に選択的ルビまたは短い言い換えを追加する。"
+    ]
+  },
+  "elapsed_sec": 114.563
+}

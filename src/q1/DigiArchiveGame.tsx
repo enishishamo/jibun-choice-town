@@ -174,7 +174,7 @@ export default function DigiArchiveGame({ onComplete }: Q1GameProps) {
             setNote(null);
           } else {
             setBouncedNow(true);
-            setNote("…登録票が、点検係から戻ってきた。付せんに「手引きと調査メモを、もう一度」。");
+            setNote("…登録票が、だまって戻ってきた。");
           }
         }}
       >

@@ -96,6 +96,24 @@ const N = 500;
     }
     check("photo: the same 2-match evidence answered as 推定 is CORRECT", tries > 0 && ok === tries, `${ok}/${tries}`);
   }
+  // one verified match supports NO conclusion — even 推定 on the right place bounces
+  {
+    let tries = 0, bounced = 0;
+    for (let i = 0; i < 200; i++) {
+      const rand = rng(9000 + i);
+      let s2 = newPhotoState(rand);
+      const ans = s2.c.candidates.find((c) => c.id === s2.c.answer);
+      const matching = CLUES.filter((c) => ans.matches[c]);
+      const missing = CLUES.filter((c) => !ans.matches[c]);
+      if (missing.length < 1) continue;
+      s2 = photoCheck(s2, matching[0]);
+      s2 = photoCheck(s2, missing[0]); // 2 lookups, only 1 verified match
+      tries++;
+      const r = photoConclude(s2, s2.c.answer, "probable");
+      if (r.state.outcome !== "done") bounced++;
+    }
+    check("photo: 推定 with only ONE verified match bounces", tries > 0 && bounced === tries, `${bounced}/${tries}`);
+  }
   // two mistakes hand the case to the mentor
   {
     let s = newPhotoState(rng(7));

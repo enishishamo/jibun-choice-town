@@ -51,3 +51,14 @@ Output (STRICT — single JSON object, no prose):
  "evidence":["file:line — finding"],"recommended_actions":[]}
 score = min(career, game). FAIL if any blockers or high remain, or
 LANGUAGE_AGE_FIT/BUTTON_CLARITY/TEXT_DENSITY < 80.
+
+ITERATION 2 CONTEXT (fixes since your R1 FAIL — verify):
+- Buttons trimmed to 2-6 chars: どうくつ・票を回す・✅ 再テスト・案を送る・残りの輪.
+- Decision data at body size: bug_repro adds a 16px いまの条件 line (the selected
+  conditions restated at body size; the bench log itself raised to 13.5-14px as
+  the compact overview per the small-annotation calibration); difficulty_tune
+  evidence panel and ui_clarity report panel raised to 16px.
+- Selective ruby at first use: ｜再現手順《さいげんてじゅん》 in the task bar,
+  ｜不具合票《ふぐあいひょう》 in the rule card; プレイログ（遊びの記録）
+  paraphrase on the log board. (コントラスト appears only in q2 with ruby.)
+Machine re-checks: sims 18/18, flow bots pass, tsc clean.

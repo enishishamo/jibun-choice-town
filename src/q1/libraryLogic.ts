@@ -90,8 +90,9 @@ export function photoConclude(
     };
   }
   const v = verifiedMatches(s, id);
-  // the professional rule: 確定 needs 3+ verified independent matches
-  const correctCertainty = certainty === "confirmed" ? v >= CONFIRM_MIN : v >= 1 && v < CONFIRM_MIN;
+  // the professional rule: 確定 needs 3+ verified matches; 推定 needs exactly 2.
+  // ONE lookalike match supports NO conclusion at all (the novice trap).
+  const correctCertainty = certainty === "confirmed" ? v >= CONFIRM_MIN : v === 2;
   if (correctPlace && correctCertainty) return { state: { ...s, outcome: "done" }, correctPlace, correctCertainty };
   const mistakes = s.mistakes + 1;
   return {

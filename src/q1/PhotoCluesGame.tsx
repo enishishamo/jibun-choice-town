@@ -12,7 +12,7 @@ type Step = "work" | "failed" | "done";
 
 const CLUE_INFO: Record<Clue, { emoji: string; label: string; source: string }> = {
   road: { emoji: "🛣", label: "道の曲がり方", source: "古い地形図と比べる" },
-  ridge: { emoji: "⛰", label: "山のかたち", source: "写真の奥の稜線と比べる" },
+  ridge: { emoji: "⛰", label: "山のかたち", source: "写真の奥の山のりんかくと比べる" },
   sign: { emoji: "🏪", label: "店の看板", source: "昔の商店の名簿で調べる" },
   pole: { emoji: "🌉", label: "橋と電柱", source: "古い住宅地図で調べる" },
 };
@@ -196,7 +196,7 @@ export default function PhotoCluesGame({ onComplete }: Q1GameProps) {
                 if (r.state.outcome === "mentor_fail") { setStep("failed"); return; }
                 setBounced((b2) => (pick && !b2.includes(pick) ? [...b2, pick] : b2));
                 setPick(null);
-                setNote("…回答の紙が、受付から戻ってきた。付せんに「根拠の数を、もう一度」。");
+                setNote("…回答の紙が、だまって戻ってきた。");
               }}
             >
               <span className="choice-name">{ct === "confirmed" ? "✅ 確定" : "🤔 推定"}</span>

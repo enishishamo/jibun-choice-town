@@ -23,7 +23,7 @@
  ],
  "aspect_ratio": "3:2",
  "size": "1536x1024",
- "output_path": "public/assets/river/scene-river.png",
+ "output_path": "public/assets/library/ba-before.png",
  "used_by": [
   "src/data/content/river.ts"
  ]

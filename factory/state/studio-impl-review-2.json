@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 91,
+    "game_quality_score": 84,
+    "language": {
+      "LANGUAGE_AGE_FIT": 91,
+      "FURIGANA_SUPPORT": 90,
+      "TEXT_DENSITY": 86,
+      "BUTTON_CLARITY": 92,
+      "TECHNICAL_TERM_SUPPORT": 88,
+      "VISUAL_LANGUAGE_SUPPORT": 84
+    },
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "ui_clarityの「色を変える」デコイはモック上の色が変わるだけで、悪化が視覚的に明確ではない。再テスト後の文章を読まない観察者には失敗理由が伝わりにくい。"
+    ],
+    "low": [
+      "difficulty_tuneの完了済みクリア率が一律55%になり、調整内容ごとの結果差は表現されない。"
+    ],
+    "evidence": [
+      "src/q1/studioLogic.ts:42 — 実行回数制限と条件別のクラッシュ判定がルールとして実装されている。",
+      "src/q1/studioLogic.ts:56 — 正確性・最小性・単独再現済みを満たさなければ不具合票を受理しない。",
+      "src/q1/BugReproGame.tsx:48 — 各実験結果を条件列と✅／💥でテスト機ログに表示する。",
+      "src/q1/BugReproGame.tsx:112 — 現在選択中の条件を16px本文サイズで再掲している。",
+      "src/q1/studioLogic.ts:94 — ログ原因と調整案の対応が機械的に定義され、HP弱体化の一律正解を許さない。",
+      "src/q1/DifficultyTuneGame.tsx:54 — 正しい調整ではクリア率バーが遷移し、誤答時は同じ数値のまま停止する。",
+      "src/q1/DifficultyTuneGame.tsx:100 — 判断に必要な失敗地点・状況を16pxの証拠パネルで提示する。",
+      "src/q1/UiClarityGame.tsx:49 — 選択ごとに戦闘画面モックの背景・形・文字・配置・情報量が変化する。",
+      "src/q1/UiClarityGame.tsx:53 — 「色を変える」は味方の色を置換するだけで、視覚的な悪化を十分に示さない。",
+      "src/q1/UiClarityGame.tsx:110 — 判断対象となる3件のテスト報告を16pxで表示する。",
+      "src/q1/UiClarityGame.tsx:163 — デコイは選択箇所を示す反応、未対応項目は該当報告の視覚強調で返し、正解自体は明示しない。",
+      "src/data/content/studio.ts:142 — 業界共通の合格率がないことを明記し、架空の合格基準を設けていない。",
+      "src/data/content/studio.ts:148 — 大きな変更はディレクターと合意すると示し、単独で発売判断する描写を避けている。"
+    ],
+    "recommended_actions": [
+      "「色を変える」選択時は敵味方を近似色にする、識別不能を示す記号を出すなど、色だけの修正が失敗であることをモック自身の変化で示す。",
+      "difficulty_tuneでは調整内容や元の証拠に応じて再テスト後の率・補助指標を変え、結果の個別性を高める。"
+    ]
+  },
+  "elapsed_sec": 104.632
+}

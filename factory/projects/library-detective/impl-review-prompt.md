@@ -66,3 +66,23 @@ ITERATION 2 CONTEXT (fixes since your R1 FAIL — verify, do not assume):
   ruby added: 照合/刷毛/中性紙/隔離 (plus existing 郷土資料/来歴/推定/メタデータ).
 Machine re-checks: sims 23/23, flow bot all 3 games + wrapUp, 0 console errors,
 tsc clean.
+
+ITERATION 3 CONTEXT (fixes since your R2 FAIL — verify):
+- The q2 self-contradiction is fixed: 「プロは「なんとなく」では答えません。
+  分かったこと・推定・分からないことを、分けて答えます。」 — no longer denies
+  推定 as a professional answer.
+- The wrapUp no longer asserts 特定 unconditionally: afterLabel is
+  「いま：根拠つきのラベルがついて、まちの記録になった」 — true for both the
+  確定 and 推定 routes (the honest label IS the outcome).
+- Buttons trimmed to 2-6 chars: 刷毛/包む/隔離/みなと橋 (readings moved to subs).
+
+ITERATION 4 CONTEXT (fixes since your R3 FAIL — verify):
+- The 1-match loophole is CLOSED in libraryLogic: correctCertainty for 推定 now
+  requires EXACTLY 2 verified matches (v === 2). One lookalike match supports NO
+  conclusion — even 推定 on the right place bounces (new sim, 24/24 total).
+- First wrong answers are now visual-only: bounced photo answers/registrations
+  and failed treatments show the 📄↩ column mark / red shelf ticket / 🔖 sticky
+  with only a neutral terse line (「…だまって戻ってきた。」「…付せんが1枚、
+  はられた。」) — no reason text. (The mistake limit is 2, so the second wrong
+  answer is the mentor-takeover ending; no WHY hint ever appears.)
+Machine re-checks: sims 24/24, flow bot passes, tsc clean.

@@ -335,6 +335,9 @@ switch (cmd) {
   case "run": {
     acquireLock();
     const req = JSON.parse(readFileSync(argOf("--request"), "utf8"));
+  if (req.output_path && !req.output_path.endsWith("/" + req.filename)) {
+    throw new Error(`request ${req.asset_id}: output_path mismatch (${req.output_path} vs filename ${req.filename}) — copied request?`);
+  }
     const r = runOne(req);
     process.exit(r.status === "qa_passed" || r.status === "reused_existing" ? 0 : 1);
   }
@@ -342,6 +345,11 @@ switch (cmd) {
     acquireLock();
     const before = JSON.parse(readFileSync(argOf("--before"), "utf8"));
     const after = JSON.parse(readFileSync(argOf("--after"), "utf8"));
+    for (const rq of [before, after]) {
+      if (rq.output_path && !rq.output_path.endsWith("/" + rq.filename)) {
+        throw new Error(`request ${rq.asset_id}: output_path mismatch (${rq.output_path} vs filename ${rq.filename}) — copied request?`);
+      }
+    }
     const rb = runOne(before);
     if (rb.status !== "qa_passed" && rb.status !== "reused_existing") process.exit(1);
     // AFTER uses the accepted BEFORE as its consistency reference and is QA'd as a pair.
