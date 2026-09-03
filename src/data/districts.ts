@@ -4,7 +4,8 @@
 // not open yet. Worlds are assigned to districts here (not in content modules)
 // so existing modules stay untouched and new worlds add one line.
 //
-// Coordinates: virtual region canvas, 1200 x 900 (px units at scale 1).
+// Coordinates: virtual region canvas, 1200 x 820 (px units at scale 1 —
+// must match CANVAS_W/CANVAS_H in HomeScreen).
 
 export interface District {
   id: string;
@@ -22,6 +23,8 @@ export interface District {
   /** foggy districts render as silhouettes with a teaser, not yet enterable */
   foggy?: boolean;
   teaser?: string;
+  /** fog only: the ghosted silhouette shown IN the mist (a visible hint) */
+  silhouette?: string;
 }
 
 export const TOWN_TILE = {
@@ -45,7 +48,7 @@ export const DISTRICTS: District[] = [
   },
   {
     id: "minato",
-    name: "みなと",
+    name: "港",
     lead: "海のそば。大きな船と、夜も動きつづける仕事の場所。",
     cx: 240,
     cy: 690,
@@ -55,7 +58,7 @@ export const DISTRICTS: District[] = [
   },
   {
     id: "mori-kawa",
-    name: "もりとかわ",
+    name: "森と川",
     lead: "川の上流と森。しずかに見えて、手入れがつづいている。",
     cx: 950,
     cy: 185,
@@ -65,7 +68,7 @@ export const DISTRICTS: District[] = [
   },
   {
     id: "ekimae",
-    name: "えきまえ",
+    name: "駅前",
     lead: "駅とオフィスのまわり。画面の向こうを作る人たちもいる。",
     cx: 930,
     cy: 600,
@@ -75,7 +78,7 @@ export const DISTRICTS: District[] = [
   },
   {
     id: "oka-bunka",
-    name: "おかのうえ",
+    name: "丘の上",
     lead: "図書館と、まちの記憶が集まる丘。",
     cx: 245,
     cy: 165,
@@ -94,6 +97,7 @@ export const DISTRICTS: District[] = [
     terrain: "fog",
     landmarkEmoji: "🌫",
     foggy: true,
+    silhouette: "📡",
     teaser: "山のむこうに、大きなアンテナのようなものが見える…",
   },
   {
@@ -106,6 +110,7 @@ export const DISTRICTS: District[] = [
     terrain: "fog",
     landmarkEmoji: "🌫",
     foggy: true,
+    silhouette: "🛩",
     teaser: "遠くの空から、白いものが飛んでくる季節があるらしい…",
   },
 ];
@@ -128,6 +133,23 @@ export const WORLD_DISTRICT: Record<string, string> = {
   "game-studio": "ekimae",
   "library-detective": "oka-bunka",
 };
+
+/** ground fill per terrain class — HomeScreen renders district grounds
+ * generically from the registry (no per-district hard-coding). */
+export const TERRAIN_FILL: Record<District["terrain"], string | null> = {
+  town: null, // the town tile artwork is its own ground
+  harbor: "#e0d9bd",
+  forest: "#bcd9a8",
+  river: "#cfe3dc",
+  station: "#e3ddc8",
+  hill: "#d4e3b4",
+  fog: null, // fog patches render separately
+};
+
+/** Content versions per world (eventId). Bump when a shipped world gains new
+ * content; players who saw the older version get the UPDATED map state. */
+export const WORLD_CONTENT_VERSION: Record<string, number> = {};
+export const contentVersion = (eventId: string) => WORLD_CONTENT_VERSION[eventId] ?? 1;
 
 /** Max worlds per district before a NEW district should be opened (§12/§30). */
 export const DISTRICT_CAPACITY = 8;

@@ -15,13 +15,3 @@ Camera / composition: Wide horizontal interior, slight high angle, one continuou
 Must include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: Candidate lighting is more uniformly amber/orange than the reference set’s brighter, more neutral daylight balance.
-- Fix vs reference set: Candidate has slightly sharper, cleaner digital rendering and deeper edge-to-edge detail; references generally feel softer and more visibly handmade.
-- Fix vs reference set: The seated characters read slightly taller and less compact than the reference set’s strongest 2.5–3-head figurine examples.
-- Fix vs reference set: Candidate uses a very wide, symmetrical room view with limited depth blur, while several reference scenes use stronger subject emphasis and softer background separation.
-- The three intended stations are clearly positioned near 20%, 52%, and 80%, but the center planner station is visually quieter than the two monitor-based stations and may need stronger UI hotspot treatment.
-- On a 375px mobile viewport, small props and monitor details will become difficult to distinguish, though each station remains identifiable from its silhouette and character activity.
-- The warm tan floor, walls, furniture, and lighting occupy most of the frame, reducing color separation compared with the more varied blue-green palette of the reference set.
-- file too large: 2.5MB (>2MB)

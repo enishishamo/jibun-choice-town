@@ -5,6 +5,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { experiences } from "../data";
+import { contentVersion } from "../data/districts";
 
 export type Screen =
   | { name: "home" }
@@ -20,6 +21,8 @@ interface Progress {
   discovered: string[];
   /** Worlds (event ids) the child has entered at least once. */
   visitedEvents: string[];
+  /** content version last seen per world — powers the UPDATED map state */
+  seenVersion?: Record<string, number>;
   /**
    * 「好きの種」: which actions the child said felt interesting, per
    * experience (multiple choice). Accumulated quietly for the future —
@@ -56,13 +59,13 @@ const load = (): Progress => {
       if (Array.isArray(p.completed) && Array.isArray(p.discovered)) {
         // older saves have no visitedEvents — derive a sensible baseline so a
         // returning child does not see everything reset to "unvisited"
-        return { seeds: {}, visitedEvents: [], ...p };
+        return { seeds: {}, visitedEvents: [], seenVersion: {}, ...p };
       }
     }
   } catch {
     /* corrupted storage -> start fresh */
   }
-  return { completed: [], discovered: [], seeds: {}, visitedEvents: [] };
+  return { completed: [], discovered: [], seeds: {}, visitedEvents: [], seenVersion: {} };
 };
 
 const Ctx = createContext<GameStateValue | null>(null);
@@ -87,7 +90,13 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
         if (s.name === "area") {
           const id = s.eventId;
           setProgress((p) =>
-            p.visitedEvents.includes(id) ? p : { ...p, visitedEvents: [...p.visitedEvents, id] },
+            p.visitedEvents.includes(id) && (p.seenVersion ?? {})[id] === contentVersion(id)
+              ? p
+              : {
+                  ...p,
+                  visitedEvents: p.visitedEvents.includes(id) ? p.visitedEvents : [...p.visitedEvents, id],
+                  seenVersion: { ...(p.seenVersion ?? {}), [id]: contentVersion(id) },
+                },
           );
         }
         window.scrollTo(0, 0);
@@ -107,13 +116,17 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
       hasDiscovered: (id) => progress.discovered.includes(id),
       recordSeed: (experienceId, seeds) =>
         setProgress((p) => ({ ...p, seeds: { ...p.seeds, [experienceId]: seeds } })),
-      resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {}, visitedEvents: [] }),
+      resetProgress: () => setProgress({ completed: [], discovered: [], seeds: {}, visitedEvents: [], seenVersion: {} }),
       worldState: (eventId) => {
+        // a world the player has seen, whose content version moved on, calls
+        // them back — UPDATED outranks the resting states (not IN_PROGRESS)
+        const seen = (progress.seenVersion ?? {})[eventId];
+        const updated = progress.visitedEvents.includes(eventId) && (seen ?? 1) < contentVersion(eventId);
         const xs = experiences.filter((x) => x.eventId === eventId);
         const done = xs.filter((x) => progress.completed.includes(x.id)).length;
-        if (xs.length > 0 && done === xs.length) return "COMPLETED";
+        if (xs.length > 0 && done === xs.length) return updated ? "UPDATED" : "COMPLETED";
         if (done > 0) return "IN_PROGRESS";
-        if (progress.visitedEvents.includes(eventId)) return "VISITED";
+        if (progress.visitedEvents.includes(eventId)) return updated ? "UPDATED" : "VISITED";
         return "DISCOVERED";
       },
     }),

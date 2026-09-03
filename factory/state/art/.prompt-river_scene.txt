@@ -17,8 +17,9 @@ Must NOT include: readable text; logos; children in the water; murky brown water
 Aspect ratio: 3:2 (compose for this frame).
 
 PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: 水面の反射と透明感がreference setよりやや精密で、粘土ミニチュア感よりリアル寄りに見える部分がある
-- Fix vs reference set: 人物が画面全体に対して小さいため、referenceの人物場面ほど顔・衣服のクレイ質感を明確に確認しにくい
-- 右側の設計事務所ホットスポットは人物・机・建物が近接しており、375px表示では個々の役割がやや判別しにくくなる可能性がある
-- 中央の下水処理施設は明瞭だが、調査ポイントから施設へ続く視線が川や堰の強いディテールに少し分散する
-- file too large: 2.8MB (>2MB)
+- Fix vs reference set: Candidate uses slightly cooler, more blue-dominant coloring than several warmer indoor references, but remains consistent with the outdoor town reference.
+- Fix vs reference set: Background houses are marginally softer and more depth-blurred than the town-overview reference.
+- The treatment facility occupies a broad central area, so its exact interactive point may need a clear UI marker on mobile.
+- The right-side office worker and riverside crew form two nearby focal elements; hotspot highlighting should clarify that they belong to one destination.
+- Small fish, insects, bottles, and worker details will lose visibility at 375px, though the three main locations remain distinguishable.
+- file too large: 2.5MB (>2MB)

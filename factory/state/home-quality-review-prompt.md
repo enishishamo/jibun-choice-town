@@ -36,3 +36,24 @@ Output (STRICT — single JSON object, no prose):
  "LANGUAGE_AGE_FIT":0,"blockers":[],"high":[],"medium":[],"low":[],
  "evidence":["file:line — finding"]}
 FAIL if any blocker/high, or any axis below its threshold.
+
+ITERATION 2 CONTEXT (fixes since your R1 FAIL — verify in code):
+- UPDATED is now REACHABLE: districts.ts exports WORLD_CONTENT_VERSION /
+  contentVersion(); GameState.Progress gains seenVersion (recorded on area
+  visit); worldState() returns UPDATED when a visited/completed world's
+  content version moved past the seen version. CSS adds a distinct
+  .st-updated style (purple pulse) and .st-discovered.
+- Markers are state-driven: STATE_FACE renders ONE face per state
+  (🔥 DISCOVERED / 📍 VISITED / 🔨 IN_PROGRESS / 🚩 COMPLETED / ✨ UPDATED) —
+  the uniform 🔥 is gone.
+- Generic terrain: district grounds are generated from the registry
+  (TERRAIN_FILL × DISTRICTS), no hard-coded per-district ellipses.
+- DISTRICT_CAPACITY is enforced with a loud console.warn, and a world missing
+  from WORLD_DISTRICT warns instead of silently piling onto center.
+- Fog districts render a distinct ghosted SILHOUETTE hint (📡 / 🛩, grayscale
+  blur) inside the mist before any tap; the teaser toast remains on tap.
+- District names use elementary kanji (港・森と川・駅前・丘の上) per the
+  language guide's no-hiragana-flood rule.
+- The canvas comment now matches the rendered 1200x820.
+Machine re-checks: 14-world map zero overlaps (mobile/desktop), all 5 new-world
+flow bots pass with the kanji chips, tsc clean.

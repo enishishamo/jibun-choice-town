@@ -36,7 +36,7 @@ const advance = async (needle, extra = "") => {
     if (t.includes(needle) && !t.includes("きみが今やっていたのは")) return true;
     if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) {
       // back at the region map: district chip, then the world marker (2 taps)
-      await click("もりとかわ"); await sleep(800);
+      await click("森と川"); await sleep(800);
       await click("森のなぞ"); await sleep(800);
       continue;
     }
@@ -52,7 +52,7 @@ const advance = async (needle, extra = "") => {
 };
 
 // enter world
-await click("もりとかわ"); await sleep(900);
+await click("森と川"); await sleep(900);
 await click("森のなぞ"); await sleep(800);
 await click("森に入ってみる"); await sleep(700);
 await shot("area");

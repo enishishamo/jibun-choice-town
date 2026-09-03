@@ -145,3 +145,18 @@
 {"ts":"2026-09-03T11:30:08.941Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":123.069}
 {"ts":"2026-09-03T11:30:27.514Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":2.815}
 {"ts":"2026-09-03T11:31:21.697Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":2.978}
+{"ts":"2026-09-03T13:52:42.358Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":4.28}
+{"ts": "2026-09-03T23:08:19", "mode": "routing-policy", "model": "fable-5", "task": "routing directive adopted (user 2026-09-03)", "policy": "Fable only for: architecture decisions / ambiguous design / hard post-FAIL repair / cross-stage integration / final synthesis. Routine (repo scan, logs, metadata, tests, browser QA, scripts) -> lightweight subagent (haiku/sonnet). Codex quota-waits stay on quota-queue.sh; no Fable substitution for independent review; extra cost = 0 unchanged.", "why_fable": "policy adoption itself is a cross-stage integration decision"}
+{"ts":"2026-09-03T14:12:46.217Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":3.543}
+{"ts":"2026-09-03T14:33:50.823Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":64.186}
+{"ts":"2026-09-03T14:35:48.986Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":117.93299999999999}
+{"ts":"2026-09-03T14:39:31.934Z","tool":"art-provider","mode":"imagegen","out":"public/assets/river/scene-river.png","exit":0}
+{"ts":"2026-09-03T14:39:55.397Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/river/scene-river.png"],"exit":0}
+{"ts":"2026-09-03T14:42:24.371Z","tool":"art-provider","mode":"imagegen","out":"public/assets/river/scene-river.png","exit":0}
+{"ts":"2026-09-03T14:42:46.972Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/river/scene-river.png"],"exit":0}
+{"ts":"2026-09-03T14:44:38.307Z","tool":"art-provider","mode":"imagegen","out":"public/assets/river/scene-river.png","exit":0}
+{"ts":"2026-09-03T14:44:54.158Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/scene-library.png","exit":1}
+{"ts":"2026-09-03T14:45:10.608Z","tool":"art-provider","mode":"imagegen","out":"public/assets/library/ba-before.png","exit":1}
+{"ts":"2026-09-03T14:45:26.205Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/scene-studio.png","exit":1}
+{"ts":"2026-09-03T14:45:42.363Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":1}
+{"ts": "2026-09-03T23:47:26", "mode": "fable-task", "model": "fable-5", "task": "Home Quality Gate FAIL repair (worldState UPDATED path, generic terrain from registry, capacity enforcement, state-driven markers, fog silhouettes, district naming age-fit)", "why_fable": "post-FAIL repair requiring architecture decisions across GameState/districts/HomeScreen (state model + registry contract changes), affects all worlds"}

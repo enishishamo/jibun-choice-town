@@ -36,12 +36,12 @@ const clickCard = (t) => p.evaluate((x) => {
 const body = () => p.evaluate(() => document.body.innerText);
 const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mobile" : "desktop"}-library-${n}.png`, fullPage: true });
 const recoverHome = async () => {
-  await click("おかのうえ"); await sleep(800);
+  await click("丘の上"); await sleep(800);
   await click("写真のなぞ"); await sleep(800);
 };
 
 // enter world: district chip → world marker → opening
-await click("おかのうえ"); await sleep(900);
+await click("丘の上"); await sleep(900);
 await click("写真のなぞ"); await sleep(800);
 await click("カウンターの奥へ"); await sleep(700);
 await shot("area");

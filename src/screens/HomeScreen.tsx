@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { events, places } from "../data";
 import {
-  DISTRICTS, TOWN_TILE, WORLD_DISTRICT, districtSlot, getDistrict,
+  DISTRICTS, TOWN_TILE, WORLD_DISTRICT, DISTRICT_CAPACITY, TERRAIN_FILL, districtSlot, getDistrict,
 } from "../data/districts";
 import type { District } from "../data/districts";
 import { useGame } from "../state/GameState";
@@ -29,9 +29,12 @@ interface WorldMarker {
   state: WorldState;
 }
 
-const STATE_ICON: Record<WorldState, string> = {
-  DISCOVERED: "❔",
-  VISITED: "",
+// ONE face icon per world state — the map reads without labels (§13):
+// unseen worlds burn (come look!), visited ones rest, in-progress shows the
+// tool, completed plants the flag, updated sparkles the call-back.
+const STATE_FACE: Record<WorldState, string> = {
+  DISCOVERED: "🔥",
+  VISITED: "📍",
   IN_PROGRESS: "🔨",
   COMPLETED: "🚩",
   UPDATED: "✨",
@@ -60,8 +63,18 @@ export default function HomeScreen() {
   const markers = useMemo<WorldMarker[]>(() => {
     const byDistrict: Record<string, string[]> = {};
     for (const ev of events) {
+      if (!(ev.id in WORLD_DISTRICT)) {
+        // §30: a world must be registered to a district — never silently pile
+        // onto the center tile
+        console.warn(`[atlas] world "${ev.id}" has no WORLD_DISTRICT entry — defaulting to center`);
+      }
       const d = WORLD_DISTRICT[ev.id] ?? "center";
       (byDistrict[d] ??= []).push(ev.id);
+    }
+    for (const [districtId, ids] of Object.entries(byDistrict)) {
+      if (districtId !== "center" && ids.length > DISTRICT_CAPACITY) {
+        console.warn(`[atlas] district "${districtId}" holds ${ids.length} worlds (capacity ${DISTRICT_CAPACITY}) — open a new district (§12/§30)`);
+      }
     }
     const out: WorldMarker[] = [];
     for (const [districtId, ids] of Object.entries(byDistrict)) {
@@ -233,14 +246,11 @@ export default function HomeScreen() {
               <path d="M0,585 C160,575 235,640 275,820 L0,820 Z" fill="#8fbfda" opacity="0.7" />
               {/* river: forest -> town -> sea */}
               <path d="M950,140 C880,250 760,300 640,330 C480,370 340,470 250,660" fill="none" stroke="#9fc8de" strokeWidth="26" strokeLinecap="round" opacity="0.85" />
-              {/* forest ground */}
-              <ellipse cx="950" cy="185" rx="185" ry="135" fill="#bcd9a8" />
-              {/* hill ground */}
-              <ellipse cx="245" cy="165" rx="150" ry="108" fill="#d4e3b4" />
-              {/* station ground */}
-              <ellipse cx="930" cy="600" rx="165" ry="118" fill="#e3ddc8" />
-              {/* harbor ground */}
-              <ellipse cx="255" cy="670" rx="165" ry="108" fill="#e0d9bd" />
+              {/* district grounds: generated from the registry (terrain field),
+                  never hard-coded per district (§30) */}
+              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center" && TERRAIN_FILL[d.terrain]).map((d) => (
+                <ellipse key={d.id} cx={d.cx} cy={d.cy - d.r * 0.15} rx={d.r * 1.25} ry={d.r * 0.9} fill={TERRAIN_FILL[d.terrain]!} />
+              ))}
               {/* roads: center to districts */}
               {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
                 <path
@@ -279,7 +289,13 @@ export default function HomeScreen() {
                 style={{ left: d.cx, top: d.cy - (d.foggy ? 0 : d.r * 0.55) }}
                 onClick={() => { if (!suppressTap.current) openDistrict(d); }}
               >
-                <span className="district-emoji">{d.foggy ? "🌫" : d.landmarkEmoji}</span>
+                <span className="district-emoji">
+                  {d.foggy ? (
+                    <span className="fog-silhouette">{d.silhouette ?? "🌫"}</span>
+                  ) : (
+                    d.landmarkEmoji
+                  )}
+                </span>
                 <span className="district-name">{d.foggy ? "？？？" : d.name}</span>
               </button>
             ))}
@@ -325,8 +341,7 @@ export default function HomeScreen() {
                 >
                   {signal && <span className="marker-crowd">👥</span>}
                   <span className="marker-face">
-                    {STATE_ICON[m.state] && <span className="marker-state">{STATE_ICON[m.state]}</span>}
-                    <span className="marker-fire">🔥</span>
+                    <span className="marker-fire">{STATE_FACE[m.state]}</span>
                   </span>
                   <span className="marker-label">{m.label}</span>
                 </button>

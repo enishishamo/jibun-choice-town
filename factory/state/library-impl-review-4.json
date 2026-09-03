@@ -1,6 +1,56 @@
 {
-  "ok": false,
-  "status": "CODEX_ERROR",
-  "error": "codex exec exited 1: , 24/24 total).\n- First wrong answers are now visual-only: bounced photo answers/registrations\n  and failed treatments show the 📄↩ column mark / red shelf ticket / 🔖 sticky\n  with only a neutral terse line (「…だまって戻ってきた。」「…付せんが1枚、\n  はられた。」) — no reason text. (The mistake limit is 2, so the second wrong\n  answer is the mentor-takeover ending; no WHY hint ever appears.)\nMachine re-checks: sims 24/24, flow bot passes, tsc clean.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\n",
-  "elapsed_sec": 2.978
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 82,
+    "career_authenticity_score": 88,
+    "game_quality_score": 82,
+    "language": {
+      "LANGUAGE_AGE_FIT": 88,
+      "FURIGANA_SUPPORT": 82,
+      "TEXT_DENSITY": 86,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 82,
+      "VISUAL_LANGUAGE_SUPPORT": 87
+    },
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "digi_archiveの棚は「公開だな」と題されているのに、公開保留の資料も同じ棚へ登録表示される。登録と公開の区別は文字と🔒で補われるが、世界表現として少し紛らわしい。",
+      "3ゲームとも失敗上限が2回で、最初の差し戻しの次は直ちにベテラン引継ぎとなる。視覚的フィードバックは成立したが、試行錯誤と上達を見せる余地は小さい。"
+    ],
+    "low": [
+      "一部の主要ボタンが言語規則の2〜6文字を超える。「状態調査票を書く」は8文字、「別の持ちこみで」は7文字。",
+      "デジタル化では内部値がtiff_400でも、選択肢表示は「TIFF」のみ。仕様書には高dpiとあるため解答可能だが、400dpiが選択結果として視覚化されない。",
+      "「閲覧」は対象学年以上の可能性がある漢字だが、同一画面で読みの補助がない。"
+    ],
+    "evidence": [
+      "src/q1/libraryLogic.ts:85 — 2件未満の照合では回答を受け付けず、1手掛かりからの結論を防止している。",
+      "src/q1/libraryLogic.ts:92 — 推定は検証済み一致が厳密に2件の場合だけ正解となり、1一致の抜け道は閉じている。",
+      "src/q1/PhotoCluesGame.tsx:55 — 差し戻された候補は色変更と📄↩で盤面に残り、文章だけでない失敗結果がある。",
+      "src/q1/PhotoCluesGame.tsx:88 — 一致数が16px本文として盤面下にも表示され、判断材料が小注釈だけに依存しない。",
+      "src/q1/PhotoCluesGame.tsx:199 — 最初の誤答反応は理由を漏らさない短い世界反応に抑えられている。",
+      "src/q1/PaperRescueGame.tsx:47 — 誤処置後の付せんが対象物上に残り、失敗が作業台の状態変化として見える。",
+      "src/q1/PaperRescueGame.tsx:82 — 処置済み資料が保存箱を埋め、カビ資料は🔒で隔離結果を示す。",
+      "src/q1/PaperRescueGame.tsx:133 — 刷毛・中性紙・隔離の専門語にルビと短い用途説明がある。",
+      "src/q1/DigiArchiveGame.tsx:47 — 差し戻された現在スロットは赤枠と📄↩に変化する。",
+      "src/q1/DigiArchiveGame.tsx:42 — 棚を「公開だな」と明記している一方、54行では同じ棚に「公開ほりゅう」を表示する。",
+      "src/q1/DigiArchiveGame.tsx:105 — 用途・根拠・人物の有無という判断材料が15pxで提示される。",
+      "src/q1/DigiArchiveGame.tsx:121 — TIFF・高dpi、JPEG、確度ラベル、人物写真の公開保留を仕事の規則として提示している。",
+      "src/q1/DigiArchiveGame.tsx:177 — 最初の登録失敗は正解理由を示さず、無言の差し戻しに限定されている。",
+      "src/data/content/library.ts:114 — プロが確定・推定・不明を分ける説明となり、推定を失敗扱いしていない。",
+      "src/data/content/library.ts:84 — wrapUpは撮影地特定を断言せず、「根拠つきのラベル」という全成功経路に共通する成果を述べる。",
+      "src/data/content/library.ts:259 — 結末は登録完了とし、公開保留資料は権利確認後に公開すると区別している。",
+      "src/q1/PaperRescueGame.tsx:113 — 「状態調査票を書く」はボタン規定の6文字上限を超える。"
+    ],
+    "recommended_actions": [
+      "公開保留資料を「公開だな」ではなく、内部の登録待ち・権利確認棚として明確に分離表示する。",
+      "失敗上限を増やさず再挑戦性を高めるなら、引継ぎ後の再プレイで前回の付せんや差し戻し履歴を比較できるようにする。",
+      "長いボタンを「調査票を書く」「別の資料へ」など6文字以内へ短縮する。",
+      "TIFF選択後の棚または登録票に「TIFF・400dpi」を表示し、形式と解像度の両方を保存仕様として定着させる。"
+    ]
+  },
+  "elapsed_sec": 64.186
 }

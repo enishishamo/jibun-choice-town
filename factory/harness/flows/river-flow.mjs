@@ -34,7 +34,7 @@ const advance = async (needle) => {
     const t = await body();
     if (t.includes(needle) && !t.includes("きみが今やっていたのは")) return true;
     if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) {
-      await click("もりとかわ"); await sleep(800);
+      await click("森と川"); await sleep(800);
       await click("川に魚が！"); await sleep(800);
       continue;
     }
@@ -49,7 +49,7 @@ const advance = async (needle) => {
 };
 
 // enter
-await click("もりとかわ"); await sleep(900);
+await click("森と川"); await sleep(900);
 await click("川に魚が！"); await sleep(800);
 await click("川ぞいを歩いてみる"); await sleep(700);
 await shot("area");
@@ -167,7 +167,7 @@ for (let i = 0; i < 14; i++) {
   const t = await body();
   if (t.includes("たしかめられる人がいる")) break;
   if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) {
-    await click("もりとかわ"); await sleep(800);
+    await click("森と川"); await sleep(800);
     await click("川に魚が！"); await sleep(800);
     continue;
   }

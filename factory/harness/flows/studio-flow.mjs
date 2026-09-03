@@ -36,12 +36,12 @@ const clickCard = (t) => p.evaluate((x) => {
 const body = () => p.evaluate(() => document.body.innerText);
 const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mobile" : "desktop"}-studio-${n}.png`, fullPage: true });
 const recoverHome = async () => {
-  await click("えきまえ"); await sleep(800);
+  await click("駅前"); await sleep(800);
   await click("ゲームの3日間"); await sleep(800);
 };
 
 // enter world
-await click("えきまえ"); await sleep(900);
+await click("駅前"); await sleep(900);
 await click("ゲームの3日間"); await sleep(800);
 await click("スタジオに入る"); await sleep(700);
 await shot("area");

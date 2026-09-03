@@ -15,11 +15,3 @@ Camera / composition: Interior medium shot from a fixed vantage: counter lower t
 Must include: wooden counter lower third; green desk lamp at left end; tall bookshelf wall; elderly woman placing a small sepia photo; curious librarian; paper sleeve and white gloves
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: 候補は基準画像より全体の色温度がやや黄褐色寄りで、背景の本棚も少し暗く重い
-- Fix vs reference set: 高齢者の眼鏡と髪の造形は基準人物よりわずかに細密だが、粘土人形の範囲内
-- 左端のランプが途中で切れているが、物語上の重要要素ではなく意味は損なわれない
-- 古写真が小さく、375px幅では写真の存在は分かっても内容までは判別しにくい
-- 重要要素は概ね中央に収まるが、横長構図のためモバイルで中央クロップすると両人物の外側がやや窮屈になる
-- file too large: 2.3MB (>2MB)

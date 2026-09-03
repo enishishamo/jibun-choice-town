@@ -15,13 +15,3 @@ Camera / composition: Wide horizontal interior, slight high angle, one continuou
 Must include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: Reference scenes generally use slightly brighter, more saturated accent colors; the candidate is more uniformly sepia and subdued.
-- Fix vs reference set: The candidate's deep, continuous bookshelves create a denser and flatter background than the softer, more selectively detailed backgrounds in several references.
-- Fix vs reference set: The three characters have slightly slimmer seated proportions than the strongest 2.5–3-head reference figures, though they still read clearly as matching clay figurines.
-- The three work zones are clearly differentiated and correctly positioned: document comparison at left, conservation work at center, and scanning/digitization at right.
-- The right-side digitization worker and scanner sit near the frame edge, leaving less crop tolerance than the left and center stations on narrow mobile presentations.
-- The warm brown palette reduces separation between furniture, documents, and shelving; slightly stronger localized color contrast would improve rapid hotspot recognition.
-- No readable text, numbers, logos, photorealistic materials, broken anatomy, or incomplete heads/hands are present.
-- file too large: 2.7MB (>2MB)

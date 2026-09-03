@@ -33,7 +33,7 @@ const body = () => p.evaluate(() => document.body.innerText);
 const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mobile" : "desktop"}-port-${n}.png`, fullPage: true });
 
 // enter the port world: minato district chip -> world marker
-await click("みなと"); await sleep(900);
+await click("港"); await sleep(900);
 await click("夜のみなと"); await sleep(800);
 await click("のぞいてみる"); await sleep(700);
 await shot("area");
@@ -98,7 +98,7 @@ for (let i = 0; i < 8; i++) {
   {
     const tt = await body();
     if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
-      await click("みなと"); await sleep(800);
+      await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
     }
@@ -140,7 +140,7 @@ for (let i = 0; i < 8; i++) {
   {
     const tt = await body();
     if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
-      await click("みなと"); await sleep(800);
+      await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
     }
@@ -184,7 +184,7 @@ for (let i = 0; i < 8; i++) {
   {
     const tt = await body();
     if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
-      await click("みなと"); await sleep(800);
+      await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
     }

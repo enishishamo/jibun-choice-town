@@ -5088,6 +5088,18 @@ img {
 .world-marker.st-completed .marker-fire { filter: grayscale(0.7); opacity: 0.7; }
 .world-marker.st-in_progress .marker-face { border-color: #d9a84a; }
 .world-marker.st-visited .marker-face { border-color: #c9b995; }
+.world-marker.st-visited .marker-fire { filter: saturate(0.6); opacity: 0.85; }
+.world-marker.st-discovered .marker-face { border-color: #d97b4a; }
+.world-marker.st-updated .marker-face {
+  border-color: #8a6fd0;
+  background: #f2edfb;
+  box-shadow: 0 0 10px rgba(138, 111, 208, 0.55);
+  animation: signal-pulse 1.6s ease-in-out infinite;
+}
+.fog-silhouette {
+  filter: grayscale(1) brightness(0.55) blur(0.6px);
+  opacity: 0.55;
+}
 /* living signal: people gathered + gentle bounce (replaces NEW badges) */
 .world-marker.signal .marker-face { animation: beckon 1.7s ease-in-out infinite; }
 .marker-crowd {
@@ -5204,3 +5216,8 @@ img {
   max-width: 118px;
 }
 @keyframes bubble-rise { from { transform: translateY(0); opacity: 0.9; } to { transform: translateY(-70px); opacity: 0; } }
+
+@keyframes signal-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
