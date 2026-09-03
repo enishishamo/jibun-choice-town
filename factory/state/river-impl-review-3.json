@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 84,
+    "game_quality_score": 72,
+    "language": {
+      "LANGUAGE_AGE_FIT": 88,
+      "FURIGANA_SUPPORT": 76,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 85,
+      "TECHNICAL_TERM_SUPPORT": 82,
+      "VISUAL_LANGUAGE_SUPPORT": 86
+    },
+    "blockers": [],
+    "high": [
+      "bank_designは生成条件が変わっても判断結果が一切変わらず、毎回「石積み＋根固め／石積み＋根固め／自然のまま／魚道」の固定解になる。職業文脈を外すと、既知の対応表を埋めるだけで、variation・replay・masteryが成立していない。"
+    ],
+    "medium": [
+      "bank_designの成功後プレビューは、採用工法ごとの定型文へ即座に置換するだけで、3年間の変化や安全・自然のトレードオフをworld stateとして示していない。",
+      "一部の難読語・専門語が、その画面での初出時にruby要件を満たしていない。"
+    ],
+    "low": [
+      "PlantOpsGameの操作後は表示が直ちに次の時間帯へ進むため、現在表示中のDO・泡・微生物表情が直前操作の結果であることと、task-barが次の条件であることが視覚的に混在する。"
+    ],
+    "evidence": [
+      "src/q1/riverLogic.ts:180 — homesはhomesBehindが常にtrueで、erosionの乱数は必要工法を変えない。",
+      "src/q1/riverLogic.ts:181 — bendはerosionが常にtrueで、homesBehindの乱数は必要工法を変えない。",
+      "src/q1/riverLogic.ts:182 — fieldsの条件は常に固定されている。",
+      "src/q1/riverLogic.ts:201 — weirはfishway以外を必ず拒否する固定条件。",
+      "src/q1/riverLogic.ts:205 — homesとbendはいずれも毎回needStrongとなる。",
+      "src/q1/riverLogic.ts:167 — 予算6では強区間2か所に各2、魚道に2が必要となり、成功解が実質一意に固定される。",
+      "src/q1/BankDesignGame.tsx:45 — after表示は同じsectionsとplanを定型結果文へ切り替えるだけで、時間変化の状態を持たない。",
+      "src/q1/BankDesignGame.tsx:72 — 3年後の結果は工法IDごとの固定テキストで表現される。",
+      "src/q1/BankDesignGame.tsx:13 — 難読語「堰」はruby要素ではなく括弧書きで表示される。",
+      "src/q1/BankDesignGame.tsx:19 — 専門語「魚道」が選択肢上でrubyなしに先行表示される。",
+      "src/q1/WaterTraceGame.tsx:57 — 中学配当以上の「稚魚」がrubyなしで表示される。",
+      "src/q1/PlantOpsGame.tsx:144 — 操作と同時に状態更新され、成功途中では次スロットへ進む。",
+      "src/q1/PlantOpsGame.tsx:116 — task-barは更新後の次スロットを示す一方、tankは直前操作で得たDO状態を表示する。"
+    ],
+    "recommended_actions": [
+      "bank_designの生成条件を実際の判断へ反映し、各区間の侵食・背後地・堰条件によって安全上必要な工法と最適計画が変わる複数の有効ケースを作る。",
+      "予算、自然スコア、将来の侵食・生息場を連動させ、3年プレビューを工法と現場条件から変化する視覚状態として実装する。",
+      "各画面の最初の表示箇所で「堰」「魚道」「稚魚」に選択的rubyを付ける。",
+      "plant_opsでは操作結果を短時間または確認ステップで現在スロットに留め、DO針・泡・表情・電力変化を見せてから次の時間帯へ進める。"
+    ]
+  },
+  "elapsed_sec": 115.171
+}

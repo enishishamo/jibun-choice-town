@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "river-impl-review-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 66,
+    "career_authenticity_score": 74,
+    "game_quality_score": 66,
+    "language": {
+      "LANGUAGE_AGE_FIT": 76,
+      "FURIGANA_SUPPORT": 58,
+      "TEXT_DENSITY": 72,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 63,
+      "VISUAL_LANGUAGE_SUPPORT": 76
+    },
+    "blockers": [],
+    "high": [
+      "water_traceの誤答結果が文章通知だけで、川・旗・人物などの視覚状態が変化しない。主要な失敗結果がTEXT_ONLY_CONSEQUENCEになっている。",
+      "plant_opsはDO帯を1回外しても成功できるのに、完了画面が「ぜんぶ基準内」と断定する。操作結果と職業上の判定が矛盾する。",
+      "water_traceで「まだ回復していない」と正しく結論できるケースがある一方、固定wrapUpは川が回復し、3つの仕事が効いたと断定する。プレイヤーが確定した調査結果と世界の結末が接続していない。",
+      "必須ルビが不足している。護岸・侵食・堰・微生物などの専門語または中学配当語が、複数の初出画面で読み支援なしに表示される。",
+      "複数のQ2本文が1文45文字を大幅に超え、対象年齢向けの文章密度規則を満たさない。"
+    ],
+    "medium": [
+      "bank_designのケース変動は正解条件を変えない。住宅は常に家あり、カーブは常に侵食あり、田んぼは常に安全、堰は常に魚道必須で、再プレイ時の判断や戦略が実質固定される。",
+      "bank_designの3年後表示は工法だけで決まり、区間に関係なく「自然のまま」なら瀬と淵ができたと表示するため、設計結果のプレビューとして粗い。",
+      "water_traceの結論候補に「処理場の下から」「支流の合流から」など判定規則が併記され、観察後の推理を必要以上に誘導している。",
+      "主要な選択カードや地点ボタンに10〜13pxのインライン文字サイズがあり、言語ガイドの本文16px・主要ボタン18px相当という可読性基準を満たさない。"
+    ],
+    "low": [
+      "一部の完了ボタンは推奨される2〜6文字を超える。"
+    ],
+    "evidence": [
+      "src/q1/WaterTraceGame.tsx:159 — 誤答時は状態文をnoteへ設定するだけで、川や人物の視覚的失敗状態を変更しない。",
+      "src/q1/riverLogic.ts:150 — DOが帯外ならtroublesを増やすが、2回目までは失敗にしない。",
+      "src/q1/riverLogic.ts:158 — 帯外が1回残った状態でも4コマ終了時にoutcomeをdoneにする。",
+      "src/q1/PlantOpsGame.tsx:94 — 上記done状態を一律「今日の放流、ぜんぶ基準内！」と表示する。",
+      "src/q1/riverLogic.ts:49 — 正解がnot_recoveredとなるケースを生成する。",
+      "src/data/content/river.ts:86 — wrapUpはケースに関係なく魚がもどったと確定する。",
+      "src/data/content/river.ts:88 — 処理場・調査・川づくりの全部が効いたと固定的に因果づける。",
+      "src/q1/BankDesignGame.tsx:124 — 専門語「護岸」をルビなしで初出表示する。",
+      "src/q1/BankDesignGame.tsx:13 — 「侵食」「堰」を選択対象名でルビなし表示する。",
+      "src/q1/PlantOpsGame.tsx:47 — 「微生物」に相当する視覚表現はあるが、語の読み支援は資料・結果画面にもない。",
+      "src/data/content/river.ts:114 — 45文字を超える説明を一文に詰め込んでいる。",
+      "src/data/content/river.ts:168 — 魚道設計の説明が長い一文で、45文字制限を大幅に超える。",
+      "src/q1/riverLogic.ts:180 — 住宅区間は常にhomesBehind=trueで、乱数の侵食値は正解条件を変えない。",
+      "src/q1/riverLogic.ts:181 — カーブは常にerosion=trueで、乱数の住宅値は正解条件を変えない。",
+      "src/q1/WaterTraceGame.tsx:21 — 選択肢の補足が各原因に対応する数値変化を直接説明する。",
+      "src/q1/WaterTraceGame.tsx:71 — 地点操作ボタンをfontSize 10で描画する。",
+      "src/q1/BankDesignGame.tsx:138 — 工法選択の主要文字をfontSize 13で描画する。"
+    ],
+    "recommended_actions": [
+      "water_traceの誤答時に、提出旗への警告、比較地点の未接続表示、報告者の非言語反応など、文章を読まずに失敗が分かる視覚状態を追加する。",
+      "plant_opsは全4コマでDO帯内の場合だけ「ぜんぶ基準内」とし、帯外を許容するなら結果タイトルと評価を実際の履歴に合わせる。",
+      "water_traceの確定結果を世界状態へ保持し、not_recovered時はwrapUpを放流目撃の否定・継続調査へ分岐させる。回復結末に進めるならnot_recoveredケースを物語上整合する別段階として設計する。",
+      "各画面の初出に「護岸」「侵食」「堰」「微生物」などの選択的ルビと15〜30字の短い言い換えを追加する。",
+      "45文字超のQ2文を2文以上に分割し、連続説明を2ブロック以内に収める。",
+      "bank_designの乱数が保護必要区間や安全区間を実際に変え、複数の予算内設計が成立するケースを追加する。",
+      "結論候補の補足から原因判定そのものを外し、観察結果の比較はプレイヤーに委ねる。",
+      "地点・工法選択を含む主要操作文字を18px相当へ引き上げる。"
+    ]
+  },
+  "elapsed_sec": 157.002
+}

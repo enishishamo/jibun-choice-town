@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: The floor of a small cozy game studio as one continuous miniature clay diorama, left to right: a test room corner with a rack of small game consoles, one monitor showing a tiny crash symbol and a clipboard; a planner's desk in the middle with a big wall chart of colorful bar graphs and sticky notes; a designer's desk at the right with a pen tablet, a large screen showing a simple game scene mock and color swatch cards. Tiny staff figures at each area, a whiteboard connecting the spaces, warm night lighting with desk lamps (crunch-before-release but hopeful). Handcrafted clay look, no readable text anywhere.
+Role in game: エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）
+Camera / composition: Wide horizontal interior, slight high angle, one continuous studio floor. Three work areas at roughly 20%/52%/80% width. At least 8% empty margin at both edges. Wall band top 25%, no text.
+Must include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard
+Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate lighting is more uniformly amber/orange than the reference set’s brighter, more neutral daylight balance.
+- Fix vs reference set: Candidate has slightly sharper, cleaner digital rendering and deeper edge-to-edge detail; references generally feel softer and more visibly handmade.
+- Fix vs reference set: The seated characters read slightly taller and less compact than the reference set’s strongest 2.5–3-head figurine examples.
+- Fix vs reference set: Candidate uses a very wide, symmetrical room view with limited depth blur, while several reference scenes use stronger subject emphasis and softer background separation.
+- The three intended stations are clearly positioned near 20%, 52%, and 80%, but the center planner station is visually quieter than the two monitor-based stations and may need stronger UI hotspot treatment.
+- On a 375px mobile viewport, small props and monitor details will become difficult to distinguish, though each station remains identifiable from its silhouette and character activity.
+- The warm tan floor, walls, furniture, and lighting occupy most of the frame, reducing color separation compared with the more varied blue-green palette of the reference set.
+- file too large: 2.5MB (>2MB)

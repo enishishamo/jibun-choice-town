@@ -15,8 +15,10 @@ import { zoo } from "./content/zoo";
 import { port } from "./content/port";
 import { forest } from "./content/forest";
 import { river } from "./content/river";
+import { library } from "./content/library";
+import { studio } from "./content/studio";
 
-const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste, zoo, port, forest, river];
+const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste, zoo, port, forest, river, library, studio];
 
 export const places: Place[] = MODULES.flatMap((m) => m.places);
 export const events: AreaEvent[] = MODULES.flatMap((m) => m.events);
@@ -26,3 +28,4 @@ export const experiences: Q1Experience[] = MODULES.flatMap((m) => m.experiences)
 export const getEvent = (id: string) => events.find((e) => e.id === id);
 export const getProfession = (id: string) => professions.find((p) => p.id === id);
 export const getExperience = (id: string) => experiences.find((x) => x.id === id);
+

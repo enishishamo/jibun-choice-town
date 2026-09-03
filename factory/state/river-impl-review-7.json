@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 76,
+    "career_authenticity_score": 88,
+    "game_quality_score": 76,
+    "language": {
+      "LANGUAGE_AGE_FIT": 88,
+      "FURIGANA_SUPPORT": 78,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 82,
+      "TECHNICAL_TERM_SUPPORT": 82,
+      "VISUAL_LANGUAGE_SUPPORT": 88
+    },
+    "blockers": [],
+    "high": [
+      "water_traceの結論カードが、各結論と観測パターンの対応を選択肢上で明示している。プレイヤーは資料から比較方法を学んで自分で因果を推論する代わりに、採水値と選択肢の説明を照合できるため、禁止されたanswer leakが残る。"
+    ],
+    "medium": [
+      "bank_designのプレイ画面では「堰」が川区間一覧で最初に表示される際、正式なrubyではなく括弧読みになっている。同一スクロール単位の専門語初出にrubyを付ける規則を満たしていない。",
+      "一部の主要ボタンが2〜6文字規則を超える。「報告をまとめる」は7文字で、行動自体は明確だが拘束スタイルから外れる。"
+    ],
+    "low": [
+      "PlantOpsGameの運転結果はタンク表現、DO針、微生物の表情、電力表示で十分視覚化されるが、時間帯一覧や計器ラベルには12.5〜13pxの補助文字が残る。判断の中心は視覚メーターと本文で代替されるため低重要度。"
+    ],
+    "evidence": [
+      "src/q1/WaterTraceGame.tsx:20 — 結論選択肢の定義そのものに、各正解を識別する観測パターンが含まれる。",
+      "src/q1/WaterTraceGame.tsx:21 — 「処理場の改善」に「処理場の下から数値が良い」と正解条件を併記している。",
+      "src/q1/WaterTraceGame.tsx:22 — 「支流がきれいに」に「支流の合流から良くなる」と正解条件を併記している。",
+      "src/q1/WaterTraceGame.tsx:23 — 「回復はまだ」に「数値は昔のまま」と正解条件を併記している。",
+      "src/q1/WaterTraceGame.tsx:192 — 上記の正解条件が結論カード内に常時表示される。",
+      "src/q1/riverLogic.ts:43 — 実際のplant_upgradeケースはCが悪くD/Eが良い構造で、選択肢説明と直接一致する。",
+      "src/q1/riverLogic.ts:46 — tributary_cleanupケースもB以降が良い構造で、選択肢説明と直接一致する。",
+      "src/q1/riverLogic.ts:49 — not_recoveredケースも数値が一様に悪い構造で、選択肢説明と直接一致する。",
+      "src/q1/BankDesignGame.tsx:13 — 区間一覧の「堰」はrubyではなく「堰（せき）」として定義される。",
+      "src/q1/BankDesignGame.tsx:45 — 区間一覧は同ゲーム画面の資料カードより先に描画される。",
+      "src/q1/BankDesignGame.tsx:164 — 正式な魚道rubyを伴う堰の表記は後段の資料カードにあり、画面初出ではない。",
+      "src/q1/WaterTraceGame.tsx:144 — 「報告をまとめる」はボタンの2〜6文字基準を超える。",
+      "src/q1/riverLogic.ts:220 — severe区間でコンクリ以外を拒否しており、安全条件は機械強制されている。",
+      "src/q1/riverLogic.ts:223 — 非severe区間のコンクリを拒否し、必要最小限の護岸を機械強制している。",
+      "src/q1/riverLogic.ts:230 — bankFaultSectionはvalidatorと同じ順序で不適切区間を返す。",
+      "src/q1/BankDesignGame.tsx:140 — 選択区間の判断条件はgame-lineで本文サイズ表示される。",
+      "src/q1/WaterTraceGame.tsx:180 — 誤った結論カードは減光される。",
+      "src/q1/WaterTraceGame.tsx:193 — 差し戻された結論には📄↩スタンプが表示される。",
+      "src/q1/PlantOpsGame.tsx:95 — troublesがある完走では「ぜんぶ基準内」を表示しない。",
+      "src/data/content/river.ts:84 — wrapUpのafterLabelは後日の再調査で確認された状態として表現される。",
+      "src/data/content/river.ts:89 — not_recovered経路と整合する「まだ」と記録された月を明示している。"
+    ],
+    "recommended_actions": [
+      "WaterTraceGameの結論カードからsubの観測パターンを削除し、職業上の主張だけを短く表示する。比較方法は資料カードに置き、どの観測がどの結論を支持するかはプレイヤーに推論させる。",
+      "BankDesignGameの区間一覧にある最初の「堰」をwithRubyによる正式なruby表示へ変更する。",
+      "「報告をまとめる」を「報告する」など2〜6文字の動詞ラベルへ短縮する。"
+    ]
+  },
+  "elapsed_sec": 57.067
+}

@@ -134,6 +134,7 @@ await shot("game-bank");
     const rows = [...document.querySelectorAll("button")].filter((e) => /住宅のそば|カーブ|田んぼ|堰/.test(e.textContent));
     return rows.map((e) => ({
       label: e.textContent.includes("住宅") ? "住宅のそば" : e.textContent.includes("カーブ") ? "カーブ" : e.textContent.includes("田んぼ") ? "田んぼ" : "堰",
+      severe: e.textContent.includes("うしろに家") && e.textContent.includes("けずられたあと"),
       strong: e.textContent.includes("うしろに家") || e.textContent.includes("けずられたあと"),
     }));
   });
@@ -145,8 +146,13 @@ await shot("game-bank");
   }, t);
   for (const sec of secs) {
     await click(sec.label); await sleep(250);
-    if (sec.label === "堰") await clickCard("魚道をつける");
-    else if (sec.strong) await clickCard("石積み＋根固め");
+    if (sec.label === "堰") {
+      // the fish note is shown when the weir is selected — read it, then design
+      const t2 = await body();
+      await clickCard(t2.includes("よわい") ? "ゆるい魚道" : "急な魚道");
+    }
+    else if (sec.severe) await clickCard("コンクリ護岸");
+    else if (sec.strong) await clickCard("石積み");
     else await clickCard("自然のまま");
     await sleep(250);
   }
@@ -159,7 +165,7 @@ await shot("game-bank");
 // wrapUp
 for (let i = 0; i < 14; i++) {
   const t = await body();
-  if (t.includes("ひとつの奇跡じゃなかった")) break;
+  if (t.includes("たしかめられる人がいる")) break;
   if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) {
     await click("もりとかわ"); await sleep(800);
     await click("川に魚が！"); await sleep(800);
@@ -174,7 +180,7 @@ for (let i = 0; i < 14; i++) {
 }
 {
   const t = await body();
-  if (!t.includes("ひとつの奇跡じゃなかった")) failures.push("wrapUp not reached");
+  if (!t.includes("たしかめられる人がいる")) failures.push("wrapUp not reached");
   else await shot("wrapup");
 }
 

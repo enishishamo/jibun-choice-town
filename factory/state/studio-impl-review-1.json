@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 76,
+    "career_authenticity_score": 88,
+    "game_quality_score": 76,
+    "language": {
+      "LANGUAGE_AGE_FIT": 88,
+      "FURIGANA_SUPPORT": 58,
+      "TEXT_DENSITY": 76,
+      "BUTTON_CLARITY": 78,
+      "TECHNICAL_TERM_SUPPORT": 65,
+      "VISUAL_LANGUAGE_SUPPORT": 82
+    },
+    "blockers": [],
+    "high": [
+      "主要な操作ボタンに7文字以上のラベルが複数あり、拘束ルールの2〜6文字を満たさない。BUTTON_CLARITYが必須80点未満。",
+      "判断に必要なログ・報告・選択補足が12〜15px、一部は8.5〜11pxで表示される。本文16px以上という拘束ルールを満たさず、同じ情報の本文サイズ表示もない。",
+      "Q1画面で専門語「不具合票」「再現手順」「プレイログ」などの初出に選択的ルビや短い言い換えがなく、専門語支援が不足している。"
+    ],
+    "medium": [
+      "bug_reproでは不具合票の必須項目として期待結果・実際結果・頻度を資料と世界データが掲げる一方、プレイヤーが記入・判断するのは条件だけで、票作成業務の再現が部分的。",
+      "ui_clarityのrecolor_onlyは色を別の色へ変えるだけで、LIVEモック上の状態悪化が明瞭でない。文章を読まない観察者には失敗原因が伝わりにくい。",
+      "コントラスト4.5対1を一般的な『きまり』として提示しており、WCAGの通常文字向け参考基準である範囲や例外が示されていない。"
+    ],
+    "low": [
+      "失敗画面の説明文には45文字を超える可能性が高い文があり、短文化の余地がある。",
+      "必須GAMEPLAY_REFERENCE記録は指定されたレビュー対象ファイル内に存在せず、この限定レビューでは適合を確認できない。"
+    ],
+    "evidence": [
+      "src/q1/BugReproGame.tsx:44 — 判断材料のログ見出しが12.5px。",
+      "src/q1/BugReproGame.tsx:51 — 実行条件の履歴が12pxで、同じ履歴の本文サイズ表示がない。",
+      "src/q1/BugReproGame.tsx:82 — 主要ボタン「票を開発へ回す」は2〜6文字制約を超える。",
+      "src/q1/BugReproGame.tsx:99 — 専門語「不具合票」の画面内初出にルビがない。",
+      "src/q1/BugReproGame.tsx:102 — 不具合票を扱うが、期待結果・実際結果・頻度を入力させない。",
+      "src/q1/DifficultyTuneGame.tsx:46 — 専門語「プレイログ」の初出にルビや短い言い換えがない。",
+      "src/q1/DifficultyTuneGame.tsx:49 — クリア率バー周辺の判断情報が12〜13px。",
+      "src/q1/DifficultyTuneGame.tsx:101 — 決定的な原因ログが15pxで、本文16px基準未満。",
+      "src/q1/DifficultyTuneGame.tsx:86 — 主要ボタン「調整案を送る」は2〜6文字制約を超える。",
+      "src/q1/UiClarityGame.tsx:55 — LIVEモックのHP表示は未修正時9px。",
+      "src/q1/UiClarityGame.tsx:65 — 全部表示デコイの注記は8.5px。",
+      "src/q1/UiClarityGame.tsx:53 — recolor_onlyは味方の色変更だけで、視覚的な悪化が明示されない。",
+      "src/q1/UiClarityGame.tsx:110 — 判断に必須のテスト報告が15px。",
+      "src/q1/UiClarityGame.tsx:172 — 主要ボタン「再テストに出す」は2〜6文字制約を超える。",
+      "src/data/content/studio.ts:108 — 不具合票の構成要素を列挙するが、Q1実装では条件以外を扱わない。",
+      "src/data/content/studio.ts:164 — 4.5対1を適用範囲の説明なしに『きまり』として提示する。",
+      "factory/rules/language-style.md:33 — ルビを除く本文16px相当以上、主要ボタン18px相当以上を要求。",
+      "factory/rules/language-style.md:38 — 専門語には短い言い換えと視覚的理解を要求。",
+      "factory/rules/language-style.md:52 — ボタンを2〜6文字の動詞ラベルに限定。",
+      "factory/rules/game-critic-v2.md:64 — observer testで文章なしに失敗と変化が理解できることを要求。"
+    ],
+    "recommended_actions": [
+      "ログ、テスト報告、選択肢補足を16px以上にし、主要ボタンを18px以上にする。",
+      "主要ボタンを「開発へ回す」「案を送る」「再テスト」など2〜6文字へ短縮する。",
+      "各Q1画面の初出専門語に選択的ルビと15〜30字の言い換えを追加する。",
+      "bug_reproで期待結果・実際結果・頻度を確認または組み立てる操作を追加する。",
+      "recolor_only選択時にも、形による区別がない状態や識別失敗をLIVEモックで明確に見せる。",
+      "4.5対1を『通常の文字で使われる参考値』など、適用範囲が誤解されない表現へ直す。",
+      "指定外にある必須GAMEPLAY_REFERENCE記録を、別途ゲート対象として確認する。"
+    ]
+  },
+  "elapsed_sec": 139.002
+}

@@ -3164,7 +3164,7 @@
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Inside an untended cedar plantation as a miniature clay diorama: trees crowded far too close, thin weak trunks, the canopy closed so the forest floor is dim and bare, a few brown withered branches. One narrow path leads in. Slightly somber but not scary — a forest waiting for care.\nRole in game: オープニング＆wrapUpのBEFORE。手入れ前の、混みあって暗い人工林\nCamera / composition: Medium view down the path into the stand from a fixed vantage point; the same camera will be reused for the AFTER image. Dim green-grey light, bare soil floor, crowded trunks left and right.\nMust include: crowded thin cedar trunks; closed dark canopy; bare forest floor; narrow path\nMust NOT include: readable text; logos; people; sunbeams reaching the floor\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 樹皮・根・地面の凹凸が参照画像より細密で写実的であり、丸く単純化された手作り粘土模型の造形から外れている\n- Fix vs reference set: 参照画像の明るく暖かな色温度と鮮やかな配色に対し、候補は暗い茶色と深緑が支配的で重苦しい\n- Fix vs reference set: 木々が均一に反復し、参照画像にある個体差や手作りミニチュアらしい柔らかな不揃いさが弱い\n- Fix vs reference set: 参照画像の俯瞰的な箱庭・玩具ジオラマ感に対し、候補は実際の森林内を撮影したような低い目線と深い遠近感が強い\n- Fix vs reference set: 葉が細い房状に密生し、参照画像の丸く塊状に整理された樹冠表現よりリアル寄り\n- Fix vs reference set: 柔らかな斜光や明るいハイライトが乏しく、シリーズ特有の親しみやすい立体感が出ていない\n- SERIES_STYLE_MATCHが80未満 — 参照セットと並べると同じ作品・同じ世界には見えない\n- 暗部が広く、縮小表示では幹と根が一体化して状況を読み取りにくい",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Inside an untended cedar plantation as a miniature clay diorama: trees crowded too close, thin weak trunks, closed dark canopy, bare dim forest floor. ANCHORS that must persist into the AFTER image: a LARGE distinctive mossy boulder at the lower-left of the path, a wooden signpost (blank, no text) at the path entrance lower-right, and the path curving gently to the right at mid-frame. Somber but not scary.\nRole in game: オープニング＆wrapUpのBEFORE。手入れ前の、混みあって暗い人工林\nCamera / composition: Medium view down the path from a fixed vantage: boulder lower-left, blank signpost lower-right, path curving right at mid-frame. The SAME camera and the SAME three anchors will appear unchanged in the AFTER image.\nMust include: crowded thin cedar trunks; closed dark canopy; bare forest floor; large mossy boulder lower-left; blank wooden signpost lower-right; path curving right\nMust NOT include: readable text; logos; people; sunbeams reaching the floor\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Tree bark, roots, stones, and forest-floor debris are more finely textured and naturalistic than the reference set's smoother, rounded clay surfaces.\n- Fix vs reference set: Lighting is substantially darker and browner than the references' warm, bright, softly saturated palette.\n- Fix vs reference set: The deep, nearly black background and strong linear perspective create a realistic forest atmosphere rather than the references' cheerful tabletop-diorama presentation.\n- Fix vs reference set: Trees repeat with rigid, thin trunks and relatively sharp branch forms; reference scenery uses chunkier, rounder, more toy-like geometry.\n- Fix vs reference set: The image has less color variety and playful miniature detailing than the reference environments, so it does not immediately read as the same handcrafted world.\n- SERIES_STYLE_MATCH is below 80: the candidate leans toward a naturalistic clay forest render rather than the established bright, rounded JIBUN CHOICE toy-diorama style.\n- The intentionally dark setting communicates an overcrowded, neglected plantation well, but shadows are so heavy that mobile readability and series color-temperature continuity suffer.\n- Important storytelling elements are split between the rock and blank sign near opposite lower edges; narrow mobile cropping could weaken the scene's visual explanation.",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -3173,30 +3173,29 @@
    ],
    "dimensions": "1248x832",
    "aspect_ratio": 1.5,
-   "created_at": "2026-09-03T10:10:00.706Z",
+   "created_at": "2026-09-03T10:21:39.737Z",
    "iteration": 2,
-   "qa_score": 82,
+   "qa_score": 84,
    "qa_scores": {
-    "STYLE_CONSISTENCY": 84,
-    "COMPOSITION": 86,
-    "CROP_SAFETY": 91,
-    "READABILITY": 82,
-    "OBJECT_COMPLETENESS": 95,
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 90,
+    "CROP_SAFETY": 84,
+    "READABILITY": 89,
+    "OBJECT_COMPLETENESS": 96,
     "CHARACTER_ANATOMY": 100,
-    "SERIES_CONSISTENCY": 83,
+    "SERIES_CONSISTENCY": 90,
     "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 85,
-    "MOBILE_USABILITY": 88,
-    "SERIES_STYLE_MATCH": 82,
+    "JOB_ACCURACY": 100,
+    "MOBILE_USABILITY": 84,
+    "SERIES_STYLE_MATCH": 90,
     "CHARACTER_SERIES_MATCH": 100
    },
    "qa_issues": [
-    "人工林の混雑と暗さは明確に伝わるが、樹木が均一すぎず、整然と植林された人工林であることが一目では少し曖昧",
-    "中央の道が視線誘導として機能している一方、主役となる問題箇所がなく、ゲーム画面では単なる森の背景として読まれる可能性がある",
-    "外周を切っても意味は維持されるが、モバイル表示では密集した幹と暗部が縮小され、手入れ不足の具体的な状態が判別しにくくなる",
-    "Before/After用として同一カメラ・同一樹木配置を再現できるよう、後続画像ではこの構図と個々の主要な幹・切り株・倒木位置を厳密に固定する必要がある"
+    "The blank sign sits close to the right edge and may be partially cropped on narrow mobile layouts; keep it nonessential or shift it slightly inward.",
+    "Dense canopy shadows reduce small-screen separation between trunks in the background, although the central path remains clearly readable.",
+    "Only the BEFORE image is supplied, so exact same-camera and same-environment consistency with the AFTER counterpart cannot yet be visually verified; this category is treated as not applicable for this single-image review."
    ],
-   "file_hash": "564086b27955",
+   "file_hash": "4caeff5a7fdc",
    "used_by": [
     "src/data/content/forest.ts"
    ],
@@ -3210,7 +3209,7 @@
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME cedar stand from the SAME camera position after thinning: fewer, thicker, healthier trunks with space between them, warm sunbeams reaching a green forest floor with low plants and one small seedling with a protective tube, a fresh cut stump near the path. Bright, hopeful, alive.\nRole in game: wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ\nCamera / composition: Identical framing to the BEFORE: same path, same vantage. Sunlight shafts from upper left, green floor, visible sky gaps in the canopy.\nMust include: same path and vantage; fewer thicker trunks; sunbeams to the floor; green understory; one cut stump; one tubed seedling\nMust NOT include: readable text; logos; people; identical crowded stand\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照画像より樹皮・地面・葉群の凹凸が細かく、手作り粘土模型というより精密な汎用3Dクレイ背景に寄っている\n- Fix vs reference set: AFTERの強い黄金色の斜光と高コントラストは、参照セットの均一で柔らかな照明より映画的\n- Fix vs reference set: 候補は画面全体を森林だけで密に満たしており、参照セットに多い明確なミニチュア配置と玩具ジオラマらしい空間整理が弱い\n- BEFOREとAFTERで残存する樹木の位置・幹の太さ・枝分かれ・樹冠形状が対応せず、同一カメラで同じ林を撮った変化として成立しにくい\n- 中央の道幅、曲がり方、消失点、前景の切り株や倒木、背景の地形が大幅に変化しており、間伐結果以外まで再構成されている\n- AFTERでは左右の主要な幹が著しく太くなり、BEFOREに存在した多数の幹を単に伐採した状態では説明できない\n- 光の変化と下草・苗の成長は意図を明瞭に表現できているが、同一構図を維持するbefore/afterの必須条件に違反している\n- vision critic verdict: FAIL (MUST violation or unstated failure)",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME cedar stand after thinning, from the SAME camera: the mossy boulder lower-left, the blank signpost lower-right and the right-curving path are all UNCHANGED. About a third of the trunks are gone (a few fresh cut stumps where they stood), the remaining trunks are the SAME trees in the same positions — just with warm sunbeams now reaching a green forest floor, low plants, and one tubed seedling near the path. Bright and hopeful.\nRole in game: wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ\nCamera / composition: Identical framing to the BEFORE: same boulder, same signpost, same path curve, same remaining trunk positions. Change ONLY: fewer trunks (stumps remain), light shafts, green understory, one seedling.\nMust include: same mossy boulder lower-left; same blank signpost lower-right; same right-curving path; fresh cut stumps; sunbeams to a green floor; one tubed seedling\nMust NOT include: readable text; logos; people; identical crowded stand\nAspect ratio: 3:2 (compose for this frame).",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -3220,35 +3219,308 @@
    ],
    "dimensions": "1248x832",
    "aspect_ratio": 1.5,
-   "created_at": "2026-09-03T10:16:37.368Z",
-   "iteration": 3,
-   "qa_score": 64,
+   "created_at": "2026-09-03T10:23:35.341Z",
+   "iteration": 1,
+   "qa_score": 86,
    "qa_scores": {
     "STYLE_CONSISTENCY": 88,
     "COMPOSITION": 91,
-    "CROP_SAFETY": 92,
-    "READABILITY": 94,
-    "OBJECT_COMPLETENESS": 95,
+    "CROP_SAFETY": 94,
+    "READABILITY": 92,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 87,
+    "BEFORE_AFTER_CONSISTENCY": 91,
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 90,
+    "SERIES_STYLE_MATCH": 86,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "AFTERでは間伐、採光、下草の成長、苗木という意図した変化が明確に読み取れる",
+    "岩、標識、道、主要な幹の位置とカメラ角度がよく維持され、同じ林の時間変化として成立している",
+    "間伐対象以外の奥の樹木配置や下草量にも細かな差が多いが、出来事の結果として許容できる範囲",
+    "標識は無地で、禁止されている読める文字・数字・ロゴはない",
+    "人物がいないため人物造形および解剖学上の問題は該当しない"
+   ],
+   "file_hash": "000368edc980",
+   "used_by": [
+    "src/data/content/forest.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "river_scene",
+   "filename": "scene-river.png",
+   "world": "river",
+   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A gentle town river seen as one continuous miniature clay diorama, left to right: a riverside survey point where a tiny researcher in waders holds a water bottle by a reed bank; a small tidy sewage treatment plant with round aeration tanks and bubbles, connected to the river by a clean outfall; a bright riverside office with a drawing board and, beside it, a stretch of bank being reworked with stones, one small fish ladder at a low weir. Clear day, blue-green water with visible riffles, dragonflies. Cozy handcrafted clay look, tiny figures, hopeful mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）\nCamera / composition: Wide horizontal scene, slight high angle, the river flowing left to right through the whole image. Three work areas at roughly 18%/52%/80% width. At least 8% empty margin at both edges. Sky top 20%.\nMust include: reed bank with a tiny surveyor; round aeration tanks with bubbles; clean outfall to the river; low weir with a small fish ladder; stone bank section; riffles in the water; tiny clay fish shadows\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照群より青〜緑の彩度と水面の透明感がやや強く、少し鮮明なレンダーに見える\n- Fix vs reference set: 遠景の樹木や川岸は参照の背景より細部密度がわずかに高い\n- 中央の処理施設と右側の石造水路が視覚的に近く、モバイル表示では②と③の役割が一瞬重なって見える可能性がある\n- 右端の人物は安全域内だが、狭い画面でcover表示すると設計事務所と人物が同時に欠けやすい\n- file too large: 2.5MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:32:00.415Z",
+   "iteration": 3,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 86,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 92,
+    "SERIES_CONSISTENCY": 94,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 94,
+    "MOBILE_USABILITY": 86,
+    "SERIES_STYLE_MATCH": 93,
+    "CHARACTER_SERIES_MATCH": 91
+   },
+   "qa_issues": [
+    "右端の設計事務所ホットスポットが画面幅約80%地点にあり、375px幅で中央クロップされる実装では建物や人物が欠ける可能性がある — responsive表示では全景維持が必要",
+    "中央の下水処理設備が大きく視線を集める一方、左の調査ポイントは人物が小さく植物に囲まれている — ホットスポットUIで明確に補助する必要がある",
+    "file too large: 2.5MB (>2MB)"
+   ],
+   "file_hash": "babe637890bb",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_failed"
+  },
+  {
+   "asset_id": "river_ba_before",
+   "filename": "ba-before.png",
+   "world": "river",
+   "purpose": "オープニング＆wrapUpのBEFORE。数年前の、にごって生きものの気配がない川",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A town river a few years ago as a miniature clay diorama: murky greyish-green water, straight concrete banks on both sides, no plants at the waterline, no fish, a lone shopping cart silhouette NOT included — keep it clean but lifeless; overcast sky, muted colors. A small footbridge crosses mid-frame.\nRole in game: オープニング＆wrapUpのBEFORE。数年前の、にごって生きものの気配がない川\nCamera / composition: Fixed vantage from the left bank looking downstream, footbridge at mid-frame; the SAME camera will be reused for the AFTER image. Concrete banks dominate both edges.\nMust include: murky water; straight concrete banks; footbridge mid-frame; overcast sky; no visible fish or plants\nMust NOT include: readable text; logos; people; garbage piles; fish\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 川の水面が参照画像の丸みある粘土表現より写実的な液体レンダリングに見える\n- Fix vs reference set: 護岸・橋・建物が硬質で角張ったコンクリート模型寄りで、参照群の柔らかく丸い手作り粘土感が弱い\n- Fix vs reference set: 全体が低彩度の灰色と茶色に偏り、参照群の温かく明るい色設計から大きく外れている\n- Fix vs reference set: 曇天の陰影と被写界深度が実写風で、参照群の明るい玩具ジオラマ的な照明・カメラ感より重い\n- Fix vs reference set: 建物や樹木の形状が単調で、参照群にある丸み、色のアクセント、親しみやすい造形密度が不足している\n- SERIES_STYLE_MATCHが80未満で、参照セットと同じ作品・同じ世界として並べた際に質感と色温度の差が目立つ\n- 濁って生きものの気配がないBEFOREの意味は明確だが、暗さを写実的な灰色表現に寄せすぎてシリーズ固有の明るいクレイ造形が失われている\n- 水、空、コンクリートの素材感が別々に見え、人物・建物・背景を同一の粘土質感で統一するMUSTを満たしていない",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:35:36.064Z",
+   "iteration": 2,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 86,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 94,
+    "READABILITY": 92,
+    "OBJECT_COMPLETENESS": 96,
     "CHARACTER_ANATOMY": 100,
     "SERIES_CONSISTENCY": 85,
-    "BEFORE_AFTER_CONSISTENCY": 64,
-    "JOB_ACCURACY": 93,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 100,
     "MOBILE_USABILITY": 90,
     "SERIES_STYLE_MATCH": 84,
     "CHARACTER_SERIES_MATCH": 100
    },
    "qa_issues": [
-    "BEFOREとAFTERで残存するはずの主要樹木の幹形状・枝位置・樹冠シルエットが一致しない — 同じ林を同一カメラで撮った時間差としての連続性が弱い",
-    "画面中央左の大木、右前景の大木、奥の樹木配置が両画像でずれており、単なる間伐結果ではなく林全体を再生成したように見える",
-    "道の輪郭・地表の石・倒木・切り株の位置関係も広範囲に変化している — 変化対象でない背景まで別物になっている",
-    "AFTERで苗と下草が育つ意図は明瞭だが、間伐直後と植生成長後が同時に見え、時間経過の設定が少し曖昧",
-    "BEFORE_AFTER_CONSISTENCYが70未満のためfail-closed条件に抵触",
-    "vision critic verdict: FAIL (MUST violation or unstated failure)",
-    "BEFORE_AFTER_CONSISTENCY below threshold: 64"
+    "川が濁り、生きものの気配がないBEFORE状態は一目で理解でき、過度な汚染物や恐怖表現にも頼っていない",
+    "中央の川と反復する橋が十分な奥行きを作り、同一カメラのAFTER画像を制作しやすい構図になっている",
+    "重要な川面と橋は中央70%に収まり、モバイルの左右クロップにも比較的強い",
+    "読める文字・数字・ロゴ・人物・不自然な人体は存在しない",
+    "AFTER制作時は建物、橋、護岸、樹木、雲、カメラ位置を完全固定し、水質と生態の変化だけに限定する必要がある"
    ],
-   "file_hash": "fafd3c7d6b1c",
+   "file_hash": "e35fc69ec5b8",
    "used_by": [
-    "src/data/content/forest.ts"
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "river_ba_after",
+   "filename": "ba-after.png",
+   "world": "river",
+   "purpose": "wrapUpのAFTER。同じ川の現在。瀬と淵、魚のかげ",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME river reach from the SAME camera position today: clear blue-green water with visible riffles and a deeper pool, the left concrete bank replaced by natural stones and reeds while the right bank keeps its concrete (minimal intervention), small clay fish shadows in the pool, sunny sky. The SAME footbridge unchanged at mid-frame — the bridge is the anchor proving it is the same place.\nRole in game: wrapUpのAFTER。同じ川の現在。瀬と淵、魚のかげ\nCamera / composition: Identical framing to the BEFORE: same footbridge position and size, same downstream view. Only the water, the left bank and the sky change.\nMust include: same footbridge unchanged; clear water with riffles and a pool; left bank natural stones + reeds; right bank still concrete; small fish shadows; sunny sky\nMust NOT include: readable text; logos; people; different bridge; changed camera angle\nAspect ratio: 3:2 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/river/ba-before.png"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:37:49.707Z",
+   "iteration": 1,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 92,
+    "CROP_SAFETY": 94,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 88,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 89,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "In the AFTER image, the entire left retaining wall and railing are replaced by a rocky planted bank; this is a larger structural intervention than merely showing the river's current condition, though the buildings, bridge, camera, and neighborhood remain convincingly matched.",
+    "The visible riffle is concentrated along the left edge while the pool occupies most of the channel; the intended distinction is readable, but a slightly clearer mid-frame transition would improve mobile recognition.",
+    "Fish shadows are subtle and may become difficult to notice when the image is displayed at small mobile sizes."
+   ],
+   "file_hash": "5ec5438b935f",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "library_scene",
+   "filename": "scene-library.png",
+   "world": "library",
+   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The backyard of a warm town library as one continuous miniature clay diorama, left to right: a local-history reference desk where a tiny librarian compares an old sepia photograph against a big unfolded old map under a desk lamp; a conservation workroom with white gloves, a soft brush, acid-free boxes and a flat table holding fragile papers; a small digitization studio with a large flatbed scanner, a color chart card and a monitor showing a thumbnail grid. Tall bookshelves in the background connect all three areas. Cozy evening light through a round window, handcrafted clay look, tiny figures, quiet mystery mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous room band. Three work areas at roughly 22%/55%/80% width. At least 8% empty margin at both edges. Bookshelf band top 25%, no text on any spine or sign.\nMust include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Reference scenes generally use slightly brighter, more saturated accent colors; the candidate is more uniformly sepia and subdued.\n- Fix vs reference set: The candidate's deep, continuous bookshelves create a denser and flatter background than the softer, more selectively detailed backgrounds in several references.\n- Fix vs reference set: The three characters have slightly slimmer seated proportions than the strongest 2.5–3-head reference figures, though they still read clearly as matching clay figurines.\n- The three work zones are clearly differentiated and correctly positioned: document comparison at left, conservation work at center, and scanning/digitization at right.\n- The right-side digitization worker and scanner sit near the frame edge, leaving less crop tolerance than the left and center stations on narrow mobile presentations.\n- The warm brown palette reduces separation between furniture, documents, and shelving; slightly stronger localized color contrast would improve rapid hotspot recognition.\n- No readable text, numbers, logos, photorealistic materials, broken anatomy, or incomplete heads/hands are present.\n- file too large: 2.7MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1023",
+   "aspect_ratio": 1.501,
+   "created_at": "2026-09-03T10:59:56.687Z",
+   "iteration": 3,
+   "qa_score": 89,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 92,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 95,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 90,
+    "SERIES_STYLE_MATCH": 89,
+    "CHARACTER_SERIES_MATCH": 91
+   },
+   "qa_issues": [
+    "3つの作業地点は左・中央・右に明確に分離され、照合、保存処置、デジタル化の道具も正確で、scene_mapのホットスポット配置に適している",
+    "重要人物と主要作業物は中央70%付近に概ね収まり、頭・手・作業対象の切断もなく安全性が高い",
+    "375px表示では各人物の作業内容は判別できるが、中央の細かな文書片や右側モニター内の個別サムネイルは小さくなり、操作地点の視認性が少し低下する可能性がある",
+    "画面内に判読可能な文字・数字・ロゴ・透かしは見当たらない",
+    "手指は手袋または単純化された粘土造形で破綻がなく、衣服・肌・髪・家具が同一のマットな粘土素材として統一されている",
+    "file too large: 2.3MB (>2MB)"
+   ],
+   "file_hash": "aee57526a487",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_failed"
+  },
+  {
+   "asset_id": "library_ba_before",
+   "filename": "ba-before.png",
+   "world": "library",
+   "purpose": "wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The front counter of the warm town library as a miniature clay diorama, full series color. ANCHORS that must persist into the AFTER image: the wooden counter running along the lower third, a green desk lamp at its left end, and a tall bookshelf wall behind. Mood NOW: an elderly woman in a cardigan gently places ONE small sepia-toned old photograph (a tiny aged rectangle, the only sepia element) on the counter; a young librarian leans in, curious; a small paper sleeve and white gloves lie ready. Quiet mystery, soft afternoon light. No readable text anywhere.\nRole in game: wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真\nCamera / composition: Interior medium shot from a fixed vantage: counter lower third, green lamp left, bookshelf wall behind. The SAME camera and anchors reappear in the AFTER image. The sepia photo is a small prop, everything else in bright series clay colors.\nMust include: wooden counter lower third; green desk lamp at left end; tall bookshelf wall; elderly woman placing a small sepia photo; curious librarian; paper sleeve and white gloves\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は基準画像より全体の色温度がやや黄褐色寄りで、背景の本棚も少し暗く重い\n- Fix vs reference set: 高齢者の眼鏡と髪の造形は基準人物よりわずかに細密だが、粘土人形の範囲内\n- 左端のランプが途中で切れているが、物語上の重要要素ではなく意味は損なわれない\n- 古写真が小さく、375px幅では写真の存在は分かっても内容までは判別しにくい\n- 重要要素は概ね中央に収まるが、横長構図のためモバイルで中央クロップすると両人物の外側がやや窮屈になる\n- file too large: 2.3MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T11:16:44.360Z",
+   "iteration": 3,
+   "qa_score": 91,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 94,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 94,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 95,
+    "CHARACTER_ANATOMY": 96,
+    "SERIES_CONSISTENCY": 94,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 91,
+    "MOBILE_USABILITY": 92,
+    "SERIES_STYLE_MATCH": 94,
+    "CHARACTER_SERIES_MATCH": 95
+   },
+   "qa_issues": [
+    "file too large: 2.2MB (>2MB)"
+   ],
+   "file_hash": "89aef2f9cf8a",
+   "used_by": [
+    "src/data/content/river.ts"
+   ],
+   "status": "qa_failed"
+  },
+  {
+   "asset_id": "studio_scene",
+   "filename": "scene-studio.png",
+   "world": "studio",
+   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The floor of a small cozy game studio as one continuous miniature clay diorama, left to right: a test room corner with a rack of small game consoles, one monitor showing a tiny crash symbol and a clipboard; a planner's desk in the middle with a big wall chart of colorful bar graphs and sticky notes; a designer's desk at the right with a pen tablet, a large screen showing a simple game scene mock and color swatch cards. Tiny staff figures at each area, a whiteboard connecting the spaces, warm night lighting with desk lamps (crunch-before-release but hopeful). Handcrafted clay look, no readable text anywhere.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）\nCamera / composition: Wide horizontal interior, slight high angle, one continuous studio floor. Three work areas at roughly 20%/52%/80% width. At least 8% empty margin at both edges. Wall band top 25%, no text.\nMust include: console rack and monitor with crash symbol; clipboard; wall chart with bar graphs; sticky notes; pen tablet; large screen with game mock; color swatches; tiny staff figures; whiteboard\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は夜間の暗い室内と強い周辺減光が支配的で、参照画像の明るく均一な色温度と柔らい斜光から大きく外れている\n- Fix vs reference set: 茶色と黒を中心とした低彩度の画面で、参照画像に共通する青・緑・黄を活かした明快で軽やかな配色より重く見える\n- Fix vs reference set: 人物や家具の粘土質感は近いが、候補は陰影と被写界深度が映画的で、参照画像の明るい玩具ジオラマ的なカメラ感よりシネマティック\n- Fix vs reference set: 人物の顔・小さな点状の目・固形粘土風の髪は参照に概ね一致するが、全体が暗いため肌と服のマットな粘土質感が埋もれている\n- Fix vs reference set: 参照の作業場シーンは各人物と道具を明瞭に見せるのに対し、候補の左端テスト席と右端デザイン席は暗部が強く、モバイル表示で役割の識別性が落ちる\n- 明るく柔らかい配色というMUST条件を満たさず、シリーズの教育ゲーム画面として暗く重い — 色温度と露出を参照画像の昼間の室内程度まで上げる必要がある\n- 強いビネットで四隅の棚・人物・机が沈む — 375px幅では3つのホットスポット、とくに左約20%と右約80%の視認性が不足する\n- 横長画面に情報が密集しており、中央70%外の左右人物は端末クロップ時に役割を示す機器ごと失われやすい",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T11:23:38.650Z",
+   "iteration": 2,
+   "qa_score": 87,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 89,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 92,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 91,
+    "SERIES_CONSISTENCY": 88,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 94,
+    "MOBILE_USABILITY": 90,
+    "SERIES_STYLE_MATCH": 87,
+    "CHARACTER_SERIES_MATCH": 88
+   },
+   "qa_issues": [
+    "The three intended stations are clearly positioned near 20%, 52%, and 80%, but the center planner station is visually quieter than the two monitor-based stations and may need stronger UI hotspot treatment.",
+    "On a 375px mobile viewport, small props and monitor details will become difficult to distinguish, though each station remains identifiable from its silhouette and character activity.",
+    "The warm tan floor, walls, furniture, and lighting occupy most of the frame, reducing color separation compared with the more varied blue-green palette of the reference set.",
+    "file too large: 2.5MB (>2MB)"
+   ],
+   "file_hash": "0ffdb8f61e46",
+   "used_by": [
+    "src/data/content/river.ts"
    ],
    "status": "qa_failed"
   }

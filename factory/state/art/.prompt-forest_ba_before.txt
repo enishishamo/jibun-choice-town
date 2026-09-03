@@ -15,3 +15,13 @@ Camera / composition: Medium view down the path from a fixed vantage: boulder lo
 Must include: crowded thin cedar trunks; closed dark canopy; bare forest floor; large mossy boulder lower-left; blank wooden signpost lower-right; path curving right
 Must NOT include: readable text; logos; people; sunbeams reaching the floor
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Tree bark, roots, stones, and forest-floor debris are more finely textured and naturalistic than the reference set's smoother, rounded clay surfaces.
+- Fix vs reference set: Lighting is substantially darker and browner than the references' warm, bright, softly saturated palette.
+- Fix vs reference set: The deep, nearly black background and strong linear perspective create a realistic forest atmosphere rather than the references' cheerful tabletop-diorama presentation.
+- Fix vs reference set: Trees repeat with rigid, thin trunks and relatively sharp branch forms; reference scenery uses chunkier, rounder, more toy-like geometry.
+- Fix vs reference set: The image has less color variety and playful miniature detailing than the reference environments, so it does not immediately read as the same handcrafted world.
+- SERIES_STYLE_MATCH is below 80: the candidate leans toward a naturalistic clay forest render rather than the established bright, rounded JIBUN CHOICE toy-diorama style.
+- The intentionally dark setting communicates an overcrowded, neglected plantation well, but shadows are so heavy that mobile readability and series color-temperature continuity suffer.
+- Important storytelling elements are split between the rock and blank sign near opposite lower edges; narrow mobile cropping could weaken the scene's visual explanation.

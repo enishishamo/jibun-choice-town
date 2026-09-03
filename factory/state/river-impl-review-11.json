@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 90,
+    "game_quality_score": 68,
+    "language": {
+      "LANGUAGE_AGE_FIT": 90,
+      "FURIGANA_SUPPORT": 78,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 86,
+      "TECHNICAL_TERM_SUPPORT": 88,
+      "VISUAL_LANGUAGE_SUPPORT": 65
+    },
+    "blockers": [],
+    "high": [
+      "bank_designの主要な失敗結果が、川・水・魚・生息空間の視覚的な状態変化ではなく、図面行に表示される説明文字列だけで表現されている。TEXT_ONLY_CONSEQUENCEに該当し、文章を読まない観察者には何が失敗したか判別できない。"
+    ],
+    "medium": [
+      "water_traceはC地点とD地点の2地点を毎回採水すれば、全3ケースを常に一意判定できる。ケースが変わっても熟練者の最適戦略が固定され、地点選択のリプレイ性と上達余地が弱い。",
+      "water_traceの主要な採水地点ボタン内の地点名・DO・BOD・魚記録が11.5px、処理場表示が10px、放流掲示が9pxで、言語規約の本文16px相当以上を満たさない。野帳を16pxにしても、直接操作する地点表示の可読性問題は残る。"
+    ],
+    "low": [
+      "一部のボタンラベルが規約の2〜6文字を超える（「支流がきれいに」「報告をまとめる」）。意味は明確だが、短縮規則とは不一致。",
+      "bank_designでは魚道の選択肢が、同一画面でルビ付きの初出が表示される前に「ゆるい魚道」「急な魚道」として現れる可能性がある。"
+    ],
+    "evidence": [
+      "factory/rules/game-critic-v2.md:60 — 結果は文章説明ではなく世界の変化で示すことを必須としている。",
+      "factory/rules/game-critic-v2.md:64 — 中心因果が視覚的に理解できず文章のみなら原則FAIL。",
+      "factory/rules/game-critic-v2.md:67 — PLAYER ACTION→説明文→retryの主要結果はTEXT_ONLY_CONSEQUENCE。",
+      "src/q1/BankDesignGame.tsx:48 — 失敗結果はsimTextが返す文字列として実装されている。",
+      "src/q1/BankDesignGame.tsx:50 — 堰の失敗は「試算🐟：段差の下で止まる」という文字列表示。",
+      "src/q1/BankDesignGame.tsx:51 — 魚道不一致も「入り口で魚が止まる」という文字列表示。",
+      "src/q1/BankDesignGame.tsx:55 — 浸水危険は「増水で家まで水が」という文字列表示。",
+      "src/q1/BankDesignGame.tsx:56 — 裸地の侵食は「岸がけずられていく」という文字列表示。",
+      "src/q1/BankDesignGame.tsx:57 — 過剰護岸の生態影響も「生きものの気配が消える」という文字列表示。",
+      "src/q1/BankDesignGame.tsx:86 — faultSec時の視覚結果はspan内のsimTextへの差し替えに留まり、川・魚・水位・生息空間の描画状態は変化しない。",
+      "factory/rules/language-style.md:59 — VISUAL-FIRSTの優先順位は絵、動き、world state、短い言葉。",
+      "factory/rules/language-style.md:60 — 文章を読まないと理解できない画面はLANGUAGE QA FAIL。",
+      "src/q1/riverLogic.ts:43 — plant_upgradeはCがpoor、Dがgoodに固定される。",
+      "src/q1/riverLogic.ts:46 — tributary_cleanupはCとDがともにgoodに固定される。",
+      "src/q1/riverLogic.ts:49 — not_recoveredはCとDがともにpoorに固定される。",
+      "src/q1/WaterTraceGame.tsx:75 — 採水地点ボタン全体の文字サイズが11.5px。",
+      "src/q1/WaterTraceGame.tsx:79 — 主要なDO・BOD・魚記録も11.5px。",
+      "src/q1/WaterTraceGame.tsx:56 — 処理場ラベルが10px。",
+      "src/q1/WaterTraceGame.tsx:58 — 稚魚放流の掲示が9px。",
+      "factory/rules/language-style.md:27 — ルビを除いた本文は16px相当以上、主要ボタンは18px相当以上を要求。"
+    ],
+    "recommended_actions": [
+      "bank_designの失敗時に文字列を出すだけでなく、該当区間の描画自体を変化させる。浸水なら水位上昇と家への到達、侵食なら岸形状の崩れ、過剰護岸なら植生・魚影の消失、魚道不一致なら魚の移動停止を短いアニメーションまたは明確な状態差で示す。",
+      "water_traceのケース生成を変更し、常にC・Dだけで解けない配置を含める。変化点や支流・処理場の位置関係をケースごとに変えるなど、再調査で採水戦略も変わる設計にする。",
+      "採水地点ボタン内の主要情報を16px相当まで拡大し、狭い画面では地点カードの横並び依存を避ける。補助掲示も自力読解可能な大きさにする。",
+      "7文字以上のボタンを2〜6文字の動作・結論ラベルへ短縮し、魚道の初出表示に選択的ルビを付ける。"
+    ]
+  },
+  "elapsed_sec": 174.504
+}

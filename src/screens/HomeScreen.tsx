@@ -83,6 +83,36 @@ export default function HomeScreen() {
         out.push({ eventId, label: ev.shortLabel ?? ev.title.split("\n")[0], districtId, x, y, state: worldState(eventId) });
       });
     }
+    // generic de-collision pass (§30): whatever produced the raw positions
+    // (authored tile spots or district rings), labels never stack. Deterministic
+    // relaxation — push overlapping pairs apart, clamp to the canvas.
+    const MIN_H = 52;
+    const approxW = (m: WorldMarker) => Math.min(160, 40 + m.label.length * 13);
+    for (let pass = 0; pass < 14; pass++) {
+      let moved = false;
+      for (let i = 0; i < out.length; i++) {
+        for (let j = i + 1; j < out.length; j++) {
+          const a = out[i], b2 = out[j];
+          const dx = b2.x - a.x, dy = b2.y - a.y;
+          const ox = (approxW(a) + approxW(b2)) / 2 - Math.abs(dx), oy = MIN_H - Math.abs(dy);
+          if (ox > 0 && oy > 0) {
+            moved = true;
+            if (ox < oy) {
+              const push = (ox / 2 + 1) * (dx >= 0 ? 1 : -1);
+              a.x -= push; b2.x += push;
+            } else {
+              const push = (oy / 2 + 1) * (dy >= 0 ? 1 : -1);
+              a.y -= push; b2.y += push;
+            }
+          }
+        }
+      }
+      if (!moved) break;
+    }
+    for (const m of out) {
+      m.x = Math.min(Math.max(m.x, 48), CANVAS_W - 48);
+      m.y = Math.min(Math.max(m.y, 30), CANVAS_H - 24);
+    }
     return out;
   }, [worldState]);
 

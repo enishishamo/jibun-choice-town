@@ -1,0 +1,24 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: A gentle town river seen as one continuous miniature clay diorama, left to right: a riverside survey point where a tiny researcher in waders holds a water bottle by a reed bank; a small tidy sewage treatment plant with round aeration tanks and bubbles, connected to the river by a clean outfall; a bright riverside office with a drawing board and, beside it, a stretch of bank being reworked with stones, one small fish ladder at a low weir. Clear day, blue-green water with visible riffles, dragonflies. Cozy handcrafted clay look, tiny figures, hopeful mood.
+Role in game: エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）
+Camera / composition: Wide horizontal scene, slight high angle, the river flowing left to right through the whole image. Three work areas at roughly 18%/52%/80% width. At least 8% empty margin at both edges. Sky top 20%.
+Must include: reed bank with a tiny surveyor; round aeration tanks with bubbles; clean outfall to the river; low weir with a small fish ladder; stone bank section; riffles in the water; tiny clay fish shadows
+Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補は参照群より青〜緑の彩度と水面の透明感がやや強く、少し鮮明なレンダーに見える
+- Fix vs reference set: 遠景の樹木や川岸は参照の背景より細部密度がわずかに高い
+- 中央の処理施設と右側の石造水路が視覚的に近く、モバイル表示では②と③の役割が一瞬重なって見える可能性がある
+- 右端の人物は安全域内だが、狭い画面でcover表示すると設計事務所と人物が同時に欠けやすい
+- file too large: 2.5MB (>2MB)

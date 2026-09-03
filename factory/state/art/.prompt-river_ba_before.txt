@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: A town river a few years ago as a miniature clay diorama: murky greyish-green water, straight concrete banks on both sides, no plants at the waterline, no fish, a lone shopping cart silhouette NOT included — keep it clean but lifeless; overcast sky, muted colors. A small footbridge crosses mid-frame.
+Role in game: オープニング＆wrapUpのBEFORE。数年前の、にごって生きものの気配がない川
+Camera / composition: Fixed vantage from the left bank looking downstream, footbridge at mid-frame; the SAME camera will be reused for the AFTER image. Concrete banks dominate both edges.
+Must include: murky water; straight concrete banks; footbridge mid-frame; overcast sky; no visible fish or plants
+Must NOT include: readable text; logos; people; garbage piles; fish
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 川の水面が参照画像の丸みある粘土表現より写実的な液体レンダリングに見える
+- Fix vs reference set: 護岸・橋・建物が硬質で角張ったコンクリート模型寄りで、参照群の柔らかく丸い手作り粘土感が弱い
+- Fix vs reference set: 全体が低彩度の灰色と茶色に偏り、参照群の温かく明るい色設計から大きく外れている
+- Fix vs reference set: 曇天の陰影と被写界深度が実写風で、参照群の明るい玩具ジオラマ的な照明・カメラ感より重い
+- Fix vs reference set: 建物や樹木の形状が単調で、参照群にある丸み、色のアクセント、親しみやすい造形密度が不足している
+- SERIES_STYLE_MATCHが80未満で、参照セットと同じ作品・同じ世界として並べた際に質感と色温度の差が目立つ
+- 濁って生きものの気配がないBEFOREの意味は明確だが、暗さを写実的な灰色表現に寄せすぎてシリーズ固有の明るいクレイ造形が失われている
+- 水、空、コンクリートの素材感が別々に見え、人物・建物・背景を同一の粘土質感で統一するMUSTを満たしていない

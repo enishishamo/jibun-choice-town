@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 82,
+    "game_quality_score": 72,
+    "language": {
+      "LANGUAGE_AGE_FIT": 88,
+      "FURIGANA_SUPPORT": 88,
+      "TEXT_DENSITY": 82,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 86,
+      "VISUAL_LANGUAGE_SUPPORT": 78
+    },
+    "blockers": [],
+    "high": [
+      "bank_designの誤設計時に、v3必須の世界結果が表示されない。魚道不一致を含む不正解はafter=falseの図面表示と文章による指差しだけで処理され、「入り口で魚が止まる」という実装済みの視覚的結果には到達不能。主要な失敗ループが実質的に選択→文章ヒント→再試行になっている。"
+    ],
+    "medium": [
+      "bank_designの3年後表示は、設計通過だけで「魚がのぼっていく」「石のすきまに生きもの」と断定する。コンテンツ側の『工事後も調査を続け、戻るかは川と数字で確認する』という慎重な framing と一致しない。",
+      "plant_opsは現在の流入量に反応する判断として成立するが、将来スロットの負荷は表示されず、資料とミッションが強調する『先を読む』操作は実装されていない。",
+      "一部の行動ボタンが2〜6文字規則を超える（例：『報告をまとめる』『川ぞいを歩いてみる』）。"
+    ],
+    "low": [
+      "bank_designの地図概要にある判断条件は13px、結果表示は12.5px。選択中条件は16pxで補完されるが、一覧比較と3年後の結果は言語ガイドの本文16px基準を下回る。"
+    ],
+    "evidence": [
+      "src/q1/BankDesignGame.tsx:72 — 魚道不一致の世界結果はriverStrip(after=true)内にだけ存在する。",
+      "src/q1/BankDesignGame.tsx:92 — mentor_fail画面はriverStrip()をafter=falseで呼び、失敗結果を表示しない。",
+      "src/q1/BankDesignGame.tsx:104 — riverStrip(true)はdone画面でしか呼ばれない。",
+      "src/q1/BankDesignGame.tsx:175 — 初回不正解は区間強調と『主任が…指でたたいた』という文章だけで返される。",
+      "src/q1/riverLogic.ts:230 — 不一致魚道はwrong_fishwayとして拒否されるため、after=trueの不一致分岐には到達できない。",
+      "src/q1/BankDesignGame.tsx:73 — 成功プレビューが魚の遡上や生きものの存在を確定表示する。",
+      "src/data/content/river.ts:255 — 正本コンテンツは工事後も調査し、回復を川と数字で確かめるとしている。",
+      "src/q1/PlantOpsGame.tsx:116 — 操作時に見える仕事データは現在スロットの流入量だけで、将来負荷を読む表示がない。",
+      "src/q1/WaterTraceGame.tsx:146 — 『報告をまとめる』は7文字でボタンの2〜6文字規則を超える。",
+      "src/data/content/river.ts:40 — CTA『川ぞいを歩いてみる』は2〜6文字規則を超える。",
+      "src/q1/BankDesignGame.tsx:64 — 地図上の条件表示は13px。",
+      "src/q1/BankDesignGame.tsx:71 — 3年後を含む区間結果表示は12.5px。"
+    ],
+    "recommended_actions": [
+      "bank_designで提出直後に計画をプレビュー状態へ移し、拒否理由に対応する川・護岸・魚の変化を実際に表示する。wrong_fishwayでは魚が入口で止まる分岐を到達可能にする。",
+      "成功プレビューを『予測』として明示し、魚や生きものの回復を断定せず、施工後の継続調査へつなげる。",
+      "plant_opsで次スロットの流入予測を表示して事前設定を可能にするか、『先を読む』という説明を現在負荷への調整に合わせる。",
+      "長いCTAを『報告する』『川へ行く』など2〜6文字の動詞ラベルへ変更する。",
+      "bank_designの一覧条件と結果表示を16px相当以上にする。"
+    ]
+  },
+  "elapsed_sec": 147.759
+}

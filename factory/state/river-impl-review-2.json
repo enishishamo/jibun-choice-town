@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 74,
+    "career_authenticity_score": 82,
+    "game_quality_score": 74,
+    "language": {
+      "LANGUAGE_AGE_FIT": 76,
+      "FURIGANA_SUPPORT": 72,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 83,
+      "TECHNICAL_TERM_SUPPORT": 78,
+      "VISUAL_LANGUAGE_SUPPORT": 86
+    },
+    "blockers": [],
+    "high": [
+      "主要なゲーム内文字が10〜13pxに固定され、言語規約の本文16px相当・主要ボタン18px相当を大幅に下回る。特に採水値と地点情報は判断に必須であり、年齢適合性を損なう。",
+      "not_recoveredで完了した場合でも、共通wrapUpが現在の川を魚のいる回復後の姿として表示する。調査結果と無関係に回復を視覚的に確定し、公平性要件に反する。"
+    ],
+    "medium": [
+      "魚道について、データ本文は魚種や泳力に応じた個別設計が必要と説明する一方、ゲーム機構は堰に汎用の「魚道をつける」を選べば常に正解とする。職業固有の設計判断が操作へ翻訳されていない。",
+      "魚道の最初の操作可能な表示にはルビも短い定義もなく、説明付きルビは同じ画面の後方にある任意資料内に置かれている。",
+      "water_traceの最終失敗画面は、視覚的な差し戻しより先へ進み、「数字の変わり目」「上下流」「どこから良くなったか」と具体的な解法を直接説明している。"
+    ],
+    "low": [
+      "一部の主要ボタンが規約の2〜6文字を超える。例：「川ぞいを歩いてみる」「報告をまとめる」。"
+    ],
+    "evidence": [
+      "src/q1/WaterTraceGame.tsx:73 — 判断に必須の地点カードをfontSize 10で固定している。",
+      "src/q1/WaterTraceGame.tsx:77 — DO・BOD・魚の採水結果をfontSize 10で表示している。",
+      "src/q1/WaterTraceGame.tsx:173 — 結論ボタンの主要ラベルをfontSize 13で固定している。",
+      "src/q1/PlantOpsGame.tsx:51 — DOメーター表示をfontSize 11で固定している。",
+      "src/q1/BankDesignGame.tsx:63 — 区間条件を含む選択行をfontSize 12で固定している。",
+      "factory/rules/language-style.md:27 — 本文16px相当以上・主要ボタン18px相当以上を要求している。",
+      "src/q1/riverLogic.ts:49 — not_recoveredでは全地点をpoorとして生成する。",
+      "src/data/content/river.ts:83 — 共通wrapUpのafterLabelが「いま：瀬と淵に、魚のかげ」と回復後の現在を示す。",
+      "src/data/content/river.ts:89 — 共通wrapUpが毎日の運転と川づくりによる回復の積み重ねを断定的に結び付ける。",
+      "src/data/content/river.ts:90 — 共通wrapUpが現在の「にごりのない水」を前提にする。",
+      "src/q1/riverLogic.ts:201 — 堰では条件にかかわらずfishwayだけを正解にする。",
+      "src/q1/BankDesignGame.tsx:19 — 魚道を単一の汎用工法として提示する。",
+      "src/data/content/river.ts:168 — 本文自身は魚の大きさや泳力に合う個別設計が必要だと説明している。",
+      "src/q1/BankDesignGame.tsx:19 — 操作候補で「魚道」がルビ・定義なしに先に現れる。",
+      "src/q1/BankDesignGame.tsx:152 — 魚道の説明付きルビは後方のInfoCards内で初めて付く。",
+      "src/q1/WaterTraceGame.tsx:106 — 最終失敗文が「数字の変わり目」と明示する。",
+      "src/q1/WaterTraceGame.tsx:107 — 最終失敗文が上下流と改善開始地点という具体的解法を教える。",
+      "factory/rules/language-style.md:49 — 失敗文は答え・規則・見るべき情報を漏らさないよう要求している。"
+    ],
+    "recommended_actions": [
+      "全Q1の判断情報を16px相当以上、主要操作ラベルを18px相当以上へ引き上げ、62px幅など読みづらい固定寸法も再調整する。",
+      "water_traceの確定結果を世界状態へ保持し、not_recoveredでは回復後画像・「いま」の魚影・きれいな水を表示しない。設計は未来予測として明示する。",
+      "堰の落差、対象魚、流速など最低1条件をケース化し、複数の魚道設計から適合案を選ばせる。",
+      "魚道の最初の表示にルビと短い言い換えを付ける。",
+      "最終失敗画面の具体的解法を一般的な振り返りへ弱め、主要な失敗原因は川と差し戻し書類の視覚状態で示す。",
+      "主要ボタンを2〜6文字の動詞ラベルへ短縮する。"
+    ]
+  },
+  "elapsed_sec": 152.946
+}

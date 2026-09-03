@@ -1,0 +1,30 @@
+{
+ "asset_id": "studio_ba_after",
+ "filename": "ba-after.png",
+ "world": "studio",
+ "use": "wrapup_after",
+ "purpose": "wrapUpのAFTER。発売日：同じフロアで、まちの子が夢中で遊ぶ",
+ "scene": "The SAME studio floor on release day, from the SAME camera: the round wall clock top-center, the big monitor on the left wall and the long desk row are UNCHANGED. Mood NOW: the big monitor shows a bright cheerful game scene (no crash symbol), the whiteboard is clean with one single sticky note and a small paper crane, two visiting town children play the game on a couch that now faces the monitor, staff figures smile behind them, a small celebration garland of plain colored triangles. Bright daytime light. No readable text.",
+ "composition": "Identical framing to the BEFORE: same clock, same monitor position, same desk row. Change ONLY: bright game on screen, clean whiteboard, children playing, garland, daylight.",
+ "required_objects": [
+  "same round wall clock",
+  "same big monitor now showing a bright game",
+  "same desk row",
+  "two children playing",
+  "smiling staff",
+  "triangle garland"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}

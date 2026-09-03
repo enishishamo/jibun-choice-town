@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 74,
+    "career_authenticity_score": 74,
+    "game_quality_score": 82,
+    "language": {
+      "LANGUAGE_AGE_FIT": 86,
+      "FURIGANA_SUPPORT": 72,
+      "TEXT_DENSITY": 84,
+      "BUTTON_CLARITY": 82,
+      "TECHNICAL_TERM_SUPPORT": 78,
+      "VISUAL_LANGUAGE_SUPPORT": 88
+    },
+    "blockers": [],
+    "high": [
+      "bank_design accepts unnecessary concrete on non-severe protected sections. Because each case receives the minimum safe budget plus one, replacing stone_root with concrete costs exactly that slack and still passes. This contradicts the career rule of necessary-minimum protection and lets an over-armored design receive approval."
+    ],
+    "medium": [
+      "Selective ruby is inconsistent across screens: 稚魚 appears without ruby at its first visible use, and the non-perfect bank preview displays 瀬・淵 without ruby on that screen.",
+      "Several choice-button labels exceed the binding 2–6-character target, including 「まだ回復していない」「石積み＋根固め」「魚道をつける」."
+    ],
+    "low": [
+      "The water-trace terminal failure text explicitly states the comparison method after failure; acceptable as terminal remediation, but more explanatory than the otherwise world-first feedback."
+    ],
+    "evidence": [
+      "src/q1/riverLogic.ts:200 — case budget is always minimum safe cost plus exactly 1 slack.",
+      "src/q1/riverLogic.ts:220 — concrete is required only for severe sections.",
+      "src/q1/riverLogic.ts:221 — strong non-severe sections reject only leave, so both stone_root and concrete are accepted.",
+      "src/q1/riverLogic.ts:222 — over-armoring is rejected only on calm sections, not on strong sections.",
+      "src/q1/BankDesignGame.tsx:16 — concrete costs 3 while stone_root costs 2; the one-point slack therefore permits the unnecessary upgrade.",
+      "src/q1/BankDesignGame.tsx:107 — any plan accepted by bankValidate is presented as having passed the design meeting.",
+      "src/q1/BankDesignGame.tsx:114 — the success screen claims necessary-minimum protection even when the accepted plan used avoidable concrete.",
+      "src/q1/WaterTraceGame.tsx:180 — a rejected conclusion visibly dims.",
+      "src/q1/WaterTraceGame.tsx:187 — the implementation records a returned-paper world reaction rather than silently retrying.",
+      "src/q1/WaterTraceGame.tsx:193 — the returned conclusion gains the 📄↩ stamp.",
+      "src/q1/PlantOpsGame.tsx:95 — 「ぜんぶ基準内」 is restricted to troubles===0.",
+      "src/q1/PlantOpsGame.tsx:101 — imperfect completion reports the number of risky time slots.",
+      "src/data/content/river.ts:84 — wrap-up labels recovery as subsequently verified by re-investigation.",
+      "src/data/content/river.ts:89 — wrap-up explicitly acknowledges months recorded as 「まだ」.",
+      "src/q1/WaterTraceGame.tsx:56 — 稚魚 is shown without selective ruby at first use.",
+      "src/q1/BankDesignGame.tsx:72 — the non-perfect preview uses 瀬 and 淵 without ruby.",
+      "factory/rules/language-style.md:23 — required ruby frequency resets for each screen.",
+      "factory/rules/language-style.md:44 — button labels should be 2–6 characters."
+    ],
+    "recommended_actions": [
+      "In bankValidate, reject concrete for every non-severe section when stone_root is sufficient; alternatively remove the slack or score/enforce the unique minimum safe plan before approval.",
+      "Ensure the approved bank result text reflects the actual plan rather than asserting necessary-minimum design unconditionally.",
+      "Add first-use ruby for 稚魚 and for 瀬・淵 in every result-screen branch where they appear.",
+      "Shorten long choice labels while retaining explanatory text in their subtitles."
+    ]
+  },
+  "elapsed_sec": 99.711
+}

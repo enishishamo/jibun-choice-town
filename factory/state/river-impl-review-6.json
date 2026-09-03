@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 84,
+    "career_authenticity_score": 91,
+    "game_quality_score": 84,
+    "language": {
+      "LANGUAGE_AGE_FIT": 86,
+      "FURIGANA_SUPPORT": 90,
+      "TEXT_DENSITY": 76,
+      "BUTTON_CLARITY": 89,
+      "TECHNICAL_TERM_SUPPORT": 88,
+      "VISUAL_LANGUAGE_SUPPORT": 82
+    },
+    "blockers": [],
+    "high": [
+      "bank_designの判断に必須な区間条件が13px＋small要素で表示され、16px相当以上という言語規約を満たさない。本文サイズで同じ条件を確認できる代替表示もない。"
+    ],
+    "medium": [
+      "water_traceの放流ポスターは結論判断に関係する情報だが9px表示で、本文サイズの重複表示がない。",
+      "water_traceの失敗終了画面は視覚的な差し戻し状態より説明文が中心となり、最終失敗のobserver testが弱い。"
+    ],
+    "low": [
+      "plant_opsの時間帯表示は12.5pxで、進行状況の読み取りが小さい。"
+    ],
+    "evidence": [
+      "src/q1/BankDesignGame.tsx:63 — 区間名をfontSize 13で固定している。",
+      "src/q1/BankDesignGame.tsx:66 — 安全判断に必須の「うしろに家」「けずられたあと」「水が家にせまる」をsmall要素で表示している。",
+      "src/q1/BankDesignGame.tsx:144 — 資料カードは一般規則だけで、各区間の実条件を本文サイズで再掲していない。",
+      "factory/rules/language-style.md:27 — ルビを除いた本文は16px相当以上を要求している。",
+      "src/q1/WaterTraceGame.tsx:56 — 放流ポスターをfontSize 9で表示している。",
+      "src/q1/WaterTraceGame.tsx:92 — 16pxの野帳は採水結果のみを再掲し、放流ポスターの内容は再掲しない。",
+      "src/q1/WaterTraceGame.tsx:120 — 最終失敗は結果カードと説明文が中心で、誤結論そのものの差し戻し表示を維持していない。",
+      "src/q1/riverLogic.ts:220 — severe区間ではコンクリ以外をunsafeとして拒否している。",
+      "src/q1/riverLogic.ts:223 — non-severe区間のコンクリをover_armoredとして機械的に拒否している。",
+      "src/q1/riverLogic.ts:230 — bankFaultSectionはbankValidateと同じ順序・条件で違反区間を返している。",
+      "src/q1/BankDesignGame.tsx:169 — UIのWHEREヒントはbankFaultSectionを直接使用している。",
+      "src/q1/PlantOpsGame.tsx:95 — troublesがある完了では「ぜんぶ基準内」を表示しない。",
+      "src/data/content/river.ts:86 — wrapUpは回復を検証できる仕事として表現している。",
+      "src/data/content/river.ts:89 — not_recoveredと矛盾しない「まだ」の記録を明記している。"
+    ],
+    "recommended_actions": [
+      "bank_designの各区間について、家・侵食・危険度を16px以上の一覧または選択区間の詳細パネルにも表示する。",
+      "放流ポスターの内容を16px以上の観察記録として再掲するか、ポスター自体を本文サイズへ引き上げる。",
+      "water_traceの最終失敗画面でも、差し戻された結論カードと川の比較状態を視覚的に残す。"
+    ]
+  },
+  "elapsed_sec": 73.496
+}

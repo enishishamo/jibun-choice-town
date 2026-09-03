@@ -4,7 +4,7 @@
 import {
   TRACE_BUDGET, newTraceState, traceSample, traceConclude, newRiverCase,
   OPS_SLOTS, newOpsState, opsAct, opsCorrect,
-  BANK_BUDGET, newBankState, bankServe, bankValidate, bankNature, bankCost, newBankCase,
+  newBankState, bankServe, bankValidate, bankNature, bankCost, newBankCase, sectionSevere, sectionStrong, bankFaultSection, fishwayFor,
 } from "../../src/q1/riverLogic.ts";
 
 let passed = 0, failed = 0;
@@ -121,41 +121,124 @@ const N = 500;
   let solvable = 0, concreteAllFails = 0, natureGap = 0;
   for (let i = 0; i < N; i++) {
     const c = newBankCase(r);
-    // informed: strong where needed (stone_root), leave the calm reach, fishway at the weir
-    const plan = { homes: null, bend: null, fields: null, weir: "fishway" };
+    // informed: read severity per section — concrete only where nothing else
+    // holds, stone where strong, leave the calm reach, fishway at the weir
+    const plan = { homes: null, bend: null, fields: null, weir: fishwayFor(c.fish) };
     for (const sec of c.sections) {
       if (sec.section === "weir") continue;
-      const strong = sec.homesBehind || sec.erosion;
-      plan[sec.section] = strong ? "stone_root" : "leave";
+      plan[sec.section] = sectionSevere(sec) ? "concrete" : sectionStrong(sec) ? "stone_root" : "leave";
     }
     if (bankValidate(c, plan) === null) solvable++;
     // novice trap: concrete everywhere
-    const armored = { homes: "concrete", bend: "concrete", fields: "concrete", weir: "fishway" };
+    const armored = { homes: "concrete", bend: "concrete", fields: "concrete", weir: fishwayFor(c.fish) };
     const v = bankValidate(c, armored);
-    if (v === "over_armored" || v === "over_budget") concreteAllFails++;
+    if (v !== null) concreteAllFails++;
     // nature score separates plans
     natureGap += bankNature(plan) - bankNature(armored);
   }
   check("bank: minimum-protection plan always passes", solvable === N, `${solvable}/${N}`);
   check("bank: 'concrete everything' never passes", concreteAllFails === N, `${concreteAllFails}/${N}`);
-  check("bank: the nature score rewards restraint", natureGap / N >= 3, `${(natureGap / N).toFixed(1)}`);
+  check("bank: the nature score rewards restraint", natureGap / N >= 2, `${(natureGap / N).toFixed(1)}`);
+  // R3 exploit: the FIXED mapping (stone/stone/leave/fishway) must NOT solve
+  // every case — variation forces reading each section
+  {
+    const r2 = rng(41);
+    let fixedWins = 0, severeCases = 0, calmBendCases = 0;
+    for (let i = 0; i < N; i++) {
+      const c = newBankCase(r2);
+      if (c.sections.some(sectionSevere)) severeCases++;
+      if (c.sections.some((sec) => sec.section === "fields" && sec.erosion)) calmBendCases++;
+      const fixed = { homes: "stone_root", bend: "stone_root", fields: "leave", weir: fishwayFor(c.fish) };
+      if (bankValidate(c, fixed) === null) fixedWins++;
+    }
+    check(`bank: fixed-answer play no longer always wins (${fixedWins}/${N})`, fixedWins < N * 0.75, `severe=${severeCases} eroded-fields=${calmBendCases}`);
+    check("bank: severe and eroded-fields cases actually occur", severeCases > N * 0.2 && calmBendCases > N * 0.2);
+  }
   // hard safety: leaving an eroding home reach is caught
   {
-    const c = { sections: [
+    const c = { budget: 8, sections: [
       { section: "homes", erosion: true, homesBehind: true },
       { section: "bend", erosion: true, homesBehind: false },
       { section: "fields", erosion: false, homesBehind: false },
       { section: "weir", erosion: false, homesBehind: false },
     ] };
-    const bad = { homes: "leave", bend: "stone_root", fields: "leave", weir: "fishway" };
+    c.fish = { name: "x", power: "weak" };
+    const bad = { homes: "leave", bend: "stone_root", fields: "leave", weir: "fishway_gentle" };
     check("bank: leaving homes unprotected is always caught", bankValidate(c, bad) === "unsafe");
+    const soft = { homes: "stone_root", bend: "stone_root", fields: "leave", weir: "fishway_gentle" };
+    check("bank: stone on a severe (home+eroding) section is still unsafe", bankValidate(c, soft) === "unsafe");
+    const c2 = { budget: 8, fish: { name: "x", power: "weak" }, sections: [
+      { section: "homes", erosion: false, homesBehind: true },
+      { section: "bend", erosion: true, homesBehind: false },
+      { section: "fields", erosion: false, homesBehind: false },
+      { section: "weir", erosion: false, homesBehind: false },
+    ] };
     const noFish = { homes: "stone_root", bend: "stone_root", fields: "leave", weir: "leave" };
-    check("bank: a weir without a fishway is always caught", bankValidate(c, noFish) === "no_fishway");
+    check("bank: a weir without a fishway is always caught", bankValidate(c2, noFish) === "no_fishway");
   }
   // budget: concrete on both strong sections + fishway busts the budget
   {
-    const plan = { homes: "concrete", bend: "concrete", fields: "leave", weir: "fishway" };
-    check("bank: double concrete + fishway exceeds the budget", bankCost(plan) > BANK_BUDGET);
+    // necessary-minimum: concrete on a merely-strong section is rejected as
+    // over-armored even when the budget could absorb it
+    const r3 = rng(51);
+    let rejected = 0, cases = 0;
+    for (let i = 0; i < N; i++) {
+      const c = newBankCase(r3);
+      const strong = c.sections.find(sectionStrong);
+      if (!strong) continue;
+      cases++;
+      const plan = { homes: null, bend: null, fields: null, weir: fishwayFor(c.fish) };
+      for (const sec of c.sections) {
+        if (sec.section === "weir") continue;
+        plan[sec.section] = sectionSevere(sec) ? "concrete" : sectionStrong(sec) ? "stone_root" : "leave";
+      }
+      plan[strong.section] = "concrete"; // the gratuitous upgrade
+      if (bankValidate(c, plan) === "over_armored") rejected++;
+    }
+    check(`bank: gratuitous concrete on a strong section is rejected (${rejected}/${cases})`, cases > 0 && rejected === cases);
+  }
+  // 個別設計: the mismatched fishway is rejected and the chief taps the weir
+  {
+    const r5 = rng(71);
+    let rejected = 0;
+    for (let i = 0; i < 200; i++) {
+      const c = newBankCase(r5);
+      const wrong = fishwayFor(c.fish) === "fishway_gentle" ? "fishway_steep" : "fishway_gentle";
+      const plan = { homes: null, bend: null, fields: null, weir: wrong };
+      for (const sec of c.sections) {
+        if (sec.section === "weir") continue;
+        plan[sec.section] = sectionSevere(sec) ? "concrete" : sectionStrong(sec) ? "stone_root" : "leave";
+      }
+      if (bankValidate(c, plan) === "wrong_fishway" && bankFaultSection(c, plan) === "weir") rejected++;
+    }
+    check("bank: a fishway mismatched to the fish is rejected at the weir (200/200)", rejected === 200);
+  }
+  // WHERE hint always exists and points at a真犯人 for non-budget rejections
+  {
+    const r4 = rng(61);
+    const works = ["concrete", "stone_root", "leave"];
+    let checks = 0, consistent = 0;
+    for (let i = 0; i < 2000; i++) {
+      const c = newBankCase(r4);
+      const plan = {
+        homes: works[Math.floor(r4() * 3)],
+        bend: works[Math.floor(r4() * 3)],
+        fields: works[Math.floor(r4() * 3)],
+        weir: r4() < 0.4 ? "fishway_gentle" : r4() < 0.6 ? "fishway_steep" : "leave",
+      };
+      const v = bankValidate(c, plan);
+      if (v === null || v === "over_budget" || v === "empty") continue;
+      checks++;
+      const fs = bankFaultSection(c, plan);
+      if (!fs) continue;
+      // fixing ONLY the tapped section must remove THIS problem type or reveal a later one
+      const sec = c.sections.find((x) => x.section === fs);
+      const fixed = { ...plan };
+      fixed[fs] = fs === "weir" ? fishwayFor(c.fish) : sectionSevere(sec) ? "concrete" : sectionStrong(sec) ? "stone_root" : "leave";
+      const v2 = bankValidate(c, fixed);
+      if (v2 !== v || bankFaultSection(c, fixed) !== fs) consistent++;
+    }
+    check(`bank: the chief's WHERE hint always names a real offending section (${consistent}/${checks})`, checks > 100 && consistent === checks);
   }
   // redo budget
   {

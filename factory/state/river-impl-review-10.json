@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 74,
+    "career_authenticity_score": 89,
+    "game_quality_score": 74,
+    "language": {
+      "LANGUAGE_AGE_FIT": 90,
+      "FURIGANA_SUPPORT": 88,
+      "TEXT_DENSITY": 86,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 87,
+      "VISUAL_LANGUAGE_SUPPORT": 76
+    },
+    "blockers": [],
+    "high": [
+      "plant_opsでは操作直後にidxを次の時間帯へ進める一方、DO・泡・微生物の表情は直前の操作結果を保持するため、画面上では次の流入量と前の結果が同時に表示される。操作→世界変化の対応が誤って見え、中心的な因果フィードバックを損なう。"
+    ],
+    "medium": [
+      "bank_designの2回目の不正解ではmentor_failへ即時遷移するため、bankFaultSectionとfaultSecの更新処理に到達しない。最終失敗となる選択だけは、追加された区間別の試算結果を表示せず、汎用説明へ飛ぶ。",
+      "イベント開始CTA「川ぞいを歩いてみる」は10文字で、ボタンを2〜6文字とする言語規約を超える。"
+    ],
+    "low": [
+      "water_traceの採水地点カード内の数値は11.5px、放流掲示は9pxで表示される。野帳には16pxで再掲されるため判断不能ではないが、地図上の視覚情報としては読みづらい。"
+    ],
+    "evidence": [
+      "src/q1/riverLogic.ts:157 — opsActはDO・泡を現在スロットから計算した後、idxを次スロットへ進める。",
+      "src/q1/PlantOpsGame.tsx:32 — task-bar用slotは更新後のos.idxから取得される。",
+      "src/q1/PlantOpsGame.tsx:35 — tankは更新後も直前スロット由来のdo_・bubblesを表示する。",
+      "src/q1/PlantOpsGame.tsx:116 — 次スロット名と流入量が、直前操作のタンク結果と同じ画面に表示される。",
+      "src/q1/BankDesignGame.tsx:195 — mentor_fail時は即座にfailedへ遷移し、区間別試算を設定する197〜200行へ到達しない。",
+      "src/q1/BankDesignGame.tsx:113 — failed画面のriverStripはfaultSec未更新のため、最終選択の試算結果を描画しない。",
+      "src/data/content/river.ts:40 — 開始CTA「川ぞいを歩いてみる」がボタン文字数規約を超える。",
+      "src/q1/WaterTraceGame.tsx:58 — 放流掲示を9pxで描画している。",
+      "src/q1/WaterTraceGame.tsx:75 — 採水地点カードを11.5pxで描画している。"
+    ],
+    "recommended_actions": [
+      "plant_opsで結果表示中は操作対象だったスロットを保持するか、結果を見せた後に明示的な次スロット遷移を行い、流入量とDO・泡・微生物表情を同じ時間帯にそろえる。",
+      "bank_designではfaultSecを設定して区間別試算を一度表示してからmentor_fail画面へ移すか、failed画面にも最後の却下区間と試算結果を保持して描画する。",
+      "開始CTAを「川へ行く」「川ぞいへ」など2〜6文字の行動ラベルへ短縮する。",
+      "地図内の小さい文字は可能な範囲で拡大し、少なくとも放流掲示の重要語と地点状態を視認しやすくする。"
+    ]
+  },
+  "elapsed_sec": 116.76
+}

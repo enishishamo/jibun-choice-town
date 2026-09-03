@@ -8,6 +8,7 @@
 //    preceded by a full opening image (物価高編のアイス売り場)
 // Once 2+ incidents are done, an event may show its "lens summary".
 import { useState } from "react";
+import { withRuby } from "../lib/ruby";
 import { getEvent } from "../data";
 import { useGame } from "../state/GameState";
 
@@ -215,7 +216,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                     <span className="lens-icon">{r.icon}</span>
                     <span className="lens-label">{r.label}</span>
                     <span className="lens-arrow">→</span>
-                    <span className="lens-view">{r.view}</span>
+                    <span className="lens-view">{withRuby(r.view)}</span>
                   </span>
                 ))}
               </div>
@@ -308,7 +309,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                   <span className="lens-icon">{r.icon}</span>
                   <span className="lens-label">{r.label}</span>
                   <span className="lens-arrow">→</span>
-                  <span className="lens-view">{r.view}</span>
+                  <span className="lens-view">{withRuby(r.view)}</span>
                 </span>
               ))}
             </div>

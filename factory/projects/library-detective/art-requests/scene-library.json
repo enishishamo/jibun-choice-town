@@ -1,0 +1,33 @@
+{
+ "asset_id": "library_scene",
+ "filename": "scene-library.png",
+ "world": "library",
+ "use": "scene_map",
+ "purpose": "エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）",
+ "scene": "The backyard of a warm town library as one continuous miniature clay diorama, left to right: a local-history reference desk where a tiny librarian compares an old sepia photograph against a big unfolded old map under a desk lamp; a conservation workroom with white gloves, a soft brush, acid-free boxes and a flat table holding fragile papers; a small digitization studio with a large flatbed scanner, a color chart card and a monitor showing a thumbnail grid. Tall bookshelves in the background connect all three areas. Cozy evening light through a round window, handcrafted clay look, tiny figures, quiet mystery mood.",
+ "composition": "Wide horizontal interior, slight high angle, one continuous room band. Three work areas at roughly 22%/55%/80% width. At least 8% empty margin at both edges. Bookshelf band top 25%, no text on any spine or sign.",
+ "required_objects": [
+  "sepia old photograph on the desk",
+  "big unfolded old map",
+  "desk lamp",
+  "white gloves and soft brush",
+  "acid-free storage boxes",
+  "large flatbed scanner",
+  "monitor with thumbnail grid",
+  "tall bookshelves",
+  "tiny librarian figures"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}

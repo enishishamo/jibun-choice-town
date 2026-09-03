@@ -46,6 +46,12 @@ import PlantPlanGame from "./PlantPlanGame";
 import WaterTraceGame from "./WaterTraceGame";
 import PlantOpsGame from "./PlantOpsGame";
 import BankDesignGame from "./BankDesignGame";
+import PhotoCluesGame from "./PhotoCluesGame";
+import PaperRescueGame from "./PaperRescueGame";
+import DigiArchiveGame from "./DigiArchiveGame";
+import BugReproGame from "./BugReproGame";
+import DifficultyTuneGame from "./DifficultyTuneGame";
+import UiClarityGame from "./UiClarityGame";
 import DelayRecoverGame from "./DelayRecoverGame";
 import HotelReceiveGame from "./HotelReceiveGame";
 import TenantMatchGame from "./TenantMatchGame";
@@ -129,4 +135,10 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   water_trace: WaterTraceGame, // 上下流比較の勾配読み（1目撃で断定しない）
   plant_ops: PlantOpsGame, // 負荷連動の送風調整（過曝気=電力むだの二軸）
   bank_design: BankDesignGame, // 守る区間を絞る引き算の設計＋魚道
+  photo_clues: PhotoCluesGame, // 独立手がかりの一致数→確定/推定の二層結論
+  paper_rescue: PaperRescueGame, // 抑制の処置判断（直すほど壊すの学習）
+  digi_archive: DigiArchiveGame, // 仕様×正直ラベル×公開判断の登録実務
+  bug_repro: BugReproGame, // 1回1条件の実験設計で最短再現手順を特定
+  difficulty_tune: DifficultyTuneGame, // ログ証拠→原因→対応する調整の三段
+  ui_clarity: UiClarityGame, // 報告1対1の制約つき画面改善（ライブモック）
 };

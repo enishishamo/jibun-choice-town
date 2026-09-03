@@ -330,6 +330,114 @@
    "what_requires_skill": "reading which reaches truly need protection; nature-score optimization",
    "why_replay": "erosion/backland patterns re-randomize; perfect = pass with nature score >= 4",
    "trace": "minimal-armoring duty -> restraint-design principle -> resource_budget + matching -> per-reach work picks -> preview shows fish climbing / riffles returning -> high-nature mastery"
+  },
+  "photo_clues": {
+   "reference_games": [
+    "Her Story (cross-referencing fragments into one truth)",
+    "Sherlock Holmes: Consulting Detective (multi-source corroboration)"
+   ],
+   "borrowed_design_principles": [
+    "one striking match is a trap; independent corroboration is the win condition",
+    "the ANSWER has two layers: what you claim and how sure you may claim it"
+   ],
+   "transformed_for_job": [
+    "case files -> old maps/rosters/photo ledgers of a local-history room",
+    "confidence system -> レファレンスの確定/推定 answer rule (3+/2 matches)"
+   ],
+   "why_it_is_fun": "a real detective loop where the twist is HONESTY: 推定 is sometimes the perfect answer",
+   "what_requires_skill": "spending 4 lookups where they discriminate candidates; resisting the lookalike decoy; choosing the right certainty",
+   "why_replay": "answer/decoy/match-pattern re-randomize; expert = right place AND right certainty first try",
+   "world_feedback": "照合ボードに一致/不一致ピンが立ち、誤答は付せん付きで紙が戻る"
+  },
+  "paper_rescue": {
+   "reference_games": [
+    "Papers, Please (rule-bound inspection under pressure)",
+    "House Flipper cleaning mode (satisfying per-item care)"
+   ],
+   "borrowed_design_principles": [
+    "the rulebook makes refusal a skill: some actions must NOT be taken",
+    "per-item diagnosis -> one deliberate action, visible shelf progress"
+   ],
+   "transformed_for_job": [
+    "inspection rules -> conservation ethics (no tape/laminate/peel, mold quarantine)",
+    "the twist: 'do nothing but record' is a correct professional treatment"
+   ],
+   "why_it_is_fun": "the urge to FIX collides with the pro rule that fixing destroys; the senior's hand stopping yours is a world reaction",
+   "what_requires_skill": "reading each item's condition; restraint on fine/old-taped items; instant quarantine on mold",
+   "why_replay": "item mix shuffles; expert = zero mistakes with restraint choices",
+   "world_feedback": "保存箱が1点ずつ埋まり、カビ品は🔒隔離表示。誤処置は机に残る"
+  },
+  "digi_archive": {
+   "reference_games": [
+    "PC Building Simulator work orders (spec-matching per order)",
+    "Cataloguing sims / Strange Horticulture (honest labeling under uncertainty)"
+   ],
+   "borrowed_design_principles": [
+    "specs derive from the PURPOSE of the order, not habit",
+    "uncertainty is data: recording 'unknown' correctly is rewarded"
+   ],
+   "transformed_for_job": [
+    "work order -> 保存用TIFF400dpi vs 閲覧用JPEG",
+    "label honesty -> 確定/推定/撮影地ふめい from carried-over evidence; rights hold for visible people"
+   ],
+   "why_it_is_fun": "the archive shelf fills with YOUR honest labels; the 100-years-later framing gives meaning",
+   "what_requires_skill": "3-part decision per item (spec×label×publish) with different sources of truth",
+   "why_replay": "purpose/evidence/people randomize; expert = zero bounces",
+   "world_feedback": "登録票が差し戻される/棚にサムネイルとラベルが並ぶ"
+  },
+  "bug_repro": {
+   "reference_games": [
+    "Zachtronics debugging puzzles (TIS-100)",
+    "Mastermind (hypothesis elimination)"
+   ],
+   "borrowed_design_principles": [
+    "change ONE variable per experiment; a differing outcome localizes the cause",
+    "a claim must be confirmed by a reproducing run, not inferred"
+   ],
+   "transformed_for_job": [
+    "logic puzzle -> QA test bench with condition toggles and a run budget",
+    "code guess -> 不具合票 filing that demands the minimal confirmed pair"
+   ],
+   "why_it_is_fun": "detective satisfaction of turning たまに into 必ず; the ✅/💥 log is the deduction board",
+   "what_requires_skill": "experiment design within 6 runs; resisting filing early or fat reports",
+   "why_replay": "the crashing pair re-randomizes; expert = file in 6 runs, zero bounces",
+   "world_feedback": "run log stamps ✅/💥; bounced tickets return with a specific sticky note"
+  },
+  "difficulty_tune": {
+   "reference_games": [
+    "Papers, Please (reading patterns in documents)",
+    "Game Dev Story (tuning loop, honest numbers)"
+   ],
+   "borrowed_design_principles": [
+    "numbers point at WHERE and HOW players fail, not just how often",
+    "the obvious lever (nerf HP) is usually the wrong one"
+   ],
+   "transformed_for_job": [
+    "pattern reading -> playlog evidence lines mapped to 4 causes",
+    "wrong lever -> retest numbers that refuse to move"
+   ],
+   "why_it_is_fun": "being the one who explains WHY it felt too hard; the clear-rate bar moves when you're right",
+   "what_requires_skill": "matching evidence to cause; ignoring the HP-nerf reflex",
+   "why_replay": "2 causes drawn from 4 re-randomize; expert = zero failed retests",
+   "world_feedback": "clear-rate bars animate on success; a wrong fix leaves them frozen"
+  },
+  "ui_clarity": {
+   "reference_games": [
+    "I'm on Observation Duty (spotting what's wrong on a screen)",
+    "Wilmot's Warehouse (less-is-more organization)"
+   ],
+   "borrowed_design_principles": [
+    "a live mock that visibly changes with each decision",
+    "constraints (3 picks) force prioritization instead of adding everything"
+   ],
+   "transformed_for_job": [
+    "spot-the-issue -> 3 randomized test reports mapped 1:1 to fixes",
+    "constraint -> UI rule: adding clutters; decoys actively worsen the mock"
+   ],
+   "why_it_is_fun": "the mock screen improves (or degrades!) live as you toggle fixes",
+   "what_requires_skill": "1:1 mapping reports->fixes; refusing attractive decoys",
+   "why_replay": "3 of 5 reports drawn per case; expert = first-try pass",
+   "world_feedback": "mock updates live; testers point at the unanswered report"
   }
  }
 }

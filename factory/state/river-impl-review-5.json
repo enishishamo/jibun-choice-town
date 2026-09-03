@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 82,
+    "career_authenticity_score": 92,
+    "game_quality_score": 82,
+    "language": {
+      "LANGUAGE_AGE_FIT": 91,
+      "FURIGANA_SUPPORT": 90,
+      "TEXT_DENSITY": 88,
+      "BUTTON_CLARITY": 91,
+      "TECHNICAL_TERM_SUPPORT": 92,
+      "VISUAL_LANGUAGE_SUPPORT": 88
+    },
+    "blockers": [],
+    "high": [
+      "bank_designの段階的ヒントが検証ロジックと不一致。strong区間にコンクリ護岸を置くとover_armoredで拒否されるが、UI側はその区間をfaultSecに設定しない。主任が『ひとつの区間』を指したという文章だけが出て、実際には視覚強調されないため、必須のWHEREヒントとWORLD_FEEDBACK_QUALITYを満たさない。後続区間に別の問題があれば、拒否原因ではない区間を指す可能性もある。"
+    ],
+    "medium": [],
+    "low": [
+      "処理場ゲームでは操作後すぐ次の時間帯へ進む一方、タンクのDO・泡・微生物表情は直前の操作結果を示す。因果は成立しているが、次の流入量との同時表示により状態の時点がやや曖昧。"
+    ],
+    "evidence": [
+      "src/q1/riverLogic.ts:220 — severe区間以外のコンクリ護岸を一律over_armoredとして拒否する正本ロジック。",
+      "src/q1/riverLogic.ts:223 — strong区間を含む全non-severe区間がコンクリ護岸禁止になっている。",
+      "src/q1/BankDesignGame.tsx:177 — UI側もsevere/strongを算出しているため、正本ロジックとの一致を実装できる情報はある。",
+      "src/q1/BankDesignGame.tsx:181 — コンクリ護岸を指摘する条件が!severe && !strongに限定され、strong区間のover_armoredを見落とす。",
+      "src/q1/BankDesignGame.tsx:185 — 見落とした場合faultSecはnullとなり、該当区間の枠強調が発生しない。",
+      "src/q1/BankDesignGame.tsx:186 — faultSecがnullでも『ひとつの区間を指でたたいた』と表示され、文章と世界表現が矛盾する。",
+      "src/q1/WaterTraceGame.tsx:92 — 採水値を16pxの野帳にも表示し、地図注記の小ささを補っている。",
+      "src/q1/WaterTraceGame.tsx:138 — not_recovered成功時を再調査の出発点として扱い、その場で回復を断定していない。",
+      "src/q1/PlantOpsGame.tsx:35 — 泡、微生物表情、DO計、送風量、電力メーターによる世界フィードバックを実装している。",
+      "src/q1/BankDesignGame.tsx:109 — 完了後の3年後プレビューをriverStripの状態変化として表示している。",
+      "src/data/content/river.ts:84 — wrapUpのafterLabelは再調査で確認された後の状態だと明示している。",
+      "src/data/content/river.ts:89 — 『まだ』と記録された月を明記し、単一プレイでの回復断定を避けている。"
+    ],
+    "recommended_actions": [
+      "BankDesignGame.tsxの指摘条件を正本と一致させ、非severe区間でw === \"concrete\"ならstrong/calmを問わずその区間をfaultSecに設定する。可能ならbankValidateと同じ判定ヘルパーを共有し、二重実装の再乖離を防ぐ。",
+      "over_armoredのstrong区間が複数あるケースについて、拒否原因の区間だけが橙枠で強調されることを回帰検証する。",
+      "処理場の時間帯更新時に短い遷移表示または『前の結果／次の流入』の区別を加え、メーターがどの時点を表すか明確にする。"
+    ]
+  },
+  "elapsed_sec": 135.492
+}

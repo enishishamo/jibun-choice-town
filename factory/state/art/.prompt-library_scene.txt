@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: The backyard of a warm town library as one continuous miniature clay diorama, left to right: a local-history reference desk where a tiny librarian compares an old sepia photograph against a big unfolded old map under a desk lamp; a conservation workroom with white gloves, a soft brush, acid-free boxes and a flat table holding fragile papers; a small digitization studio with a large flatbed scanner, a color chart card and a monitor showing a thumbnail grid. Tall bookshelves in the background connect all three areas. Cozy evening light through a round window, handcrafted clay look, tiny figures, quiet mystery mood.
+Role in game: エリア画面の連続シーン背景。3ホットスポット（①照合デスク ~22%左, ②保存作業室 ~55%, ③デジタル化スタジオ ~80%）
+Camera / composition: Wide horizontal interior, slight high angle, one continuous room band. Three work areas at roughly 22%/55%/80% width. At least 8% empty margin at both edges. Bookshelf band top 25%, no text on any spine or sign.
+Must include: sepia old photograph on the desk; big unfolded old map; desk lamp; white gloves and soft brush; acid-free storage boxes; large flatbed scanner; monitor with thumbnail grid; tall bookshelves; tiny librarian figures
+Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Reference scenes generally use slightly brighter, more saturated accent colors; the candidate is more uniformly sepia and subdued.
+- Fix vs reference set: The candidate's deep, continuous bookshelves create a denser and flatter background than the softer, more selectively detailed backgrounds in several references.
+- Fix vs reference set: The three characters have slightly slimmer seated proportions than the strongest 2.5–3-head reference figures, though they still read clearly as matching clay figurines.
+- The three work zones are clearly differentiated and correctly positioned: document comparison at left, conservation work at center, and scanning/digitization at right.
+- The right-side digitization worker and scanner sit near the frame edge, leaving less crop tolerance than the left and center stations on narrow mobile presentations.
+- The warm brown palette reduces separation between furniture, documents, and shelving; slightly stronger localized color contrast would improve rapid hotspot recognition.
+- No readable text, numbers, logos, photorealistic materials, broken anatomy, or incomplete heads/hands are present.
+- file too large: 2.7MB (>2MB)

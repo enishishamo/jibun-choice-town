@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 78,
+    "game_quality_score": 58,
+    "language": {
+      "LANGUAGE_AGE_FIT": 83,
+      "FURIGANA_SUPPORT": 58,
+      "TEXT_DENSITY": 80,
+      "BUTTON_CLARITY": 78,
+      "TECHNICAL_TERM_SUPPORT": 72,
+      "VISUAL_LANGUAGE_SUPPORT": 65
+    },
+    "blockers": [],
+    "high": [
+      "3ゲームとも通常の誤答結果が主に文章通知で、盤面・資料・棚などの世界状態は変化しない。v3のTEXT_ONLY_CONSEQUENCEおよび失敗時OBSERVER TESTを満たさない。",
+      "デジタルアーカイブでは人物写真を必ず公開保留にする実装なのに、世界データの結末は「3点が公開された」と断定する。公開判断に関する職業学習と物語結果が矛盾する。",
+      "本文・主要選択ボタンが12.5〜13px、判断用棚ラベルが8.5〜9pxで、言語規約の本文16px相当・主要ボタン18px相当を大幅に下回る。小さい棚ラベルの情報も常に本文サイズで再掲されていない。"
+    ],
+    "medium": [
+      "「稜線」「刷毛」「隔離」「閲覧」など、難読・中学配当または職業専門語の画面初出にルビがない。",
+      "「別の持ちこみで」「状態調査票を書く」など、2〜6文字というボタン規約を超えるラベルがある。",
+      "写真ゲームの誤答通知「根拠の数を、もう一度」は、場所の誤選択でも確度の誤選択でも同じため、世界反応として因果が判別できない。"
+    ],
+    "low": [
+      "紙資料ゲームの成功箱は処置種別を示さず、カビ以外は元の損傷アイコンのままなので、どの処置を施したか観察者には分かりにくい。"
+    ],
+    "evidence": [
+      "factory/rules/game-critic-v2.md:60 — 結果は文章説明ではなく世界の変化で示すことを必須化している。",
+      "factory/rules/game-critic-v2.md:66 — action→文章→retryの主要結果は原則HIGHで、GAME_QUALITY PASS禁止。",
+      "src/q1/PhotoCluesGame.tsx:185 — 誤答時に更新される実質的状態はmistakes/outcomeで、盤面用checkedや一致表示は変化しない。",
+      "src/q1/PhotoCluesGame.tsx:191 — 通常誤答の可視結果は付せん文章だけ。",
+      "src/q1/PaperRescueGame.tsx:147 — 誤処置では同じ資料を机に残し、文章noteだけを表示する。",
+      "src/q1/DigiArchiveGame.tsx:165 — 棚へ追加されるのは正答時だけで、誤答時の棚には変化がない。",
+      "src/q1/DigiArchiveGame.tsx:171 — 誤登録の結果は付せん文章だけ。",
+      "src/q1/libraryLogic.ts:206 — 3点目は必ずpeopleVisible=true。",
+      "src/q1/libraryLogic.ts:219 — 人物が写る資料の正解はpublish=false。",
+      "src/data/content/library.ts:259 — 結末は矛盾して「アーカイブに、3点が公開された」と表示する。",
+      "factory/rules/language-style.md:27 — 本文16px相当以上・主要ボタン18px相当以上を要求。",
+      "src/q1/PhotoCluesGame.tsx:48 — 判断盤を10.5pxで表示する。",
+      "src/q1/PaperRescueGame.tsx:154 — 処置ボタン本文を13pxで表示する。",
+      "src/q1/DigiArchiveGame.tsx:46 — 棚の資料名を9pxで表示する。",
+      "src/q1/DigiArchiveGame.tsx:48 — 公開状態と確度ラベルを8.5pxで表示する。",
+      "src/q1/DigiArchiveGame.tsx:142 — 撮影地ラベルの主要ボタンを12.5pxで表示する。",
+      "factory/rules/language-style.md:21 — 難読漢字・専門語の初出には選択的ルビが必須。",
+      "src/q1/PhotoCluesGame.tsx:15 — 「稜線」をルビなしで表示する。",
+      "src/q1/PaperRescueGame.tsx:15 — 「刷毛」をルビなしで主要操作に使う。",
+      "src/q1/PaperRescueGame.tsx:17 — 「隔離」をルビなしで主要操作に使う。",
+      "src/q1/DigiArchiveGame.tsx:105 — 「閲覧用」をルビなしで表示する。",
+      "factory/rules/language-style.md:44 — ボタンラベルは2〜6文字を要求。",
+      "src/q1/PaperRescueGame.tsx:106 — 「状態調査票を書く」は規定文字数を超える。"
+    ],
+    "recommended_actions": [
+      "各ゲームの通常誤答に、盤面の差し戻し印、資料の移動停止・箱の拒否状態、棚スロットの返却表示など、文章を読まずに分かる持続的な世界変化を実装する。",
+      "公開済み件数と保留件数を世界データの結末へ反映し、「3点を登録、公開可能な資料のみ公開」のように修正する。",
+      "本文と主要ボタンを規定サイズへ引き上げ、棚の確度・公開状態は本文サイズの登録票にも常時表示する。",
+      "難読語・専門語の各画面初出へ選択的ルビと短い説明を追加する。",
+      "長いボタンを「調査票を書く」「別の資料へ」など6文字以内の明確な動詞句へ短縮する。"
+    ]
+  },
+  "elapsed_sec": 108.914
+}

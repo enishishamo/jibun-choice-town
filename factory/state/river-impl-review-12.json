@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 91,
+    "game_quality_score": 84,
+    "language": {
+      "LANGUAGE_AGE_FIT": 90,
+      "FURIGANA_SUPPORT": 84,
+      "TEXT_DENSITY": 86,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 91,
+      "VISUAL_LANGUAGE_SUPPORT": 88
+    },
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "plant_opsの初期タンク表示は、DOが基準帯内でも微生物が眠った顔になり、当日の流入量とも連動していない。最初の判断前だけ世界状態とルールの対応が不明瞭。",
+      "bank_designでは2回目の不合格が直ちにfailed画面へ移るため、その提出に対する区間別の洪水・侵食・灰色化・魚停止の視覚試算が表示されない。最終失敗にも直前の因果を残すと一貫する。"
+    ],
+    "low": [
+      "一部の遷移ボタンは「別の調査で」「別の日に」のような名詞句で、言語規則が推奨する明示的な動詞になっていない。",
+      "bank_designの画面上で最初に見える専門語「堰」は括弧読みであり、指定されたruby要素ではない。意味は読めるが表記規則との軽微な不一致がある。"
+    ],
+    "evidence": [
+      "src/q1/riverLogic.ts:38 — 回復理由3種で地点パターンが変化し、単一施設・単一目撃だけでは結論できないケース生成になっている。",
+      "src/q1/riverLogic.ts:85 — 2地点未満の結論を機械的に拒否し、比較調査を必須化している。",
+      "src/q1/WaterTraceGame.tsx:94 — 採水値を16pxの野帳にも表示し、小型地図ラベルだけに判断情報を依存していない。",
+      "src/q1/WaterTraceGame.tsx:182 — 誤った結論カードが減光され、返却印と差し戻し表示を伴う可視的な世界反応になっている。",
+      "src/q1/riverLogic.ts:145 — plant_opsは操作後の送風量と当該時間帯の流入負荷との差からDO・電力・泡・事故を更新している。",
+      "src/q1/PlantOpsGame.tsx:43 — 泡、微生物の顔、DO針、送風段、電力計によって運転結果を世界状態として表示する。",
+      "src/q1/PlantOpsGame.tsx:72 — 直前の操作、対象時間帯、結果DO、基準帯内外を同じタンク内で結び付けている。",
+      "src/q1/PlantOpsGame.tsx:51 — 初期値bubbles=calmのため、基準帯内DO 2.2でも眠った顔になり、初回流入条件との対応がない。",
+      "src/q1/riverLogic.ts:197 — 護岸条件、魚の泳力、予算がケースごとに変化し、固定解の暗記を防いでいる。",
+      "src/q1/riverLogic.ts:225 — 深刻区間以外のコンクリを拒否し、安全と必要最小限を機械的に強制している。",
+      "src/q1/BankDesignGame.tsx:51 — 指摘区間そのものを洪水・侵食・死んだ護岸・魚停止へ変える視覚試算を実装している。",
+      "src/q1/BankDesignGame.tsx:81 — 視覚試算はstepがworkの場合だけ表示され、2回目の不合格後はfailed画面へ移るため直前結果が消える。",
+      "src/data/content/river.ts:84 — wrapUpは再調査で確認された後の状態と明記し、not_recoveredのプレイ結果と矛盾しない。",
+      "src/q1/BankDesignGame.tsx:13 — 「堰」は「堰（せき）」表記で、専門語初出に要求されるruby要素ではない。"
+    ],
+    "recommended_actions": [
+      "PlantOpsGameの初期bubblesと微生物表情を、初回スロットの流入量・送風量・DOに整合する状態から計算する。",
+      "BankDesignGameの最終失敗画面にもfaultSecと直前のsimVisualを保持し、最後の提出結果を川の図上に残す。",
+      "再挑戦ボタンを「別の日を始める」「調査をやり直す」など、2〜6文字を目安にした明確な動詞ラベルへ短縮する。",
+      "BankDesignGameで最初に表示される堰をwithRubyによる選択的ルビに統一する。"
+    ]
+  },
+  "elapsed_sec": 126.593
+}

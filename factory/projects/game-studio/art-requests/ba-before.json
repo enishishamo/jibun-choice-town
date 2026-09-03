@@ -1,0 +1,30 @@
+{
+ "asset_id": "studio_ba_before",
+ "filename": "ba-before.png",
+ "world": "studio",
+ "use": "wrapup_before",
+ "purpose": "wrapUpのBEFORE。発売3日前の夜：💥報告の山と、しかめっつらのテスト",
+ "scene": "Inside the small game studio at night, three days before release, as a miniature clay diorama. ANCHORS that must persist into the AFTER image: the studio's round wall clock top-center, the big shared monitor on the left wall, and the long desk row running to the right. Mood NOW: the big monitor shows a tiny crash symbol, sticky notes pile on the whiteboard, a tester child-sized figure frowns at a handheld, coffee cups, one figure stretching tiredly. Warm but tense lamplight. No readable text.",
+ "composition": "Interior wide shot from a fixed vantage: wall clock top-center, big monitor left, desk row to the right. The SAME camera and anchors reappear in the AFTER image.",
+ "required_objects": [
+  "round wall clock top-center",
+  "big monitor left with crash symbol",
+  "long desk row",
+  "sticky-note-covered whiteboard",
+  "frowning tester figure",
+  "coffee cups"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}

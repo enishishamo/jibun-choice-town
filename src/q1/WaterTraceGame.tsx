@@ -17,20 +17,24 @@ const SPOTS: { id: Spot; name: string; x: number }[] = [
   { id: "D", name: "処理場の下", x: 68 },
   { id: "E", name: "下流", x: 88 },
 ];
-const ANSWERS: { id: RiverCause; label: string; sub: string }[] = [
-  { id: "plant_upgrade", label: "処理場の改善", sub: "処理場の下から数値が良い" },
-  { id: "tributary_cleanup", label: "支流がきれいに", sub: "支流の合流から良くなる" },
-  { id: "not_recovered", label: "まだ回復していない", sub: "数値は昔のまま（魚は放流かも）" },
+// NOTE: no explanatory subs — mapping a conclusion to its evidence pattern is
+// the player's own reasoning (answer-leak reviewed out in R7)
+const ANSWERS: { id: RiverCause; label: string }[] = [
+  { id: "plant_upgrade", label: "処理場の改善" },
+  { id: "tributary_cleanup", label: "支流がきれいに" },
+  { id: "not_recovered", label: "回復はまだ" },
 ];
 
 export default function WaterTraceGame({ onComplete }: Q1GameProps) {
   const [ts, setTs] = useState<TraceState>(() => newTraceState());
   const [step, setStep] = useState<Step>("work");
   const [note, setNote] = useState<string | null>("調べる地点を選ぼう（採水びんは4本）。");
+  const [bounced, setBounced] = useState<RiverCause[]>([]); // conclusions returned by the meeting
   const [attempts, setAttempts] = useState(1);
 
   const restart = () => {
     setTs(newTraceState());
+    setBounced([]);
     setNote("調べる地点を選ぼう（採水びんは4本）。");
     setStep("work");
     setAttempts((a) => a + 1);
@@ -52,7 +56,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
         <span style={{ position: "absolute", left: "55%", top: "30%", fontSize: 10, color: "#4c5c68" }}>処理場</span>
         {ts.c.stockingPosterSeen && (
           <span style={{ position: "absolute", right: 6, top: "4%", fontSize: 9, background: "#fff6da", border: "1px solid #d9c98a", borderRadius: 6, padding: "1px 5px" }}>
-            はり紙「稚魚の放流をしました」
+            {withRuby("はり紙「｜稚魚《ちぎょ》の放流をしました」")}
           </span>
         )}
         {SPOTS.map((sp) => {
@@ -68,11 +72,11 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
                 setTs(nx);
                 setNote(null);
               }}
-              style={{ position: "absolute", left: `${sp.x}%`, bottom: 4, transform: "translateX(-50%)", width: 62, background: sampled ? "rgba(255,253,245,0.96)" : "rgba(255,253,245,0.72)", border: sampled ? "2px solid #4a90d9" : "1.5px dashed #8fa8b8", borderRadius: 10, padding: "3px 2px", fontSize: 10 }}
+              style={{ position: "absolute", left: `${sp.x}%`, bottom: 4, transform: "translateX(-50%)", width: 66, background: sampled ? "rgba(255,253,245,0.96)" : "rgba(255,253,245,0.72)", border: sampled ? "2px solid #4a90d9" : "1.5px dashed #8fa8b8", borderRadius: 10, padding: "3px 2px", fontSize: 11.5 }}
             >
               <div style={{ fontWeight: "bold" }}>{sp.id} {sp.name}</div>
               {sampled ? (
-                <div style={{ fontFamily: "monospace", fontSize: 10 }}>
+                <div style={{ fontFamily: "monospace", fontSize: 11.5, fontWeight: "bold" }}>
                   DO {r.do_}
                   <br />
                   BOD {r.bod}
@@ -87,7 +91,23 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
           );
         })}
       </div>
-      <div style={{ display: "flex", gap: 5, marginTop: 4, alignItems: "center", fontSize: 12 }}>
+      {ts.sampled.length > 0 && (
+        <div style={{ marginTop: 6, background: "#fffdf5", border: "1.5px solid #d8c9a8", borderRadius: 10, padding: "6px 10px", fontSize: 16 }}>
+          <b style={{ fontSize: 13, color: "#6b5d45" }}>📓 野帳（記録ノート）</b>
+          {ts.sampled.map((id) => {
+            const r0 = ts.c.readings[id];
+            return (
+              <div key={id} style={{ display: "flex", gap: 10 }}>
+                <b>{id}</b>
+                <span>DO {r0.do_}</span>
+                <span>BOD {r0.bod}</span>
+                <span>{r0.fish ? "🐟あり" : "🐟なし"}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 5, marginTop: 4, alignItems: "center", fontSize: 13 }}>
         <span>🧪 採水びん</span>
         {Array.from({ length: TRACE_BUDGET }).map((_, i) => (
           <span key={i} style={{ opacity: i < TRACE_BUDGET - ts.sampled.length ? 1 : 0.25 }}>🧪</span>
@@ -117,6 +137,9 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
         <p className="game-line soft center-line">
           {perfect ? "少ない採水で言い当てた。地点の選び方が良かった。" : "通った。どの地点を調べるかで、採水の数は変わる。"}
         </p>
+        {ts.c.cause === "not_recovered" && (
+          <p className="game-line soft center-line">きみの「まだ」の記録が、再調査の出発点になった。川の回復は、そのあと何か月もかけて確かめられていく。</p>
+        )}
         <p className="game-line soft center-line">
           {withRuby("魚1匹では「回復」と言えない。｜溶存酸素《ようぞんさんそ》（DO＝水にとけた酸素）の数字が、川の体温計なんだ。")}
         </p>
@@ -156,17 +179,22 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
           <button
             key={a.id}
             className="choice-card"
+            style={bounced.includes(a.id) ? { opacity: 0.55, borderColor: "#c9857a" } : undefined}
             onClick={() => {
               const r = traceConclude(ts, a.id);
               setTs(r.state);
               if (r.state.refusal) { setNote(r.state.refusal); return; }
               if (r.state.outcome === "done") { setStep("done"); return; }
               if (r.state.outcome === "mentor_fail") { setStep("failed"); return; }
-              setNote("…報告会がざわついた。数字と結論が、かみ合っていないようだ。");
+              // the world reacts: the conclusion sheet comes BACK, stamped
+              setBounced((b2) => [...b2, a.id]);
+              setNote("…報告会から、結論の紙が戻ってきた。付せんが1枚：「数字と合っていますか」");
             }}
           >
-            <span className="choice-name" style={{ fontSize: 13 }}>{a.label}</span>
-            <small style={{ opacity: 0.7 }}>{a.sub}</small>
+            <span className="choice-name">
+              {bounced.includes(a.id) ? "📄↩ " : ""}{a.label}
+            </span>
+            {bounced.includes(a.id) && <small style={{ opacity: 0.7 }}>差し戻し。もう一度、数字と</small>}
           </button>
         ))}
       </div>

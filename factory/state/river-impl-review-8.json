@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 72,
+    "game_quality_score": 87,
+    "language": {
+      "LANGUAGE_AGE_FIT": 90,
+      "FURIGANA_SUPPORT": 88,
+      "TEXT_DENSITY": 85,
+      "BUTTON_CLARITY": 88,
+      "TECHNICAL_TERM_SUPPORT": 86,
+      "VISUAL_LANGUAGE_SUPPORT": 91
+    },
+    "blockers": [],
+    "high": [
+      "魚道を選ぶだけで魚が上れるものとして成功・将来表示が確定する。世界データ自身が説明する「魚の大きさや泳ぐ力に合わせた個別設計」がゲームの判断や検証に実装されておらず、職業上重要な条件を誤って単純化している。",
+      "川岸工事の完了だけで生きものが戻ると断定する解決文が残っており、回復を継続調査で確かめるという世界全体の公平性 framing と矛盾する。"
+    ],
+    "medium": [
+      "water_traceの成功後説明がDOを単独で「川の体温計」と強調し、実際の判定で必要なBODとの組み合わせや地点比較を弱めている。"
+    ],
+    "low": [],
+    "evidence": [
+      "src/q1/BankDesignGame.tsx:72 — fishwayを選んだ3年後表示が無条件に「魚がのぼっていく」となる。",
+      "src/q1/BankDesignGame.tsx:143 — 堰で選べるのはfishwayかleaveだけで、魚種・流速・入口・勾配など魚道固有の設計判断が存在しない。",
+      "src/q1/riverLogic.ts:216 — 堰はworkがfishwayなら条件なしで検証を通過する。",
+      "src/data/content/river.ts:169 — 「魚道はつければ通れるわけではない」と説明しており、ゲーム実装と直接矛盾する。",
+      "src/data/content/river.ts:258 — 「工事が終わるころ、瀬と淵に生きものがもどる」と回復を確定的に断言する。",
+      "src/q1/WaterTraceGame.tsx:20 — 結論カードの観察パターン説明は削除され、Iteration 8のanswer-leak修正を確認した。",
+      "src/q1/WaterTraceGame.tsx:182 — 誤った結論カードは視覚的に減光される。",
+      "src/q1/WaterTraceGame.tsx:195 — 差し戻されたカードに📄↩スタンプが表示される。",
+      "src/q1/WaterTraceGame.tsx:197 — 差し戻し表示は答えを示さず、数値の再確認だけを促す。",
+      "src/q1/WaterTraceGame.tsx:144 — 成功後説明がDOだけを「川の体温計」と表現する。"
+    ],
+    "recommended_actions": [
+      "魚道を単一の設置ボタンにせず、少なくともケースごとの対象魚・流れ・入口条件を示し、適合する魚道案を選ばせる。成功プレビューも適合時だけ魚の遡上を示す。",
+      "resolutionの断定を「工事後も調査し、瀬・淵や生きものの戻りを確かめる」に変更する。",
+      "water_traceの成功後説明を、DOとBODの組み合わせおよび地点間比較が判断根拠だと分かる表現に直す。"
+    ]
+  },
+  "elapsed_sec": 111.744
+}

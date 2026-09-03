@@ -20,11 +20,15 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
   const [os, setOs] = useState<OpsState>(() => newOpsState());
   const [step, setStep] = useState<Step>("work");
   const [note, setNote] = useState<string | null>(null);
+  // ties the visible tank state to the action that produced it (R10: the DO
+  // shown after acting belongs to the PREVIOUS slot's decision)
+  const [lastAct, setLastAct] = useState<{ slot: string; act: string; do_: number; inBand: boolean } | null>(null);
   const [attempts, setAttempts] = useState(1);
 
   const restart = () => {
     setOs(newOpsState());
     setNote(null);
+    setLastAct(null);
     setStep("work");
     setAttempts((a) => a + 1);
   };
@@ -48,7 +52,7 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
           </span>
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
             <span>{withRuby("DO")}</span>
             <div style={{ flex: 1, position: "relative", height: 12, borderRadius: 6, background: "#41545e" }}>
               <div style={{ position: "absolute", left: `${(DO_LOW / 4.5) * 100}%`, width: `${((DO_HIGH - DO_LOW) / 4.5) * 100}%`, top: 0, bottom: 0, background: "#5f8f6a", borderRadius: 6 }} />
@@ -56,7 +60,7 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
             </div>
             <span>{os.do_}</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6, fontSize: 11 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6, fontSize: 13 }}>
             <span>送風</span>
             {[1, 2, 3, 4, 5].map((i) => (
               <span key={i} style={{ width: 14, height: 8 + i * 2, borderRadius: 3, background: i <= os.air ? "#7fb2d0" : "#41545e", alignSelf: "flex-end" }} />
@@ -65,7 +69,12 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", gap: 8, marginTop: 8, fontSize: 11, color: "#b9c8d0" }}>
+      {lastAct && (
+        <div style={{ marginTop: 6, fontSize: 13.5, color: "#dfe6ee", background: "#3a4a54", borderRadius: 8, padding: "4px 8px" }}>
+          {lastAct.slot}の操作「{lastAct.act}」→ DO {lastAct.do_} {lastAct.inBand ? "（みどりの帯の中 ✓）" : "（帯の外 ⚠）"}
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 8, marginTop: 8, fontSize: 12.5, color: "#b9c8d0" }}>
         {os.slots.map((sl, i) => (
           <span key={i} style={{ opacity: i === os.idx ? 1 : i < os.idx ? 0.45 : 0.7, fontWeight: i === os.idx ? "bold" : "normal" }}>
             {i < os.idx ? "✓" : ""}{sl.rain ? "🌧" : ""}{sl.label}
@@ -91,10 +100,16 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
     const perfect = os.troubles === 0 && os.power === 0 && attempts === 1;
     return (
       <div className="game board-game">
-        <div className="result-card good"><span className="result-title">今日の放流、ぜんぶ基準内！</span></div>
+        <div className="result-card good">
+          <span className="result-title">{os.troubles === 0 ? "今日の放流、ぜんぶ基準内！" : "今日の放流、なんとか守りきった"}</span>
+        </div>
         {tank}
         <p className="game-line soft center-line">
-          {perfect ? "水質も電力もむだなし。微生物のきげんを読み切った。" : `終えられた。電力のむだ${os.power}。ぴったり合わせるほど、電気も節約できる。`}
+          {perfect
+            ? "水質も電力もむだなし。微生物のきげんを読み切った。"
+            : os.troubles > 0
+              ? `ひやりとした時間帯が${os.troubles}回。針がみどりの外へ出た——次はもっと早く合わせよう。`
+              : `終えられた。電力のむだ${os.power}。ぴったり合わせるほど、電気も節約できる。`}
         </p>
         <p className="game-line soft center-line">
           {withRuby("よごれを食べているのは｜活性汚泥《かっせいおでい》という微生物のかたまり。運転員は、目に見えない生き物の飼育係でもあるんだ。")}
@@ -120,7 +135,7 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
           body: (
             <>
               <p>DOのめもりを<strong>みどりの帯</strong>に保つ。送風は流れこむ量に合わせる。</p>
-              <p>上げすぎは電気のむだ＋微生物が乱れる。下げすぎは息切れ。</p>
+              <p>{withRuby("上げすぎは電気のむだ。｜微生物《びせいぶつ》が乱れる。下げすぎは息切れ。")}</p>
               <p>雨の日は水がどっと増える——先を読んで。</p>
             </>
           ),
@@ -135,8 +150,10 @@ export default function PlantOpsGame({ onComplete }: Q1GameProps) {
             key={a.id}
             className="choice-card"
             onClick={() => {
+              const cur = os.slots[os.idx];
               const r = opsAct(os, a.id);
               setOs(r.state);
+              setLastAct({ slot: cur.label, act: a.label, do_: r.state.do_, inBand: r.state.do_ >= DO_LOW && r.state.do_ <= DO_HIGH });
               if (r.state.outcome === "discharge_fail") { setStep("failed"); return; }
               if (r.state.outcome === "done") { setStep("done"); return; }
               setNote(null);

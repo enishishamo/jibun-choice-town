@@ -1,0 +1,30 @@
+{
+ "asset_id": "library_ba_before",
+ "filename": "ba-before.png",
+ "world": "library",
+ "use": "wrapup_before",
+ "purpose": "wrapUpのBEFORE。持ちこまれた日：図書館カウンターに、なぞの古写真",
+ "scene": "The front counter of the warm town library as a miniature clay diorama, full series color. ANCHORS that must persist into the AFTER image: the wooden counter running along the lower third, a green desk lamp at its left end, and a tall bookshelf wall behind. Mood NOW: an elderly woman in a cardigan gently places ONE small sepia-toned old photograph (a tiny aged rectangle, the only sepia element) on the counter; a young librarian leans in, curious; a small paper sleeve and white gloves lie ready. Quiet mystery, soft afternoon light. No readable text anywhere.",
+ "composition": "Interior medium shot from a fixed vantage: counter lower third, green lamp left, bookshelf wall behind. The SAME camera and anchors reappear in the AFTER image. The sepia photo is a small prop, everything else in bright series clay colors.",
+ "required_objects": [
+  "wooden counter lower third",
+  "green desk lamp at left end",
+  "tall bookshelf wall",
+  "elderly woman placing a small sepia photo",
+  "curious librarian",
+  "paper sleeve and white gloves"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}

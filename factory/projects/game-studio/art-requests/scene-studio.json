@@ -1,0 +1,33 @@
+{
+ "asset_id": "studio_scene",
+ "filename": "scene-studio.png",
+ "world": "studio",
+ "use": "scene_map",
+ "purpose": "エリア画面の連続シーン背景。3ホットスポット（①テストルーム ~20%左, ②プランナー席 ~52%, ③デザイン席 ~80%）",
+ "scene": "The floor of a small cozy game studio as one continuous miniature clay diorama, left to right: a test room corner with a rack of small game consoles, one monitor showing a tiny crash symbol and a clipboard; a planner's desk in the middle with a big wall chart of colorful bar graphs and sticky notes; a designer's desk at the right with a pen tablet, a large screen showing a simple game scene mock and color swatch cards. Tiny staff figures at each area, a whiteboard connecting the spaces, warm night lighting with desk lamps (crunch-before-release but hopeful). Handcrafted clay look, no readable text anywhere.",
+ "composition": "Wide horizontal interior, slight high angle, one continuous studio floor. Three work areas at roughly 20%/52%/80% width. At least 8% empty margin at both edges. Wall band top 25%, no text.",
+ "required_objects": [
+  "console rack and monitor with crash symbol",
+  "clipboard",
+  "wall chart with bar graphs",
+  "sticky notes",
+  "pen tablet",
+  "large screen with game mock",
+  "color swatches",
+  "tiny staff figures",
+  "whiteboard"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}

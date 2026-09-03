@@ -574,14 +574,14 @@ img {
   margin: 10px auto 0;
 }
 .game-line {
-  font-size: 15px;
+  font-size: 16px;
   margin: 2px 4px;
 }
 .game-note {
   background: var(--blue-soft);
   border-radius: 14px;
   padding: 10px 14px;
-  font-size: 13.5px;
+  font-size: 14.5px;
   margin: 0;
   animation: fadein 0.3s ease;
 }
@@ -2345,7 +2345,7 @@ img {
   background: var(--orange-soft);
 }
 .choice-name {
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: bold;
   text-align: center;
   line-height: 1.35;
@@ -3980,11 +3980,11 @@ img {
   gap: 3px;
 }
 .task-now {
-  font-size: 14.5px;
+  font-size: 15.5px;
   font-weight: bold;
 }
 .task-sub {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-soft);
 }
 

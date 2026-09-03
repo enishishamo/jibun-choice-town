@@ -161,28 +161,57 @@ export function opsAct(s: OpsState, a: AirAction): { state: OpsState; correct: A
 
 // ============================== bank_design =================================
 export type Section = "homes" | "bend" | "fields" | "weir";
-export type Work = "concrete" | "stone_root" | "leave" | "fishway";
+export type Work = "concrete" | "stone_root" | "leave" | "fishway_gentle" | "fishway_steep";
 export const BANK_BUDGET = 6;
 export const BANK_REDO_LIMIT = 2;
-export const WORK_COST: Record<Work, number> = { concrete: 3, stone_root: 2, leave: 0, fishway: 2 };
+export const WORK_COST: Record<Work, number> = { concrete: 3, stone_root: 2, leave: 0, fishway_gentle: 2, fishway_steep: 2 };
 
 export interface SectionCond {
   section: Section;
   erosion: boolean; // 侵食の履歴
   homesBehind: boolean;
 }
+export interface RiverFish {
+  name: string;
+  power: "weak" | "strong"; // swimming power decides the fishway design
+}
 export interface BankCase {
   sections: SectionCond[];
+  /** varies per case: minimal safe plan + 1 slack (工事課が毎回提示する) */
+  budget: number;
+  /** 魚道は個別設計: the fish this river must pass decides gentle vs steep */
+  fish: RiverFish;
+}
+/** the fishway design that matches this river's fish (research: 魚の大きさ・
+ * 泳ぐ力・のぼる季節に合わせて設計する) */
+export function fishwayFor(fish: RiverFish): Work {
+  return fish.power === "weak" ? "fishway_gentle" : "fishway_steep";
+}
+/** severe = homes right behind an eroding bank: only concrete holds. */
+export function sectionSevere(sec: SectionCond): boolean {
+  return sec.section !== "weir" && sec.homesBehind && sec.erosion;
+}
+export function sectionStrong(sec: SectionCond): boolean {
+  return sec.section !== "weir" && !sectionSevere(sec) && (sec.homesBehind || sec.erosion);
 }
 export function newBankCase(rand: () => number = Math.random): BankCase {
-  return {
-    sections: [
-      { section: "homes", erosion: rand() < 0.5, homesBehind: true },
-      { section: "bend", erosion: true, homesBehind: rand() < 0.3 },
-      { section: "fields", erosion: false, homesBehind: false },
-      { section: "weir", erosion: false, homesBehind: false },
-    ],
-  };
+  // every attribute varies => the safe plan differs case by case
+  const sections: SectionCond[] = [
+    { section: "homes", erosion: rand() < 0.5, homesBehind: true },
+    { section: "bend", erosion: true, homesBehind: rand() < 0.4 },
+    { section: "fields", erosion: rand() < 0.35, homesBehind: false },
+    { section: "weir", erosion: false, homesBehind: false },
+  ];
+  const fish: RiverFish = rand() < 0.5
+    ? { name: "小さなウグイ（泳ぐ力：よわい）", power: "weak" }
+    : { name: "大きなアユ（泳ぐ力：つよい・長い魚道は苦手）", power: "strong" };
+  const minCost = sections.reduce((n, sec) => {
+    if (sec.section === "weir") return n + WORK_COST.fishway_gentle;
+    if (sectionSevere(sec)) return n + WORK_COST.concrete;
+    if (sectionStrong(sec)) return n + WORK_COST.stone_root;
+    return n; // calm: leave = 0
+  }, 0);
+  return { sections, budget: minCost + 1, fish };
 }
 
 export type BankPlan = Record<Section, Work | null>;
@@ -190,21 +219,42 @@ export function bankCost(plan: BankPlan): number {
   return (Object.values(plan) as (Work | null)[]).reduce((n, w) => n + (w ? WORK_COST[w] : 0), 0);
 }
 
-export type BankProblem = "empty" | "unsafe" | "over_armored" | "no_fishway" | "over_budget" | null;
+export type BankProblem = "empty" | "unsafe" | "over_armored" | "no_fishway" | "wrong_fishway" | "over_budget" | null;
 /** Safety first, nature next: homes/eroding bends need strong protection; the
  * calm field reach must NOT be fully armored; the weir needs a fishway. */
 export function bankValidate(c: BankCase, plan: BankPlan): BankProblem {
-  if (bankCost(plan) > BANK_BUDGET) return "over_budget";
+  if (bankCost(plan) > c.budget) return "over_budget";
   for (const sec of c.sections) {
     const w = plan[sec.section];
     if (w === null || w === undefined) return "empty";
     if (sec.section === "weir") {
-      if (w !== "fishway") return "no_fishway";
+      if (w !== "fishway_gentle" && w !== "fishway_steep") return "no_fishway";
+      if (w !== fishwayFor(c.fish)) return "wrong_fishway"; // 個別設計: the fish decides
       continue;
     }
-    const needStrong = sec.homesBehind || sec.erosion;
-    if (needStrong && w === "leave") return "unsafe";
-    if (!needStrong && w === "concrete") return "over_armored";
+    if (sectionSevere(sec) && w !== "concrete") return "unsafe"; // only concrete holds here
+    if (sectionStrong(sec) && w === "leave") return "unsafe";
+    // necessary-minimum: concrete anywhere it is not strictly needed is rejected
+    if (!sectionSevere(sec) && w === "concrete") return "over_armored";
+  }
+  return null;
+}
+
+/** the section the chief taps for a given rejection — mirrors bankValidate's
+ * scan order exactly so the WHERE hint can never drift from the rule. */
+export function bankFaultSection(c: BankCase, plan: BankPlan): Section | null {
+  if (bankCost(plan) > c.budget) return null; // budget: the meter, not a section
+  for (const sec of c.sections) {
+    const w = plan[sec.section];
+    if (w === null || w === undefined) return sec.section;
+    if (sec.section === "weir") {
+      if (w !== "fishway_gentle" && w !== "fishway_steep") return "weir";
+      if (w !== fishwayFor(c.fish)) return "weir";
+      continue;
+    }
+    if (sectionSevere(sec) && w !== "concrete") return sec.section;
+    if (sectionStrong(sec) && w === "leave") return sec.section;
+    if (!sectionSevere(sec) && w === "concrete") return sec.section;
   }
   return null;
 }

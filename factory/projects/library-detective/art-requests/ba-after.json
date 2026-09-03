@@ -1,0 +1,31 @@
+{
+ "asset_id": "library_ba_after",
+ "filename": "ba-after.png",
+ "world": "library",
+ "use": "wrapup_after",
+ "purpose": "wrapUpのAFTER。いま：同じカウンターの奥に、特定された写真が展示され、まちの記録になった",
+ "scene": "The SAME library counter, from the SAME camera: the wooden counter, the green desk lamp at its left end and the tall bookshelf wall are UNCHANGED. Mood NOW: on the bookshelf wall hangs a small wooden display frame holding the same tiny sepia photograph beside a small blank caption card; the elderly woman and a child look up at it smiling; the librarian points gently with an open hand; a tiny potted flower now sits on the counter. Bright, warm, a little celebratory. No readable text anywhere.",
+ "composition": "Identical framing to the BEFORE: same counter, same green lamp, same bookshelf wall. Change ONLY: the framed sepia photo with blank caption card on the wall, the child, the smiles, the potted flower.",
+ "required_objects": [
+  "same wooden counter",
+  "same green desk lamp",
+  "same bookshelf wall",
+  "framed tiny sepia photo with blank caption card",
+  "elderly woman and child smiling",
+  "librarian pointing with open hand",
+  "potted flower"
+ ],
+ "forbidden_objects": [
+  "readable text",
+  "logos",
+  "children in the water",
+  "murky brown water",
+  "industrial gloom"
+ ],
+ "aspect_ratio": "3:2",
+ "size": "1536x1024",
+ "output_path": "public/assets/river/scene-river.png",
+ "used_by": [
+  "src/data/content/river.ts"
+ ]
+}
