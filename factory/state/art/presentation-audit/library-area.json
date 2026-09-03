@@ -1,39 +1,24 @@
 {
  "ok": true,
- "verdict": "FAIL",
- "critic_verdict": "FAIL",
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
  "scores": {
-  "SUBJECT_CROP": 68,
-  "SUBJECT_OCCLUSION": 52,
-  "FOCAL_OBJECT_VISIBILITY": 76,
-  "BADGE_OVERLAP": 45,
-  "CONTAINER_FIT": 94,
-  "BACKGROUND_EDGE_QUALITY": 95,
-  "ASPECT_RATIO_FIT": 92,
-  "VISUAL_INTEGRATION": 82,
-  "MOBILE_CROP": 62,
-  "DESKTOP_CROP": 91,
-  "ASSET_PRESENTATION_QUALITY": 72
+  "SUBJECT_CROP": 88,
+  "SUBJECT_OCCLUSION": 93,
+  "FOCAL_OBJECT_VISIBILITY": 96,
+  "BADGE_OVERLAP": 94,
+  "CONTAINER_FIT": 95,
+  "BACKGROUND_EDGE_QUALITY": 91,
+  "ASPECT_RATIO_FIT": 97,
+  "VISUAL_INTEGRATION": 90,
+  "MOBILE_CROP": 84,
+  "DESKTOP_CROP": 97,
+  "ASSET_PRESENTATION_QUALITY": 92
  },
- "badge_collision": true,
- "prototype_feel_reasons": [
-  "The first hotspot label overlaps the left character’s face/head and map-reading activity in both viewports.",
-  "The mobile crop removes the right-side worker almost entirely, weakening the intended three-job overview before interaction.",
-  "Hotspot markers are placed over character hands and work objects instead of adjacent negative space.",
-  "Overlay sizing and placement feel mechanically anchored rather than composed around the illustrated subjects."
- ],
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
  "issues": [
-  "library scene/first hotspot label — label covers the left worker’s face/head and part of the map needed to understand the job — move the label into nearby shelf space or below the table edge and connect it with a short pointer.",
-  "library scene/center translucent hotspot — marker sits directly over the conservator’s hand and focal work surface — offset it beside the object or reduce its size while preserving the tap target invisibly.",
-  "library scene/mobile viewport — horizontal crop hides the entire right-side worker and cuts the scanner station at the edge — use a slightly wider mobile framing, reduce scene scale, or set an initial object-position that previews all three subjects.",
-  "library scene/mobile carousel — important content reaches the container edge without a strong visual continuation cue inside the artwork — add a subtle edge fade or visible sliver of the next subject while keeping the rounded mask.",
-  "library scene/overlay hierarchy — large opaque speech label dominates the characters and competes with the scene — shorten the label, reduce its footprint, and reserve opaque overlays for areas without faces, hands, or tools.",
-  "SUBJECT_CROP below threshold: 68",
-  "SUBJECT_OCCLUSION below threshold: 52",
-  "BADGE_OVERLAP below threshold: 45",
-  "MOBILE_CROP below threshold: 62",
-  "ASSET_PRESENTATION_QUALITY below gate (80): 72",
-  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
-  "presentation critic verdict: FAIL"
+  "mobile/main library scene — the right-side worker and scanner are partially cropped, though the horizontal-swipe treatment makes this feel intentional — preserve the current active-hotspot centering and ensure the final swipe position reveals the rightmost subject fully",
+  "mobile/main library scene — the right edge fade is somewhat strong and washes over the scanner area — narrow or reduce the opacity of the edge-fade mask"
  ]
 }

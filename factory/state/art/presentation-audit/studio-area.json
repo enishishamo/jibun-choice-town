@@ -1,37 +1,25 @@
 {
  "ok": true,
- "verdict": "FAIL",
- "critic_verdict": "FAIL",
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
  "scores": {
-  "SUBJECT_CROP": 68,
-  "SUBJECT_OCCLUSION": 74,
-  "FOCAL_OBJECT_VISIBILITY": 88,
-  "BADGE_OVERLAP": 66,
-  "CONTAINER_FIT": 91,
+  "SUBJECT_CROP": 84,
+  "SUBJECT_OCCLUSION": 82,
+  "FOCAL_OBJECT_VISIBILITY": 95,
+  "BADGE_OVERLAP": 91,
+  "CONTAINER_FIT": 96,
   "BACKGROUND_EDGE_QUALITY": 94,
-  "ASPECT_RATIO_FIT": 96,
-  "VISUAL_INTEGRATION": 82,
-  "MOBILE_CROP": 64,
-  "DESKTOP_CROP": 92,
-  "ASSET_PRESENTATION_QUALITY": 77
+  "ASPECT_RATIO_FIT": 97,
+  "VISUAL_INTEGRATION": 92,
+  "MOBILE_CROP": 82,
+  "DESKTOP_CROP": 97,
+  "ASSET_PRESENTATION_QUALITY": 91
  },
- "badge_collision": true,
- "prototype_feel_reasons": [
-  "On mobile, the horizontally oversized scene is clipped at the viewport edge, cutting the right-side character and workstation mid-body.",
-  "The hotspot label and magnifier occupy a large portion of the left workstation, obscuring the chair and clipboard/tool area.",
-  "The hotspot’s stacked icon-and-label treatment feels bulky relative to the scene and competes with the illustrated subjects.",
-  "The desktop layout uses a narrow fixed-width play column surrounded by substantial empty space, making the composition feel insufficiently adapted for desktop."
- ],
+ "badge_collision": false,
+ "prototype_feel_reasons": [],
  "issues": [
-  "mobile/scene image — right-side character and workstation are cut by the viewport — provide a deliberate scroll viewport with stronger edge affordance and initialize object-position so no face or key workstation is stranded at the edge",
-  "studio hotspot — magnifier badge and text label obscure the chair and clipboard/tool area — move the label into lower-left floor space or use a leader line from a smaller marker",
-  "studio hotspot — marker and label visually dominate the nearby subject — reduce overlay scale and padding while preserving tap-target size with a transparent hit area",
-  "desktop/main composition — fixed narrow column leaves excessive unused canvas and makes the asset feel like a mobile prototype centered on desktop — use a wider responsive stage or add balanced surrounding UI framing",
-  "SUBJECT_CROP below threshold: 68",
-  "BADGE_OVERLAP below threshold: 66",
-  "MOBILE_CROP below threshold: 64",
-  "ASSET_PRESENTATION_QUALITY below gate (80): 77",
-  "BADGE_COLLISION: overlay covers a subject's face/head/tools",
-  "presentation critic verdict: FAIL"
+  "mobile/scene viewport — the right-side worker is cut at the screen edge, though the swipe instruction and edge fade communicate intentional horizontal continuation — slightly strengthen the right fade or auto-center a few pixels farther right",
+  "desktop/locked hotspot over center table — translucent lock partially obscures small tabletop evidence — offset it slightly upward or reduce its diameter/opacity",
+  "desktop/locked hotspot near right shelf — marker overlaps the shelf/plant area — move it into adjacent negative space while retaining a short pointer stem"
  ]
 }

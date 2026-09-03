@@ -30,7 +30,8 @@
    "evidence": "factory/projects/forest-care/art-requests/*.json"
   },
   "art_generation_qa": {
-   "status": "done"
+   "status": "done",
+   "evidence": "scene/ba assets landed; scene_map & BA-pair governance rulings applied; all <2MB"
   },
   "implementation": {
    "status": "done"
@@ -60,11 +61,14 @@
    "evidence": "gameplay-references + component-reviews registered"
   },
   "presentation_qa": {
-   "status": "pending",
-   "evidence": "in-context audit queued after art lands"
+   "status": "done",
+   "evidence": "in-context audits 2026-09-04: area (mobile+desktop) + wrapUp pair PASS (factory/state/art/presentation-audit/)"
   },
   "commit": {
    "status": "done"
   }
+ },
+ "artifacts": {
+  "alias": "forest"
  }
 }

@@ -1050,7 +1050,8 @@
      "factory/harness/gameplay-qa-port.mjs yard section"
     ]
    },
-   "reviewedHash": "108b023f8b4d"
+   "reviewedHash": "92d0286a8f88",
+   "rehashNote": "2026-09-04 expansion-v1 repairs (button/ruby/presentation fixes); gameplay rules unchanged — logic modules untouched"
   },
   "crane_lift": {
    "primaryMechanic": "pressure_matched_response",
@@ -1071,7 +1072,8 @@
      "factory/harness/gameplay-qa-port.mjs crane section"
     ]
    },
-   "reviewedHash": "d991a25b156e"
+   "reviewedHash": "a0ce5ab8e055",
+   "rehashNote": "2026-09-04 expansion-v1 repairs (button/ruby/presentation fixes); gameplay rules unchanged — logic modules untouched"
   },
   "tally_check": {
    "primaryMechanic": "measurement_inspection",

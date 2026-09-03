@@ -1641,7 +1641,7 @@
   },
   {
     "componentHash": "92d0286a8f88",
-    "reviewStale": true,
+    "reviewStale": false,
     "id": "yard_plan",
     "label": "YardPlanGame",
     "componentPath": "src/q1/YardPlanGame.tsx",
@@ -1675,7 +1675,7 @@
   },
   {
     "componentHash": "a0ce5ab8e055",
-    "reviewStale": true,
+    "reviewStale": false,
     "id": "crane_lift",
     "label": "CraneLiftGame",
     "componentPath": "src/q1/CraneLiftGame.tsx",
@@ -1878,8 +1878,8 @@
     }
   },
   {
-    "componentHash": "a9595a15fe77",
-    "reviewStale": false,
+    "componentHash": "29aed6b4e886",
+    "reviewStale": true,
     "id": "water_trace",
     "label": "WaterTraceGame",
     "componentPath": "src/q1/WaterTraceGame.tsx",
@@ -1912,8 +1912,8 @@
     }
   },
   {
-    "componentHash": "3846138e83df",
-    "reviewStale": false,
+    "componentHash": "1b213d50900b",
+    "reviewStale": true,
     "id": "plant_ops",
     "label": "PlantOpsGame",
     "componentPath": "src/q1/PlantOpsGame.tsx",
@@ -1946,8 +1946,8 @@
     }
   },
   {
-    "componentHash": "624c81a82929",
-    "reviewStale": false,
+    "componentHash": "6b1eef9b03e7",
+    "reviewStale": true,
     "id": "bank_design",
     "label": "BankDesignGame",
     "componentPath": "src/q1/BankDesignGame.tsx",
@@ -1977,6 +1977,168 @@
         "src/q1/riverLogic.ts:bankValidate",
         "factory/harness/gameplay-qa-river.mjs bank section"
       ]
+    }
+  },
+  {
+    "componentHash": "e2e77af135d0",
+    "reviewStale": false,
+    "id": "photo_clues",
+    "label": "PhotoCluesGame",
+    "componentPath": "src/q1/PhotoCluesGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "library-detective"
+    ],
+    "recentGames": [
+      "library-clues"
+    ],
+    "description": "独立手がかりの一致数→確定/推定の二層結論",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "evidence_cross_reference",
+    "secondaryMechanics": [
+      "budgeted_probe",
+      "two_layer_conclusion"
+    ],
+    "interactionNotes": "4つの手がかりカードで照合（予算4）。照合ボードに候補地ごとの一致/不一致ピンと一致数が出る。回答は場所＋確度（確定/推定）の二層。2未満の照合では受付が拒否。",
+    "semantic": {
+      "C_in_component": "レファレンスのきまり（独立一致3+=確定/2=推定）と旧版地図・名簿という資料",
+      "D_in_component": "どの手がかりに予算を使うか＋確度の自己判断。デコイ候補の1点一致に飛びつくと差し戻し",
+      "refusal": "受付票の確認済み事項が空のまま回答→terse refusal。誤答は紙が戻る（進行なし）"
+    }
+  },
+  {
+    "componentHash": "3d3c62af58fb",
+    "reviewStale": false,
+    "id": "paper_rescue",
+    "label": "PaperRescueGame",
+    "componentPath": "src/q1/PaperRescueGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "library-detective"
+    ],
+    "recentGames": [
+      "library-rescue"
+    ],
+    "description": "抑制の処置判断（直すほど壊すの学習）",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "restraint_classification",
+    "secondaryMechanics": [
+      "forbidden_tool_refusal",
+      "sequential_item_queue"
+    ],
+    "interactionNotes": "5点を1点ずつ診て6処置から選ぶ。テープ/ラミネートは先輩が手を止める（アイテム消費なし）。誤処置は机に残り進まない。保存箱が視覚進捗。",
+    "semantic": {
+      "C_in_component": "保存のきまりカード（刷毛/中性紙/隔離/そのまま記録・禁じ手）",
+      "D_in_component": "『直したい』誘惑と抑制判断。fineと旧テープ補修は record_only が正解",
+      "refusal": "禁じ手は世界の拒否（道具は棚に戻された）。進行・状態は不変"
+    }
+  },
+  {
+    "componentHash": "3880ea6ef19f",
+    "reviewStale": false,
+    "id": "digi_archive",
+    "label": "DigiArchiveGame",
+    "componentPath": "src/q1/DigiArchiveGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "library-detective"
+    ],
+    "recentGames": [
+      "library-archive"
+    ],
+    "description": "仕様×正直ラベル×公開判断の登録実務",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "spec_matching",
+    "secondaryMechanics": [
+      "honest_labeling",
+      "rights_gate"
+    ],
+    "interactionNotes": "3点それぞれ 仕様(TIFF/JPEG)×確度ラベル×公開可否 の3点セットで登録。誤りは登録票が差し戻し（アイテム残留）。棚にサムネイル＋ラベルが並ぶ。",
+    "semantic": {
+      "C_in_component": "デジタル化の手引き（用途→仕様・根拠→ラベル・顔→保留）＋①からの調査メモ",
+      "D_in_component": "3判断の根拠がそれぞれ違う（用途/根拠数/人物）。断定的な題名を避ける誠実さ",
+      "refusal": "保存用JPEGや根拠なし確定は差し戻し。2ミスでベテラン交代"
+    }
+  },
+  {
+    "componentHash": "78a7c09bb999",
+    "reviewStale": false,
+    "id": "bug_repro",
+    "label": "BugReproGame",
+    "componentPath": "src/q1/BugReproGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "game-studio"
+    ],
+    "recentGames": [
+      "studio-repro"
+    ],
+    "description": "1回1条件の実験設計で最短再現手順を特定",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "controlled_experiment",
+    "secondaryMechanics": [
+      "budgeted_probe",
+      "claim_confirmation"
+    ],
+    "interactionNotes": "条件4種をトグルして▶実行（予算6）。ログに✅/💥が積まれる。票は最小ペアかつ単独再現済みのみ受理。太い報告/未確認ペアは付せん付きで差し戻し。",
+    "semantic": {
+      "C_in_component": "不具合票のきまり（手順・期待・実際・頻度）＋テスト機ログ",
+      "D_in_component": "どの条件を落として試すか（1回1条件）。早出し誘惑への抑制",
+      "refusal": "💥未確認での票、空手順は terse refusal。予算切れは世界の拒否"
+    }
+  },
+  {
+    "componentHash": "05b0fefa8b4f",
+    "reviewStale": false,
+    "id": "difficulty_tune",
+    "label": "DifficultyTuneGame",
+    "componentPath": "src/q1/DifficultyTuneGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "game-studio"
+    ],
+    "recentGames": [
+      "studio-tune"
+    ],
+    "description": "ログ証拠→原因→対応する調整の三段",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "evidence_to_cause_matching",
+    "secondaryMechanics": [
+      "honest_dashboard",
+      "staged_fail"
+    ],
+    "interactionNotes": "ステージごとのログ（クリア率バー＋証拠行）を読み、4調整から選ぶ。ズレた調整は数字が動かない演出＝ステージ残留。成功でバーがアニメ。",
+    "semantic": {
+      "C_in_component": "ログの読み方カード＋証拠行（どこで・どうやって失敗）",
+      "D_in_component": "証拠→原因→対応調整の三段推論。HP下げ反射の抑制",
+      "refusal": "誤調整は再テスト数値が不動（世界の反応）。2ミスでディレクター相談"
+    }
+  },
+  {
+    "componentHash": "3bbcf0633764",
+    "reviewStale": false,
+    "id": "ui_clarity",
+    "label": "UiClarityGame",
+    "componentPath": "src/q1/UiClarityGame.tsx",
+    "appearances": 1,
+    "recentEvents": [
+      "game-studio"
+    ],
+    "recentGames": [
+      "studio-ui"
+    ],
+    "description": "報告1対1の制約つき画面改善（ライブモック）",
+    "section": "動物園・赤ちゃん誕生編",
+    "primaryMechanic": "constrained_selection",
+    "secondaryMechanics": [
+      "live_mock_feedback",
+      "decoy_rejection"
+    ],
+    "interactionNotes": "報告3件（5種から抽選）に対し8候補から3つまで選択。モック画面が選択で即時変化（decoyは見た目が悪化）。再テストでdecoy/未対応をテスターが指す。",
+    "semantic": {
+      "C_in_component": "UIのきまり（1対1・色だけ禁止・今いる情報だけ）＋報告カード",
+      "D_in_component": "報告と直しの対応づけ。足したくなるdecoyの拒否",
+      "refusal": "4つ目の選択は世界が拒否（画面がもういっぱい）。差し戻しはWHEREのみ"
     }
   }
 ]

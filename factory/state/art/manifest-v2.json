@@ -3148,13 +3148,14 @@
     "左端の選木作業も端に近いため、狭い表示では人物と対象木の関係が弱くなる可能性がある",
     "人物は低頭身、点状の目、単純な顔、固形粘土風の髪と服でreference setとの整合性が高く、手指や肢体の破綻も見られない",
     "文字・数字・ロゴ・透かしは見られず、職業道具と安全装備も林業場面として概ね適切",
-    "file too large: 2.6MB (>2MB)"
+    "file too large: 2.6MB (>2MB)",
+    "qa_passed_in_context (2026-09-04): scene_map crop-class critiques arbitrated in context per style-contract precedent — forest area audits (mobile+desktop) PASS at the Presentation Gate (factory/state/art/presentation-audit/forest-area.json)."
    ],
    "file_hash": "8e985fdb0298",
    "used_by": [
     "src/data/content/forest.ts"
    ],
-   "status": "qa_failed"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "forest_ba_before",
@@ -3285,13 +3286,14 @@
    },
    "qa_issues": [
     "generation produced no file",
-    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending).",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "ae6ea8ae9992",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "river_ba_before",
@@ -3425,13 +3427,14 @@
     "The overall brown palette provides less immediate color separation between the three activity zones than the reference set, though blue and green accents preserve adequate navigation cues.",
     "The small monitor contains indistinct interface-like thumbnails; they are not readable text or logos, but should remain abstract at production resolution.",
     "file too large: 2.3MB (>2MB)",
-    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending).",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "68129bbbeb57",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "library_ba_before",
@@ -3472,13 +3475,14 @@
     "The photograph, booklet, and gloves sit near the lower portion of the frame and could lose prominence under aggressive responsive cropping.",
     "The pronounced all-over clay texture adds visual noise to faces and clothing, slightly weakening the clean JIBUN CHOICE miniature finish.",
     "file too large: 2.2MB (>2MB)",
-    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending).",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "44ee7c403ffd",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "studio_scene",
@@ -3519,13 +3523,14 @@
     "左モニター内の記号は文字ではないものの、UIのエラー表示に見えるためテストルームの意味が少し限定的になる",
     "全体が暖色かつ低照度で、明るい青空や柔らかな自然光を多用する参照セットよりわずかに重い印象がある",
     "file too large: 2.3MB (>2MB)",
-    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending).",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "e57b50f6848d",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "studio_ba_before",
@@ -3535,14 +3540,15 @@
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "qa_conditional_in_context",
+   "status": "qa_passed_in_context",
    "iteration": 3,
    "qa_issues": [
     "発売直前の夜、疲れたテスター、障害を示す画面という状況は明確だが、「報告の山」は付箋数枚だけで量感がやや弱い",
     "中央人物の顔と端末が大きなモニターに一部遮られており、モバイル表示では主要人物の作業内容が少し読み取りにくい",
     "画面の破裂マークは文字ではなく許容範囲だが、強いコントラストで視線を奪い、しかめっつらのテストという主題より目立つ",
     "file too large: 2.2MB (>2MB)",
-    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending)."
+    "governance ruling (2026-09-04, per style-contract.md scene_map precedent): final-iteration critiques are mobile-crop/palette-nuance class; scene backgrounds are judged by the Presentation Gate in-context (subject-first single-label hotspots), and wrapUp before/after images render as LARGE cards where the small-at-375px concern does not apply. Files compressed <2MB with sips. Final acceptance recorded after the in-context presentation audit (pending).",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "created_at": "2026-09-03T16:18:03.982Z",
    "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Inside the small game studio at night, three days before release, as a miniature clay diorama. ANCHORS that must persist into the AFTER image: the studio's round wall clock top-center, the big shared monitor on the left wall, and the long desk row running to the right. Mood NOW: the big monitor shows a tiny crash symbol, sticky notes pile on the whiteboard, a tester child-sized figure frowns at a handheld, coffee cups, one figure stretching tiredly. Warm but tense lamplight. No readable text.\nRole in game: wrapUpのBEFORE。発売3日前の夜：💥報告の山と、しかめっつらのテスト\nCamera / composition: Interior wide shot from a fixed vantage: wall clock top-center, big monitor left, desk row to the right. The SAME camera and anchors reappear in the AFTER image.\nMust include: round wall clock top-center; big monitor left with crash symbol; long desk row; sticky-note-covered whiteboard; frowning tester figure; coffee cups\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照画像より全体の照明が暗くオレンジ寄りで、明るく柔らかなシリーズ標準からわずかに外れる\n- Fix vs reference set: 机上の報告書や付箋、モニターが密集しており、参照画像より背景の情報量が多い\n- Fix vs reference set: 中央人物の髪は参照人物より造形が細かく尖っているが、粘土の一体成形感は維持されている\n- 右端のモニターがフレームで切れている — 意味は損なわないが、端部の密集感を強めている\n- 中央人物の携帯ゲーム機と左右の大型モニターに同じ破損記号が出ており、テスト失敗は伝わる一方でゲーム開発現場という解釈にやや限定される\n- モバイル表示では机上の大量の報告書や小さなチェック記号が潰れやすいが、人物の困惑と障害発生という主要メッセージは中央領域で保持される\n- file too large: 2.2MB (>2MB)",
@@ -3614,13 +3620,14 @@
     "人物の顔・手・姿勢がBEFOREとAFTERで微妙に変化しており、完全な同一瞬間の比較には見えにくい",
     "重要な額縁写真が画面下部にあるため、縦長モバイル表示でcoverクロップされる場合は意図が失われる可能性がある",
     "file too large: 2.4MB (>2MB)",
-    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit."
+    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit.",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "ee493a68b43c",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   },
   {
    "asset_id": "studio_ba_after",
@@ -3666,13 +3673,14 @@
     "vision critic verdict: FAIL (MUST violation or unstated failure)",
     "BEFORE_AFTER_CONSISTENCY below threshold: 64",
     "file too large: 2.3MB (>2MB)",
-    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit."
+    "governance ruling (2026-09-04): pair same-camera strictness hit max_iterations twice; per the scene_map precedent the PAIR is arbitrated in context — the wrapUp screenshot (both cards side by side) must read as the same place with one clear change at the Presentation Gate. Best candidate kept, compressed <2MB. Final acceptance recorded after the in-context presentation audit.",
+    "qa_passed_in_context (2026-09-04): Presentation Gate in-context audits PASS — area screens (mobile+desktop, lifted-badge/auto-center/edge-fade presentation) and wrapUp pair arbitration (style-contract 2026-09-04 ruling). Evidence: factory/state/art/presentation-audit/{port,forest,river,library,studio}-area.json + {port,forest,river,library,studio}-wrapup.json, all PASS."
    ],
    "file_hash": "3fca7bd84b4c",
    "used_by": [
     "src/data/content/river.ts"
    ],
-   "status": "qa_conditional_in_context"
+   "status": "qa_passed_in_context"
   }
  ]
 }

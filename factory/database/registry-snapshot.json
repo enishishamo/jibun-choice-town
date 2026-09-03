@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-09-03T10:12:32.516Z",
+  "scannedAt": "2026-09-03T17:37:29.109Z",
   "sourceOfTruth": {
     "registry": "src/q1/registry.ts",
     "contentIndex": "src/data/index.ts",
@@ -460,6 +460,54 @@
       "componentPath": "src/q1/BankDesignGame.tsx",
       "componentExists": true,
       "description": "守る区間を絞る引き算の設計＋魚道",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "photo_clues",
+      "component": "PhotoCluesGame",
+      "componentPath": "src/q1/PhotoCluesGame.tsx",
+      "componentExists": true,
+      "description": "独立手がかりの一致数→確定/推定の二層結論",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "paper_rescue",
+      "component": "PaperRescueGame",
+      "componentPath": "src/q1/PaperRescueGame.tsx",
+      "componentExists": true,
+      "description": "抑制の処置判断（直すほど壊すの学習）",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "digi_archive",
+      "component": "DigiArchiveGame",
+      "componentPath": "src/q1/DigiArchiveGame.tsx",
+      "componentExists": true,
+      "description": "仕様×正直ラベル×公開判断の登録実務",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "bug_repro",
+      "component": "BugReproGame",
+      "componentPath": "src/q1/BugReproGame.tsx",
+      "componentExists": true,
+      "description": "1回1条件の実験設計で最短再現手順を特定",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "difficulty_tune",
+      "component": "DifficultyTuneGame",
+      "componentPath": "src/q1/DifficultyTuneGame.tsx",
+      "componentExists": true,
+      "description": "ログ証拠→原因→対応する調整の三段",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "ui_clarity",
+      "component": "UiClarityGame",
+      "componentPath": "src/q1/UiClarityGame.tsx",
+      "componentExists": true,
+      "description": "報告1対1の制約つき画面改善（ライブモック）",
       "section": "動物園・赤ちゃん誕生編"
     }
   ],
@@ -971,6 +1019,231 @@
             "育つ場所を見立てるところ",
             "限りある予算のやりくり",
             "ずっと先の未来を考えるところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/library.ts",
+      "exportName": "library",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "town-library",
+          "name": "まちの図書館",
+          "eventId": "library-detective"
+        }
+      ],
+      "events": [
+        {
+          "id": "library-detective",
+          "title": "100年前の写真のなぞ\n「ここはどこですか？」",
+          "areaName": "図書館のバックヤード",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① この写真は「どこ」だ？",
+              "experienceId": "library-clues",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② こわさずに、あずかれ",
+              "experienceId": "library-rescue",
+              "requires": [
+                "library-clues"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 100年後へ、のこせ",
+              "experienceId": "library-archive",
+              "requires": [
+                "library-rescue"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "library-reference",
+          "name": "司書（レファレンス・郷土資料担当）",
+          "catch": "本の森で謎を解く、調べもの探偵",
+          "discoveryLine": "手がかりを資料と照合して、\n「どこ？」「なに？」を解く仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "博物館の学芸員",
+            "新聞記者の調査",
+            "地図をつくる仕事"
+          ]
+        },
+        {
+          "id": "library-conservator",
+          "name": "資料保存・修復の担当者",
+          "catch": "「直さない」も選べる、紙の医者",
+          "discoveryLine": "こわれやすい資料を、\n100年先まで守る仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "美術品の修復家",
+            "文化財を守る仕事",
+            "製本・印刷の仕事"
+          ]
+        },
+        {
+          "id": "library-archivist",
+          "name": "デジタルアーカイブの担当者",
+          "catch": "100年後へ手紙を出す、記録の設計者",
+          "discoveryLine": "資料をデジタル化して、\n未来のだれかに届ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "データベースをつくる仕事",
+            "写真スタジオの仕事",
+            "権利を扱う仕事"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "library-clues",
+          "professionId": "library-reference",
+          "eventId": "library-detective",
+          "gameType": "photo_clues",
+          "componentPath": "src/q1/PhotoCluesGame.tsx",
+          "A_place": "郷土資料室の照合デスク",
+          "B_mission": {
+            "title": "写真の「どこ」を、資料でつきとめる",
+            "lines": [
+              "手がかりは4つ。古い地図・名簿と照合できる。",
+              "一致がいくつそろうかで、答え方が変わる。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "map",
+              "name": "旧版地図",
+              "desc": "むかしの道と地名"
+            },
+            {
+              "id": "roster",
+              "name": "商店の名簿",
+              "desc": "看板の店を調べる"
+            },
+            {
+              "id": "slip",
+              "name": "受付票",
+              "desc": "確認ずみ事項を記録"
+            }
+          ],
+          "D_mechanic": "photo_clues",
+          "E_resolution": {
+            "title": "回答は、根拠つきで手わたされた",
+            "lines": [
+              "おばあさんは写真を、両手でそっと受け取った。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「一致はいくつ？」と数えたよね。あの数え方で謎を解く仕事があるんだ。",
+          "interestSeeds": [
+            "手がかりを照合する推理",
+            "断定しない誠実さ",
+            "古い資料をたどる時間旅行"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "library-rescue",
+          "professionId": "library-conservator",
+          "eventId": "library-detective",
+          "gameType": "paper_rescue",
+          "componentPath": "src/q1/PaperRescueGame.tsx",
+          "A_place": "保存作業室",
+          "B_mission": {
+            "title": "追加の持ちこみ5点、こわさずあずかる",
+            "lines": [
+              "写真のうわさを聞いて、資料の持ちこみがふえた。",
+              "1点ずつ状態を見て、処置を決めよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "gloves",
+              "name": "手ぶくろ",
+              "desc": "手のあぶらから守る"
+            },
+            {
+              "id": "brush",
+              "name": "やわらかい刷毛",
+              "desc": "ほこりを、そっと"
+            },
+            {
+              "id": "paper",
+              "name": "中性紙の包み",
+              "desc": "長期保存の定番"
+            }
+          ],
+          "D_mechanic": "paper_rescue",
+          "E_resolution": {
+            "title": "5点とも、安全に保存箱へ",
+            "lines": [
+              "状態調査票が、次の担当への引きつぎになる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「直さない」を選べたよね。あのがまんが専門技術になる仕事があるんだ。",
+          "interestSeeds": [
+            "こわれものを扱う集中力",
+            "「しない」判断の勇気",
+            "道具と材料へのこだわり"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "library-archive",
+          "professionId": "library-archivist",
+          "eventId": "library-detective",
+          "gameType": "digi_archive",
+          "componentPath": "src/q1/DigiArchiveGame.tsx",
+          "A_place": "デジタル化スタジオ",
+          "B_mission": {
+            "title": "3点をデジタル化して、登録する",
+            "lines": [
+              "用途に合う仕様で、正直なラベルをつけて。",
+              "調査メモが、ラベルの根拠になる。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "scanner",
+              "name": "大型スキャナ",
+              "desc": "光をおさえて読み取る"
+            },
+            {
+              "id": "chart",
+              "name": "カラーチャート",
+              "desc": "色の基準をいっしょに写す"
+            },
+            {
+              "id": "guide",
+              "name": "デジタル化の手引き",
+              "desc": "dpiと形式のきまり"
+            }
+          ],
+          "D_mechanic": "digi_archive",
+          "E_resolution": {
+            "title": "3点の登録が、終わった",
+            "lines": [
+              "公開ほりゅうの写真も、権利がたしかめられたら公開される。",
+              "「撮影地ふめい」の1点にも、いつか続報が届くだろう。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「ふめい」と正直に書けたよね。あの正直さが信頼になる仕事があるんだ。",
+          "interestSeeds": [
+            "未来のだれかを想像する力",
+            "きちんと分けて整理する楽しさ",
+            "機械と紙の両方が好き"
           ],
           "retry": "unknown_lives_in_component"
         }
@@ -2174,19 +2447,19 @@
             "title": "魚がすめる川岸を、設計する",
             "lines": [
               "守る区間は、しっかり守る。それ以外は川にまかせる。",
-              "堰には魚道を。予算には限りがある。"
+              "｜堰《せき》（水の段差）には魚道を。予算には限りがある。"
             ]
           },
           "C_tools": [
             {
               "id": "map",
               "name": "川の図面",
-              "desc": "侵食のあとと土地利用"
+              "desc": "けずれたあとと土地利用"
             },
             {
               "id": "works",
               "name": "工法カタログ",
-              "desc": "護岸・石積み・魚道"
+              "desc": "｜護岸《ごがん》・石積み・魚道"
             },
             {
               "id": "budget",
@@ -2198,7 +2471,7 @@
           "E_resolution": {
             "title": "図面が、川の未来になる",
             "lines": [
-              "工事が終わるころ、瀬と淵に生きものがもどる。"
+              "工事のあとも調査は続く。もどってくるかは、川と数字が教えてくれる。"
             ]
           },
           "jobReveal_discoveryEcho": "きみがさっき「固めない場所」を選んだよね。あの引き算の設計が、いまの川づくりなんだ。",
@@ -3189,6 +3462,230 @@
       ]
     },
     {
+      "file": "src/data/content/studio.ts",
+      "exportName": "studio",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "town-game-studio",
+          "name": "駅前のゲームスタジオ",
+          "eventId": "game-studio"
+        }
+      ],
+      "events": [
+        {
+          "id": "game-studio",
+          "title": "「たまに止まる」の犯人さがし\n発売まで、あと3日",
+          "areaName": "スタジオのフロア",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① 「たまに止まる」をつかまえろ",
+              "experienceId": "studio-repro",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② 「むずかしすぎ」の正体をさがせ",
+              "experienceId": "studio-tune",
+              "requires": [
+                "studio-repro"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 「まちがえない画面」に直せ",
+              "experienceId": "studio-ui",
+              "requires": [
+                "studio-tune"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "studio-qa",
+          "name": "QAテスター（品質チェック）",
+          "catch": "「たまに」を「必ず」に変える再現の職人",
+          "discoveryLine": "不具合を最短の手順にしぼりこんで、\n開発チームに届ける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "ソフトウェアの検証の仕事",
+            "製品の品質管理",
+            "校正・校閲の仕事"
+          ]
+        },
+        {
+          "id": "studio-planner",
+          "name": "ゲームプランナー（難易度調整）",
+          "catch": "「悔しい！もう1回」を設計する人",
+          "discoveryLine": "プレイログを読んで、\nちょうどいい手ごたえを作る仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "ボードゲームを作る仕事",
+            "教材を設計する仕事",
+            "データ分析の仕事"
+          ]
+        },
+        {
+          "id": "studio-ui",
+          "name": "UIデザイナー（画面・操作設計）",
+          "catch": "「まちがえない画面」を作るデザイナー",
+          "discoveryLine": "ボタンの場所から文字の大きさまで、\n遊びやすさをデザインする仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "Webデザインの仕事",
+            "サウンドデザイナー",
+            "案内サインを作る仕事"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "studio-repro",
+          "professionId": "studio-qa",
+          "eventId": "game-studio",
+          "gameType": "bug_repro",
+          "componentPath": "src/q1/BugReproGame.tsx",
+          "A_place": "テストルーム",
+          "B_mission": {
+            "title": "「たまに止まる」を、必ず止まる手順に",
+            "lines": [
+              "テスト機を使えるのは6回。条件の組み合わせで実験しよう。",
+              "最短の手順をつきとめたら、不具合票を書く。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "bench",
+              "name": "テスト機",
+              "desc": "条件を変えて動かす"
+            },
+            {
+              "id": "sheet",
+              "name": "不具合票",
+              "desc": "手順・期待・実際・頻度"
+            },
+            {
+              "id": "build",
+              "name": "体験版ビルド",
+              "desc": "番号つきの検証版"
+            }
+          ],
+          "D_mechanic": "bug_repro",
+          "E_resolution": {
+            "title": "票が受理され、開発が動いた",
+            "lines": [
+              "夕方には、修正ビルドが届いた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「1つずつ変えて」試したよね。あの実験のやり方が武器になる仕事があるんだ。",
+          "interestSeeds": [
+            "条件をそろえて試す実験",
+            "ねばり強くしぼりこむ集中",
+            "だれかが直せる形にする親切"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "studio-tune",
+          "professionId": "studio-planner",
+          "eventId": "game-studio",
+          "gameType": "difficulty_tune",
+          "componentPath": "src/q1/DifficultyTuneGame.tsx",
+          "A_place": "プランナー席",
+          "B_mission": {
+            "title": "「むずかしすぎ」の原因を、ログでつきとめる",
+            "lines": [
+              "クリア率だけじゃない。どこで・どうやって失敗したかを読む。",
+              "原因に合う調整を選ぼう。ズレた調整は数字が動かない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "log",
+              "name": "プレイログ",
+              "desc": "失敗地点・死亡回数・離脱"
+            },
+            {
+              "id": "params",
+              "name": "パラメータ表",
+              "desc": "敵HP・速度・報酬の一覧"
+            },
+            {
+              "id": "voice",
+              "name": "テスターの声",
+              "desc": "数字にならない手ざわり"
+            }
+          ],
+          "D_mechanic": "difficulty_tune",
+          "E_resolution": {
+            "title": "「悔しい、もう1回！」の声が聞こえた",
+            "lines": [
+              "かんたんにしたんじゃない。伝わるようにしたんだ。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「なぜ失敗したか」から考えたよね。あの読み方で遊びを作る仕事があるんだ。",
+          "interestSeeds": [
+            "数字の裏の気持ちを読む",
+            "ちょうどいい、を探す調整",
+            "遊ぶ人を想像する力"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "studio-ui",
+          "professionId": "studio-ui",
+          "eventId": "game-studio",
+          "gameType": "ui_clarity",
+          "componentPath": "src/q1/UiClarityGame.tsx",
+          "A_place": "デザイン席",
+          "B_mission": {
+            "title": "報告3件に合わせて、画面を直す",
+            "lines": [
+              "直しは3つまで。足すほど画面は散らかる。",
+              "報告と直しを、1対1でつなげよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "wire",
+              "name": "画面設計図",
+              "desc": "ボタンと情報の配置図"
+            },
+            {
+              "id": "system",
+              "name": "デザインシステム",
+              "desc": "色・形・文字のきまり"
+            },
+            {
+              "id": "reports",
+              "name": "テスト報告",
+              "desc": "今日直すべき3件"
+            }
+          ],
+          "D_mechanic": "ui_clarity",
+          "E_resolution": {
+            "title": "「見やすい！」——再テスト通過",
+            "lines": [
+              "画面は静かになった。遊びが、前に出てきた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「足さない」勇気を出せたよね。あの引き算のセンスが光る仕事があるんだ。",
+          "interestSeeds": [
+            "まちがえない仕組みづくり",
+            "引き算のデザイン",
+            "見え方の個人差への想像力"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
       "file": "src/data/content/townEvent.ts",
       "exportName": "townEvent",
       "factCheckNotes": [],
@@ -4099,7 +4596,8 @@
     }
   ],
   "issues": [
-    "semantic review for \"yard_plan\" is STALE: src/q1/YardPlanGame.tsx changed since review (108b023f8b4d -> 92d0286a8f88)",
-    "semantic review for \"crane_lift\" is STALE: src/q1/CraneLiftGame.tsx changed since review (d991a25b156e -> a0ce5ab8e055)"
+    "semantic review for \"water_trace\" is STALE: src/q1/WaterTraceGame.tsx changed since review (a9595a15fe77 -> 29aed6b4e886)",
+    "semantic review for \"plant_ops\" is STALE: src/q1/PlantOpsGame.tsx changed since review (3846138e83df -> 1b213d50900b)",
+    "semantic review for \"bank_design\" is STALE: src/q1/BankDesignGame.tsx changed since review (624c81a82929 -> 6b1eef9b03e7)"
   ]
 }

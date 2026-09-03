@@ -146,65 +146,59 @@
    "why_replay": "temperament and events re-randomize; perfect = fitting plan with calm day or justified early stop",
    "trace": "welfare-first ops -> plan-then-adapt principle -> plan_then_adapt + event_response -> plan sliders + per-slot actions -> cub drifts to hide box, sign lamps light, crowd icons -> lever-matching mastery"
   },
-  "yard_plan": [
-   {
-    "reference_games": [
-     "Mini Metro",
-     "Wilmot's Warehouse"
-    ],
-    "borrowed_design_principles": [
-     "place now for retrieval later (spatial lookahead)",
-     "the cost of a bad layout arrives visibly at rush time"
-    ],
-    "transformed_for_job": [
-     "warehouse tiles -> container stacks with pickup days",
-     "rush hour -> the dawn discharge simulation replaying your choices"
-    ],
-    "why_it_is_fun": "a compact stacking puzzle where tomorrow morning replays your decisions box by box",
-    "what_requires_skill": "reading the whole manifest and keeping columns sorted by pickup",
-    "why_replay": "ship contents and pickup days re-randomize; perfect = zero rehandles",
-    "trace": "retrieval-order duty -> spatial-lookahead principle -> spatial_placement -> place 8 boxes -> dawn sim moves boxes aside with ❗ per rehandle -> zero-rehandle mastery"
-   }
-  ],
-  "crane_lift": [
-   {
-    "reference_games": [
-     "Papers, Please",
-     "FTL: Faster Than Light"
-    ],
-    "borrowed_design_principles": [
-     "per-case judgment against posted regulations",
-     "withdrawing/stopping as a first-class winning move"
-    ],
-    "transformed_for_job": [
-     "passport rules -> port wind/lock/signal regulations",
-     "ship crisis -> gusts, unseated locks, mismatched ground cues"
-    ],
-    "why_it_is_fun": "a tense gauge-reading loop where restraint is the skill",
-    "what_requires_skill": "mapping instrument state to the regulation ladder; not over-stopping",
-    "why_replay": "wind/lock/cue patterns re-randomize; perfect = no strikes, no needless holds",
-    "trace": "safety-over-speed duty -> justified-restraint principle -> pressure_matched_response -> 4-way call per lift -> gauges move, boxes accumulate, red lamps on strikes -> clean-night mastery"
-   }
-  ],
-  "tally_check": [
-   {
-    "reference_games": [
-     "Papers, Please"
-    ],
-    "borrowed_design_principles": [
-     "document-vs-reality cross-checking under a mistake budget",
-     "neutral recording as the professional core"
-    ],
-    "transformed_for_job": [
-     "passport fields -> container number(check digit)/seal/condition",
-     "approve-deny -> accept/query-number/query-seal/record-damage + fair wording"
-    ],
-    "why_it_is_fun": "spot-the-difference with real stakes: your record is the proof",
-    "what_requires_skill": "three-point matching; restraint from asserting WHEN damage happened",
-    "why_replay": "numbers/seals/damage re-randomize; perfect = five clean calls",
-    "trace": "handover-proof duty -> cross-check principle -> measurement_inspection -> per-box 4-way call + wording -> gate strip fills, wrong calls carry ❗ -> no-miss mastery"
-   }
-  ],
+  "yard_plan": {
+   "reference_games": [
+    "Mini Metro",
+    "Wilmot's Warehouse"
+   ],
+   "borrowed_design_principles": [
+    "place now for retrieval later (spatial lookahead)",
+    "the cost of a bad layout arrives visibly at rush time"
+   ],
+   "transformed_for_job": [
+    "warehouse tiles -> container stacks with pickup days",
+    "rush hour -> the dawn discharge simulation replaying your choices"
+   ],
+   "why_it_is_fun": "a compact stacking puzzle where tomorrow morning replays your decisions box by box",
+   "what_requires_skill": "reading the whole manifest and keeping columns sorted by pickup",
+   "why_replay": "ship contents and pickup days re-randomize; perfect = zero rehandles",
+   "trace": "retrieval-order duty -> spatial-lookahead principle -> spatial_placement -> place 8 boxes -> dawn sim moves boxes aside with ❗ per rehandle -> zero-rehandle mastery"
+  },
+  "crane_lift": {
+   "reference_games": [
+    "Papers, Please",
+    "FTL: Faster Than Light"
+   ],
+   "borrowed_design_principles": [
+    "per-case judgment against posted regulations",
+    "withdrawing/stopping as a first-class winning move"
+   ],
+   "transformed_for_job": [
+    "passport rules -> port wind/lock/signal regulations",
+    "ship crisis -> gusts, unseated locks, mismatched ground cues"
+   ],
+   "why_it_is_fun": "a tense gauge-reading loop where restraint is the skill",
+   "what_requires_skill": "mapping instrument state to the regulation ladder; not over-stopping",
+   "why_replay": "wind/lock/cue patterns re-randomize; perfect = no strikes, no needless holds",
+   "trace": "safety-over-speed duty -> justified-restraint principle -> pressure_matched_response -> 4-way call per lift -> gauges move, boxes accumulate, red lamps on strikes -> clean-night mastery"
+  },
+  "tally_check": {
+   "reference_games": [
+    "Papers, Please"
+   ],
+   "borrowed_design_principles": [
+    "document-vs-reality cross-checking under a mistake budget",
+    "neutral recording as the professional core"
+   ],
+   "transformed_for_job": [
+    "passport fields -> container number(check digit)/seal/condition",
+    "approve-deny -> accept/query-number/query-seal/record-damage + fair wording"
+   ],
+   "why_it_is_fun": "spot-the-difference with real stakes: your record is the proof",
+   "what_requires_skill": "three-point matching; restraint from asserting WHEN damage happened",
+   "why_replay": "numbers/seals/damage re-randomize; perfect = five clean calls",
+   "trace": "handover-proof duty -> cross-check principle -> measurement_inspection -> per-box 4-way call + wording -> gate strip fills, wrong calls carry ❗ -> no-miss mastery"
+  },
   "truck_dispatch": {
    "reference_games": [
     "Mini Metro",
@@ -347,7 +341,8 @@
    "why_it_is_fun": "a real detective loop where the twist is HONESTY: 推定 is sometimes the perfect answer",
    "what_requires_skill": "spending 4 lookups where they discriminate candidates; resisting the lookalike decoy; choosing the right certainty",
    "why_replay": "answer/decoy/match-pattern re-randomize; expert = right place AND right certainty first try",
-   "world_feedback": "照合ボードに一致/不一致ピンが立ち、誤答は付せん付きで紙が戻る"
+   "world_feedback": "照合ボードに一致/不一致ピンが立ち、誤答は付せん付きで紙が戻る",
+   "trace": "reference-answer duty -> independent-corroboration principle -> evidence_cross_reference -> spend lookups, conclude place+certainty -> match pins, returned papers -> first-try right-certainty mastery"
   },
   "paper_rescue": {
    "reference_games": [
@@ -365,7 +360,8 @@
    "why_it_is_fun": "the urge to FIX collides with the pro rule that fixing destroys; the senior's hand stopping yours is a world reaction",
    "what_requires_skill": "reading each item's condition; restraint on fine/old-taped items; instant quarantine on mold",
    "why_replay": "item mix shuffles; expert = zero mistakes with restraint choices",
-   "world_feedback": "保存箱が1点ずつ埋まり、カビ品は🔒隔離表示。誤処置は机に残る"
+   "world_feedback": "保存箱が1点ずつ埋まり、カビ品は🔒隔離表示。誤処置は机に残る",
+   "trace": "conservation duty -> restraint principle -> restraint_classification -> pick treatment per condition -> boxes fill, stickies pin mistakes -> zero-mistake restraint mastery"
   },
   "digi_archive": {
    "reference_games": [
@@ -383,7 +379,8 @@
    "why_it_is_fun": "the archive shelf fills with YOUR honest labels; the 100-years-later framing gives meaning",
    "what_requires_skill": "3-part decision per item (spec×label×publish) with different sources of truth",
    "why_replay": "purpose/evidence/people randomize; expert = zero bounces",
-   "world_feedback": "登録票が差し戻される/棚にサムネイルとラベルが並ぶ"
+   "world_feedback": "登録票が差し戻される/棚にサムネイルとラベルが並ぶ",
+   "trace": "digitization duty -> honest-metadata principle -> spec_matching -> spec x label x publish per item -> shelf fills with honest labels, bounced tickets -> zero-bounce mastery"
   },
   "bug_repro": {
    "reference_games": [
@@ -401,7 +398,8 @@
    "why_it_is_fun": "detective satisfaction of turning たまに into 必ず; the ✅/💥 log is the deduction board",
    "what_requires_skill": "experiment design within 6 runs; resisting filing early or fat reports",
    "why_replay": "the crashing pair re-randomizes; expert = file in 6 runs, zero bounces",
-   "world_feedback": "run log stamps ✅/💥; bounced tickets return with a specific sticky note"
+   "world_feedback": "run log stamps ✅/💥; bounced tickets return with a specific sticky note",
+   "trace": "QA-repro duty -> one-variable-at-a-time principle -> controlled_experiment -> compose runs, file minimal pair -> bench log stamps, ticket returns -> 6-run filing mastery"
   },
   "difficulty_tune": {
    "reference_games": [
@@ -419,7 +417,8 @@
    "why_it_is_fun": "being the one who explains WHY it felt too hard; the clear-rate bar moves when you're right",
    "what_requires_skill": "matching evidence to cause; ignoring the HP-nerf reflex",
    "why_replay": "2 causes drawn from 4 re-randomize; expert = zero failed retests",
-   "world_feedback": "clear-rate bars animate on success; a wrong fix leaves them frozen"
+   "world_feedback": "clear-rate bars animate on success; a wrong fix leaves them frozen",
+   "trace": "tuning duty -> evidence-before-lever principle -> evidence_to_cause_matching -> read log, pick matched fix -> clear-rate bars move or freeze -> zero-retest mastery"
   },
   "ui_clarity": {
    "reference_games": [
@@ -437,7 +436,8 @@
    "why_it_is_fun": "the mock screen improves (or degrades!) live as you toggle fixes",
    "what_requires_skill": "1:1 mapping reports->fixes; refusing attractive decoys",
    "why_replay": "3 of 5 reports drawn per case; expert = first-try pass",
-   "world_feedback": "mock updates live; testers point at the unanswered report"
+   "world_feedback": "mock updates live; testers point at the unanswered report",
+   "trace": "UI-clarity duty -> less-is-more principle -> constrained_selection -> pick <=3 report-matched fixes -> mock improves/degrades live -> first-pass mastery"
   }
  }
 }

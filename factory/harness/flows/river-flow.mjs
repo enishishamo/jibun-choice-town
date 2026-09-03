@@ -16,6 +16,8 @@ const b = await puppeteer.launch({ executablePath: CHROME, headless: "new" });
 const p = await b.newPage();
 p.on("console", (m) => { if (m.type() === "error") consoleErrors.push(m.text().slice(0, 160)); });
 p.on("pageerror", (e) => consoleErrors.push(String(e).slice(0, 160)));
+const navLog = [];
+p.on("framenavigated", (f) => { if (f === p.mainFrame()) navLog.push(Date.now()); });
 await p.setViewport(MOBILE ? { width: 375, height: 812 } : { width: 1280, height: 900 });
 await p.goto(BASE, { waitUntil: "networkidle2" });
 await p.evaluate(() => localStorage.clear());
@@ -28,6 +30,13 @@ const click = (t) => p.evaluate((x) => {
   return false;
 }, t);
 const body = () => p.evaluate(() => document.body.innerText);
+const waitFor = async (needle, tries = 12) => {
+  for (let i = 0; i < tries; i++) {
+    if ((await body()).includes(needle)) return true;
+    await sleep(400);
+  }
+  return false;
+};
 const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mobile" : "desktop"}-river-${n}.png`, fullPage: true });
 const advance = async (needle) => {
   for (let i = 0; i < 14; i++) {
@@ -56,7 +65,7 @@ await shot("area");
 
 // ---- ① water_trace ----------------------------------------------------------
 await click("① 魚がもどった理由"); await sleep(500);
-await click("やってみる"); await sleep(700);
+await click("やってみる"); await waitFor("採水びん");
 await shot("game-trace");
 {
   const readSpot = async (id) => {
@@ -89,7 +98,7 @@ await advance("② 見えない生きもの");
 
 // ---- ② plant_ops ------------------------------------------------------------
 await click("② 見えない生きもの"); await sleep(500);
-await click("やってみる"); await sleep(700);
+await click("やってみる"); await waitFor("運転のめやす");
 await shot("game-ops");
 for (let guard = 0; guard < 10; guard++) {
   const t = await body();
@@ -127,7 +136,8 @@ await advance("③ 魚がすめる川岸");
 
 // ---- ③ bank_design ----------------------------------------------------------
 await click("③ 魚がすめる川岸"); await sleep(500);
-await click("やってみる"); await sleep(700);
+if (!(await click("やってみる"))) { await sleep(700); await click("やってみる"); }
+await waitFor("工法");
 await shot("game-bank");
 {
   const secs = await p.evaluate(() => {
@@ -163,6 +173,7 @@ await shot("game-bank");
 }
 
 // wrapUp
+const clickLog = [];
 for (let i = 0; i < 14; i++) {
   const t = await body();
   if (t.includes("たしかめられる人がいる")) break;
@@ -171,16 +182,21 @@ for (let i = 0; i < 14; i++) {
     await click("川に魚が！"); await sleep(800);
     continue;
   }
-  await p.evaluate(() => {
+  const clicked = await p.evaluate(() => {
     const btns = [...document.querySelectorAll("button")].filter((x) => !x.disabled);
     const b2 = btns.reverse().find((x) => /えらんだ|もどる|すすむ|つぎへ|ふり返/.test(x.textContent)) || btns[0];
-    if (b2) b2.click();
+    if (b2) { const lbl = b2.textContent.slice(0, 24); b2.click(); return lbl; }
+    return null;
   });
+  clickLog.push(clicked);
   await sleep(600);
 }
 {
   const t = await body();
-  if (!t.includes("たしかめられる人がいる")) failures.push("wrapUp not reached");
+  if (!t.includes("たしかめられる人がいる")) {
+    const store = await p.evaluate(() => localStorage.getItem("jibun-choice-progress-v1"));
+    failures.push("wrapUp not reached: reloads=" + navLog.length + " clicks=" + JSON.stringify(clickLog) + " store=" + String(store).slice(0, 300) + " body=" + t.slice(0, 120).replace(/\n/g, "/"));
+  }
   else await shot("wrapup");
 }
 

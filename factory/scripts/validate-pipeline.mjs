@@ -18,6 +18,9 @@ const req = (cond, msg) => { if (!cond) errs.push(msg); };
 const pipePath = P(`factory/projects/${world}/pipeline.json`);
 req(existsSync(pipePath), "pipeline.json missing");
 const pipe = existsSync(pipePath) ? JSON.parse(readFileSync(pipePath, "utf8")) : { phases: {} };
+// worlds may declare a short artifact alias (content module / QA suite / review
+// file prefix) in pipeline.json: { "artifacts": { "alias": "port" } }
+const alias = pipe.artifacts?.alias || world;
 
 // every declared phase must be done (self-attested statuses are then cross-checked below)
 for (const [ph, v] of Object.entries(pipe.phases || {})) {
@@ -27,18 +30,20 @@ for (const [ph, v] of Object.entries(pipe.phases || {})) {
 // artifacts per claimed-done phase
 req(existsSync(P(`factory/projects/${world}/design.md`)), "design.md missing");
 req(existsSync(P(`factory/projects/${world}/research.result.json`)) || existsSync(P(`factory/projects/${world}/research.md`)), "research artifact missing");
-req(existsSync(P(`factory/harness/gameplay-qa-${world}.mjs`)), `gameplay-qa-${world}.mjs missing`);
-if (existsSync(P(`factory/harness/gameplay-qa-${world}.mjs`))) {
+req(existsSync(P(`factory/harness/gameplay-qa-${alias}.mjs`)), `gameplay-qa-${alias}.mjs missing`);
+if (existsSync(P(`factory/harness/gameplay-qa-${alias}.mjs`))) {
   // completion is not self-attested: the QA suite is EXECUTED here
-  const qa = spawnSync("node", [P(`factory/harness/gameplay-qa-${world}.mjs`)], { encoding: "utf8", timeout: 120000 });
+  const qa = spawnSync("node", [P(`factory/harness/gameplay-qa-${alias}.mjs`)], { encoding: "utf8", timeout: 120000 });
   req(qa.status === 0, `gameplay QA suite FAILED when executed (exit ${qa.status})`);
 }
 
 // binding gate: find the recorded impl review evidence and RE-READ the verdict
-const implCandidates = [
-  P(`factory/state/${world}-impl-review-2.json`),
-  P(`factory/state/${world}-impl-review-1.json`),
-];
+// any iteration number counts — the LATEST PASS wins (reviews iterate)
+const stateDir = P("factory/state");
+const implCandidates = readdirSync(stateDir)
+  .filter((f) => f.startsWith(`${alias}-impl-review-`) && f.endsWith(".json"))
+  .sort((a, b) => Number(b.match(/-(\d+)\.json$/)?.[1] || 0) - Number(a.match(/-(\d+)\.json$/)?.[1] || 0))
+  .map((f) => join(stateDir, f));
 let bindingOk = false, bindingWhere = null;
 for (const f of implCandidates) {
   if (!existsSync(f)) continue;
@@ -64,7 +69,7 @@ if (!bindingOk) {
         const hay = `${d.task || ""} ${d.artifact || ""} ${JSON.stringify(d.files || "")}`;
         // attribution is path-anchored, not free-substring: the run must name this
         // world's logic module or content module
-        return hay.includes(`src/q1/${world}Logic`) || hay.includes(`content/${world}`) || hay.includes(`${world}Logic.ts`);
+        return hay.includes(`src/q1/${alias}Logic`) || hay.includes(`content/${alias}`) || hay.includes(`${alias}Logic.ts`);
       } catch { return false; }
     }).map((f) => f.replace(/\.json$/, ""));
     outer: for (const runId of worldRuns) {
@@ -93,7 +98,7 @@ req(Boolean(pipe.phases?.presentation_qa), "presentation_qa phase missing (Asset
     for (const f of readdirSync(audits).filter((x) => x.endsWith(".json"))) {
       try {
         const d = JSON.parse(readFileSync(join(audits, f), "utf8"));
-        if (f.startsWith(world) || f.startsWith("town-map")) {
+        if (f.startsWith(alias) || f.startsWith(world) || f.startsWith("town-map")) {
           if (d.verdict === "PASS") anyPass = true; else anyFail = true;
         }
       } catch { /* skip */ }
@@ -107,9 +112,9 @@ req(Boolean(pipe.phases?.presentation_qa), "presentation_qa phase missing (Asset
 // every gameType this world's content module registers needs a non-empty entry
 try {
   const refs = JSON.parse(readFileSync(P("factory/taxonomy/gameplay-references.json"), "utf8"));
-  const content = readFileSync(P(`src/data/content/${world}.ts`), "utf8");
+  const content = readFileSync(P(`src/data/content/${alias}.ts`), "utf8");
   const gts = [...new Set([...content.matchAll(/gameType:\s*"([a-z_]+)"/g)].map((m) => m[1]))];
-  req(gts.length > 0, `no gameTypes found in src/data/content/${world}.ts`);
+  req(gts.length > 0, `no gameTypes found in src/data/content/${alias}.ts`);
   for (const gt of gts) {
     const e = refs.games?.[gt];
     req(Boolean(e && Array.isArray(e.reference_games) && e.reference_games.length > 0 && e.trace), `gameplay reference missing/empty for ${gt}`);

@@ -226,3 +226,11 @@
 {"ts":"2026-09-03T17:18:39.585Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-library-wrapup.png"],"exit":0}
 {"ts":"2026-09-03T17:19:05.969Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-studio-area.png","factory/state/art/shots/desktop-studio-area.png"],"exit":0}
 {"ts":"2026-09-03T17:19:30.222Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-studio-wrapup.png"],"exit":0}
+{"ts":"2026-09-03T17:30:02.026Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-port-area.png","factory/state/art/shots/desktop-port-area.png"],"exit":0}
+{"ts":"2026-09-03T17:30:19.730Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-forest-area.png","factory/state/art/shots/desktop-forest-area.png"],"exit":0}
+{"ts":"2026-09-03T17:30:46.152Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-river-area.png","factory/state/art/shots/desktop-river-area.png"],"exit":0}
+{"ts":"2026-09-03T17:31:04.337Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-library-area.png","factory/state/art/shots/desktop-library-area.png"],"exit":0}
+{"ts":"2026-09-03T17:31:24.772Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-studio-area.png","factory/state/art/shots/desktop-studio-area.png"],"exit":0}
+{"ts":"2026-09-03T17:31:46.040Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-library-wrapup.png"],"exit":0}
+{"ts":"2026-09-03T17:32:01.827Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/mobile-studio-wrapup.png"],"exit":0}
+{"ts": "2026-09-04T03:02:30", "mode": "fable-task", "model": "fable-5", "task": "§39 final report synthesis (World Expansion v1)", "why_fable": "final cross-stage synthesis over 5 world gates, map gates, critics, art governance and cost accounting"}

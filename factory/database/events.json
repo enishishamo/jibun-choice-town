@@ -28,7 +28,7 @@
     "sourceFiles": [
       "src/data/content/extremeHeat.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "spatial_placement",
       "resource_allocation",
@@ -59,11 +59,41 @@
     "sourceFiles": [
       "src/data/content/forest.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "spatial_placement",
       "justified_refusal",
       "resource_budget"
+    ]
+  },
+  {
+    "id": "library-detective",
+    "title": "100年前の写真のなぞ\n「ここはどこですか？」",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "library-clues",
+      "library-rescue",
+      "library-archive"
+    ],
+    "jobIds": [
+      "library-reference",
+      "library-conservator",
+      "library-archivist"
+    ],
+    "mechanics": [
+      "photo_clues",
+      "paper_rescue",
+      "digi_archive"
+    ],
+    "sourceFiles": [
+      "src/data/content/library.ts"
+    ],
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
+    "mechanicCategories": [
+      "evidence_cross_reference",
+      "restraint_classification",
+      "spec_matching"
     ]
   },
   {
@@ -106,7 +136,7 @@
     "sourceFiles": [
       "src/data/content/medical.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "search_discovery",
       "measurement_inspection",
@@ -143,7 +173,7 @@
     "sourceFiles": [
       "src/data/content/port.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "spatial_placement",
       "pressure_matched_response",
@@ -177,7 +207,7 @@
     "sourceFiles": [
       "src/data/content/priceHike.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "resource_allocation",
       "parameter_adjust",
@@ -208,7 +238,7 @@
     "sourceFiles": [
       "src/data/content/river.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "evidence_elimination",
       "parameter_adjust",
@@ -244,7 +274,7 @@
     "sourceFiles": [
       "src/data/content/schoolLunch.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "measurement_inspection",
       "drag_drop_assign",
@@ -281,7 +311,7 @@
     "sourceFiles": [
       "src/data/content/schoolTrip.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "composition_design",
       "drag_drop_assign",
@@ -317,13 +347,43 @@
     "sourceFiles": [
       "src/data/content/shopOpening.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "matching",
       "conversation_observation",
       "measurement_inspection",
       "spatial_placement",
       "search_discovery"
+    ]
+  },
+  {
+    "id": "game-studio",
+    "title": "「たまに止まる」の犯人さがし\n発売まで、あと3日",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "studio-repro",
+      "studio-tune",
+      "studio-ui"
+    ],
+    "jobIds": [
+      "studio-qa",
+      "studio-planner",
+      "studio-ui"
+    ],
+    "mechanics": [
+      "bug_repro",
+      "difficulty_tune",
+      "ui_clarity"
+    ],
+    "sourceFiles": [
+      "src/data/content/studio.ts"
+    ],
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
+    "mechanicCategories": [
+      "controlled_experiment",
+      "evidence_to_cause_matching",
+      "constrained_selection"
     ]
   },
   {
@@ -358,7 +418,7 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "composition_design",
       "resource_allocation",
@@ -394,7 +454,7 @@
     "sourceFiles": [
       "src/data/content/waste.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "measurement_inspection",
       "simulation_run",
@@ -428,7 +488,7 @@
     "sourceFiles": [
       "src/data/content/zoo.ts"
     ],
-    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "lastScannedAt": "2026-09-03T17:37:29.109Z",
     "mechanicCategories": [
       "trend_reading",
       "evidence_elimination",
