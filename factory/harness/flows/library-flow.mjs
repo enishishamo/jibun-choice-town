@@ -78,7 +78,7 @@ const advance = async (needle) => {
   for (let i = 0; i < 14; i++) {
     const t = await body();
     if (t.includes(needle) && !t.includes("きみが今やっていたのは")) return true;
-    if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
+    if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
     await p.evaluate(() => {
       const btns = [...document.querySelectorAll("button")].filter((x) => !x.disabled);
       const b2 = btns.reverse().find((x) => /えらんだ|もどる|すすむ|つぎへ/.test(x.textContent)) || btns[0];
@@ -134,7 +134,7 @@ await shot("game-archive");
 for (let i = 0; i < 14; i++) {
   const t = await body();
   if (t.includes("まちの宝を1つふやした")) break;
-  if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
+  if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
   await p.evaluate(() => {
     const btns = [...document.querySelectorAll("button")].filter((x) => !x.disabled);
     const b2 = btns.reverse().find((x) => /えらんだ|もどる|すすむ|つぎへ|ふり返/.test(x.textContent)) || btns[0];

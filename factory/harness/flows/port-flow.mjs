@@ -97,7 +97,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("② 巨大クレーン") && !t.includes("きみが今やっていたのは")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
@@ -139,7 +139,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("③ 書類と現物")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
@@ -183,7 +183,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("④ 朝いちの4本")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は うごかせる") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;

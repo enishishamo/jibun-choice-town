@@ -189,3 +189,4 @@
 {"ts":"2026-09-03T16:17:38.471Z","tool":"art-provider","mode":"imagegen","out":"public/assets/studio/ba-before.png","exit":0}
 {"ts":"2026-09-03T16:18:03.947Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/studio/ba-before.png"],"exit":0}
 {"ts": "2026-09-04T01:20:31", "mode": "fable-task", "model": "fable-5", "task": "Home R2 FAIL + Child Critic HIGH repair (center capacity re-homing, unknown-district fallback, district-bounded relaxation, marker direct-open UX, fog teaser progression, age-fit copy)", "why_fable": "cross-cutting map architecture + UX flow decisions (camera/enter semantics), content re-homing judgment across worlds"}
+{"ts":"2026-09-03T16:31:32.533Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":206.583}

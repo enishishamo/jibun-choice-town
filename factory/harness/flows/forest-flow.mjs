@@ -34,7 +34,7 @@ const advance = async (needle, extra = "") => {
   for (let i = 0; i < 14; i++) {
     const t = await body();
     if (t.includes(needle) && !t.includes("きみが今やっていたのは")) return true;
-    if (t.includes("地図は うごかせる") || t.includes("地図はこれからも")) {
+    if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("地図はこれからも")) {
       // back at the region map: district chip, then the world marker (2 taps)
       await click("森と川"); await sleep(800);
       await click("森のなぞ"); await sleep(800);
