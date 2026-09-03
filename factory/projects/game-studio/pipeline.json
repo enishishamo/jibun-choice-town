@@ -1,0 +1,71 @@
+{
+ "world": "game-studio",
+ "pipeline_version": "world-expansion v1 (autonomous)",
+ "phases": {
+  "world_selection": {
+   "status": "done",
+   "evidence": "factory/state/expansion/candidate-eval.json (Codex autonomous selection of 5 from 30 candidates)"
+  },
+  "event_research": {
+   "status": "done"
+  },
+  "career_fact_research": {
+   "status": "done",
+   "evidence": "factory/projects/game-studio/research.result.json (Codex bg research)"
+  },
+  "difficulty_extraction": {
+   "status": "done",
+   "evidence": "design.md C/D per Q1"
+  },
+  "mechanics_matching": {
+   "status": "done",
+   "evidence": "factory/taxonomy/gameplay-references.json entries"
+  },
+  "game_design": {
+   "status": "done",
+   "evidence": "factory/projects/game-studio/design.md"
+  },
+  "art_need_detection": {
+   "status": "done",
+   "evidence": "factory/projects/game-studio/art-requests/*.json"
+  },
+  "art_generation_qa": {
+   "status": "in_progress"
+  },
+  "implementation": {
+   "status": "done"
+  },
+  "build_static_qa": {
+   "status": "done",
+   "evidence": "tsc -p tsconfig.app.json clean"
+  },
+  "gameplay_qa": {
+   "status": "done",
+   "evidence": "gameplay-qa-studio.mjs 18/18"
+  },
+  "browser_qa": {
+   "status": "done",
+   "evidence": "flow bot mobile 375px + desktop 1280px, 0 console errors"
+  },
+  "language_qa": {
+   "status": "done",
+   "evidence": "combined review language axes (binding: AGE_FIT/BUTTON/DENSITY >=80)"
+  },
+  "adversarial_review": {
+   "status": "done",
+   "evidence": "R1 FAIL76 -> R2 PASS 84 (CA91/GQ84)"
+  },
+  "db_manifest_update": {
+   "status": "done",
+   "evidence": "gameplay-references + component-reviews registered"
+  },
+  "presentation_qa": {
+   "status": "pending",
+   "evidence": "in-context audit queued after art lands"
+  },
+  "commit": {
+   "status": "done"
+  }
+ },
+ "notes": "サウンド職はQ2紹介のみ（音なし環境の誠実化）"
+}

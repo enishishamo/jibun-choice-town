@@ -15,3 +15,10 @@ Camera / composition: Wide horizontal scene, slight high angle, the river flowin
 Must include: reed bank with a tiny surveyor; round aeration tanks with bubbles; clean outfall to the river; low weir with a small fish ladder; stone bank section; riffles in the water; tiny clay fish shadows
 Must NOT include: readable text; logos; children in the water; murky brown water; industrial gloom
 Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 水面の反射と透明感がreference setよりやや精密で、粘土ミニチュア感よりリアル寄りに見える部分がある
+- Fix vs reference set: 人物が画面全体に対して小さいため、referenceの人物場面ほど顔・衣服のクレイ質感を明確に確認しにくい
+- 右側の設計事務所ホットスポットは人物・机・建物が近接しており、375px表示では個々の役割がやや判別しにくくなる可能性がある
+- 中央の下水処理施設は明瞭だが、調査ポイントから施設へ続く視線が川や堰の強いディテールに少し分散する
+- file too large: 2.8MB (>2MB)

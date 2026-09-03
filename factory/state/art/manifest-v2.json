@@ -3257,7 +3257,7 @@
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A gentle town river seen as one continuous miniature clay diorama, left to right: a riverside survey point where a tiny researcher in waders holds a water bottle by a reed bank; a small tidy sewage treatment plant with round aeration tanks and bubbles, connected to the river by a clean outfall; a bright riverside office with a drawing board and, beside it, a stretch of bank being reworked with stones, one small fish ladder at a low weir. Clear day, blue-green water with visible riffles, dragonflies. Cozy handcrafted clay look, tiny figures, hopeful mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）\nCamera / composition: Wide horizontal scene, slight high angle, the river flowing left to right through the whole image. Three work areas at roughly 18%/52%/80% width. At least 8% empty margin at both edges. Sky top 20%.\nMust include: reed bank with a tiny surveyor; round aeration tanks with bubbles; clean outfall to the river; low weir with a small fish ladder; stone bank section; riffles in the water; tiny clay fish shadows\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照群より青〜緑の彩度と水面の透明感がやや強く、少し鮮明なレンダーに見える\n- Fix vs reference set: 遠景の樹木や川岸は参照の背景より細部密度がわずかに高い\n- 中央の処理施設と右側の石造水路が視覚的に近く、モバイル表示では②と③の役割が一瞬重なって見える可能性がある\n- 右端の人物は安全域内だが、狭い画面でcover表示すると設計事務所と人物が同時に欠けやすい\n- file too large: 2.5MB (>2MB)",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A gentle town river seen as one continuous miniature clay diorama, left to right: a riverside survey point where a tiny researcher in waders holds a water bottle by a reed bank; a small tidy sewage treatment plant with round aeration tanks and bubbles, connected to the river by a clean outfall; a bright riverside office with a drawing board and, beside it, a stretch of bank being reworked with stones, one small fish ladder at a low weir. Clear day, blue-green water with visible riffles, dragonflies. Cozy handcrafted clay look, tiny figures, hopeful mood.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）\nCamera / composition: Wide horizontal scene, slight high angle, the river flowing left to right through the whole image. Three work areas at roughly 18%/52%/80% width. At least 8% empty margin at both edges. Sky top 20%.\nMust include: reed bank with a tiny surveyor; round aeration tanks with bubbles; clean outfall to the river; low weir with a small fish ladder; stone bank section; riffles in the water; tiny clay fish shadows\nMust NOT include: readable text; logos; children in the water; murky brown water; industrial gloom\nAspect ratio: 3:2 (compose for this frame).",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -3266,29 +3266,29 @@
    ],
    "dimensions": "1536x1024",
    "aspect_ratio": 1.5,
-   "created_at": "2026-09-03T10:32:00.415Z",
-   "iteration": 3,
-   "qa_score": 86,
+   "created_at": "2026-09-03T11:28:42.633Z",
+   "iteration": 1,
+   "qa_score": 90,
    "qa_scores": {
     "STYLE_CONSISTENCY": 94,
-    "COMPOSITION": 93,
-    "CROP_SAFETY": 86,
-    "READABILITY": 91,
+    "COMPOSITION": 96,
+    "CROP_SAFETY": 94,
+    "READABILITY": 92,
     "OBJECT_COMPLETENESS": 96,
-    "CHARACTER_ANATOMY": 92,
-    "SERIES_CONSISTENCY": 94,
+    "CHARACTER_ANATOMY": 93,
+    "SERIES_CONSISTENCY": 95,
     "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 94,
-    "MOBILE_USABILITY": 86,
-    "SERIES_STYLE_MATCH": 93,
-    "CHARACTER_SERIES_MATCH": 91
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 90,
+    "SERIES_STYLE_MATCH": 94,
+    "CHARACTER_SERIES_MATCH": 92
    },
    "qa_issues": [
-    "右端の設計事務所ホットスポットが画面幅約80%地点にあり、375px幅で中央クロップされる実装では建物や人物が欠ける可能性がある — responsive表示では全景維持が必要",
-    "中央の下水処理設備が大きく視線を集める一方、左の調査ポイントは人物が小さく植物に囲まれている — ホットスポットUIで明確に補助する必要がある",
-    "file too large: 2.5MB (>2MB)"
+    "右側の設計事務所ホットスポットは人物・机・建物が近接しており、375px表示では個々の役割がやや判別しにくくなる可能性がある",
+    "中央の下水処理施設は明瞭だが、調査ポイントから施設へ続く視線が川や堰の強いディテールに少し分散する",
+    "file too large: 2.8MB (>2MB)"
    ],
-   "file_hash": "babe637890bb",
+   "file_hash": "81c26c3b5b29",
    "used_by": [
     "src/data/content/river.ts"
    ],

@@ -141,3 +141,7 @@
 {"ts":"2026-09-03T11:26:04.897Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/game-studio/impl-review-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":104.632}
 {"ts":"2026-09-03T11:26:07.223Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":114.563}
 {"ts":"2026-09-03T11:28:19.741Z","tool":"art-provider","mode":"imagegen","out":"public/assets/river/scene-river.png","exit":0}
+{"ts":"2026-09-03T11:28:42.605Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/river/scene-river.png"],"exit":0}
+{"ts":"2026-09-03T11:30:08.941Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":123.069}
+{"ts":"2026-09-03T11:30:27.514Z","tool":"codex-review","label":"review","prompt_file":"factory/state/home-quality-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":2.815}
+{"ts":"2026-09-03T11:31:21.697Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/library-detective/impl-review-prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":2.978}

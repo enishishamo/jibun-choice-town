@@ -3,20 +3,114 @@
  "$schema": "http://json-schema.org/draft-07/schema#",
  "title": "ChildObservation",
  "type": "object",
- "required": ["world", "game", "age", "completed", "time_to_understand", "retries", "confusion_points", "spontaneous_replay", "asked_for_help", "comments", "observer_notes"],
+ "required": [
+  "world",
+  "game",
+  "age",
+  "completed",
+  "time_to_understand",
+  "retries",
+  "confusion_points",
+  "spontaneous_replay",
+  "asked_for_help",
+  "comments",
+  "observer_notes"
+ ],
  "properties": {
-  "observed_at": { "type": "string", "format": "date" },
-  "world": { "type": "string", "description": "event id, e.g. shop-opening" },
-  "game": { "type": "string", "description": "gameType, e.g. xray_shoot" },
-  "age": { "type": "integer", "minimum": 5, "maximum": 15 },
-  "completed": { "type": "boolean" },
-  "time_to_understand": { "type": "string", "description": "e.g. '30s', '3min', 'never without help'" },
-  "retries": { "type": "integer", "minimum": 0 },
-  "confusion_points": { "type": "array", "items": { "type": "string" }, "description": "where the child got stuck / misread the UI / misunderstood the goal" },
-  "spontaneous_replay": { "type": "boolean", "description": "did the child replay WITHOUT being asked" },
-  "asked_for_help": { "type": "integer", "minimum": 0, "description": "times the child asked an adult" },
-  "comments": { "type": "array", "items": { "type": "string" }, "description": "child's own words (verbatim where possible)" },
-  "observer_notes": { "type": "string" },
-  "engagement_signals": { "type": "array", "items": { "type": "string" }, "description": "optional: leaning in, narrating, showing others, ignoring distractions..." }
+  "observed_at": {
+   "type": "string",
+   "format": "date"
+  },
+  "world": {
+   "type": "string",
+   "description": "event id, e.g. shop-opening"
+  },
+  "game": {
+   "type": "string",
+   "description": "gameType, e.g. xray_shoot"
+  },
+  "age": {
+   "type": "integer",
+   "minimum": 5,
+   "maximum": 15
+  },
+  "completed": {
+   "type": "boolean"
+  },
+  "time_to_understand": {
+   "type": "string",
+   "description": "e.g. '30s', '3min', 'never without help'"
+  },
+  "retries": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "confusion_points": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "where the child got stuck / misread the UI / misunderstood the goal"
+  },
+  "spontaneous_replay": {
+   "type": "boolean",
+   "description": "did the child replay WITHOUT being asked"
+  },
+  "asked_for_help": {
+   "type": "integer",
+   "minimum": 0,
+   "description": "times the child asked an adult"
+  },
+  "comments": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "child's own words (verbatim where possible)"
+  },
+  "observer_notes": {
+   "type": "string"
+  },
+  "engagement_signals": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "optional: leaning in, narrating, showing others, ignoring distractions..."
+  },
+  "map_observation": {
+   "type": "object",
+   "description": "§35 World Map Lab: home/region-map observation for the same session. AI_VERIFIED_MAP stays REAL_CHILD_MAP_VALIDATION_PENDING until these accumulate.",
+   "properties": {
+    "first_tap": {
+     "type": "string",
+     "description": "地図で最初に押した場所（world名/地区チップ/霧の地区/その他）"
+    },
+    "panned_map": {
+     "type": "boolean",
+     "description": "地図をドラッグ/スワイプで動かしたか"
+    },
+    "zoom_understood": {
+     "type": "boolean",
+     "description": "地区タップ→ズームの動きを迷わず使えたか"
+    },
+    "explored_beyond_signals": {
+     "type": "boolean",
+     "description": "光っている(シグナル)以外のworldも自分から開いたか"
+    },
+    "fog_reaction": {
+     "type": "string",
+     "description": "霧の地区(？)への反応（押した/聞いた/無視/こわがった）"
+    },
+    "returned_home_unaided": {
+     "type": "boolean",
+     "description": "world体験後、助けなしで地図に戻れたか"
+    },
+    "map_words": {
+     "type": "string",
+     "description": "地図について子どもが発した言葉（例:「まだあるの？」）"
+    }
+   }
+  }
  }
 }

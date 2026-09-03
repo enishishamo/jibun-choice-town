@@ -60,3 +60,28 @@ JIBUN CHOICEは「職業図鑑」ではない。
 既存アプリの実コード（`src/data/content/*.ts` と `src/q1/registry.ts`）が正本。
 `factory/database/` は検索・重複検知・制作履歴・比較のための索引にすぎない。
 実コードとDBが食い違ったら実コードが正しい。`node factory/scripts/update-factory-db.mjs` で再同期する。
+
+## World Expansion v1 learnings (2026-09-03, §36)
+- **Art request hygiene**: art requests are per-asset files; `output_path` MUST
+  match `filename`. A copied request once overwrote another world's asset.
+  art-loop now fail-closes on mismatch (run + run-pair). Never copy a request
+  without rewriting asset_id/filename/output_path/world.
+- **BA pair generation**: same-camera pairs succeed when the BEFORE prompt
+  names 2-3 persistent ANCHORS (boulder+signpost / clock+monitor / counter+
+  lamp) and the AFTER prompt lists them as UNCHANGED plus an explicit
+  change-only list. Style-conflicting concepts (e.g. a sepia photo AS the
+  image) fight the Series Style Gate — reframe so the stylized element is a
+  small prop inside a series-style scene.
+- **Review iteration pattern (12-round river case)**: the adversarial reviewer
+  finds ONE new class per round. The stable end-state checklist for a Q1:
+  (1) wrong answers produce VISUAL world-state change (not text), staged to the
+  tapped/blamed element only; (2) done/wrapUp text branches honestly on the
+  actual outcome; (3) decision-critical data readable at 16px (compact
+  overviews allowed when data is restated at body size); (4) no answer-mapping
+  subs on conclusion buttons; (5) domain nuance the world's own q2 mentions
+  must be IN the mechanics (fishway individual design); (6) buttons 2-6 chars;
+  (7) UI hints derived from the SAME rule scan as the validator (export a
+  fault-locator from the logic module). Bake these in before R1 next time.
+- **Codex quota**: reviews+art share the ChatGPT subscription quota; long
+  chains can exhaust it. quota-queue.sh pattern: probe-retry every 20 min,
+  then run the queued work serially. No paid fallback (§0).

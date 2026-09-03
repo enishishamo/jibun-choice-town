@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "status": "CODEX_ERROR",
+  "error": "codex exec exited 1: istinct; not a textbook chapter list; no\n  job-category front page.\n- LANGUAGE_AGE_FIT (>=80): district names/leads/labels for grades 5-9.\n\nOutput (STRICT — single JSON object, no prose):\n{\"verdict\":\"PASS|FAIL\",\"EXPLORATION_DESIRE\":0,\"SCALABILITY\":0,\"MAP_CLARITY\":0,\n \"LANGUAGE_AGE_FIT\":0,\"blockers\":[],\"high\":[],\"medium\":[],\"low\":[],\n \"evidence\":[\"file:line — finding\"]}\nFAIL if any blocker/high, or any axis below its threshold.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\n",
+  "elapsed_sec": 2.815
+}

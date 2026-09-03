@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "status": "CODEX_ERROR",
+  "error": "codex exec exited 1: , 24/24 total).\n- First wrong answers are now visual-only: bounced photo answers/registrations\n  and failed treatments show the 📄↩ column mark / red shelf ticket / 🔖 sticky\n  with only a neutral terse line (「…だまって戻ってきた。」「…付せんが1枚、\n  はられた。」) — no reason text. (The mistake limit is 2, so the second wrong\n  answer is the mentor-takeover ending; no WHY hint ever appears.)\nMachine re-checks: sims 24/24, flow bot passes, tsc clean.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:17 PM.\n",
+  "elapsed_sec": 2.978
+}
