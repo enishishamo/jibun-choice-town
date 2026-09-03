@@ -869,7 +869,7 @@
     "tap_select",
     "document_check"
    ],
-   "interactionNotes": "収集区分（燃やす/プラの日がランダム）と袋の見た目（ランダム生成・違反2〜3保証）を突き合わせ、積む/分別違いシール/指定袋シール/危険物隔離連絡の4値を判定。危険物積載は検知停止で即失敗、ミスは1回まで。",
+   "interactionNotes": "収集区分（燃やす/プラの日がランダム）と袋の見た目（ランダム生成・違反2〜3保証）を突き合わせ、積む/分別違いシール/指定袋シール/危険物隔離連絡の4値を判定。危険物積載は検知停止で即失敗、ミスは1回まで。（体験ゲート修理: 街路ストリップ(荷台/残置/連絡待ち・❗・🔥)・段階的ミス反応（review 80/82 PASS））",
    "semantic": {
     "C_in_component": "今日の収集ルールカード（区分連動）・袋の視覚手がかり・危険物の知識",
     "C_required": "yes — 区分が毎回変わるためルールカードを読まずに正答不能。違反≥2＋ミス予算1で全積み完走は不可能（QA 0/500）",
@@ -882,7 +882,7 @@
      "factory/harness/gameplay-qa-waste.mjs curb section"
     ]
    },
-   "reviewedHash": "3bbcbe449439"
+   "reviewedHash": "d7decad6625c"
   },
   "pit_crane": {
    "primaryMechanic": "simulation_run",
@@ -890,7 +890,7 @@
     "spatial_placement",
     "parameter_adjust"
    ],
-   "interactionNotes": "3×3ピットの乾/湿/混合をクレーンで掴んで投入 or 隣接の乾+湿を撹拌。8ターン、炉温850以上/1000未満を維持。搬入で湿が増える動的環境。",
+   "interactionNotes": "3×3ピットの乾/湿/混合をクレーンで掴んで投入 or 隣接の乾+湿を撹拌。8ターン、炉温850以上/1000未満を維持。搬入で湿が増える動的環境。（体験ゲート修理: 失敗画面に最終盤面+温度計（review 88/90 PASS））",
    "semantic": {
     "C_in_component": "運転マニュアル（850℃ダイオキシン則・施設固有上限を明示）・ごみ質の効果・搬入予告",
     "C_required": "yes — 質と温度の対応を使わないと2ターンで失敗（無操作0%・乾連打0%）",
@@ -903,7 +903,7 @@
      "gameplay-qa-waste.mjs pit section"
     ]
    },
-   "reviewedHash": "6784edcdbbd9"
+   "reviewedHash": "c6500eb669df"
   },
   "gas_watch": {
    "primaryMechanic": "search_discovery",
@@ -911,7 +911,7 @@
     "data_layer_compare",
     "document_check"
    ],
-   "interactionNotes": "アラート（原因3種ランダム・計器は原因従属）に対し、点検（時間4コマ・最大3回）で証拠を集め容疑を消し込み、職掌内の依頼4種から1回勝負で選ぶ。差圧はデコイ点検。",
+   "interactionNotes": "アラート（原因3種ランダム・計器は原因従属）に対し、点検（時間4コマ・最大3回）で証拠を集め容疑を消し込み、職掌内の依頼4種から1回勝負で選ぶ。差圧はデコイ点検。（体験ゲート修理: 計器盤メーター常設+消し込み統合（review 74/76 PASS））",
    "semantic": {
     "C_in_component": "証拠マトリクス（矛盾症例なし）・切り分け手順・管理値",
     "C_required": "yes — 無調査ランダム依頼は勝率23.6%どまり、全点検総当たりは時間構造で不可能",
@@ -924,7 +924,7 @@
      "gameplay-qa-waste.mjs gas section"
     ]
    },
-   "reviewedHash": "4362c79dd526"
+   "reviewedHash": "bd2f2003a43b"
   },
   "landfill_ops": {
    "primaryMechanic": "resource_allocation",
@@ -932,7 +932,7 @@
     "spatial_placement",
     "simulation_run"
    ],
-   "interactionNotes": "5日間、型付き搬入（灰/不燃は別区画=施設受入区分）を3区画へ配置し、夜は作業面への覆いが日課（覆いは持続）。材料不足の夜だけ天気を読んだ優先順位判断。雨=浸出水/風=苦情。（実装レビュー修正でセルは常時タップ可・受入可否はロジック側の拒否で提示＝UIオラクルなし。再照合済み 2026-09-02）",
+   "interactionNotes": "5日間、型付き搬入（灰/不燃は別区画=施設受入区分）を3区画へ配置し、夜は作業面への覆いが日課（覆いは持続）。材料不足の夜だけ天気を読んだ優先順位判断。雨=浸出水/風=苦情。（実装レビュー修正でセルは常時タップ可・受入可否はロジック側の拒否で提示＝UIオラクルなし。再照合済み 2026-09-02）（体験ゲート修理: 受入拒否を世界の反応に（review 86/87 PASS））",
    "semantic": {
     "C_in_component": "処分場のきまりカード（覆いの意味・浸出水の仕組み・受入区分）・天気予報・残量メーター",
     "C_required": "yes — 覆い放棄4.2%/事後対応20%どまり。配置集約＋義務履行で100%（配置判断が成否を分ける: 散らかし配置は43.6%）",
@@ -945,7 +945,7 @@
      "gameplay-qa-waste.mjs landfill section"
     ]
    },
-   "reviewedHash": "ad154f7f9188"
+   "reviewedHash": "8bec3d81e2a7"
   },
   "baby_care": {
    "primaryMechanic": "trend_reading",
@@ -953,7 +953,7 @@
     "document_check",
     "tap_select"
    ],
-   "interactionNotes": "毎朝の体重を成長曲線に足し、日誌（飲み残し/便/活動）と重ねて 順調/調整/相談 の3値を見立てる。週レイアウトは12基本配置（stall対+相談日+40%良性凹み）で位置暗記無効。ミス予算2をロジックが強制。",
+   "interactionNotes": "毎朝の体重を成長曲線に足し、日誌（飲み残し/便/活動）と重ねて 順調/調整/相談 の3値を見立てる。週レイアウトは12基本配置（stall対+相談日+40%良性凹み）で位置暗記無効。ミス予算2をロジックが強制。（体験ゲート修理: 曲線を全画面表示・判断アイコン+❗刻印・猫の様子カード・段階hint（focused review 73/76 PASS））",
    "semantic": {
     "C_in_component": "見立てのめやす（先輩のメモ＝規則カード）＋成長曲線の形＋今朝の日誌",
     "C_required": "yes — 規則を今日の曲線・日誌・前日履歴に当てはせないと3値を当てられない。ok/consult/adjustスパムは全て0%完走（QA 48/48）",
@@ -966,7 +966,7 @@
      "factory/harness/gameplay-qa-zoo.mjs baby section"
     ]
    },
-   "reviewedHash": "3daa3019e3ad"
+   "reviewedHash": "4754fe49e3fb"
   },
   "zoo_checkup": {
    "primaryMechanic": "evidence_elimination",
@@ -974,7 +974,7 @@
     "resource_budget",
     "risk_tradeoff"
    ],
-   "interactionNotes": "負担予算4の中で検査を選び3原因を絞り込む。血液以外の単独検査は確定不能（証拠行列）。無所見診断は拒否、bloodは低負担2手後のみ＋12%保定中止リスク。方針決定は1回勝負。",
+   "interactionNotes": "負担予算4の中で検査を選び3原因を絞り込む。血液以外の単独検査は確定不能（証拠行列）。無所見診断は拒否、bloodは低負担2手後のみ＋12%保定中止リスク。方針決定は1回勝負。（体験ゲート修理: 観察窓(証拠由来オーバーレイ+結果で表情/治療✓✗)・診断盤全画面化（focused review 82/84 PASS））",
    "semantic": {
     "C_in_component": "検査ごとの所見テキスト＋負担コスト表＋「方針が変わるか」の原則",
     "C_required": "yes — 無所見診断はロジックが拒否（勘の1/3勝ち封鎖）。低負担ルートは100%確定・平均負担<1.2（QA）",
@@ -987,7 +987,7 @@
      "factory/harness/gameplay-qa-zoo.mjs checkup section"
     ]
    },
-   "reviewedHash": "a7b0ddbdc858"
+   "reviewedHash": "1a5810cf9928"
   },
   "feed_prep": {
    "primaryMechanic": "rule_application",
@@ -995,7 +995,7 @@
     "resource_budget",
     "document_check"
    ],
-   "interactionNotes": "飼料日量表（規則）を今朝の体重・授乳メモ（データ）に当てはめてトレイを組む。野菜在庫の充足は算術（在庫数を自分で数える）で、不足朝は授乳中の母を優先。パンはデコイ。全数検査で余剰のせ不可。差し戻し予算2。",
+   "interactionNotes": "飼料日量表（規則）を今朝の体重・授乳メモ（データ）に当てはめてトレイを組む。野菜在庫の充足は算術（在庫数を自分で数える）で、不足朝は授乳中の母を優先。パンはデコイ。全数検査で余剰のせ不可。差し戻し予算2。（体験ゲート修理: 差し戻しは黙って指さす+トレイ強調・terminal画面にトレイ残置（review 80/84））",
    "semantic": {
     "C_in_component": "飼料日量表カード＋今朝の日誌＋在庫数",
     "C_required": "yes — 体重線470-584gの跨ぎと授乳メモで正解が毎朝変わる。暗記固定トレイは469/500失敗（QA）",
@@ -1008,7 +1008,7 @@
      "factory/harness/gameplay-qa-zoo.mjs feed section"
     ]
    },
-   "reviewedHash": "cf24896ccb4a"
+   "reviewedHash": "9ecb97e79cfa"
   },
   "debut_plan": {
    "primaryMechanic": "plan_then_adapt",
@@ -1016,7 +1016,7 @@
     "risk_tradeoff",
     "event_response"
    ],
-   "interactionNotes": "練習記録から初日プランを組み（園の期待は記録連動：calmの子は最低5）、当日は時間帯ごとのイベントとサインを見て続行/縮小(3種・圧力対応)/中止を判断。サイン0や縮小前の中止はロジックが拒否。done_earlyのperfectはプラン適合時のみ。",
+   "interactionNotes": "練習記録から初日プランを組み（園の期待は記録連動：calmの子は最低5）、当日は時間帯ごとのイベントとサインを見て続行/縮小(3種・圧力対応)/中止を判断。サイン0や縮小前の中止はロジックが拒否。done_earlyのperfectはプラン適合時のみ。（体験ゲート修理: ヤードパネル・イベント事前表示・無言refusal段階化（debut単独 final PASS 78））",
    "semantic": {
     "C_in_component": "展示練習の記録＋デビューのきまり（縮小の使い分け含む）＋当日のイベント表示",
     "C_required": "yes — 記録無視の安全固定プランはcalm日に期待ゲートで163/500失敗、品質差0.39vs0.19（QA）",
@@ -1029,7 +1029,217 @@
      "factory/harness/gameplay-qa-zoo.mjs debut section"
     ]
    },
-   "reviewedHash": "44337cc9b4fe"
+   "reviewedHash": "836c4e7b1978"
+  },
+  "yard_plan": {
+   "primaryMechanic": "spatial_placement",
+   "secondaryMechanics": [
+    "resource_budget",
+    "simulation_run"
+   ],
+   "interactionNotes": "TOSの引取日を読み8箱を3列+電源列+隔離区画へ仮置き。属性制約はロジックが拒否。夜明けシミュが引取順に箱を出しリハンドルを❗で可視化、4回で失敗。",
+   "semantic": {
+    "C_in_component": "TOS搬出予定+ヤードのきまり（積み替え/電源/隔離）",
+    "C_required": "yes — 予定を読まない配置は294/500失敗、全船が上限内で可解（QA）",
+    "action_changes_result": "yes — 置き方が夜明けシミュの積み替え回数を決める",
+    "retry": "yes — 船と引取日を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 5置場×8箱の順列",
+    "evidence": [
+     "src/q1/portLogic.ts:yardPlace/yardSimulate",
+     "factory/harness/gameplay-qa-port.mjs yard section"
+    ]
+   },
+   "reviewedHash": "108b023f8b4d"
+  },
+  "crane_lift": {
+   "primaryMechanic": "pressure_matched_response",
+   "secondaryMechanics": [
+    "justified_refusal",
+    "risk_tradeoff"
+   ],
+   "interactionNotes": "風速計・ロック4点・地上合図を読み おろす/ゆっくり/止めて確認/見合わせる。危険操作は安全装置が止め(strike2で交代)、過剰停止は夜が尽きる(delay4)。",
+   "semantic": {
+    "C_in_component": "運用規程カード（風10/16m・ロック4点・合図一致）+毎回の計器",
+    "C_required": "yes — lower/hold/recheckスパム全て100%失敗、規程読解のみ100%完走（QA）",
+    "action_changes_result": "yes — 判断ごとに箱が運ばれ/赤ランプ/夜メーターが減る",
+    "retry": "yes — 風と事象を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 4値×計器3種",
+    "evidence": [
+     "src/q1/portLogic.ts:craneCorrect/craneAct",
+     "factory/harness/gameplay-qa-port.mjs crane section"
+    ]
+   },
+   "reviewedHash": "d991a25b156e"
+  },
+  "tally_check": {
+   "primaryMechanic": "measurement_inspection",
+   "secondaryMechanics": [
+    "document_check",
+    "rule_matching_verification"
+   ],
+   "interactionNotes": "書類と現物の番号(チェックデジット補助✓/？)・封印・外観を3点照合し4値判断。損傷は文言選択（時点断定は公正性違反）。ゲート通過列に❗つきで並ぶ。（R2修理: 誤判定は箱が戻る(進行しない)・オラクル除去・文言ボタン短縮）",
+   "semantic": {
+    "C_in_component": "タリーシート+検数のきまり（3点ひと組・見たまま記録）",
+    "C_required": "yes — accept/query両スパム100%失敗、3点照合のみ100%完走（QA）",
+    "action_changes_result": "yes — 箱ごとに通過列へ、誤判定は後から無線が返る",
+    "retry": "yes — 番号・封印・損傷を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 4値+文言サブ選択",
+    "evidence": [
+     "src/q1/portLogic.ts:tallyCorrect/tallyAct/damageWordingOk",
+     "factory/harness/gameplay-qa-port.mjs tally section"
+    ]
+   },
+   "reviewedHash": "95612b9da344"
+  },
+  "truck_dispatch": {
+   "primaryMechanic": "resource_allocation",
+   "secondaryMechanics": [
+    "rule_application",
+    "score_optimization"
+   ],
+   "interactionNotes": "4荷物を3台へ割当。背高→低床のみ・重量→小型不可・A⇄C遠距離チェーン不可はロジックが拒否。点呼は問題トラックを黙って指さす(段階hint)。空走スコアで熟達差。（R2修理: B行き経路選択(こみち3.8m/うかい路)・道路制限マップカード・空走メーター）",
+   "semantic": {
+    "C_in_component": "配車のきまり+荷物属性+車両条件",
+    "C_required": "yes — 全朝が可解・背高誤載/時刻違反は100%検出・最適と有効ランダムに空走差（QA）",
+    "action_changes_result": "yes — 割当でトラックに箱が載り、点呼が指さす",
+    "retry": "yes — 荷物構成を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 割当空間81通り+最適化層",
+    "evidence": [
+     "src/q1/portLogic.ts:dispatchValidate/dispatchEmptyRun",
+     "factory/harness/gameplay-qa-port.mjs dispatch section"
+    ]
+   },
+   "reviewedHash": "f70b18d293aa"
+  },
+  "thinning_pick": {
+   "primaryMechanic": "spatial_placement",
+   "secondaryMechanics": [
+    "resource_budget",
+    "rule_application"
+   ],
+   "interactionNotes": "12本の林から材積15-30%を選木。将来木はロジックが拒否、提出validateが率/風の通り道/損傷放置を検査。5年後プレビューが世界FB。（R2修理: 先輩が問題箇所へ歩く(where-not-why)）",
+   "semantic": {
+    "C_in_component": "選木のめやす（材積・損傷優先・3連禁止）+各木データ",
+    "C_required": "yes — 本数勘定(2本)はrate_low、全thin伐りは損傷mid残しで全滅、太い木全伐りは率超過(QA 22/22)",
+    "action_changes_result": "yes — 印で木が変色、メーター移動、提出後プレビュー",
+    "retry": "yes — 林を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 12択トグル×制約3種",
+    "evidence": [
+     "src/q1/forestLogic.ts:thinValidate",
+     "factory/harness/gameplay-qa-forest.mjs thin section"
+    ]
+   },
+   "reviewedHash": "6cd1cae373cd"
+  },
+  "fell_direction": {
+   "primaryMechanic": "justified_refusal",
+   "secondaryMechanics": [
+    "pressure_matched_response",
+    "sequencing_dependency"
+   ],
+   "interactionNotes": "合図→退避確認→伐倒の手順順序と方位判断。無理な木は機械へ(正解)。手順飛ばし/障害物方向は指揮者とワイヤーが停止(strike2)。臆病スパンは日暮れ。（R2-4修理: 誤方向はワイヤーsnap-back、合図前はエンジン停止で無動作）",
+   "semantic": {
+    "C_in_component": "伐倒のきまり+1本ごとの傾き/障害物表示",
+    "C_required": "yes — 無合図100%停止、機械丸投げ100%日暮れ、手順遵守100%完走(QA)",
+    "action_changes_result": "yes — 木がCSSで倒れ、丸太が並び、赤笛が点く",
+    "retry": "yes — 傾き/障害を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 4方位+機械+手順",
+    "evidence": [
+     "src/q1/forestLogic.ts:fellAct",
+     "factory/harness/gameplay-qa-forest.mjs fell section"
+    ]
+   },
+   "reviewedHash": "208bb8e2ee6b"
+  },
+  "plant_plan": {
+   "primaryMechanic": "resource_budget",
+   "secondaryMechanics": [
+    "matching",
+    "risk_tradeoff"
+   ],
+   "interactionNotes": "3区画に樹種(相性)×獣害対策×予算6を配分。全部柵は予算超過が機械保証。3年後プレビュー(育つ/食べられる)が世界FB。（R2修理: previewの相性判定を正直化・fault zone指さし）",
+   "semantic": {
+    "C_in_component": "植栽のめやす(相性表/シカ/費用)+区画データ",
+    "C_required": "yes — 全柵は100%予算超過、相性違反/無防備は100%検出、適合計画100%通過(QA)",
+    "action_changes_result": "yes — 区画に苗/柵が置かれ、予算メーター、提出後プレビュー",
+    "retry": "yes — 乾湿/シカ圧を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 3樹種×3対策×3区画×予算",
+    "evidence": [
+     "src/q1/forestLogic.ts:plantValidate",
+     "factory/harness/gameplay-qa-forest.mjs plant section"
+    ]
+   },
+   "reviewedHash": "a8ad0a935c88"
+  },
+  "water_trace": {
+   "primaryMechanic": "evidence_elimination",
+   "secondaryMechanics": [
+    "resource_budget",
+    "risk_tradeoff"
+   ],
+   "interactionNotes": "5地点×採水予算4で上下流比較し3択の結論。無採水/2未満の結論は拒否、誤結論はミス予算2。放流はり紙がデコイ。真相区間が結論後に光る。",
+   "semantic": {
+    "C_in_component": "B類型基準カード+地点測定値+「1目撃で断定しない」原則",
+    "C_required": "yes — 比較読みで100%正答、はり紙頼みは失敗が発生、無採水結論は機械拒否(QA 19/19)",
+    "action_changes_result": "yes — 採水で旗と数値が立ち、結論が報告会で通る/戻される",
+    "retry": "yes — 真相と数値を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 地点選択×3択+予算",
+    "evidence": [
+     "src/q1/riverLogic.ts:traceConclude",
+     "factory/harness/gameplay-qa-river.mjs trace section"
+    ]
+   },
+   "reviewedHash": "a9595a15fe77"
+  },
+  "plant_ops": {
+   "primaryMechanic": "parameter_adjust",
+   "secondaryMechanics": [
+    "dynamic_state",
+    "score_optimization"
+   ],
+   "interactionNotes": "4コマの負荷(±1で平滑・雨夜は最大)にDOバンドを保つ送風調整。過曝気は電力メーター、band外2回で放流停止。泡と微生物の表情が状態表示。",
+   "semantic": {
+    "C_in_component": "運転のめやす(バンド・負荷連動・雨予報)+毎コマ計器",
+    "C_required": "yes — up/down/keepスパム全て失敗優勢、負荷追従のみ100%(QA)",
+    "action_changes_result": "yes — 泡量・表情・DO針・電力が毎手で動く",
+    "retry": "yes — 負荷カーブ再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 3値×4コマ×先読み",
+    "evidence": [
+     "src/q1/riverLogic.ts:opsAct",
+     "factory/harness/gameplay-qa-river.mjs ops section"
+    ]
+   },
+   "reviewedHash": "3846138e83df"
+  },
+  "bank_design": {
+   "primaryMechanic": "resource_budget",
+   "secondaryMechanics": [
+    "matching",
+    "rule_application"
+   ],
+   "interactionNotes": "4区間へ工法配分。全面コンクリはover_armored/予算で機械却下、守るべき区間の放置はunsafe、堰は魚道必須。自然スコアが熟達軸。3年後プレビュー。",
+   "semantic": {
+    "C_in_component": "多自然川づくりのきまり+区間データ(侵食/背後地)",
+    "C_required": "yes — 全コンクリ100%却下・最小防護は100%通過・自然スコア差+3以上(QA)",
+    "action_changes_result": "yes — 断面図に工法が置かれ、プレビューで魚がのぼる",
+    "retry": "yes — 侵食/背後地を再抽選",
+    "fixed_progression": "no",
+    "obvious_binary_choice": "no — 4区間×3-4工法×予算",
+    "evidence": [
+     "src/q1/riverLogic.ts:bankValidate",
+     "factory/harness/gameplay-qa-river.mjs bank section"
+    ]
+   },
+   "reviewedHash": "624c81a82929"
   }
  }
 }

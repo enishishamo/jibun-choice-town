@@ -1,0 +1,34 @@
+{
+  "asset_id": "port_scene",
+  "filename": "scene-port.png",
+  "world": "port",
+  "use": "scene_map",
+  "purpose": "エリア画面の連続シーン背景。4つのホットスポット（①管理棟/プランニング室 14-18%左, ②ガントリークレーン 38-42%, ③検数ブース/ゲート 60-65%, ④配車場/トラック列 80-84%）が乗る",
+  "scene": "A container terminal at blue hour (just after sunset, sky still deep blue with warm orange horizon), seen as one continuous miniature clay diorama, left to right: a small glowing planning office; a tall gantry crane lifting a container from a docked cargo ship; a small checking booth by a gate; a truck area with ONE toy truck waiting (keep this area simple and readable). Warm floodlights, calm sea. Cozy, safe, clearly lit workplace with tiny helmeted worker figures — bright enough that every element reads at small sizes.",
+  "composition": "Wide horizontal scene, slight high angle. Four work areas at roughly 16%/40%/62%/80% of the width. IMPORTANT: leave at least 8% empty margin on BOTH left and right edges — no building or truck may touch the frame edge. Sky top 25%. Moderate contrast so dark areas stay readable when scaled down.",
+  "required_objects": [
+    "gantry crane with a hanging container",
+    "docked container ship",
+    "small lit planning office",
+    "checking booth with gate",
+    "three toy trucks",
+    "stacked colorful containers",
+    "floodlight towers",
+    "tiny helmeted worker figures"
+  ],
+  "forbidden_objects": [
+    "readable text",
+    "logos",
+    "children in the yard",
+    "pitch-black darkness",
+    "rain",
+    "elements touching the left or right edge",
+    "dense clutter at the truck area"
+  ],
+  "aspect_ratio": "3:2",
+  "size": "1536x1024",
+  "output_path": "public/assets/port/scene-port.png",
+  "used_by": [
+    "src/data/content/port.ts"
+  ]
+}

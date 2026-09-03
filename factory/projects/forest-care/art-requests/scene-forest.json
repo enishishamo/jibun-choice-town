@@ -1,0 +1,15 @@
+{
+  "asset_id": "forest_scene",
+  "filename": "scene-forest.png",
+  "world": "forest",
+  "use": "scene_map",
+  "purpose": "エリア画面の連続シーン背景。3ホットスポット（①選木の林 ~20%左, ②伐倒現場 ~52%, ③植栽斜面 ~80%）",
+  "scene": "A mountain forestry worksite as one continuous miniature clay diorama, left to right: a dense cedar stand where a worker marks a trunk with tape; a felling site where one tree lies neatly on the ground and a helmeted crew stands at safe distance with a small winch machine; a replanted open slope with tiny seedlings in rows, protective tubes and a deer fence, distant valley behind. Bright daytime, warm sunlight through the canopy on the left, open sky on the right. Cozy handcrafted clay look, tiny helmeted worker figures, safe and organized.",
+  "composition": "Wide horizontal scene, slight high angle. Three work areas at roughly 20%/52%/80% width, visually distinct (dark dense stand -> working clearing -> bright open slope). At least 8% empty margin at left and right edges. Sky top 20%.",
+  "required_objects": ["dense cedar stand", "tape-marking worker", "one cleanly felled log", "small winch machine", "seedling rows with tubes", "deer fence", "helmeted tiny workers"],
+  "forbidden_objects": ["readable text", "logos", "chainsaw in a child's hands", "falling tree mid-air", "injury or danger scene"],
+  "aspect_ratio": "3:2",
+  "size": "1536x1024",
+  "output_path": "public/assets/forest/scene-forest.png",
+  "used_by": ["src/data/content/forest.ts"]
+}

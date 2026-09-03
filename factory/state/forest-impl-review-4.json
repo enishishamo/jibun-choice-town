@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "forest-impl-review-4",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 86,
+    "career_authenticity_score": 91,
+    "game_quality_score": 86,
+    "language": {
+      "LANGUAGE_AGE_FIT": 90,
+      "FURIGANA_SUPPORT": 86,
+      "TEXT_DENSITY": 88,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 90,
+      "VISUAL_LANGUAGE_SUPPORT": 82
+    },
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "主要な判断材料の一部が9〜13px指定で、375px画面では読みやすさが弱い。",
+      "間伐の開けすぎ判定時、先輩アイコンが実際の連続3本ではなく、印を付けた全木の中央付近に出る場合がある。"
+    ],
+    "low": [
+      "「道具を片づける」「森に入ってみる」は言語規約のボタン上限6文字を超える。"
+    ],
+    "evidence": [
+      "src/q1/forestLogic.ts:84 — 将来木への印はルール層で拒否され、保護を迂回できない。",
+      "src/q1/forestLogic.ts:109 — 材積率、連続した伐採列、損傷木の残置を別々に検証している。",
+      "src/q1/forestLogic.ts:202 — 合図前の伐倒操作は進行せず、事故前に停止される。",
+      "src/q1/forestLogic.ts:221 — 手作業可能な木の機械送りには時間コストが発生し、不可能木の機械送りは正解になる。",
+      "src/q1/FellDirectionGame.tsx:166 — 合図済みだった場合だけsnap-back表示へ進むため、合図前の試行では木が動かない。",
+      "src/q1/FellDirectionGame.tsx:179 — ワイヤーによる傾き表示は鋸が正当に始動した方向ミスに限定されている。",
+      "src/q1/FellDirectionGame.tsx:98 — 失敗時も負傷を示さず、明示的に『だれもケガはない』とする。",
+      "src/q1/PlantPlanGame.tsx:52 — 3年後表示の成功条件に樹種、場所適合、シカ対策の全てが含まれる。",
+      "src/q1/PlantPlanGame.tsx:79 — 場所不適合による枯死とシカ食害を異なる世界結果として表示する。",
+      "src/q1/PlantPlanGame.tsx:127 — 森を守ったと言える条件を伐採後の再造林まで含むものとして明示する。",
+      "src/data/content/forest.ts:224 — チェーンソーを『訓練を受けた大人の道具』と明示する。",
+      "src/data/content/forest.ts:88 — 『伐る＝守る』を、選木・安全な伐倒・再植林がそろった場合に限定する。",
+      "src/q1/ThinningPickGame.tsx:65 — 材積や損傷など攻略に必要な木の表示が9pxで指定されている。",
+      "src/q1/ThinningPickGame.tsx:183 — gap時の案内位置を問題の連続列ではなく全選択木の中央から決めている。",
+      "src/q1/FellDirectionGame.tsx:119 — 『道具を片づける』は7文字で、2〜6文字のボタン規約を超える。"
+    ],
+    "recommended_actions": [
+      "木・区画・傾きなど主要判断ラベルを原則16px相当まで拡大する。",
+      "openGapTooWideと同じ走査で違反した行・列を返し、その連続区間に先輩を配置する。",
+      "7文字のボタンを『片づける』『森へ入る』など6文字以内へ短縮する。"
+    ]
+  },
+  "elapsed_sec": 110.623
+}

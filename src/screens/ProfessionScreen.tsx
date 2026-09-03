@@ -1,5 +1,6 @@
 // Q2: know the job. Card-based — open only what looks interesting.
 // Also keeps a visible (but quiet) slot for future Q3 "meet a person".
+import { withRuby } from "../lib/ruby";
 import { useState } from "react";
 import { getProfession } from "../data";
 import type { Screen } from "../state/GameState";
@@ -50,7 +51,7 @@ export default function ProfessionScreen({
               {isOpen && (
                 <span className="q2-body">
                   {card.body.map((p) => (
-                    <span key={p} className="q2-para">{p}</span>
+                    <span key={p} className="q2-para">{withRuby(p)}</span>
                   ))}
                   {card.flow && (
                     <span className="q2-flow">

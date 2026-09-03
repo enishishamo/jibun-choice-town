@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: The SAME cedar stand from the SAME camera position after thinning: fewer, thicker, healthier trunks with space between them, warm sunbeams reaching a green forest floor with low plants and one small seedling with a protective tube, a fresh cut stump near the path. Bright, hopeful, alive.
+Role in game: wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ
+Camera / composition: Identical framing to the BEFORE: same path, same vantage. Sunlight shafts from upper left, green floor, visible sky gaps in the canopy.
+Must include: same path and vantage; fewer thicker trunks; sunbeams to the floor; green understory; one cut stump; one tubed seedling
+Must NOT include: readable text; logos; people; identical crowded stand
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補は参照画像より樹皮・地面・葉群の凹凸が細かく、手作り粘土模型というより精密な汎用3Dクレイ背景に寄っている
+- Fix vs reference set: AFTERの強い黄金色の斜光と高コントラストは、参照セットの均一で柔らかな照明より映画的
+- Fix vs reference set: 候補は画面全体を森林だけで密に満たしており、参照セットに多い明確なミニチュア配置と玩具ジオラマらしい空間整理が弱い
+- BEFOREとAFTERで残存する樹木の位置・幹の太さ・枝分かれ・樹冠形状が対応せず、同一カメラで同じ林を撮った変化として成立しにくい
+- 中央の道幅、曲がり方、消失点、前景の切り株や倒木、背景の地形が大幅に変化しており、間伐結果以外まで再構成されている
+- AFTERでは左右の主要な幹が著しく太くなり、BEFOREに存在した多数の幹を単に伐採した状態では説明できない
+- 光の変化と下草・苗の成長は意図を明瞭に表現できているが、同一構図を維持するbefore/afterの必須条件に違反している
+- vision critic verdict: FAIL (MUST violation or unstated failure)

@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-09-02T14:42:41.468Z",
+  "scannedAt": "2026-09-03T10:12:32.516Z",
   "sourceOfTruth": {
     "registry": "src/q1/registry.ts",
     "contentIndex": "src/data/index.ts",
@@ -381,6 +381,86 @@
       "componentExists": true,
       "description": "練習記録でプラン→当日サインで運営判断",
       "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "yard_plan",
+      "component": "YardPlanGame",
+      "componentPath": "src/q1/YardPlanGame.tsx",
+      "componentExists": true,
+      "description": "搬出予定を読んで仮置き（取り出し順の先読み）",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "crane_lift",
+      "component": "CraneLiftGame",
+      "componentPath": "src/q1/CraneLiftGame.tsx",
+      "componentExists": true,
+      "description": "計器×規程で おろす/減速/確認/見合わせ",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "tally_check",
+      "component": "TallyCheckGame",
+      "componentPath": "src/q1/TallyCheckGame.tsx",
+      "componentExists": true,
+      "description": "書類と現物の3点照合・公正な損傷記録",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "truck_dispatch",
+      "component": "TruckDispatchGame",
+      "componentPath": "src/q1/TruckDispatchGame.tsx",
+      "componentExists": true,
+      "description": "車両・経路・時刻の制約下の割当",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "thinning_pick",
+      "component": "ThinningPickGame",
+      "componentPath": "src/q1/ThinningPickGame.tsx",
+      "componentExists": true,
+      "description": "材積×損傷優先×開けすぎ防止の選木",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "fell_direction",
+      "component": "FellDirectionGame",
+      "componentPath": "src/q1/FellDirectionGame.tsx",
+      "componentExists": true,
+      "description": "合図→退避→方向判断（機械への引き渡しも正解）",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "plant_plan",
+      "component": "PlantPlanGame",
+      "componentPath": "src/q1/PlantPlanGame.tsx",
+      "componentExists": true,
+      "description": "樹種相性×シカ対策×予算配分",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "water_trace",
+      "component": "WaterTraceGame",
+      "componentPath": "src/q1/WaterTraceGame.tsx",
+      "componentExists": true,
+      "description": "上下流比較の勾配読み（1目撃で断定しない）",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "plant_ops",
+      "component": "PlantOpsGame",
+      "componentPath": "src/q1/PlantOpsGame.tsx",
+      "componentExists": true,
+      "description": "負荷連動の送風調整（過曝気=電力むだの二軸）",
+      "section": "動物園・赤ちゃん誕生編"
+    },
+    {
+      "id": "bank_design",
+      "component": "BankDesignGame",
+      "componentPath": "src/q1/BankDesignGame.tsx",
+      "componentExists": true,
+      "description": "守る区間を絞る引き算の設計＋魚道",
+      "section": "動物園・赤ちゃん誕生編"
     }
   ],
   "modules": [
@@ -667,6 +747,230 @@
             "街を変えて試す",
             "結果を比べる",
             "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/forest.ts",
+      "exportName": "forest",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "mountain-forest",
+          "name": "山の森",
+          "eventId": "forest-care"
+        }
+      ],
+      "events": [
+        {
+          "id": "forest-care",
+          "title": "木を切っているのに、\n「森を守っている」って？",
+          "areaName": "森のしごと場",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① どの木を伐る？どれを残す？",
+              "experienceId": "forest-thin",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② その木、どっちに倒す？",
+              "experienceId": "forest-fell",
+              "requires": [
+                "forest-thin"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 伐ったあとの山、どうする？",
+              "experienceId": "forest-plant",
+              "requires": [
+                "forest-fell"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "forest-picker",
+          "name": "林業作業士（選木）",
+          "catch": "「伐る木」ではなく「残す木」を選ぶ人",
+          "discoveryLine": "材積と将来の木を読んで、\n間伐の印をつける仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "森林施業プランナー",
+            "庭師・樹木医",
+            "国立公園の管理の仕事"
+          ]
+        },
+        {
+          "id": "forest-feller",
+          "name": "伐木作業者",
+          "catch": "倒す前に、ぜんぶ決めておく職人",
+          "discoveryLine": "合図と退避を確認して、\n木を安全な方向へ倒す仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "高所作業の仕事",
+            "クレーン運転士",
+            "造園の仕事"
+          ]
+        },
+        {
+          "id": "forest-planter",
+          "name": "造林作業員",
+          "catch": "50年後の森を、いま植える人",
+          "discoveryLine": "場所との相性とシカ対策を考えて、\n次の森を植える仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "農家",
+            "植木の生産の仕事",
+            "自然保護の仕事"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "forest-thin",
+          "professionId": "forest-picker",
+          "eventId": "forest-care",
+          "gameType": "thinning_pick",
+          "componentPath": "src/q1/ThinningPickGame.tsx",
+          "A_place": "間伐予定の林",
+          "B_mission": {
+            "title": "この林の選木、たのんだ",
+            "lines": [
+              "｜伐《き》る木に印を。数えるのは本数でなく材積。",
+              "傷んだ木から先に、将来木は残す。開けすぎにも注意。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "tape",
+              "name": "印のテープ",
+              "desc": "伐る木につける"
+            },
+            {
+              "id": "table",
+              "name": "材積のめやす",
+              "desc": "太さごとの体積"
+            },
+            {
+              "id": "map",
+              "name": "林の図",
+              "desc": "将来木と傷んだ木の位置"
+            }
+          ],
+          "D_mechanic": "thinning_pick",
+          "E_resolution": {
+            "title": "選木おわり。印は次の班へ",
+            "lines": [
+              "きみの印を目印に、伐倒班が動き出す。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「残すほう」を選んだよね。あの選択が森の50年を決める仕事があるんだ。",
+          "interestSeeds": [
+            "残すものを選ぶ責任",
+            "数字（材積）で考えるところ",
+            "5年後の森を想像するところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "forest-fell",
+          "professionId": "forest-feller",
+          "eventId": "forest-care",
+          "gameType": "fell_direction",
+          "componentPath": "src/q1/FellDirectionGame.tsx",
+          "A_place": "伐倒の現場",
+          "B_mission": {
+            "title": "5本、安全に倒す",
+            "lines": [
+              "切る前に、合図と退避の確認。",
+              "かたむき・障害物・逃げ道を読んで、方向を決める。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "whistle",
+              "name": "ホイッスル",
+              "desc": "合図してから切る"
+            },
+            {
+              "id": "saw",
+              "name": "チェーンソー",
+              "desc": "訓練を受けた大人の道具"
+            },
+            {
+              "id": "winch",
+              "name": "ウインチ班",
+              "desc": "無理な木はたのむ"
+            }
+          ],
+          "D_mechanic": "fell_direction",
+          "E_resolution": {
+            "title": "今日のぶん、ぶじ完了",
+            "lines": [
+              "倒した木は、道を通って山を下りていく。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「切る前にぜんぶ決めた」よね。あの段どりが命を守る仕事があるんだ。",
+          "interestSeeds": [
+            "切る前の段どり",
+            "方向を読む空間の感覚",
+            "無理をしない勇気"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "forest-plant",
+          "professionId": "forest-planter",
+          "eventId": "forest-care",
+          "gameType": "plant_plan",
+          "componentPath": "src/q1/PlantPlanGame.tsx",
+          "A_place": "伐採あとの斜面",
+          "B_mission": {
+            "title": "この斜面に、森を返す",
+            "lines": [
+              "尾根・中腹・沢ぞい。場所に合う苗を選ぼう。",
+              "シカの多い区画は守りを。予算は足りないかもしれない。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "seedling",
+              "name": "苗木",
+              "desc": "スギ・ヒノキ・カラマツ"
+            },
+            {
+              "id": "fence",
+              "name": "シカ柵・チューブ",
+              "desc": "苗を食害から守る"
+            },
+            {
+              "id": "budget",
+              "name": "予算表",
+              "desc": "ぜんぶには足りない"
+            }
+          ],
+          "D_mechanic": "plant_plan",
+          "E_resolution": {
+            "title": "植栽計画、スタート",
+            "lines": [
+              "苗が草より高くなるまで、世話はつづく。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「どこを守るか」を選んだよね。50年後の森をいま決める仕事があるんだ。",
+          "interestSeeds": [
+            "育つ場所を見立てるところ",
+            "限りある予算のやりくり",
+            "ずっと先の未来を考えるところ"
           ],
           "retry": "unknown_lives_in_component"
         }
@@ -1160,6 +1464,296 @@
       ]
     },
     {
+      "file": "src/data/content/port.ts",
+      "exportName": "port",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "port-wharf",
+          "name": "コンテナふ頭",
+          "eventId": "night-port"
+        }
+      ],
+      "events": [
+        {
+          "id": "night-port",
+          "title": "真夜中のみなとで、\nきみの荷物が動いている",
+          "areaName": "ふ頭のうらがわ",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① この箱、どこに置く？",
+              "experienceId": "port-yard",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② 巨大クレーン、動かすか止めるか",
+              "experienceId": "port-crane",
+              "requires": [
+                "port-yard"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 書類と現物、合っている？",
+              "experienceId": "port-tally",
+              "requires": [
+                "port-crane"
+              ]
+            },
+            {
+              "id": "ch4",
+              "title": "④ 朝いちの4本、どの車で？",
+              "experienceId": "port-dispatch",
+              "requires": [
+                "port-tally"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "port-planner",
+          "name": "コンテナヤードプランナー",
+          "catch": "港の「置き場所」で朝の速さが決まる、港の頭脳",
+          "discoveryLine": "搬出予定を読んで、積み替えの少ない\n仮置きを設計する仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "倉庫の管理の仕事",
+            "鉄道の運行計画",
+            "工場の生産計画"
+          ]
+        },
+        {
+          "id": "port-crane",
+          "name": "ガントリークレーン運転士",
+          "catch": "ビルの高さから、数センチをねらう職人",
+          "discoveryLine": "風速・ロック・合図を読んで、\n巨大クレーンを安全に動かす仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "建設現場のクレーン運転",
+            "フォークリフトの仕事",
+            "航空機の誘導の仕事"
+          ]
+        },
+        {
+          "id": "port-tally",
+          "name": "港の検数員",
+          "catch": "受け渡しを「証明」する、公正な立会人",
+          "discoveryLine": "書類と現物を3点照合して、\n受け渡しの証拠を作る仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "品質検査の仕事",
+            "税関の仕事",
+            "銀行の照合の仕事"
+          ]
+        },
+        {
+          "id": "port-dispatch",
+          "name": "コンテナ輸送の配車担当",
+          "catch": "車と道と時刻のパズルを毎朝解く、陸の司令塔",
+          "discoveryLine": "車両条件×道路条件×予約時刻で、\n朝いちの配送を組む仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "バスの運行管理",
+            "宅配の配達計画",
+            "タクシーの配車の仕事"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "port-yard",
+          "professionId": "port-planner",
+          "eventId": "night-port",
+          "gameType": "yard_plan",
+          "componentPath": "src/q1/YardPlanGame.tsx",
+          "A_place": "管理棟のプランニング室",
+          "B_mission": {
+            "title": "今夜の仮置き当番は、きみだ",
+            "lines": [
+              "船から8個の箱が下りてくる。",
+              "TOSの搬出予定を読んで、朝に積み替えが起きない置き方を考えよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "tos",
+              "name": "TOS",
+              "desc": "搬出予定と箱の属性の一覧"
+            },
+            {
+              "id": "map",
+              "name": "ヤードマップ",
+              "desc": "列と段の見取り図"
+            },
+            {
+              "id": "power",
+              "name": "電源列の表",
+              "desc": "冷凍コンテナ用のさし込み口"
+            }
+          ],
+          "D_mechanic": "yard_plan",
+          "E_resolution": {
+            "title": "仮置き完了。あとは朝を待つだけ",
+            "lines": [
+              "きみのヤードマップは、朝のクレーン班へ引き継がれた。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「あとで取り出す順」を先に読んだよね。あの先読みを毎晩やる仕事があるんだ。",
+          "interestSeeds": [
+            "先の順番を読んで組み立てるところ",
+            "地図やマスに置いていくところ",
+            "朝スムーズに流れる瞬間"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "port-crane",
+          "professionId": "port-crane",
+          "eventId": "night-port",
+          "gameType": "crane_lift",
+          "componentPath": "src/q1/CraneLiftGame.tsx",
+          "A_place": "ガントリークレーンの運転席",
+          "B_mission": {
+            "title": "今夜の6本、まかせた",
+            "lines": [
+              "風速計・ロック表示・地上合図。3つを見てから動かす。",
+              "止まるべき時に止まれるのが、いちばんの腕前。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "wind",
+              "name": "風速計",
+              "desc": "規程の速度・中止ラインと見比べる"
+            },
+            {
+              "id": "lock",
+              "name": "ロック表示",
+              "desc": "4点そろって、はじめて吊れる"
+            },
+            {
+              "id": "radio",
+              "name": "地上合図の無線",
+              "desc": "指示と合図が合っているか"
+            }
+          ],
+          "D_mechanic": "crane_lift",
+          "E_resolution": {
+            "title": "今夜のぶんを、下ろしきった",
+            "lines": [
+              "運転日誌に風速と判断を残す。次の運転士への申し送りだ。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「動かすか、止めるか」を計器で決めたよね。あの判断を40mの高さでやる仕事があるんだ。",
+          "interestSeeds": [
+            "大きな機械を動かすところ",
+            "「止める」判断ができるところ",
+            "計器を読んで決めるところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "port-tally",
+          "professionId": "port-tally",
+          "eventId": "night-port",
+          "gameType": "tally_check",
+          "componentPath": "src/q1/TallyCheckGame.tsx",
+          "A_place": "ゲート前の検数ブース",
+          "B_mission": {
+            "title": "受け渡しの証明は、きみの目で",
+            "lines": [
+              "書類と現物、番号・封印・外観の3点をひと組で照合。",
+              "ちがいを見つけたら照会。損傷は「見たまま」を記録する。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "tally",
+              "name": "タリーシート",
+              "desc": "書類側の番号・封印・数"
+            },
+            {
+              "id": "light",
+              "name": "ライト",
+              "desc": "夜でも番号と外観を見るため"
+            },
+            {
+              "id": "camera",
+              "name": "記録用カメラ",
+              "desc": "見たままを残す"
+            }
+          ],
+          "D_mechanic": "tally_check",
+          "E_resolution": {
+            "title": "照合ずみ。受け渡し成立",
+            "lines": [
+              "きみのタリーシートが、船とまちの「受け渡した証拠」になった。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「1文字のちがい」を見逃さなかったよね。あの照合が受け渡しの証拠になる仕事があるんだ。",
+          "interestSeeds": [
+            "ちがいを見つける瞬間",
+            "どちらの味方もしない公正さ",
+            "きちんと記録を残すところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "port-dispatch",
+          "professionId": "port-dispatch",
+          "eventId": "night-port",
+          "gameType": "truck_dispatch",
+          "componentPath": "src/q1/TruckDispatchGame.tsx",
+          "A_place": "配車室",
+          "B_mission": {
+            "title": "朝いちの4本、組んでみよう",
+            "lines": [
+              "背高は低床車だけ。重い箱は小型車に積めない。",
+              "予約の時刻に合わせて、近い行き先をつなごう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "board",
+              "name": "配車表",
+              "desc": "車・運転手・便の割当て"
+            },
+            {
+              "id": "roadmap",
+              "name": "道路の制限マップ",
+              "desc": "高さ・重さで通れない道"
+            },
+            {
+              "id": "booking",
+              "name": "納入予約の一覧",
+              "desc": "届け先が待っている時刻"
+            }
+          ],
+          "D_mechanic": "truck_dispatch",
+          "E_resolution": {
+            "title": "朝いちの便、ぜんぶ出発",
+            "lines": [
+              "ゲートを出たトラックが、まちへ散っていく。きみの組んだ順番で。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「通れる道か」まで確かめて車を選んだよね。あのパズルを毎朝解く仕事があるんだ。",
+          "interestSeeds": [
+            "条件のパズルがはまる瞬間",
+            "道や車のちがいに気づくところ",
+            "荷物が届く朝を想像するところ"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
       "file": "src/data/content/priceHike.ts",
       "exportName": "priceHike",
       "factCheckNotes": [
@@ -1388,6 +1982,230 @@
             "数字を見る",
             "もっといい方法を考える",
             "特にない"
+          ],
+          "retry": "unknown_lives_in_component"
+        }
+      ]
+    },
+    {
+      "file": "src/data/content/river.ts",
+      "exportName": "river",
+      "factCheckNotes": [],
+      "places": [
+        {
+          "id": "town-river",
+          "name": "まちの川",
+          "eventId": "river-health"
+        }
+      ],
+      "events": [
+        {
+          "id": "river-health",
+          "title": "川に魚がもどってきた！\nだれかが、何かをしたらしい",
+          "areaName": "川ぞいのしごと場",
+          "chapters": null,
+          "incidents": [
+            {
+              "id": "ch1",
+              "title": "① 魚がもどった理由、つきとめろ",
+              "experienceId": "river-trace",
+              "requires": null
+            },
+            {
+              "id": "ch2",
+              "title": "② 見えない生きものを、飼いならせ",
+              "experienceId": "river-ops",
+              "requires": [
+                "river-trace"
+              ]
+            },
+            {
+              "id": "ch3",
+              "title": "③ 魚がすめる川岸を、設計せよ",
+              "experienceId": "river-bank",
+              "requires": [
+                "river-ops"
+              ]
+            }
+          ],
+          "hasLensSummary": true,
+          "hasWrapUp": true
+        }
+      ],
+      "professions": [
+        {
+          "id": "river-surveyor",
+          "name": "河川の水質・生きもの調査員",
+          "catch": "川の体温計を読む、フィールドの科学者",
+          "discoveryLine": "上下流を比べて、\n川の変化の理由をつきとめる仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "環境計測の仕事",
+            "気象観測の仕事",
+            "水族館の飼育スタッフ"
+          ]
+        },
+        {
+          "id": "river-operator",
+          "name": "下水処理場の運転管理員",
+          "catch": "見えない微生物を飼いならす、水の料理長",
+          "discoveryLine": "微生物のきげんを読んで、\nまちの水をきれいにして返す仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "浄水場の仕事",
+            "清掃工場の運転員",
+            "発酵食品をつくる仕事"
+          ]
+        },
+        {
+          "id": "river-designer",
+          "name": "多自然川づくりの設計者",
+          "catch": "「固めない勇気」を図面にする土木設計者",
+          "discoveryLine": "守る区間をしぼって、\n魚のすめる川岸を設計する仕事！",
+          "q2CardCount": 3,
+          "related": [
+            "土木の仕事",
+            "造園・ランドスケープ",
+            "防災の仕事"
+          ]
+        }
+      ],
+      "experiences": [
+        {
+          "id": "river-trace",
+          "professionId": "river-surveyor",
+          "eventId": "river-health",
+          "gameType": "water_trace",
+          "componentPath": "src/q1/WaterTraceGame.tsx",
+          "A_place": "川ぞいの調査ポイント",
+          "B_mission": {
+            "title": "うわさの真相を、数字で確かめる",
+            "lines": [
+              "採水びんは4本。どの地点を調べるかが腕の見せどころ。",
+              "数字の「変わり目」を読んで、理由を結論づけよう。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "bottle",
+              "name": "採水びん",
+              "desc": "1地点1本。むだづかい禁物"
+            },
+            {
+              "id": "meter",
+              "name": "DO計",
+              "desc": "水にとけた酸素をはかる"
+            },
+            {
+              "id": "sheet",
+              "name": "基準カード",
+              "desc": "この川の健康のめやす"
+            }
+          ],
+          "D_mechanic": "water_trace",
+          "E_resolution": {
+            "title": "結論は、記録として残った",
+            "lines": [
+              "きみの報告が、次の川づくりの根拠になる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「比べて」理由を見つけたよね。あの比べ方が科学の基本になる仕事があるんだ。",
+          "interestSeeds": [
+            "数字から理由を推理するところ",
+            "現場を歩いて確かめるところ",
+            "断定しない慎重さ"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "river-ops",
+          "professionId": "river-operator",
+          "eventId": "river-health",
+          "gameType": "plant_ops",
+          "componentPath": "src/q1/PlantOpsGame.tsx",
+          "A_place": "下水処理場の中央監視室",
+          "B_mission": {
+            "title": "今日の運転、まかせた",
+            "lines": [
+              "DOをみどりの帯に保つ。送風は流れこむ量に合わせる。",
+              "夜は雨の予報。先を読んで。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "monitor",
+              "name": "中央監視のモニター",
+              "desc": "DO・送風・流入量"
+            },
+            {
+              "id": "blower",
+              "name": "送風機",
+              "desc": "微生物への空気"
+            },
+            {
+              "id": "scope",
+              "name": "顕微鏡",
+              "desc": "微生物のようすを見る"
+            }
+          ],
+          "D_mechanic": "plant_ops",
+          "E_resolution": {
+            "title": "今日も、きれいな水を川へ返せた",
+            "lines": [
+              "処理場の水は、あの魚たちの上流になる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「多すぎてもだめ」を体で覚えたよね。あのさじ加減を毎日やる仕事があるんだ。",
+          "interestSeeds": [
+            "見えない生きものの世話",
+            "ちょうどいい、を探す調整",
+            "まちの水を預かる責任"
+          ],
+          "retry": "unknown_lives_in_component"
+        },
+        {
+          "id": "river-bank",
+          "professionId": "river-designer",
+          "eventId": "river-health",
+          "gameType": "bank_design",
+          "componentPath": "src/q1/BankDesignGame.tsx",
+          "A_place": "川ぞいの設計事務所",
+          "B_mission": {
+            "title": "魚がすめる川岸を、設計する",
+            "lines": [
+              "守る区間は、しっかり守る。それ以外は川にまかせる。",
+              "堰には魚道を。予算には限りがある。"
+            ]
+          },
+          "C_tools": [
+            {
+              "id": "map",
+              "name": "川の図面",
+              "desc": "侵食のあとと土地利用"
+            },
+            {
+              "id": "works",
+              "name": "工法カタログ",
+              "desc": "護岸・石積み・魚道"
+            },
+            {
+              "id": "budget",
+              "name": "予算表",
+              "desc": "ぜんぶは固められない"
+            }
+          ],
+          "D_mechanic": "bank_design",
+          "E_resolution": {
+            "title": "図面が、川の未来になる",
+            "lines": [
+              "工事が終わるころ、瀬と淵に生きものがもどる。"
+            ]
+          },
+          "jobReveal_discoveryEcho": "きみがさっき「固めない場所」を選んだよね。あの引き算の設計が、いまの川づくりなんだ。",
+          "interestSeeds": [
+            "安全と自然の両立を考えるところ",
+            "しぼる・まかせるの判断",
+            "何年も先の川を想像するところ"
           ],
           "retry": "unknown_lives_in_component"
         }
@@ -3280,5 +4098,8 @@
       ]
     }
   ],
-  "issues": []
+  "issues": [
+    "semantic review for \"yard_plan\" is STALE: src/q1/YardPlanGame.tsx changed since review (108b023f8b4d -> 92d0286a8f88)",
+    "semantic review for \"crane_lift\" is STALE: src/q1/CraneLiftGame.tsx changed since review (d991a25b156e -> a0ce5ab8e055)"
+  ]
 }

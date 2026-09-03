@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "forest-impl-review-3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "career_authenticity_score": 91,
+    "game_quality_score": 78,
+    "language": {
+      "LANGUAGE_AGE_FIT": 84,
+      "FURIGANA_SUPPORT": 72,
+      "TEXT_DENSITY": 86,
+      "BUTTON_CLARITY": 88,
+      "TECHNICAL_TERM_SUPPORT": 74,
+      "VISUAL_LANGUAGE_SUPPORT": 82
+    },
+    "blockers": [],
+    "high": [
+      "fell_directionは合図前の切断操作でも倒木・ワイヤー捕捉アニメーションを再生する。ロジック上は指揮者がエンジン始動時点で全員を止めるため、危険行為を実害前に止める安全描写と画面上の結果が矛盾する。"
+    ],
+    "medium": [
+      "主要な状態表示に9〜13px指定が多く、言語規約の本文16px相当以上を満たさない。特に選木対象の属性、斜面条件、伐倒の合図状態は判断に必要な情報であり、低年齢層とモバイルでの自力読解を損なう。",
+      "専門語の「伐倒」「植栽」が複数画面で初出ルビなしのまま使われている。選択的ルビの主要対象は修復されているが、専門語全般という規約には未達。"
+    ],
+    "low": [
+      "一部の遷移ボタン（「道具を片づける」「森に入ってみる」）は推奨の2〜6文字を超える。意味は明確なので軽微。"
+    ],
+    "evidence": [
+      "src/q1/forestLogic.ts:202 — 合図前のcutは指揮者が全員を止めたという拒否結果を返し、木が倒れ始める状態ではない。",
+      "src/q1/FellDirectionGame.tsx:177 — cut失敗の原因を区別せず、すべてsetSnapped(d)へ流している。",
+      "src/q1/FellDirectionGame.tsx:180 — 合図前の操作にも、木が選択方向へ傾いてワイヤーに捕捉される演出が発生する。",
+      "src/q1/FellDirectionGame.tsx:69 — 判断に必要な合図・退避状態がfontSize 10で表示される。",
+      "src/q1/ThinningPickGame.tsx:65 — 将来木・傷あり・材積という核心情報がfontSize 9で表示される。",
+      "src/q1/PlantPlanGame.tsx:69 — 区画名と水分・シカ条件が12px以下で表示される。",
+      "src/q1/FellDirectionGame.tsx:136 — 専門語「伐倒」の画面初出にルビがない。",
+      "src/q1/PlantPlanGame.tsx:120 — 専門語「植栽」の画面初出にルビがない。",
+      "src/q1/forestLogic.ts:227 — iteration 3の機械班拒否文は原因を明示せず、沈黙する世界反応へ正しく修復されている。",
+      "src/q1/PlantPlanGame.tsx:79 — 3年後プレビューは不適合による枯死とシカ食害を視覚・文言の両方で区別している。",
+      "src/data/content/forest.ts:224 — チェーンソーを「訓練を受けた大人の道具」と明示している。",
+      "src/data/content/forest.ts:86 — 「伐る＝守る」を選木・安全な伐倒・再植林という条件付きで描いている。"
+    ],
+    "recommended_actions": [
+      "FellDirectionGameの失敗演出を原因別に分岐し、未合図なら木を一切傾けず、指揮者の停止動作だけを表示する。合図後の誤方向に限ってsnap-back演出を使う。",
+      "判断に必須のラベルと状態表示を16px相当以上へ引き上げ、375px幅で配置を再調整する。",
+      "各画面で初出する「伐倒」「植栽」に選択的ルビを付ける。"
+    ]
+  },
+  "elapsed_sec": 115.754
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "forest-impl-review-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 76,
+    "career_authenticity_score": 88,
+    "game_quality_score": 76,
+    "language": {
+      "LANGUAGE_AGE_FIT": 86,
+      "FURIGANA_SUPPORT": 74,
+      "TEXT_DENSITY": 82,
+      "BUTTON_CLARITY": 84,
+      "TECHNICAL_TERM_SUPPORT": 78,
+      "VISUAL_LANGUAGE_SUPPORT": 86
+    },
+    "blockers": [],
+    "high": [
+      "fell_directionの初回誤反応が段階的ヒント規則に違反する。可能な木を機械班へ渡すと、世界反応に加えて「この木は手で行けるはずだ」と原因・正解種別を即座に明示する。"
+    ],
+    "medium": [
+      "plant_planの予算制約は見かけより弱い。成功上はチューブと柵が同等なのに柵だけ高く、全高シカ区画をチューブで守れば常に予算内となるため、実質的な配分判断ではなく劣位選択の回避になっている。",
+      "画面ごとの専門語ルビが不完全。profession discoveryの「間伐」、mission/toolsの「材積」、複数画面の「伐倒」などに初出ルビがない。",
+      "一部の行動ボタンが2〜6文字規則を超える。"
+    ],
+    "low": [
+      "thinning_pickの最終説明「伐って守る」は間伐単体で成立するようにも読めるが、world wrapUpとplant_planでは再造林まで必要だと明確に条件付けされている。"
+    ],
+    "evidence": [
+      "src/q1/forestLogic.ts:227 — 初回から「この木は手で行けるはずだ」と具体的な突破情報を返す。",
+      "src/q1/FellDirectionGame.tsx:196 — 通常木へのhandoff失敗時、段階管理なしでrefusalをそのまま表示する。",
+      "src/q1/forestLogic.ts:241 — 植栽予算は6。",
+      "src/q1/forestLogic.ts:243 — チューブ1、柵2だが検証上の保護効果は区別されない。",
+      "src/q1/forestLogic.ts:267 — 高シカ区画は最大2区画なので、苗3＋チューブ最大2＝5で必ず予算内になる。",
+      "src/q1/forestLogic.ts:297 — 高シカ区画はguardがnoneでなければ通り、柵固有の利点がない。",
+      "src/q1/PlantPlanGame.tsx:79 — 3年後表示は不適地の枯死とシカ害を正しく区別している。",
+      "src/q1/PlantPlanGame.tsx:197 — 初回失敗は先輩が問題区画へ移動する世界反応に留めている。",
+      "src/q1/ThinningPickGame.tsx:176 — 初回失敗は先輩がメーター・損傷木・伐採列へ移動し、原因を文章で明示しない。",
+      "src/q1/FellDirectionGame.tsx:178 — 誤方向では木の傾きとワイヤーによる停止を視覚化している。",
+      "src/data/content/forest.ts:224 — チェーンソーを「訓練を受けた大人の道具」と明記している。",
+      "src/data/content/forest.ts:88 — 森を守る条件を、選木・安全な伐倒・再植栽の順番として限定している。",
+      "src/data/content/forest.ts:102 — 別画面の初出とみられる「間伐」にルビがない。",
+      "src/data/content/forest.ts:190 — mission画面の「材積」にルビがない。",
+      "src/q1/FellDirectionGame.tsx:119 — 「道具を片づける」は7文字でボタン規則を超える。"
+    ],
+    "recommended_actions": [
+      "通常木を機械へ渡した初回失敗は首をかしげて戻る視覚反応だけにし、2回目を汎用ヒント、3回目以降に「手で対応できる木かも」と段階化する。",
+      "チューブと柵に異なる適用条件・耐久性・成功効果を持たせ、限られた予算の配分判断を実在させる。",
+      "各スクロール単位で間伐・材積・伐倒などの専門語の初出をwithRubyで補う。",
+      "7文字以上のボタンを「片づける」「森へ入る」など2〜6文字の動詞ラベルへ短縮する。"
+    ]
+  },
+  "elapsed_sec": 111.109
+}

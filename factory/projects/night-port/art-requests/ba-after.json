@@ -1,0 +1,15 @@
+{
+  "asset_id": "port_ba_after",
+  "filename": "ba-after.png",
+  "world": "port",
+  "use": "before_after",
+  "purpose": "wrapUpのAFTER。朝8時、同じふ頭。船は軽くなり、トラックが町へ出ていく",
+  "scene": "The SAME miniature clay wharf as the BEFORE image, seen from the SAME camera position, but at 8am: soft warm morning light, the ship's deck is mostly empty of containers, the gantry crane rests, and on the right lane a toy truck carrying one container drives out through the gate toward the town visible in the distance. One or two workers wave it off. Same buildings, same crane, same quay — only time and activity changed.",
+  "composition": "Identical framing to the BEFORE: ship left, crane center, truck lane right. Morning sky. The departing truck sits around 75-80% width, fully inside frame.",
+  "required_objects": ["same ship (deck nearly empty)", "same gantry crane at rest", "truck with container exiting through the right gate", "morning light", "distant town beyond the gate"],
+  "forbidden_objects": ["readable text", "logos", "night sky", "different camera angle"],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/port/ba-after.png",
+  "used_by": ["src/data/content/port.ts"]
+}

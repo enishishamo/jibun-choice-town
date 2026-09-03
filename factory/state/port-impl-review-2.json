@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "port-impl-review-2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 78,
+    "game_quality_score": 72,
+    "language": {
+      "LANGUAGE_AGE_FIT": 84,
+      "FURIGANA_SUPPORT": 76,
+      "TEXT_DENSITY": 74,
+      "BUTTON_CLARITY": 76,
+      "TECHNICAL_TERM_SUPPORT": 80,
+      "VISUAL_LANGUAGE_SUPPORT": 72
+    },
+    "blockers": [],
+    "high": [
+      "yard_planの中心的な結果である積み替えが、ヤード上の箱の移動として表示されない。夜明けシミュレーション中も元の積載状態を描画し続け、因果を文章だけで説明しているため、WORLD_FEEDBACK_QUALITY／TEXT_ONLY_CONSEQUENCEゲートを満たさない。",
+      "truck_dispatchでは道路の高さ制限が実際の判断として出現しない。背高便の行先Bを生成から除外しており、tall_route検査は通常プレイで到達不能。提示された『道路の制限マップ』も実装されず、道路制限より車両割当てだけを体験する構造になっている。"
+    ],
+    "medium": [
+      "tally_checkの誤判断直後はゲート列が変化せず、差し戻しが文章通知だけで表現される。箱がブースへ戻る移動・状態表示を追加すべき。",
+      "複数の画面で45文字を超える文が残り、説明密度基準を満たさない。wrapUpや職業説明にも長い一文が集中している。",
+      "ボタン文字数2〜6字の規則に違反するラベルが残る。特に「証明書をまとめる」と導入CTA「夜のふ頭を、のぞいてみる」が超過している。",
+      "難読・専門語のルビ運用が不統一。「隔離」「規程」「照合」「損傷」「蔵置」などが画面ごとの初出で必ずしもルビ化されていない。",
+      "game-critic-v2が必須とするGAMEPLAY_REFERENCE記録は、指定された実装ファイル内では確認できない。許可対象外ファイルにあるため、この要件は別途ゲートで確認が必要。"
+    ],
+    "low": [
+      "tally_checkの残り許容表示は開始時から「あ​​と1回」と表示され、定数名が示す2回制限との意味が直感的でない。"
+    ],
+    "evidence": [
+      "src/q1/YardPlanGame.tsx:127 — 夜明け進行はsim.logの切り替えだけで、yardViewは未更新のys.colsを描画する。",
+      "src/q1/YardPlanGame.tsx:137 — 積み替え結果は「上の箱をどかした」という文章でのみ提示される。",
+      "src/q1/portLogic.ts:334 — 背高便の行先をAまたはCだけに限定し、道路高さ制限ケースを生成しない。",
+      "src/q1/portLogic.ts:354 — tall_route検査は存在するが、通常生成データでは到達不能。",
+      "src/q1/TruckDispatchGame.tsx:137 — 資料カードに高さ制限道路の選択・地図がなく、A/B/Cは距離関係だけで扱われる。",
+      "src/q1/TallyCheckGame.tsx:87 — 誤判断時の『箱が戻る』結果はnote文字列だけで、gateStripの視覚状態は変わらない。",
+      "src/q1/TallyCheckGame.tsx:73 — 「証明書をまとめる」は8字で、2〜6字規則に違反する。",
+      "src/data/content/port.ts:40 — 導入CTA「夜のふ頭を、のぞいてみる」は2〜6字を超える。",
+      "src/data/content/port.ts:98 — wrapUpの一文が45文字上限を超える。",
+      "src/data/content/port.ts:118 — TOS説明の一文が45文字上限を大幅に超える。",
+      "src/data/content/port.ts:124 — 積み替え説明が長い一文のまま残る。",
+      "src/q1/CraneLiftGame.tsx:136 — 専門語「運用規程」の画面初出にルビがない。",
+      "src/q1/TallyCheckGame.tsx:119 — 専門語「照合」の画面初出にルビがない。",
+      "factory/rules/game-critic-v2.md:46 — 中心因果が文章のみなら原則FAILと定める。",
+      "factory/rules/language-style.md:35 — 1文45文字以下を必須とする。",
+      "factory/rules/language-style.md:43 — ボタンを2〜6文字と定める。"
+    ],
+    "recommended_actions": [
+      "夜明けシミュレーション専用の可視ヤード状態を持ち、対象箱と上の箱を各ステップで実際に移動・退避・搬出させる。失敗・完了画面にも最終状態を残す。",
+      "背高便が高さ制限ルートと衝突し得るケースを生成し、プレイヤーが車両だけでなく経路も割り当てる仕組みと道路制限マップを実装する。",
+      "tally_checkで誤判断した箱をゲート方向からブースへ戻す視覚状態または短いアニメーションを追加する。",
+      "45文字超の文を意味単位で分割し、各画面の説明を最大2ブロックに整理する。",
+      "全CTAを2〜6文字の動詞ラベルへ短縮する。例：「証明する」「ふ頭へ」。",
+      "画面ごとの初出専門語をwithRubyで統一し、短い言い換えと既存の視覚表示を対応させる。",
+      "許可対象外のgameplay-references記録について、各4ゲームのreference_gamesと設計トレーサビリティが埋まっていることを別途検証する。"
+    ]
+  },
+  "elapsed_sec": 126.46
+}

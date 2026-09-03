@@ -105,6 +105,81 @@
     ]
   },
   {
+    "id": "forest-picker",
+    "displayName": "林業作業士（選木）",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "forest-care"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "印のテープ",
+      "材積のめやす",
+      "林の図"
+    ],
+    "dPatterns": [
+      "thinning_pick"
+    ],
+    "mechanics": [
+      "thinning_pick"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/forest.ts"
+    ]
+  },
+  {
+    "id": "forest-feller",
+    "displayName": "伐木作業者",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "forest-care"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "ホイッスル",
+      "チェーンソー",
+      "ウインチ班"
+    ],
+    "dPatterns": [
+      "fell_direction"
+    ],
+    "mechanics": [
+      "fell_direction"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/forest.ts"
+    ]
+  },
+  {
+    "id": "forest-planter",
+    "displayName": "造林作業員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "forest-care"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "苗木",
+      "シカ柵・チューブ",
+      "予算表"
+    ],
+    "dPatterns": [
+      "plant_plan"
+    ],
+    "mechanics": [
+      "plant_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/forest.ts"
+    ]
+  },
+  {
     "id": "doctor",
     "displayName": "医師",
     "aliases": [],
@@ -275,6 +350,106 @@
     ]
   },
   {
+    "id": "port-planner",
+    "displayName": "コンテナヤードプランナー",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "night-port"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "TOS",
+      "ヤードマップ",
+      "電源列の表"
+    ],
+    "dPatterns": [
+      "yard_plan"
+    ],
+    "mechanics": [
+      "yard_plan"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/port.ts"
+    ]
+  },
+  {
+    "id": "port-crane",
+    "displayName": "ガントリークレーン運転士",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "night-port"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "風速計",
+      "ロック表示",
+      "地上合図の無線"
+    ],
+    "dPatterns": [
+      "crane_lift"
+    ],
+    "mechanics": [
+      "crane_lift"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/port.ts"
+    ]
+  },
+  {
+    "id": "port-tally",
+    "displayName": "港の検数員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "night-port"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "タリーシート",
+      "ライト",
+      "記録用カメラ"
+    ],
+    "dPatterns": [
+      "tally_check"
+    ],
+    "mechanics": [
+      "tally_check"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/port.ts"
+    ]
+  },
+  {
+    "id": "port-dispatch",
+    "displayName": "コンテナ輸送の配車担当",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "night-port"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "配車表",
+      "道路の制限マップ",
+      "納入予約の一覧"
+    ],
+    "dPatterns": [
+      "truck_dispatch"
+    ],
+    "mechanics": [
+      "truck_dispatch"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/port.ts"
+    ]
+  },
+  {
     "id": "sourcing",
     "displayName": "食品メーカーの「調達」の仕事",
     "aliases": [],
@@ -356,6 +531,81 @@
     "factConfidence": "needs_manual_review",
     "sourceFiles": [
       "src/data/content/priceHike.ts"
+    ]
+  },
+  {
+    "id": "river-surveyor",
+    "displayName": "河川の水質・生きもの調査員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "river-health"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "採水びん",
+      "DO計",
+      "基準カード"
+    ],
+    "dPatterns": [
+      "water_trace"
+    ],
+    "mechanics": [
+      "water_trace"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/river.ts"
+    ]
+  },
+  {
+    "id": "river-operator",
+    "displayName": "下水処理場の運転管理員",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "river-health"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "中央監視のモニター",
+      "送風機",
+      "顕微鏡"
+    ],
+    "dPatterns": [
+      "plant_ops"
+    ],
+    "mechanics": [
+      "plant_ops"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/river.ts"
+    ]
+  },
+  {
+    "id": "river-designer",
+    "displayName": "多自然川づくりの設計者",
+    "aliases": [],
+    "domain": "unknown",
+    "events": [
+      "river-health"
+    ],
+    "appearanceCount": 1,
+    "cPatterns": [
+      "川の図面",
+      "工法カタログ",
+      "予算表"
+    ],
+    "dPatterns": [
+      "bank_design"
+    ],
+    "mechanics": [
+      "bank_design"
+    ],
+    "factConfidence": "not_assessed",
+    "sourceFiles": [
+      "src/data/content/river.ts"
     ]
   },
   {

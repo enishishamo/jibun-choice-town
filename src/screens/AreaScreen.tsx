@@ -168,7 +168,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                     className={`map-spot ${done ? "done" : ""} ${locked ? "locked" : ""}`}
                     style={inc.scenePos ? { left: inc.scenePos.left, top: inc.scenePos.top } : undefined}
                     onClick={() => {
-                      if (locked) { setLockNote(inc.requiresHint ?? "これは、もう少しあとみたい。"); return; }
+                      if (locked) { setLockNote(`${inc.title}（${inc.requiresHint ?? "これは、もう少しあと"}）`); return; }
                       navigate({ name: "q1", experienceId: inc.experienceId });
                     }}
                   >
@@ -176,7 +176,10 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                       <span className="map-spot-emoji">{locked ? "🔒" : inc.emoji}</span>
                       {done && <span className="hotspot-check">✓</span>}
                     </span>
-                    <span className="map-spot-label">{inc.title}</span>
+                    {/* subject-first: only the currently playable spot carries a
+                        persistent label; locked/done spots stay quiet dots and
+                        speak through the note when tapped */}
+                    {!locked && !done && <span className="map-spot-label">{inc.title}</span>}
                   </button>
                 );
               })}

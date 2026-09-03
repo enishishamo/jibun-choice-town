@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "port-impl-review-3",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 89,
+    "game_quality_score": 84,
+    "language": {
+      "LANGUAGE_AGE_FIT": 91,
+      "FURIGANA_SUPPORT": 74,
+      "TEXT_DENSITY": 82,
+      "BUTTON_CLARITY": 92,
+      "TECHNICAL_TERM_SUPPORT": 84,
+      "VISUAL_LANGUAGE_SUPPORT": 90
+    },
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "truck_dispatch automatically assigns every load to its booked slot, so reservation-time interpretation is presented as a rule but is not a player judgment.",
+      "truck_dispatch accepts every legally valid plan regardless of empty-run efficiency; the optimization layer affects only terminal praise and has no visible replay action on that screen.",
+      "Selective ruby remains inconsistent across screens: several difficult or occupational terms first appear without ruby.",
+      "Some result and reference screens exceed the language guide's two-block or four-line explanation target."
+    ],
+    "low": [
+      "Crane actions that are safe but needlessly cautious still complete the current lift after charging one delay, making the physical consequence less distinct than the unsafe-stop consequence.",
+      "The internal TallyBox.checkOk name and comment still describe a check-digit aid even though the UI oracle was removed; it is currently unused by the reviewed UI."
+    ],
+    "evidence": [
+      "src/q1/portLogic.ts:179 — unsafe or rushed crane choices increment strikes and return without advancing idx or done, preserving the same lift.",
+      "src/q1/CraneLiftGame.tsx:75 — the persistent panel visibly marks a stopped lift as ⛔📦吊り直し.",
+      "src/q1/portLogic.ts:292 — an incorrect tally action increments mistakes and returns without advancing idx.",
+      "src/q1/TallyCheckGame.tsx:84 — only correct calls append a box to the gate strip.",
+      "src/q1/TallyCheckGame.tsx:128 — the document number is shown plainly without an answer-status oracle.",
+      "src/q1/YardPlanGame.tsx:56 — dawn snapshots remove departed boxes and visibly lift blocking boxes during the current step.",
+      "src/q1/YardPlanGame.tsx:169 — the dawn simulation exposes moving world state and a live rehandle counter.",
+      "src/q1/portLogic.ts:357 — tall-chassis, tall-route, weight, booking-window, double-booking, and distance constraints are enforced in logic.",
+      "src/q1/TruckDispatchGame.tsx:138 — each assigned B-bound job exposes an interactive short-road/detour choice.",
+      "src/q1/TruckDispatchGame.tsx:175 — the road card visually compares the 3.8m underpass with the unrestricted detour.",
+      "src/q1/TruckDispatchGame.tsx:111 — the terminal screen retains the truck board and adds a visible empty-run meter.",
+      "src/q1/TruckDispatchGame.tsx:59 — assignment copies the job's window automatically, removing slot choice from the player.",
+      "src/q1/portLogic.ts:407 — every constraint-valid dispatch immediately reaches done; empty-run quality is not part of success validation.",
+      "src/q1/TruckDispatchGame.tsx:121 — the dispatch terminal offers only 見送る, with no local mastery replay action.",
+      "src/q1/CraneLiftGame.tsx:117 — 荷役 receives a gloss and ruby, supporting an authentic technical term.",
+      "src/q1/CraneLiftGame.tsx:127 — 吊り first appears on the gameplay screen without ruby.",
+      "src/q1/TallyCheckGame.tsx:143 — 検数 first appears in the work-screen card title without ruby on that screen.",
+      "src/q1/TruckDispatchGame.tsx:165 — 背高 is glossed parenthetically rather than rendered with the prescribed ruby markup.",
+      "src/q1/TruckDispatchGame.tsx:110 — the success screen contains three consecutive explanatory paragraphs.",
+      "src/data/content/port.ts:98 — the wrap-up uses three consecutive explanation lines, including a comparatively dense first line.",
+      "src/data/content/port.ts:37 — the night is framed around scheduled cargo operations and the four missions occur in managed professional workplaces, not as unsupervised adventure."
+    ],
+    "recommended_actions": [
+      "Make booking slot or run order an explicit dispatch choice, then validate it against each job's reservation window.",
+      "Let players replay dispatch from the terminal to improve the empty-run meter, or attach a meaningful mastery threshold to the outcome while preserving hard-rule priority.",
+      "Apply per-screen ruby to first appearances such as 吊り, 検数, 背高, 搬出, 規程, and 納入.",
+      "Condense dispatch success and wrap-up copy to at most two explanation blocks per screen.",
+      "Rename or re-document checkOk as an internal fixture-coherence field so the code no longer suggests a shipped check-digit aid."
+    ]
+  },
+  "elapsed_sec": 229.961
+}

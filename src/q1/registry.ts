@@ -36,6 +36,16 @@ import LifePlanGame from "./LifePlanGame";
 import TripPlanGame from "./TripPlanGame";
 import SafetyPlanGame from "./SafetyPlanGame";
 import BusOpsGame from "./BusOpsGame";
+import YardPlanGame from "./YardPlanGame";
+import CraneLiftGame from "./CraneLiftGame";
+import TallyCheckGame from "./TallyCheckGame";
+import TruckDispatchGame from "./TruckDispatchGame";
+import ThinningPickGame from "./ThinningPickGame";
+import FellDirectionGame from "./FellDirectionGame";
+import PlantPlanGame from "./PlantPlanGame";
+import WaterTraceGame from "./WaterTraceGame";
+import PlantOpsGame from "./PlantOpsGame";
+import BankDesignGame from "./BankDesignGame";
 import DelayRecoverGame from "./DelayRecoverGame";
 import HotelReceiveGame from "./HotelReceiveGame";
 import TenantMatchGame from "./TenantMatchGame";
@@ -109,4 +119,14 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   zoo_checkup: ZooCheckupGame, // 負担予算内で検査を選び原因を特定
   feed_prep: FeedPrepGame, // 日量表の規則×今朝のデータで餌を導出
   debut_plan: DebutPlanGame, // 練習記録でプラン→当日サインで運営判断
+  yard_plan: YardPlanGame, // 搬出予定を読んで仮置き（取り出し順の先読み）
+  crane_lift: CraneLiftGame, // 計器×規程で おろす/減速/確認/見合わせ
+  tally_check: TallyCheckGame, // 書類と現物の3点照合・公正な損傷記録
+  truck_dispatch: TruckDispatchGame, // 車両・経路・時刻の制約下の割当
+  thinning_pick: ThinningPickGame, // 材積×損傷優先×開けすぎ防止の選木
+  fell_direction: FellDirectionGame, // 合図→退避→方向判断（機械への引き渡しも正解）
+  plant_plan: PlantPlanGame, // 樹種相性×シカ対策×予算配分
+  water_trace: WaterTraceGame, // 上下流比較の勾配読み（1目撃で断定しない）
+  plant_ops: PlantOpsGame, // 負荷連動の送風調整（過曝気=電力むだの二軸）
+  bank_design: BankDesignGame, // 守る区間を絞る引き算の設計＋魚道
 };

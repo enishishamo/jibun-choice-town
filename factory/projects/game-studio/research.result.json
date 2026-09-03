@@ -1,0 +1,319 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "world": "game-studio",
+    "jobs": [
+      {
+        "name_ja": "ゲームプランナー（遊び・難易度調整）",
+        "what_they_do": [
+          {
+            "claim": "体験版の感想、プレイ映像、行動ログを調べ、どこで迷う・飽きる・難しすぎるのかを仮説にする。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "敵の強さ、報酬、制限時間、ステージ配置などを仕様書やデータ表で調整し、再テストして面白さを確かめる。",
+            "fact_confidence": "high"
+          }
+        ],
+        "C": [
+          {
+            "claim": "企画書、ゲーム仕様書、レベル設計図、パラメータ表を使う。表には敵HP、攻撃力、移動速度、出現数、報酬量、制限時間などを記録する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "プレイログでは、クリア率、失敗地点、死亡回数、クリア時間、途中離脱率、操作やアイテムの使用回数などを見る。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "クリア率などに業界共通の合格値はない。対象年齢、ステージの役割、ゲームジャンルごとにチームが目標値を決める。",
+            "fact_confidence": "high"
+          }
+        ],
+        "D": [
+          {
+            "claim": "失敗が多い原因を、敵が強すぎる、説明不足、操作しにくい、進む場所が見えない、のどれかに切り分ける。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "初心者は敵のHPだけを下げがちだが、熟練者は攻撃前の予告、再挑戦までの時間、回復配置、学習順序も調整する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "簡単さと達成感、偶然性と腕前、初心者への案内と上級者の自由度を両立させる。大きな変更はディレクターや各担当と合意して決める。",
+            "fact_confidence": "high"
+          }
+        ],
+        "実は!": {
+          "claim": "同じ『つまらない』でも、簡単すぎる場合と、何をすればよいか分からない場合では直す場所がまったく違う。",
+          "fact_confidence": "high"
+        },
+        "safety_sensitivities": [
+          "プレイヤーの失敗を能力不足と決めつけず、説明、操作、表示、アクセシビリティも原因として扱う。",
+          "依存を強める報酬設計や課金誘導を、単純な『面白さアップ』として扱わない。",
+          "ログは個人情報になり得るため、子どもの行動を無断で監視する表現にしない。"
+        ],
+        "sources": [
+          {
+            "title": "CEDEC セッション分野定義",
+            "url": "https://cedec.cesa.or.jp/2026/session/field/"
+          },
+          {
+            "title": "任天堂 新卒採用 職種紹介 ゲーム開発",
+            "url": "https://www.nintendo.co.jp/jobs/introduction/engineer/soft-game.html"
+          }
+        ]
+      },
+      {
+        "name_ja": "QAテスター（品質チェック）",
+        "what_they_do": [
+          {
+            "claim": "テスト項目に沿って実際の結果と期待する結果を比べ、不具合を再現できる手順と証拠を付けて報告する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "修正版で再テストし、不具合が直ったか、別の場所を壊していないかを確認する。",
+            "fact_confidence": "high"
+          }
+        ],
+        "C": [
+          {
+            "claim": "テスト計画書、テストケース、仕様書、チェックリスト、機種別・OS別のテスト環境を使う。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "不具合票には、ビルド番号、機種、発生手順、期待結果、実際の結果、発生頻度、動画や画面写真、ログを記録する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "重要度は一般に、進行不能やデータ消失のような重大問題から、表示ずれなどの軽微な問題まで段階分けするが、段階名と修正期限は会社ごとに異なる。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "発売判断では、未修正件数だけでなく、重大度、再現率、影響範囲、回避方法、プラットフォーム規定への適合を見る。",
+            "fact_confidence": "high"
+          }
+        ],
+        "D": [
+          {
+            "claim": "不具合、仕様どおりだが分かりにくい問題、好みの違いを分けて報告する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "初心者は『たまに止まる』で終えがちだが、熟練者は直前の操作、セーブ状態、通信状態、発生頻度を変え、最短の再現手順を探す。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "限られた期間では、発生しやすさだけでなく被害の大きさも考えてテストと修正確認の順番を決める。発売可否はQAテスター一人では決めない。",
+            "fact_confidence": "high"
+          }
+        ],
+        "実は!": {
+          "claim": "一度見つけた不具合を何十回も条件を変えて試し、『どうすれば必ず起こるか』を突き止めることが大切な仕事になる。",
+          "fact_confidence": "high"
+        },
+        "safety_sensitivities": [
+          "QAを、ただ遊んで粗探しする仕事として描かない。",
+          "進行不能、セーブ破損、個人情報漏えい、光過敏などを軽い失敗扱いしない。",
+          "テスターが単独で発売や修正内容を決定するように描かない。"
+        ],
+        "sources": [
+          {
+            "title": "ISTQB Certified Tester Foundation Level Syllabus v4.0.1",
+            "url": "https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf"
+          },
+          {
+            "title": "任天堂 新卒採用 職種紹介 ゲーム開発",
+            "url": "https://www.nintendo.co.jp/jobs/introduction/engineer/soft-game.html"
+          }
+        ]
+      },
+      {
+        "name_ja": "UIデザイナー（画面・操作設計）",
+        "what_they_do": [
+          {
+            "claim": "メニュー、HUD、ボタン表示、文字、アイコンの情報の順番と見た目を設計し、プレイヤーが迷わず操作できる画面を作る。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "試作画面をゲームに組み込み、実際の操作やプレイテストを通じて読みやすさ、選びやすさ、ゲーム全体との一貫性を直す。",
+            "fact_confidence": "high"
+          }
+        ],
+        "C": [
+          {
+            "claim": "画面遷移図、ワイヤーフレーム、UI仕様書、デザインシステム、アイコン一覧、文字サイズ表、入力機器ごとのボタン表記を使う。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "参考基準としてWCAG 2.2では通常文字のコントラスト比4.5対1以上、大きな文字は3対1以上を示す。ただしWCAGはゲーム全体への一律の法的合格基準ではない。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "色だけで成功・失敗や敵味方を区別せず、形、文字、模様、音など別の手掛かりも組み合わせる。",
+            "fact_confidence": "high"
+          }
+        ],
+        "D": [
+          {
+            "claim": "情報を増やすほど説明しやすい一方、画面が混雑するため、今必要な情報を優先して表示する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "初心者は画面一枚の美しさを優先しがちだが、熟練者はプレイ中の視線、ボタン移動順、文字量、背景の変化、誤操作からの戻りやすさまで確認する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "世界観に合う表現と読みやすさ、演出の派手さと操作への反応速度を両立させる。",
+            "fact_confidence": "high"
+          }
+        ],
+        "実は!": {
+          "claim": "UIは絵を作るだけでは完成せず、ゲーム内で選択、点滅、拡大、入力切替などが正しく動くよう実装する仕事を含む場合がある。",
+          "fact_confidence": "high"
+        },
+        "safety_sensitivities": [
+          "小さい文字、低いコントラスト、色だけの区別を『難しさ』として正当化しない。",
+          "認知、視覚、運動特性の違いを本人の注意不足として描かない。",
+          "確認なしでセーブ削除や購入が実行されるUIを笑い話にしない。"
+        ],
+        "sources": [
+          {
+            "title": "CEDEC2020 カービィUIでおもてなし！",
+            "url": "https://cedec.cesa.or.jp/2020/session/detail/s5e815abe3a080.html"
+          },
+          {
+            "title": "WCAG 2.2 Contrast Minimum",
+            "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+          },
+          {
+            "title": "WCAG 2.2 Use of Color",
+            "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+          },
+          {
+            "title": "Xbox Accessibility Guidelines",
+            "url": "https://learn.microsoft.com/en-us/xbox/accessibility/guidelines"
+          }
+        ]
+      },
+      {
+        "name_ja": "サウンドデザイナー（音響演出）",
+        "what_they_do": [
+          {
+            "claim": "操作音、環境音、敵の予告音、効果音などを録音・加工・制作し、ゲームの状況に応じて鳴るよう設定する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "BGM、せりふ、効果音が互いを邪魔しないよう音量や鳴る優先順位を調整し、複数の再生機器で確認する。",
+            "fact_confidence": "high"
+          }
+        ],
+        "C": [
+          {
+            "claim": "DAW、マイク、録音機、ヘッドホン、スピーカー、波形、スペクトラム表示、サウンド一覧表、イベント名・再生条件表を使う。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "音量確認にはピーク値のdBFSや平均的な聞こえ方を表すLUFSなどを使うことがある。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "ゲーム全体に共通する単一のLUFS合格値は確立しておらず、作品、機種、出力機器、社内基準に合わせて目標を決める。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "スマートフォン、テレビ、内蔵スピーカー、ヘッドホンでは聞こえ方が異なるため、実機で確認する。",
+            "fact_confidence": "high"
+          }
+        ],
+        "D": [
+          {
+            "claim": "音を豪華に重ねるほどよいとは限らず、攻撃の予告、決定音、せりふなど、プレイに必要な音を聞き取れるよう優先する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "初心者は単体で格好よい音を作りがちだが、熟練者は同時に鳴る音、連続再生、距離、方向、場面の緊張度の中で調整する。",
+            "fact_confidence": "high"
+          },
+          {
+            "claim": "迫力と耳への負担、リアルさと状況の分かりやすさ、データ容量と音質を両立させる。",
+            "fact_confidence": "high"
+          }
+        ],
+        "実は!": {
+          "claim": "敵の攻撃前の音は飾りではなく、画面を見続けなくても危険へ反応するためのゲームルールの一部になり得る。",
+          "fact_confidence": "high"
+        },
+        "safety_sensitivities": [
+          "大音量や突然の音を『迫力があるほど正解』として扱わない。",
+          "重要情報を音だけで伝えず、字幕、表示、振動など代替手段も検討する。",
+          "市販音源や他作品の音を自由にコピーできるように描かず、著作権・利用許諾を扱う。"
+        ],
+        "sources": [
+          {
+            "title": "CEDEC2018 ソーシャルゲームのラウドネスコントロール",
+            "url": "https://cedec.cesa.or.jp/2018/session/detail/s5aae0cdde2a23.html"
+          },
+          {
+            "title": "CEDEC2003 サウンドデザイン",
+            "url": "https://cedec.cesa.or.jp/2003/session/details/r47.html"
+          },
+          {
+            "title": "Xbox Accessibility Guideline 104",
+            "url": "https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/104"
+          }
+        ]
+      }
+    ],
+    "world_flow": "体験版の感想とプレイログをゲームプランナーが分類し、直すべき体験と仮説を仕様・調整案にする。UIデザイナーは迷いや読みづらさを画面・操作から直し、サウンドデザイナーは反応の弱さや危険の分かりにくさを音響演出から直す。新しいビルドをQAテスターが仕様、再現手順、機種別条件で検証し、不具合票とテスト結果を各担当へ返す。修正版を再びプレイテストし、面白さの改善と新しい不具合の有無をチームで確認する。発売可否や大きな仕様変更は一職種だけでなく、ディレクター、制作、技術、QAなどの合議で決める。",
+    "terms": [
+      {
+        "term": "仕様書",
+        "yomi": "しようしょ",
+        "gloss": "ゲームの動きと条件を決める設計文書"
+      },
+      {
+        "term": "再現手順",
+        "yomi": "さいげんてじゅん",
+        "gloss": "不具合をもう一度起こす操作の順番"
+      },
+      {
+        "term": "プレイログ",
+        "yomi": "ぷれいろぐ",
+        "gloss": "操作や失敗地点を記録した行動データ"
+      },
+      {
+        "term": "ラウドネス",
+        "yomi": "らうどねす",
+        "gloss": "人が感じる音の大きさを表す尺度"
+      }
+    ],
+    "safety_sensitivities": [
+      "『つまらない』という一言を、そのまま一つの数値や原因に置き換えない。",
+      "子ども、障害のある人、ゲームに不慣れな人の失敗を本人の能力不足として描かない。",
+      "品質確認を、バグを全部なくせば終わる単純作業として描かない。",
+      "発売日優先で進行不能、データ消失、個人情報、課金、光過敏などの重大問題を無視させない。",
+      "ログ収集には目的説明、必要最小限の収集、匿名化やプライバシー配慮が必要である。",
+      "各職種の担当範囲は会社やプロジェクト規模で重なるため、完全に分業された固定職として描かない。"
+    ],
+    "uncertain_claims": [
+      {
+        "claim": "ゲームのクリア率、死亡回数、途中離脱率に使える業界共通の典型的合格値",
+        "status": "FACT_CHECK_REQUIRED",
+        "reason": "公開された普遍的基準はなく、ジャンル、対象者、ステージ目的、会社の目標で変わる。"
+      },
+      {
+        "claim": "ゲーム全体の標準ラウドネス値",
+        "status": "FACT_CHECK_REQUIRED",
+        "reason": "放送などには規格があるが、ゲームは機種や作品ごとの差が大きく、全作品共通値として断定できない。"
+      },
+      {
+        "claim": "不具合重要度の段階数と各段階の修正期限",
+        "status": "FACT_CHECK_REQUIRED",
+        "reason": "SeverityやPriorityの名称、段階、発売阻止条件は会社・プラットフォームごとに異なり、一部は非公開である。"
+      }
+    ]
+  },
+  "output": "{\n  \"world\": \"game-studio\",\n  \"jobs\": [\n    {\n      \"name_ja\": \"ゲームプランナー（遊び・難易度調整）\",\n      \"what_they_do\": [\n        {\n          \"claim\": \"体験版の感想、プレイ映像、行動ログを調べ、どこで迷う・飽きる・難しすぎるのかを仮説にする。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"敵の強さ、報酬、制限時間、ステージ配置などを仕様書やデータ表で調整し、再テストして面白さを確かめる。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"C\": [\n        {\n          \"claim\": \"企画書、ゲーム仕様書、レベル設計図、パラメータ表を使う。表には敵HP、攻撃力、移動速度、出現数、報酬量、制限時間などを記録する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"プレイログでは、クリア率、失敗地点、死亡回数、クリア時間、途中離脱率、操作やアイテムの使用回数などを見る。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"クリア率などに業界共通の合格値はない。対象年齢、ステージの役割、ゲームジャンルごとにチームが目標値を決める。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"D\": [\n        {\n          \"claim\": \"失敗が多い原因を、敵が強すぎる、説明不足、操作しにくい、進む場所が見えない、のどれかに切り分ける。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"初心者は敵のHPだけを下げがちだが、熟練者は攻撃前の予告、再挑戦までの時間、回復配置、学習順序も調整する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"簡単さと達成感、偶然性と腕前、初心者への案内と上級者の自由度を両立させる。大きな変更はディレクターや各担当と合意して決める。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"実は!\": {\n        \"claim\": \"同じ『つまらない』でも、簡単すぎる場合と、何をすればよいか分からない場合では直す場所がまったく違う。\",\n        \"fact_confidence\": \"high\"\n      },\n      \"safety_sensitivities\": [\n        \"プレイヤーの失敗を能力不足と決めつけず、説明、操作、表示、アクセシビリティも原因として扱う。\",\n        \"依存を強める報酬設計や課金誘導を、単純な『面白さアップ』として扱わない。\",\n        \"ログは個人情報になり得るため、子どもの行動を無断で監視する表現にしない。\"\n      ],\n      \"sources\": [\n        {\n          \"title\": \"CEDEC セッション分野定義\",\n          \"url\": \"https://cedec.cesa.or.jp/2026/session/field/\"\n        },\n        {\n          \"title\": \"任天堂 新卒採用 職種紹介 ゲーム開発\",\n          \"url\": \"https://www.nintendo.co.jp/jobs/introduction/engineer/soft-game.html\"\n        }\n      ]\n    },\n    {\n      \"name_ja\": \"QAテスター（品質チェック）\",\n      \"what_they_do\": [\n        {\n          \"claim\": \"テスト項目に沿って実際の結果と期待する結果を比べ、不具合を再現できる手順と証拠を付けて報告する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"修正版で再テストし、不具合が直ったか、別の場所を壊していないかを確認する。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"C\": [\n        {\n          \"claim\": \"テスト計画書、テストケース、仕様書、チェックリスト、機種別・OS別のテスト環境を使う。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"不具合票には、ビルド番号、機種、発生手順、期待結果、実際の結果、発生頻度、動画や画面写真、ログを記録する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"重要度は一般に、進行不能やデータ消失のような重大問題から、表示ずれなどの軽微な問題まで段階分けするが、段階名と修正期限は会社ごとに異なる。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"発売判断では、未修正件数だけでなく、重大度、再現率、影響範囲、回避方法、プラットフォーム規定への適合を見る。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"D\": [\n        {\n          \"claim\": \"不具合、仕様どおりだが分かりにくい問題、好みの違いを分けて報告する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"初心者は『たまに止まる』で終えがちだが、熟練者は直前の操作、セーブ状態、通信状態、発生頻度を変え、最短の再現手順を探す。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"限られた期間では、発生しやすさだけでなく被害の大きさも考えてテストと修正確認の順番を決める。発売可否はQAテスター一人では決めない。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"実は!\": {\n        \"claim\": \"一度見つけた不具合を何十回も条件を変えて試し、『どうすれば必ず起こるか』を突き止めることが大切な仕事になる。\",\n        \"fact_confidence\": \"high\"\n      },\n      \"safety_sensitivities\": [\n        \"QAを、ただ遊んで粗探しする仕事として描かない。\",\n        \"進行不能、セーブ破損、個人情報漏えい、光過敏などを軽い失敗扱いしない。\",\n        \"テスターが単独で発売や修正内容を決定するように描かない。\"\n      ],\n      \"sources\": [\n        {\n          \"title\": \"ISTQB Certified Tester Foundation Level Syllabus v4.0.1\",\n          \"url\": \"https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf\"\n        },\n        {\n          \"title\": \"任天堂 新卒採用 職種紹介 ゲーム開発\",\n          \"url\": \"https://www.nintendo.co.jp/jobs/introduction/engineer/soft-game.html\"\n        }\n      ]\n    },\n    {\n      \"name_ja\": \"UIデザイナー（画面・操作設計）\",\n      \"what_they_do\": [\n        {\n          \"claim\": \"メニュー、HUD、ボタン表示、文字、アイコンの情報の順番と見た目を設計し、プレイヤーが迷わず操作できる画面を作る。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"試作画面をゲームに組み込み、実際の操作やプレイテストを通じて読みやすさ、選びやすさ、ゲーム全体との一貫性を直す。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"C\": [\n        {\n          \"claim\": \"画面遷移図、ワイヤーフレーム、UI仕様書、デザインシステム、アイコン一覧、文字サイズ表、入力機器ごとのボタン表記を使う。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"参考基準としてWCAG 2.2では通常文字のコントラスト比4.5対1以上、大きな文字は3対1以上を示す。ただしWCAGはゲーム全体への一律の法的合格基準ではない。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"色だけで成功・失敗や敵味方を区別せず、形、文字、模様、音など別の手掛かりも組み合わせる。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"D\": [\n        {\n          \"claim\": \"情報を増やすほど説明しやすい一方、画面が混雑するため、今必要な情報を優先して表示する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"初心者は画面一枚の美しさを優先しがちだが、熟練者はプレイ中の視線、ボタン移動順、文字量、背景の変化、誤操作からの戻りやすさまで確認する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"世界観に合う表現と読みやすさ、演出の派手さと操作への反応速度を両立させる。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"実は!\": {\n        \"claim\": \"UIは絵を作るだけでは完成せず、ゲーム内で選択、点滅、拡大、入力切替などが正しく動くよう実装する仕事を含む場合がある。\",\n        \"fact_confidence\": \"high\"\n      },\n      \"safety_sensitivities\": [\n        \"小さい文字、低いコントラスト、色だけの区別を『難しさ』として正当化しない。\",\n        \"認知、視覚、運動特性の違いを本人の注意不足として描かない。\",\n        \"確認なしでセーブ削除や購入が実行されるUIを笑い話にしない。\"\n      ],\n      \"sources\": [\n        {\n          \"title\": \"CEDEC2020 カービィUIでおもてなし！\",\n          \"url\": \"https://cedec.cesa.or.jp/2020/session/detail/s5e815abe3a080.html\"\n        },\n        {\n          \"title\": \"WCAG 2.2 Contrast Minimum\",\n          \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html\"\n        },\n        {\n          \"title\": \"WCAG 2.2 Use of Color\",\n          \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color\"\n        },\n        {\n          \"title\": \"Xbox Accessibility Guidelines\",\n          \"url\": \"https://learn.microsoft.com/en-us/xbox/accessibility/guidelines\"\n        }\n      ]\n    },\n    {\n      \"name_ja\": \"サウンドデザイナー（音響演出）\",\n      \"what_they_do\": [\n        {\n          \"claim\": \"操作音、環境音、敵の予告音、効果音などを録音・加工・制作し、ゲームの状況に応じて鳴るよう設定する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"BGM、せりふ、効果音が互いを邪魔しないよう音量や鳴る優先順位を調整し、複数の再生機器で確認する。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"C\": [\n        {\n          \"claim\": \"DAW、マイク、録音機、ヘッドホン、スピーカー、波形、スペクトラム表示、サウンド一覧表、イベント名・再生条件表を使う。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"音量確認にはピーク値のdBFSや平均的な聞こえ方を表すLUFSなどを使うことがある。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"ゲーム全体に共通する単一のLUFS合格値は確立しておらず、作品、機種、出力機器、社内基準に合わせて目標を決める。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"スマートフォン、テレビ、内蔵スピーカー、ヘッドホンでは聞こえ方が異なるため、実機で確認する。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"D\": [\n        {\n          \"claim\": \"音を豪華に重ねるほどよいとは限らず、攻撃の予告、決定音、せりふなど、プレイに必要な音を聞き取れるよう優先する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"初心者は単体で格好よい音を作りがちだが、熟練者は同時に鳴る音、連続再生、距離、方向、場面の緊張度の中で調整する。\",\n          \"fact_confidence\": \"high\"\n        },\n        {\n          \"claim\": \"迫力と耳への負担、リアルさと状況の分かりやすさ、データ容量と音質を両立させる。\",\n          \"fact_confidence\": \"high\"\n        }\n      ],\n      \"実は!\": {\n        \"claim\": \"敵の攻撃前の音は飾りではなく、画面を見続けなくても危険へ反応するためのゲームルールの一部になり得る。\",\n        \"fact_confidence\": \"high\"\n      },\n      \"safety_sensitivities\": [\n        \"大音量や突然の音を『迫力があるほど正解』として扱わない。\",\n        \"重要情報を音だけで伝えず、字幕、表示、振動など代替手段も検討する。\",\n        \"市販音源や他作品の音を自由にコピーできるように描かず、著作権・利用許諾を扱う。\"\n      ],\n      \"sources\": [\n        {\n          \"title\": \"CEDEC2018 ソーシャルゲームのラウドネスコントロール\",\n          \"url\": \"https://cedec.cesa.or.jp/2018/session/detail/s5aae0cdde2a23.html\"\n        },\n        {\n          \"title\": \"CEDEC2003 サウンドデザイン\",\n          \"url\": \"https://cedec.cesa.or.jp/2003/session/details/r47.html\"\n        },\n        {\n          \"title\": \"Xbox Accessibility Guideline 104\",\n          \"url\": \"https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/104\"\n        }\n      ]\n    }\n  ],\n  \"world_flow\": \"体験版の感想とプレイログをゲームプランナーが分類し、直すべき体験と仮説を仕様・調整案にする。UIデザイナーは迷いや読みづらさを画面・操作から直し、サウンドデザイナーは反応の弱さや危険の分かりにくさを音響演出から直す。新しいビルドをQAテスターが仕様、再現手順、機種別条件で検証し、不具合票とテスト結果を各担当へ返す。修正版を再びプレイテストし、面白さの改善と新しい不具合の有無をチームで確認する。発売可否や大きな仕様変更は一職種だけでなく、ディレクター、制作、技術、QAなどの合議で決める。\",\n  \"terms\": [\n    {\n      \"term\": \"仕様書\",\n      \"yomi\": \"しようしょ\",\n      \"gloss\": \"ゲームの動きと条件を決める設計文書\"\n    },\n    {\n      \"term\": \"再現手順\",\n      \"yomi\": \"さいげんてじゅん\",\n      \"gloss\": \"不具合をもう一度起こす操作の順番\"\n    },\n    {\n      \"term\": \"プレイログ\",\n      \"yomi\": \"ぷれいろぐ\",\n      \"gloss\": \"操作や失敗地点を記録した行動データ\"\n    },\n    {\n      \"term\": \"ラウドネス\",\n      \"yomi\": \"らうどねす\",\n      \"gloss\": \"人が感じる音の大きさを表す尺度\"\n    }\n  ],\n  \"safety_sensitivities\": [\n    \"『つまらない』という一言を、そのまま一つの数値や原因に置き換えない。\",\n    \"子ども、障害のある人、ゲームに不慣れな人の失敗を本人の能力不足として描かない。\",\n    \"品質確認を、バグを全部なくせば終わる単純作業として描かない。\",\n    \"発売日優先で進行不能、データ消失、個人情報、課金、光過敏などの重大問題を無視させない。\",\n    \"ログ収集には目的説明、必要最小限の収集、匿名化やプライバシー配慮が必要である。\",\n    \"各職種の担当範囲は会社やプロジェクト規模で重なるため、完全に分業された固定職として描かない。\"\n  ],\n  \"uncertain_claims\": [\n    {\n      \"claim\": \"ゲームのクリア率、死亡回数、途中離脱率に使える業界共通の典型的合格値\",\n      \"status\": \"FACT_CHECK_REQUIRED\",\n      \"reason\": \"公開された普遍的基準はなく、ジャンル、対象者、ステージ目的、会社の目標で変わる。\"\n    },\n    {\n      \"claim\": \"ゲーム全体の標準ラウドネス値\",\n      \"status\": \"FACT_CHECK_REQUIRED\",\n      \"reason\": \"放送などには規格があるが、ゲームは機種や作品ごとの差が大きく、全作品共通値として断定できない。\"\n    },\n    {\n      \"claim\": \"不具合重要度の段階数と各段階の修正期限\",\n      \"status\": \"FACT_CHECK_REQUIRED\",\n      \"reason\": \"SeverityやPriorityの名称、段階、発売阻止条件は会社・プラットフォームごとに異なり、一部は非公開である。\"\n    }\n  ]\n}",
+  "elapsed_sec": 108.345
+}

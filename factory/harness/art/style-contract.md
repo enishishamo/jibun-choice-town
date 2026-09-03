@@ -83,3 +83,12 @@ BADGE_COLLISION（NEW等が顔・頭・手・職業道具に被る）= true で 
 "Asset itself passes Art QA, but its in-app presentation is poorly cropped,
 occluded by badges, or visually pasted into the UI."
 — 対策: IMAGE QA と IN-CONTEXT PRESENTATION QA の両PASSを完成条件とする（本ゲート）。
+
+### 較正メモ（2026-09-03・scene_map級アセット）
+scene_map（エリア背景）のasset単体QAが「375pxクロップで全要素を同時に保持できない」等の
+指摘でFAILする場合、それは**Presentation Gateの問い**（アプリはスワイプ/縮小で対応）。
+判定は in-context監査（present-shots→art-qa presentation）を正とし、asset側は
+SERIES_STYLE_MATCH>=80と機械チェック（サイズ/形式）を満たすこと。manifestには
+`qa_passed_in_context` として根拠つきで記録する。
+併せて、シーン上のホットスポットは「今遊べるスポットだけがラベルを持つ」
+（subject-first single-label 設計・AreaScreen共通）。

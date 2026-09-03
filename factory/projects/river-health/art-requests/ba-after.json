@@ -1,0 +1,15 @@
+{
+  "asset_id": "river_ba_after",
+  "filename": "ba-after.png",
+  "world": "river",
+  "use": "before_after",
+  "purpose": "wrapUpのAFTER。同じ川の現在。瀬と淵、魚のかげ",
+  "scene": "The SAME river reach from the SAME camera position today: clear blue-green water with visible riffles and a deeper pool, the left concrete bank replaced by natural stones and reeds while the right bank keeps its concrete (minimal intervention), small clay fish shadows in the pool, sunny sky. The SAME footbridge unchanged at mid-frame — the bridge is the anchor proving it is the same place.",
+  "composition": "Identical framing to the BEFORE: same footbridge position and size, same downstream view. Only the water, the left bank and the sky change.",
+  "required_objects": ["same footbridge unchanged", "clear water with riffles and a pool", "left bank natural stones + reeds", "right bank still concrete", "small fish shadows", "sunny sky"],
+  "forbidden_objects": ["readable text", "logos", "people", "different bridge", "changed camera angle"],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/river/ba-after.png",
+  "used_by": ["src/data/content/river.ts"]
+}

@@ -3253,8 +3253,8 @@ img {
 }
 .map-spot-ring {
   position: relative;
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: rgba(255, 253, 246, 0.95);
   border: 3px solid var(--orange);
@@ -5187,3 +5187,20 @@ img {
   .world-screen .world { max-width: 960px; }
   .region-viewport { height: 600px; }
 }
+
+/* Presentation Gate: locked scene hotspots must not dominate the artwork.
+   A locked spot shrinks to a small quiet dot; the label carries a tiny 🔒. */
+.map-spot.locked .map-spot-ring {
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  border-width: 2px;
+  opacity: 0.65;
+  box-shadow: 0 2px 6px rgba(90, 70, 40, 0.25);
+}
+.map-spot.locked .map-spot-label {
+  font-size: 11px;
+  opacity: 0.85;
+  max-width: 118px;
+}
+@keyframes bubble-rise { from { transform: translateY(0); opacity: 0.9; } to { transform: translateY(-70px); opacity: 0; } }

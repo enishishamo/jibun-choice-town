@@ -2968,6 +2968,289 @@
     "src/data/content/zoo.ts"
    ],
    "status": "qa_passed"
+  },
+  {
+   "asset_id": "port_scene",
+   "filename": "scene-port.png",
+   "world": "port",
+   "purpose": "エリア画面の連続シーン背景。4つのホットスポット（①管理棟/プランニング室 14-18%左, ②ガントリークレーン 38-42%, ③検数ブース/ゲート 60-65%, ④配車場/トラック列 80-84%）が乗る",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A container terminal at blue hour (just after sunset, sky still deep blue with warm orange horizon), seen as one continuous miniature clay diorama, left to right: a small glowing planning office; a tall gantry crane lifting a container from a docked cargo ship; a small checking booth by a gate; a truck area with ONE toy truck waiting (keep this area simple and readable). Warm floodlights, calm sea. Cozy, safe, clearly lit workplace with tiny helmeted worker figures — bright enough that every element reads at small sizes.\nRole in game: エリア画面の連続シーン背景。4つのホットスポット（①管理棟/プランニング室 14-18%左, ②ガントリークレーン 38-42%, ③検数ブース/ゲート 60-65%, ④配車場/トラック列 80-84%）が乗る\nCamera / composition: Wide horizontal scene, slight high angle. Four work areas at roughly 16%/40%/62%/80% of the width. IMPORTANT: leave at least 8% empty margin on BOTH left and right edges — no building or truck may touch the frame edge. Sky top 25%. Moderate contrast so dark areas stay readable when scaled down.\nMust include: gantry crane with a hanging container; docked container ship; small lit planning office; checking booth with gate; three toy trucks; stacked colorful containers; floodlight towers; tiny helmeted worker figures\nMust NOT include: readable text; logos; children in the yard; pitch-black darkness; rain; elements touching the left or right edge; dense clutter at the truck area\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は夕景の青とオレンジによる映画的な照明が強く、昼光中心の参照画像より色温度差とコントラストがやや大きい\n- Fix vs reference set: 人物が画面内で小さいため、参照人物に共通する顔・服・粘土造形の特徴は一致しているものの判別性が少し弱い\n- Fix vs reference set: 路面と海面は参照画像より滑らかなCGレンダー感がわずかに強く、手作り粘土の凹凸が控えめ\n- 4つの対象エリアは左から管理棟、ガントリークレーン、検数ゲート、トラック列の順に明確に配置され、指定位置にもおおむね合致している\n- 横長画面全体では良好だが、375pxの固定幅クロップ表示では左右の管理棟とトラック列を同時に保持できないため、横スクロールまたは全幅縮小表示が必要\n- 夕景でも各ホットスポットの輪郭と役割は読み取れるが、暗い路面上にUIを載せる場合はラベルやマーカーの十分なコントラストが必要\n- 作業員は低頭身、点状の目、単純化された顔と手、固形粘土風の髪と制服で統一され、汎用Pixar風人物への顕著な逸脱はない\n- 読める文字、数字、ロゴ、透かし、不自然な手指、人物の見切れは確認できない",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T09:49:08.514Z",
+   "iteration": 3,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 86,
+    "READABILITY": 92,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 91,
+    "SERIES_CONSISTENCY": 85,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 88,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 86
+   },
+   "qa_issues": [
+    "夜景寄りの暗い色調 — 小学生向けゲーム画面として参照セットより少し重く、シリーズの明るい印象から外れる",
+    "左端の管理棟と右端のトラックが外周に近い — 端末ごとのトリミングでホットスポットの意味が弱くなる可能性がある",
+    "人物と作業小物が小さい — モバイル表示では役割や港湾作業の状況を識別しにくい",
+    "4つの指定ホットスポットは概ね正しい位置にあり、管理棟・クレーン・検数ゲート・トラック列の職務表現も適切",
+    "file too large: 2.6MB (>2MB)"
+   ],
+   "file_hash": "ea7bd7206a51",
+   "used_by": [
+    "src/data/content/port.ts"
+   ],
+   "status": "qa_passed_in_context",
+   "qa_note": "asset-level QA hit max_iterations on mobile-crop/label concerns that are PRESENTATION-stage questions; the Asset Presentation Gate judged the real area screen: PASS 92, badge_collision=false (after the subject-first single-label hotspot redesign). SSM 84 >= 80. File compressed to <2MB."
+  },
+  {
+   "asset_id": "port_ba_before",
+   "filename": "ba-before.png",
+   "world": "port",
+   "purpose": "オープニング＆wrapUpのBEFORE。夜10時、船が着いたばかりの静かなふ頭",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Night at a miniature clay container wharf, 10pm: a container ship has just docked, gangway down, containers still stacked on deck. The gantry crane stands ready but idle. Floodlights are on, long soft shadows, calm dark-blue sea, a few tiny helmeted workers walking toward the ship. Quiet anticipation before work begins.\nRole in game: オープニング＆wrapUpのBEFORE。夜10時、船が着いたばかりの静かなふ頭\nCamera / composition: Medium-wide view of the wharf from a fixed vantage point: ship on the left at the quay, crane center, empty truck lane on the right leading toward a lit gate. Same camera position will be reused for the AFTER image. Keep the crane and quay fully in frame with generous margins.\nMust include: docked ship with containers on deck; idle gantry crane; empty truck lane on the right; lit gate in the right background; floodlights\nMust NOT include: readable text; logos; moving trucks; morning light\nAspect ratio: 3:2 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T09:52:42.078Z",
+   "iteration": 1,
+   "qa_score": 87,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 90,
+    "COMPOSITION": 92,
+    "CROP_SAFETY": 90,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 94,
+    "CHARACTER_ANATOMY": 93,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 88,
+    "SERIES_STYLE_MATCH": 87,
+    "CHARACTER_SERIES_MATCH": 90
+   },
+   "qa_issues": [
+    "右端の道路と設備が途中で切れているが、船・クレーン・作業員は中央70%付近に収まり、場面の意味は維持されている",
+    "『静かなふ頭』としては作業員3人と稼働中に見えるクレーンが多少活動的だが、到着直後の状況として許容できる",
+    "暗い青の背景と細かな港湾設備はスマートフォン表示で一部が潰れやすい"
+   ],
+   "file_hash": "4552df5f6245",
+   "used_by": [
+    "src/data/content/port.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "port_ba_after",
+   "filename": "ba-after.png",
+   "world": "port",
+   "purpose": "wrapUpのAFTER。朝8時、同じふ頭。船は軽くなり、トラックが町へ出ていく",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME miniature clay wharf as the BEFORE image, seen from the SAME camera position, but at 8am: soft warm morning light, the ship's deck is mostly empty of containers, the gantry crane rests, and on the right lane a toy truck carrying one container drives out through the gate toward the town visible in the distance. One or two workers wave it off. Same buildings, same crane, same quay — only time and activity changed.\nRole in game: wrapUpのAFTER。朝8時、同じふ頭。船は軽くなり、トラックが町へ出ていく\nCamera / composition: Identical framing to the BEFORE: ship left, crane center, truck lane right. Morning sky. The departing truck sits around 75-80% width, fully inside frame.\nMust include: same ship (deck nearly empty); same gantry crane at rest; truck with container exiting through the right gate; morning light; distant town beyond the gate\nMust NOT include: readable text; logos; night sky; different camera angle\nAspect ratio: 3:2 (compose for this frame).",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/port/ba-before.png"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T09:55:12.269Z",
+   "iteration": 1,
+   "qa_score": 91,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 95,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 91,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 93,
+    "CHARACTER_ANATOMY": 92,
+    "SERIES_CONSISTENCY": 95,
+    "BEFORE_AFTER_CONSISTENCY": 96,
+    "JOB_ACCURACY": 98,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 96,
+    "CHARACTER_SERIES_MATCH": 92
+   },
+   "qa_issues": [
+    "AFTERでは作業員が3人から2人に減っており、荷下ろし完了後の自然な変化ではあるものの、厳密な差分は積荷・トラック・時間帯だけに限定されていない",
+    "右端のコンテナと建物が見切れているため、狭い表示では周辺情報がさらに失われる可能性がある",
+    "AFTERのトラックは町へ向かう状況を示しているが、静止画では走行中か停車中かがやや曖昧"
+   ],
+   "file_hash": "0c68d9f5f33d",
+   "used_by": [
+    "src/data/content/port.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "forest_scene",
+   "filename": "scene-forest.png",
+   "world": "forest",
+   "purpose": "エリア画面の連続シーン背景。3ホットスポット（①選木の林 ~20%左, ②伐倒現場 ~52%, ③植栽斜面 ~80%）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A mountain forestry worksite as one continuous miniature clay diorama, left to right: a dense cedar stand where a worker marks a trunk with tape; a felling site where one tree lies neatly on the ground and a helmeted crew stands at safe distance with a small winch machine; a replanted open slope with tiny seedlings in rows, protective tubes and a deer fence, distant valley behind. Bright daytime, warm sunlight through the canopy on the left, open sky on the right. Cozy handcrafted clay look, tiny helmeted worker figures, safe and organized.\nRole in game: エリア画面の連続シーン背景。3ホットスポット（①選木の林 ~20%左, ②伐倒現場 ~52%, ③植栽斜面 ~80%）\nCamera / composition: Wide horizontal scene, slight high angle. Three work areas at roughly 20%/52%/80% width, visually distinct (dark dense stand -> working clearing -> bright open slope). At least 8% empty margin at left and right edges. Sky top 20%.\nMust include: dense cedar stand; tape-marking worker; one cleanly felled log; small winch machine; seedling rows with tubes; deer fence; helmeted tiny workers\nMust NOT include: readable text; logos; chainsaw in a child's hands; falling tree mid-air; injury or danger scene\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Candidate has slightly denser, more naturalistic ground debris and foliage texture than the cleaner, more simplified surfaces in the reference set.\n- Fix vs reference set: Characters are smaller in-frame than most reference scenes, making the established face and eye design less visually confirmable.\n- Fix vs reference set: The central felling hotspot is less immediately recognizable than the tree-selection and planting areas because it mainly shows a felled log, winch, and standing workers rather than an active felling action.\n- The three-stage left-to-right workflow is clear, but the central stage needs a slightly stronger visual cue for tree felling to distinguish it instantly on a small screen.\n- Fine soil, stones, seedlings, and distant landscape details may become visually busy at mobile size, slightly reducing hotspot readability.\n- The left and right workers remain safely framed, but their small scale limits expression and task-tool legibility.\n- file too large: 2.6MB (>2MB)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1536x1024",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:06:07.611Z",
+   "iteration": 3,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 86,
+    "READABILITY": 92,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 94,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 92,
+    "MOBILE_USABILITY": 84,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 92
+   },
+   "qa_issues": [
+    "①選木、②伐倒・搬出、③植栽の3工程が左・中央・右に明確に分かれ、scene_mapとして読み取りやすい",
+    "右端の植栽作業員と苗木はモバイル横トリミングで失われやすく、重要要素を中央70%へ寄せる余地がある",
+    "左端の選木作業も端に近いため、狭い表示では人物と対象木の関係が弱くなる可能性がある",
+    "人物は低頭身、点状の目、単純な顔、固形粘土風の髪と服でreference setとの整合性が高く、手指や肢体の破綻も見られない",
+    "文字・数字・ロゴ・透かしは見られず、職業道具と安全装備も林業場面として概ね適切",
+    "file too large: 2.6MB (>2MB)"
+   ],
+   "file_hash": "8e985fdb0298",
+   "used_by": [
+    "src/data/content/forest.ts"
+   ],
+   "status": "qa_failed"
+  },
+  {
+   "asset_id": "forest_ba_before",
+   "filename": "ba-before.png",
+   "world": "forest",
+   "purpose": "オープニング＆wrapUpのBEFORE。手入れ前の、混みあって暗い人工林",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: Inside an untended cedar plantation as a miniature clay diorama: trees crowded far too close, thin weak trunks, the canopy closed so the forest floor is dim and bare, a few brown withered branches. One narrow path leads in. Slightly somber but not scary — a forest waiting for care.\nRole in game: オープニング＆wrapUpのBEFORE。手入れ前の、混みあって暗い人工林\nCamera / composition: Medium view down the path into the stand from a fixed vantage point; the same camera will be reused for the AFTER image. Dim green-grey light, bare soil floor, crowded trunks left and right.\nMust include: crowded thin cedar trunks; closed dark canopy; bare forest floor; narrow path\nMust NOT include: readable text; logos; people; sunbeams reaching the floor\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 樹皮・根・地面の凹凸が参照画像より細密で写実的であり、丸く単純化された手作り粘土模型の造形から外れている\n- Fix vs reference set: 参照画像の明るく暖かな色温度と鮮やかな配色に対し、候補は暗い茶色と深緑が支配的で重苦しい\n- Fix vs reference set: 木々が均一に反復し、参照画像にある個体差や手作りミニチュアらしい柔らかな不揃いさが弱い\n- Fix vs reference set: 参照画像の俯瞰的な箱庭・玩具ジオラマ感に対し、候補は実際の森林内を撮影したような低い目線と深い遠近感が強い\n- Fix vs reference set: 葉が細い房状に密生し、参照画像の丸く塊状に整理された樹冠表現よりリアル寄り\n- Fix vs reference set: 柔らかな斜光や明るいハイライトが乏しく、シリーズ特有の親しみやすい立体感が出ていない\n- SERIES_STYLE_MATCHが80未満 — 参照セットと並べると同じ作品・同じ世界には見えない\n- 暗部が広く、縮小表示では幹と根が一体化して状況を読み取りにくい",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:10:00.706Z",
+   "iteration": 2,
+   "qa_score": 82,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 84,
+    "COMPOSITION": 86,
+    "CROP_SAFETY": 91,
+    "READABILITY": 82,
+    "OBJECT_COMPLETENESS": 95,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 83,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 85,
+    "MOBILE_USABILITY": 88,
+    "SERIES_STYLE_MATCH": 82,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "人工林の混雑と暗さは明確に伝わるが、樹木が均一すぎず、整然と植林された人工林であることが一目では少し曖昧",
+    "中央の道が視線誘導として機能している一方、主役となる問題箇所がなく、ゲーム画面では単なる森の背景として読まれる可能性がある",
+    "外周を切っても意味は維持されるが、モバイル表示では密集した幹と暗部が縮小され、手入れ不足の具体的な状態が判別しにくくなる",
+    "Before/After用として同一カメラ・同一樹木配置を再現できるよう、後続画像ではこの構図と個々の主要な幹・切り株・倒木位置を厳密に固定する必要がある"
+   ],
+   "file_hash": "564086b27955",
+   "used_by": [
+    "src/data/content/forest.ts"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "forest_ba_after",
+   "filename": "ba-after.png",
+   "world": "forest",
+   "purpose": "wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: The SAME cedar stand from the SAME camera position after thinning: fewer, thicker, healthier trunks with space between them, warm sunbeams reaching a green forest floor with low plants and one small seedling with a protective tube, a fresh cut stump near the path. Bright, hopeful, alive.\nRole in game: wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ\nCamera / composition: Identical framing to the BEFORE: same path, same vantage. Sunlight shafts from upper left, green floor, visible sky gaps in the canopy.\nMust include: same path and vantage; fewer thicker trunks; sunbeams to the floor; green understory; one cut stump; one tubed seedling\nMust NOT include: readable text; logos; people; identical crowded stand\nAspect ratio: 3:2 (compose for this frame).\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は参照画像より樹皮・地面・葉群の凹凸が細かく、手作り粘土模型というより精密な汎用3Dクレイ背景に寄っている\n- Fix vs reference set: AFTERの強い黄金色の斜光と高コントラストは、参照セットの均一で柔らかな照明より映画的\n- Fix vs reference set: 候補は画面全体を森林だけで密に満たしており、参照セットに多い明確なミニチュア配置と玩具ジオラマらしい空間整理が弱い\n- BEFOREとAFTERで残存する樹木の位置・幹の太さ・枝分かれ・樹冠形状が対応せず、同一カメラで同じ林を撮った変化として成立しにくい\n- 中央の道幅、曲がり方、消失点、前景の切り株や倒木、背景の地形が大幅に変化しており、間伐結果以外まで再構成されている\n- AFTERでは左右の主要な幹が著しく太くなり、BEFOREに存在した多数の幹を単に伐採した状態では説明できない\n- 光の変化と下草・苗の成長は意図を明瞭に表現できているが、同一構図を維持するbefore/afterの必須条件に違反している\n- vision critic verdict: FAIL (MUST violation or unstated failure)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/forest/ba-before.png"
+   ],
+   "dimensions": "1248x832",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-03T10:16:37.368Z",
+   "iteration": 3,
+   "qa_score": 64,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 92,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 95,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 85,
+    "BEFORE_AFTER_CONSISTENCY": 64,
+    "JOB_ACCURACY": 93,
+    "MOBILE_USABILITY": 90,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "BEFOREとAFTERで残存するはずの主要樹木の幹形状・枝位置・樹冠シルエットが一致しない — 同じ林を同一カメラで撮った時間差としての連続性が弱い",
+    "画面中央左の大木、右前景の大木、奥の樹木配置が両画像でずれており、単なる間伐結果ではなく林全体を再生成したように見える",
+    "道の輪郭・地表の石・倒木・切り株の位置関係も広範囲に変化している — 変化対象でない背景まで別物になっている",
+    "AFTERで苗と下草が育つ意図は明瞭だが、間伐直後と植生成長後が同時に見え、時間経過の設定が少し曖昧",
+    "BEFORE_AFTER_CONSISTENCYが70未満のためfail-closed条件に抵触",
+    "vision critic verdict: FAIL (MUST violation or unstated failure)",
+    "BEFORE_AFTER_CONSISTENCY below threshold: 64"
+   ],
+   "file_hash": "fafd3c7d6b1c",
+   "used_by": [
+    "src/data/content/forest.ts"
+   ],
+   "status": "qa_failed"
   }
  ]
 }

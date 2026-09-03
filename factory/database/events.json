@@ -28,12 +28,42 @@
     "sourceFiles": [
       "src/data/content/extremeHeat.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "spatial_placement",
       "resource_allocation",
       "sequencing",
       "data_layer_compare"
+    ]
+  },
+  {
+    "id": "forest-care",
+    "title": "木を切っているのに、\n「森を守っている」って？",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "forest-thin",
+      "forest-fell",
+      "forest-plant"
+    ],
+    "jobIds": [
+      "forest-picker",
+      "forest-feller",
+      "forest-planter"
+    ],
+    "mechanics": [
+      "thinning_pick",
+      "fell_direction",
+      "plant_plan"
+    ],
+    "sourceFiles": [
+      "src/data/content/forest.ts"
+    ],
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "mechanicCategories": [
+      "spatial_placement",
+      "justified_refusal",
+      "resource_budget"
     ]
   },
   {
@@ -76,7 +106,7 @@
     "sourceFiles": [
       "src/data/content/medical.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "search_discovery",
       "measurement_inspection",
@@ -85,6 +115,40 @@
       "parameter_adjust",
       "trial_and_error_experiment",
       "composition_design"
+    ]
+  },
+  {
+    "id": "night-port",
+    "title": "真夜中のみなとで、\nきみの荷物が動いている",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "port-yard",
+      "port-crane",
+      "port-tally",
+      "port-dispatch"
+    ],
+    "jobIds": [
+      "port-planner",
+      "port-crane",
+      "port-tally",
+      "port-dispatch"
+    ],
+    "mechanics": [
+      "yard_plan",
+      "crane_lift",
+      "tally_check",
+      "truck_dispatch"
+    ],
+    "sourceFiles": [
+      "src/data/content/port.ts"
+    ],
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "mechanicCategories": [
+      "spatial_placement",
+      "pressure_matched_response",
+      "measurement_inspection",
+      "resource_allocation"
     ]
   },
   {
@@ -113,12 +177,42 @@
     "sourceFiles": [
       "src/data/content/priceHike.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "resource_allocation",
       "parameter_adjust",
       "composition_design",
       "data_layer_compare"
+    ]
+  },
+  {
+    "id": "river-health",
+    "title": "川に魚がもどってきた！\nだれかが、何かをしたらしい",
+    "status": "released",
+    "category": "unknown",
+    "gameIds": [
+      "river-trace",
+      "river-ops",
+      "river-bank"
+    ],
+    "jobIds": [
+      "river-surveyor",
+      "river-operator",
+      "river-designer"
+    ],
+    "mechanics": [
+      "water_trace",
+      "plant_ops",
+      "bank_design"
+    ],
+    "sourceFiles": [
+      "src/data/content/river.ts"
+    ],
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
+    "mechanicCategories": [
+      "evidence_elimination",
+      "parameter_adjust",
+      "resource_budget"
     ]
   },
   {
@@ -150,7 +244,7 @@
     "sourceFiles": [
       "src/data/content/schoolLunch.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "measurement_inspection",
       "drag_drop_assign",
@@ -187,7 +281,7 @@
     "sourceFiles": [
       "src/data/content/schoolTrip.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "composition_design",
       "drag_drop_assign",
@@ -223,7 +317,7 @@
     "sourceFiles": [
       "src/data/content/shopOpening.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "matching",
       "conversation_observation",
@@ -264,7 +358,7 @@
     "sourceFiles": [
       "src/data/content/townEvent.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "composition_design",
       "resource_allocation",
@@ -300,7 +394,7 @@
     "sourceFiles": [
       "src/data/content/waste.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "measurement_inspection",
       "simulation_run",
@@ -334,7 +428,7 @@
     "sourceFiles": [
       "src/data/content/zoo.ts"
     ],
-    "lastScannedAt": "2026-09-02T14:42:41.468Z",
+    "lastScannedAt": "2026-09-03T10:12:32.516Z",
     "mechanicCategories": [
       "trend_reading",
       "evidence_elimination",

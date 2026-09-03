@@ -12,8 +12,11 @@ import { schoolTrip } from "./content/schoolTrip";
 import { shopOpening } from "./content/shopOpening";
 import { waste } from "./content/waste";
 import { zoo } from "./content/zoo";
+import { port } from "./content/port";
+import { forest } from "./content/forest";
+import { river } from "./content/river";
 
-const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste, zoo];
+const MODULES: ContentModule[] = [schoolLunch, extremeHeat, priceHike, townEvent, medical, schoolTrip, shopOpening, waste, zoo, port, forest, river];
 
 export const places: Place[] = MODULES.flatMap((m) => m.places);
 export const events: AreaEvent[] = MODULES.flatMap((m) => m.events);

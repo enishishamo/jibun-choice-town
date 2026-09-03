@@ -145,6 +145,191 @@
    "what_requires_skill": "record-to-plan translation + pressure-matched lever choice + stop timing",
    "why_replay": "temperament and events re-randomize; perfect = fitting plan with calm day or justified early stop",
    "trace": "welfare-first ops -> plan-then-adapt principle -> plan_then_adapt + event_response -> plan sliders + per-slot actions -> cub drifts to hide box, sign lamps light, crowd icons -> lever-matching mastery"
+  },
+  "yard_plan": [
+   {
+    "reference_games": [
+     "Mini Metro",
+     "Wilmot's Warehouse"
+    ],
+    "borrowed_design_principles": [
+     "place now for retrieval later (spatial lookahead)",
+     "the cost of a bad layout arrives visibly at rush time"
+    ],
+    "transformed_for_job": [
+     "warehouse tiles -> container stacks with pickup days",
+     "rush hour -> the dawn discharge simulation replaying your choices"
+    ],
+    "why_it_is_fun": "a compact stacking puzzle where tomorrow morning replays your decisions box by box",
+    "what_requires_skill": "reading the whole manifest and keeping columns sorted by pickup",
+    "why_replay": "ship contents and pickup days re-randomize; perfect = zero rehandles",
+    "trace": "retrieval-order duty -> spatial-lookahead principle -> spatial_placement -> place 8 boxes -> dawn sim moves boxes aside with ❗ per rehandle -> zero-rehandle mastery"
+   }
+  ],
+  "crane_lift": [
+   {
+    "reference_games": [
+     "Papers, Please",
+     "FTL: Faster Than Light"
+    ],
+    "borrowed_design_principles": [
+     "per-case judgment against posted regulations",
+     "withdrawing/stopping as a first-class winning move"
+    ],
+    "transformed_for_job": [
+     "passport rules -> port wind/lock/signal regulations",
+     "ship crisis -> gusts, unseated locks, mismatched ground cues"
+    ],
+    "why_it_is_fun": "a tense gauge-reading loop where restraint is the skill",
+    "what_requires_skill": "mapping instrument state to the regulation ladder; not over-stopping",
+    "why_replay": "wind/lock/cue patterns re-randomize; perfect = no strikes, no needless holds",
+    "trace": "safety-over-speed duty -> justified-restraint principle -> pressure_matched_response -> 4-way call per lift -> gauges move, boxes accumulate, red lamps on strikes -> clean-night mastery"
+   }
+  ],
+  "tally_check": [
+   {
+    "reference_games": [
+     "Papers, Please"
+    ],
+    "borrowed_design_principles": [
+     "document-vs-reality cross-checking under a mistake budget",
+     "neutral recording as the professional core"
+    ],
+    "transformed_for_job": [
+     "passport fields -> container number(check digit)/seal/condition",
+     "approve-deny -> accept/query-number/query-seal/record-damage + fair wording"
+    ],
+    "why_it_is_fun": "spot-the-difference with real stakes: your record is the proof",
+    "what_requires_skill": "three-point matching; restraint from asserting WHEN damage happened",
+    "why_replay": "numbers/seals/damage re-randomize; perfect = five clean calls",
+    "trace": "handover-proof duty -> cross-check principle -> measurement_inspection -> per-box 4-way call + wording -> gate strip fills, wrong calls carry ❗ -> no-miss mastery"
+   }
+  ],
+  "truck_dispatch": {
+   "reference_games": [
+    "Mini Metro",
+    "Overcooked"
+   ],
+   "borrowed_design_principles": [
+    "hard network constraints shape every assignment",
+    "chaining nearby tasks is the optimization layer"
+   ],
+   "transformed_for_job": [
+    "lines/stations -> chassis types, road height limits, booked windows",
+    "order chaining -> pairing nearby destinations to cut empty runs"
+   ],
+   "why_it_is_fun": "a small assignment puzzle where the map, the truck and the clock all bite",
+   "what_requires_skill": "satisfying hard constraints first, then minimizing empty runs",
+   "why_replay": "job mixes re-randomize; perfect = first-serve with empty-run <= 1",
+   "trace": "road-legality duty -> constrained-assignment principle -> resource_allocation -> job->truck taps -> trucks visibly load, checker points at a wrong truck -> low-empty-run mastery"
+  },
+  "thinning_pick": {
+   "reference_games": [
+    "Wilmot's Warehouse",
+    "SimCity (zoning tradeoffs)"
+   ],
+   "borrowed_design_principles": [
+    "curate what REMAINS, not what you remove",
+    "quota by weighted value, not by count"
+   ],
+   "transformed_for_job": [
+    "inventory tiles -> a stand of trees with volume weights",
+    "zoning balance -> wind-lane and future-tree constraints"
+   ],
+   "why_it_is_fun": "a subtraction puzzle where the answer is the forest you leave behind, with a 5-years-later reveal",
+   "what_requires_skill": "volume arithmetic + damage triage + spatial spacing",
+   "why_replay": "plots re-randomize; perfect = first-serve approval",
+   "trace": "volume-rate duty -> curation principle -> spatial selection -> mark/unmark trees -> meter moves, trees gray out, 5-year preview -> first-serve mastery"
+  },
+  "fell_direction": {
+   "reference_games": [
+    "Ace Attorney (procedure order)",
+    "FTL (withdraw as a win)"
+   ],
+   "borrowed_design_principles": [
+    "mandatory procedure order enforced by the world",
+    "handing off to specialists is a correct move, not a fail"
+   ],
+   "transformed_for_job": [
+    "courtroom order -> signal->escape-check->cut",
+    "ship retreat -> winch-team handoff for impossible trees"
+   ],
+   "why_it_is_fun": "spatial one-shots with a falling-tree payoff animation and a real dare-to-delegate choice",
+   "what_requires_skill": "lean x obstacle x escape reading; procedure discipline",
+   "why_replay": "leans/obstacles re-randomize; perfect = no red whistles, no wasted handoffs",
+   "trace": "felling-safety duty -> procedure+delegation principle -> justified_refusal + spatial call -> signal then direction tap -> tree falls (CSS), logs line up, red whistle on unsafe -> clean-day mastery"
+  },
+  "plant_plan": {
+   "reference_games": [
+    "Frostpunk (scarce allocation)",
+    "Stardew Valley (site fit)"
+   ],
+   "borrowed_design_principles": [
+    "a budget that cannot cover everything forces priority judgment",
+    "crops must match the tile, not the player's favorite"
+   ],
+   "transformed_for_job": [
+    "heat allocation -> deer-guard budget across zones",
+    "crop tiles -> species x moisture fit on a real slope"
+   ],
+   "why_it_is_fun": "a tight 3-zone allocation puzzle with a 3-years-later germination reveal",
+   "what_requires_skill": "fit matrix + protecting the RIGHT zone under budget",
+   "why_replay": "moisture/deer patterns re-randomize; perfect = all zones alive, first serve",
+   "trace": "regeneration duty -> scarcity-allocation principle -> resource_budget + matching -> per-zone species/guard picks -> hillside preview (growing vs eaten) -> first-serve mastery"
+  },
+  "water_trace": {
+   "reference_games": [
+    "Return of the Obra Dinn (deduction from evidence placement)",
+    "Metroid (gated exploration reading)"
+   ],
+   "borrowed_design_principles": [
+    "truth is located WHERE the evidence changes, not what one clue says",
+    "spending limited probes where they split hypotheses"
+   ],
+   "transformed_for_job": [
+    "deduction board -> river spots up/downstream of a plant and a tributary",
+    "limited probes -> four sampling bottles"
+   ],
+   "why_it_is_fun": "a reverse-whodunit about GOOD news, with a stocking-poster red herring",
+   "what_requires_skill": "choosing spots that split the three truths; refusing one-sighting conclusions",
+   "why_replay": "causes/readings re-randomize; expert = correct with 3 bottles",
+   "trace": "comparison-survey duty -> evidence-gradient principle -> evidence_elimination(spatial) -> pick spots + conclude -> meters plant flags on the river band, truth zone sparkles -> few-bottle mastery"
+  },
+  "plant_ops": {
+   "reference_games": [
+    "Overcooked (load following)",
+    "Tamagotchi (creature care)"
+   ],
+   "borrowed_design_principles": [
+    "throughput follows demand, not maximum",
+    "the system is a living thing with a mood"
+   ],
+   "transformed_for_job": [
+    "kitchen rush -> inflow load incl. a forecast rain surge",
+    "pet mood -> microbe face + bubble intensity + power waste meter"
+   ],
+   "why_it_is_fun": "keeping an invisible creature happy with one dial — where MORE is a real trap",
+   "what_requires_skill": "matching air to load each slot; anticipating the rain slot",
+   "why_replay": "load curves re-randomize; perfect = zero troubles AND zero wasted power",
+   "trace": "aeration duty -> demand-matching principle -> parameter_adjust -> up/keep/down per slot -> bubbles/face/DO needle/power meter react -> zero-waste mastery"
+  },
+  "bank_design": {
+   "reference_games": [
+    "Mini Metro (less is more networks)",
+    "SimCity (zoning restraint)"
+   ],
+   "borrowed_design_principles": [
+    "the best plan uses the FEWEST interventions that satisfy hard constraints",
+    "every over-build has a visible ecological cost"
+   ],
+   "transformed_for_job": [
+    "minimal lines -> minimal armoring (必要最小限)",
+    "zoning -> per-reach work choice + a fishway for the weir"
+   ],
+   "why_it_is_fun": "a subtraction design puzzle: the win is what you DON'T build, shown by a 3-years river preview",
+   "what_requires_skill": "reading which reaches truly need protection; nature-score optimization",
+   "why_replay": "erosion/backland patterns re-randomize; perfect = pass with nature score >= 4",
+   "trace": "minimal-armoring duty -> restraint-design principle -> resource_budget + matching -> per-reach work picks -> preview shows fish climbing / riffles returning -> high-nature mastery"
   }
  }
 }

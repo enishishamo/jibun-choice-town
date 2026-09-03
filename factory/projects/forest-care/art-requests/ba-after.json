@@ -1,0 +1,29 @@
+{
+  "asset_id": "forest_ba_after",
+  "filename": "ba-after.png",
+  "world": "forest",
+  "use": "before_after",
+  "purpose": "wrapUpのAFTER。同じ林、間伐後。光が入り、下草と苗が育つ",
+  "scene": "The SAME cedar stand after thinning, from the SAME camera: the mossy boulder lower-left, the blank signpost lower-right and the right-curving path are all UNCHANGED. About a third of the trunks are gone (a few fresh cut stumps where they stood), the remaining trunks are the SAME trees in the same positions — just with warm sunbeams now reaching a green forest floor, low plants, and one tubed seedling near the path. Bright and hopeful.",
+  "composition": "Identical framing to the BEFORE: same boulder, same signpost, same path curve, same remaining trunk positions. Change ONLY: fewer trunks (stumps remain), light shafts, green understory, one seedling.",
+  "required_objects": [
+    "same mossy boulder lower-left",
+    "same blank signpost lower-right",
+    "same right-curving path",
+    "fresh cut stumps",
+    "sunbeams to a green floor",
+    "one tubed seedling"
+  ],
+  "forbidden_objects": [
+    "readable text",
+    "logos",
+    "people",
+    "identical crowded stand"
+  ],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/forest/ba-after.png",
+  "used_by": [
+    "src/data/content/forest.ts"
+  ]
+}

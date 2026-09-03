@@ -3,6 +3,7 @@
 // The A-E letters are never shown to the child.
 // This outer flow (event -> Q1 -> discovery -> seed -> Q2) is common to
 // every profession; only the game inside differs.
+import { withRuby } from "../lib/ruby";
 import { useState } from "react";
 import { getEvent, getExperience, getProfession } from "../data";
 import { gameRegistry } from "../q1/registry";
@@ -54,7 +55,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
             <img className="mission-fire" src={A("ui-fire")} alt="" />
             <h2 className="mission-title">{exp.mission.title}</h2>
             {exp.mission.lines.map((l) => (
-              <p key={l} className="mission-line">{l}</p>
+              <p key={l} className="mission-line">{withRuby(l)}</p>
             ))}
           </div>
           <button className="btn primary big" onClick={() => setPhase("game")}>

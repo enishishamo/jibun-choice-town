@@ -1,0 +1,26 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: A mountain forestry worksite as one continuous miniature clay diorama, left to right: a dense cedar stand where a worker marks a trunk with tape; a felling site where one tree lies neatly on the ground and a helmeted crew stands at safe distance with a small winch machine; a replanted open slope with tiny seedlings in rows, protective tubes and a deer fence, distant valley behind. Bright daytime, warm sunlight through the canopy on the left, open sky on the right. Cozy handcrafted clay look, tiny helmeted worker figures, safe and organized.
+Role in game: エリア画面の連続シーン背景。3ホットスポット（①選木の林 ~20%左, ②伐倒現場 ~52%, ③植栽斜面 ~80%）
+Camera / composition: Wide horizontal scene, slight high angle. Three work areas at roughly 20%/52%/80% width, visually distinct (dark dense stand -> working clearing -> bright open slope). At least 8% empty margin at left and right edges. Sky top 20%.
+Must include: dense cedar stand; tape-marking worker; one cleanly felled log; small winch machine; seedling rows with tubes; deer fence; helmeted tiny workers
+Must NOT include: readable text; logos; chainsaw in a child's hands; falling tree mid-air; injury or danger scene
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate has slightly denser, more naturalistic ground debris and foliage texture than the cleaner, more simplified surfaces in the reference set.
+- Fix vs reference set: Characters are smaller in-frame than most reference scenes, making the established face and eye design less visually confirmable.
+- Fix vs reference set: The central felling hotspot is less immediately recognizable than the tree-selection and planting areas because it mainly shows a felled log, winch, and standing workers rather than an active felling action.
+- The three-stage left-to-right workflow is clear, but the central stage needs a slightly stronger visual cue for tree felling to distinguish it instantly on a small screen.
+- Fine soil, stones, seedlings, and distant landscape details may become visually busy at mobile size, slightly reducing hotspot readability.
+- The left and right workers remain safely framed, but their small scale limits expression and task-tool legibility.
+- file too large: 2.6MB (>2MB)

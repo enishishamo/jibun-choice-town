@@ -1,0 +1,27 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: A container terminal at blue hour (just after sunset, sky still deep blue with warm orange horizon), seen as one continuous miniature clay diorama, left to right: a small glowing planning office; a tall gantry crane lifting a container from a docked cargo ship; a small checking booth by a gate; a truck area with ONE toy truck waiting (keep this area simple and readable). Warm floodlights, calm sea. Cozy, safe, clearly lit workplace with tiny helmeted worker figures — bright enough that every element reads at small sizes.
+Role in game: エリア画面の連続シーン背景。4つのホットスポット（①管理棟/プランニング室 14-18%左, ②ガントリークレーン 38-42%, ③検数ブース/ゲート 60-65%, ④配車場/トラック列 80-84%）が乗る
+Camera / composition: Wide horizontal scene, slight high angle. Four work areas at roughly 16%/40%/62%/80% of the width. IMPORTANT: leave at least 8% empty margin on BOTH left and right edges — no building or truck may touch the frame edge. Sky top 25%. Moderate contrast so dark areas stay readable when scaled down.
+Must include: gantry crane with a hanging container; docked container ship; small lit planning office; checking booth with gate; three toy trucks; stacked colorful containers; floodlight towers; tiny helmeted worker figures
+Must NOT include: readable text; logos; children in the yard; pitch-black darkness; rain; elements touching the left or right edge; dense clutter at the truck area
+Aspect ratio: 3:2 (compose for this frame).
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 候補は夕景の青とオレンジによる映画的な照明が強く、昼光中心の参照画像より色温度差とコントラストがやや大きい
+- Fix vs reference set: 人物が画面内で小さいため、参照人物に共通する顔・服・粘土造形の特徴は一致しているものの判別性が少し弱い
+- Fix vs reference set: 路面と海面は参照画像より滑らかなCGレンダー感がわずかに強く、手作り粘土の凹凸が控えめ
+- 4つの対象エリアは左から管理棟、ガントリークレーン、検数ゲート、トラック列の順に明確に配置され、指定位置にもおおむね合致している
+- 横長画面全体では良好だが、375pxの固定幅クロップ表示では左右の管理棟とトラック列を同時に保持できないため、横スクロールまたは全幅縮小表示が必要
+- 夕景でも各ホットスポットの輪郭と役割は読み取れるが、暗い路面上にUIを載せる場合はラベルやマーカーの十分なコントラストが必要
+- 作業員は低頭身、点状の目、単純化された顔と手、固形粘土風の髪と制服で統一され、汎用Pixar風人物への顕著な逸脱はない
+- 読める文字、数字、ロゴ、透かし、不自然な手指、人物の見切れは確認できない

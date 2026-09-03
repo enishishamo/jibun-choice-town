@@ -1,0 +1,15 @@
+{
+  "asset_id": "port_ba_before",
+  "filename": "ba-before.png",
+  "world": "port",
+  "use": "before_after",
+  "purpose": "オープニング＆wrapUpのBEFORE。夜10時、船が着いたばかりの静かなふ頭",
+  "scene": "Night at a miniature clay container wharf, 10pm: a container ship has just docked, gangway down, containers still stacked on deck. The gantry crane stands ready but idle. Floodlights are on, long soft shadows, calm dark-blue sea, a few tiny helmeted workers walking toward the ship. Quiet anticipation before work begins.",
+  "composition": "Medium-wide view of the wharf from a fixed vantage point: ship on the left at the quay, crane center, empty truck lane on the right leading toward a lit gate. Same camera position will be reused for the AFTER image. Keep the crane and quay fully in frame with generous margins.",
+  "required_objects": ["docked ship with containers on deck", "idle gantry crane", "empty truck lane on the right", "lit gate in the right background", "floodlights"],
+  "forbidden_objects": ["readable text", "logos", "moving trucks", "morning light"],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/port/ba-before.png",
+  "used_by": ["src/data/content/port.ts"]
+}

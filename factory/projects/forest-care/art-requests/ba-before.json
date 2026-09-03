@@ -1,0 +1,29 @@
+{
+  "asset_id": "forest_ba_before",
+  "filename": "ba-before.png",
+  "world": "forest",
+  "use": "before_after",
+  "purpose": "オープニング＆wrapUpのBEFORE。手入れ前の、混みあって暗い人工林",
+  "scene": "Inside an untended cedar plantation as a miniature clay diorama: trees crowded too close, thin weak trunks, closed dark canopy, bare dim forest floor. ANCHORS that must persist into the AFTER image: a LARGE distinctive mossy boulder at the lower-left of the path, a wooden signpost (blank, no text) at the path entrance lower-right, and the path curving gently to the right at mid-frame. Somber but not scary.",
+  "composition": "Medium view down the path from a fixed vantage: boulder lower-left, blank signpost lower-right, path curving right at mid-frame. The SAME camera and the SAME three anchors will appear unchanged in the AFTER image.",
+  "required_objects": [
+    "crowded thin cedar trunks",
+    "closed dark canopy",
+    "bare forest floor",
+    "large mossy boulder lower-left",
+    "blank wooden signpost lower-right",
+    "path curving right"
+  ],
+  "forbidden_objects": [
+    "readable text",
+    "logos",
+    "people",
+    "sunbeams reaching the floor"
+  ],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/forest/ba-before.png",
+  "used_by": [
+    "src/data/content/forest.ts"
+  ]
+}

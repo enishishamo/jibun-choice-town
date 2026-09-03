@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "forest-impl-review-1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 66,
+    "career_authenticity_score": 88,
+    "game_quality_score": 66,
+    "language": {
+      "LANGUAGE_AGE_FIT": 84,
+      "FURIGANA_SUPPORT": 58,
+      "TEXT_DENSITY": 81,
+      "BUTTON_CLARITY": 86,
+      "TECHNICAL_TERM_SUPPORT": 68,
+      "VISUAL_LANGUAGE_SUPPORT": 64
+    },
+    "blockers": [],
+    "high": [
+      "plant_planの3年後プレビューが樹種と場所の相性を判定せず、不適合な苗でも「そだっている」と表示するため、中心的な因果を誤って教える。",
+      "thinning_pickとplant_planの初回失敗は世界状態を変えず、人物の反応を文章で伝えるだけである。fell_directionも誤方向の停止を文章だけで示すため、v3のWORLD_FEEDBACK_QUALITY/TEXT_ONLY_CONSEQUENCEを満たさない。"
+    ],
+    "medium": [
+      "専門語・難読語の選択的ルビが不足している。ゲーム画面やミッションの「伐倒」「退避」「植栽」「尾根」「中腹」などが無ルビで現れる。",
+      "主要な盤面補助文字が9〜13pxに固定されており、language-style.mdの本文16px相当以上という基準を下回る。",
+      "指定ファイルだけでは、rubricが必須とするgameplay-references.jsonの各Q1記録とGAME DESIGN TRACEABILITYを確認できない。"
+    ],
+    "low": [
+      "fell_directionの完了ボタン「道具を片づける」は推奨される2〜6文字を超える。"
+    ],
+    "evidence": [
+      "src/q1/PlantPlanGame.tsx:50 — 3年後表示のokはspeciesの有無とシカ対策しか見ず、speciesFitを評価していない。",
+      "src/q1/PlantPlanGame.tsx:72 — okなら無条件で「🌱🌱🌱 そだっている」と表示し、不適合樹種について誤った世界フィードバックを返す。",
+      "src/q1/forestLogic.ts:296 — 正規ルールでは樹種不適合をfitとして失敗にしており、プレビュー実装と矛盾する。",
+      "src/q1/ThinningPickGame.tsx:167 — 初回不合格後に盤面変化を生成せず、汎用的な首振り文だけを設定する。",
+      "src/q1/PlantPlanGame.tsx:190 — 初回の相性・シカ失敗は斜面の変化を見せず、首振り文だけを設定する。",
+      "src/q1/FellDirectionGame.tsx:173 — 誤方向時はfallingアニメーションを起動せず、refusal文と赤笛メーターだけを更新する。",
+      "src/q1/FellDirectionGame.tsx:216 — 誤方向の主要結果「木がワイヤーで止められた」は文章にしか存在しない。",
+      "factory/rules/game-critic-v2.md:49 — 中心因果が視覚的に理解できず文章のみなら原則FAILと規定する。",
+      "src/q1/ThinningPickGame.tsx:62 — 木の重要情報を9pxで表示している。",
+      "src/q1/FellDirectionGame.tsx:65 — 安全手順の状態表示を10pxで表示している。",
+      "src/q1/PlantPlanGame.tsx:64 — 区画条件を12pxで表示している。",
+      "factory/rules/language-style.md:31 — ルビを除いた本文は16px相当以上を要求する。",
+      "src/data/content/forest.ts:215 — ミッション見出しの「安全に倒す」周辺で専門語「伐倒」「退避」がルビなしで使われる。",
+      "src/data/content/forest.ts:242 — 「尾根」「中腹」「植栽」などの課題語に選択的ルビがない。",
+      "factory/rules/language-style.md:20 — 中学配当・難読・専門語の画面初出にはルビを必須とする。"
+    ],
+    "recommended_actions": [
+      "PlantPlanGameの3年後判定にspeciesFitを組み込み、不適合樹種は枯れ・生育不良として正しく可視化する。",
+      "各ゲームの初回失敗に盤面上の結果を追加する。間伐は過密・風の通り道・傷んだ木の残存、植栽は生育不良・食害・予算超過、伐倒は指揮者の停止やワイヤー制止を視覚状態として示す。",
+      "ゲーム画面ごとの初出に「間伐・選木・受け口・再造林・材積」に加え、「伐倒・退避・植栽・尾根・中腹」等の必要なルビを付ける。",
+      "盤面の条件・安全状態・結果ラベルを16px相当以上へ引き上げ、375px幅で再確認する。",
+      "gameplay-references.jsonと設計トレーサビリティを、許可された監査範囲に含めて次回ゲートで検証可能にする。"
+    ]
+  },
+  "elapsed_sec": 101.277
+}

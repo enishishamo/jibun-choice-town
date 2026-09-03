@@ -1,0 +1,15 @@
+{
+  "asset_id": "river_scene",
+  "filename": "scene-river.png",
+  "world": "river",
+  "use": "scene_map",
+  "purpose": "エリア画面の連続シーン背景。3ホットスポット（①調査ポイント ~18%左, ②下水処理場 ~52%, ③設計事務所/川岸 ~80%）",
+  "scene": "A gentle town river seen as one continuous miniature clay diorama, left to right: a riverside survey point where a tiny researcher in waders holds a water bottle by a reed bank; a small tidy sewage treatment plant with round aeration tanks and bubbles, connected to the river by a clean outfall; a bright riverside office with a drawing board and, beside it, a stretch of bank being reworked with stones, one small fish ladder at a low weir. Clear day, blue-green water with visible riffles, dragonflies. Cozy handcrafted clay look, tiny figures, hopeful mood.",
+  "composition": "Wide horizontal scene, slight high angle, the river flowing left to right through the whole image. Three work areas at roughly 18%/52%/80% width. At least 8% empty margin at both edges. Sky top 20%.",
+  "required_objects": ["reed bank with a tiny surveyor", "round aeration tanks with bubbles", "clean outfall to the river", "low weir with a small fish ladder", "stone bank section", "riffles in the water", "tiny clay fish shadows"],
+  "forbidden_objects": ["readable text", "logos", "children in the water", "murky brown water", "industrial gloom"],
+  "aspect_ratio": "3:2",
+  "size": "1536x1024",
+  "output_path": "public/assets/river/scene-river.png",
+  "used_by": ["src/data/content/river.ts"]
+}

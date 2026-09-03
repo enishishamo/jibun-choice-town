@@ -1,0 +1,15 @@
+{
+  "asset_id": "river_ba_before",
+  "filename": "ba-before.png",
+  "world": "river",
+  "use": "before_after",
+  "purpose": "オープニング＆wrapUpのBEFORE。数年前の、にごって生きものの気配がない川",
+  "scene": "A town river a few years ago as a miniature clay diorama: murky greyish-green water, straight concrete banks on both sides, no plants at the waterline, no fish, a lone shopping cart silhouette NOT included — keep it clean but lifeless; overcast sky, muted colors. A small footbridge crosses mid-frame.",
+  "composition": "Fixed vantage from the left bank looking downstream, footbridge at mid-frame; the SAME camera will be reused for the AFTER image. Concrete banks dominate both edges.",
+  "required_objects": ["murky water", "straight concrete banks", "footbridge mid-frame", "overcast sky", "no visible fish or plants"],
+  "forbidden_objects": ["readable text", "logos", "people", "garbage piles", "fish"],
+  "aspect_ratio": "3:2",
+  "size": "1248x832",
+  "output_path": "public/assets/river/ba-before.png",
+  "used_by": ["src/data/content/river.ts"]
+}
