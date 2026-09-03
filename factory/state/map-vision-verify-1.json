@@ -1,0 +1,56 @@
+{
+ "ok": true,
+ "status": "OK",
+ "verdict": {
+  "adversarial_a": "Without labels, the illustrated center and overlapping terrain create some geographic context, but the surrounding destinations still read primarily as isolated icon clusters and hotspot controls. The zoomed district replaces the wider world with a large symbolic vignette rather than revealing continuous geographic detail, so the experience would become a collection of buttons arranged around a central image.",
+  "adversarial_a_verdict": "COLLECTION_OF_BUTTONS",
+  "adversarial_b": "It has map-like scenery, spatial zooming, and partial geographic continuity, but destinations are represented as oversized symbolic modules inside translucent circles. The disconnected visual scales, floating hotspots, and separate radial navigator make interaction feel more like selecting menu categories than exploring terrain.",
+  "adversarial_b_verdict": "MENU_STYLED_AS_MAP",
+  "navigation_layers_seen": [
+   "global illustrated world overview",
+   "district hotspots on the world",
+   "floating radial district navigator",
+   "district-focused zoom view",
+   "event hotspot within a district",
+   "return-to-world control"
+  ],
+  "duplicate_navigation_found": true,
+  "duplicate_navigation_detail": "Districts can be selected through hotspots placed on the world and through the floating radial navigator. The radial control duplicates destination access without making its relationship to the map immediately clear.",
+  "scores": {
+   "EXPLORATION_DESIRE": 72,
+   "MAP_CLARITY": 68,
+   "SCALABILITY": 62,
+   "DISCOVERY_QUALITY": 69,
+   "VISUAL_WORLD_FEEL": 74,
+   "MOBILE_USABILITY": 67,
+   "CONTENT_DENSITY": 61,
+   "RETURN_MOTIVATION": 58,
+   "LANGUAGE_AGE_FIT": 82,
+   "MAP_SPATIAL_COHERENCE": 64,
+   "NAVIGATION_LAYER_CLARITY": 65,
+   "WORLD_CONTINUITY": 63
+  },
+  "blockers": [
+   "The core destinations still read as discrete selectable modules surrounding a central illustration, so the screen does not pass the label-free one-world test.",
+   "The district zoom does not preserve enough visible geography or neighboring context to feel like movement through one continuous world."
+  ],
+  "high": [
+   "The floating radial navigator duplicates the map's primary destination navigation and is visually ambiguous.",
+   "Initial mobile framing makes the detailed central town too small while large amounts of space are given to abstract district overlays.",
+   "District illustrations use a markedly different scale and abstraction level from the central town, weakening spatial coherence."
+  ],
+  "medium": [
+   "Several hotspots rely on repeated fire icons whose specific meanings are indistinguishable without text.",
+   "Large translucent circles and wedges obscure terrain instead of defining convincing geographic regions.",
+   "The selected-district view contains substantial low-information space and only one prominent event.",
+   "Unknown districts represented by floating question-mark islands feel like locked UI states rather than undiscovered geography.",
+   "The desktop and mobile zoom compositions differ enough to make the world's spatial model feel unstable."
+  ],
+  "low": [
+   "Some pale text and controls have weak contrast against cream or translucent backgrounds.",
+   "The instruction that the map can be moved competes with the map rather than being learned directly through interaction."
+  ],
+  "overall_verdict": "FAIL"
+ },
+ "elapsed_sec": 20.268
+}

@@ -1,0 +1,78 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "name": "page-open-and-setup",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 2,
+      "name": "initial-state",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 3,
+      "name": "pan-operation",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 4,
+      "name": "district-tap",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 5,
+      "name": "marker-tap-and-transition",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 6,
+      "name": "return-home",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 7,
+      "name": "visited-marker-verify",
+      "success": false,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 8,
+      "name": "discover-another-district",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    {
+      "step": 9,
+      "name": "foggy-tap-teaser",
+      "success": true,
+      "pageErrors": 0,
+      "consoleErrors": 0
+    }
+  ],
+  "totalErrors": 0,
+  "screenshots": [
+    "mobile-qa-02-initial.png",
+    "mobile-qa-03-after-pan.png",
+    "mobile-qa-04-district-selected.png",
+    "mobile-qa-05-event-appeared.png",
+    "mobile-qa-06-return-to-home.png",
+    "mobile-qa-07-visited-state.png",
+    "mobile-qa-08-discover-another-area.png",
+    "mobile-qa-09-undiscovered-state.png"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+ "ok": true,
+ "status": "OK",
+ "verdict": {
+  "adversarial_a": "Without labels, the continuous land, water, roads, dotted routes, central town, surrounding districts, and spatial zoom preserve the sense of one explorable world. Some district elements still resemble oversized controls, but they remain geographically anchored rather than reading as a detached button grid.",
+  "adversarial_a_verdict": "ONE_WORLD",
+  "adversarial_b": "This now reads as a genuine illustrated map: districts occupy distinct terrain, routes imply relationships, the overview establishes geography, and selecting the port produces a spatially consistent zoom. However, the oversized translucent zones, emoji-like landmarks, and sparse zoomed view still expose menu-like interaction patterns.",
+  "adversarial_b_verdict": "MAP",
+  "navigation_layers_seen": [
+   "World-map overview",
+   "District selection via geographic hotspots",
+   "Zoomed district view",
+   "Event or incident hotspot within a district",
+   "Persistent minimap showing current location",
+   "Return-to-world control",
+   "Separate story/library utility navigation"
+  ],
+  "duplicate_navigation_found": true,
+  "duplicate_navigation_detail": "In the district view, both the 「地域全体」 control and the persistent minimap appear to offer overlapping world-level orientation or return navigation, although the minimap's exact interaction is not self-evident.",
+  "scores": {
+   "EXPLORATION_DESIRE": 78,
+   "MAP_CLARITY": 84,
+   "SCALABILITY": 72,
+   "DISCOVERY_QUALITY": 76,
+   "VISUAL_WORLD_FEEL": 86,
+   "MOBILE_USABILITY": 73,
+   "CONTENT_DENSITY": 67,
+   "RETURN_MOTIVATION": 64,
+   "LANGUAGE_AGE_FIT": 85,
+   "MAP_SPATIAL_COHERENCE": 83,
+   "NAVIGATION_LAYER_CLARITY": 74,
+   "WORLD_CONTINUITY": 82
+  },
+  "blockers": [],
+  "high": [
+   "The zoomed district contains only one dominant incident and large areas of non-interactive scenery, so entering it feels shallow rather than exploratory.",
+   "On mobile, the overview is heavily cropped and overlapping district zones obscure the broader geography, weakening orientation and discoverability."
+  ],
+  "medium": [
+   "The minimap and 「地域全体」 control create partially duplicated navigation without clearly distinct purposes.",
+   "Large translucent interaction radii and emoji-like landmarks still make parts of the world feel like interface targets placed over scenery.",
+   "The zoom transition preserves geography, but the abrupt scale change and sparse local detail make the district feel more like a single-detail screen than a navigable place.",
+   "Locked areas represented mainly by question marks communicate gating but provide little anticipatory motivation."
+  ],
+  "low": [
+   "The instructional copy below the map is visually detached from the main interaction area.",
+   "Some labels and hotspots compete with scenery and reduce immediate visual hierarchy."
+  ],
+  "overall_verdict": "FAIL"
+ },
+ "elapsed_sec": 33.166
+}

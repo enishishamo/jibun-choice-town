@@ -1,0 +1,36 @@
+{
+ "option1": {
+  "spatial_coherence": 8,
+  "exploration_desire": 7,
+  "navigation_clarity": 8,
+  "scalability_50_worlds": 8,
+  "mobile_usability": 8,
+  "visual_continuity": 7,
+  "implementation_complexity": 6,
+  "asset_compatibility": 8
+ },
+ "option2": {
+  "spatial_coherence": 9,
+  "exploration_desire": 8,
+  "navigation_clarity": 6,
+  "scalability_50_worlds": 6,
+  "mobile_usability": 6,
+  "visual_continuity": 7,
+  "implementation_complexity": 5,
+  "asset_compatibility": 8
+ },
+ "option3": {
+  "spatial_coherence": 9,
+  "exploration_desire": 9,
+  "navigation_clarity": 8,
+  "scalability_50_worlds": 6,
+  "mobile_usability": 8,
+  "visual_continuity": 9,
+  "implementation_complexity": 8,
+  "asset_compatibility": 5
+ },
+ "severity_assessment": "NEEDS_HYBRID",
+ "reasoning": "Option 1 fixes the duplicated navigation, disabled-button fog treatment, hard center boundary, and weak district illustration, so it is a credible structural repair. However, a baseline WORLD_CONTINUITY score of 31 indicates that palette-matched SVG dressing alone is too risky: districts may become richer yet still feel like separate decorative panels around an inserted center image. Option 3's shared texture directly addresses that perceptual discontinuity, but applying bespoke crops to every district across 50 worlds would create substantial tuning and maintenance costs. Option 2 has the strongest spatial purity, but removing all overview fast-travel weakens discoverability and mobile navigation as the world count and canvas complexity grow.",
+ "recommendation": "hybrid",
+ "hybrid_description": "Use Option 1 as the scalable foundation, including illustrated terrain, softened center blending, atmospheric fog, and the geometry-faithful compass. Add Option 3's shared-texture arrival corners through a small set of reusable terrain-class masks and automated crop/filter presets, reserving manual tuning for prominent transitions rather than every district."
+}

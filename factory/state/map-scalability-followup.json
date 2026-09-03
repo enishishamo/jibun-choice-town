@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "status": "CODEX_MALFORMED",
+  "error": "reviewer output was not a valid verdict JSON after retry",
+  "raw": "{\"revised_scalability_score\":86,\"reasoning\":\"The data-driven registration, generic slot layout, terrain-based rendering, minimap projection, capacity warning, and 34-marker stress result justify raising SCALABILITY above 85. However, the source contradicts one detail: de-collision clamps non-center markers to district bounds but explicitly excludes center markers, and the 8-world capacity is advisory rather than enforced.\",\"remaining_structural_risk\":\"At 50 worlds, an accidentally overfilled center district can push markers outside its town area because capacity only warns and center markers are not district-bounded; the fixed 14-pass relaxation also has no final overlap assertion.\"}",
+  "elapsed_sec": 79.01400000000001
+}

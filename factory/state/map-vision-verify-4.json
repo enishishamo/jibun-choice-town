@@ -1,0 +1,48 @@
+{
+ "ok": true,
+ "status": "OK",
+ "verdict": {
+  "adversarial_a": "ラベルが消えても、中央の街と周辺地域が地形、道、海、光の連なりで接続され、ズーム後も隣接地域と現在位置が残るため、一つの探索世界として認識できる。ただし半透明の円と孤立気味のアイコンにはボタン的な印象が残る。",
+  "adversarial_a_verdict": "ONE_WORLD",
+  "adversarial_b": "概要から地区へ空間的に拡大し、周辺景観とミニマップで位置関係を維持しているため、今回はメニュー風の配置ではなく実質的な地図になっている。ただし探索可能範囲と装飾の区別はまだ弱い。",
+  "adversarial_b_verdict": "MAP",
+  "navigation_layers_seen": [
+   "グローバルヘッダー／しごと図鑑",
+   "地域全体マップ",
+   "地区選択・ズーム表示",
+   "地区内の出来事ホットスポット",
+   "現在位置を示すミニマップ",
+   "地域全体へ戻る操作"
+  ],
+  "duplicate_navigation_found": false,
+  "duplicate_navigation_detail": "ミニマップは現在位置と表示範囲を示し、「地域全体」は階層を戻る操作であり、同一目的の重複ナビゲーションとは判断しない。",
+  "scores": {
+   "EXPLORATION_DESIRE": 84,
+   "MAP_CLARITY": 86,
+   "SCALABILITY": 82,
+   "DISCOVERY_QUALITY": 81,
+   "VISUAL_WORLD_FEEL": 88,
+   "MOBILE_USABILITY": 80,
+   "CONTENT_DENSITY": 83,
+   "RETURN_MOTIVATION": 72,
+   "LANGUAGE_AGE_FIT": 89,
+   "MAP_SPATIAL_COHERENCE": 87,
+   "NAVIGATION_LAYER_CLARITY": 86,
+   "WORLD_CONTINUITY": 88
+  },
+  "blockers": [],
+  "high": [],
+  "medium": [
+   "再訪を促す進捗、変化、収集、次の発見の予告が見えず、RETURN_MOTIVATIONが弱い。",
+   "モバイルの全体表示では中央の街とホットスポットが小さく、タップ対象の識別と精度に不安がある。",
+   "半透明の大きな円が探索範囲、照明、選択状態のどれを意味するか判別しにくい。",
+   "地区内でタップできる対象と背景装飾の視覚的な差が弱い。"
+  ],
+  "low": [
+   "ミニマップ内の記号と疑問符は小さく、単独では意味を読み取りにくい。",
+   "地区ズーム時の吹き出しが景観から離れており、対象との対応を一瞬考えさせる。"
+  ],
+  "overall_verdict": "FAIL"
+ },
+ "elapsed_sec": 42.276
+}

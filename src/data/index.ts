@@ -28,4 +28,3 @@ export const experiences: Q1Experience[] = MODULES.flatMap((m) => m.experiences)
 export const getEvent = (id: string) => events.find((e) => e.id === id);
 export const getProfession = (id: string) => professions.find((p) => p.id === id);
 export const getExperience = (id: string) => experiences.find((x) => x.id === id);
-

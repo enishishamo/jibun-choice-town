@@ -5028,9 +5028,13 @@ img {
 .town-tile {
   position: absolute;
   border-radius: 22px;
-  box-shadow: 0 6px 18px rgba(60, 50, 30, 0.25);
   cursor: pointer;
   object-fit: cover;
+  /* soft feathered edge instead of a hard drop-shadow "card" — blends into
+     the terrain beneath it (map repair §5, 2026-09-04) */
+  -webkit-mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
+  filter: url(#worldGrain) drop-shadow(0 4px 10px rgba(60, 50, 30, 0.15));
 }
 .district-node {
   position: absolute;
@@ -5059,6 +5063,11 @@ img {
   box-shadow: var(--shadow);
 }
 .district-node.foggy .district-name { color: #7d858d; }
+/* signpost: districts now carry illustrated ground content of their own
+   (districtKit in HomeScreen.tsx), so the emoji+label is a SMALL marker on
+   top of that ground, not the district's entire visual content. */
+.district-node.signpost .district-emoji { font-size: 34px; }
+.district-node.signpost .district-name { font-size: 15px; padding: 1px 9px; }
 @keyframes mist { 0%,100% { transform: translateX(0); opacity: 0.75; } 50% { transform: translateX(6px); opacity: 0.5; } }
 
 .world-marker {
@@ -5168,26 +5177,11 @@ img {
 }
 @keyframes teaser-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-.district-chips {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 10px 2px 4px;
-  -webkit-overflow-scrolling: touch;
-}
-.district-chip {
-  flex: 0 0 auto;
-  border: 2px solid #e3d9bd;
-  background: var(--ivory);
-  border-radius: 14px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #4c4434;
-  padding: 7px 12px;
-  cursor: pointer;
-}
-.district-chip.active { border-color: var(--orange); background: #fff3e2; }
-.district-chip.foggy { color: #8b929a; border-style: dashed; }
+/* .district-chips / .district-chip retired 2026-09-04 (Home/World Map Human
+   Visual Review repair): the chip bar fully duplicated on-canvas district
+   taps and read as an independent menu. Replaced by .compass-* below, a
+   compressed VIEW of the same canvas geometry. See
+   factory/state/expansion/map-repair-decision.md. */
 
 .quiet-dot {
   position: absolute;
@@ -5222,9 +5216,29 @@ img {
 }
 @keyframes hint-pulse { 0%,100% { opacity: 0.95; } 50% { opacity: 0.55; } }
 @media (min-width: 980px) {
+  /* Pre-existing bug found during the map repair (2026-09-04): this rule
+     never took effect because the ancestor .app-frame caps EVERY screen at
+     480px, and max-width alone cannot widen a block past its containing
+     block. Scoped fix — only the Home/Map screen's frame widens; every
+     other screen (Q1 games, area, profession, zukan) keeps its existing
+     480px app-frame width unchanged. */
+  .app-frame:has(.world-screen) { max-width: 960px; }
   .world-screen .world { max-width: 960px; }
   .region-viewport { height: 600px; }
 }
+
+/* Compass (map repair, 2026-09-04): replaces the old chip-bar menu. A
+   compressed VIEW of the same canvas geometry — not an independent list —
+   so it cannot compete with the canvas as a second navigation system. */
+.compass-wrap {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 6;
+  filter: drop-shadow(0 3px 8px rgba(60, 50, 30, 0.2));
+}
+.compass-dot { cursor: pointer; }
+.compass-dot text { pointer-events: none; user-select: none; }
 
 /* Presentation Gate: locked scene hotspots must not dominate the artwork.
    A locked spot shrinks to a small quiet dot; the label carries a tiny 🔒. */

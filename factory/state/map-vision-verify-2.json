@@ -1,0 +1,53 @@
+{
+ "ok": true,
+ "status": "OK",
+ "verdict": {
+  "adversarial_a": "Even without labels, the continuous terrain, waterways, roads, paths, landmarks, cropped neighboring areas, minimap viewport, and zoom transition would still communicate one pannable world. Some peripheral districts retain button-like spotlight circles, but they no longer read primarily as disconnected controls.",
+  "adversarial_a_verdict": "ONE_WORLD",
+  "adversarial_b": "This is genuinely a map: locations occupy a shared spatial field, routes and geography connect them, panning is explicit, and district selection preserves geographic context through magnification and the minimap. The oversized translucent district zones and hotspot badges still add a menu-like overlay.",
+  "adversarial_b_verdict": "MAP",
+  "navigation_layers_seen": [
+   "world map overview",
+   "district selection and spatial zoom",
+   "district landmark/hotspot selection",
+   "event teaser overlay",
+   "persistent book/reference entry",
+   "minimap viewport navigation"
+  ],
+  "duplicate_navigation_found": false,
+  "duplicate_navigation_detail": "The minimap duplicates geographic position for orientation, not destination navigation; no separate list, tab bar, or card menu repeats the map destinations.",
+  "scores": {
+   "EXPLORATION_DESIRE": 82,
+   "MAP_CLARITY": 86,
+   "SCALABILITY": 74,
+   "DISCOVERY_QUALITY": 81,
+   "VISUAL_WORLD_FEEL": 88,
+   "MOBILE_USABILITY": 78,
+   "CONTENT_DENSITY": 80,
+   "RETURN_MOTIVATION": 68,
+   "LANGUAGE_AGE_FIT": 84,
+   "MAP_SPATIAL_COHERENCE": 83,
+   "NAVIGATION_LAYER_CLARITY": 82,
+   "WORLD_CONTINUITY": 86
+  },
+  "blockers": [],
+  "high": [
+   "The desktop district view scales the selected landmark dramatically and leaves large low-information areas, weakening the sense that zooming reveals a richer explorable district.",
+   "Mobile navigation depends on panning a heavily cropped canvas while the minimap and viewport indicator are too small to provide confident spatial control."
+  ],
+  "medium": [
+   "Large translucent district circles still resemble oversized hit targets rather than natural geographic regions.",
+   "The initial map exposes many nearly identical fire badges without enough visual differentiation to support informed discovery.",
+   "The district zoom reveals only one prominent event and a vague teaser, so the reward for entering a district feels thin.",
+   "The fixed illustrated city image is much denser and more detailed than surrounding symbolic districts, producing inconsistent spatial granularity.",
+   "No visible progress, change, or persistent consequence establishes a strong reason to return."
+  ],
+  "low": [
+   "The pale palette reduces boundary and route contrast in several overlapping areas.",
+   "Some hotspot labels and icons crowd one another at mobile scale.",
+   "The instruction to move the map competes with the map's own visual affordances instead of being self-evident."
+  ],
+  "overall_verdict": "FAIL"
+ },
+ "elapsed_sec": 29.818
+}

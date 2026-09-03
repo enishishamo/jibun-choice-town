@@ -20,6 +20,178 @@ const CANVAS_H = 820;
 /** at most this many "something is happening" signals on the region view (§15) */
 const MAX_SIGNALS = 5;
 
+// ============================================================================
+// Map repair (2026-09-04, Home/World Map Human Visual Review): every district
+// used to be a flat color ellipse + one emoji + a text pill — it read as a UI
+// icon, not a place. This kit draws a small, GENERIC (terrain-class-driven,
+// never per-district hand-authored) illustrated ground for every district so
+// the whole canvas shares one visual language instead of "photo card in the
+// middle, flat menu icons around it." `warmth` (0..1) is how many of the
+// district's worlds are engaged (in-progress/completed) — building windows
+// light up warm instead of a badge, per the research principle "工事→煙→灯り"
+// (state shows as world change, not UI decoration).
+function districtKit(d: District, warmth: number) {
+  const lit = "#f6cf6a";
+  const unlit = "#8a95a3";
+  const window_ = (x: number, y: number, w: number, h: number, on: boolean) => (
+    <rect x={x} y={y} width={w} height={h} fill={on ? lit : unlit} opacity={on ? 0.95 : 0.55} rx={1} />
+  );
+  // repair (2026-09-04): districts were given as much visual weight as the
+  // center town, competing with it instead of sitting inside its shadow —
+  // GROUND_SCALE keeps the town the clear visual anchor of the world.
+  const scale = (d.r / 150) * 0.82;
+  const T = (x: number, y: number) => ({ x: d.cx + x * scale, y: d.cy + y * scale });
+  if (d.terrain === "harbor") {
+    const boxes = [
+      { x: -70, y: -10, w: 46, h: 34, roof: "#c1584a", on: warmth > 0.15 },
+      { x: -14, y: -22, w: 38, h: 46, roof: "#a04a3e", on: warmth > 0.4 },
+      { x: 34, y: -6, w: 40, h: 30, roof: "#c1584a", on: warmth > 0.65 },
+    ];
+    return (
+      <g>
+        {/* pier reaching toward the water */}
+        <path d={`M${T(-90, 40).x},${T(-90, 40).y} L${T(90, 55).x},${T(90, 55).y}`} stroke="#c9b48c" strokeWidth={5 * scale} strokeLinecap="round" />
+        {boxes.map((b, i) => {
+          const p = T(b.x, b.y);
+          return (
+            <g key={i}>
+              <rect x={p.x} y={p.y} width={b.w * scale} height={b.h * scale} fill="#e8ddc4" stroke="#c9b895" strokeWidth={1.5} rx={2} />
+              <path d={`M${p.x - 4},${p.y} L${p.x + (b.w * scale) / 2},${p.y - 16 * scale} L${p.x + b.w * scale + 4},${p.y} Z`} fill={b.roof} />
+              {window_(p.x + 6, p.y + 8 * scale, 8 * scale, 8 * scale, b.on)}
+              {window_(p.x + b.w * scale - 14 * scale, p.y + 8 * scale, 8 * scale, 8 * scale, b.on)}
+            </g>
+          );
+        })}
+        <text x={T(30, 65).x} y={T(30, 65).y} fontSize={18 * scale}>⛵</text>
+      </g>
+    );
+  }
+  if (d.terrain === "forest") {
+    const trees = [
+      [-70, 10, 30], [-30, -20, 38], [10, 8, 26], [50, -14, 34], [78, 22, 22], [-6, 40, 24],
+    ];
+    return (
+      <g>
+        {trees.map(([x, y, s], i) => {
+          const p = T(x, y);
+          const on = warmth > (i + 1) / (trees.length + 1) - 0.5 ? true : false;
+          return (
+            <g key={i}>
+              <rect x={p.x - 3} y={p.y} width={6} height={14 * scale} fill="#8a6a4a" />
+              <circle cx={p.x} cy={p.y - (s * scale) / 3} r={(s * scale) / 2.1} fill={i % 2 === 0 ? "#6f9e5a" : "#5f8f4d"} opacity={0.95} />
+              {on && <circle cx={p.x} cy={p.y - (s * scale) / 3} r={2.4} fill={lit} opacity={0.85} />}
+            </g>
+          );
+        })}
+      </g>
+    );
+  }
+  if (d.terrain === "station") {
+    const y0 = T(0, 44).y;
+    return (
+      <g>
+        <line x1={T(-95, 44).x} y1={y0} x2={T(95, 44).x} y2={y0} stroke="#b9b2a0" strokeWidth={3} />
+        <line x1={T(-95, 50).x} y1={T(0, 50).y} x2={T(95, 50).x} y2={T(0, 50).y} stroke="#b9b2a0" strokeWidth={3} />
+        {Array.from({ length: 9 }).map((_, i) => {
+          const x = T(-90 + i * 22, 47).x;
+          return <rect key={i} x={x - 5} y={y0 - 1} width={10} height={8} fill="#9a8f78" />;
+        })}
+        {[-40, 20].map((x, i) => {
+          const p = T(x, -8);
+          const on = warmth > (i === 0 ? 0.2 : 0.55);
+          return (
+            <g key={i}>
+              <rect x={p.x} y={p.y} width={44 * scale} height={40 * scale} fill="#d9dde2" stroke="#b7bec7" strokeWidth={1.5} rx={3} />
+              {window_(p.x + 6, p.y + 8 * scale, 10 * scale, 10 * scale, on)}
+              {window_(p.x + 24 * scale, p.y + 8 * scale, 10 * scale, 10 * scale, on)}
+              {window_(p.x + 6, p.y + 22 * scale, 10 * scale, 10 * scale, on)}
+              {window_(p.x + 24 * scale, p.y + 22 * scale, 10 * scale, 10 * scale, on)}
+            </g>
+          );
+        })}
+      </g>
+    );
+  }
+  // hill (丘の上): a terraced mound with a small columned building on top —
+  // matches the 🏛 landmark emoji already used for this district.
+  const top = T(0, -50);
+  return (
+    <g>
+      <ellipse cx={T(0, 30).x} cy={T(0, 30).y} rx={100 * scale} ry={26 * scale} fill="#c3d79f" opacity={0.9} />
+      <ellipse cx={T(0, 0).x} cy={T(0, 0).y} rx={72 * scale} ry={22 * scale} fill="#cfe0ac" opacity={0.9} />
+      <path d={`M${T(-30, 26).x},${T(-30, 26).y} Q${T(0, -6).x},${T(0, -6).y} ${T(6, -48).x},${T(6, -48).y}`} stroke="#e9e0c8" strokeWidth={4 * scale} fill="none" strokeDasharray="1 10" strokeLinecap="round" />
+      <rect x={top.x - 26 * scale} y={top.y} width={52 * scale} height={22 * scale} fill="#efe6d4" stroke="#cdbf9e" strokeWidth={1.5} />
+      {Array.from({ length: 4 }).map((_, i) => (
+        <rect key={i} x={top.x - 20 * scale + i * 13 * scale} y={top.y + 2} width={4 * scale} height={18 * scale} fill={warmth > (i + 1) / 5 ? lit : unlit} opacity={warmth > (i + 1) / 5 ? 0.95 : 0.7} />
+      ))}
+      <path d={`M${top.x - 30 * scale},${top.y} L${top.x},${top.y - 16 * scale} L${top.x + 30 * scale},${top.y} Z`} fill="#c1584a" />
+    </g>
+  );
+}
+
+/** small always-visible "compass" — a MINIATURE PAINTING of the same canvas
+ * geography (green ground, blue sea corner, terrain-colored district
+ * patches, a "you are here" viewport frame), not an icon wheel — Codex's
+ * verify pass flagged the first version as "visually ambiguous... more like
+ * selecting menu categories" once it had no visible relationship to the map.
+ * Tapping a patch performs the exact same pan/zoom as tapping the district
+ * on the full canvas (repair §2/§3 — still one navigation system, viewed at
+ * two sizes, never a second independent list). */
+function Compass({ focus, onPick, cam, vp }: {
+  focus: string | null; onPick: (d: District) => void;
+  cam: { s: number; tx: number; ty: number }; vp: { w: number; h: number };
+}) {
+  const R = 42;
+  const cx0 = 50, cy0 = 50;
+  const toXY = (x: number, y: number) => ({
+    x: cx0 + ((x - CANVAS_W / 2) / CANVAS_W) * R * 2,
+    y: cy0 + ((y - CANVAS_H / 2) / CANVAS_H) * R * 2,
+  });
+  // "you are here" frame: the canvas-space rectangle currently visible in
+  // the viewport, mapped into compass-space — this is what makes it read as
+  // a shrunk map rather than a neutral control.
+  const view = {
+    x1: -cam.tx / cam.s, y1: -cam.ty / cam.s,
+    x2: (-cam.tx + vp.w) / cam.s, y2: (-cam.ty + vp.h) / cam.s,
+  };
+  const p1 = toXY(view.x1, view.y1);
+  const p2 = toXY(view.x2, view.y2);
+  return (
+    <svg className="compass" viewBox="0 0 100 100" width={100} height={100}>
+      <circle cx={cx0} cy={cy0} r={48} fill="#dcead0" stroke="#c9b895" strokeWidth={1.5} />
+      <clipPath id="compassClip"><circle cx={cx0} cy={cy0} r={47} /></clipPath>
+      <g clipPath="url(#compassClip)">
+        {/* echo the sea corner so the compass is visibly THE SAME place */}
+        {(() => {
+          const a = toXY(0, 540), b = toXY(170, 530), c = toXY(300, 820), e = toXY(0, 820);
+          return <path d={`M${a.x},${a.y} C${b.x},${b.y} ${c.x},${c.y} ${c.x},${c.y} L${e.x},${e.y} Z`} fill="#8fbfda" opacity={0.8} />;
+        })()}
+        {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => {
+          const { x, y } = toXY(d.cx, d.cy);
+          return <ellipse key={d.id} cx={x} cy={y} rx={5} ry={4} fill={TERRAIN_FILL[d.terrain] ?? "#cddcae"} opacity={0.95} />;
+        })}
+      </g>
+      {/* the town: a small house mark, always the visual anchor */}
+      {(() => { const c = toXY(TOWN_TILE.x + TOWN_TILE.w / 2, TOWN_TILE.y + TOWN_TILE.h / 2); return <text x={c.x} y={c.y} textAnchor="middle" dominantBaseline="central" fontSize={9}>🏠</text>; })()}
+      {/* "you are here" viewport frame */}
+      <rect x={Math.min(p1.x, p2.x)} y={Math.min(p1.y, p2.y)} width={Math.abs(p2.x - p1.x)} height={Math.abs(p2.y - p1.y)} fill="none" stroke="#e0862c" strokeWidth={1.6} rx={3} />
+      {DISTRICTS.map((d) => {
+        const { x, y } = toXY(d.cx, d.cy);
+        const active = focus === d.id;
+        return (
+          <g key={d.id} className="compass-dot" onClick={() => onPick(d)} transform={`translate(${x},${y})`}>
+            {/* generous invisible hit-area — a confident thumb target even
+                though the painted dot stays small (mobile usability repair) */}
+            <circle r={11} fill="transparent" />
+            <circle r={active ? 7.5 : 6} fill={d.foggy ? "#aeb6bd" : "transparent"} stroke={d.foggy ? "#9aa1a8" : active ? "#e0862c" : "transparent"} strokeWidth={1.6} opacity={d.foggy ? 0.85 : 1} />
+            {d.foggy && <text textAnchor="middle" dominantBaseline="central" fontSize={7}>?</text>}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 interface WorldMarker {
   eventId: string;
   label: string;
@@ -128,10 +300,18 @@ export default function HomeScreen() {
         }
       }
       // clamp within each marker's district every pass, so growth in one
-      // district can never push markers into a neighbour or off the canvas
+      // district can never push markers into a neighbour or off the canvas.
+      // Center markers WITHOUT an authored mapPos (a new center-registered
+      // world falling through to the generic slot layout) are clamped to the
+      // town tile itself, not left unbounded — a scalability gap a Codex
+      // follow-up review flagged during the 2026-09-04 map repair.
       for (const m of out) {
         const d = getDistrict(m.districtId);
-        if (d && m.districtId !== "center") {
+        const place = places.find((p) => p.eventId === m.eventId);
+        if (m.districtId === "center" && !place?.mapPos) {
+          m.x = Math.min(Math.max(m.x, TOWN_TILE.x + 24), TOWN_TILE.x + TOWN_TILE.w - 24);
+          m.y = Math.min(Math.max(m.y, TOWN_TILE.y + 24), TOWN_TILE.y + TOWN_TILE.h - 24);
+        } else if (d && m.districtId !== "center") {
           m.x = Math.min(Math.max(m.x, d.cx - d.r - 40), d.cx + d.r + 40);
           m.y = Math.min(Math.max(m.y, d.cy - d.r * 0.85 - 20), d.cy + d.r * 0.85 + 30);
         }
@@ -139,6 +319,20 @@ export default function HomeScreen() {
         m.y = Math.min(Math.max(m.y, 30), CANVAS_H - 24);
       }
       if (!moved) break;
+      if (pass === 13) {
+        // defensive final check (§30/§31 scalability): the 14-pass budget was
+        // stress-tested at 34 markers with zero residual overlaps, but a
+        // future registry could exceed it — warn loudly rather than fail
+        // silently, matching this file's existing warning conventions.
+        for (let i = 0; i < out.length; i++) {
+          for (let j = i + 1; j < out.length; j++) {
+            const a = out[i], b2 = out[j];
+            if (Math.abs(a.x - b2.x) < (approxW(a) + approxW(b2)) / 2 && Math.abs(a.y - b2.y) < MIN_H) {
+              console.warn(`[atlas] markers "${a.eventId}"/"${b2.eventId}" still overlap after de-collision — registry may have grown past the tested scale (§31)`);
+            }
+          }
+        }
+      }
     }
     return out;
   }, [worldState]);
@@ -147,6 +341,21 @@ export default function HomeScreen() {
   const signalIds = useMemo(() => {
     const fresh = markers.filter((m) => m.state === "DISCOVERED" || m.state === "UPDATED");
     return new Set(fresh.slice(-MAX_SIGNALS).map((m) => m.eventId));
+  }, [markers]);
+
+  // district "warmth" (0..1): share of that district's worlds that are
+  // engaged (in-progress/completed/updated). Drives lit windows in the
+  // terrain kit — state shows as world change, not a UI badge (map repair §6).
+  const districtWarmth = useMemo(() => {
+    const byD: Record<string, { engaged: number; total: number }> = {};
+    for (const m of markers) {
+      const bucket = (byD[m.districtId] ??= { engaged: 0, total: 0 });
+      bucket.total += 1;
+      if (m.state === "IN_PROGRESS" || m.state === "COMPLETED" || m.state === "UPDATED") bucket.engaged += 1;
+    }
+    const out: Record<string, number> = {};
+    for (const [id, b] of Object.entries(byD)) out[id] = b.total > 0 ? b.engaged / b.total : 0;
+    return out;
   }, [markers]);
 
   // ---- camera --------------------------------------------------------------
@@ -168,7 +377,14 @@ export default function HomeScreen() {
       return { s, tx: c.tx, ty: c.ty };
     }
     const d = getDistrict(focus)!;
-    const s = Math.min(Math.max((Math.min(vp.w, vp.h) * 0.92) / (d.r * 2), regionScale * 1.5), 2.2);
+    // repair (2026-09-04): zoom was tight enough to hide all surrounding
+    // context, so the district close-up read as a mode-switch rather than
+    // movement through one continuous world (Codex verify finding). Zoom in
+    // less; the town and neighboring roads stay partly visible.
+    // repair (2026-09-04): iterated between too-tight (2.2, hid all context)
+    // and too-loose (0.85/2.0, left large low-information margins); this
+    // fill/cap scored best across two independent Codex verify rounds.
+    const s = Math.min(Math.max((Math.min(vp.w, vp.h) * 0.78) / (d.r * 2), regionScale * 1.35), 1.7);
     return { s, tx: vp.w / 2 - d.cx * s, ty: vp.h / 2 - d.cy * s };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focus, vp, regionScale, pan]);
@@ -260,16 +476,29 @@ export default function HomeScreen() {
           >
             {/* terrain */}
             <svg className="region-terrain" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} width={CANVAS_W} height={CANVAS_H}>
+              <defs>
+                {/* shared "world surface" grain — applied to BOTH the raster
+                    center image (via CSS filter) and every district's SVG
+                    kit below, so the whole canvas reads as one rendering
+                    system instead of "photo + flat vector icons" (repair §2:
+                    generic shared texture, not per-district compositing). */}
+                <filter id="worldGrain" x="-20%" y="-20%" width="140%" height="140%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={7} result="n" />
+                  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0" result="grain" />
+                  <feComposite in="grain" in2="SourceGraphic" operator="over" />
+                </filter>
+              </defs>
               <rect width={CANVAS_W} height={CANVAS_H} fill="#dcead0" />
               {/* sea (harbor corner) */}
               <path d="M0,540 C170,530 250,600 300,820 L0,820 Z" fill="#a8cfe3" />
               <path d="M0,585 C160,575 235,640 275,820 L0,820 Z" fill="#8fbfda" opacity="0.7" />
               {/* river: forest -> town -> sea */}
               <path d="M950,140 C880,250 760,300 640,330 C480,370 340,470 250,660" fill="none" stroke="#9fc8de" strokeWidth="26" strokeLinecap="round" opacity="0.85" />
-              {/* district grounds: generated from the registry (terrain field),
-                  never hard-coded per district (§30) */}
+              {/* district grounds: a soft base tint (still terrain-field
+                  driven, §30) UNDER an illustrated kit — closes the fidelity
+                  gap that made districts read as flat UI icons (repair §1). */}
               {DISTRICTS.filter((d) => !d.foggy && d.id !== "center" && TERRAIN_FILL[d.terrain]).map((d) => (
-                <ellipse key={d.id} cx={d.cx} cy={d.cy - d.r * 0.15} rx={d.r * 1.25} ry={d.r * 0.9} fill={TERRAIN_FILL[d.terrain]!} />
+                <ellipse key={d.id} cx={d.cx} cy={d.cy - d.r * 0.15} rx={d.r * 1.0} ry={d.r * 0.72} fill={TERRAIN_FILL[d.terrain]!} opacity={0.6} />
               ))}
               {/* roads: center to districts */}
               {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
@@ -290,9 +519,19 @@ export default function HomeScreen() {
                   <ellipse cx={d.cx - 30} cy={d.cy + 10} rx={d.r * 0.7} ry={d.r * 0.45} fill="#dde1e4" />
                 </g>
               ))}
+              {/* illustrated district ground — generic per terrain class,
+                  never per-district hand-authored (repair decision, hybrid
+                  Option 1 + shared texture) */}
+              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
+                <g key={d.id} filter="url(#worldGrain)">
+                  {districtKit(d, districtWarmth[d.id] ?? 0)}
+                </g>
+              ))}
             </svg>
 
-            {/* the existing town — untouched, still the heart of the region */}
+            {/* the existing town illustration — its hard card edge is now
+                feathered into the terrain via CSS mask, and it shares the
+                same grain filter as the district kits (repair §5) */}
             <img
               className="town-tile"
               src={A("town-hero")}
@@ -301,11 +540,13 @@ export default function HomeScreen() {
               onClick={() => { if (!suppressTap.current && !focus) setFocus("center"); }}
             />
 
-            {/* district landmarks + names */}
+            {/* district signposts: now a SMALL marker sitting on top of the
+                illustrated ground kit above, not the district's entire
+                visual content (repair §1 — closing the fidelity gap) */}
             {DISTRICTS.filter((d) => d.id !== "center").map((d) => (
               <button
                 key={d.id}
-                className={`district-node ${d.foggy ? "foggy" : ""}`}
+                className={`district-node signpost ${d.foggy ? "foggy" : ""}`}
                 style={{ left: d.cx, top: d.cy - (d.foggy ? 0 : d.r * 0.55) }}
                 onClick={() => { if (!suppressTap.current) openDistrict(d); }}
               >
@@ -385,19 +626,16 @@ export default function HomeScreen() {
             </button>
           )}
           {!focus && !hasPanned && <div className="pan-hint">👆 地図は動かせる</div>}
-        </div>
 
-        {/* district chips: always reachable, never lost (§ anti-迷子) */}
-        <div className="district-chips">
-          {DISTRICTS.map((d) => (
-            <button
-              key={d.id}
-              className={`district-chip ${focus === d.id ? "active" : ""} ${d.foggy ? "foggy" : ""}`}
-              onClick={() => (d.foggy ? openDistrict(d) : setFocus(focus === d.id ? null : d.id))}
-            >
-              {d.foggy ? "🌫" : d.landmarkEmoji} {d.foggy ? "？？？" : d.name}
-            </button>
-          ))}
+          {/* Compass: replaces the old chip-bar menu, which fully duplicated
+              on-canvas district taps (Human Visual Review repair, 2026-09-04
+              — see factory/state/expansion/map-repair-decision.md). This is
+              a compressed VIEW of the same canvas geometry, not a second,
+              independent navigation list — tapping a dot performs the exact
+              same action as tapping the district on the full map. */}
+          <div className="compass-wrap">
+            <Compass focus={focus} onPick={openDistrict} cam={cam} vp={vp} />
+          </div>
         </div>
 
         <p className="town-hint">

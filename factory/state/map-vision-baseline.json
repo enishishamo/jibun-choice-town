@@ -1,0 +1,81 @@
+{
+ "ok": true,
+ "status": "OK",
+ "verdict": {
+  "traceability_verdict": "PARTIALLY_REALIZED",
+  "traceability_evidence": [
+   "The initial view contains a bounded canvas, a central town illustration, peripheral district landmarks, event markers, mist/silhouette imagery, and district chips—the specified technical ingredients are visibly present.",
+   "The center is a highly rendered rectangular town image, while surrounding districts are isolated emoji-like landmarks, labels, dots, and pastel circles. They do not share one illustrated geography.",
+   "The river, roads, coastline, vegetation, buildings, and other spatial features inside the central image do not visibly continue into the surrounding canvas. The image reads as an inset card rather than the center of a larger landmass.",
+   "The district close-up replaces the central town image with a mostly flat composition dominated by one huge beige circle, an anchor icon, text badges, and a cropped decorative image. It does not look like a camera moving deeper into the same terrain.",
+   "Initial and selected screenshots may technically be transform states, but the radical change in rendering style makes the transition feel like switching panels or menu modes rather than zooming through one continuous world.",
+   "Mist and the unknown silhouette exist, but discovery is explained through labels such as “???” and prose rather than primarily communicated by world behavior.",
+   "Event-first signaling is present through small flame markers, yet the markers resemble repeated UI pins and are too detached from depicted events such as smoke, crowds, construction, or moving residents.",
+   "Permanent world-state changes, flags, completed-place transformations, current-location indication, and a clearly readable route back to the town are not demonstrated in these screenshots.",
+   "The district chips provide scalable categorical access, but the visible composition does not demonstrate how seven or eight districts and fifty worlds would remain spatially coherent."
+  ],
+  "adversarial_a": "Without labels and explanatory text, the outer canvas would become pale abstract blobs containing isolated icons, dots, and a few cropped images around a central rectangular illustration. A child could not infer a coherent coastline, route network, district boundaries, or how the places connect. The screen would read as tappable controls arranged around a hero image, not as geography that can be explored.",
+  "adversarial_a_verdict": "COLLECTION_OF_BUTTONS",
+  "adversarial_b": "This is a menu styled to look like a map. Its strongest navigational structure is the persistent row of district chips; the supposed geography supplies a second, less legible set of shortcuts to the same destinations. The initial town artwork depicts a map, but the containing screen does not establish a navigable spatial model, and the close-up behaves like a district detail card.",
+  "adversarial_b_verdict": "MENU_STYLED_AS_MAP",
+  "navigation_layers_seen": [
+   "The “しごと図鑑” pill in the header, apparently opening a separate encyclopedia.",
+   "The central illustrated town image, apparently selectable as the town-center district.",
+   "Multiple flame event pins embedded inside the central town image, apparently opening individual events or worlds.",
+   "Peripheral district landmarks and their labels—丘の上, 森と川, 港, 駅前—apparently jumping into those districts.",
+   "Small flame markers next to peripheral district landmarks, apparently opening or highlighting district events.",
+   "The unknown mist/silhouette labeled “???”, apparently revealing or previewing an undiscovered district.",
+   "The “地図は動かせる” control, which advertises or initiates map panning.",
+   "Direct dragging or panning of the map canvas, implied by the “map can move” control.",
+   "The persistent bottom district chips—まちの中心, 港, 森と川, 駅前, 丘の上—which jump to districts.",
+   "The “地域全体” control in district view, apparently returning to the regional overview.",
+   "The large district identity cluster in close-up—the anchor, 港 label, flame signal, and “夜のみなと” badge—which appears to open the featured event/world.",
+   "The cropped illustrated scene at the upper-right of the district close-up, which visually appears tappable even though its action is unclear."
+  ],
+  "duplicate_navigation_found": true,
+  "duplicate_navigation_detail": "Districts can apparently be entered both by tapping landmarks/labels on the canvas and by tapping the bottom chips. The central town image and the “まちの中心” chip also appear to target the same place. Event access may likewise be duplicated between flame markers and the labeled event cluster. Panning has both a direct gesture and a button-like instruction. These layers compete without a clearly dominant spatial navigation model.",
+  "scores": {
+   "EXPLORATION_DESIRE": 57,
+   "MAP_CLARITY": 54,
+   "SCALABILITY": 43,
+   "DISCOVERY_QUALITY": 45,
+   "VISUAL_WORLD_FEEL": 38,
+   "MOBILE_USABILITY": 67,
+   "CONTENT_DENSITY": 55,
+   "RETURN_MOTIVATION": 47,
+   "LANGUAGE_AGE_FIT": 82,
+   "MAP_SPATIAL_COHERENCE": 29,
+   "NAVIGATION_LAYER_CLARITY": 38,
+   "WORLD_CONTINUITY": 31
+  },
+  "blockers": [
+   "The screen fails the core architectural promise of looking inside one continuous world: the central illustration, surrounding districts, and district close-up use incompatible spatial and visual systems.",
+   "The primary experience is redundant menu navigation through district chips plus canvas shortcuts, not exploration through readable geography.",
+   "The district close-up does not visually preserve continuity with the overview; it reads as a replacement detail panel despite any underlying camera transform."
+  ],
+  "high": [
+   "District locations have no convincing geographic relationships because terrain, paths, water, roads, and landmarks do not continue between them.",
+   "The initial town image is visibly rectangular and self-contained, making the wider canvas look like decoration around an embedded map asset.",
+   "Event signals are repetitive flame badges rather than observable in-world happenings, weakening event-first discovery.",
+   "The composition provides little evidence that fifty worlds can be represented without increasing marker clutter or relying almost entirely on menu chips.",
+   "The close-up contains extensive empty flat space while the actionable content is compressed into a central badge stack and one cropped image.",
+   "Map state is difficult to read: discovered, visited, in-progress, completed, and updated places are not clearly distinguishable from the screenshots.",
+   "The mobile view is physically tappable but vertically cramped at the top, while important context and navigation compete within a narrow 375px layout."
+  ],
+  "medium": [
+   "The “地図は動かせる” pill looks like an action button but may only be instructional, creating an unclear affordance.",
+   "The “地域全体” return control is understandable, but it reinforces a mode switch rather than a natural zoom-out relationship.",
+   "The unknown silhouette offers some anticipation, but its generic mist, icon, and question marks feel like a locked menu item.",
+   "Desktop simply presents the same narrow mobile-width experience centered inside large empty margins, missing an opportunity for a wider explorable landscape.",
+   "The cropped district illustration implies additional scenery but appears disconnected from the main district landmark and may be mistaken for another card.",
+   "Instructional copy explains what to do because the visual system does not make exploration self-evident."
+  ],
+  "low": [
+   "The language is broadly suitable for grades 5–9, though phrases such as “仕事の場所” and repeated explanatory guidance feel slightly didactic.",
+   "The header and cream pill styling are friendly and readable, but their polished UI treatment further contrasts with the inconsistent map artwork.",
+   "The limited number of foreground signals avoids immediate overload in the shown state."
+  ],
+  "overall_verdict": "FAIL"
+ },
+ "elapsed_sec": 33.97
+}
