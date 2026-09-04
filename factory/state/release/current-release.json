@@ -66,6 +66,25 @@
   },
   "two_track_model": "factory/state/release/two-track-model.md",
   "stable_public_blockers_record": "factory/state/release/stable-public-blockers-2026-09-04.md",
-  "remote_push_performed": false,
+  "remote_push_performed": true,
+  "remote_push": {
+    "performed": true,
+    "date": "2026-09-04",
+    "pushed": ["main (fast-forwarded d8ddb38 -> 12f3ed5, 36 commits)", "tag stable-prototype-v0.1"],
+    "github_actions_run": "https://github.com/enishishamo/jibun-choice-town/actions/runs/33836489723 (build+deploy, success)"
+  },
+  "github_pages_deployment": {
+    "status": "LIVE",
+    "public_url": "https://enishishamo.github.io/jibun-choice-town/",
+    "verified": "2026-09-04, real browser navigation to the live URL (not localhost)"
+  },
+  "production_smoke_qa_2026_09_04": {
+    "status": "PASS",
+    "flow_tested": "Home -> world entry (er-patient) -> Q1 game load -> Job Reveal -> Career Path, on the live production URL",
+    "mobile_375px": "PASS -- 0 console errors, all network requests 200/304, career path furigana rendered correctly, no raw ruby leaks",
+    "desktop": "PASS -- 0 console errors, all network requests 200/304, career path furigana rendered correctly, no raw ruby leaks",
+    "note": "Full per-world gameplay was not re-clicked step-by-step against production (already covered by the pre-deploy Public Smoke QA + this session's flow-bot regression against the identical build); this pass specifically confirms the deployed artifact matches the verified build and serves correctly to a real browser at the public URL."
+  },
+  "development_track_status": "PRESERVED -- feature/harness-bootstrap remains the active Development Track branch, untouched in content by this promotion (main was fast-forwarded to it, not merged backwards). factory/state/backlog/, feedback routing, and continuous-development-queue.md are all unaffected and continue forward from here.",
   "extra_cost_incurred": 0
 }
