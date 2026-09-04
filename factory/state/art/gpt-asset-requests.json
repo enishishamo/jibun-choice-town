@@ -15,7 +15,7 @@
       "reference_assets": ["public/assets/town-hero.png", "public/assets/port/scene-port.png"],
       "safe_area": "Keep the main subject within the center 80% — this composites into a district's ground ellipse with a soft edge blend, so hard rectangular borders should be avoided",
       "priority": "high",
-      "public_blocker": false
+      "public_blocker": true
     },
     {
       "asset_id": "hill-district-illustration",
@@ -31,7 +31,7 @@
       "reference_assets": ["public/assets/town-hero.png", "public/assets/library/scene-library.png"],
       "safe_area": "Keep the main subject within the center 80%",
       "priority": "high",
-      "public_blocker": false
+      "public_blocker": true
     },
     {
       "asset_id": "station-district-illustration",
@@ -47,7 +47,23 @@
       "reference_assets": ["public/assets/town-hero.png", "public/assets/studio/scene-studio.png"],
       "safe_area": "Keep the main subject within the center 80%",
       "priority": "high",
-      "public_blocker": false
+      "public_blocker": true
+    },
+    {
+      "asset_id": "forest-district-illustration",
+      "screen": "Home / World Map region view",
+      "district_or_world": "forest terrain district — hosts forest-care and river-health worlds",
+      "purpose": "Illustrated ground content for the forest district on the region map, replacing an SVG placeholder (flat vector tree shapes, src/screens/HomeScreen.tsx:69-88)",
+      "current_problem": "Current placeholder is a cluster of flat-vector circle/rectangle 'trees' with no relationship to the series' clay-diorama illustration style — an independent Codex vision audit classified this as E (Claude-original illustration) and a public blocker, since Home is the app's primary first-impression surface, not a secondary screen",
+      "required_subject": "A small forest/riverside scene: a cluster of miniature trees and a hint of the river, in the same style as existing series art",
+      "required_style": "Match existing JIBUN CHOICE series style — miniature clay-diorama look, warm rounded forms, soft lighting, no photorealism",
+      "composition": "Small vignette for a ~170x130px district ground area, slight top-down angle, must read at small scale (mobile map thumbnail size)",
+      "aspect_ratio": "~4:3, flexible",
+      "transparent_background": true,
+      "reference_assets": ["public/assets/town-hero.png", "public/assets/forest/scene-forest.png"],
+      "safe_area": "Keep the main subject within the center 80%",
+      "priority": "high",
+      "public_blocker": true
     }
   ],
   "backlog_low_priority": [

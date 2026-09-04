@@ -16,6 +16,14 @@ observations of the app.
 - `backlog.md` — human-readable triage backlog, one line per feedback_id that
   reached severity HIGH or BLOCKER, with its routing decision and current
   status. Updated during triage, not by the observer.
+- `successful-patterns.md` — the positive counterpart to `backlog.md`:
+  records `spontaneous_replay` (successful mechanic) and unexpected-interest
+  discovery signals, regardless of severity (there is no severity for a
+  success). See "REAL_USER_FEEDBACK ルーティング表" in
+  `../release/two-track-model.md` for the exact mapping from observed
+  behavior to routing/recording destination (2026-09-04, established when
+  JIBUN CHOICE's operation was split into the Stable/Public Validation Track
+  and the Continuous Development Track).
 
 ## AI_VERIFIED vs REAL_USER_OBSERVED — these are NEVER the same status
 A world, game, or the Home/map screen can be `AI_VERIFIED` (every automated
