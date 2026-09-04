@@ -1,5 +1,6 @@
 import { GameStateProvider, useGame } from "./state/GameState";
 import HomeScreen from "./screens/HomeScreen";
+import WorldMapScreen from "./screens/WorldMapScreen";
 import AreaScreen from "./screens/AreaScreen";
 import Q1Screen from "./screens/Q1Screen";
 import ProfessionScreen from "./screens/ProfessionScreen";
@@ -10,6 +11,8 @@ function Router() {
   switch (screen.name) {
     case "home":
       return <HomeScreen />;
+    case "map":
+      return <WorldMapScreen />;
     case "area":
       return <AreaScreen eventId={screen.eventId} />;
     case "q1":

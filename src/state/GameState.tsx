@@ -8,7 +8,11 @@ import { experiences } from "../data";
 import { contentVersion } from "../data/districts";
 
 export type Screen =
+  // "home" = the True Home (title-like hub: 冒険する / しごと図鑑 / 毎日のチャレンジ).
+  // "map" = the World Map (formerly rendered at "home") — reached via Home's
+  // "社会を冒険する" card. Renamed 2026-09-04 (True Home / Map role split).
   | { name: "home" }
+  | { name: "map" }
   | { name: "area"; eventId: string }
   | { name: "q1"; experienceId: string }
   | { name: "zukan" }

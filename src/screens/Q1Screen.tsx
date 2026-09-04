@@ -163,7 +163,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
           <button className="btn" onClick={() => navigate({ name: "area", eventId: exp.eventId })}>
             この場所をもう少し探す
           </button>
-          <button className="btn ghost" onClick={() => navigate({ name: "home" })}>
+          <button className="btn ghost" onClick={() => navigate({ name: "map" })}>
             街にもどる
           </button>
         </div>

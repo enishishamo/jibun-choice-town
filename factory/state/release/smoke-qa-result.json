@@ -96,7 +96,10 @@
   "brokenImages": [],
   "failedRequests": [],
   "consoleErrors": [],
-  "pageErrors": []
+  "pageErrors": [],
+  "trueHome": {
+   "brokenImages": []
+  }
  },
  "desktop": {
   "viewport": "desktop",
@@ -195,6 +198,9 @@
   "brokenImages": [],
   "failedRequests": [],
   "consoleErrors": [],
-  "pageErrors": []
+  "pageErrors": [],
+  "trueHome": {
+   "brokenImages": []
+  }
  }
 }

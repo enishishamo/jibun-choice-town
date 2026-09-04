@@ -93,10 +93,31 @@
       "note": "Pre-existing SVG coastline/river/road paths, authored before this session's Sonnet-era Home repair (see art-ownership-audit-2026-09-04.md, 'pre-dating' section). Same category of concern as the district building clusters; not fixed now as it was outside the audit's primary requested scope.",
       "priority": "low",
       "public_blocker": false
+    },
+    {
+      "asset_id": "true-home-mascot-character",
+      "screen": "True Home (src/screens/HomeScreen.tsx)",
+      "district_or_world": "n/a — app-level Home screen, not a district",
+      "purpose": "2026-09-04 True Home + Mobile Map Simplification: independent Codex screenshot review (factory/state/expansion/true-home-map-codex-review-final.json) repeatedly scored HOME_GAME_FEEL below threshold across 3 rounds (68/68/67, need >=80) with the same root-cause finding each time: True Home reads as 'an elegant learning-site card menu' rather than a game hub, because it has 'no character, no sense of an ongoing world, no world-state connection.' CSS-only fixes (breathing animation, sparkle, explicit play-button affordance, Japanese microcopy) measurably helped other axes but could not move this one — Codex's own comparison note is that the missing ingredient is a character/mascot presence, which is explicitly GPT's domain, not something to keep chasing with layout tricks.",
+      "current_problem": "True Home is 3 flat rounded-rectangle cards (a photo card + 2 icon cards) with no character or figure of any kind, unlike Home-screen conventions in Animal Crossing / Duolingo / Pokemon spinoffs where a character or avatar anchors the title/hub screen and visually signals 'a world you return to,' not a menu.",
+      "required_subject": "A single small, friendly mascot/guide character (or a loose set of 2-3 alternate poses) that could sit on or beside the primary '社会を冒険する' (go adventure in society) card — e.g., peeking from a corner, waving, or looking toward the town image. No specific character has been designed for this game yet; propose something warm and simple that fits a clay-diorama town of many different professions (not tied to any one profession/world) so it can be reused as a persistent Home/brand figure across future sessions.",
+      "required_style": "Match existing JIBUN CHOICE series style — miniature clay-diorama look, warm rounded forms, soft lighting, no photorealism (see reference_assets). Should read clearly at small size (mobile card corner, roughly 80-140px).",
+      "composition": "Small enough to sit within or beside the primary card without covering the title text or the existing play-button chip (bottom-right of that card is already occupied — see src/screens/HomeScreen.tsx home-card-play). A bottom-left or top-left placement, or a version designed to sit just outside/below the card, would avoid collision.",
+      "aspect_ratio": "flexible, roughly square or portrait, whatever suits a single small figure",
+      "transparent_background": true,
+      "reference_assets": [
+        "public/assets/town-hero.png",
+        "public/assets/districts/harbor-district.png"
+      ],
+      "safe_area": "n/a — full figure should be visible, no internal cropping needed given the small footprint",
+      "priority": "medium",
+      "public_blocker": false,
+      "post_release_ok": true,
+      "note": "Not a Stable/public blocker — Development Track only. True Home functions correctly and clearly (TRUE_HOME_CLARITY=91, PRIMARY_ACTION_CLARITY=93) without this; it addresses a 'feels like a game, not a menu' polish finding, not a usability defect."
     }
   ],
   "revision_note_2026_09_04": "Claude's initial self-audit classified forest_trees as D (keep-candidate, low priority) and all 4 district clusters as POST_RELEASE_ART_BACKLOG (not blocking). An INDEPENDENT Codex vision audit (factory/state/art/art-ownership-codex-audit.json), shown only screenshots with no access to Claude's classification, disagreed on both counts: it classified forest_trees as E (not D) and judged all 4 district illustration clusters (harbor/forest/station/hill) as any_public_blocker=true, reasoning that the Home screen is the app's primary, first-impression surface — not a deep/secondary screen — so a visible style mismatch there counts as a real public blocker, not backlog. Because Claude has an inherent conflict of interest auditing its own work, this file defers to the independent Codex verdict: forest-district-illustration has been moved from backlog into the primary (blocking) requests list below, and all 4 requests are now marked public_blocker=true. No image was generated or redrawn by Claude to resolve this — per directive §16, that is explicitly GPT's job; these requests remain open until fulfilled.",
   "public_blocker_count": 0,
-  "post_release_backlog_count": 1,
+  "post_release_backlog_count": 2,
   "fulfilled_count": 4
 }

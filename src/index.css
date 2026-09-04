@@ -72,6 +72,9 @@ img {
 .screen.world-screen {
   padding: 0;
 }
+.screen.true-home {
+  padding: 0;
+}
 
 @keyframes fadein {
   from {
@@ -215,6 +218,168 @@ img {
   border-radius: 999px;
   display: grid;
   place-items: center;
+}
+
+/* ===== True Home (2026-09-04) =====
+   Game-title-screen feel: a couple of big, visual, one-tap cards — never a
+   dashboard list, never a paragraph of instructions. See
+   factory/state/expansion/mobile-map-repair-2026-09-04.md for the
+   Human-Review background and the option comparison this replaced. */
+.true-home {
+  min-height: 100dvh;
+  background: linear-gradient(180deg, var(--blue-soft) 0%, var(--cream) 55%);
+  display: flex;
+  flex-direction: column;
+}
+.true-home-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 15dvh 18px 24px;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+}
+.true-home-brand {
+  text-align: center;
+  margin-bottom: 6px;
+}
+.true-home-brand .tagline {
+  font-size: 14px;
+}
+
+.home-card {
+  position: relative;
+  display: flex;
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  overflow: hidden;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text);
+}
+.home-card:active { transform: scale(0.98); }
+
+.home-card-primary {
+  height: 220px;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center 62%;
+  padding: 0;
+  /* 2026-09-04 (Codex review follow-up: HOME_GAME_FEEL was scored too low,
+     "static, no sense of ongoing play"): a slow, gentle breathing scale —
+     purely decorative CSS, no new art, cheap to composite (transform only,
+     no layout/paint work). */
+  animation: home-card-breathe 4.5s ease-in-out infinite;
+}
+@keyframes home-card-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+.home-card-sparkle {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 2;
+  font-size: 20px;
+  animation: home-card-sparkle 2.6s ease-in-out infinite;
+}
+@keyframes home-card-sparkle {
+  0%, 100% { opacity: 0.55; transform: scale(0.9) rotate(-6deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(6deg); }
+}
+.home-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(74, 59, 46, 0) 35%, rgba(52, 40, 28, 0.72) 100%);
+}
+.home-card-label {
+  position: relative;
+  z-index: 1;
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+/* 2026-09-04 (Codex review follow-up: "画像カード全体がタップ可能だと即座に
+   理解できない"): an explicit play chip, not just an implicit "the whole
+   photo is a button" affordance. */
+.home-card-play {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  box-shadow: 0 3px 10px rgba(224, 134, 44, 0.5);
+}
+.home-card-primary .home-card-title {
+  color: #fff;
+  font-size: 21px;
+  font-weight: bold;
+}
+.home-card-primary .home-card-sub {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 13px;
+}
+
+.home-card-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.home-card-secondary {
+  flex: 1.4;
+  min-height: 96px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 8px;
+}
+.home-card-secondary .home-card-icon { font-size: 26px; }
+.home-card-secondary .home-card-title { font-size: 14px; font-weight: bold; }
+.home-card-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  padding: 0 5px;
+}
+.home-card-secondary.is-coming-soon {
+  flex: 1;
+  opacity: 0.55;
+  cursor: default;
+  min-height: 80px;
+}
+.home-card-secondary.is-coming-soon .home-card-icon { font-size: 20px; }
+.home-card-secondary.is-coming-soon:active { transform: none; }
+.home-card-soon {
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: var(--text-soft);
+  background: var(--orange-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 
 .town {
@@ -1215,21 +1380,30 @@ img {
 
 .world-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: 10px;
   padding: 16px 16px 0;
   position: relative;
   z-index: 4;
 }
-.world-header-text {
-  flex: 1;
-  min-width: 0;
+/* 2026-09-04 (True Home / Map role split): the map no longer carries the
+   app logo/tagline/zukan entry — those live on True Home now. This screen's
+   header is just a way back to it, styled like the existing .back-chip
+   "← 街" buttons used elsewhere. */
+.map-home-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  background: rgba(255, 253, 246, 0.9);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text-soft);
+  box-shadow: var(--shadow);
 }
-.world-header .zukan-btn {
-  flex-shrink: 0;
-  white-space: nowrap;
-}
+.map-home-back:hover { border-color: var(--orange); }
 
 .world-lead {
   margin: 8px 16px 0;
@@ -1240,6 +1414,12 @@ img {
   line-height: 1.5;
   position: relative;
   z-index: 4;
+}
+/* the unfocused overview prompt is now a short wayfinding question, not a
+   sentence — a touch smaller/quieter than a district's own flavor line */
+.world-lead.map-prompt {
+  font-size: 13px;
+  color: var(--text-soft);
 }
 
 /* Keep the town in the FIRST view on phones: fixed headroom for the
@@ -5133,7 +5313,11 @@ img {
 .region-viewport {
   position: relative;
   width: 100%;
-  height: min(100vw, 560px);
+  /* 2026-09-04 (Mobile Map Simplification): grows to fill the remaining
+     screen height (the .world column) instead of a fixed vw-based square —
+     trimming the header/instructional text around it should make the map
+     itself bigger, not leave dead space below it. */
+  flex: 1;
   min-height: 340px;
   overflow: hidden;
   border-radius: 18px;
@@ -5157,16 +5341,23 @@ img {
      the terrain beneath it (map repair §5, 2026-09-04) */
   -webkit-mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
   mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
-  filter: url(#worldGrain) drop-shadow(0 4px 10px rgba(60, 50, 30, 0.15));
+  /* the url(#worldGrain) SVG feTurbulence filter this used to carry alongside
+     drop-shadow was removed 2026-09-04 (Mobile Map Simplification perf pass)
+     — SVG filter references force expensive software compositing on mobile
+     WebKit and were a measured contributor to the "重い/カクつく" Human
+     Review finding. A plain CSS drop-shadow is native-composited and much
+     cheaper; the grain texture's visual contribution at map-thumbnail scale
+     was negligible next to its cost. */
+  filter: drop-shadow(0 4px 10px rgba(60, 50, 30, 0.15));
 }
 .district-illustration {
   position: absolute;
   object-fit: contain;
   pointer-events: none;
   /* source PNGs already carry a soft alpha-feathered vignette edge, so no
-     additional mask is applied here — just the shared grain texture so it
-     reads as one rendering system with the center town illustration. */
-  filter: url(#worldGrain) drop-shadow(0 3px 8px rgba(60, 50, 30, 0.12));
+     additional mask is applied here. See .town-tile above for why the
+     url(#worldGrain) SVG filter was dropped in favor of plain drop-shadow. */
+  filter: drop-shadow(0 3px 8px rgba(60, 50, 30, 0.12));
 }
 .district-node {
   position: absolute;
@@ -5250,6 +5441,14 @@ img {
 .world-marker.far .marker-face { width: 22px; height: 22px; border-width: 2px; }
 .world-marker.far .marker-fire { font-size: 11px; }
 .world-marker.far .marker-state { font-size: 10px; top: -6px; right: -6px; }
+/* 2026-09-04 (Codex review follow-up): at the region overview many "far"
+   markers cluster inside the center town tile and read as visual clutter
+   ("全部回収する印象" — Codex). Quieting them further (smaller, lower
+   opacity) while a district IS focused doesn't apply — this only affects
+   the true overview, where individual-world choice isn't the point yet. */
+.region-viewport.is-region .world-marker.far { opacity: 0.72; }
+.region-viewport.is-region .world-marker.far .marker-face { width: 18px; height: 18px; }
+.region-viewport.is-region .world-marker.far .marker-fire { font-size: 9.5px; }
 /* state looks */
 .world-marker.st-completed .marker-face { border-color: #7fae6a; background: #eef5e4; }
 .world-marker.st-completed .marker-fire { filter: grayscale(0.7); opacity: 0.7; }
@@ -5328,6 +5527,22 @@ img {
 }
 .region-viewport.is-region { cursor: grab; touch-action: none; }
 .region-viewport.is-region:active { cursor: grabbing; }
+/* 2026-09-04 (Codex review follow-up, true-home-map-codex-review.json):
+   peripheral districts peeking in at the region-overview edges read as a
+   hard, unintentional crop rather than a deliberate "there's more this way"
+   cue. A soft edge vignette (an overlay, not a mask on the content itself —
+   keeps illustrations crisp toward the center) turns that hard edge into an
+   atmospheric fade. Only shown in the overview, not once a district is
+   focused (that view already crops tightly to the district on purpose). */
+.region-viewport.is-region::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: inset 0 0 46px 14px rgba(233, 240, 234, 0.85);
+  border-radius: inherit;
+}
 .world-marker.label-up { flex-direction: column-reverse; }
 .world-marker.label-up .marker-label { margin-top: 0; margin-bottom: 3px; }
 .region-canvas.no-anim { transition: none; }
@@ -5356,7 +5571,7 @@ img {
      480px app-frame width unchanged. */
   .app-frame:has(.world-screen) { max-width: 960px; }
   .world-screen .world { max-width: 960px; }
-  .region-viewport { height: 600px; }
+  .region-viewport { flex: none; height: 600px; }
 }
 
 /* Compass (map repair, 2026-09-04): replaces the old chip-bar menu. A
@@ -5364,10 +5579,20 @@ img {
    so it cannot compete with the canvas as a second navigation system. */
 .compass-wrap {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 8px;
+  bottom: 8px;
   z-index: 6;
   filter: drop-shadow(0 3px 8px rgba(60, 50, 30, 0.2));
+}
+/* 2026-09-04 (Mobile Map Simplification): moved from top-right to
+   bottom-right and shrunk on narrow viewports — top-right is where the
+   forest (mori-kawa) district sits at the tightened mobile initial zoom,
+   and a full-size compass there both crowded the screen and covered a real
+   tappable district (factory/state/backlog/ui-ux-backlog.md
+   compass-forest-overlap). Bottom-right keeps it clear of every district's
+   signpost at the new initial framing. */
+@media (max-width: 700px) {
+  .compass-wrap { transform: scale(0.78); transform-origin: bottom right; }
 }
 .compass-dot { cursor: pointer; }
 .compass-dot text { pointer-events: none; user-select: none; }

@@ -91,7 +91,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
       <div className="screen world-screen">
         <div className={`scene ${event.mood ? `mood-${event.mood}` : ""}`}>
           <div className="scene-top">
-            <button className="back-chip" onClick={() => navigate({ name: "home" })}>
+            <button className="back-chip" onClick={() => navigate({ name: "map" })}>
               ← 街
             </button>
           </div>
@@ -124,7 +124,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
       <div className="screen world-screen">
         <div className={`scene ${event.mood ? `mood-${event.mood}` : ""}`}>
           <div className="scene-top">
-            <button className="back-chip" onClick={() => navigate({ name: "home" })}>
+            <button className="back-chip" onClick={() => navigate({ name: "map" })}>
               ← 街
             </button>
             <div className="scene-banner">
@@ -249,7 +249,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
     <div className="screen world-screen">
       <div className={`scene ${event.mood ? `mood-${event.mood}` : ""}`}>
         <div className="scene-top">
-          <button className="back-chip" onClick={() => navigate({ name: "home" })}>
+          <button className="back-chip" onClick={() => navigate({ name: "map" })}>
             ← 街
           </button>
           <div className="scene-banner">

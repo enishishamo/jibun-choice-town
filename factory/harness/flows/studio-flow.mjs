@@ -41,6 +41,7 @@ const recoverHome = async () => {
 };
 
 // enter world
+await click("社会を冒険する"); await sleep(700);
 await click("駅前"); await sleep(900);
 await click("ゲームの3日間"); await sleep(800);
 await click("中へ入る"); await sleep(700);
@@ -88,7 +89,7 @@ const advance = async (needle) => {
   for (let i = 0; i < 14; i++) {
     const t = await body();
     if (t.includes(needle) && !t.includes("きみが今やっていたのは")) return true;
-    if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
+    if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("どこへ行く？")) { await recoverHome(); continue; }
     await p.evaluate(() => {
       const btns = [...document.querySelectorAll("button")].filter((x) => !x.disabled);
       const b2 = btns.reverse().find((x) => /えらんだ|もどる|すすむ|つぎへ/.test(x.textContent)) || btns[0];
@@ -146,7 +147,7 @@ await shot("game-ui");
 for (let i = 0; i < 14; i++) {
   const t = await body();
   if (t.includes("直した人たちの合作")) break;
-  if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("地図はこれからも")) { await recoverHome(); continue; }
+  if (t.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || t.includes("どこへ行く？")) { await recoverHome(); continue; }
   await p.evaluate(() => {
     const btns = [...document.querySelectorAll("button")].filter((x) => !x.disabled);
     const b2 = btns.reverse().find((x) => /えらんだ|もどる|すすむ|つぎへ|ふり返/.test(x.textContent)) || btns[0];

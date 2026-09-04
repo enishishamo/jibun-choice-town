@@ -33,6 +33,7 @@ const body = () => p.evaluate(() => document.body.innerText);
 const shot = (n) => p.screenshot({ path: `factory/state/art/shots/${MOBILE ? "mobile" : "desktop"}-port-${n}.png`, fullPage: true });
 
 // enter the port world: minato district chip -> world marker
+await click("社会を冒険する"); await sleep(700);
 await click("港"); await sleep(900);
 await click("夜のみなと"); await sleep(800);
 await click("ふ頭へ"); await sleep(700);
@@ -97,7 +98,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("② 巨大クレーン") && !t.includes("きみが今やっていたのは")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("どこへ行く？")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
@@ -139,7 +140,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("③ 書類と現物")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("どこへ行く？")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;
@@ -183,7 +184,7 @@ for (let i = 0; i < 8; i++) {
   if (t.includes("④ 朝いちの4本")) break;
   {
     const tt = await body();
-    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("地図はこれからも")) {
+    if (tt.includes("地図は動かせる") || t.includes("全部回らなくてもいい") || tt.includes("どこへ行く？")) {
       await click("港"); await sleep(800);
       await click("夜のみなと"); await sleep(800);
       continue;

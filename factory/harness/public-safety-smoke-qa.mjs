@@ -71,11 +71,17 @@ async function runViewport(browser, viewport) {
   const results = { viewport, home: {}, worlds: [], brokenImages: [], failedRequests: [], consoleErrors: [], pageErrors: [] };
   const { p, consoleErrors, pageErrors, failedRequests } = await newPage(browser, viewport);
 
-  // ---- Home: display, pan, district tap, map return ----
+  // ---- True Home: display + entry into the World Map ----
   await p.goto(BASE, { waitUntil: "networkidle2" });
   await p.evaluate(() => localStorage.clear());
   await p.reload({ waitUntil: "networkidle2" });
   await sleep(1500);
+  await p.screenshot({ path: `${OUT}/${viewport}-true-home.png` });
+  results.trueHome = { brokenImages: await checkBrokenImages(p) };
+  await clickText(p, "社会を冒険する");
+  await sleep(700);
+
+  // ---- World Map: display, pan, district tap, map return ----
   await p.screenshot({ path: `${OUT}/${viewport}-home.png` });
   results.home.brokenImagesInitial = await checkBrokenImages(p);
 
@@ -108,6 +114,8 @@ async function runViewport(browser, viewport) {
       await p.evaluate(() => localStorage.clear());
       await p.reload({ waitUntil: "networkidle2" });
       await sleep(1400);
+      await clickText(p, "社会を冒険する");
+      await sleep(700);
       if (w.district === "center") {
         await p.evaluate(() => document.querySelector(".town-tile")?.click());
       } else {
@@ -150,7 +158,9 @@ let blockers = 0;
 for (const [vp, r] of Object.entries(out)) {
   const failedWorlds = r.worlds.filter((w) => !w.ok);
   console.log(`\n=== ${vp} ===`);
+  console.log(`trueHome: brokenImages=${r.trueHome?.brokenImages?.length ?? "?"}`);
   console.log(`home: display=OK pan=${r.home.panOk} districtTap=${r.home.districtTapOk} mapReturn=${r.home.mapReturnOk}`);
+  if (r.trueHome?.brokenImages?.length) { console.log("  TRUE HOME BROKEN IMAGES:", r.trueHome.brokenImages); blockers += r.trueHome.brokenImages.length; }
   console.log(`worlds: ${r.worlds.length - failedWorlds.length}/${r.worlds.length} entered successfully`);
   if (failedWorlds.length) { console.log("  FAILED:", failedWorlds.map((w) => `${w.id} (${w.error})`).join("; ")); blockers += failedWorlds.length; }
   if (r.consoleErrors.length) { console.log("  CONSOLE ERRORS:", r.consoleErrors); blockers += r.consoleErrors.length; }
