@@ -31,8 +31,8 @@
     "broken_images": 0,
     "evidence": "factory/state/release/smoke-qa-result.json, smoke-qa-report.md"
   },
-  "release_lifecycle_stage": "RELEASE_CANDIDATE_PENDING_GPT_ASSETS",
-  "release_lifecycle_note": "2026-09-04: operation split into Stable/Public Validation Track (A) and Continuous Development Track (B), see factory/state/release/two-track-model.md. The 3 pre-publish gaps from the earlier Human Review are now resolved for Track A per factory/state/release/stable-public-blockers-2026-09-04.md: CAREER_FACT_PUBLIC_BLOCKERS=0 (WebSearch-verified against real Japanese government/legal sources, replacing the earlier non-converging Codex-only plausibility review loop), LANGUAGE_PUBLIC_BLOCKERS=0 (systemic raw-ruby-leak bug fixed; remaining furigana coverage gaps are real but judged non-blocking given the visual-first navigation design, deferred to Track B), GPT_ASSETS_REQUIRED=4/PUBLIC_BLOCKING_GPT_ASSETS=4 retained as-is (art still pending GPT delivery). Only remaining blocker before Release Candidate -> Stable is the 4 GPT assets.",
+  "release_lifecycle_stage": "RELEASE_CANDIDATE",
+  "release_lifecycle_note": "2026-09-04: operation split into Stable/Public Validation Track (A) and Continuous Development Track (B), see factory/state/release/two-track-model.md. All 3 pre-publish gaps from the earlier Human Review are now resolved for Track A per factory/state/release/stable-public-blockers-2026-09-04.md: CAREER_FACT_PUBLIC_BLOCKERS=0, LANGUAGE_PUBLIC_BLOCKERS=0, GPT_PUBLIC_BLOCKERS=0 (all 4 GPT-generated district illustrations received from the user and placed, see gpt_asset_placement_2026_09_04 below). Public-Safety Smoke QA re-run after placement: 14/14 worlds, mobile+desktop, 0 blocker-class findings -- PASS. This commit is a RELEASE_CANDIDATE. STABLE tag creation and remote push remain human-triggered only (not performed).",
   "pre_publish_fixes_2026_09_04": {
     "career_path_feature": {
       "status": "IMPLEMENTED",
@@ -49,8 +49,18 @@
     "art_ownership_audit": {
       "status": "COMPLETE",
       "note": "Independent Codex screenshot audit classified harbor/forest/station/hill district visuals as E (Claude-original illustration, off-series) with public_blocker=true. Filed as factory/state/art/gpt-asset-requests.json (4 public-blocking requests + 1 post-release backlog item). No new illustrations drawn by Claude. A data-consistency bug found and fixed 2026-09-04: the file's own revision note claimed all 4 requests were public_blocker=true and that forest-district-illustration had been added, but the actual JSON still had only 3 entries all marked false -- corrected to match, and authoring-source-ledger.json's forest_trees/station_rail_line entries reclassified D->E to match.",
-      "gate_status": "CLAUDE_ORIGINAL_ART_AUDITED=true, GPT_ASSETS_REQUIRED=4, PUBLIC_BLOCKING_GPT_ASSETS=4, POST_RELEASE_ART_BACKLOG=1"
+      "gate_status": "CLAUDE_ORIGINAL_ART_AUDITED=true, GPT_ASSETS_REQUIRED=4, PUBLIC_BLOCKING_GPT_ASSETS=0 (4/4 fulfilled), POST_RELEASE_ART_BACKLOG=1"
     }
+  },
+  "gpt_asset_placement_2026_09_04": {
+    "status": "COMPLETE",
+    "assets_placed": ["harbor-district.png", "hill-district.png", "station-district.png", "forest-district.png"],
+    "asset_path": "public/assets/districts/",
+    "implementation": "src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION map + <img class=district-illustration>, CSS sizing/position/object-fit only in src/index.css -- no pixel editing of the supplied images. Dead SVG placeholder code (districtKit()) and its now-unused districtWarmth computation were removed.",
+    "quality_reevaluation": "factory/state/art/gpt-asset-quality-reeval-2026-09-04.md -- ASSET_PRESENTATION_QUALITY/SUBJECT_CROP/FOCAL_OBJECT_VISIBILITY/CONTAINER_FIT/VISUAL_INTEGRATION/MOBILE_CROP/DESKTOP_CROP/SERIES_STYLE_MATCH all PASS, verified via real mobile 375px + desktop browser screenshots (region overview + each district's focused view)",
+    "evidence_screenshots": "factory/state/art/gpt-asset-placement-2026-09-04/",
+    "known_secondary_finding": "forest district's signpost/illustration overlaps the fixed Compass minimap widget in the region OVERVIEW (zoomed-out) camera state -- pre-existing layout interaction, not caused by this placement (signpost position unchanged); fully clear once the district is tapped into its focused view. Tracked in factory/state/backlog/ui-ux-backlog.md as compass-forest-overlap (MEDIUM, Track B).",
+    "public_smoke_qa_rerun": "factory/state/release/smoke-qa-result.json -- 14/14 worlds, mobile+desktop, 0 blocker-class findings, PASS"
   },
   "two_track_model": "factory/state/release/two-track-model.md",
   "stable_public_blockers_record": "factory/state/release/stable-public-blockers-2026-09-04.md",

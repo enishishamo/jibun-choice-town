@@ -54,27 +54,43 @@ crowd-safety/trip-conductor/forest-picker、一部重複あり）はすべて修
 **判定: LANGUAGE_PUBLIC_BLOCKERS = 0**
 （残存改善事項は `factory/state/backlog/language-furigana-backlog.md` へ）
 
-## 3. Art Ownership — GPT_PUBLIC_BLOCKERS = 4（保持・変更なし）
+## 3. Art Ownership — GPT_PUBLIC_BLOCKERS = 0（2026-09-04 解消）
 
-`factory/state/art/gpt-asset-requests.json` を4件のPUBLIC BLOCKER
-（harbor / hill / station / forest の各district illustration）として保持。
-確認の過程で、このファイル自体に矛盾（`revision_note` は4件すべてを
-public_blocker=trueとしたと書いていたが、実データは3件のみ・全てfalseの
-ままだった。forest-district-illustrationのrequestエントリも欠落していた）
-を発見し、今回修正した。`authoring-source-ledger.json` の
-`forest_trees`・`station_rail_line` も D→E に整合させた。
+`factory/state/art/gpt-asset-requests.json` の4件のPUBLIC BLOCKER
+（harbor / hill / station / forest の各district illustration）は、ユーザーが
+GPTで生成した画像を受領・配置したことで解消した。確認の過程で、このファイル
+自体に矛盾（`revision_note` は4件すべてをpublic_blocker=trueとしたと書いて
+いたが、実データは3件のみ・全てfalseのままだった。forest-district-illustration
+のrequestエントリも欠落していた）を発見し、まず修正した上で、4件とも
+`fulfilled: true` / `public_blocker: false` に更新。`authoring-source-ledger.json`
+の該当5ユニット（harbor_buildings / hill_building / station_buildings /
+forest_trees / station_rail_line）も `gpt_generated` へ更新し、旧SVG
+プレースホルダー（`districtKit()`関数、到達不能になったdead code）は削除した。
 
-**判定: GPT_ASSETS_REQUIRED = 4, PUBLIC_BLOCKING_GPT_ASSETS = 4**
-（GPT側で画像制作後、visual QA再実行 → 差し替え）
+8軸（ASSET_PRESENTATION_QUALITY / SUBJECT_CROP / FOCAL_OBJECT_VISIBILITY /
+CONTAINER_FIT / VISUAL_INTEGRATION / MOBILE_CROP / DESKTOP_CROP /
+SERIES_STYLE_MATCH）をmobile 375px・desktopの実ブラウザスクリーンショット
+（region overview + 4地区それぞれのfocused view、計10枚）で再評価し、全軸PASS。
+詳細・エビデンス: `factory/state/art/gpt-asset-quality-reeval-2026-09-04.md`、
+`factory/state/art/gpt-asset-placement-2026-09-04/`。
 
-## Stable Track 昇格条件（現時点のまとめ）
+副次的に、forest地区のregion overview（ズームアウト状態）で既存のCompass
+ウィジェットと地区サインポストが画面上重なる既存レイアウト課題を発見・記録
+（今回の画像差し替えが原因ではなく、サインポスト位置は変更していない。
+focused viewでは完全にクリア）。Continuous Development Track backlogへ:
+`factory/state/backlog/ui-ux-backlog.md`。
+
+**判定: GPT_ASSETS_REQUIRED = 4, PUBLIC_BLOCKING_GPT_ASSETS = 0（4/4 fulfilled）**
+
+## Stable Track 昇格条件（2026-09-04更新）
 
 | 項目 | 状態 |
 |---|---|
 | CAREER_FACT_PUBLIC_BLOCKERS | 0 ✅ |
 | LANGUAGE_PUBLIC_BLOCKERS | 0 ✅ |
-| GPT_PUBLIC_BLOCKERS | 4（未解消、GPT納品待ち）⏳ |
+| GPT_PUBLIC_BLOCKERS | 0 ✅（4/4 fulfilled） |
 
-GPT asset 4件が差し替わり次第、Public Smoke QA → Release Candidate →
-Stable の順に進める（`release-lifecycle.md` 参照）。GPT納品を待つ間も、
-Development Track側の作業は独立して継続できる（`two-track-model.md`）。
+3項目すべて解消。Public Smoke QAを再実行し、14/14 world・mobile+desktop・
+BLOCKER-class findings=0でPASS（`smoke-qa-result.json`、実行日2026-09-04）。
+**Release Candidateとして公開可能な状態。** Stable tag作成・remote pushは
+引き続き人間の明示指示があるまで行わない。

@@ -1,17 +1,97 @@
 {
   "note": "ART_AUTHORING_SOURCE tracking (directive §19, 2026-09-04). Covers inline (non-file) visual units in code, which the PNG-oriented factory/state/art/manifest-v2.json does not track. Values: existing_asset | gpt_generated | functional_svg | css | unknown. 'unknown' must never PASS as a new production asset.",
   "units": [
-    { "id": "home.districtKit.harbor_buildings", "location": "src/screens/HomeScreen.tsx:44-68", "authoring_source": "claude_sonnet_svg", "art_ownership_class": "E", "status": "flagged_for_gpt_replacement", "gpt_asset_request": "harbor-district-illustration" },
-    { "id": "home.districtKit.hill_building", "location": "src/screens/HomeScreen.tsx:113-127", "authoring_source": "claude_sonnet_svg", "art_ownership_class": "E", "status": "flagged_for_gpt_replacement", "gpt_asset_request": "hill-district-illustration" },
-    { "id": "home.districtKit.station_buildings", "location": "src/screens/HomeScreen.tsx:89-112", "authoring_source": "claude_sonnet_svg", "art_ownership_class": "E", "status": "flagged_for_gpt_replacement", "gpt_asset_request": "station-district-illustration" },
-    { "id": "home.districtKit.forest_trees", "location": "src/screens/HomeScreen.tsx:69-88", "authoring_source": "claude_sonnet_svg", "art_ownership_class": "E", "status": "flagged_for_gpt_replacement", "gpt_asset_request": "forest-district-illustration", "note": "reclassified D->E 2026-09-04 per independent Codex audit revision (art-ownership-codex-audit.json), same as the other 3 district clusters" },
-    { "id": "home.districtKit.station_rail_line", "location": "src/screens/HomeScreen.tsx:89-112", "authoring_source": "claude_sonnet_svg", "art_ownership_class": "E", "status": "flagged_for_gpt_replacement", "gpt_asset_request": "station-district-illustration", "note": "reclassified D->E 2026-09-04; Codex audited this together with station_buildings as one 'station_buildings_and_rail' element" },
-    { "id": "home.groundTint.ellipses", "location": "src/screens/HomeScreen.tsx region-terrain SVG", "authoring_source": "functional_svg", "art_ownership_class": "B", "status": "keep" },
-    { "id": "home.worldGrain.filter", "location": "src/screens/HomeScreen.tsx defs #worldGrain", "authoring_source": "functional_svg", "art_ownership_class": "B", "status": "keep" },
-    { "id": "home.compass", "location": "src/screens/HomeScreen.tsx:140-192", "authoring_source": "functional_svg", "art_ownership_class": "B", "status": "keep" },
-    { "id": "home.townTile.cssTreatment", "location": "src/index.css .town-tile", "authoring_source": "css", "art_ownership_class": "C", "status": "keep", "note": "underlying town-hero.png is a pre-existing approved asset, unmodified" },
-    { "id": "home.districtSignpost", "location": "src/screens/HomeScreen.tsx .district-node.signpost", "authoring_source": "functional_svg", "art_ownership_class": "A", "status": "keep" },
-    { "id": "home.fogSilhouette", "location": "src/screens/HomeScreen.tsx + src/data/districts.ts silhouette field", "authoring_source": "functional_svg", "art_ownership_class": "A", "status": "keep", "note": "emoji glyph + abstract mist shapes only" },
-    { "id": "home.regionTerrain.sea_river_road_paths", "location": "src/screens/HomeScreen.tsx region-terrain SVG (pre-dates 2026-09-04 Sonnet repair)", "authoring_source": "claude_fable_svg", "art_ownership_class": "E", "status": "backlog_noted_out_of_primary_scope", "note": "authored in an earlier session/model (Fable) before the Human Visual Review repair; same category of concern, flagged for completeness per the audit's own principle of not staying silent about pre-existing instances" }
+    {
+      "id": "home.districtKit.harbor_buildings",
+      "location": "public/assets/districts/harbor-district.png (rendered via src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION img pass; old SVG code at the previous location removed 2026-09-04)",
+      "authoring_source": "gpt_generated",
+      "art_ownership_class": "E",
+      "status": "resolved",
+      "gpt_asset_request": "harbor-district-illustration"
+    },
+    {
+      "id": "home.districtKit.hill_building",
+      "location": "public/assets/districts/hill-district.png (rendered via src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION img pass; old SVG code at the previous location removed 2026-09-04)",
+      "authoring_source": "gpt_generated",
+      "art_ownership_class": "E",
+      "status": "resolved",
+      "gpt_asset_request": "hill-district-illustration"
+    },
+    {
+      "id": "home.districtKit.station_buildings",
+      "location": "public/assets/districts/station-district.png (rendered via src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION img pass; old SVG code at the previous location removed 2026-09-04)",
+      "authoring_source": "gpt_generated",
+      "art_ownership_class": "E",
+      "status": "resolved",
+      "gpt_asset_request": "station-district-illustration"
+    },
+    {
+      "id": "home.districtKit.forest_trees",
+      "location": "public/assets/districts/forest-district.png (rendered via src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION img pass; old SVG code at the previous location removed 2026-09-04)",
+      "authoring_source": "gpt_generated",
+      "art_ownership_class": "E",
+      "status": "resolved",
+      "gpt_asset_request": "forest-district-illustration"
+    },
+    {
+      "id": "home.districtKit.station_rail_line",
+      "location": "public/assets/districts/station-district.png (rendered via src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION img pass; old SVG code at the previous location removed 2026-09-04)",
+      "authoring_source": "gpt_generated",
+      "art_ownership_class": "E",
+      "status": "resolved",
+      "gpt_asset_request": "station-district-illustration"
+    },
+    {
+      "id": "home.groundTint.ellipses",
+      "location": "src/screens/HomeScreen.tsx region-terrain SVG",
+      "authoring_source": "functional_svg",
+      "art_ownership_class": "B",
+      "status": "keep"
+    },
+    {
+      "id": "home.worldGrain.filter",
+      "location": "src/screens/HomeScreen.tsx defs #worldGrain",
+      "authoring_source": "functional_svg",
+      "art_ownership_class": "B",
+      "status": "keep"
+    },
+    {
+      "id": "home.compass",
+      "location": "src/screens/HomeScreen.tsx:140-192",
+      "authoring_source": "functional_svg",
+      "art_ownership_class": "B",
+      "status": "keep"
+    },
+    {
+      "id": "home.townTile.cssTreatment",
+      "location": "src/index.css .town-tile",
+      "authoring_source": "css",
+      "art_ownership_class": "C",
+      "status": "keep",
+      "note": "underlying town-hero.png is a pre-existing approved asset, unmodified"
+    },
+    {
+      "id": "home.districtSignpost",
+      "location": "src/screens/HomeScreen.tsx .district-node.signpost",
+      "authoring_source": "functional_svg",
+      "art_ownership_class": "A",
+      "status": "keep"
+    },
+    {
+      "id": "home.fogSilhouette",
+      "location": "src/screens/HomeScreen.tsx + src/data/districts.ts silhouette field",
+      "authoring_source": "functional_svg",
+      "art_ownership_class": "A",
+      "status": "keep",
+      "note": "emoji glyph + abstract mist shapes only"
+    },
+    {
+      "id": "home.regionTerrain.sea_river_road_paths",
+      "location": "src/screens/HomeScreen.tsx region-terrain SVG (pre-dates 2026-09-04 Sonnet repair)",
+      "authoring_source": "claude_fable_svg",
+      "art_ownership_class": "E",
+      "status": "backlog_noted_out_of_primary_scope",
+      "note": "authored in an earlier session/model (Fable) before the Human Visual Review repair; same category of concern, flagged for completeness per the audit's own principle of not staying silent about pre-existing instances"
+    }
   ]
 }

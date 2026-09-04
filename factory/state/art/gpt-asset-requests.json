@@ -1,5 +1,6 @@
 {
   "note": "Assets requested for GPT (art ownership rule, 2026-09-04 directive §14/§17). Claude does not draw these itself. Each entry's current implementation is a functional SVG placeholder (see authoring-source-ledger.json) that remains live until an asset here is fulfilled — replacing a placeholder with nothing would regress the Home/Map screen behind the state the 2026-09-04 Human Visual Review repair fixed.",
+  "fulfilled_2026_09_04": "All 4 requests below were fulfilled the same day: the user supplied GPT-generated harbor-district.png / hill-district.png / station-district.png / forest-district.png (1536x1024, RGBA with a soft alpha-feathered vignette edge already baked in). Placed at public/assets/districts/*.png and wired into src/screens/HomeScreen.tsx's district-illustration <img> pass (CSS sizing/position/object-fit only — no pixel editing). Verified via real mobile 375px + desktop browser screenshots, both the region overview and each district's zoomed-in focused view; see factory/state/art/gpt-asset-placement-2026-09-04/ and factory/state/art/gpt-asset-quality-reeval-2026-09-04.md for the full re-evaluation. Each request entry below is kept as historical spec/record with fulfilled:true rather than deleted.",
   "requests": [
     {
       "asset_id": "harbor-district-illustration",
@@ -12,10 +13,15 @@
       "composition": "Small vignette suitable for a ~180x140px district ground area on the region map, viewed at a slight top-down angle consistent with the center town illustration's perspective; must read clearly at small scale (mobile map thumbnail size) and not just at full zoom",
       "aspect_ratio": "~4:3, flexible",
       "transparent_background": true,
-      "reference_assets": ["public/assets/town-hero.png", "public/assets/port/scene-port.png"],
+      "reference_assets": [
+        "public/assets/town-hero.png",
+        "public/assets/port/scene-port.png"
+      ],
       "safe_area": "Keep the main subject within the center 80% — this composites into a district's ground ellipse with a soft edge blend, so hard rectangular borders should be avoided",
       "priority": "high",
-      "public_blocker": true
+      "public_blocker": false,
+      "fulfilled": true,
+      "fulfilled_asset_path": "public/assets/districts/harbor-district.png"
     },
     {
       "asset_id": "hill-district-illustration",
@@ -28,10 +34,15 @@
       "composition": "Small vignette for a ~150x120px district ground area, slight top-down angle, must read at small scale",
       "aspect_ratio": "~4:3, flexible",
       "transparent_background": true,
-      "reference_assets": ["public/assets/town-hero.png", "public/assets/library/scene-library.png"],
+      "reference_assets": [
+        "public/assets/town-hero.png",
+        "public/assets/library/scene-library.png"
+      ],
       "safe_area": "Keep the main subject within the center 80%",
       "priority": "high",
-      "public_blocker": true
+      "public_blocker": false,
+      "fulfilled": true,
+      "fulfilled_asset_path": "public/assets/districts/hill-district.png"
     },
     {
       "asset_id": "station-district-illustration",
@@ -44,10 +55,15 @@
       "composition": "Small vignette for a ~160x130px district ground area, slight top-down angle, must read at small scale",
       "aspect_ratio": "~4:3, flexible",
       "transparent_background": true,
-      "reference_assets": ["public/assets/town-hero.png", "public/assets/studio/scene-studio.png"],
+      "reference_assets": [
+        "public/assets/town-hero.png",
+        "public/assets/studio/scene-studio.png"
+      ],
       "safe_area": "Keep the main subject within the center 80%",
       "priority": "high",
-      "public_blocker": true
+      "public_blocker": false,
+      "fulfilled": true,
+      "fulfilled_asset_path": "public/assets/districts/station-district.png"
     },
     {
       "asset_id": "forest-district-illustration",
@@ -60,10 +76,15 @@
       "composition": "Small vignette for a ~170x130px district ground area, slight top-down angle, must read at small scale (mobile map thumbnail size)",
       "aspect_ratio": "~4:3, flexible",
       "transparent_background": true,
-      "reference_assets": ["public/assets/town-hero.png", "public/assets/forest/scene-forest.png"],
+      "reference_assets": [
+        "public/assets/town-hero.png",
+        "public/assets/forest/scene-forest.png"
+      ],
       "safe_area": "Keep the main subject within the center 80%",
       "priority": "high",
-      "public_blocker": true
+      "public_blocker": false,
+      "fulfilled": true,
+      "fulfilled_asset_path": "public/assets/districts/forest-district.png"
     }
   ],
   "backlog_low_priority": [
@@ -75,6 +96,7 @@
     }
   ],
   "revision_note_2026_09_04": "Claude's initial self-audit classified forest_trees as D (keep-candidate, low priority) and all 4 district clusters as POST_RELEASE_ART_BACKLOG (not blocking). An INDEPENDENT Codex vision audit (factory/state/art/art-ownership-codex-audit.json), shown only screenshots with no access to Claude's classification, disagreed on both counts: it classified forest_trees as E (not D) and judged all 4 district illustration clusters (harbor/forest/station/hill) as any_public_blocker=true, reasoning that the Home screen is the app's primary, first-impression surface — not a deep/secondary screen — so a visible style mismatch there counts as a real public blocker, not backlog. Because Claude has an inherent conflict of interest auditing its own work, this file defers to the independent Codex verdict: forest-district-illustration has been moved from backlog into the primary (blocking) requests list below, and all 4 requests are now marked public_blocker=true. No image was generated or redrawn by Claude to resolve this — per directive §16, that is explicitly GPT's job; these requests remain open until fulfilled.",
-  "public_blocker_count": 4,
-  "post_release_backlog_count": 1
+  "public_blocker_count": 0,
+  "post_release_backlog_count": 1,
+  "fulfilled_count": 4
 }

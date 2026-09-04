@@ -15,6 +15,15 @@ import { useGame } from "../state/GameState";
 import type { WorldState } from "../state/GameState";
 
 const A = (n: string) => `${import.meta.env.BASE_URL}assets/${n}.png`;
+/** GPT-authored district ground illustrations (2026-09-04 Art Ownership
+ * replacement — see factory/state/art/gpt-asset-requests.json). Claude does
+ * not draw these; only CSS sizing/position/crop is adjusted here. */
+const DISTRICT_ILLUSTRATION: Partial<Record<District["terrain"], string>> = {
+  harbor: "districts/harbor-district",
+  forest: "districts/forest-district",
+  station: "districts/station-district",
+  hill: "districts/hill-district",
+};
 const CANVAS_W = 1200;
 const CANVAS_H = 820;
 /** at most this many "something is happening" signals on the region view (§15) */
@@ -30,104 +39,13 @@ const MAX_SIGNALS = 5;
 // district's worlds are engaged (in-progress/completed) — building windows
 // light up warm instead of a badge, per the research principle "工事→煙→灯り"
 // (state shows as world change, not UI decoration).
-function districtKit(d: District, warmth: number) {
-  const lit = "#f6cf6a";
-  const unlit = "#8a95a3";
-  const window_ = (x: number, y: number, w: number, h: number, on: boolean) => (
-    <rect x={x} y={y} width={w} height={h} fill={on ? lit : unlit} opacity={on ? 0.95 : 0.55} rx={1} />
-  );
-  // repair (2026-09-04): districts were given as much visual weight as the
-  // center town, competing with it instead of sitting inside its shadow —
-  // GROUND_SCALE keeps the town the clear visual anchor of the world.
-  const scale = (d.r / 150) * 0.82;
-  const T = (x: number, y: number) => ({ x: d.cx + x * scale, y: d.cy + y * scale });
-  if (d.terrain === "harbor") {
-    const boxes = [
-      { x: -70, y: -10, w: 46, h: 34, roof: "#c1584a", on: warmth > 0.15 },
-      { x: -14, y: -22, w: 38, h: 46, roof: "#a04a3e", on: warmth > 0.4 },
-      { x: 34, y: -6, w: 40, h: 30, roof: "#c1584a", on: warmth > 0.65 },
-    ];
-    return (
-      <g>
-        {/* pier reaching toward the water */}
-        <path d={`M${T(-90, 40).x},${T(-90, 40).y} L${T(90, 55).x},${T(90, 55).y}`} stroke="#c9b48c" strokeWidth={5 * scale} strokeLinecap="round" />
-        {boxes.map((b, i) => {
-          const p = T(b.x, b.y);
-          return (
-            <g key={i}>
-              <rect x={p.x} y={p.y} width={b.w * scale} height={b.h * scale} fill="#e8ddc4" stroke="#c9b895" strokeWidth={1.5} rx={2} />
-              <path d={`M${p.x - 4},${p.y} L${p.x + (b.w * scale) / 2},${p.y - 16 * scale} L${p.x + b.w * scale + 4},${p.y} Z`} fill={b.roof} />
-              {window_(p.x + 6, p.y + 8 * scale, 8 * scale, 8 * scale, b.on)}
-              {window_(p.x + b.w * scale - 14 * scale, p.y + 8 * scale, 8 * scale, 8 * scale, b.on)}
-            </g>
-          );
-        })}
-        <text x={T(30, 65).x} y={T(30, 65).y} fontSize={18 * scale}>⛵</text>
-      </g>
-    );
-  }
-  if (d.terrain === "forest") {
-    const trees = [
-      [-70, 10, 30], [-30, -20, 38], [10, 8, 26], [50, -14, 34], [78, 22, 22], [-6, 40, 24],
-    ];
-    return (
-      <g>
-        {trees.map(([x, y, s], i) => {
-          const p = T(x, y);
-          const on = warmth > (i + 1) / (trees.length + 1) - 0.5 ? true : false;
-          return (
-            <g key={i}>
-              <rect x={p.x - 3} y={p.y} width={6} height={14 * scale} fill="#8a6a4a" />
-              <circle cx={p.x} cy={p.y - (s * scale) / 3} r={(s * scale) / 2.1} fill={i % 2 === 0 ? "#6f9e5a" : "#5f8f4d"} opacity={0.95} />
-              {on && <circle cx={p.x} cy={p.y - (s * scale) / 3} r={2.4} fill={lit} opacity={0.85} />}
-            </g>
-          );
-        })}
-      </g>
-    );
-  }
-  if (d.terrain === "station") {
-    const y0 = T(0, 44).y;
-    return (
-      <g>
-        <line x1={T(-95, 44).x} y1={y0} x2={T(95, 44).x} y2={y0} stroke="#b9b2a0" strokeWidth={3} />
-        <line x1={T(-95, 50).x} y1={T(0, 50).y} x2={T(95, 50).x} y2={T(0, 50).y} stroke="#b9b2a0" strokeWidth={3} />
-        {Array.from({ length: 9 }).map((_, i) => {
-          const x = T(-90 + i * 22, 47).x;
-          return <rect key={i} x={x - 5} y={y0 - 1} width={10} height={8} fill="#9a8f78" />;
-        })}
-        {[-40, 20].map((x, i) => {
-          const p = T(x, -8);
-          const on = warmth > (i === 0 ? 0.2 : 0.55);
-          return (
-            <g key={i}>
-              <rect x={p.x} y={p.y} width={44 * scale} height={40 * scale} fill="#d9dde2" stroke="#b7bec7" strokeWidth={1.5} rx={3} />
-              {window_(p.x + 6, p.y + 8 * scale, 10 * scale, 10 * scale, on)}
-              {window_(p.x + 24 * scale, p.y + 8 * scale, 10 * scale, 10 * scale, on)}
-              {window_(p.x + 6, p.y + 22 * scale, 10 * scale, 10 * scale, on)}
-              {window_(p.x + 24 * scale, p.y + 22 * scale, 10 * scale, 10 * scale, on)}
-            </g>
-          );
-        })}
-      </g>
-    );
-  }
-  // hill (丘の上): a terraced mound with a small columned building on top —
-  // matches the 🏛 landmark emoji already used for this district.
-  const top = T(0, -50);
-  return (
-    <g>
-      <ellipse cx={T(0, 30).x} cy={T(0, 30).y} rx={100 * scale} ry={26 * scale} fill="#c3d79f" opacity={0.9} />
-      <ellipse cx={T(0, 0).x} cy={T(0, 0).y} rx={72 * scale} ry={22 * scale} fill="#cfe0ac" opacity={0.9} />
-      <path d={`M${T(-30, 26).x},${T(-30, 26).y} Q${T(0, -6).x},${T(0, -6).y} ${T(6, -48).x},${T(6, -48).y}`} stroke="#e9e0c8" strokeWidth={4 * scale} fill="none" strokeDasharray="1 10" strokeLinecap="round" />
-      <rect x={top.x - 26 * scale} y={top.y} width={52 * scale} height={22 * scale} fill="#efe6d4" stroke="#cdbf9e" strokeWidth={1.5} />
-      {Array.from({ length: 4 }).map((_, i) => (
-        <rect key={i} x={top.x - 20 * scale + i * 13 * scale} y={top.y + 2} width={4 * scale} height={18 * scale} fill={warmth > (i + 1) / 5 ? lit : unlit} opacity={warmth > (i + 1) / 5 ? 0.95 : 0.7} />
-      ))}
-      <path d={`M${top.x - 30 * scale},${top.y} L${top.x},${top.y - 16 * scale} L${top.x + 30 * scale},${top.y} Z`} fill="#c1584a" />
-    </g>
-  );
-}
+// 2026-09-04: harbor/forest/station/hill (the only terrains that ever reach
+// this point — see DISTRICTS in ../data/districts) now render as
+// GPT-authored raster illustrations (DISTRICT_ILLUSTRATION + the <img> pass
+// in the JSX below) instead of the hand-drawn SVG ground kit this file used
+// to have. The `warmth`-driven lit-window detail that kit drew is not
+// reproduced on the illustrations; district-level progress is still visible
+// via the separate "living signal" markers (👥, see signalIds below).
 
 /** small always-visible "compass" — a MINIATURE PAINTING of the same canvas
  * geography (green ground, blue sea corner, terrain-colored district
@@ -343,21 +261,6 @@ export default function HomeScreen() {
     return new Set(fresh.slice(-MAX_SIGNALS).map((m) => m.eventId));
   }, [markers]);
 
-  // district "warmth" (0..1): share of that district's worlds that are
-  // engaged (in-progress/completed/updated). Drives lit windows in the
-  // terrain kit — state shows as world change, not a UI badge (map repair §6).
-  const districtWarmth = useMemo(() => {
-    const byD: Record<string, { engaged: number; total: number }> = {};
-    for (const m of markers) {
-      const bucket = (byD[m.districtId] ??= { engaged: 0, total: 0 });
-      bucket.total += 1;
-      if (m.state === "IN_PROGRESS" || m.state === "COMPLETED" || m.state === "UPDATED") bucket.engaged += 1;
-    }
-    const out: Record<string, number> = {};
-    for (const [id, b] of Object.entries(byD)) out[id] = b.total > 0 ? b.engaged / b.total : 0;
-    return out;
-  }, [markers]);
-
   // ---- camera --------------------------------------------------------------
   // region mode fills the viewport height and is PANNABLE (the map is a place,
   // not a thumbnail); district mode zooms the camera onto the district.
@@ -519,14 +422,6 @@ export default function HomeScreen() {
                   <ellipse cx={d.cx - 30} cy={d.cy + 10} rx={d.r * 0.7} ry={d.r * 0.45} fill="#dde1e4" />
                 </g>
               ))}
-              {/* illustrated district ground — generic per terrain class,
-                  never per-district hand-authored (repair decision, hybrid
-                  Option 1 + shared texture) */}
-              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
-                <g key={d.id} filter="url(#worldGrain)">
-                  {districtKit(d, districtWarmth[d.id] ?? 0)}
-                </g>
-              ))}
             </svg>
 
             {/* the existing town illustration — its hard card edge is now
@@ -539,6 +434,25 @@ export default function HomeScreen() {
               style={{ left: TOWN_TILE.x, top: TOWN_TILE.y, width: TOWN_TILE.w, height: TOWN_TILE.h }}
               onClick={() => { if (!suppressTap.current && !focus) setFocus("center"); }}
             />
+
+            {/* district ground illustrations — GPT-authored (2026-09-04 Art
+                Ownership replacement of the earlier Claude-drawn SVG
+                placeholders). Each source PNG already carries its own soft
+                alpha-feathered edge, so no additional mask is needed; only
+                size/position is tuned here per district's cx/cy/r. */}
+            {DISTRICTS.filter((d) => !d.foggy && d.id !== "center" && DISTRICT_ILLUSTRATION[d.terrain]).map((d) => {
+              const w = d.r * 2.7;
+              const h = w * (1024 / 1536);
+              return (
+                <img
+                  key={d.id}
+                  className="district-illustration"
+                  src={A(DISTRICT_ILLUSTRATION[d.terrain]!)}
+                  alt=""
+                  style={{ left: d.cx - w / 2, top: d.cy - h * 0.58, width: w, height: h }}
+                />
+              );
+            })}
 
             {/* district signposts: now a SMALL marker sitting on top of the
                 illustrated ground kit above, not the district's entire
