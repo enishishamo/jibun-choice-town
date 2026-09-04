@@ -991,6 +991,129 @@ img {
   font-size: 13.5px;
 }
 
+/* ---------- career path ("どうやってなるの？", 2026-09-04) ---------- */
+.career-path {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 2px solid var(--line);
+}
+.career-path-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.career-path-qual {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.career-path-summary {
+  font-size: 15px;
+  color: var(--text-soft);
+  margin: 0 0 12px;
+}
+.career-path-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.career-path-tab {
+  border: 2px solid var(--line);
+  background: var(--ivory);
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.career-path-tab.active {
+  border-color: var(--orange);
+  background: var(--orange-soft);
+  color: var(--text);
+}
+.career-path-track {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4px;
+}
+.career-path-node {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0 14px 0;
+}
+/* the connecting line between nodes — a functional path diagram, not scenery */
+.career-path-connector {
+  position: absolute;
+  left: 15px;
+  top: -8px;
+  width: 2px;
+  height: 14px;
+  background: var(--line);
+}
+.career-path-dot {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  z-index: 1;
+}
+.career-path-node.here .career-path-dot {
+  border-color: var(--orange);
+  background: var(--orange-soft);
+}
+.career-path-node.required .career-path-dot { border-color: var(--blue); }
+.career-path-node.optional .career-path-dot { border-color: var(--green); border-style: dashed; }
+.career-path-node-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+.career-path-node-body b {
+  font-size: 15px;
+}
+.career-path-desc {
+  font-size: 14px;
+  color: var(--text-soft);
+}
+.career-path-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 8px;
+  padding: 1px 7px;
+  margin: 2px 0;
+}
+.career-path-later {
+  font-size: 14px;
+  background: var(--blue-soft);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+.career-path-note {
+  font-size: 13.5px;
+  color: var(--text-soft);
+  margin-top: 8px;
+}
+.career-path-note.soft {
+  font-style: normal;
+  opacity: 0.9;
+}
+
 .related {
   margin-top: 18px;
 }

@@ -1,0 +1,958 @@
+[
+ {
+  "profession_id": "tenant-coordinator",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "商店街の空き店舗対策やまちづくり推進（タウンマネージャー等）になるための決まった国家資格・免許は存在しない。まちづくり会社・商店街振興組合・自治体の商業観光部局への就職、自治体の公募（委託契約や任期付職員）、地域おこし協力隊への応募など、複数の入り口がある。実務主体が『市の職員』『まちづくり会社の社員』『商店街振興組合の職員』のいずれかは地域ごとに異なるため、断定せず『商店街の空き店舗対策に関わる仕事』と仮置きする。",
+  "routes": [
+   {
+    "route_name": "まちづくり会社・商店街振興組合の職員になるルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "中学校・高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特別な必修科目や資格はない。地域の商店や町の様子に関心を持つ経験が土台になる。",
+      "child_friendly_description": "決まった勉強はないよ。町のお店や商店街に興味を持つことが最初の一歩。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "商学・経営学・都市計画・不動産・観光などを学ぶ人が多いが、必須ではない。",
+      "child_friendly_description": "町づくりやお店のことを大学で学ぶ人もいるけど、必ずしも必要じゃないよ。"
+     },
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "まちづくり会社、商店街振興組合、市町村の商業・観光部局などに就職し、空き店舗調査・テナント誘致・イベント運営などの実務経験を積む。",
+      "child_friendly_description": "町づくり会社や商店街の組合、市役所などで働きながら、お店を探す・つなげる仕事を覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "自治体のタウンマネージャー公募ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "自治体が開くタウンマネジメント研修会を受講した人を対象に、委託契約や任期付き職員としての公募が行われる例がある（地域差が大きい）。",
+      "child_friendly_description": "町（自治体）が『こんな人を探してます』と募集を出すことがあって、そこに応募して選ばれるとタウンマネージャーになれることがあるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "地域おこし協力隊から入るルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "採用試験・応募",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "総務省の地域おこし協力隊制度に応募し、委嘱を受けて商店街活性化の企画・情報発信等に従事する例がある。",
+      "child_friendly_description": "国の『地域おこし協力隊』という仕組みに応募して、町に住みながら商店街を元気にする活動をする道もあるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "中小企業診断士（国家資格）を活かすルート",
+    "route_type": "国家資格活用ルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校/実務経験",
+      "requirement_type": "license",
+      "required": false,
+      "description": "中小企業診断士（国家資格）の第1次試験・第2次試験に合格し実務補習等を修了すると、商店街支援のコンサルティング業務を通じてタウンマネージャー的役割を担う人もいる。ただし必須ではなく数あるルートの一つ。",
+      "child_friendly_description": "『中小企業診断士』という国の資格を持って、専門家として商店街を手伝う道もあるよ。でも、これがないとなれないわけじゃないよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "市町村の商業振興・都市計画担当の公務員として、業務の一部で空き店舗対策に関わる道もある。",
+  "can_start_later": true,
+  "important_notes": "『タウンマネージャー』は資格制度ではなく役割・ポジションの呼び名。実務主体（誰が空き店舗対策を担うか）は自治体・まちづくり会社・商店街振興組合など地域によって大きく異なるため、特定の職業名で断定しない。",
+  "fact_sources": [
+   "経済産業省中国経済産業局「人と人との縁を紡ぐ、タウンマネージャーという仕事」 https://chugoku-meti-gov.note.jp/n/n13c4e6eba5cd?gs=466cd83125294e0797e4fa9b81cff59a",
+   "Think都城「シャッター商店街、再生の兆し タウンマネージャーの奮闘」 https://think-miyakonojo.jp/article/5702/",
+   "総務省 地域おこし協力隊全国オンラインイベント「【山口県】商店街活性化のための企画と情報発信」 https://www.soumu.go.jp/main_sosiki/jichi_gyousei/c-gyousei/chiikiokoshitai/article/yamaguchi.html",
+   "ウィキペディア「タウンマネージャー」 https://ja.wikipedia.org/wiki/%E3%82%BF%E3%82%A6%E3%83%B3%E3%83%9E%E3%83%8D%E3%83%BC%E3%82%B8%E3%83%A3%E3%83%BC",
+   "幻冬舎ゴールドオンライン「街を創り、人を呼び、地域を活性化…知られざる『タウンマネージャー』という仕事」 https://gentosha-go.com/articles/-/41250",
+   "埼玉県「平成28年度商店街経営実態調査 第5節 空き店舗の現状と対策」 https://www.pref.saitama.lg.jp/documents/3956/ni5.pdf",
+   "全国中小企業団体中央会「どうしたら中小企業診断士になれるの？」 https://www.jf-cmca.jp/contents/002_c_shindanshiseido/002_shindanshi_doushitara.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "keiei-shidoin",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "経営指導員は商工会・商工会議所が実施する採用試験に合格し、採用後の研修を経て任用される職員である。中小企業診断士・税理士・公認会計士などの資格を持っていると受験時に実務経験年数要件が緩和される場合があるが、資格が無くても実務経験だけで受験・採用され得る。東京商工会議所の指導員採用ページでは『経営支援に関する経験や知識が無くても、研修などで知識習得をサポートする』と明記されている。",
+  "routes": [
+   {
+    "route_name": "実務経験ルート（資格なし）",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "商工会（全国商工会連合会系）の経営指導員等採用資格試験では、大学卒業＋直近5年以内に商工業指導・経営実務の経験2年以上で受験資格を得られる例がある（商工会連合会の例。商工会議所は組織が別で要件は個別に確認が必要）。",
+      "child_friendly_description": "大学を出て、お店や会社の仕事を手伝った経験が少しあれば、試験を受けられることがあるよ。"
+     },
+     {
+      "stage": "採用試験・応募",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "商工会議所・商工会が実施する採用試験（面接・小論文・適性検査等）に合格する。東京商工会議所の例では『小規模事業者等、中小企業への営業および目標達成経験』が必須条件とされる。",
+      "child_friendly_description": "商工会議所が行う採用試験に受かる必要があるよ。お店や会社に営業や提案をした経験があると有利みたい。"
+     },
+     {
+      "stage": "実務経験（採用後研修）",
+      "requirement_type": "training",
+      "required": true,
+      "description": "採用後は経営指導員向けの研修（中小企業大学校の研修等）を受けながら、経営相談・創業計画作成支援などの実務にあたる。",
+      "child_friendly_description": "採用されたあとも研修を受けながら、少しずつお店の相談にのる仕事を覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "資格保有ルート（優遇されるが必須ではない）",
+    "route_type": "国家資格活用ルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校/実務経験",
+      "requirement_type": "license",
+      "required": false,
+      "description": "公認会計士・税理士・中小企業診断士（いずれも国家資格）を持っていると、商工会連合会系の採用試験では実務経験年数要件を満たさなくても受験資格が得られる例がある。ただし『資格が必須』ではなく、資格なしの実務経験ルートと並ぶ選択肢の一つ。",
+      "child_friendly_description": "『中小企業診断士』のような国の資格を先に取っておくと試験を受けやすくなることもあるけど、資格がなくてもなれるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "中小企業診断士として独立し、商工会議所からの委託業務（専門家派遣等）で経営相談に関わる道もある。",
+  "can_start_later": true,
+  "important_notes": "中小企業診断士は国家資格だが、経営指導員になるための必須条件ではない。実務経験のみでもなれる。また『商工会』（全国商工会連合会系、主に町村部）と『商工会議所』（日本商工会議所系、主に市部）は別組織で、採用試験の要件は組織・地域ごとに異なる可能性がある。マル経融資は経営指導員個人の一存では決まらず、商工会議所内の審査会や会頭（会長）の認証といった組織的な手続きを経て推薦される。",
+  "fact_sources": [
+   "千葉県商工会連合会「令和3年度第2回経営指導員等採用資格試験 受験案内」 https://www.chibaken.or.jp/staffonly/wp-content/uploads/2021/07/%E4%BB%A4%E5%92%8C%EF%BC%93%E5%B9%B4%E5%BA%A6%E7%B5%8C%E5%96%B6%E6%8C%87%E5%B0%8E%E5%93%A1%E7%AD%89%E6%8E%A1%E7%94%A8%E8%B3%87%E6%A0%BC%E8%A9%A6%E9%A8%93%E5%8F%97%E9%A8%93%E6%A1%88%E5%86%85%EF%BC%88%E7%AC%AC%EF%BC%92%E5%9B%9E%EF%BC%89.pdf",
+   "東京商工会議所 指導員採用サイト https://www.tokyo-cci.or.jp/saiyo/shidoin/",
+   "日本商工会議所「マル経融資」 https://www.jcci.or.jp/support/financing/marukei/index.html",
+   "日本政策金融公庫「マル経融資（小規模事業者経営改善資金）」 https://www.jfc.go.jp/n/finance/search/kaizen_m.html",
+   "中小企業庁「小規模事業者経営改善資金（マル経融資）について」 https://www.chusho.meti.go.jp/keiei/shokibo/marukei/",
+   "日本政策金融公庫「制度概要｜小規模事業者経営改善資金（マル経融資）」 https://www.jfc.go.jp/n/finance/marukei/about/index.html",
+   "独立行政法人中小企業基盤整備機構「中小企業支援担当者向け研修｜中小企業大学校」 https://www.smrj.go.jp/institute/hitoyoshi/training/supporter/index.html",
+   "日本商工会議所「商工会議所の経営支援 現状と課題」（2024年12月、中小企業庁ヨロズ検討会資料） https://www.chusho.meti.go.jp/koukai/kenkyukai/yorozu/003/006.pdf"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "loan-screener",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "日本政策金融公庫（政策金融機関）の職員として新卒・中途で採用され、配属後の研修とOJTを通じて融資審査の知識・技能を身につける。融資審査業務そのものに必須の国家資格・免許はなく、公庫独自の採用試験（エントリーシート・筆記試験・面接等）に合格することが入口になる。",
+  "routes": [
+   {
+    "route_name": "新卒総合職ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特定の学部・学科の指定はなく、新卒採用ページでは幅広い出身学部から採用している。",
+      "child_friendly_description": "大学で何を勉強していないといけない、という決まりはとくにないよ。"
+     },
+     {
+      "stage": "採用試験・応募",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "日本政策金融公庫の新卒採用試験（エントリーシート・適性検査・面接等）に合格し、総合職として入庫する。",
+      "child_friendly_description": "公庫が行う採用試験に受かって、まず職員になる必要があるよ。"
+     },
+     {
+      "stage": "実務経験（入庫後研修）",
+      "requirement_type": "training",
+      "required": true,
+      "description": "入庫後、業務全般の基礎知識とビジネスマナーを学ぶ新入職員研修を受け、その後は部門別研修とOJTを通じて融資審査の基礎的な技能を身につける。",
+      "child_friendly_description": "職員になったあと、研修と先輩からの指導で、少しずつ『お金を貸していいか考える』仕事のやり方を覚えていくよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "民間銀行・信用金庫などで融資審査の実務経験を積んだ後、中途採用で公庫に転職する道もある（要件は公庫の中途採用情報を要確認）。",
+  "can_start_later": true,
+  "important_notes": "『創業融資の審査員』という単独の国家資格は存在しない。日本政策金融公庫の職員は特殊会社（政策金融機関）の職員であり、国家公務員ではない点にも注意（試験は公庫独自の採用試験で、国家公務員試験ではない）。",
+  "fact_sources": [
+   "日本政策金融公庫「日本政策金融公庫紹介｜2027年度新卒者採用ホームページ」 https://www.jfc.go.jp/n/recruit/business/",
+   "日本政策金融公庫「国民生活事業｜2027年度新卒者採用ホームページ」 https://www.jfc.go.jp/n/recruit/business/business03.html",
+   "日本政策金融公庫「キャリア支援｜2027年度新卒者採用ホームページ」 https://www.jfc.go.jp/n/recruit/career/",
+   "日本政策金融公庫「採用情報｜2027年度新卒者採用ホームページ」 https://www.jfc.go.jp/n/recruit/recruit/",
+   "日本政策金融公庫「はじめての方はこちら｜2027年度新卒者採用ホームページ」 https://www.jfc.go.jp/n/recruit/first/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "shop-designer",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "店舗デザイナー自身に法律上必須の資格はない。ただし、一定規模を超える建築物の設計・工事監理（構造や用途変更を伴う場合など）には建築士法に基づき建築士の資格が必要になる場面があり、内装工事の施工管理には施工管理技士等の資格を持つ人が関わることがある。店舗デザイナーは大学・専門学校でデザインや建築を学んだ後、設計事務所・内装会社等に就職して実務経験を積むのが一般的なルートである。",
+  "routes": [
+   {
+    "route_name": "専門学校・大学からデザイン事務所へ就職するルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "美術・デザイン系の授業や作品制作の経験が土台になることがあるが必須ではない。",
+      "child_friendly_description": "絵を描いたり、ものを作ったりするのが好きだと将来役に立つことがあるよ。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "建築・インテリアデザイン・空間デザインなどを学ぶ人が多いが、法律上の必須要件ではない。",
+      "child_friendly_description": "学校でお店や建物のデザインを学ぶ人が多いけど、行かないとなれないわけじゃないよ。"
+     },
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "設計事務所・内装会社・デザイン会社等に就職し、先輩の下で実際の店舗設計プロジェクトに携わりながら経験を積む。",
+      "child_friendly_description": "会社に入って、実際にお店のデザインを手伝いながら仕事のやり方を覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "関連資格を取得して専門性を補強するルート（任意）",
+    "route_type": "資格活用ルート（任意）",
+    "steps": [
+     {
+      "stage": "資格取得（任意）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "インテリアコーディネーター、インテリアプランナー等の民間資格を取得すると専門知識の証明になるが、店舗デザイナーとして働くための必須資格ではない。",
+      "child_friendly_description": "『インテリアコーディネーター』のような資格を取ると自分の知識を証明しやすくなるけど、これがないとデザイナーになれないわけじゃないよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "建築士資格（国家資格）を取得し、より大きな改装や構造に関わる部分まで担当できる設計者になる道もある。",
+  "can_start_later": true,
+  "important_notes": "『店舗デザイナー』という職業名自体に対応する必須の国家資格・免許はない。ただし建築確認申請が必要な規模の工事や用途変更を伴う場合は、建築士法に基づき建築士が設計・工事監理に関わる必要がある。内装工事の現場管理には施工管理技士等の資格保持者が関わることがある。",
+  "fact_sources": [
+   "建築家紹介センター「店舗設計に必要な資格について」 https://kentikusi.jp/dr/%E5%BA%97%E8%88%97/%E8%B3%87%E6%A0%BC",
+   "店舗デザイン.COM「デザイナーの流儀：内装工事の許認可・資格」 https://www.tenpodesign.com/style/65",
+   "インテリアお仕事マガジン「店舗デザイナーに必要な6つの要素」 https://job.tenpodesign.com/magazine/article/104",
+   "SDC「店舗デザイナーになるには－仕事内容・年収・資格難易度－」 https://www.space-design.co.jp/occupation/shop_designer.php",
+   "「建築士法と建築士と内装設計の仕事」 https://www.interior-supervisor.com/kentikusiho-kentikusi-naisosekkei/",
+   "店舗設計施工.com「店舗設計とは？」 https://www.shop-reform.com/column/planning/basic_store_design",
+   "カグポンメディア「店舗デザインに資格は必要？」 https://www.kagupon.com/media/store_design_qualification/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "food-inspector",
+  "qualification_required": true,
+  "qualification_name": "食品衛生監視員任用資格（国家資格ではなく、食品衛生法施行令第9条に基づく任用資格）＋地方公務員採用試験（都道府県・保健所設置市等）合格",
+  "path_summary": "食品衛生監視員は国家資格ではない。食品衛生法第30条に基づき、都道府県知事・保健所設置市長等（国の検疫所の場合は厚生労働大臣）が任命する『任用資格』であり、（1）食品衛生法施行令第9条が定める要件（医師・歯科医師・薬剤師・獣医師である、または大学等で医学・歯学・薬学・獣医学・畜産学・水産学・農芸化学の課程を修めて卒業、または栄養士として2年以上食品衛生行政の実務経験があるなど）を満たし、かつ（2）地方公務員採用試験（都道府県・保健所設置市の獣医師区分・薬剤師区分・食品衛生系区分等）に合格して自治体職員となり保健所に配属される、という2つの条件がそろって初めてこの役職に就ける。",
+  "routes": [
+   {
+    "route_name": "地方公務員（保健所）ルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "食品衛生法施行令第9条が定める要件のいずれかを満たす必要がある：医師・歯科医師・薬剤師・獣医師の資格を持つ、大学等で医学・歯学・薬学・獣医学・畜産学・水産学・農芸化学の課程を修めて卒業する、または栄養士として2年以上食品衛生行政の実務経験を積む、のいずれか一つ。大学の特定課程だけが唯一の道ではない。",
+      "child_friendly_description": "大学で決まった勉強をして卒業する道と、栄養士として経験を積む道など、いくつかの道があるよ。"
+     },
+     {
+      "stage": "公務員試験・採用試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "都道府県や保健所を設置する市（政令市・中核市等）が実施する地方公務員採用試験（獣医師区分・薬剤師区分・食品衛生系区分等、自治体により区分名は異なる）に合格する。",
+      "child_friendly_description": "県や市が行う『公務員になるための試験』に受かる必要があるよ。"
+     },
+     {
+      "stage": "実務経験（任命）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "自治体職員として採用され、保健所の食品衛生部門に配属されて初めて『食品衛生監視員』に任命される。",
+      "child_friendly_description": "県や市の職員になって、保健所の食べ物担当の部署に配属されると、『食品衛生監視員』と呼ばれるようになるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "国家公務員（検疫所）ルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "公務員試験・採用試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "人事院が実施する国家公務員専門職試験『食品衛生監視員採用試験』（平成24年度創設）は、大学等で医学・歯学・薬学・獣医学・畜産学・水産学・農芸化学等の課程を修めていることなど、一定の受験資格を満たした上で受験し、合格すると厚生労働省の検疫所（全国の主要な海港・空港）に配属され、輸入食品の安全監視・検査業務にあたる。",
+      "child_friendly_description": "国が行う専門の試験に受かると、空港や港で外国から来る食べ物をチェックする仕事につくこともあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "既に薬剤師・獣医師の資格を持つ人が、自治体の薬剤師区分・獣医師区分の採用試験を経て保健所配属となり、本来の専門業務と兼ねて食品衛生監視員に任命される例もある。",
+  "can_start_later": true,
+  "important_notes": "重要: 食品衛生監視員は国家資格ではない。大学で指定の課程を修めるだけでも、公務員試験に合格するだけでも不十分で、任用資格（学歴・履修科目等の要件）と地方公務員試験（または国家公務員専門職試験）の合格の両方がそろって初めて『食品衛生監視員』に任命される。大学卒業時点で学部・履修科目が要件に合っているか自己判断せず、必ず大学の教務窓口や志望自治体に確認する必要がある（食品衛生管理者（施設側の資格）とは別の制度なので混同しない）。また、栄養士・薬剤師・獣医師としてすでに資格を持つ大人が、あとから目指す道もある（今すぐ決めなくても大丈夫）。",
+  "fact_sources": [
+   "厚生労働省「食品衛生監視員」 https://www.mhlw.go.jp/general/saiyo/shokukan.html",
+   "人事院 国家公務員試験採用情報NAVI「食品衛生監視員採用試験」 https://www.jinji.go.jp/saiyo/siken/sennmonnsyoku_daisotsu/syokuhinn/syokuhin_eisei.html",
+   "千葉県「食品衛生管理者・食品衛生監視員について」 https://www.pref.chiba.lg.jp/hoidai/shokuhinn.html",
+   "神戸大学大学院農学研究科「食品衛生管理者,食品衛生監視員について」 https://www.ans.kobe-u.ac.jp/gakka/ouyou/shikaku1.html",
+   "東京家政大学「食品衛生監視員（任用資格）の資格とは」 https://www.tokyo-kasei.ac.jp/academics/environmental_science_and_education/assets/%E9%A3%9F%E5%93%81%E8%A1%9B%E7%94%9F%E7%9B%A3%E8%A6%96%E5%93%A1.pdf",
+   "兵庫県立大学環境人間学部「食品衛生監視員・食品衛生管理者」 https://www.u-hyogo.ac.jp/shse/koho/ss_eisei.html",
+   "尚絅学院大学「食品衛生関連資格」 https://www.shokei.jp/campuslife/qualification/food_safety_certificate.html",
+   "福島大学「食品衛生管理者・食品衛生監視員」 https://kyoumu.adb.fukushima-u.ac.jp/guide/2019/agri/page/006612.html",
+   "ウィキペディア「食品衛生監視員」（食品衛生法第30条に基づく任命制度である旨の記載） https://ja.wikipedia.org/wiki/%E9%A3%9F%E5%93%81%E8%A1%9B%E7%94%9F%E7%9B%A3%E8%A6%96%E5%93%A1"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "sourcing",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "食品メーカーの調達・購買（原料調達）職に就くために必須の国家資格はない。大学の学部を問わず新卒で採用される場合が多く、工場の製造・品質保証部門からの社内異動や、商社・小売などでの購買実務経験を経た中途採用など、複数の入り口がある。",
+  "routes": [
+   {
+    "route_name": "大学卒業後の新卒採用ルート",
+    "route_type": "実務経験ルート（学部不問）",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特定の学科を選ぶ義務はない。理系・文系どちらからでも進める。",
+      "child_friendly_description": "高校でどの科目を選んでも大丈夫。決められたコースはないよ。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "農学・食品科学・経済・経営など学部は問われないことが多い。食品や栄養の知識、簿記や語学（英検・TOEIC等）は採用時に有利とされるが必須ではない。",
+      "child_friendly_description": "大学で何を勉強していても目指せる。食べ物のことや外国語を勉強しておくと少し有利になることもある。"
+     },
+     {
+      "stage": "採用試験・就職活動",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "食品メーカーの新卒採用（資材調達・購買職、または総合職として配属）に応募する。特別な国家資格の提示は求められない。",
+      "child_friendly_description": "会社の採用試験を受けて、調達の部署に配属してもらう。"
+     }
+    ]
+   },
+   {
+    "route_name": "社内異動ルート（製造・品質保証から調達へ）",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "工場の製造ラインや品質保証部門などで数年勤務した後、社内公募や人事異動で調達・購買部門に移る例がある。",
+      "child_friendly_description": "はじめは工場で働いて、そのあとで材料を選ぶ係にかわることもある。"
+     }
+    ]
+   },
+   {
+    "route_name": "中途採用ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "商社・小売業などでの購買・バイヤー経験を経て、食品メーカーの調達職に転職する例がある。",
+      "child_friendly_description": "別の会社で「買う仕事」をしていた人が、あとから食品会社に移ってくることもある。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "調達の中でも品質保証を兼ねる場合、食品衛生管理者（食品衛生法に基づく国家資格。特定の製造業種で施設ごとに専任が義務づけられる）や、HACCP関連の民間資格（HACCP管理者資格・HACCP普及指導員など）を持つと有利になることがあるが、調達職そのものに必須ではない。日商簿記検定・販売士・TOEIC等の資格も有利とされるが必須ではない（キャリアガーデン調べ、FACT_CHECK_REQUIRED: 個別企業の必須要件は求人票により異なるため要確認）。",
+  "can_start_later": true,
+  "important_notes": "『バイヤー』のような専門職に見えるが、資格試験に合格しないとなれない仕事ではない。学部や資格よりも、実際の採用試験・面接や社内でのキャリア形成で決まる部分が大きい。今の時点で『調達に向いた勉強』を選ばなくても遅くはない。",
+  "fact_sources": [
+   "キャリアガーデン『食品メーカーに就職するには？』 https://careergarden.jp/shokuhinmaker/naruniha/",
+   "マナビジョン（Benesse）『食品メーカー勤務とは』 https://manabi.benesse.ne.jp/shokugaku/job/list/072/index.html",
+   "日清食品株式会社 新卒採用サイト『職種紹介（原料調達）』 https://www.nissin.com/jp/recruit/nissinfoods/work/",
+   "食品衛生管理者について（FOOD TOWN／食品工場Week解説記事） https://www.foodtechjapan.jp/hub/ja-jp/blog/article_041.html",
+   "日本食品保蔵科学会 HACCP管理者資格制度 https://jafps.smoosy.atlas.jp/ja/haccp_02"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "product-dev",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "食品メーカーの商品開発（研究開発）職に必須の国家資格はない。農学・食品科学・栄養学・化学・工学系の学部で学んで新卒で研究開発職に就くルートが一般的だが、調理・製菓の専門学校を経てから商品開発に関わるルートもある。",
+  "routes": [
+   {
+    "route_name": "理系学部からの新卒採用ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "理科（化学・生物）を選択しておくと大学での学びにつながりやすいが、必須の指定科目はない。",
+      "child_friendly_description": "理科がすきだと後で役に立つことが多いけど、今すぐ決めなくても大丈夫。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "農学部・食品科学系学科・栄養学部・工学部（応用化学等）で食品の成分・加工・衛生などを学ぶのが一般的な進路。栄養士・管理栄養士の資格を取ると採用で有利になる場合がある（必須ではない）。",
+      "child_friendly_description": "大学で『食べ物の科学』や『栄養』を勉強する人が多いよ。栄養士の資格を持っているとちょっと有利になることも。"
+     },
+     {
+      "stage": "採用試験・就職活動",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "食品メーカーの新卒採用（研究開発・商品開発職）に応募する。",
+      "child_friendly_description": "会社の採用試験を受けて、新しい商品を考える部署に入る。"
+     }
+    ]
+   },
+   {
+    "route_name": "調理・製菓分野からのルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "専門学校（調理・製菓）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "調理師・製菓衛生師の養成校で調理や製菓の技術を学び、飲食・製菓の現場を経てから食品メーカーの商品開発職に転じる例がある。",
+      "child_friendly_description": "お菓子や料理を作る学校で勉強してから、会社で新商品を考える仕事に進む人もいる。"
+     },
+     {
+      "stage": "実務経験・中途採用",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "飲食店や製菓メーカーでの実務経験を経て、食品メーカーの商品開発部門に中途採用される。",
+      "child_friendly_description": "お店で料理やお菓子を作っていた人が、あとから食品会社に入ることもある。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "文系（経済・経営学部等）からマーケティング寄りの商品企画職に進む例もある。栄養士・管理栄養士資格は必須ではないが評価されやすい。",
+  "can_start_later": true,
+  "important_notes": "『研究開発』という名前から国家資格が必要に見えるが、必須資格はない。大学での専攻はひとつの道であり、調理・製菓など別の入り口から進む人も実際にいる。",
+  "fact_sources": [
+   "関西福祉科学大学 ふっかライブラリー『食品開発者になるには？どんな大学（学部）で学べば良いか』 https://www.fuksi-kagk-u.ac.jp/fukkalibrary/article/nourish04.html",
+   "北海道ハイテクノロジー専門学校『食品開発者になるには？』 https://www.hht.ac.jp/news/64060/",
+   "エフラボコラム『食品の商品企画・商品開発の仕事に就くには？役立つ資格を紹介』 https://www.flabo.site/media/how-to-get-a-job-in-product-development/",
+   "日清食品株式会社 新卒採用サイト『職種紹介（研究開発）』 https://www.nissin.com/jp/recruit/nissinfoods/work/",
+   "株式会社明治 新卒採用サイト『職種紹介（商品開発）』 https://www.meiji.co.jp/corporate/recruit/new-graduate/business/job/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "packaging",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "食品のパッケージデザイン・資材（包材）開発に必須の国家資格はない。美術・デザイン系の学校からパッケージデザイナーになるルートと、工学・化学系の学部から資材開発（素材・構造の設計）担当になるルートの大きく2つがある。",
+  "routes": [
+   {
+    "route_name": "デザイン系からのルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "美術を選択科目にする生徒もいるが、必須ではない。",
+      "child_friendly_description": "絵をかくのが好きだと役立つこともあるけど、決まったコースはないよ。"
+     },
+     {
+      "stage": "美術大学・デザイン専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "グラフィックデザインやパッケージデザインを学び、卒業後に食品メーカーの企業内デザイナーや、パッケージ制作会社・デザイン事務所に就職する。",
+      "child_friendly_description": "デザインの学校でパッケージの作り方を勉強してから、会社に入る人が多い。"
+     },
+     {
+      "stage": "採用試験・就職活動",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "食品メーカーのパッケージデザイン職、または資材開発職の採用試験に応募する。",
+      "child_friendly_description": "会社の採用試験を受けて、パッケージを考える部署に入る。"
+     }
+    ]
+   },
+   {
+    "route_name": "工学・化学系からの資材開発ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "大学（工学部・農学部・化学系等）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "包装材料（プラスチック・フィルム・紙等）の性質や、環境対応（リサイクル性等）を学ぶ。実際には農学部など食品系以外の学科から資材開発担当になった例もあり、学部は必須条件ではない。",
+      "child_friendly_description": "材料やリサイクルのことを勉強した人が、包み方や容器を設計する係になることもある。"
+     },
+     {
+      "stage": "入社後のOJT",
+      "requirement_type": "training",
+      "required": false,
+      "description": "包装に関する専門知識は入社後の実務や研修で身につけるという企業側の説明があり、入社前に必須の資格・知識があるわけではない。",
+      "child_friendly_description": "会社に入ってから、包み方の専門知識を教えてもらいながら覚えていく。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "『包装管理士』という民間資格（公益社団法人日本包装技術協会が認定）があるが、これは受験に協会会員かつ包装関連業務4年以上の実務経験が必要な、すでに働いている人向けのステップアップ資格であり、就職の入口資格ではない。",
+  "can_start_later": true,
+  "important_notes": "国家資格は不要。味の素冷凍食品の生産技術（包装設計）職の社員インタビューでも『資格は必要ない。包装関連の知識は入社してから勉強すれば大丈夫』と明言されている。デザイン系・理工系のどちらからも道がある。",
+  "fact_sources": [
+   "OCA大阪デザイン&IT専門学校『パッケージデザイナーになるには？』 https://www.oca.ac.jp/work_books/5074/",
+   "キャリアガーデン『パッケージデザイナーの仕事内容・なり方・年収・資格』 https://careergarden.jp/package-designer/",
+   "公益社団法人日本包装技術協会（JPI）公式サイト https://www.jpi.or.jp/",
+   "特種東海製紙グループ『パッケージプロフェッショナルの証「包装管理士」』 https://secure.tt-paper.co.jp/blog/knowledge/CK005",
+   "日清食品株式会社 新卒採用サイト『職種紹介（包材開発）』 https://www.nissin.com/jp/recruit/nissinfoods/work/",
+   "味の素冷凍食品 新卒採用サイト 生産技術（包装設計）社員インタビュー https://www.ffa.ajinomoto.com/recruit/interview/s02.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "line-eng",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "工場の生産技術・設備保全の仕事に就くこと自体に必須の国家資格はない。工業高校・工学部（機械・電気）からの新卒採用や、製造現場からのOJTでの社内昇格など複数の入り口がある。ただし、工場内の一定規模以上の電気設備を扱う事業所は、法律（電気事業法）により『電気主任技術者』という国家資格者を最低1名選任することが義務づけられている（全員が持つ必要はない）。",
+  "routes": [
+   {
+    "route_name": "工業高校・工学部からの新卒採用ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "高校（普通科・工業高校）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "工業高校では在学中に第二種電気工事士や電験三種（第三種電気主任技術者）などの資格取得を目指せる場合があるが、普通科からでも進路は開かれている。",
+      "child_friendly_description": "工業高校では機械や電気の勉強ができるけど、ふつうの高校からでもこの仕事は目指せる。"
+     },
+     {
+      "stage": "大学・専門学校（機械・電気系等）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "実際の採用事例では、工学部機械工学科出身者が新卒で生産技術職に配属される例が確認できる一方、農学部出身者が新卒で生産技術（包装設計）に配属された例もあり、学部は必須条件ではない。",
+      "child_friendly_description": "機械や電気を勉強した人が多いけど、ちがう分野を勉強していても、この仕事についた人がいるよ。"
+     },
+     {
+      "stage": "採用試験・就職活動後のOJT",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "新卒入社後、数年間は工場の製造現場に配属されてから生産技術部門に異動するキャリアパスが企業事例として確認できる（例: キユーピーでは入社から約3年間製造課に所属後に生産技術部門へ）。",
+      "child_friendly_description": "はじめは工場のラインで働いて、そのあとで『ラインをよくする係』にかわることが多い。"
+     }
+    ]
+   },
+   {
+    "route_name": "製造現場からの社内昇格ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "工場の製造・生産ラインで働きながら設備の知識を身につけ、設備保全・生産技術の担当に社内異動する。",
+      "child_friendly_description": "工場で機械を動かす仕事をしながら覚えていって、機械を直す係になる人もいる。"
+     }
+    ]
+   },
+   {
+    "route_name": "国家資格取得で専門性を高めるルート（任意）",
+    "route_type": "国家資格必須ルート（一部業務のみ）",
+    "steps": [
+     {
+      "stage": "資格試験（任意）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "『機械保全技能士』（厚生労働省所管の国家検定・技能検定、3級〜特級）や『電気主任技術者（電験三種等）』『電気工事士』（経済産業省所管の国家資格）を取得すると、設備保全の専門職として評価されやすくなる。電気主任技術者は事業場ごとの選任義務があるため、資格保有者は特に重宝される。ただしこれらは全ての設備保全担当者に必須ではない。",
+      "child_friendly_description": "『機械を直すプロ』や『電気の責任者』になる試験があって、取っておくと仕事の幅が広がるよ。全員が必ず取る必要はない。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "ボイラー技士など、工場で使う設備の種類によって取得が推奨・義務化される資格が別途あり得る（FACT_CHECK_REQUIRED: 具体的にどの設備区分でどの資格が法律上必須になるかは、事業場の設備規模・種類により異なるため個別確認が必要）。",
+  "can_start_later": true,
+  "important_notes": "『生産技術・設備保全』は資格試験合格が入口条件の仕事ではない。電気主任技術者のように法律で選任が義務づけられた国家資格は存在するが、これは事業場に1名以上いればよい話であり、担当者全員が保有する必要があるものではない。工業高校でなくても、製造現場からのステップアップでこの仕事に就く人が多い。",
+  "fact_sources": [
+   "キユーピー株式会社 新卒採用サイト 生産技術職 社員インタビュー https://www.kewpie.com/recruit/employees/interview30/",
+   "味の素冷凍食品 新卒採用サイト 生産技術（包装設計）社員インタビュー https://www.ffa.ajinomoto.com/recruit/interview/s02.html",
+   "経済産業省『電気主任技術者』制度解説 https://www.meti.go.jp/information/license/c_text25.html",
+   "一般財団法人電気技術者試験センター『電気主任技術者の資格概要』 https://www.shiken.or.jp/chief/about/",
+   "国家検定 機械保全技能検定 公式サイト（公益社団法人日本プラントメンテナンス協会） https://www.kikaihozenshi.jp/",
+   "厚生労働省『技のとびら』機械保全技能士 https://waza.mhlw.go.jp/shokushu/list/kikaihozen.html",
+   "FOOD TOWN『食品工場の仕事で役立つ資格とは？』 https://food-town.jp/customer/news/detail/569",
+   "日清食品株式会社 新卒採用サイト『職種紹介（生産技術）』 https://www.nissin.com/jp/recruit/nissinfoods/work/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "planner",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "イベントを企画する仕事に就くために法律で定められた資格や免許は無い。大学・短大・専門学校で企画やイベント運営を学んでからイベント会社・広告代理店・観光関連企業などに就職するルートが一般的だが、異業種からの転職やフリーランス、自治体職員・学校教員として祭りや学校行事を企画する立場になる道もある。",
+  "routes": [
+   {
+    "route_name": "専門学校・大学から企業に就職するルート",
+    "route_type": "教育機関ルート",
+    "steps": [
+     {
+      "stage": "中学校・高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特別な科目選択は不要。高校卒業までに進路を決める必要は無い。",
+      "child_friendly_description": "中学・高校のうちに『これじゃなきゃダメ』というコースは無いよ。"
+     },
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "イベント・観光・広告・経営・地域デザインなどを学べる専門学校や大学の学部に進学する人が多いが、必須ではない。企業の採用では4年制大学卒を条件にする例もあれば、短大・専門学校卒まで間口を広げる企業もある。",
+      "child_friendly_description": "『イベントの勉強ができる学校』に行く人が多いけど、行かなくてもなれるよ。"
+     },
+     {
+      "stage": "就職・採用試験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "イベント会社・広告代理店・観光協会・まちづくり団体などに就職し、アシスタントとして企画の作り方や予算管理を実務で覚える。国家試験や採用試験の合格は不要だが、各企業の採用選考（書類・面接）を通る必要はある。",
+      "child_friendly_description": "会社に入って、先輩と一緒に企画づくりをしながら仕事を覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験・異業種からのOJTルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験（他業種）",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "飲食・小売・自治体職員・学校教員など別の仕事をしていた人が、地域のお祭りや学校行事の運営に関わったことをきっかけに、イベント業界やまちづくり業務へ転職する例が多い。",
+      "child_friendly_description": "他の仕事をしていた大人が、お祭りや行事の手伝いをきっかけにこの仕事に変わることもあるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "公務員として企画に関わるルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "公務員試験・採用試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "自治体職員や学校教員として採用され、地域イベント・観光イベント・学校行事の企画運営を担当する立場になる道もある。この場合は公務員試験や教員採用試験に合格する必要がある。",
+      "child_friendly_description": "市役所や学校の先生になって、お祭りや行事を企画する係になる道もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "フリーランスの企画者として独立する例、地域おこし協力隊としてイベント企画に関わる例もある。",
+  "can_start_later": true,
+  "important_notes": "『イベント検定』『イベント業務管理士』などの民間資格が存在するが、いずれも任意の資格でありイベントプランナーになるための必須要件ではない。国家資格ではないため取得しなくてもこの仕事には就ける。",
+  "fact_sources": [
+   "イベントプランナーになるには｜スタディサプリ 進路 https://shingakunet.com/bunnya/w0015/x0223/naruniha/",
+   "イベントプランナーになるには｜大学・専門学校のマイナビ進学 https://shingaku.mynavi.jp/future/shigoto/353/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "promoter",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "広報・PR担当になるために法律で定められた必須資格は無い。企業の広報部門に配属される、PR会社に就職する、他部署からの社内異動、フリーランスとして実務経験を積むなど複数の入り口がある。",
+  "routes": [
+   {
+    "route_name": "PR会社・企業広報部への就職ルート",
+    "route_type": "教育機関ルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "マーケティング・メディア・広報・ジャーナリズム系の学科で学ぶ人が多いが必須ではない。",
+      "child_friendly_description": "伝え方や情報の仕事を学べる学校に行く人もいるけど、必ずではないよ。"
+     },
+     {
+      "stage": "就職・採用試験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "PR会社や企業の広報部門に就職し、プレスリリース作成やメディア対応を通じて実務を覚える。",
+      "child_friendly_description": "会社に入って、伝える文章の書き方やニュースの発信のしかたを覚えるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "他部署からの社内異動・未経験からのOJTルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験（他部署・他業種）",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "営業・編集・カスタマーサポートなど別の部署や職種から社内異動、または中途採用で広報職に就く例が多い。",
+      "child_friendly_description": "別の仕事をしていた人が、社内で広報の係に変わることもよくあるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "自治体広報として関わるルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "公務員試験・採用試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "自治体職員として採用され、広報課などでまちの情報発信を担当する道もある。",
+      "child_friendly_description": "市役所に入って、まちのできごとをみんなに伝える係になる道もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "フリーランスの広報・PRパーソンとして独立する例もある。",
+  "can_start_later": true,
+  "important_notes": "『PRプランナー資格認定制度』は日本パブリックリレーションズ協会（PRSJ）が運営する民間資格であり、広報・PR職に就くための必須資格ではない。基礎知識の証明として役立つが、取得しなくても実務経験でこの仕事に就くことは可能。",
+  "fact_sources": [
+   "広報（PR）になるには｜スキハジ https://web.anabuki-net.ne.jp/sukihaji/job/pr/",
+   "広報PRで役立つ資格7選｜シェイプウィン株式会社 https://www.shapewin.co.jp/blog14331"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "stage-manager",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "イベントや舞台の進行を組む『制作・舞台監督』の仕事に就くために法律で定められた必須資格は無い。劇団・劇場・イベント制作会社に就職し、演出部や舞台監督助手として下積みをしながら仕事を覚えるのが一般的なルート。",
+  "routes": [
+   {
+    "route_name": "専門学校・演劇系大学からのルート",
+    "route_type": "教育機関ルート",
+    "steps": [
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "舞台芸術・演劇・イベント制作を学べる専門学校や大学の学科に進学する人が多いが必須ではない。",
+      "child_friendly_description": "舞台やイベントの作り方を学べる学校に行く人もいるけど、必須ではないよ。"
+     },
+     {
+      "stage": "就職・下積み（助手からのスタート）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "劇団・制作会社・イベント会社に就職し、舞台監督助手や演出部としてベテランのもとで進行表の作り方や本番対応を覚える。",
+      "child_friendly_description": "はじめは先輩の手伝いから始めて、進行のつくり方を少しずつ覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験からのOJTルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験（現場アルバイト等）",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "イベント現場のスタッフやアルバイトから経験を積み、進行管理の仕事に関わるようになる例もある。",
+      "child_friendly_description": "イベントの現場を手伝ううちに、進行係の仕事を任されるようになることもあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "フリーランスの舞台監督として独立する例が多い。関連スキルを示す資格として『舞台機構調整技能士』（国家技能検定）、『照明技術者技能検定』（公益社団法人日本照明協会）、『音響技術者能力検定』（一般社団法人日本音響家協会、民間資格）があるが、いずれも舞台監督になるための必須資格ではない。",
+  "can_start_later": true,
+  "important_notes": "『舞台監督』を名乗るための国家資格・免許は存在しない。関連する国家技能検定（舞台機構調整技能士）や業界団体の民間資格はスキル証明として活用されることがあるが、取得しなくてもこの仕事には就ける。FACT_CHECK_REQUIRED: 日本舞台監督協会による認定制度・会員基準の詳細は今回の検索で確認できなかったため、必要であれば同協会公式サイトで追加確認すること。",
+  "fact_sources": [
+   "舞台監督になるには？必要な資格・進路・キャリアパスまとめ https://sl-i.co.jp/2025/11/25/butaikantoku-careerpath/",
+   "舞台監督への転職に資格は必要？｜職人BASE https://shokunin-base.com/blog/stage-manager-job-change-qualifications-20240531/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "venue-designer",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "ステージやブースの配置を考え設営する仕事（舞台美術・施工に近い）自体に必須資格は無いが、現場で使う重機や器具の操作には労働安全衛生法に基づく別の技能講習が必要になる場合がある。",
+  "routes": [
+   {
+    "route_name": "専門学校・大学からのルート",
+    "route_type": "教育機関ルート",
+    "steps": [
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "舞台美術・建築・空間デザインを学べる専門学校や大学の学科に進学する人が多いが必須ではない。",
+      "child_friendly_description": "空間や舞台のデザインを学べる学校に行く人もいるけど、必須ではないよ。"
+     },
+     {
+      "stage": "就職・現場経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "舞台美術会社・イベント制作会社・施工会社に就職し、設営の現場で先輩から道具の使い方や安全な組み立て方を教わる。",
+      "child_friendly_description": "会社に入って、現場でステージの組み方や安全な作り方を覚えるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "特定作業に必要な技能講習（労働安全衛生法）",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "実務経験＋技能講習",
+      "requirement_type": "training",
+      "required": true,
+      "description": "つり上げ荷重1トン以上のクレーン等の玉掛け作業や、最大荷重1トン以上のフォークリフト運転などを担当する場合は、労働安全衛生法に基づく玉掛け技能講習・フォークリフト運転技能講習の修了が法律上必須になる。ただしこれは『会場デザイナー』という職業全体の必須資格ではなく、担当する作業内容による。",
+      "child_friendly_description": "重い機械を使うときだけ、その機械を使うための講習を受ける必要があるよ。全部の仕事に必要なわけじゃないよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "国家技能検定『舞台機構調整技能士』（1〜3級）は舞台機構の調整に関するスキル証明として活用できるが、会場設営・舞台美術の仕事に就くための必須資格ではない。",
+  "can_start_later": true,
+  "important_notes": "『会場をつくる仕事』そのものに必須の免許は無いが、現場で扱う機械（クレーン・フォークリフト等）によっては労働安全衛生法上の技能講習・特別教育が法律で義務づけられている点に注意。これは職業資格ではなく作業ごとの安全資格。",
+  "fact_sources": [
+   "【まとめ一覧】労働安全衛生法で必要な免許・技能講習・特別教育 https://skillnote.jp/knowledge/license2/",
+   "舞台機構調整技能士＜国＞になるには｜スタディサプリ 進路 https://shingakunet.com/bunnya/w0015/x0222/",
+   "舞台機構調整技能士 - Wikipedia https://ja.wikipedia.org/wiki/%E8%88%9E%E5%8F%B0%E6%A9%9F%E6%A7%8B%E8%AA%BF%E6%95%B4%E6%8A%80%E8%83%BD%E5%A3%AB"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "sound-tech",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "マイクやスピーカーで会場に音を届けるPA（音響）エンジニアになるために法律で定められた必須資格は無い。音響専門学校・大学で学んでから音響制作会社等に就職するルートと、未経験から現場アシスタントとして経験を積むルートがある。",
+  "routes": [
+   {
+    "route_name": "音響専門学校・大学からのルート",
+    "route_type": "教育機関ルート",
+    "steps": [
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "音響工学・音響機材について学べる専門学校や大学に進学する人が多いが必須ではない。",
+      "child_friendly_description": "音の仕組みや機材の使い方を学べる学校に行く人もいるけど、必須ではないよ。"
+     },
+     {
+      "stage": "就職・現場経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "音響制作会社・舞台制作会社・ホール・劇場に就職し、機材の設営から音響調整まで現場で経験を積む。",
+      "child_friendly_description": "会社に入って、マイクやスピーカーの使い方を現場で覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験からのOJTルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "実務経験（現場アシスタント）",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "イベント現場でのアルバイト・アシスタントから始め、機材の運搬・設営を通じて音響の仕事を覚える例もある。",
+      "child_friendly_description": "現場のお手伝いから始めて、少しずつ音響の仕事を任されるようになることもあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "国家技能検定『舞台機構調整技能士』（音響部門を含む1〜3級）や、一般社団法人日本音響家協会が運営する民間資格『音響家技能認定』があるが、いずれもPAエンジニアになるための必須資格ではなくスキル証明として使われる。フリーランスとして独立する例も多い。",
+  "can_start_later": true,
+  "important_notes": "『音響の仕事』をするために国家資格や免許は不要。関連する国家技能検定・民間資格は存在するが、取得は任意でありキャリアの証明として活用される位置づけ。",
+  "fact_sources": [
+   "PA・音響スタッフになるには｜専門学校 東京ビジュアルアーツ・アカデミー https://www.tva.ac.jp/naruniha/pa.html",
+   "PAエンジニアになるには？｜札幌ミュージック＆ダンス・放送専門学校 https://www.ssm.ac.jp/career-debut/work_books/event/pa.html",
+   "舞台機構調整技能士 - Wikipedia https://ja.wikipedia.org/wiki/%E8%88%9E%E5%8F%B0%E6%A9%9F%E6%A7%8B%E8%AA%BF%E6%95%B4%E6%8A%80%E8%83%BD%E5%A3%AB"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "crowd-safety",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "『警備員』個人になるために国家資格は不要で、18歳以上であれば警備業法上の欠格事由（破産未復権、一定の前科・処分から5年未経過、暴力団関係者、アルコール・薬物中毒、心身の障害で業務遂行が困難等）に該当しない限りなれる。ただし雇い主となる『警備業者』は都道府県公安委員会の認定を受ける必要があり（警備業法第4条）、警備員は法律で定められた新任教育（20時間以上）を受けることが義務づけられている。雑踏警備（イベント警備等）の一部区域では、警備業法に定められた国家検定制度『警備員検定（雑踏警備業務検定）』の合格警備員の配置が法令上義務づけられる場合がある点に注意。",
+  "routes": [
+   {
+    "route_name": "18歳以上で警備業者に採用され警備員になるルート（検定なし）",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "年齢要件",
+      "requirement_type": "education",
+      "required": true,
+      "description": "警備業法第14条により18歳未満は警備員になれない。上限年齢の法的な定めは無い。",
+      "child_friendly_description": "警備の仕事は18歳になってから始められるよ。大人になってから始める仕事なんだ。"
+     },
+     {
+      "stage": "欠格事由に該当しないこと",
+      "requirement_type": "license",
+      "required": true,
+      "description": "警備業法第3条が定める欠格事由（破産手続中で復権前、一定の前科・処分から5年未経過、暴力団関係者、薬物・アルコール中毒、心身の障害で業務遂行が困難等）に該当しないことが必要。",
+      "child_friendly_description": "誰でもというわけではなく、法律で決まった『なれない条件』に当てはまらない人がなれるよ。"
+     },
+     {
+      "stage": "警備業者への採用",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "警備員個人が直接国家試験を受けるのではなく、都道府県公安委員会の認定を受けた警備業者に採用される形で仕事を始める。",
+      "child_friendly_description": "個人の試験ではなく、警備の会社に採用されて仕事が始まるよ。"
+     },
+     {
+      "stage": "新任教育",
+      "requirement_type": "training",
+      "required": true,
+      "description": "採用後、警備業法に基づき20時間以上の新任教育（基本教育＋業務別教育）を受けることが法律で義務づけられている。",
+      "child_friendly_description": "働き始める前に、決められた時間の勉強・訓練を受けることが法律で決まっているよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "雑踏警備業務検定合格者として配置されるルート（一部現場で必要）",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "警備員として実務経験",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "警備員として採用された後、雑踏警備業務検定2級は特別な受験資格なしで挑戦できる（都道府県公安委員会の検定または登録講習機関の講習修了による取得）。",
+      "child_friendly_description": "警備の仕事をしながら、雑踏警備の検定にチャレンジすることができるよ（先に警備員になっている必要はあるよ）。"
+     },
+     {
+      "stage": "雑踏警備業務検定2級・1級の取得（任意、ただし一部現場で必須）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "雑踏警備業務検定は警備業法に定められた国家検定制度で、2級は受験資格の制限が無く、1級は2級合格後1年以上の実務経験が必要。検定自体は個人が警備員になるための必須資格ではないが、警備業法第18条により『事故が発生すると不特定多数の生命・身体・財産に危険が及ぶおそれがある』と判断される雑踏警備区域では、検定合格警備員の配置が法令上義務づけられる場合がある。具体的な配置基準は現場の広さ・混雑状況等をもとに個別に判断される。",
+      "child_friendly_description": "この検定は必須じゃないけど、すごく混雑が予想される場所では『検定に受かった警備員』を置かなければいけない決まりがあることもあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "警察官・消防官など公務員として群衆の安全に関わる仕事に就く道は別制度（公務員試験ルート）であり、民間警備員とは異なる。",
+  "can_start_later": true,
+  "important_notes": "重要な誤解注意点: (1) 警備員になること自体に『資格試験』は無い。必要なのは18歳以上であることと欠格事由に該当しないこと、および採用後の法定教育（新任教育20時間以上）。(2) 『警備員検定（雑踏警備業務検定など6種類、各1級・2級）』は警備業法に定められた国家検定制度であり単なる民間資格ではないが、警備員になるための必須資格ではなく、特定の危険性の高い現場でのみ配置が法令上求められる資格である。この2点を混同して『警備員になるには国家資格が必須』と書かないこと。(3) 警備業を営む会社（警備業者）は都道府県公安委員会の認定（警備業法第4条）が必要だが、これは会社に対する制度であり個人の警備員資格とは別物。",
+  "fact_sources": [
+   "警備業法 e-Gov法令検索（第3条・第4条・第14条・第18条ほか） https://laws.e-gov.go.jp/law/347AC0000000117",
+   "警備員に年齢制限はある？｜警備のMT https://keibinomt.jp/security-guard-age/",
+   "警備業法第14条（警備員の制限）｜keibee https://keibee.work/kyouiku/law/keibigyouhou14jou.html",
+   "警備業務検定 - Wikipedia https://ja.wikipedia.org/wiki/%E8%AD%A6%E5%82%99%E6%A5%AD%E5%8B%99%E6%A4%9C%E5%AE%9A",
+   "警備員検定合格証明書の取得方法｜警視庁 https://www.keishicho.metro.tokyo.lg.jp/tetsuzuki/keibi/k_keibi/gokaku/index.html",
+   "雑踏警備業務の検定合格警備員の配置基準について｜徳島県警察 https://www.police.pref.tokushima.jp/07tetuduki/16802-2/index.html",
+   "検定合格警備員の配置基準｜警視庁 https://www.keishicho.metro.tokyo.lg.jp/tetsuzuki/keibi/arrange.html",
+   "警備員に対する教育時間｜警視庁 https://www.keishicho.metro.tokyo.lg.jp/tetsuzuki/keibi/k_keibi/education_time.html",
+   "警備業に関する主な申請手続きの概要について｜広島県警察 https://www.pref.hiroshima.lg.jp/site/police/keibigyou.html"
+  ],
+  "last_verified": "2026-09-04"
+ }
+]

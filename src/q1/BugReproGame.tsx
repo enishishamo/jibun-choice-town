@@ -107,7 +107,7 @@ export default function BugReproGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <p className="game-line" style={{ margin: "4px 16px 0", fontSize: 16 }}>
         いまの条件：{sel.length === 0 ? "（なし）" : sel.map((c) => COND_INFO[c].label).join("＋")}

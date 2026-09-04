@@ -1,0 +1,57 @@
+{
+ "ok": true,
+ "verdict": {
+  "classifications": [
+   {
+    "element": "center_town_image",
+    "class": "C",
+    "same_series_style": true,
+    "reasoning": "A detailed, cohesive clay-diorama town illustration that appears to be the established approved visual anchor."
+   },
+   {
+    "element": "harbor_buildings",
+    "class": "E",
+    "same_series_style": false,
+    "reasoning": "The houses, boat, and dock form an authored harbor scene, but their flat geometric treatment visibly conflicts with the center town's dimensional clay-diorama style."
+   },
+   {
+    "element": "forest_trees",
+    "class": "E",
+    "same_series_style": false,
+    "reasoning": "The trees depict a specific forest environment and read as newly authored flat vector scenery rather than elements from the detailed illustrated series."
+   },
+   {
+    "element": "station_buildings_and_rail",
+    "class": "E",
+    "same_series_style": false,
+    "reasoning": "The buildings and railway compose a depicted station landmark, but use simplified flat shapes that look bolted onto the richer center-town artwork."
+   },
+   {
+    "element": "hill_building",
+    "class": "E",
+    "same_series_style": false,
+    "reasoning": "The columned building and mound depict a landmark scene in a noticeably flatter, icon-like style than the center illustration."
+   },
+   {
+    "element": "compass",
+    "class": "A",
+    "same_series_style": false,
+    "reasoning": "This is a functional navigation control composed of status dots, a home marker, and an orange viewport frame, not world illustration."
+   },
+   {
+    "element": "ground_tint_patches",
+    "class": "B",
+    "same_series_style": false,
+    "reasoning": "These are abstract translucent region and terrain masks used to organize districts spatially, rather than illustrated scenery."
+   },
+   {
+    "element": "fog_silhouettes",
+    "class": "B",
+    "same_series_style": false,
+    "reasoning": "The blurred monochrome silhouettes function as locked-area or mystery-state effects and do not constitute finished depicted scenes."
+   }
+  ],
+  "any_public_blocker": true,
+  "public_blocker_reasoning": "The harbor, forest, station, and hill visuals depict game-world places or landmarks as authored illustrations and are visibly inconsistent with the established clay-diorama center artwork. Under the new ownership rule, they should be replaced with GPT-authored assets before public release."
+ }
+}

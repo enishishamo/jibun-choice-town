@@ -1,0 +1,709 @@
+[
+ {
+  "profession_id": "park-design",
+  "qualification_required": false,
+  "qualification_name": "（施工管理の立場を担う場合のみ）造園施工管理技士 1級・2級",
+  "path_summary": "「公園の暑さ対策を考える仕事」は一つの資格・一つの職業名では説明できず、自治体の公園計画担当、造園設計者、植栽・工事の現場責任者など複数の立場の総称。工事の施工管理を担う場合にのみ国家資格（造園施工管理技士）が関係する。",
+  "routes": [
+   {
+    "route_name": "造園・ランドスケープ設計者ルート",
+    "route_type": "教育（大学・専門学校）＋実務経験ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "普通科・工業高校（造園科・土木科など）のどちらからでも進学できる。必須の学科指定はない。",
+      "child_friendly_description": "とくに決まったコースはないよ。ふつうの高校からでも目指せる。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "農学部・造園学科、ランドスケープ系の大学・専門学校で植物・設計・土木の基礎を学ぶ人が多いが、必須ではない。",
+      "child_friendly_description": "植物や公園づくりを勉強できる学校で学ぶ人が多いけど、絶対条件ではないよ。"
+     },
+     {
+      "stage": "実務経験・就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "造園会社・設計事務所・自治体などに就職し、実際の公園づくりの仕事を通じて設計・現場の知識を身につける。",
+      "child_friendly_description": "会社に入って、実際に公園をつくる仕事をしながら覚えていくよ。"
+     },
+     {
+      "stage": "資格試験（施工管理を担当する場合）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "工事現場の責任者（主任技術者・監理技術者）になるには、国家資格である造園施工管理技士（1級・2級、国土交通省所管の技術検定）などが必要。ただし、これは工事の施工管理という特定の役割の話であり、公園の計画・設計・植栽そのものに全員が必要な資格ではない。",
+      "child_friendly_description": "工事現場のリーダーになるときだけ必要な国の資格があるよ。公園づくりに関わる人みんなが持っているわけじゃないよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "自治体職員（公園計画担当）ルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "土木・建築・農学系の学部で学ぶ人が多いが、公務員試験に合格すれば学部を問わず採用されることもある。",
+      "child_friendly_description": "まちの仕事をする公務員試験に受かれば、いろいろな学部からなれるよ。"
+     },
+     {
+      "stage": "公務員試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "地方自治体（土木職・造園職など）の採用試験に合格し、公園緑地課などに配属される。",
+      "child_friendly_description": "市役所や県庁の試験に合格して、公園を担当する部署に入るよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "植栽・剪定などの現場作業員として未経験から入り、実務経験を積みながら専門知識を身につける道もある（民間資格の造園技能士などを後から取る人もいる）。",
+  "can_start_later": true,
+  "important_notes": "「造園施工管理技士」は工事現場の責任者になるために関係する国家資格で、公園づくりに関わる人全員に必須ではない。計画・設計・植栽・評価など役割によって必要なものは異なる。今すぐ進路を決める必要はない。",
+  "fact_sources": [
+   "国土交通省 総合政策局「監理技術者又は主任技術者となり得る国家資格等」https://www.mlit.go.jp/totikensangyo/const/content/001619998.pdf",
+   "国土交通省中国地方整備局「監理技術者又は主任技術者となり得る国家資格等」https://www.cbr.mlit.go.jp/kensei/info/qa/pdf/R0312/R0312_shiryo_02_shikaku.pdf",
+   "造園施工管理技士 - Wikipedia https://ja.wikipedia.org/wiki/造園施工管理技士",
+   "厚生労働省 職業情報提供サイト（job tag）https://shigoto.mhlw.go.jp/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "power-ops",
+  "qualification_required": false,
+  "qualification_name": "（保安監督の立場を担う場合のみ）電気主任技術者（電験一種〜三種）",
+  "path_summary": "「電力の需給・系統運用に関わる仕事」も複数の役割の総称（需要予測、発電所運転、送配電設備の保守、需給調整）。電気設備の保安監督者として法律上必ず選任しなければならないのが電気主任技術者（国家資格）だが、需要予測や需給バランスを見る業務そのものに全員がこの資格を必要とするわけではない。",
+  "routes": [
+   {
+    "route_name": "電力会社・電力広域機関の需給調整・系統運用担当ルート",
+    "route_type": "教育（大学・高専）＋企業内育成ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "普通科・工業高校（電気科）のどちらからも道はある。",
+      "child_friendly_description": "決まったコースはないよ。"
+     },
+     {
+      "stage": "大学・高専",
+      "requirement_type": "education",
+      "required": false,
+      "description": "電気・電子工学系の学部や高専で学ぶ人が多いが、採用試験に合格すれば他分野の出身者も就く例がある。",
+      "child_friendly_description": "電気を勉強した人が多いけど、それだけがルートじゃないよ。"
+     },
+     {
+      "stage": "就職・企業内研修",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "電力会社や電力広域的運営推進機関などに就職し、社内研修とOJTで需要予測・系統運用の実務を学ぶ。",
+      "child_friendly_description": "会社に入ってから、電気の需要と供給を合わせる仕事を教わっていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "電気主任技術者（保安監督者）ルート",
+    "route_type": "国家資格ルート（電気設備の保安を法律上監督する立場）",
+    "steps": [
+     {
+      "stage": "資格試験または認定校卒業",
+      "requirement_type": "license",
+      "required": true,
+      "description": "電気事業法により、高圧・特別高圧の電気工作物を持つ事業者は電気主任技術者（電験）の選任が義務づけられている。電験三種〜一種の国家試験に合格するか、経済産業省認定の専門学校・大学の課程を修了し実務経験を積むことで取得できる。",
+      "child_friendly_description": "電気の設備を安全に見守るための国の資格だよ。試験に受かるか、認められた学校で勉強して取るよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "発電所の運転員、送配電設備の保守員なども、それぞれ異なる採用ルート・社内研修がある。",
+  "can_start_later": true,
+  "important_notes": "電気主任技術者は「電気設備の保安監督」という特定の法律上の役割に必要な国家資格であり、需要予測や系統運用の業務全体に全員が必要というわけではない。混同しないよう注意。",
+  "fact_sources": [
+   "経済産業省「電気主任技術者」https://www.meti.go.jp/information/license/c_text25.html",
+   "関東東北産業保安監督部「国家資格の申請手続き（電気保安関係）」https://www.safety-kanto.meti.go.jp/electric/e_sikaku.html",
+   "一般財団法人電気技術者試験センター「電気主任技術者の資格概要」https://www.shiken.or.jp/chief/about/",
+   "厚生労働省 職業情報提供サイト（job tag）https://shigoto.mhlw.go.jp/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "site-safety",
+  "qualification_required": false,
+  "qualification_name": "（現場の主任技術者・監理技術者になる場合）土木施工管理技士／建築施工管理技士 1級・2級",
+  "path_summary": "工事現場の安全・工程管理（施工管理）を行う仕事。一定規模以上の工事現場では、建設業法により国家資格をもつ主任技術者・監理技術者を配置する義務があるが、経験を積みながら資格を取る人が多く、未経験からでも現場で働き始めることはできる。",
+  "routes": [
+   {
+    "route_name": "国家資格ルート（主任技術者・監理技術者）",
+    "route_type": "国家資格必須ルート（一定規模以上の現場責任者になる場合）",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "工業高校（建築・土木科）で学ぶと基礎知識が得られるが、普通科からでも目指せる。",
+      "child_friendly_description": "建築や土木を教える高校でも、ふつうの高校でも道はあるよ。"
+     },
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "建築学科・土木工学科などで学ぶと受検資格の実務経験年数が短縮される場合がある。",
+      "child_friendly_description": "専門的に学ぶと、資格試験を受けるまでの年数が短くなることがあるよ。"
+     },
+     {
+      "stage": "実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "建設会社に就職し、現場での実務経験を積む（学歴に応じて必要年数が異なる）。",
+      "child_friendly_description": "会社に入って、実際の工事現場で経験を積むよ。"
+     },
+     {
+      "stage": "資格試験",
+      "requirement_type": "license",
+      "required": true,
+      "description": "建設業法に基づく国家試験である土木施工管理技士・建築施工管理技士（1級・2級）に合格すると、工事現場の主任技術者（2級）または監理技術者（1級）になれる。請負金額が一定額以上の工事では現場ごとにこの資格者の配置が法律で義務づけられている。",
+      "child_friendly_description": "工事現場のリーダーになるための国の試験だよ。大きな工事では、この資格を持つ人を必ず置かないといけないルールがあるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験からのOJTルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "資格がなくても建設会社の現場作業員・アシスタントとして就職し、経験を積みながら資格取得を目指す人が多い。",
+      "child_friendly_description": "資格がなくても、まず現場で働きながら覚えていく人がたくさんいるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "小規模な工事では国家資格をもつ技術者の配置義務がない場合もあり、経験だけで現場を担当することもある。",
+  "can_start_later": true,
+  "important_notes": "国家資格（施工管理技士）が法律上必要になるのは、一定金額以上の工事現場に置く主任技術者・監理技術者という特定の役割。工事現場で働く人全員がこの資格を持っているわけではない。",
+  "fact_sources": [
+   "国土交通省「特定建設業の営業所専任技術者（又は監理技術者）となり得る国家資格」https://www.mlit.go.jp/totikensangyo/const/content/001619998.pdf",
+   "国土交通省中国地方整備局「監理技術者又は主任技術者となり得る国家資格等」https://www.cbr.mlit.go.jp/kensei/info/qa/pdf/R0312/R0312_shiryo_02_shikaku.pdf",
+   "厚生労働省 職業情報提供サイト（job tag）https://shigoto.mhlw.go.jp/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "water-ops",
+  "qualification_required": false,
+  "qualification_name": "（役割により）ダム管理主任技術者／水道技術管理者 など",
+  "path_summary": "「水資源の管理・調整」はダム管理者、水道事業者、土地改良区（農業用水）、自治体・国の担当など複数の立場の総称。それぞれ関わる法律・資格が異なり、全員に共通の一つの国家資格があるわけではない。",
+  "routes": [
+   {
+    "route_name": "水道事業者（水道局など）ルート",
+    "route_type": "国家資格必須ルート（水道技術管理者は法律上必置）",
+    "steps": [
+     {
+      "stage": "大学・専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "土木・環境工学系の学部で学ぶ人が多いが必須ではない。",
+      "child_friendly_description": "水や土木のことを学ぶ人が多いけど、それだけが道じゃないよ。"
+     },
+     {
+      "stage": "就職（水道局・水道事業者）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "自治体の水道局や水道事業者に就職し、実務経験を積む。",
+      "child_friendly_description": "水道を届ける会社や役所に入って、仕事を覚えていくよ。"
+     },
+     {
+      "stage": "水道技術管理者の選任",
+      "requirement_type": "license",
+      "required": true,
+      "description": "水道法第19条により、すべての水道事業者・水道用水供給事業者は水道技術管理者を置くことが義務づけられている。一定の実務経験＋講習・学科試験などの要件を満たして資格を得る。ただし、これは事業者ごとに置く責任者の役割であり、水道関係の仕事をする人全員がこの資格を持つわけではない。",
+      "child_friendly_description": "水道を安全に管理する責任者を必ず置くという国のルールがあるよ。でも、水道の仕事をする人みんなが持つ資格ではないよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "ダム管理・河川管理ルート",
+    "route_type": "実務経験＋資格ルート（対象により異なる）",
+    "steps": [
+     {
+      "stage": "大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "土木工学系の学部で学ぶ人が多いが、公務員試験や公的機関の採用試験に合格すれば就ける。",
+      "child_friendly_description": "土木を勉強する人が多いけど、試験に受かればなれるよ。"
+     },
+     {
+      "stage": "就職（水資源機構・国・自治体など）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "独立行政法人水資源機構や国土交通省の河川事務所、自治体などに就職する。",
+      "child_friendly_description": "ダムや川を管理する国や公的な機関に入るよ。"
+     },
+     {
+      "stage": "ダム管理主任技術者（該当する場合）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "河川法に基づき、利水目的の一定規模以上のダムでは「ダム管理主任技術者」の選任が求められる場合がある。すべてのダム・すべての担当者に必要というわけではない。",
+      "child_friendly_description": "大きなダムでは管理の責任者を決めるルールがあるけど、みんなが持つ資格ではないよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "農業用水（土地改良区）ルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "土地改良区などに就職し、農業用水の配分調整の実務を通じて学ぶ。特定の国家資格は必須ではない。",
+      "child_friendly_description": "農業用の水を管理する組織に入って、仕事をしながら覚えるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "自治体・国の水行政担当は公務員試験ルートで、学部を問わず採用されることもある。",
+  "can_start_later": true,
+  "important_notes": "「水資源管理」に関わる仕事は立場によって関係法令・資格が大きく異なる。水道技術管理者は水道事業者に必置だが、これは水関係の仕事全般に必須の資格ではない点に注意。",
+  "fact_sources": [
+   "国土交通省「水道技術管理者について」https://www.mlit.go.jp/mizukokudo/watersupply/stf_seisakunitsuite_bunya_kenkou_iryou_kenkou_suido_kanrisya_index.html",
+   "ダム管理主任技術者 - Wikipedia https://ja.wikipedia.org/wiki/ダム管理主任技術者",
+   "独立行政法人水資源機構「職種紹介」https://www.water.go.jp/honsya/honsya/recruit/works/index.html",
+   "経済産業省「ダム水路主任技術者」https://www.meti.go.jp/information/license/c_text22.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "urban-heat",
+  "qualification_required": false,
+  "qualification_name": "（コンサルタント業務等で評価されることが多い）技術士（建設部門：都市及び地方計画）",
+  "path_summary": "都市の暑さを分析し街づくりを考える仕事は、自治体職員、気象・環境データの分析者、研究者、建築・ランドスケープ設計者などの総称。都市計画コンサルタント業務では技術士（建設部門）などの資格が評価されることが多いが、必ずしも全員に必須ではない。",
+  "routes": [
+   {
+    "route_name": "自治体職員（都市計画・環境部門）ルート",
+    "route_type": "公務員試験ルート",
+    "steps": [
+     {
+      "stage": "大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "都市工学・建築・土木系の学部で学ぶ人が多いが、公務員試験に合格すれば他学部出身者も採用される。",
+      "child_friendly_description": "まちづくりを勉強する人が多いけど、試験に受かればいろいろな学部からなれるよ。"
+     },
+     {
+      "stage": "公務員試験",
+      "requirement_type": "exam",
+      "required": true,
+      "description": "地方自治体（土木職・建築職など）の採用試験に合格し、都市計画課などに配属される。",
+      "child_friendly_description": "市役所や県庁の試験に合格してまちづくりの部署に入るよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "都市計画コンサルタント・技術士ルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "大学・大学院",
+      "requirement_type": "education",
+      "required": false,
+      "description": "都市工学・建築・土木系の学部で学ぶ人が多い。",
+      "child_friendly_description": "まちづくりの勉強をする人が多いよ。"
+     },
+     {
+      "stage": "就職・実務経験",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "都市計画コンサルタント会社などに就職し、実務経験を積む。",
+      "child_friendly_description": "まちづくりの会社に入って経験を積むよ。"
+     },
+     {
+      "stage": "技術士試験（該当する場合）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "技術士（建設部門・都市及び地方計画）は国が認定する専門資格で、官公庁からの受注時に評価・要求されることがあるが、都市計画の仕事全員に法律上必須というわけではない。",
+      "child_friendly_description": "まちづくりの専門家として認められる国の資格があるけど、仕事によって必要かどうかが違うよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "研究者・データ分析ルート",
+    "route_type": "教育（大学院）ルート",
+    "steps": [
+     {
+      "stage": "大学院",
+      "requirement_type": "education",
+      "required": false,
+      "description": "気象学・環境工学・都市工学などの大学院で研究を行い、研究機関や大学に所属する道もある。",
+      "child_friendly_description": "大学院でもっと詳しく研究して、研究者になる道もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "GISやデータ分析のスキルを独学・専門学校で身につけ、環境コンサルタント会社に就く道もある。",
+  "can_start_later": true,
+  "important_notes": "技術士は取得が難しい資格で、実務経験を積んだ大人が挑戦することが多い。子どものうちに「取らなければ」と焦る必要はない。",
+  "fact_sources": [
+   "公益社団法人日本都市計画学会「認定都市プランナー制度」https://www.cpij.or.jp/com/coop/planner.html",
+   "一般社団法人都市計画コンサルタント協会 制度創設の経緯 http://www.cpij.or.jp/com/gp/upload/file/overview201601.pdf",
+   "厚生労働省 職業情報提供サイト（job tag）https://shigoto.mhlw.go.jp/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "studio-qa",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "ゲームのQAテスター（品質チェック）には国家資格・必須の学歴はなく、専門学校・大学・独学のいずれからでもゲーム会社やQA専門会社に就職して始められる仕事。",
+  "routes": [
+   {
+    "route_name": "専門学校ルート",
+    "route_type": "教育ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特に指定の学科はない。",
+      "child_friendly_description": "どんな高校からでも目指せるよ。"
+     },
+     {
+      "stage": "専門学校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "ゲーム系専門学校でテストの基礎知識やツールの使い方を学ぶ人が多いが必須ではない。",
+      "child_friendly_description": "ゲームの学校で学ぶ人もいるけど、絶対ではないよ。"
+     },
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "ゲーム会社やQA専門会社（デバッグ会社）に就職し、実務でバグの見つけ方・報告の仕方を学ぶ。",
+      "child_friendly_description": "会社に入って、実際にゲームのテストをしながら覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験からのOJTルート",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "アルバイト・契約社員として就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "未経験者を受け入れるデバッグ・QA会社も多く、実際の業務を通じてスキルを身につけられる。",
+      "child_friendly_description": "未経験でも入れる会社が多くて、働きながら覚えられるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "大学（情報系など）でプログラミングやテスト理論を学んでから就く人もいる。",
+  "can_start_later": true,
+  "important_notes": "資格や特定の学歴を今から決める必要はない。ゲームを注意深く観察し、気づいたことを言葉で説明する練習が役立つと言われている。",
+  "fact_sources": [
+   "一般社団法人コンピュータエンターテインメント協会（CESA）「ゲーム開発者の就業とキャリア形成2023」https://www.cesa.or.jp/uploads/2024/info20240315.pdf",
+   "OCA大阪デザイン&ITテクノロジー専門学校「ゲームプランナーになるには」https://www.oca.ac.jp/work_books/4410/（QA・関連職種の一般的な入職ルートの参考として）"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "studio-planner",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "ゲームプランナー（難易度調整など）には国家資格は不要。大学・専門学校・独学のいずれからでもゲーム会社に就職して始められ、実務経験の中でスキルを積んでいく仕事。",
+  "routes": [
+   {
+    "route_name": "専門学校・大学ルート",
+    "route_type": "教育ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特に指定の学科はない。",
+      "child_friendly_description": "どんな高校からでも目指せるよ。"
+     },
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "専門学校は実務直結のカリキュラムとチーム制作の機会が多く、大学は基礎学術・汎用力を広く学べる。どちらも道として成立する。",
+      "child_friendly_description": "専門学校でも大学でも、それぞれ違う良さがあって、どちらからでもなれるよ。"
+     },
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "ゲーム会社に企画職・プランナー職として就職し、実務の中で企画書作成やバランス調整のスキルを身につける。",
+      "child_friendly_description": "会社に入って、実際にゲームの企画や調整をしながら学んでいくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "独学・自主制作ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "自主制作・ポートフォリオ作成",
+      "requirement_type": "training",
+      "required": false,
+      "description": "個人でゲームを企画・制作し、その実績（ポートフォリオ）を持って就職活動をする人もいる。",
+      "child_friendly_description": "自分で小さいゲームを企画してみて、それを見せて就職する人もいるよ。"
+     },
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "実績や熱意を評価されて未経験からゲーム会社に採用される例もある。",
+      "child_friendly_description": "経験がなくても、やる気や作った物を見て採用してもらえることもあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "プログラマーやデザイナーから企画職に異動してプランナーになる人もいる。",
+  "can_start_later": true,
+  "important_notes": "資格は不要で、進路も一つに決まっていない。「悔しい、もう1回」と思わせる仕組みを考えるのが好き、という気持ちを大事にすればよい。",
+  "fact_sources": [
+   "一般社団法人コンピュータエンターテインメント協会（CESA）「ゲーム開発者の就業とキャリア形成2023」https://www.cesa.or.jp/uploads/2024/info20240315.pdf",
+   "松陰高等学校（通信制高校）「ゲームプランナーになるには？大学・未経験からの道筋」https://sho-in.ed.jp/column/2249/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "studio-ui",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "ゲームのUIデザイナー（画面・操作設計）には国家資格は不要。専門学校・大学・独学のいずれからでも道があり、色彩検定やAdobe認定資格などの民間資格はスキルアップの参考になる程度。",
+  "routes": [
+   {
+    "route_name": "専門学校・大学ルート",
+    "route_type": "教育ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特に指定の学科はない。",
+      "child_friendly_description": "どんな高校からでも目指せるよ。"
+     },
+     {
+      "stage": "専門学校・大学",
+      "requirement_type": "education",
+      "required": false,
+      "description": "デザイン系専門学校や大学の美術・情報デザイン系学科で学ぶ人が多いが必須ではない。",
+      "child_friendly_description": "デザインを学ぶ学校に行く人が多いけど、それだけが道じゃないよ。"
+     },
+     {
+      "stage": "就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "ゲーム会社のUI/UXデザイン部門に就職し、実務で画面設計・操作のわかりやすさを学ぶ。",
+      "child_friendly_description": "会社に入って、実際に画面をデザインしながら学んでいくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "独学ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "独学・ポートフォリオ作成",
+      "requirement_type": "training",
+      "required": false,
+      "description": "デザインツールを独学で習得し、自主制作したUIデザインをポートフォリオとしてまとめる人もいる。",
+      "child_friendly_description": "自分でデザインの練習をして、作った物を見せて就職する道もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "色彩検定・Webデザイン系の民間資格を取ってスキルを示す人もいるが、いずれも任意。",
+  "can_start_later": true,
+  "important_notes": "国家資格は不要。「まちがえない画面」を考えるのが好きという気持ちが土台になる仕事。",
+  "fact_sources": [
+   "アミューズメントメディア総合学院「UIデザイナー専門の学校」https://www.amgakuin.co.jp/contents/game-sogo/ui",
+   "TECH.C.東京デザインテクノロジーセンター専門学校「UIデザイナー」https://www.tech.ac.jp/work_books/ui-designer/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "library-reference",
+  "qualification_required": false,
+  "qualification_name": "司書（国家資格ではなく、図書館法に基づく資格）",
+  "path_summary": "公共図書館で本の選定・分類・レファレンス（調べもの支援）を行う専門的職員である司書は、図書館法第5条に基づく資格。国家資格ではなく、大学での司書養成科目の履修や司書講習の修了などで取得できる。",
+  "routes": [
+   {
+    "route_name": "大学で司書資格科目を履修するルート",
+    "route_type": "教育ルート（図書館法に基づく資格）",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "特に指定の学科はない。",
+      "child_friendly_description": "どんな高校からでも目指せるよ。"
+     },
+     {
+      "stage": "大学（司書課程のある大学）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "図書館法施行規則で定められた図書館に関する科目の単位を大学で修得し、大学を卒業することで司書資格が得られる。",
+      "child_friendly_description": "大学で図書館のことを学ぶ授業をとって卒業すると、司書の資格がもらえるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "司書講習を受講するルート",
+    "route_type": "教育ルート（大学卒業後・短期集中）",
+    "steps": [
+     {
+      "stage": "大学・短期大学（学部不問）を卒業",
+      "requirement_type": "education",
+      "required": true,
+      "description": "司書課程のない大学・短大を卒業した人でも、大学卒業（短大の場合は一定の実務経験も条件）という要件を満たせば司書講習を受けられる。",
+      "child_friendly_description": "図書館の授業がない大学を出た人でも、あとから講習を受ければ資格が取れるよ。"
+     },
+     {
+      "stage": "司書講習の受講",
+      "requirement_type": "training",
+      "required": true,
+      "description": "文部科学省が定める司書講習実施大学で、夏期などに開講される司書講習（司書及び司書補の講習）を受講し、単位を修得する。",
+      "child_friendly_description": "夏休みなどに開かれる集中講座を受けて、必要な勉強をするよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "実務経験＋司書講習ルート（司書補から）",
+    "route_type": "実務経験ルート",
+    "steps": [
+     {
+      "stage": "司書補として実務経験を積む",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "高校卒業後、司書補として図書館に3年以上勤務した経験があれば、司書講習を受講する資格が得られる。",
+      "child_friendly_description": "図書館で司書のお手伝いとして3年以上働くと、司書になるための講習を受けられるようになるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "郷土資料の調査など専門性の高い分野は、司書資格に加えて実務経験や独自の調べもの経験が重視されることが多い。",
+  "can_start_later": true,
+  "important_notes": "司書は「図書館法」に基づく資格であり、国家資格ではない（司書という試験に国が合否を出す仕組みではなく、大学での単位取得・講習修了で得られる）。「国家資格」と紹介する記事も一部にあるが、文部科学省・日本図書館協会の説明では国家資格という表現は使われていない。取得ルートが複数あり、大学卒業後に進路変更してもなれるので、今すぐ決める必要はない。",
+  "fact_sources": [
+   "文部科学省「司書について」https://www.mext.go.jp/a_menu/shougai/gakugei/shisyo/index.htm",
+   "公益社団法人日本図書館協会「司書（補）資格の取得方法」https://www.jla.or.jp/how_to_obtain_a_librarian_qualification/",
+   "厚生労働省 職業情報提供サイト（job tag）https://shigoto.mhlw.go.jp/（司書の職業情報ページ）"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "library-conservator",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "図書館資料の保存・修復を担当する仕事には、国家資格も業界共通の必須資格もない。司書資格を持つ図書館員が兼務することが多いが、専門の民間研修や実務経験を通じて技能を身につける場合もある。",
+  "routes": [
+   {
+    "route_name": "司書資格＋資料保存の実務・研修ルート",
+    "route_type": "教育＋実務経験ルート",
+    "steps": [
+     {
+      "stage": "大学（司書課程）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "司書資格を取得したうえで、図書館に就職して資料保存を担当することが多いが、司書資格自体は資料保存の必須条件ではない。",
+      "child_friendly_description": "司書の資格を持って図書館に入り、そこで資料を守る係になる人が多いよ。"
+     },
+     {
+      "stage": "図書館・資料保存機関への就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "図書館、文書館、博物館などに就職し、実務の中で紙資料の取り扱い・保存環境の管理を学ぶ。",
+      "child_friendly_description": "図書館や資料館に入って、資料を大切に扱う方法を仕事の中で覚えるよ。"
+     },
+     {
+      "stage": "専門研修・講習会",
+      "requirement_type": "training",
+      "required": false,
+      "description": "日本図書館協会資料保存委員会や専門図書館協議会などが開くセミナー・講習会で、補修や防災の技術を学ぶ人が多い。",
+      "child_friendly_description": "資料を直したり守ったりするやり方を教えてくれる講座があるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "美術・工芸系の修復技術ルート",
+    "route_type": "教育ルート（文化財保存系）",
+    "steps": [
+     {
+      "stage": "大学・専門学校（文化財保存修復系）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "紙・書籍文化財の保存修復を専門に学べる大学・大学院もあり、より専門的な修復技術を学ぶ道もある。",
+      "child_friendly_description": "紙や本を直す専門の技術を学べる学校もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "民間の製本・修復工房で経験を積んでから図書館の資料保存部門に転職する人もいる。",
+  "can_start_later": true,
+  "important_notes": "「資料保存・修復」を認定する統一の国家資格・必須資格は存在しない。「直さない」という判断も含めて、経験と知識の積み重ねが重視される仕事。",
+  "fact_sources": [
+   "公益社団法人日本図書館協会 資料保存委員会「やってみよう資料保存～資料保存入門～」https://www.jla.or.jp/wp/wp-content/uploads/2025/04/やってみよう資料保存.pdf",
+   "専門図書館協議会「資料保存コーナー」https://jsla.or.jp/preservation/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "library-archivist",
+  "qualification_required": false,
+  "qualification_name": "デジタルアーキビスト（民間資格。国家資格ではない）",
+  "path_summary": "図書館・博物館などの資料をデジタル化し保存・公開する「デジタルアーカイブ」の担当者には国家資格は不要。司書・学芸員の資格や情報系の知識が役立つほか、NPO法人が認定する民間資格「デジタルアーキビスト」もあるが、必須ではない。",
+  "routes": [
+   {
+    "route_name": "司書・学芸員資格＋情報系知識ルート",
+    "route_type": "教育＋実務経験ルート",
+    "steps": [
+     {
+      "stage": "大学（司書課程・情報系学部など）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "司書資格や情報学・図書館情報学を学ぶ人が多いが、必須の学部指定はない。",
+      "child_friendly_description": "図書館やコンピューターのことを学ぶ人が多いけど、それだけが道じゃないよ。"
+     },
+     {
+      "stage": "図書館・博物館・自治体への就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "図書館、博物館、自治体のデジタルアーカイブ事業などに就職し、資料のスキャン・データベース化・権利処理の実務を学ぶ。",
+      "child_friendly_description": "図書館や博物館に入って、資料をデータにする仕事を覚えていくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "デジタルアーキビスト資格（民間資格）ルート",
+    "route_type": "民間資格ルート（任意）",
+    "steps": [
+     {
+      "stage": "認定養成機関での講習・単位取得",
+      "requirement_type": "training",
+      "required": false,
+      "description": "特定非営利活動法人日本デジタル・アーキビスト資格認定機構が認定する養成機関で講習を受け、試験に合格すると「準デジタル・アーキビスト」「デジタル・アーキビスト」などの民間資格が得られる。国や自治体のデジタルアーカイブ事業でこの資格の保有者配置が求められる場合があるが、法律で必須と定められた資格ではない。",
+      "child_friendly_description": "資料をデジタル化する専門家として認められる民間の資格があるよ。持っていると役立つ場面もあるけど、必ず必要というわけではないよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "IT企業でスキャン・データベース構築の技術を身につけてから、図書館・文化施設のデジタルアーカイブ担当に転職する人もいる。",
+  "can_start_later": true,
+  "important_notes": "デジタルアーキビストは民間資格であり、国家資格ではない。持っていなくてもこの仕事に就くことはできるが、一部の公的事業では評価・要求されることがある。",
+  "fact_sources": [
+   "特定非営利活動法人日本デジタルアーキビスト資格認定機構「デジタルアーキビストとは」https://jdaa.jp/digital-archivist",
+   "同機構「資格・取得方法」https://jdaa.jp/qualification",
+   "内閣府NPOポータルサイト「日本デジタルアーキビスト資格認定機構」https://www.npo-homepage.go.jp/npoportal/detail/021000759"
+  ],
+  "last_verified": "2026-09-04"
+ }
+]

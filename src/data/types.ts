@@ -163,6 +163,48 @@ export interface Q2Card {
 }
 
 /**
+ * "どうやってなるの？" — a career path, shown in Job Reveal right after
+ * "どんな仕事？" (§3 of the 2026-09-04 Career Path directive). Fact-checked
+ * against Japanese public/authoritative sources per profession (see
+ * factory/state/career-path/ for the research + fact_sources). NEVER a
+ * single forced route: professions with genuinely multiple entry points list
+ * multiple `routes`. `canStartLater=true` professions must never be framed
+ * as "decide now or it's too late" — see language rules in
+ * factory/state/career-path/career-path-copy-guide.md.
+ */
+export interface CareerPathStep {
+  /** the stage name itself, e.g. "高校" / "医師国家試験" — ruby-marked where a technical term first appears */
+  stage: string;
+  requirementType: "education" | "license" | "training" | "experience" | "exam";
+  /** is this step legally/structurally required for this route, or a common-but-optional path? */
+  required: boolean;
+  /** short child-facing explanation of this stage (target: grades 5-9, ruby-marked where needed) */
+  description: string;
+}
+export interface CareerPathRoute {
+  routeName: string;
+  /** e.g. "国家資格必須ルート" / "実務経験ルート" / "未経験からのOJTルート" */
+  routeType: string;
+  steps: CareerPathStep[];
+}
+export interface CareerPath {
+  /** true only if a specific named qualification is legally/structurally required to do this job */
+  qualificationRequired: boolean;
+  qualificationName: string | null;
+  /** one short child-facing overview line */
+  pathSummary: string;
+  routes: CareerPathRoute[];
+  /** other routes worth mentioning without a full step breakdown, or null */
+  alternatives: string | null;
+  /** can an adult realistically start pursuing this later (career change), not just from childhood? */
+  canStartLater: boolean;
+  /** honest caveats — e.g. "this is an office-level requirement, not required of every individual" */
+  importantNotes: string | null;
+  factSources: string[];
+  lastVerified: string;
+}
+
+/**
  * A profession exists once, independent of events.
  * Multiple events / Q1 experiences can lead to the same profession.
  */
@@ -176,9 +218,19 @@ export interface Profession {
   q2: Q2Card[];
   related: string[]; // names of similar professions
   /**
+   * "どうやってなるの？" section of Job Reveal. Optional so existing
+   * professions render unchanged until their career path is added; looked
+   * up from src/data/careerPaths.ts by profession id (kept out of each
+   * content module to avoid bloating 14 files with a large nested object
+   * per profession — see that file's header comment).
+   */
+  careerPath?: CareerPath;
+  /**
    * Q3 = "meet a person doing this job" (interviews, life stories).
-   * Not implemented in this prototype; reserved so content can be
-   * attached to a profession later without changing the model.
+   * NOT implemented — Real Professional Profile stays DESIGN_RESERVED
+   * (2026-09-04 directive §20: no fabricated individual professional data).
+   * Reserved so content can be attached to a profession later without
+   * changing the model.
    */
   q3?: { available: boolean };
 }

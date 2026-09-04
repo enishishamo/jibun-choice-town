@@ -224,7 +224,7 @@ export default function YardPlanGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       {ys.outcome === "placed" && (
         <button className="btn primary big" onClick={() => { setSimStep(0); setStep("sim"); }}>

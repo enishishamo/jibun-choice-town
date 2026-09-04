@@ -1,0 +1,200 @@
+{
+ "mobile": {
+  "viewport": "mobile",
+  "home": {
+   "brokenImagesInitial": [],
+   "panOk": true,
+   "districtTapOk": true,
+   "mapReturnOk": true
+  },
+  "worlds": [
+   {
+    "id": "lunch-late",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "heat-wave",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "ice-price",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "town-festival",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "er-patient",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "school-trip",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "waste-journey",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "shop-opening",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "zoo-baby",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "night-port",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "forest-care",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "river-health",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "game-studio",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "library-detective",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   }
+  ],
+  "brokenImages": [],
+  "failedRequests": [],
+  "consoleErrors": [],
+  "pageErrors": []
+ },
+ "desktop": {
+  "viewport": "desktop",
+  "home": {
+   "brokenImagesInitial": [],
+   "panOk": true,
+   "districtTapOk": true,
+   "mapReturnOk": true
+  },
+  "worlds": [
+   {
+    "id": "lunch-late",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "heat-wave",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "ice-price",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "town-festival",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "er-patient",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "school-trip",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "waste-journey",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "shop-opening",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "zoo-baby",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "night-port",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "forest-care",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "river-health",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "game-studio",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   },
+   {
+    "id": "library-detective",
+    "ok": true,
+    "error": null,
+    "brokenImages": []
+   }
+  ],
+  "brokenImages": [],
+  "failedRequests": [],
+  "consoleErrors": [],
+  "pageErrors": []
+ }
+}

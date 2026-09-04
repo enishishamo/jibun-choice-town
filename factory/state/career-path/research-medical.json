@@ -1,0 +1,473 @@
+[
+ {
+  "profession_id": "doctor",
+  "qualification_required": true,
+  "qualification_name": "医師免許（医師国家試験に合格し、厚生労働大臣の免許を受ける）",
+  "path_summary": "大学の医学部医学科（6年制）を卒業し、医師国家試験に合格したうえで、2年以上の臨床研修を修了して医師として働く。医業は医師免許を持つ人にしか許されない業務独占資格。",
+  "routes": [
+   {
+    "route_name": "大学医学部医学科ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "医学部医学科（6年制）の入試に向けて、高校の学習内容（特に理系科目）を修める。高等学校卒業程度認定試験で大学入学資格を得て進学する道もある。",
+      "child_friendly_description": "高校で理科や数学をがんばって医学部を目指す"
+     },
+     {
+      "stage": "大学医学部医学科（6年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "医学部医学科で6年間学ぶ。2025年度からは臨床実習の前に共用試験（CBT・OSCE）に合格する必要がある。",
+      "child_friendly_description": "医学部で6年間、からだと病気を学ぶ"
+     },
+     {
+      "stage": "医師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "医学部を卒業した年に医師国家試験を受験し、合格すると厚生労働大臣から医師免許が与えられる。",
+      "child_friendly_description": "国のテストに受かって医師免許をもらう"
+     },
+     {
+      "stage": "臨床研修（2年以上）",
+      "requirement_type": "training",
+      "required": true,
+      "description": "医師免許取得後、法律で義務づけられた2年以上の臨床研修（初期研修）を病院で受ける。その後も専門分野の研修（後期研修）を積むのが一般的。",
+      "child_friendly_description": "免許のあと2年以上、病院で研修して経験を積む"
+     }
+    ]
+   }
+  ],
+  "alternatives": "一般の大学を卒業したあとに医学部へ入り直す『学士編入学』という道もある。どちらの道でも、最後は医学部医学科（6年）を修了する必要がある。",
+  "can_start_later": true,
+  "important_notes": "医学部医学科は人気が高く、入りたい人の数に対して席が少ない。6年間の学びと2年以上の臨床研修が必要で、資格を取るまでの道のりは長い。社会人になってから『学士編入学』で目指す人もいる。『今すぐ決めないと間に合わない』わけではないが、長い時間がかかる仕事だと正直に伝えておきたい。",
+  "fact_sources": [
+   "医師国家試験の施行について｜厚生労働省 https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/ishi/",
+   "医師免許取得後の研修制度等について（厚生労働省医政局、文部科学省資料） https://www.mext.go.jp/content/20240227-mxt_senmon02-000034447_1.pdf"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "labtech",
+  "qualification_required": true,
+  "qualification_name": "臨床検査技師免許（国家資格）",
+  "path_summary": "文部科学大臣指定の大学・短大や都道府県知事指定の養成所で3年以上学び、臨床検査技師国家試験に合格して免許を取得する。心電図・超音波などの一部の生理学的検査は法律で臨床検査技師などの有資格者に限定されており、医療機関での検体検査も基本的に有資格者が担当する。",
+  "routes": [
+   {
+    "route_name": "養成校（大学・短大・専門学校）ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "臨床検査技師養成課程のある大学・短大・専門学校への進学を目指す。",
+      "child_friendly_description": "高校を出て検査の専門学校や大学をめざす"
+     },
+     {
+      "stage": "養成校（3年以上、大学は4年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "臨床検査技師法第15条に基づき指定された学校・養成所で3年以上、検査に必要な知識・技能を修める。",
+      "child_friendly_description": "学校で3年以上、検査のやり方を学ぶ"
+     },
+     {
+      "stage": "臨床検査技師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験（200問、120点以上で合格が目安）に合格すると臨床検査技師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   }
+  ],
+  "alternatives": "特になし（大学・短大・専門学校いずれかの養成校を経る単一ルートが基本）。海外の養成校卒業者や海外資格保有者は、厚生労働大臣の個別認定を受けて受験資格を得られる場合がある。",
+  "can_start_later": true,
+  "important_notes": "臨床検査技師は国家資格。心電図・超音波などの一部の生理学的検査は法律で臨床検査技師などの有資格者に限定されている（すべての検体検査を一律に独占しているわけではない）。すでに大人になってから養成校（3年制専門学校など）に入学し直して目指すことも可能。",
+  "fact_sources": [
+   "臨床検査技師国家試験受験資格の認定について｜厚生労働省 https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000107630.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "radtech",
+  "qualification_required": true,
+  "qualification_name": "診療放射線技師免許（国家資格・業務独占資格）",
+  "path_summary": "厚生労働大臣指定の養成所（3年制専門学校など）や文部科学大臣指定の大学（4年制）で学び、診療放射線技師国家試験に合格して免許を取得する。X線などの放射線を人体に照射する行為は、医師・歯科医師とこの資格を持つ人以外には認められていない。",
+  "routes": [
+   {
+    "route_name": "養成校（大学・専門学校）ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "診療放射線技師養成課程のある4年制大学や3年制専門学校への進学を目指す。",
+      "child_friendly_description": "高校を出て放射線技師の学校をめざす"
+     },
+     {
+      "stage": "養成校（3年以上、大学は4年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "指定された養成校で放射線を使った検査・治療に必要な知識・技能を修める。",
+      "child_friendly_description": "学校でX線やCTの使い方を学ぶ"
+     },
+     {
+      "stage": "診療放射線技師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験（200問、120点以上が合格基準の目安）に合格すると免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   }
+  ],
+  "alternatives": "特になし（大学・専門学校いずれかの養成校を経る単一ルートが基本）。海外の養成校卒業者等は個別認定によるルートもある。",
+  "can_start_later": true,
+  "important_notes": "放射線を人体にあてる行為そのものが法律で制限されており、免許なしでは行えない業務独占資格。社会人になってから養成校に入り直して目指すこともできる。",
+  "fact_sources": [
+   "診療放射線技師国家試験受験資格の認定について｜厚生労働省 https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000106627.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "pharmacist",
+  "qualification_required": true,
+  "qualification_name": "薬剤師免許（国家資格・業務独占資格）",
+  "path_summary": "大学の薬学部（6年制）を卒業し、薬剤師国家試験に合格して厚生労働省の薬剤師名簿に登録されると薬剤師になれる。調剤は薬剤師（および医師等一部の例外）にしか認められていない業務独占資格。",
+  "routes": [
+   {
+    "route_name": "薬学部6年制ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "薬学部（6年制）の入試に向けて学習する。",
+      "child_friendly_description": "高校で理科をがんばって薬学部をめざす"
+     },
+     {
+      "stage": "大学薬学部（6年制）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "薬剤師法第15条により、薬剤師国家試験の受験資格は原則6年制薬学課程の卒業者に限られる。",
+      "child_friendly_description": "薬学部で6年間、薬とからだを学ぶ"
+     },
+     {
+      "stage": "薬剤師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格し、薬剤師名簿に登録されると薬剤師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   }
+  ],
+  "alternatives": "薬剤師になるには原則6年制の薬学課程を卒業する必要がある。4年制の薬科学科等は主に研究者養成コースで、薬剤師国家試験の受験資格には原則つながらない（過去の制度移行期に限られた例外的な個別審査ルートがあったが、現在の新規進学者が通常あてにできる経路ではない）。",
+  "can_start_later": true,
+  "important_notes": "薬学部は基本的に6年制（薬剤師を目指すコース）と4年制（研究者向けコース）に分かれており、薬剤師になるには原則6年制課程を選ぶ必要がある点に注意。社会人から6年制に入学し直すことも可能。",
+  "fact_sources": [
+   "薬学教育制度の概要｜文部科学省 https://www.mext.go.jp/a_menu/01_d/1329586.htm",
+   "薬剤師国家試験のページ｜厚生労働省 https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iyakuhin/yakuzaishi-kokkashiken/index.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "nurse",
+  "qualification_required": true,
+  "qualification_name": "看護師免許（国家資格・業務独占資格、都道府県知事免許の准看護師とは別の資格）",
+  "path_summary": "看護系の大学・短期大学・専門学校いずれかで学び、看護師国家試験に合格して免許を得る。准看護師（都道府県知事免許）から正看護師（国家資格）を目指す道もあり、複数のルートが存在する。",
+  "routes": [
+   {
+    "route_name": "看護系大学ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "看護系大学への進学を目指す。",
+      "child_friendly_description": "高校を出て看護の大学をめざす"
+     },
+     {
+      "stage": "看護系大学（4年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "文部科学大臣指定の大学で看護に必要な知識・技術を4年間学ぶ。保健師・助産師の受験資格も得やすい。",
+      "child_friendly_description": "大学で4年間、看護のことを学ぶ"
+     },
+     {
+      "stage": "看護師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると看護師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   },
+   {
+    "route_name": "短期大学ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "看護系短期大学（3年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "指定された短期大学で3年間、看護の課程を修める。",
+      "child_friendly_description": "短大で3年間、看護のことを学ぶ"
+     },
+     {
+      "stage": "看護師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると看護師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   },
+   {
+    "route_name": "専門学校ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "看護専門学校（3年、5年一貫校は中学卒業後5年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "指定された専門学校で看護の課程を修める。中学卒業後に入学できる5年一貫の課程もある。",
+      "child_friendly_description": "専門学校で看護のことを学ぶ"
+     },
+     {
+      "stage": "看護師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると看護師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   },
+   {
+    "route_name": "准看護師からのルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "准看護師（都道府県知事免許）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "准看護師養成所（2年）等で学び、都道府県知事が交付する准看護師免許を取得して働くことができる。これは看護師とは別の資格。",
+      "child_friendly_description": "先に『准看護師』として働きはじめる道もある"
+     },
+     {
+      "stage": "看護師養成課程（2年課程）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "准看護師として働きながら、指定の看護師養成課程（2年課程。全日制・定時制のほか、一定年数以上の実務経験を入学条件とする通信制もある）に進学し、修了することで看護師国家試験の受験資格を得る。実務経験の年数だけで受験資格が得られるわけではない。",
+      "child_friendly_description": "働きながら、正看護師になるための学校（2年間）に通って卒業をめざす"
+     },
+     {
+      "stage": "看護師国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると看護師免許が交付される。",
+      "child_friendly_description": "国のテストに受かって正看護師になる"
+     }
+    ]
+   }
+  ],
+  "alternatives": "上記4ルート以外に、放送大学等の通信制課程を活用して准看護師から看護師を目指す道もある。",
+  "can_start_later": true,
+  "important_notes": "看護師（正看護師）は国家資格、准看護師は都道府県知事が与える別の資格で、法律上の位置づけが異なる点に注意。准看護師として先に働き始めてから、あとで正看護師を目指す『途中からのルート』が実際に存在するため、早く決めないと目指せない仕事ではない。",
+  "fact_sources": [
+   "看護師国家試験の施行｜厚生労働省 https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kangoshi/",
+   "看護師国家試験の受験資格｜放送大学 https://www.ouj.ac.jp/reasons-to-choose-us/qualification/nurse/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "dietitian",
+  "qualification_required": true,
+  "qualification_name": "管理栄養士免許（国家資格・名称独占資格）。前提として栄養士免許（都道府県知事免許）も取得する。",
+  "path_summary": "管理栄養士は国家資格で、『管理栄養士』を名乗るには免許が必要（名称独占）。栄養士（都道府県知事免許）とは別の資格で、多くの場合は4年制の管理栄養士養成課程を卒業して栄養士免許を得ると同時に、実務経験なしで管理栄養士国家試験の受験資格を得るルートが一般的。栄養士養成施設（2年制・3年制）を出て実務経験を積んでから管理栄養士国家試験を受ける道もある。",
+  "routes": [
+   {
+    "route_name": "管理栄養士養成課程（4年制大学等）ルート",
+    "route_type": "国家資格ルート（実務経験不要）",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "管理栄養士養成課程のある4年制大学・専門学校への進学を目指す。",
+      "child_friendly_description": "高校を出て管理栄養士の学校をめざす"
+     },
+     {
+      "stage": "管理栄養士養成課程（4年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "厚生労働大臣指定の4年制養成課程を卒業すると、栄養士免許を得ると同時に、実務経験なしで管理栄養士国家試験の受験資格が得られる。",
+      "child_friendly_description": "学校で4年間、栄養のことを学ぶ"
+     },
+     {
+      "stage": "管理栄養士国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると管理栄養士名簿に登録され、管理栄養士と名乗れるようになる。",
+      "child_friendly_description": "国のテストに受かって管理栄養士になる"
+     }
+    ]
+   },
+   {
+    "route_name": "栄養士養成施設（2年制・3年制）＋実務経験ルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "栄養士養成施設（2年または3年）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "2年制または3年制の栄養士養成施設を卒業し、都道府県知事から栄養士免許を得る。",
+      "child_friendly_description": "学校で栄養士の資格をまず取る"
+     },
+     {
+      "stage": "実務経験（養成施設の年数に応じて2〜3年以上）",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "栄養士として、厚生労働省令で定める施設で一定期間（学校の修業年数と合わせて概ね5年以上になるように）栄養の指導業務に従事する。",
+      "child_friendly_description": "栄養士として働きながら経験を積む"
+     },
+     {
+      "stage": "管理栄養士国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "実務経験を満たすと管理栄養士国家試験の受験資格が得られ、合格すると管理栄養士になれる。",
+      "child_friendly_description": "国のテストに受かって管理栄養士になる"
+     }
+    ]
+   }
+  ],
+  "alternatives": "特になし（上記2ルートが基本）。",
+  "can_start_later": true,
+  "important_notes": "『栄養士』と『管理栄養士』は別の資格で、管理栄養士の方が上位の国家資格（名称独占）。誤解されやすいが、管理栄養士になるために必ず先に栄養士として現場で長く働く必要があるわけではなく、4年制の管理栄養士養成課程を卒業すれば実務経験なしで国家試験を受けられる道が今は主流。栄養士として働き始めてから管理栄養士を目指す『途中からのルート』も存在する。",
+  "fact_sources": [
+   "管理栄養士国家試験｜厚生労働省 https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kanrieiyoushi/",
+   "管理栄養士国家試験について｜公益社団法人 日本栄養士会 https://www.dietitian.or.jp/students/national-exam/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "pt",
+  "qualification_required": true,
+  "qualification_name": "理学療法士免許（国家資格・名称独占資格）",
+  "path_summary": "理学療法士養成校（大学・短大・専門学校のいずれか、3年以上）で学び、理学療法士国家試験に合格して免許を取得する。理学療法士は名称独占資格で、免許のない人が「理学療法士」と名乗ることはできない。医療機関では医師の指示のもと、実際のリハビリ業務は基本的に有資格者が担当する。",
+  "routes": [
+   {
+    "route_name": "養成校（大学・短大・専門学校）ルート",
+    "route_type": "国家資格必須ルート",
+    "steps": [
+     {
+      "stage": "高校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "理学療法士養成課程のある大学（4年）・短大（3年）・専門学校（3〜4年）への進学を目指す。",
+      "child_friendly_description": "高校を出て理学療法士の学校をめざす"
+     },
+     {
+      "stage": "養成校（3年以上）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "指定された養成校で、からだの動きやリハビリに必要な知識・技術を学ぶ。",
+      "child_friendly_description": "学校でリハビリのやり方を学ぶ"
+     },
+     {
+      "stage": "理学療法士国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると理学療法士免許が交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   },
+   {
+    "route_name": "作業療法士資格保有者ルート",
+    "route_type": "国家資格必須ルート（既資格者向け短縮）",
+    "steps": [
+     {
+      "stage": "作業療法士免許を先に取得",
+      "requirement_type": "education",
+      "required": false,
+      "description": "すでに作業療法士（別の国家資格）の免許を持っている場合の特例ルート。",
+      "child_friendly_description": "先に作業療法士になっている人向けの道"
+     },
+     {
+      "stage": "理学療法士養成校（2年以上）",
+      "requirement_type": "education",
+      "required": true,
+      "description": "作業療法士免許保有者は、養成校で2年以上学ぶことで理学療法士国家試験の受験資格を得られる。",
+      "child_friendly_description": "2年間、追加で理学療法士の勉強をする"
+     },
+     {
+      "stage": "理学療法士国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると理学療法士免許も交付される。",
+      "child_friendly_description": "国のテストに受かって免許をもらう"
+     }
+    ]
+   }
+  ],
+  "alternatives": "海外の理学療法養成校卒業者や海外資格保有者は、厚生労働大臣の個別認定を受けて受験資格を得られる場合がある。",
+  "can_start_later": true,
+  "important_notes": "理学療法士は名称独占資格（免許のない人が「理学療法士」と名乗ることはできない資格）。業務そのものを法律で全面的に独占しているわけではないが、医療機関では医師の指示のもと基本的に有資格者がリハビリ業務を担当する。社会人になってから養成校に入り直して目指すことも可能。",
+  "fact_sources": [
+   "理学療法士国家試験の施行｜厚生労働省 https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/rigakuryouhoushi/",
+   "理学療法士になるには｜公益社団法人 日本理学療法士協会 https://www.japanpt.or.jp/about_pt/aim/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "msw",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "『MSW（医療ソーシャルワーカー）』という肩書自体は法律で定められた資格名ではない。多くの場合、社会福祉士（国家資格・名称独占）や精神保健福祉士（国家資格・名称独占）を取得した人が、医療機関でこの役割を担っている。厚生労働省の『医療ソーシャルワーカー業務指針』はあるが、資格保有そのものを法律上の必須条件とはしていない。",
+  "routes": [
+   {
+    "route_name": "社会福祉士ルート（最も一般的）",
+    "route_type": "実務でよく求められる資格ルート（法的必須ではない）",
+    "steps": [
+     {
+      "stage": "福祉系大学 または 一般大学＋養成施設",
+      "requirement_type": "education",
+      "required": true,
+      "description": "福祉系大学で指定科目を修める、短期養成施設（6月以上）で学ぶ、または一般大学卒業後・実務経験後に一般養成施設（1年以上）で学ぶなど、複数の入り口がある。",
+      "child_friendly_description": "福祉を学べる大学や学校に通う（何通りかの道がある）"
+     },
+     {
+      "stage": "社会福祉士国家試験",
+      "requirement_type": "national_exam",
+      "required": true,
+      "description": "国家試験に合格すると社会福祉士として登録でき、『社会福祉士』を名乗れるようになる（名称独占資格）。",
+      "child_friendly_description": "国のテストに受かって社会福祉士になる"
+     },
+     {
+      "stage": "病院など医療機関に就職",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "社会福祉士（または精神保健福祉士）として病院等に採用され、退院支援や相談援助を担当することで『MSW』と呼ばれるようになる。採用条件は病院ごとに異なる。",
+      "child_friendly_description": "病院で相談の仕事をする人としてはたらく"
+     }
+    ]
+   }
+  ],
+  "alternatives": "精神保健福祉士（国家資格）を取得して医療機関で働くルートもある。また、法律上は資格がなくても『相談員』等の名称で同様の相談援助業務に従事することは可能だが、『社会福祉士』『精神保健福祉士』を無資格で名乗ることは名称独占によりできない。",
+  "can_start_later": true,
+  "important_notes": "MSWという名前を聞くと専用の資格があるように誤解しやすいが、実際は社会福祉士・精神保健福祉士という別の国家資格の保有者が医療現場でMSWと呼ばれていることが多い、という点を正確に伝える必要がある。資格保有は法的な必須条件ではないが、実際の求人ではほぼ必須とされることが多い。一般大学を卒業してからでも1年程度の養成施設で目指せるルートがあり、途中から目指しやすい仕事の一つ。",
+  "fact_sources": [
+   "医療ソーシャルワーカー（MSW）の仕事内容と資格について https://www.iryou21.jp/media/how-to-work/shokushu-msw/",
+   "[社会福祉士国家試験]受験資格（資格取得ルート図）｜公益財団法人 社会福祉振興・試験センター https://www.sssc.or.jp/shakai/shikaku/route.html",
+   "[社会福祉士国家試験]受験資格：短期養成施設・一般養成施設｜公益財団法人 社会福祉振興・試験センター https://www.sssc.or.jp/shakai/shikaku/s_12.html"
+  ],
+  "last_verified": "2026-09-04"
+ }
+]

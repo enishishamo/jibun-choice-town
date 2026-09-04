@@ -3,8 +3,10 @@
 import { withRuby } from "../lib/ruby";
 import { useState } from "react";
 import { getProfession } from "../data";
+import { getCareerPath } from "../data/careerPaths";
 import type { Screen } from "../state/GameState";
 import { useGame } from "../state/GameState";
+import CareerPathSection from "./CareerPathSection";
 
 export default function ProfessionScreen({
   professionId,
@@ -17,6 +19,7 @@ export default function ProfessionScreen({
   const [open, setOpen] = useState<string | null>(null);
   const profession = getProfession(professionId);
   if (!profession) return null;
+  const careerPath = profession.careerPath ?? getCareerPath(professionId);
 
   return (
     <div className="screen profession">
@@ -77,11 +80,13 @@ export default function ProfessionScreen({
         })}
       </div>
 
+      {careerPath && <CareerPathSection careerPath={careerPath} />}
+
       <div className="related">
         <span className="related-title">似ている仕事</span>
         <div className="related-chips">
           {profession.related.map((r) => (
-            <span key={r} className="chip static">{r}</span>
+            <span key={r} className="chip static">{withRuby(r)}</span>
           ))}
         </div>
       </div>

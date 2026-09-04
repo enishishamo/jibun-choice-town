@@ -185,10 +185,10 @@ export const river: ContentModule = {
       gameType: "water_trace",
       place: { name: "川ぞいの調査ポイント", image: R("scene-river"), fit: "cover", focus: "18% 35%" },
       mission: {
-        title: "うわさの真相を、数字で確かめる",
+        title: "うわさの｜真相《しんそう》を、数字で確かめる",
         lines: [
-          "採水びんは4本。どの地点を調べるかが腕の見せどころ。",
-          "数字の「変わり目」を読んで、理由を結論づけよう。",
+          "｜採水《さいすい》びんは4本。どの地点を調べるかが腕の見せどころ。",
+          "数字の「変わり目」を読んで、理由を｜結論《けつろん》づけよう。",
         ],
         deadline: "夕方の報告会まで",
       },

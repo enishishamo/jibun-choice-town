@@ -1,0 +1,502 @@
+{
+ "results": [
+  {
+   "id": "doctor",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 766
+  },
+  {
+   "id": "labtech",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 776
+  },
+  {
+   "id": "radtech",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 691
+  },
+  {
+   "id": "pharmacist",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 729
+  },
+  {
+   "id": "nurse",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 755
+  },
+  {
+   "id": "dietitian",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 1014
+  },
+  {
+   "id": "pt",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 859
+  },
+  {
+   "id": "msw",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 946
+  },
+  {
+   "id": "forest-picker",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 836
+  },
+  {
+   "id": "forest-feller",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 919
+  },
+  {
+   "id": "forest-planter",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 769
+  },
+  {
+   "id": "river-surveyor",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 754
+  },
+  {
+   "id": "river-operator",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 962
+  },
+  {
+   "id": "river-designer",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 1005
+  },
+  {
+   "id": "port-planner",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 652
+  },
+  {
+   "id": "port-crane",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 982
+  },
+  {
+   "id": "port-tally",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 684
+  },
+  {
+   "id": "port-dispatch",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 724
+  },
+  {
+   "id": "waste-collector",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 765
+  },
+  {
+   "id": "incinerator-operator",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 887
+  },
+  {
+   "id": "env-measurer",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 834
+  },
+  {
+   "id": "landfill-manager",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 817
+  },
+  {
+   "id": "park-design",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 880
+  },
+  {
+   "id": "power-ops",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 750
+  },
+  {
+   "id": "site-safety",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 814
+  },
+  {
+   "id": "water-ops",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 729
+  },
+  {
+   "id": "urban-heat",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 670
+  },
+  {
+   "id": "studio-qa",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 544
+  },
+  {
+   "id": "studio-planner",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 572
+  },
+  {
+   "id": "studio-ui",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 556
+  },
+  {
+   "id": "library-reference",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 775
+  },
+  {
+   "id": "library-conservator",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 642
+  },
+  {
+   "id": "library-archivist",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 685
+  },
+  {
+   "id": "cook",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 635
+  },
+  {
+   "id": "nutrition",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 1016
+  },
+  {
+   "id": "farmer",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 594
+  },
+  {
+   "id": "logistics",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 631
+  },
+  {
+   "id": "recycle",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 679
+  },
+  {
+   "id": "trip-planner",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 850
+  },
+  {
+   "id": "trip-teacher",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 728
+  },
+  {
+   "id": "trip-busmanager",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 730
+  },
+  {
+   "id": "trip-conductor",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 905
+  },
+  {
+   "id": "trip-hotel",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 544
+  },
+  {
+   "id": "zoo-keeper",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 669
+  },
+  {
+   "id": "zoo-vet",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 764
+  },
+  {
+   "id": "zoo-nutritionist",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 643
+  },
+  {
+   "id": "zoo-planner",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 634
+  },
+  {
+   "id": "tenant-coordinator",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 842
+  },
+  {
+   "id": "keiei-shidoin",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 936
+  },
+  {
+   "id": "loan-screener",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 718
+  },
+  {
+   "id": "shop-designer",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 835
+  },
+  {
+   "id": "food-inspector",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 1321
+  },
+  {
+   "id": "sourcing",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 889
+  },
+  {
+   "id": "product-dev",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 700
+  },
+  {
+   "id": "packaging",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 747
+  },
+  {
+   "id": "line-eng",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 985
+  },
+  {
+   "id": "planner",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 730
+  },
+  {
+   "id": "promoter",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 616
+  },
+  {
+   "id": "stage-manager",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 791
+  },
+  {
+   "id": "venue-designer",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 649
+  },
+  {
+   "id": "sound-tech",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 657
+  },
+  {
+   "id": "crowd-safety",
+   "clicked": true,
+   "hasCareerPath": true,
+   "hasTrack": true,
+   "rawRubyLeak": false,
+   "bodyLen": 1198
+  }
+ ],
+ "consoleErrors": [],
+ "pageErrors": []
+}

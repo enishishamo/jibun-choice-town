@@ -164,7 +164,7 @@ export default function ThinningPickGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <button
         className="btn primary big"

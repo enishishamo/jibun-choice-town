@@ -53,7 +53,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
           )}
           <div className="mission-card">
             <img className="mission-fire" src={A("ui-fire")} alt="" />
-            <h2 className="mission-title">{exp.mission.title}</h2>
+            <h2 className="mission-title">{withRuby(exp.mission.title)}</h2>
             {exp.mission.lines.map((l) => (
               <p key={l} className="mission-line">{withRuby(l)}</p>
             ))}
@@ -92,7 +92,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
 
       <span className="e-chip">
         🎉 {exp.resolution.clock && `${exp.resolution.clock}　`}
-        {exp.resolution.title}
+        {withRuby(exp.resolution.title)}
       </span>
 
       <div className="discovery-hero-wrap">
@@ -100,7 +100,7 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
         <img className="discovery-hero" src={profession.image} alt="" />
       </div>
 
-      <p className="discovery-echo">{exp.discoveryEcho}</p>
+      <p className="discovery-echo">{withRuby(exp.discoveryEcho)}</p>
       <p className="discovery-lead">きみが今やっていたのは……</p>
       <h2 className="discovery-name-big">{profession.name}</h2>
       {!rediscovery && <p className="discovery-zukan">📖 しごと図鑑に追加された！</p>}

@@ -1,0 +1,685 @@
+[
+ {
+  "profession_id": "forest-picker",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "選木（間伐や主伐でどの木を残し、どの木を伐るか見極める仕事）に法律上必須の資格はなく、林業会社や森林組合に就職してから実務経験と研修で技術を身につけるのが一般的なルート。林業大学校で先に体系的に学んでから就職する道もある。",
+  "routes": [
+   {
+    "route_name": "林業大学校・林業科ルート",
+    "route_type": "教育機関からの就職ルート",
+    "steps": [
+     {
+      "stage": "中学校",
+      "requirement_type": "education",
+      "required": true,
+      "description": "義務教育としての中学校卒業が前提となる。特別な専門科目は不要。",
+      "child_friendly_description": "まずはふつうに中学校を卒業するよ。"
+     },
+     {
+      "stage": "高校（普通科でも農業・林業系専門学科でも可）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "林業科・森林科学科のある専門高校もあるが、普通科高校からでも林業大学校や林業への就職は可能。",
+      "child_friendly_description": "森や林業のことを学べる高校もあるけど、ふつうの高校でも大丈夫。"
+     },
+     {
+      "stage": "林業大学校・専門学校（1〜2年課程、全国24校程度）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "林野庁がまとめる全国の林業大学校等（年間おおむね1,200時間以上のカリキュラム）で、伐木・造林・選木の基礎理論と実技、資格取得（刈払機・チェーンソー特別教育など）を学べる。必須ではないが、就職後の習熟が早まる。",
+      "child_friendly_description": "林業の学校に行くと、木の見分け方や道具の使い方を先に勉強できるよ。行かなくても仕事にはつけるけど、行くと早く上手になれる。"
+     },
+     {
+      "stage": "森林組合・林業会社に就職＋「緑の雇用」研修",
+      "requirement_type": "training",
+      "required": false,
+      "description": "林野庁の「緑の雇用」事業では、未経験で採用された人向けに3年間の「フォレストワーカー研修」（集合研修＋OJT）を提供しており、選木に必要な樹種の見分け方や森林の状態を読む技術はこの中で習得するのが実態に近い。",
+      "child_friendly_description": "会社に入ってから、国のサポートで少しずつ木の育て方や選び方を教えてもらえる制度があるよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "未経験からの直接就職ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "中学校・高校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "林業大学校を経由せず、高校卒業後や社会人からの転職として森林組合・林業会社に直接就職する人も多い。学歴要件を課す会社は一般的ではない。",
+      "child_friendly_description": "学校を出たら、すぐに林業の会社に入って仕事をしながら覚える道もあるよ。"
+     },
+     {
+      "stage": "就職後のOJT・研修",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "選木の判断力は座学よりも現場経験の蓄積によって培われる比重が大きく、先輩作業員の指導のもとで数年かけて習熟していく。",
+      "child_friendly_description": "実際に森に入って、先輩と一緒に木を見ながら少しずつ上手になっていくよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "農林業系の大学・大学院（森林科学科等）に進学してから就職する道もあるが、必須ではなく、選木業務自体に学歴フィルターは一般的にない。",
+  "can_start_later": true,
+  "important_notes": "「選木」という業務単体に対応する国家資格は存在しない。ただし現場では伐木用チェーンソーや刈払機を扱う場面が出てくるため、その作業に対応する法定の特別教育（下記forest-fellerの説明を参照）は別途必要になる。",
+  "fact_sources": [
+   "林野庁「緑の雇用」事業と林業労働力の確保・育成について https://www.rinya.maff.go.jp/j/routai/koyou/",
+   "林野庁 林業大学校等一覧（令和6年4月現在） https://www.rinya.maff.go.jp/j/ken_sidou/fukyuu/attach/pdf/ringyoukyouiku-30.pdf",
+   "森林の仕事、林業で働きたい方の就業を支援『緑の雇用』RINGYOU.NET https://www.ringyou.net/project/",
+   "職業情報提供サイト（job tag）厚生労働省 林業作業 https://shigoto.mhlw.go.jp/User/Occupation/Detail/230"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "forest-feller",
+  "qualification_required": true,
+  "qualification_name": "チェーンソーによる伐木等特別教育（労働安全衛生法上の法定特別教育）",
+  "path_summary": "チェーンソーを使って木を伐る業務に就労者として携わる場合、労働安全衛生法・労働安全衛生規則に基づき「チェーンソーによる伐木等特別教育」を事業者が受けさせることが法律で義務付けられている。学歴要件はなく、就職前後どちらでも受講でき、未経験から始められる。",
+  "routes": [
+   {
+    "route_name": "就職＋法定特別教育ルート（最も一般的）",
+    "route_type": "実務経験＋法定講習ルート",
+    "steps": [
+     {
+      "stage": "中学校・高校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "伐木作業者になるための学歴要件は定められていない。特別教育の受講自体に年齢・学歴の制限はないが、年少者労働基準規則により満18歳未満の人はチェーンソーを使う伐木などの危険な業務そのものに従事することはできない。",
+      "child_friendly_description": "学歴は関係ないけど、実際にチェーンソーで木を伐る仕事につけるのは18歳になってから。"
+     },
+     {
+      "stage": "森林組合・林業会社・造園会社等に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "チェーンソーによる伐木は林業に限らず、土木工事業・造園工事業などでも行われる業務で、いずれの業種でも従事する場合は特別教育が必須となる。",
+      "child_friendly_description": "木を切る仕事をする会社に入るところからスタートするよ。"
+     },
+     {
+      "stage": "チェーンソーによる伐木等特別教育（学科9時間＋実技9時間、合計18時間）",
+      "requirement_type": "license",
+      "required": true,
+      "description": "労働安全衛生法第59条第3項・労働安全衛生規則第36条第8号に基づく法定の特別教育で、事業者が実施義務を負う。受講資格の制限はなく、修了することでチェーンソーを用いた伐木業務に法的に就くことができる。",
+      "child_friendly_description": "チェーンソーを使うには、法律で決まっている安全のための講習を必ず受けないといけないよ。誰でも受けられる講習だよ。"
+     },
+     {
+      "stage": "大径木・特殊伐倒等の技能講習（架線集材など高度な業務に応じて追加）",
+      "requirement_type": "training",
+      "required": false,
+      "description": "架線集材、高性能林業機械の運転、作業道の開設など、より高度・危険な業務に従事する場合は、業務内容に応じた追加の技能講習・特別教育が必要になる。",
+      "child_friendly_description": "もっと難しい木の伐り方をするときは、さらに別の講習を受けることもあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "林業大学校で在学中に特別教育を取得してから就職するルートもあるが、必須ではなく就職後に受講しても問題ない。",
+  "can_start_later": true,
+  "important_notes": "「特別教育」は運転免許のような国家試験に合格して交付される『免許』ではなく、法律で受講が義務付けられた講習（修了証が交付される）である点に注意。無資格・未受講でチェーンソーによる伐木業務に就かせることは事業者にとって労働安全衛生法違反となる。",
+  "fact_sources": [
+   "厚生労働省 労働安全衛生規則第36条第8号（特別教育を必要とする業務）",
+   "コベルコ教習所 チェーンソーによる伐木等特別教育 https://www.kobelco-kyoshu.com/batsuboku_special/",
+   "CIC日本建設情報センター チェーンソーによる伐木等特別教育とは https://www.cic-ct.co.jp/column/spchainsaw-column/spchainsaw-column-column01/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "forest-planter",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "植林・下刈りなど造林作業そのものに法律上必須の資格はなく、未経験からでも森林組合・林業会社に就職して働き始められる。ただし刈払機を使う作業では、法定ではないが業界標準として安全教育（刈払機取扱作業者安全衛生教育）を受けるのが一般的。",
+  "routes": [
+   {
+    "route_name": "未経験からの就職ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "中学校・高校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "造林作業員になるための学歴要件はない。",
+      "child_friendly_description": "学校はふつうに卒業すれば大丈夫だよ。"
+     },
+     {
+      "stage": "森林組合・林業会社に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "地ごしらえ・植林・下刈り・枝打ちなどの造林作業は、未経験者を採用したうえで先輩と組んで教わりながら覚えていくのが一般的。",
+      "child_friendly_description": "森を育てる会社に入って、先輩といっしょに木を植えたり草を刈ったりして覚えるよ。"
+     },
+     {
+      "stage": "刈払機取扱作業者安全衛生教育（業界推奨の安全教育、法定の特別教育ではない）",
+      "requirement_type": "training",
+      "required": false,
+      "description": "下刈り作業で使う刈払機については、法律上の特別教育義務はないが、林業・木材製造業労働災害防止協会などが実施する安全衛生教育の受講が業界標準として広く推奨されている。",
+      "child_friendly_description": "草刈り機を使うときの安全講習を受けておくと、より安心して仕事ができるよ（法律の決まりではないけど、みんな受けているよ）。"
+     },
+     {
+      "stage": "「緑の雇用」フォレストワーカー研修",
+      "requirement_type": "training",
+      "required": false,
+      "description": "未経験就業者向けの3年間の育成研修プログラムで、造林技術も段階的に学べる。",
+      "child_friendly_description": "国の応援で、仕事をしながら少しずつ木の育て方を教えてもらえるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "林業大学校で先に基礎を学んでから就職する道もある（forest-pickerと同様のルート）。",
+  "can_start_later": true,
+  "important_notes": "「造林作業員」という業務そのものに学歴要件・国家資格要件を課す実態はない。誤解されやすいが、林業＝資格必須というわけではなく、資格が必要になるのは特定の機械・危険業務（チェーンソー等）に限られる。",
+  "fact_sources": [
+   "林野庁「緑の雇用」事業 https://www.rinya.maff.go.jp/j/routai/koyou/",
+   "森ワーク 林業に必要な資格等 https://moriwork.jp/employment/flow/qualifications/",
+   "職業情報提供サイト（job tag）林業作業 https://shigoto.mhlw.go.jp/User/Occupation/Detail/230"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "river-surveyor",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "河川の水質や生きもの（魚類・底生動物・水生植物など）を調べる調査員の仕事に、法律で定められた必須資格はない。環境系の学校・学部で生物や水質の知識を学び、環境調査会社や建設コンサルタントに就職して国や自治体発注の調査（河川水辺の国勢調査など）に携わるのが一般的な道。",
+  "routes": [
+   {
+    "route_name": "環境・生物系の専門学校/大学からのルート",
+    "route_type": "専門教育ルート",
+    "steps": [
+     {
+      "stage": "中学校・高校",
+      "requirement_type": "education",
+      "required": false,
+      "description": "理科（生物）に関心を持っておくと後の学びに役立つが、進学先を限定する必須要件ではない。",
+      "child_friendly_description": "生き物や自然が好きだと、この先の勉強が楽しくなるよ。"
+     },
+     {
+      "stage": "環境系・生物系の専門学校や大学（環境調査、水産、農学、生物学など）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "環境調査の仕事は魚類・底生動物・鳥類・植物など専門分野が分かれているため、大学や専門学校で該当分野を学んでおくと就職・実務で有利になる。ただし必須の国家資格・学位要件ではない。",
+      "child_friendly_description": "生き物や水のことを専門に勉強できる学校に行くと、調べる仕事がしやすくなるよ。行かなくてもなれるよ。"
+     },
+     {
+      "stage": "環境調査会社・建設コンサルタントに就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "国土交通省が実施する「河川水辺の国勢調査」など、国や自治体から発注される河川環境調査は、環境調査会社や建設コンサルタントが受託し、そこに所属する調査員が現地調査を行う。",
+      "child_friendly_description": "川の生き物や水を調べる会社に入って、国や県から頼まれた調査をする仕事につくよ。"
+     }
+    ]
+   },
+   {
+    "route_name": "市民調査からの関心の広がり",
+    "route_type": "参加型ルート（職業ルートではない）",
+    "steps": [
+     {
+      "stage": "全国水生生物調査などの市民参加型調査",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "環境省が実施する「全国水生生物調査」は、特別な資格や高価な器材なしで誰でも参加できる市民調査で、川や生きものへの関心を育てるきっかけになる（ただしこれ自体は職業ではない）。",
+      "child_friendly_description": "夏休みなどに川の生き物を調べるイベントがあって、だれでも参加できるよ。これがきっかけで将来この仕事に興味を持つ人もいるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "自治体や国交省の技術系公務員として河川環境行政に携わる道もある（この場合は公務員試験が必要）。",
+  "can_start_later": true,
+  "important_notes": "環境調査員という職業カテゴリ全体に対応する単一の必須資格は存在しない。分野（水質・魚類・鳥類等）によって役立つ資格（例：ビオトープ管理士、環境計量士など）はあるが、いずれも任意の付加価値資格であり、必須ではない。",
+  "fact_sources": [
+   "国土交通省 河川水辺の国勢調査 基本調査マニュアル https://www.mlit.go.jp/river/shinngikai_blog/mizubekokutyou/dai05kai/dai05kai_siryou3-1.pdf",
+   "環境省 令和6年度全国水生生物調査の結果及び令和7年度の調査の実施について https://www.env.go.jp/press/press_05029.html",
+   "日本自然環境専門学校 環境調査の仕事紹介 https://www.caretech.ac.jp/profession/profession_investigation.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "river-operator",
+  "qualification_required": false,
+  "qualification_name": "公害防止管理者（水質関係、区分は処理水量により第1種〜第4種）※施設の規模による選任義務であり、現場の運転員全員が必ず保有する必要はない",
+  "path_summary": "下水処理場の運転管理そのものは未経験からOJTで始められる仕事だが、施設の業種区分や規模によっては、「特定工場における公害防止組織の整備に関する法律」により水質関係公害防止管理者の選任が法律で義務づけられる場合がある（すべての下水処理施設に一律に適用される制度ではない）。対象になる場合は、国家試験合格または資格認定講習の修了で取得する。",
+  "routes": [
+   {
+    "route_name": "就職後に資格取得するルート（現場運転員の一般的な道）",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "高校（工業系・化学系だと知識面で有利だが必須ではない）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "下水処理場を運営する自治体・処理事業者・委託会社の運転員は、工業高校の化学・環境系学科出身者も多いが、学歴要件として必須ではない。",
+      "child_friendly_description": "理科や化学が好きだと役に立つけど、絶対にその勉強をしていないとダメというわけじゃないよ。"
+     },
+     {
+      "stage": "下水処理場の運転管理業務に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "自治体や下水道関連の運転管理会社に就職し、日常の水質チェックや設備運転をOJTで学ぶのが実際のスタート地点。",
+      "child_friendly_description": "まずは水をきれいにする施設で働き始めて、仕事をしながら覚えていくよ。"
+     },
+     {
+      "stage": "公害防止管理者（水質関係）国家試験または資格認定講習",
+      "requirement_type": "license",
+      "required": false,
+      "description": "施設の業種区分や排水量規模によっては、水質関係公害防止管理者（第1種〜第4種）を1名以上選任することが法律で義務づけられる場合がある（すべての施設が対象になるわけではない）。対象になる場合は、国家試験合格、または実務経験＋資格認定講習の修了により取得できる。",
+      "child_friendly_description": "施設によっては、水をきれいにする専門の資格を持った人を置かないといけない決まりがあるよ。試験に合格するか、講習を受けて資格を取るよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "小規模な施設や特定の担当業務であれば資格保有者でなくてもチームの一員として運転管理業務に携わることは可能（選任義務は施設単位）。",
+  "can_start_later": true,
+  "important_notes": "「公害防止管理者」の選任義務は施設の業種区分や規模によって決まり、すべての下水処理施設に一律に必要というわけではない。対象になる場合でも、現場の運転員全員がこの資格を持つ必要はなく、未取得のまま実務経験を積み、途中で取得するのが一般的。",
+  "fact_sources": [
+   "環境省 公害防止管理者法の概要（特定工場における公害防止組織の整備に関する法律）https://www.env.go.jp/air/info/pp_kentou/pem01/ref01.pdf",
+   "一般社団法人産業環境管理協会 公害防止管理者等の種類・選任資格 https://www.jemai.or.jp/polconman/dd4ht300000005e4-att/pol_license_about.pdf",
+   "和歌山県 公害防止管理者制度のあらまし https://www.pref.wakayama.lg.jp/prefg/032100/kougaibousikannrisya.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "river-designer",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "多自然川づくり（自然環境に配慮した河川の設計）そのものに設計者として就くための法定必須資格はないが、公共事業を発注・受注する上での「管理技術者」要件として、技術士（建設部門）や1級土木施工管理技士が実務上ほぼ必須とされる場面が多い。大学の土木・環境系学科で学び、建設コンサルタント会社に就職するのが典型的な道。",
+  "routes": [
+   {
+    "route_name": "大学（土木・環境工学）→建設コンサルタントルート",
+    "route_type": "教育機関からの就職ルート",
+    "steps": [
+     {
+      "stage": "高校（理系、できれば数学・物理を選択）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "土木・環境工学系の大学進学を目指す場合、理系科目の履修が実質的に有利になる。",
+      "child_friendly_description": "理科や数学の勉強をがんばっておくと、あとで役に立つよ。"
+     },
+     {
+      "stage": "大学・高専（土木工学、環境工学、河川工学など）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "多くの河川設計者は大学や高等専門学校の土木・環境系学科を卒業しているが、法律で定められた必須学歴ではない。",
+      "child_friendly_description": "川や土木のことを大学で勉強してから、この仕事につく人が多いよ。"
+     },
+     {
+      "stage": "建設コンサルタント会社・国土交通省関連機関に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "多自然川づくりの設計業務は国土交通省や都道府県から発注されるため、それを受注する建設コンサルタント会社に就職して実務経験を積む。",
+      "child_friendly_description": "川の形を考える会社に入って、実際の仕事をしながら経験を積んでいくよ。"
+     },
+     {
+      "stage": "技術士（建設部門）または1級土木施工管理技士（実務上重要な資格）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "技術士は一次試験（受験資格制限なし）合格後、4〜7年程度の実務経験を経て二次試験に合格することで取得する国家資格。公共の河川設計業務では、管理技術者としてこれらの資格保有が入札・契約条件になっている場合が多く、法定の必須資格ではないものの実務上は重要視される。",
+      "child_friendly_description": "国が認める『川づくりの専門家』の資格を取ると、より責任のある仕事を任されやすくなるよ。絶対に必要というわけではないけど、取っている人が多いよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "土木施工管理技士（現場の施工管理を担う国家資格）から実務経験を積み、設計側にキャリアチェンジする道もある。",
+  "can_start_later": true,
+  "important_notes": "『技術士』『土木施工管理技士』はどちらも国家資格だが、法律上「これがないと多自然川づくりの設計をしてはいけない」という業務独占資格ではない。ただし公共事業の管理技術者要件として実質的に求められることが多く、「資格がなくても設計の仕事に関わり始めることはできるが、責任者になるには資格取得が実務上の壁になる」という構造を正確に伝える必要がある。",
+  "fact_sources": [
+   "国土交通省 水管理・国土保全局 多自然川づくりとは https://www.mlit.go.jp/river/kankyo/main/kankyou/tashizen/02.html",
+   "日本技術士会 技術士資格の公的活用 https://www.engineer.or.jp/contents/attach/attach_6276_2.pdf",
+   "国土交通省 建設産業・不動産業：技術検定制度・技術者制度 https://www.mlit.go.jp/totikensangyo/const/totikensangyo_const_tk1_000055.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "port-planner",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "コンテナヤードでの荷役計画・コンテナ配置計画（プランナー）の仕事に法律上必須の資格はなく、港湾運送会社・船会社の現場業務（荷役補助など）からの社内キャリアアップで就くのが一般的。パソコンでの計画システム操作や船の積み付け知識は入社後に習得する。",
+  "routes": [
+   {
+    "route_name": "港湾運送会社への就職＋社内キャリアアップルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "高校・専門学校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "港湾運送会社や船会社のコンテナターミナル部門は、学歴を限定せず採用しているところが多い。",
+      "child_friendly_description": "決まった学校を出ていないとなれない仕事ではないよ。"
+     },
+     {
+      "stage": "港湾運送会社・船会社ターミナル部門に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "まず現場のコンテナ取扱業務や事務系の仕事に就き、船のスケジュールやコンテナの動きを理解していく。",
+      "child_friendly_description": "港の会社に入って、コンテナがどう動いているかをまず知ることから始めるよ。"
+     },
+     {
+      "stage": "ヤードプランナー業務へのステップアップ",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "船の喫水・重量バランス・積み付け順序などを踏まえてコンテナの置き場所や積み込み順を計画する業務は、現場経験を積んだ社員が担当するのが一般的で、社内研修やOJTで専門知識を身につける。",
+      "child_friendly_description": "経験を積んでいくと、コンテナをどこに置くか計画する係を任されるようになるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "物流・海事系の大学や専門学校（商船系など）で船舶や物流の基礎を学んでから就職する道もあるが必須ではない。",
+  "can_start_later": true,
+  "important_notes": "「プランナー」という肩書きの業務に対応する国家資格・業界統一資格は確認できなかった。企業ごとの社内育成・OJTが実態である点を明記する。",
+  "fact_sources": [
+   "求人ボックス コンテナヤードの転職・求人情報 https://求人ボックス.com/コンテナヤードの仕事",
+   "東海協和株式会社 コンテナ船の作業プランナー https://www.tokai-kyowa.co.jp/recruit/terminal.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "port-crane",
+  "qualification_required": true,
+  "qualification_name": "クレーン・デリック運転士免許（クレーン限定で足りる場合が多い）※つり上げ荷重5トン以上のクレーンを運転する場合に法律上必須の国家資格。ガントリークレーンはつり上げ荷重5トン以上に該当するため対象。",
+  "path_summary": "ガントリークレーンなどコンテナ荷役用の大型クレーンを運転するには、労働安全衛生法に基づく国家資格「クレーン・デリック運転士免許」が法律上必ず必要。多くの港湾運送会社では未経験で採用したうえで、荷役補助業務からスタートし、会社の支援制度を使って入社後に免許を取得させるのが一般的。",
+  "routes": [
+   {
+    "route_name": "港湾会社に就職＋会社支援での免許取得ルート（最も一般的）",
+    "route_type": "国家資格必須ルート（実務経験併用）",
+    "steps": [
+     {
+      "stage": "高校・専門学校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "クレーン・デリック運転士免許の受験自体に学歴要件はない。",
+      "child_friendly_description": "特別な学校に行っていなくても目指せる資格だよ。"
+     },
+     {
+      "stage": "港湾運送会社に就職（免許なしでも採用されることが多い）",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "免許を持っていない新入社員をまず採用し、クレーンのリモコン操作や荷役補助業務からスタートさせ、その後の適性を見て免許取得支援を行う企業が多い。",
+      "child_friendly_description": "免許がなくても港の会社に入れて、最初は他の仕事を手伝いながら覚えていくよ。"
+     },
+     {
+      "stage": "クレーン・デリック運転士免許（学科試験＋実技試験、安全衛生技術試験協会が実施）",
+      "requirement_type": "license",
+      "required": true,
+      "description": "つり上げ荷重5トン以上のクレーン（ガントリークレーンを含む）を運転するために労働安全衛生法上必ず必要な国家資格。デリック（起重機）を扱わないガントリークレーンの運転であれば「クレーン限定」免許で足りる場合が多い。学科試験と実技試験に合格して免許の交付を受ける。多くの港湾会社が受験費用の負担や教習期間の勤務扱いなど取得支援制度を設けている。",
+      "child_friendly_description": "大きなクレーンを動かすには、国が決めた運転免許を必ず持っていないといけないよ。会社がお金を出して免許を取らせてくれることも多いよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "ポリテクセンター（職業能力開発促進センター）の港湾荷役科などを修了すると、クレーン・デリック運転士免許を申請のみで取得できる制度もある。",
+  "can_start_later": true,
+  "important_notes": "クレーン・デリック運転士免許は法律で明確に義務付けられた国家資格であり、無資格でつり上げ荷重5トン以上のクレーンを運転させることは事業者にとって労働安全衛生法違反となる。ただし『免許を持っていないと港の会社に入社すらできない』わけではなく、入社後に取得するのが実態に近い。",
+  "fact_sources": [
+   "公益財団法人 安全衛生技術試験協会 クレーン・デリック運転士〔クレーン限定〕の紹介 https://www.exam.or.jp/introduction/h_shokai206/",
+   "職業能力開発促進センター名古屋港 港湾の仕事と港湾技能者に必要な資格について https://www3.jeed.go.jp/nagoyakouwan/poly/of_minato_sigoto.html",
+   "ja.wikipedia.org クレーン・デリック運転士 https://ja.wikipedia.org/wiki/クレーン・デリック運転士"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "port-tally",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "港の検数員（貨物の個数・状態を確認し証明する仕事）は港湾運送事業法上の「検数事業」に位置づけられているが、就業に法律上必須の国家資格は確認できなかった。日本貨物検数協会など検数事業者に就職し、社内研修・OJTで実務を身につけるのが一般的なルート。",
+  "routes": [
+   {
+    "route_name": "検数事業者への就職ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "高校・大学卒業（学歴要件は各事業者による）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "検数事業者（日本貨物検数協会など）は新卒・中途どちらも採用しており、業務そのものに法定の学歴要件はない。",
+      "child_friendly_description": "決まった学歴がなくても目指せる仕事だよ。"
+     },
+     {
+      "stage": "検数事業者（日本貨物検数協会など）に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "港湾運送事業法に基づく検数事業を行う事業者に就職し、荷役現場での実地研修を通じて、貨物の種類・数量・状態を確認する検数業務を学ぶ。",
+      "child_friendly_description": "貨物を確認する会社に入って、実際に港で働きながら仕事を覚えるよ。"
+     },
+     {
+      "stage": "社内研修・実務経験の蓄積",
+      "requirement_type": "training",
+      "required": true,
+      "description": "検数業務は正確性と経験が問われる仕事で、国家資格ではなく事業者内の研修制度と実務経験によって技能を高めていく。",
+      "child_friendly_description": "何回も経験を積むことで、貨物を見分ける力がついていくよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "港湾職業能力開発短期大学校などで港湾関連の基礎知識を学んでから就職する道もある。",
+  "can_start_later": true,
+  "important_notes": "「検数技士」という名称の統一的な国家資格・業界共通資格の存在は、公的資料からは確認できなかった。誤解を避けるため、本教材では『検数員になるための必須資格は確認できていない（社内研修中心）』という不確実性を明記して扱う。今後、日本貨物検数協会等への追加確認が望ましい。",
+  "fact_sources": [
+   "一般社団法人 日本貨物検数協会 https://www.jctc.or.jp/",
+   "一般社団法人 日本貨物検数協会 協会概要 https://www.jctc.or.jp/about/outline/",
+   "職業能力開発促進センター名古屋港 港湾の仕事と港湾技能者に必要な港湾資格について https://www3.jeed.go.jp/nagoyakouwan/poly/of_minato_sigoto.html"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "port-dispatch",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "コンテナ輸送の配車担当（トラックやドライバーの手配・運行計画）に法律上必須の資格はなく、物流会社・港湾運送会社に就職してから配送業務の知識を身につけ、配車担当へステップアップするのが一般的。普通自動車免許程度は業務上有用だが必須の国家資格ではない。",
+  "routes": [
+   {
+    "route_name": "物流・運送会社への就職ルート",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "高校・専門学校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "配車担当という業務自体に学歴要件を課す実態は一般的ではない。",
+      "child_friendly_description": "特別な学校を出ていなくても目指せる仕事だよ。"
+     },
+     {
+      "stage": "物流会社・港湾運送会社に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "まず物流現場や事務での業務経験を積み、荷物の流れやドライバーとのやり取りを理解していく。",
+      "child_friendly_description": "運送の会社に入って、荷物がどう運ばれているかをまず知るよ。"
+     },
+     {
+      "stage": "配車担当へのステップアップ",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "ドライバー・ターミナル・営業部門と連絡を取り合いながら、安全かつ効率的な輸送計画を立てる業務で、現場経験を積んだ社員が担当することが多い。運行管理者資格（貨物自動車運送事業法上の国家資格）を保有していると有利になる場合がある。",
+      "child_friendly_description": "経験を積むと、どのトラックがいつどこに行くかを考える係を任されるようになるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "貨物自動車運送事業法上の「運行管理者」資格（国家資格）を取得すると、法令上必置とされる運行管理業務にも携われるようになり、配車業務でも評価されやすい（ただし配車担当そのものの必須資格ではない）。",
+  "can_start_later": true,
+  "important_notes": "配車担当そのものに義務付けられた国家資格はない。ただし、一定台数以上のトラックを持つ営業所では「運行管理者」の選任が法律で義務付けられており、混同しないよう注意が必要。",
+  "fact_sources": [
+   "エラン 物流業界で働く上で役に立つ資格とは https://www.elan-jp.com/zukan/logistics_qualification.htm",
+   "GOジョブ 運送業への転職完全ガイド https://gojob.go.goinc.jp/useful/driver_tensyoku/"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "waste-collector",
+  "qualification_required": false,
+  "qualification_name": null,
+  "path_summary": "ごみ収集作業員（積み込み担当）は、運転しないなら自動車の運転免許がなくても始められる仕事で、法律上の専門資格も不要。収集車の運転手を目指す場合は中型・大型（または準中型）自動車免許が必要になるが、未経験で助手として入り、働きながら免許を取得してステップアップする人が多い。",
+  "routes": [
+   {
+    "route_name": "未経験からの就職ルート（助手→運転手）",
+    "route_type": "未経験からのOJTルート",
+    "steps": [
+     {
+      "stage": "中学校・高校卒業（学歴要件なし）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "ごみ収集作業員になるための学歴要件はない。",
+      "child_friendly_description": "学校はふつうに卒業していれば大丈夫だよ。"
+     },
+     {
+      "stage": "収集車の積み込み担当（助手）として就職",
+      "requirement_type": "experience",
+      "required": false,
+      "description": "積み込み担当は運転をしないため、自動車の運転免許がなくても就業できる。自治体の委託会社や民間廃棄物収集運搬会社で未経験者を積極採用している。",
+      "child_friendly_description": "運転しない係なら、車の免許がなくても始められるよ。"
+     },
+     {
+      "stage": "中型・大型自動車免許の取得（運転手を目指す場合）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "収集車を運転する場合は車両総重量に応じて準中型・中型・大型自動車免許が必要。会社によっては取得費用を支援する制度がある。",
+      "child_friendly_description": "収集車を運転したくなったら、大きい車用の免許を取るよ。会社がお金を出してくれることもあるよ。"
+     },
+     {
+      "stage": "産業廃棄物収集運搬業関連の資格（キャリアアップ時、任意）",
+      "requirement_type": "training",
+      "required": false,
+      "description": "フォークリフト技能講習や運行管理者資格などを取得すると、収集ルートの管理や産業廃棄物分野へのキャリアアップに有利になる。",
+      "child_friendly_description": "もっといろんな仕事を任されたいときに取るとよい資格もあるよ（必須ではないよ）。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "自治体職員（公務員）としてごみ収集業務に携わる道もあり、その場合は自治体の採用試験を受ける必要がある。",
+  "can_start_later": true,
+  "important_notes": "ごみ収集自体に学歴・専門資格の壁はほぼない。必要になるのは運転手になる段階での自動車運転免許の区分のみで、これは働きながら取得するのが一般的。",
+  "fact_sources": [
+   "職業情報提供サイト（job tag）厚生労働省 ごみ収集作業員 https://shigoto.mhlw.go.jp/User/Occupation/Detail/494",
+   "運転ドットコム ゴミ収集車の運転手の平均年収・必要な免許 https://wnten.com/column/230",
+   "ドライブX ゴミ収集は公務員の仕事？応募条件から給与まで https://drive-x.jp/column/garbage-collection-civilservant"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "incinerator-operator",
+  "qualification_required": false,
+  "qualification_name": "廃棄物処理施設技術管理者（施設単位での選任義務。運転員全員が保有する必須資格ではない）",
+  "path_summary": "清掃工場（ごみ焼却施設）の運転員そのものになるための必須資格は法律上存在しないが、廃棄物処理法第21条により、施設ごとに「廃棄物処理施設技術管理者」を1名以上置くことが自治体・運営事業者に義務付けられている。未経験からOJTで運転業務に就き、経験を積んでからこの資格を取得してキャリアアップするのが一般的な道。",
+  "routes": [
+   {
+    "route_name": "未経験就職→現場経験→技術管理者資格取得ルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "高校（工業系だと有利だが必須ではない）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "清掃工場の運転員は工業高校出身者も多いが、学歴要件として必須ではない。",
+      "child_friendly_description": "理科や機械が好きだと役に立つけど、必ずその勉強をしていないとダメではないよ。"
+     },
+     {
+      "stage": "清掃工場（焼却施設）の運転管理会社・自治体委託事業者に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "焼却炉の温度管理やごみの投入量調整など、日々の運転業務は未経験から採用され、先輩の指導のもとOJTで習得する。",
+      "child_friendly_description": "焼却炉を動かす仕事は、最初は先輩に教えてもらいながら覚えていくよ。"
+     },
+     {
+      "stage": "廃棄物処理施設技術管理者講習（実務経験を積んだ担当者が取得）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "焼却施設ごとに1名以上、技術管理者を置くことが廃棄物処理法で義務付けられている。一般財団法人日本環境衛生センター等が実施する講習を受講し修了試験に合格する、または技術士・環境衛生指導員等の資格＋実務経験で要件を満たす方法がある。現場の運転員全員が保有する必要はなく、施設の技術統括を担う立場になる際に取得する。",
+      "child_friendly_description": "施設全体には、専門の資格を持った責任者を1人以上置かないといけない決まりがあるよ。長く働いて詳しくなった人がこの資格を取ることが多いよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "自治体職員（技術系公務員）として清掃工場の運営・管理に携わる道もある。",
+  "can_start_later": true,
+  "important_notes": "『焼却炉を動かす人は全員国家資格が必要』という誤解をしないよう注意。法律が義務付けているのは施設単位での技術管理者の設置であり、現場の日常運転業務自体は無資格からのOJTで始められる。",
+  "fact_sources": [
+   "e-Gov法令検索 廃棄物の処理及び清掃に関する法律第21条",
+   "一般財団法人日本環境衛生センター 廃棄物処理施設技術管理者講習 https://www.jesc.or.jp/training/tabid/603/Default.aspx",
+   "ja.wikipedia.org 廃棄物処理施設技術管理者 https://ja.wikipedia.org/wiki/廃棄物処理施設技術管理者"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "env-measurer",
+  "qualification_required": false,
+  "qualification_name": "公害防止管理者（大気関係、区分は排出ガス量により第1種〜第4種）※施設の規模による選任義務",
+  "path_summary": "清掃工場や工場の排ガスを測定・管理する業務は、大気汚染防止法・特定工場における公害防止組織の整備に関する法律に基づき、一定規模以上の施設で大気関係公害防止管理者の選任が法律で義務付けられている。未経験から測定補助の実務に就き、資格を取得してキャリアアップするのが一般的。",
+  "routes": [
+   {
+    "route_name": "就職後に資格取得するルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "高校（工業・化学系だと有利だが必須ではない）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "環境計測業務は化学・分析の知識が役立つが、必須の学歴要件ではない。",
+      "child_friendly_description": "化学の勉強が好きだと役に立つけど、必ず必要というわけではないよ。"
+     },
+     {
+      "stage": "清掃工場・工場の環境管理部門、または計量証明事業者に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "排ガス測定機器の操作やデータ記録などの実務は未経験から始められ、OJTで習熟していく。",
+      "child_friendly_description": "空気のきれいさを測る仕事は、まず現場で仕事をしながら覚えていくよ。"
+     },
+     {
+      "stage": "公害防止管理者（大気関係）国家試験または資格認定講習",
+      "requirement_type": "license",
+      "required": false,
+      "description": "ばい煙発生量が一定基準（例：1時間あたり4万立方メートル以上等）を超える特定工場では、大気関係公害防止管理者の選任が法律で義務付けられている。国家試験合格または実務経験＋認定講習の修了で取得する。",
+      "child_friendly_description": "大きな施設では、空気のきれいさを管理する専門の国家資格を持った人を必ず置かないといけない決まりがあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "計量士（環境計量士）などの関連資格を取得し、外部の計量証明事業者として排ガス測定業務に携わる道もある。",
+  "can_start_later": true,
+  "important_notes": "公害防止管理者は施設の規模（排出ガス量・排出水量）によって選任義務の有無・区分（第1種〜第4種等）が変わる点に注意。すべての工場・施設に一律で必要というわけではない。",
+  "fact_sources": [
+   "環境省 公害防止管理者法の概要 https://www.env.go.jp/air/info/pp_kentou/pem01/ref01.pdf",
+   "一般社団法人産業環境管理協会 公害発生施設の区分と選任資格者 https://www.jemai.or.jp/polconman/dd4ht300000005e4-att/pol_license_about.pdf",
+   "大阪市 公害防止管理者制度のあらまし https://www.city.osaka.lg.jp/kankyo/cmsfiles/contents/0000060/60623/aramashi_02.pdf"
+  ],
+  "last_verified": "2026-09-04"
+ },
+ {
+  "profession_id": "landfill-manager",
+  "qualification_required": true,
+  "qualification_name": "廃棄物処理施設技術管理者（施設への配置が法律で義務づけられている技術管理者の資格要件）",
+  "path_summary": "最終処分場（埋立処分場）の管理者になるには、廃棄物処理法に基づき施設ごとに「廃棄物処理施設技術管理者」を置くことが法律で義務付けられている。まず現場の実務経験を積んだうえで、講習の受講・修了試験合格などにより資格を取得するのが一般的な道。",
+  "routes": [
+   {
+    "route_name": "実務経験→技術管理者資格取得ルート",
+    "route_type": "実務経験＋国家資格ルート",
+    "steps": [
+     {
+      "stage": "高校・専門学校（土木・環境系だと有利だが必須ではない）",
+      "requirement_type": "education",
+      "required": false,
+      "description": "最終処分場の管理には土木・環境の知識が役立つが、必須の学歴要件ではない。",
+      "child_friendly_description": "土や環境の勉強が好きだと役に立つけど、必ず必要というわけではないよ。"
+     },
+     {
+      "stage": "最終処分場の運営事業者・自治体委託会社に就職",
+      "requirement_type": "experience",
+      "required": true,
+      "description": "埋立地の管理・維持補修・浸出水処理などの実務は未経験からOJTで学び始めることができる。",
+      "child_friendly_description": "ごみを最後に埋める場所を管理する仕事は、最初は先輩に教わりながら覚えるよ。"
+     },
+     {
+      "stage": "廃棄物処理施設技術管理者講習（最終処分場コース）",
+      "requirement_type": "license",
+      "required": false,
+      "description": "廃棄物処理法第21条により最終処分場にも技術管理者の設置が義務付けられている。一般財団法人日本環境衛生センター等が実施する最終処分場コースの講習（産業廃棄物概論、施設の構造と維持管理、管理監督理論など）を受講し修了試験に合格する道が代表的だが、技術士・環境衛生指導員等の資格＋実務経験など、法令が定める他の要件を満たす道もあり、この講習だけが唯一の方法というわけではない。",
+      "child_friendly_description": "最終処分場の管理責任者になるには、専門の講習を受けて資格をとる道が代表的だけど、ほかの資格や経験で認められる道もあるよ。"
+     }
+    ]
+   }
+  ],
+  "alternatives": "自治体職員（技術系公務員）として最終処分場の運営・監督に携わる道もある。",
+  "can_start_later": true,
+  "important_notes": "管理者（施設の技術統括責任者）としてこの資格が必須である一方、処分場での日常的な現場作業員全員がこの資格を持つ必要はない。管理者になる段階で取得するのが実態に近い。",
+  "fact_sources": [
+   "国立環境研究所 最終処分場 https://www.nies.go.jp/landfill_survey/waste/final-disposal/index.html",
+   "一般財団法人日本環境衛生センター 廃棄物処理施設技術管理者講習 https://www.jesc.or.jp/Portals/0/images/training/pdf/haikibutsu_bosyu_youkou.pdf",
+   "一般社団法人廃棄物処理施設技術管理協会 廃棄物処理施設の技術管理者に関する実態調査報告書 https://jaem.or.jp/cms/wp-content/uploads/2019/08/jittaichousa-houkokusho_1402.pdf"
+  ],
+  "last_verified": "2026-09-04"
+ }
+]

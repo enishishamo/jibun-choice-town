@@ -152,7 +152,7 @@ export default function TallyCheckGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <div className="choice-row wrap">
         <button className="choice-card" onClick={() => handle("accept")}><span className="choice-name">✅ 正常受け</span></button>

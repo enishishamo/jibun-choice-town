@@ -11,31 +11,31 @@ import type { TraceState, Spot, RiverCause } from "./riverLogic";
 type Step = "work" | "failed" | "done";
 
 const SPOTS: { id: Spot; name: string; x: number }[] = [
-  { id: "A", name: "上流", x: 8 },
-  { id: "B", name: "支流", x: 28 },
-  { id: "C", name: "処理場の上", x: 48 },
-  { id: "D", name: "処理場の下", x: 68 },
-  { id: "E", name: "下流", x: 88 },
+  { id: "A", name: "｜上流《じょうりゅう》", x: 8 },
+  { id: "B", name: "｜支流《しりゅう》", x: 28 },
+  { id: "C", name: "｜処理場《しょりじょう》の上", x: 48 },
+  { id: "D", name: "｜処理場《しょりじょう》の下", x: 68 },
+  { id: "E", name: "｜下流《かりゅう》", x: 88 },
 ];
 // NOTE: no explanatory subs — mapping a conclusion to its evidence pattern is
 // the player's own reasoning (answer-leak reviewed out in R7)
 const ANSWERS: { id: RiverCause; label: string }[] = [
-  { id: "plant_upgrade", label: "処理場の改善" },
-  { id: "tributary_cleanup", label: "支流がきれいに" },
+  { id: "plant_upgrade", label: "｜処理場《しょりじょう》の改善" },
+  { id: "tributary_cleanup", label: "｜支流《しりゅう》がきれいに" },
   { id: "not_recovered", label: "回復はまだ" },
 ];
 
 export default function WaterTraceGame({ onComplete }: Q1GameProps) {
   const [ts, setTs] = useState<TraceState>(() => newTraceState());
   const [step, setStep] = useState<Step>("work");
-  const [note, setNote] = useState<string | null>("調べる地点を選ぼう（採水びんは4本）。");
+  const [note, setNote] = useState<string | null>("調べる地点を選ぼう（｜採水《さいすい》びんは4本）。");
   const [bounced, setBounced] = useState<RiverCause[]>([]); // conclusions returned by the meeting
   const [attempts, setAttempts] = useState(1);
 
   const restart = () => {
     setTs(newTraceState());
     setBounced([]);
-    setNote("調べる地点を選ぼう（採水びんは4本）。");
+    setNote("調べる地点を選ぼう（｜採水《さいすい》びんは4本）。");
     setStep("work");
     setAttempts((a) => a + 1);
   };
@@ -53,7 +53,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
         <div style={{ position: "absolute", left: "30%", top: 0, width: 14, height: "40%", background: "#9fc8de", borderRadius: 7 }} />
         {/* treatment plant between C and D */}
         <span style={{ position: "absolute", left: "56%", top: "6%", fontSize: 20 }}>🏭</span>
-        <span style={{ position: "absolute", left: "55%", top: "30%", fontSize: 10, color: "#4c5c68" }}>処理場</span>
+        <span style={{ position: "absolute", left: "55%", top: "30%", fontSize: 10, color: "#4c5c68" }}>{withRuby("｜処理場《しょりじょう》")}</span>
         {ts.c.stockingPosterSeen && (
           <span style={{ position: "absolute", right: 6, top: "4%", fontSize: 9, background: "#fff6da", border: "1px solid #d9c98a", borderRadius: 6, padding: "1px 5px" }}>
             {withRuby("はり紙「｜稚魚《ちぎょ》の放流をしました」")}
@@ -74,7 +74,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
               }}
               style={{ position: "absolute", left: `${sp.x}%`, bottom: 4, transform: "translateX(-50%)", width: 66, background: sampled ? "rgba(255,253,245,0.96)" : "rgba(255,253,245,0.72)", border: sampled ? "2px solid #4a90d9" : "1.5px dashed #8fa8b8", borderRadius: 10, padding: "3px 2px", fontSize: 11.5 }}
             >
-              <div style={{ fontWeight: "bold" }}>{sp.id} {sp.name}</div>
+              <div style={{ fontWeight: "bold" }}>{sp.id} {withRuby(sp.name)}</div>
               {sampled ? (
                 <div style={{ fontFamily: "monospace", fontSize: 11.5, fontWeight: "bold" }}>
                   DO {r.do_}
@@ -108,7 +108,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
         </div>
       )}
       <div style={{ display: "flex", gap: 5, marginTop: 4, alignItems: "center", fontSize: 13 }}>
-        <span>🧪 採水びん</span>
+        <span>🧪 ｜採水《さいすい》びん</span>
         {Array.from({ length: TRACE_BUDGET }).map((_, i) => (
           <span key={i} style={{ opacity: i < TRACE_BUDGET - ts.sampled.length ? 1 : 0.25 }}>🧪</span>
         ))}
@@ -119,10 +119,10 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
   if (step === "failed") {
     return (
       <div className="game board-game">
-        <div className="result-card"><span className="result-title">報告会で、結論が通らなかった</span></div>
+        <div className="result-card"><span className="result-title">{withRuby("報告会で、｜結論《けつろん》が通らなかった")}</span></div>
         {river()}
-        <p className="game-line center-line">数字の「変わり目」と結論が合っていなかった。調べ直しは先輩チームが引き継いだ。</p>
-        <p className="game-line soft center-line">上下流を比べて、どこから良くなったかを読む。（川のようすは毎回ちがう）</p>
+        <p className="game-line center-line">{withRuby("数字の「変わり目」と｜結論《けつろん》が合っていなかった。調べ直しは先輩チームが引き継いだ。")}</p>
+        <p className="game-line soft center-line">上流・下流・｜支流《しりゅう》（本流に合わさる小さな川）を比べて、どこから良くなったかを読む。（川のようすは毎回ちがう）</p>
         <button className="btn primary big" onClick={restart}>🔁 別の調査で</button>
       </div>
     );
@@ -132,7 +132,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
     const perfect = ts.mistakes === 0 && attempts === 1 && ts.sampled.length <= 3;
     return (
       <div className="game board-game">
-        <div className="result-card good"><span className="result-title">結論が、報告会で通った！</span></div>
+        <div className="result-card good"><span className="result-title">{withRuby("｜結論《けつろん》が、報告会で通った！")}</span></div>
         {river(true)}
         <p className="game-line soft center-line">
           {perfect ? "少ない採水で言い当てた。地点の選び方が良かった。" : "通った。どの地点を調べるかで、採水の数は変わる。"}
@@ -160,7 +160,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
       <InfoCards
         label="しごとの資料"
         cards={[{
-          id: "rule", icon: "📋", title: "この川の基準（B類型）",
+          id: "rule", icon: "📋", title: "この川の｜基準《きじゅん》（B｜類型《るいけい》：川のきれいさのランク）",
           body: (
             <>
               <p>{withRuby("健康なめやす：｜溶存酸素《ようぞんさんそ》DO 5以上・よごれBOD 3以下。")}</p>
@@ -171,9 +171,9 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
-      <p className="pick-title">結論を出す（報告会に出すもの）</p>
+      <p className="pick-title">{withRuby("｜結論《けつろん》を出す（報告会に出すもの）")}</p>
       <div className="choice-row wrap">
         {ANSWERS.map((a) => (
           <button
@@ -192,7 +192,7 @@ export default function WaterTraceGame({ onComplete }: Q1GameProps) {
             }}
           >
             <span className="choice-name">
-              {bounced.includes(a.id) ? "📄↩ " : ""}{a.label}
+              {bounced.includes(a.id) ? "📄↩ " : ""}{withRuby(a.label)}
             </span>
             {bounced.includes(a.id) && <small style={{ opacity: 0.7 }}>差し戻し。もう一度、数字と</small>}
           </button>

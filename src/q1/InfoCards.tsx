@@ -3,6 +3,7 @@
 // cards were opened (e.g. to unlock ideas) via onOpen.
 import { useState } from "react";
 import type { ReactNode } from "react";
+import { withRuby } from "../lib/ruby";
 
 export interface InfoCard {
   id: string;
@@ -36,7 +37,7 @@ export default function InfoCards({
               }}
             >
               <span className="doc-icon">{c.icon}</span>
-              <span className="doc-title">{c.title}</span>
+              <span className="doc-title">{withRuby(c.title)}</span>
               <span className="doc-toggle">{isOpen ? "−" : "+"}</span>
             </button>
             {isOpen && <div className="doc-body">{c.body}</div>}

@@ -1,0 +1,58 @@
+{
+  "note": "Current Stable snapshot record — updated only on a deliberate, human-approved promotion to a new STABLE tag. See factory/state/release/release-lifecycle.md.",
+  "stable_prototype_version": "stable-prototype-v0.1",
+  "stable_tag": "stable-prototype-v0.1",
+  "stable_commit": "PENDING",
+  "branch": "feature/harness-bootstrap",
+  "release_date": "2026-09-04",
+  "world_count": 14,
+  "worlds": [
+    "lunch-late", "heat-wave", "ice-price", "town-festival", "er-patient",
+    "school-trip", "waste-journey", "shop-opening", "zoo-baby",
+    "night-port", "forest-care", "river-health", "game-studio", "library-detective"
+  ],
+  "q1_experience_count": 63,
+  "map_version": "Living Town Atlas v1 (post Human Visual Review repair, 2026-09-04)",
+  "language_ux_version": "Language Style Guide v1",
+  "ai_verification_status": "AI_VERIFIED",
+  "ai_verification_evidence": {
+    "per_world_pipeline_validation": "factory/scripts/validate-pipeline.mjs <world> — all 5 Expansion v1 worlds OK (see factory/projects/*/pipeline.json)",
+    "original_9_worlds": "Factory v1.0 pipeline (pre-dates this session; waste PASS 86, zoo PASS 91, others via the same gate history)",
+    "home_map_repair": "factory/state/expansion/map-repair-decision.md — Codex adversarial PASS, blockers=0/high=0, 12/12 gates cleared threshold",
+    "public_safety_smoke_qa": "factory/state/release/smoke-qa-result.json"
+  },
+  "public_safety_smoke_qa": {
+    "status": "PASS",
+    "worlds_entered": "14/14 at mobile 375px and desktop, both viewports",
+    "blocker_class_findings": 0,
+    "console_errors": 0,
+    "page_errors": 0,
+    "failed_requests_4xx_5xx": 0,
+    "broken_images": 0,
+    "evidence": "factory/state/release/smoke-qa-result.json, smoke-qa-report.md"
+  },
+  "release_lifecycle_stage": "RELEASE_CANDIDATE_PENDING_PRE_PUBLISH_FIXES",
+  "release_lifecycle_note": "2026-09-04 Human Review found 3 pre-publish gaps before final STABLE tag: (1) Job Reveal needs a career-path ('how do you become this job?') section + navigation, (2) Language UX furigana/age-appropriateness must be verified as actually RENDERED on real screens, not just documented in the style guide, (3) any illustration-like visuals Claude/Sonnet authored itself must be audited and listed as ASSET_REQUEST for GPT to redraw — Claude does not draw new illustrations going forward, functional SVG/UI only. Detailed specs pending in a follow-up instruction. No STABLE tag, no commit marked as release, no remote push until these are resolved.",
+  "pre_publish_fixes_2026_09_04": {
+    "career_path_feature": {
+      "status": "IMPLEMENTED",
+      "professions_covered": "62/62",
+      "note": "CareerPathSection.tsx added to Job Reveal, data in src/data/careerPaths.ts (auto-generated from factory/state/career-path/career-path-research-merged.json via factory/harness/build-career-paths.mjs). Fact-checked against real Japanese sources by 5 parallel research agents, then adversarially reviewed by Codex across 6 rounds of plausibility review (career-path-fact-review-prompt.md) — each round found and fixed real issues (individual-vs-facility qualification conflation, 業務独占 vs 名称独占 mislabeling, overstated legal mandates), but the 6th round still returned FAIL with new findings (see fact-review-result-r6.json). This looks like a non-converging adversarial-review pattern (no live web access for the reviewer, large 62-profession surface) rather than one more fixable bug — see routing-log and HUMAN_REQUIRED note below.",
+      "gate_status": "CAREER_PATH_FACT_QA=FAIL (6 rounds run; real fixes applied each round; not fully clean)"
+    },
+    "language_ux_rendering": {
+      "status": "PARTIALLY_VERIFIED",
+      "found_and_fixed": "A genuine systemic bug: ruby/furigana markup added to profession.name fields and several screen render sites (AreaScreen.tsx event.title/opening.lines/wrapUp/chapter.clear/areaLead, Q1Screen.tsx mission.title/resolution.title/discoveryEcho, InfoCards.tsx card.title) was rendering as literal raw ｜《》 text instead of furigana. Fixed across ~10 render sites plus 13 profession.name reverts. Zero raw-ruby-leaks remain across all 62 professions (career-path-full-sweep-qa.mjs) and all 5 world flow-bots pass.",
+      "still_failing": "4 rounds of Codex in-context screenshot QA (language-in-context-qa.mjs) still return overall_verdict=FAIL. Scores improved each round (FURIGANA_RENDERED_IN_CONTEXT 48→68, LANGUAGE_RULE_RENDERED 67→68) but never cleared the ≥80 threshold — remaining findings are about uneven furigana coverage across the ~63 Q1 game components (only a fraction import withRuby; this session fixed specific flagged terms, not a full systemic pass) and a few unglossed technical terms (溶存酸素, BOD, 業務独占資格).",
+      "gate_status": "LANGUAGE_RULE_DEFINED=true, LANGUAGE_RULE_RENDERED=false (partial), FURIGANA_RENDERED_IN_CONTEXT=FAIL, AGE_READABILITY_IN_CONTEXT=FAIL(borderline), TECHNICAL_TERM_READABILITY=FAIL(borderline)"
+    },
+    "art_ownership_audit": {
+      "status": "COMPLETE",
+      "note": "Independent Codex screenshot audit classified harbor/forest/station/hill district visuals as E (Claude-original illustration, off-series) with public_blocker=true. Filed as factory/state/art/gpt-asset-requests.json (4 public-blocking requests + 1 post-release backlog item). No new illustrations drawn by Claude.",
+      "gate_status": "CLAUDE_ORIGINAL_ART_AUDITED=true, GPT_ASSETS_REQUIRED=4, PUBLIC_BLOCKING_GPT_ASSETS=4, POST_RELEASE_ART_BACKLOG=1"
+    },
+    "human_required": "The Career Path fact-review and Language in-context QA loops do not appear to be converging to a clean PASS through further autonomous iteration (6 and 4 rounds respectively, each with real fixes but new findings every round) — the same class of issue as the existing 'Codex reviewer calibration' precedent (factory memory: codex-reviewer-calibration.md). A human decision is needed on: (a) what residual risk is acceptable to publish with real, sourced (if imperfect) career-path data plus a visible disclaimer, vs. requiring live web re-verification of the remaining flagged professions before publish, and (b) whether to invest in a full systemic furigana pass across all 63 Q1 components before publish, or ship with the current partial-but-substantially-improved coverage plus a visible 'if you can't read a word, ask an adult' affordance. Stopped here per this session's max-iteration policy rather than looping indefinitely."
+  },
+  "remote_push_performed": false,
+  "extra_cost_incurred": 0
+}

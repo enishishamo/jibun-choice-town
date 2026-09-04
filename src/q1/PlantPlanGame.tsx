@@ -182,7 +182,7 @@ export default function PlantPlanGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
       <p className="game-note" style={{ margin: "4px 14px" }}>
         {zc.deer === "high" ? "🦌 この区画は、ふんと食べあとが多い。" : "この区画のシカの気配は、少なめ。"}
       </p>

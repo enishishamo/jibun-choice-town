@@ -126,7 +126,7 @@ export default function DigiArchiveGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <p className="pick-title">① スキャン仕様</p>
       <div className="choice-row">

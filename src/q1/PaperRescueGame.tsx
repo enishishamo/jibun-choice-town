@@ -138,7 +138,7 @@ export default function PaperRescueGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <div className="choice-row wrap">
         {TREATMENTS.map((t) => (

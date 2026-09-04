@@ -166,7 +166,7 @@ export default function PhotoCluesGame({ onComplete }: Q1GameProps) {
         }]}
       />
 
-      {note && <p className="game-note">{note}</p>}
+      {note && <p className="game-note">{withRuby(note)}</p>}
 
       <p className="pick-title">回答を出す（場所と、たしからしさ）</p>
       <div className="choice-row wrap">

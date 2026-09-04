@@ -77,9 +77,9 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
         )}
         {!event.wrapUp.beforeAfter && event.wrapUp.image && <img src={event.wrapUp.image} alt="" />}
         <div className="wrapup-body">
-          <p className="wrapup-title">{event.wrapUp.title}</p>
+          <p className="wrapup-title">{withRuby(event.wrapUp.title)}</p>
           {event.wrapUp.lines.map((l) => (
-            <p key={l} className="wrapup-line">{l}</p>
+            <p key={l} className="wrapup-line">{withRuby(l)}</p>
           ))}
         </div>
       </div>
@@ -101,11 +101,11 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
           <div className="opening-copy">
             <h2>
               {event.title.split("\n").map((l) => (
-                <span key={l}>{l}<br /></span>
+                <span key={l}>{withRuby(l)}<br /></span>
               ))}
             </h2>
             {opening.lines.map((l) => (
-              <p key={l}>{l}</p>
+              <p key={l}>{withRuby(l)}</p>
             ))}
           </div>
           <div className="opening-action">
@@ -131,7 +131,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
               <img src={A("ui-fire")} alt="" />
               <span>
                 {event.title.split("\n").map((l) => (
-                  <span key={l}>{l}<br /></span>
+                  <span key={l}>{withRuby(l)}<br /></span>
                 ))}
               </span>
             </div>
@@ -151,7 +151,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                       setChapterPick(i);
                     }}
                   >
-                    {open ? "" : "🔒 "}{c.tab}
+                    {open ? "" : "🔒 "}{withRuby(c.tab)}
                     {chapterDone(i) && " ✓"}
                   </button>
                 );
@@ -161,7 +161,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
 
           <p className="map-lead">
             {(chapter ? `${chapter.title}\n${chapter.lead}` : event.areaLead).split("\n").map((l) => (
-              <span key={l}>{l}<br /></span>
+              <span key={l}>{withRuby(l)}<br /></span>
             ))}
           </p>
 
@@ -190,7 +190,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
                     {/* subject-first: only the currently playable spot carries a
                         persistent label; locked/done spots stay quiet dots and
                         speak through the note when tapped */}
-                    {!locked && !done && <span className="map-spot-label">{inc.title}</span>}
+                    {!locked && !done && <span className="map-spot-label">{withRuby(inc.title)}</span>}
                   </button>
                 );
               })}
@@ -198,13 +198,13 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
           </div>
           </div>
           <p className="scroll-hint">← 横にスワイプして見てみよう →</p>
-          {lockNote && <p className="game-note map-note">{lockNote}</p>}
+          {lockNote && <p className="game-note map-note">{withRuby(lockNote)}</p>}
 
           {chapter?.clear && chapterDone(chapterIdx) && (
             <div className="chapter-clear">
-              <p className="chapter-clear-title">{chapter.clear.title}</p>
+              <p className="chapter-clear-title">{withRuby(chapter.clear.title)}</p>
               {chapter.clear.lines.map((l) => (
-                <p key={l} className="chapter-clear-line">{l}</p>
+                <p key={l} className="chapter-clear-line">{withRuby(l)}</p>
               ))}
               {chapters && chapterIdx + 1 < chapters.length && (
                 <button
@@ -256,7 +256,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             <img src={A("ui-fire")} alt="" />
             <span>
               {event.title.split("\n").map((l) => (
-                <span key={l}>{l}<br /></span>
+                <span key={l}>{withRuby(l)}<br /></span>
               ))}
             </span>
           </div>
@@ -270,7 +270,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
           />
           <p className="scene-lead">
             {event.areaLead.split("\n").map((l) => (
-              <span key={l}>{l}<br /></span>
+              <span key={l}>{withRuby(l)}<br /></span>
             ))}
           </p>
 
@@ -308,7 +308,7 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
             );
           })}
         </div>
-        {lockNote && <p className="game-note map-note">{lockNote}</p>}
+        {lockNote && <p className="game-note map-note">{withRuby(lockNote)}</p>}
 
         {wrapUp}
         {showLenses && event.lensSummary && (
