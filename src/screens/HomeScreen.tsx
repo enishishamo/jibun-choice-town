@@ -8,6 +8,38 @@ import { useGame } from "../state/GameState";
 
 const M = (n: string) => `${import.meta.env.BASE_URL}assets/map-thumb/${n}.png`;
 
+/** 2026-09-04 (Experience Design Harness — Visual Design System §ICONOGRAPHY):
+ * OS emoji (📖🌱) render as photorealistic/platform-dependent glyphs that
+ * clash with the clay-diorama illustration style (Codex whole-screen review:
+ * ICON_CONSISTENCY=29/100, "incompatible rendering, scale, and visual
+ * weight"). Per the icon priority order in factory/rules/visual-design-
+ * system.md — reuse existing JC asset, then a Claude-authored functional SVG
+ * in one shared line style, GPT request only if neither suffices — these are
+ * simple functional glyphs (not world illustration), so drawing them as
+ * single-stroke-width line icons is Claude's own domain, not GPT's. */
+const ICON_STROKE = 1.8;
+function BookIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 5.5c2.2-1 4.6-1 7 0v13c-2.4-1-4.8-1-7 0v-13Z M20 5.5c-2.2-1-4.6-1-7 0v13c2.4-1 4.8-1 7 0v-13Z"
+        stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinejoin="round" strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+function SproutIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 20V11" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" />
+      <path
+        d="M12 12c0-3.6-2.7-6-6.5-6C5.5 9.8 8 12 12 12Z M12 10c0-3 2.2-5 5.5-5C17.5 8.3 15.5 10 12 10Z"
+        stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinejoin="round" strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function HomeScreen() {
   const { navigate, progress } = useGame();
 
@@ -39,7 +71,7 @@ export default function HomeScreen() {
 
         <div className="home-card-row">
           <button className="home-card home-card-secondary" onClick={() => navigate({ name: "zukan" })}>
-            <span className="home-card-icon">📖</span>
+            <span className="home-card-icon"><BookIcon /></span>
             <span className="home-card-title">しごと図鑑</span>
             {progress.discovered.length > 0 && (
               <span className="home-card-badge">{progress.discovered.length}</span>
@@ -47,7 +79,7 @@ export default function HomeScreen() {
           </button>
 
           <button className="home-card home-card-secondary is-coming-soon" disabled>
-            <span className="home-card-icon">🌱</span>
+            <span className="home-card-icon"><SproutIcon /></span>
             <span className="home-card-title">毎日のチャレンジ</span>
             <span className="home-card-soon">近日公開</span>
           </button>

@@ -227,11 +227,42 @@ img {
    Human-Review background and the option comparison this replaced. */
 .true-home {
   min-height: 100dvh;
-  background: linear-gradient(180deg, var(--blue-soft) 0%, var(--cream) 55%);
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  /* 2026-09-04 (Visual Design System §BACKGROUND/§ILLUSTRATION_INTEGRATION):
+     baseline Codex whole-screen review (WHOLE_SCREEN_COHESION 42-52,
+     "premium illustration isolated inside a generic card shell") found the
+     flat two-color gradient made the hero card read as a photo dropped on a
+     plain menu. The background is now the SAME approved town illustration,
+     heavily blurred/darkened — no new art, non-destructive CSS only — so
+     the whole screen reads as one continuous place instead of an image
+     floating on an unrelated backdrop. The gradient stays as a scrim ON TOP
+     for text legibility, not as the background itself. */
+  background: linear-gradient(180deg, rgba(220, 233, 242, 0.88) 0%, rgba(250, 245, 233, 0.94) 60%);
+}
+.true-home::before {
+  content: "";
+  position: absolute;
+  inset: -6%;
+  background-image: url("/jibun-choice-town/assets/map-thumb/town-hero.png");
+  background-size: cover;
+  background-position: center 40%;
+  filter: blur(22px) saturate(1.05) brightness(0.92);
+  transform: scale(1.08);
+  z-index: 0;
+  /* fade the bled illustration out toward the bottom of the screen instead
+     of covering it edge-to-edge — on a tall viewport with unused space
+     below the cards, a full-height blur reads as a smear rather than an
+     extension of the world; fading back to the plain scrim keeps the
+     "one place" effect near the hero card without that risk. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 88%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 88%);
 }
 .true-home-inner {
+  position: relative;
+  z-index: 1;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -245,8 +276,26 @@ img {
   text-align: center;
   margin-bottom: 6px;
 }
+.true-home-brand .logo {
+  /* was the plain shared .logo weight — Codex baseline flagged the wordmark
+     as reading like unstyled default text rather than a considered brand
+     mark; widening tracking + heavier weight uses the EXISTING type system
+     (no new font) per visual-design-system.md §TYPOGRAPHY. Now sitting over
+     a photographic (blurred) background instead of a flat tint, so it also
+     needs real lift to stay legible — a soft light halo, not just a hairline. */
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6);
+}
 .true-home-brand .tagline {
   font-size: 14px;
+  color: var(--text);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.85);
+}
+@media (min-width: 980px) {
+  .true-home-inner { max-width: 720px; padding-top: 11dvh; }
+  .home-card-primary { height: 300px; }
 }
 
 .home-card {
@@ -348,7 +397,7 @@ img {
   gap: 4px;
   padding: 12px 8px;
 }
-.home-card-secondary .home-card-icon { font-size: 26px; }
+.home-card-secondary .home-card-icon { display: flex; color: var(--text); }
 .home-card-secondary .home-card-title { font-size: 14px; font-weight: bold; }
 .home-card-badge {
   position: absolute;
@@ -370,7 +419,8 @@ img {
   cursor: default;
   min-height: 80px;
 }
-.home-card-secondary.is-coming-soon .home-card-icon { font-size: 20px; }
+.home-card-secondary.is-coming-soon .home-card-icon { color: var(--text-soft); }
+.home-card-secondary.is-coming-soon .home-card-icon svg { width: 20px; height: 20px; }
 .home-card-secondary.is-coming-soon:active { transform: none; }
 .home-card-soon {
   font-size: 10px;
@@ -5579,6 +5629,16 @@ img {
   .app-frame:has(.world-screen) { max-width: 960px; }
   .world-screen .world { max-width: 960px; }
   .region-viewport { flex: none; height: 600px; }
+  /* 2026-09-04 (Experience Design Harness — Visual Design System round 2):
+     same .app-frame-caps-everything-at-480px issue as .world-screen above,
+     found via an independent Codex whole-screen review — the True Home
+     background bleed (.true-home::before) is positioned relative to
+     .true-home, so as long as its ancestor .app-frame stayed at 480px on a
+     1280px desktop viewport, the bled illustration only filled a narrow
+     center strip with a visible hard edge against the plain body background
+     on both sides, undercutting the very "one continuous world" effect it
+     was added for. */
+  .app-frame:has(.true-home) { max-width: 960px; }
 }
 
 /* Compass (map repair, 2026-09-04): replaces the old chip-bar menu. A
