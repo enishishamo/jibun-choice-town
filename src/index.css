@@ -231,25 +231,32 @@ img {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  /* 2026-09-04 (Visual Design System §BACKGROUND/§ILLUSTRATION_INTEGRATION):
-     baseline Codex whole-screen review (WHOLE_SCREEN_COHESION 42-52,
-     "premium illustration isolated inside a generic card shell") found the
-     flat two-color gradient made the hero card read as a photo dropped on a
-     plain menu. The background is now the SAME approved town illustration,
-     heavily blurred/darkened — no new art, non-destructive CSS only — so
-     the whole screen reads as one continuous place instead of an image
-     floating on an unrelated backdrop. The gradient stays as a scrim ON TOP
-     for text legibility, not as the background itself. */
-  background: linear-gradient(180deg, rgba(220, 233, 242, 0.88) 0%, rgba(250, 245, 233, 0.94) 60%);
+  /* 2026-09-05 (Home Visual Refresh, Human Review): the previous pale
+     wash + thin type read as "quiet education service", not a game a
+     child wants to open. Same non-destructive technique as before
+     (blurred/darkened background bleed of an approved illustration, a
+     scrim on top for legibility) but now sourced from the Human-approved
+     Continuous World Base Illustration (the same art the primary card and
+     the Map itself use) rather than the old town-hero, and pushed less
+     pale — a game world behind the UI, not a faint backdrop. */
+  background: linear-gradient(180deg, rgba(60, 82, 48, 0.42) 0%, rgba(250, 245, 233, 0.88) 62%);
+  /* Human Review §Font: headings should read as bold/friendly gothic, not
+     the rounded "maru" style used elsewhere in the app — that specific
+     roundness was flagged as reading generic-education/beauty-app here.
+     Scoped to Home only; every other screen keeps the shared body stack. */
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
 }
 .true-home::before {
   content: "";
   position: absolute;
   inset: -6%;
-  background-image: url("/jibun-choice-town/assets/map-thumb/town-hero.png");
+  background-image: url("/jibun-choice-town/assets/world/continuous-world.png");
   background-size: cover;
-  background-position: center 40%;
-  filter: blur(22px) saturate(1.05) brightness(0.92);
+  /* town plaza is at roughly (850,380) of the 1774x887 source — the same
+     landmark the primary card crops (town-center-crop.png) and the Map's
+     "center" district frame, so Home visually continues into the Map. */
+  background-position: 48% 40%;
+  filter: blur(11px) saturate(1.15) brightness(1.03);
   transform: scale(1.08);
   z-index: 0;
   /* fade the bled illustration out toward the bottom of the screen instead
@@ -257,8 +264,8 @@ img {
      below the cards, a full-height blur reads as a smear rather than an
      extension of the world; fading back to the plain scrim keeps the
      "one place" effect near the hero card without that risk. */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 88%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 88%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 92%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 92%);
 }
 .true-home-inner {
   position: relative;
@@ -266,32 +273,36 @@ img {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 14px;
-  padding: 15dvh 18px 24px;
+  padding: 8dvh 18px 10dvh;
   max-width: 560px;
   width: 100%;
   margin: 0 auto;
 }
 .true-home-brand {
   text-align: center;
-  margin-bottom: 6px;
 }
 .true-home-brand .logo {
-  /* was the plain shared .logo weight — Codex baseline flagged the wordmark
-     as reading like unstyled default text rather than a considered brand
-     mark; widening tracking + heavier weight uses the EXISTING type system
-     (no new font) per visual-design-system.md §TYPOGRAPHY. Now sitting over
-     a photographic (blurred) background instead of a flat tint, so it also
-     needs real lift to stay legible — a soft light halo, not just a hairline. */
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 2.5px;
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* 2026-09-05 (Home Visual Refresh): the wordmark stays as the brand
+     name but is deliberately QUIETER than before — the lead line below is
+     now the screen's actual headline. Smaller size, tighter tracking. */
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8), 0 1px 0 rgba(255, 255, 255, 0.6);
 }
-.true-home-brand .tagline {
-  font-size: 14px;
+.true-home-lead {
+  /* 2026-09-05 (Home Visual Refresh): promoted from a small muted
+     "tagline" under the logo to the screen's real headline — short,
+     action-oriented copy ("今日は、どこ行く？"), bold and sized to be the
+     most prominent text on screen after the primary card itself. */
+  margin: 2px 0 4px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
   color: var(--text);
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85), 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 @media (min-width: 980px) {
   .true-home-inner { max-width: 720px; padding-top: 11dvh; }
@@ -313,7 +324,10 @@ img {
 .home-card:active { transform: scale(0.98); }
 
 .home-card-primary {
-  height: 220px;
+  /* 2026-09-05 (Home Visual Refresh): taller than before — with the
+     coming-soon slot removed, the primary CTA should read as clearly the
+     dominant thing on screen, not just "the first of a few equal cards". */
+  height: 250px;
   align-items: flex-end;
   background-size: cover;
   background-position: center 62%;
@@ -373,36 +387,41 @@ img {
 }
 .home-card-primary .home-card-title {
   color: #fff;
-  font-size: 21px;
-  font-weight: bold;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 .home-card-primary .home-card-sub {
   color: rgba(255, 255, 255, 0.88);
   font-size: 13px;
 }
 
-.home-card-row {
+/* 2026-09-05 (Home Visual Refresh): secondary action — deliberately a slim
+   pill-shaped bar, not a card the same shape/size as the primary. With
+   "毎日のチャレンジ" removed from Home entirely (not a Human-decided core
+   feature; see factory/rules/product-identity-gate.md), しごと図鑑 is the
+   only secondary item — sizing it as a low-key bar rather than letting it
+   expand to fill a now-empty row keeps it from reading as equal-weight to
+   the primary CTA. */
+.home-secondary-bar {
   display: flex;
-  gap: 12px;
-  align-items: stretch;
-}
-.home-card-secondary {
-  flex: 1.4;
-  min-height: 96px;
+  align-items: center;
+  gap: 10px;
   background: var(--card);
   border: 2px solid var(--line);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 12px 8px;
+  border-radius: 999px;
+  padding: 11px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  color: var(--text-soft);
+  font-family: inherit;
+  cursor: pointer;
 }
-.home-card-secondary .home-card-icon { display: flex; color: var(--text); }
-.home-card-secondary .home-card-title { font-size: 14px; font-weight: bold; }
+.home-secondary-bar:active { transform: scale(0.98); }
+.home-secondary-bar .home-card-icon { display: flex; color: var(--text-soft); }
+.home-secondary-title { font-size: 14px; font-weight: 600; }
 .home-card-badge {
-  position: absolute;
-  top: 8px;
-  right: 10px;
+  margin-left: auto;
   background: var(--red);
   color: #fff;
   font-size: 11px;
@@ -412,24 +431,6 @@ img {
   display: grid;
   place-items: center;
   padding: 0 5px;
-}
-.home-card-secondary.is-coming-soon {
-  flex: 1;
-  opacity: 0.55;
-  cursor: default;
-  min-height: 80px;
-}
-.home-card-secondary.is-coming-soon .home-card-icon { color: var(--text-soft); }
-.home-card-secondary.is-coming-soon .home-card-icon svg { width: 20px; height: 20px; }
-.home-card-secondary.is-coming-soon:active { transform: none; }
-.home-card-soon {
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  color: var(--text-soft);
-  background: var(--orange-soft);
-  border-radius: 999px;
-  padding: 2px 8px;
 }
 
 .town {

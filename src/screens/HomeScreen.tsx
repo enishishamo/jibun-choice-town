@@ -34,18 +34,6 @@ function BookIcon() {
     </svg>
   );
 }
-function SproutIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 20V11" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" />
-      <path
-        d="M12 12c0-3.6-2.7-6-6.5-6C5.5 9.8 8 12 12 12Z M12 10c0-3 2.2-5 5.5-5C17.5 8.3 15.5 10 12 10Z"
-        stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinejoin="round" strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 export default function HomeScreen() {
   const { navigate, progress } = useGame();
 
@@ -54,12 +42,12 @@ export default function HomeScreen() {
       <div className="true-home-inner">
         <div className="true-home-brand">
           <h1 className="logo">JIBUN CHOICE</h1>
-          <p className="tagline">
-            {progress.discovered.length > 0
-              ? `これまでに ${progress.discovered.length}この仕事に出会った。つづきから遊ぼう。`
-              : "知らない社会を、ちょっとのぞいてみよう。"}
-          </p>
         </div>
+        <p className="true-home-lead">
+          {progress.discovered.length > 0
+            ? `これまでに ${progress.discovered.length}この仕事に出会った。つづきから遊ぼう。`
+            : "今日は、どこ行く？"}
+        </p>
 
         <button
           className="home-card home-card-primary"
@@ -75,21 +63,18 @@ export default function HomeScreen() {
           </span>
         </button>
 
-        <div className="home-card-row">
-          <button className="home-card home-card-secondary" onClick={() => navigate({ name: "zukan" })}>
-            <span className="home-card-icon"><BookIcon /></span>
-            <span className="home-card-title">しごと図鑑</span>
-            {progress.discovered.length > 0 && (
-              <span className="home-card-badge">{progress.discovered.length}</span>
-            )}
-          </button>
-
-          <button className="home-card home-card-secondary is-coming-soon" disabled>
-            <span className="home-card-icon"><SproutIcon /></span>
-            <span className="home-card-title">毎日のチャレンジ</span>
-            <span className="home-card-soon">近日公開</span>
-          </button>
-        </div>
+        {/* 2026-09-05 (Home Visual Refresh): secondary action, deliberately
+           NOT the same visual weight as the primary card — a slim bar, not
+           a same-size sibling card. "毎日のチャレンジ" (disabled placeholder
+           for a not-yet-decided core feature) is removed from this prime
+           slot entirely per Human instruction, not relocated/expanded. */}
+        <button className="home-secondary-bar" onClick={() => navigate({ name: "zukan" })}>
+          <span className="home-card-icon"><BookIcon /></span>
+          <span className="home-secondary-title">しごと図鑑</span>
+          {progress.discovered.length > 0 && (
+            <span className="home-card-badge">{progress.discovered.length}</span>
+          )}
+        </button>
       </div>
     </div>
   );
