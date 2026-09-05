@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototype C — Hierarchical Atlas (NOT PRODUCTION)</title>
+<style>
+  :root {
+    --cream: #faf5e9; --text: #4a3b2e; --line: #eadfc8;
+    --shadow: 0 4px 14px rgba(120, 96, 60, 0.13);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: var(--cream); font-family: "Hiragino Maru Gothic ProN", "Zen Maru Gothic", sans-serif; color: var(--text); }
+  .badge { position: fixed; top: 6px; left: 6px; z-index: 50; font-size: 10px; background: #d95b43; color: #fff; padding: 3px 8px; border-radius: 999px; font-weight: bold; opacity: 0.85; }
+  .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; touch-action: none; }
+
+  /* ---- OVERVIEW: a small living diorama, not a menu grid ---- */
+  .overview-vp { position: absolute; inset: 0; cursor: grab; }
+  .overview-vp:active { cursor: grabbing; }
+  .overview-world {
+    position: absolute; left: 0; top: 0; width: 1100px; height: 1500px;
+    transform-origin: 0 0;
+    animation: world-breathe 7s ease-in-out infinite;
+    transition: transform 0.5s cubic-bezier(0.22,0.8,0.3,1);
+  }
+  .overview-world.no-anim { transition: none; }
+  @keyframes world-breathe { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.025); } }
+  .terrain { position: absolute; inset: 0; }
+  .cloud { position: absolute; width: 320px; height: 130px; background: radial-gradient(ellipse, rgba(255,255,255,0.4), transparent 70%); border-radius: 50%; filter: blur(6px); animation: drift linear infinite; }
+  @keyframes drift { from { transform: translateX(-180px); } to { transform: translateX(1300px); } }
+
+  .pin {
+    position: absolute; width: 78px; height: 78px; border-radius: 50%;
+    border: 4px solid #fffdf6; box-shadow: 0 4px 10px rgba(80,60,30,0.35);
+    background-size: 230%; background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    display: flex; align-items: flex-end; justify-content: center;
+    animation: breathe 4.2s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.045); } }
+  .pin.town { width: 100px; height: 100px; }
+  .pin-label {
+    position: absolute; top: 86px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; font-weight: bold; background: rgba(255,253,246,0.92);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap; box-shadow: var(--shadow);
+  }
+  .pin.town .pin-label { top: 106px; }
+  .signal { position: absolute; top: -4px; right: -2px; font-size: 15px; animation: beckon 1.7s ease-in-out infinite; }
+  @keyframes beckon { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+
+  .fog { position: absolute; border-radius: 50%; background: radial-gradient(ellipse, #cfd4d9, #dde1e4); opacity: 0.92; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #7d858d; animation: mist 3.4s ease-in-out infinite; }
+  @keyframes mist { 0%,100% { opacity: 0.85; } 50% { opacity: 0.98; } }
+  .road { position: absolute; height: 12px; background: repeating-linear-gradient(90deg, #e9e0c8 0 9px, transparent 9px 23px); border-radius: 8px; }
+
+  .overview-vp::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 60px 16px rgba(60,80,40,0.16); }
+  .lead { position: absolute; top: 8px; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--text); z-index: 5; font-weight: bold; opacity: 0.85; }
+
+  /* ---- FOCUS: full-screen rich detail, reusing the REAL approved illustration ---- */
+  .focus {
+    position: fixed; inset: 0; background: #dcead0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transform: scale(0.9);
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22,0.8,0.3,1);
+    z-index: 20;
+  }
+  .focus.show { opacity: 1; pointer-events: auto; transform: scale(1); }
+  .focus img { width: 100%; max-width: 700px; }
+  .focus-back {
+    position: absolute; top: 14px; left: 14px; z-index: 21;
+    background: rgba(255,253,246,0.92); border: 2px solid var(--line); border-radius: 999px;
+    padding: 8px 16px; font-weight: bold; font-size: 13px; box-shadow: var(--shadow);
+  }
+  .focus-title { position: absolute; bottom: 40px; left: 0; right: 0; text-align: center; font-size: 20px; font-weight: bold; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+</style>
+</head>
+<body>
+  <div class="badge">PROTOTYPE C — NOT PRODUCTION</div>
+  <div class="stage">
+    <p class="lead">どこへ行く？</p>
+    <div class="overview-vp" id="vp">
+      <div class="overview-world no-anim" id="world">
+        <svg class="terrain" width="1100" height="1500" viewBox="0 0 1100 1500">
+          <rect width="1100" height="1500" fill="#dcead0"/>
+          <path d="M0,1050 C200,1010 300,1150 350,1500 L0,1500 Z" fill="#a8cfe3"/>
+          <path d="M0,1100 C180,1070 260,1200 300,1500 L0,1500 Z" fill="#8fbfda" opacity="0.7"/>
+          <path d="M870,120 C760,260 620,340 480,420 C340,500 220,620 160,800" fill="none" stroke="#9fc8de" stroke-width="24" stroke-linecap="round" opacity="0.85"/>
+          <path d="M550,750 L200,880" fill="none" stroke="#e9e0c8" stroke-width="14" stroke-dasharray="2 20" stroke-linecap="round"/>
+          <path d="M550,750 L820,1080" fill="none" stroke="#e9e0c8" stroke-width="14" stroke-dasharray="2 20" stroke-linecap="round"/>
+          <path d="M550,750 L870,180" fill="none" stroke="#e9e0c8" stroke-width="14" stroke-dasharray="2 20" stroke-linecap="round"/>
+          <path d="M550,750 L200,180" fill="none" stroke="#e9e0c8" stroke-width="14" stroke-dasharray="2 20" stroke-linecap="round"/>
+        </svg>
+        <div class="cloud" style="top:80px; animation-duration: 34s;"></div>
+        <div class="cloud" style="top:620px; animation-duration: 41s; animation-delay: -14s;"></div>
+
+        <div class="pin town" data-id="center" data-name="まちの中心" data-src="/jibun-choice-town/assets/map-thumb/town-hero.png" style="left:550px; top:750px; background-image:url('/jibun-choice-town/assets/map-thumb/town-hero.png'); background-position:center 55%;"><span class="pin-label">まちの中心</span></div>
+        <div class="pin" data-id="minato" data-name="港" data-src="/jibun-choice-town/assets/map-thumb/harbor-district.png" style="left:200px; top:880px; background-image:url('/jibun-choice-town/assets/map-thumb/harbor-district.png'); background-position:30% 55%;"><span class="signal">👥</span><span class="pin-label">港</span></div>
+        <div class="pin" data-id="mori-kawa" data-name="森と川" data-src="/jibun-choice-town/assets/map-thumb/forest-district.png" style="left:870px; top:180px; background-image:url('/jibun-choice-town/assets/map-thumb/forest-district.png'); background-position:center 40%;"><span class="pin-label">森と川</span></div>
+        <div class="pin" data-id="ekimae" data-name="駅前" data-src="/jibun-choice-town/assets/map-thumb/station-district.png" style="left:820px; top:1080px; background-image:url('/jibun-choice-town/assets/map-thumb/station-district.png'); background-position:center 45%;"><span class="signal">👥</span><span class="pin-label">駅前</span></div>
+        <div class="pin" data-id="oka" data-name="丘の上" data-src="/jibun-choice-town/assets/map-thumb/hill-district.png" style="left:200px; top:180px; background-image:url('/jibun-choice-town/assets/map-thumb/hill-district.png'); background-position:center 40%;"><span class="pin-label">丘の上</span></div>
+
+        <div class="fog" style="left:950px; top:850px; width:120px; height:95px;">？</div>
+        <div class="fog" style="left:60px; top:480px; width:110px; height:90px;">？</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="focus" id="focus">
+    <button class="focus-back" id="focusBack">← 全体</button>
+    <img id="focusImg" src="" alt="">
+    <div class="focus-title" id="focusTitle"></div>
+  </div>
+
+<script>
+  const vp = document.getElementById('vp');
+  const world = document.getElementById('world');
+  const WORLD_W = 1100, WORLD_H = 1500;
+  let vw = vp.clientWidth, vh = vp.clientHeight;
+  let cam = { s: 1, tx: 0, ty: 0 };
+  const SLOP = 8;
+
+  function fitScale() {
+    // fit by height (the world's aspect ratio is wider than a phone
+    // screen's), so almost everything is visible at once with only a
+    // little horizontal pan needed — "mostly one glance, not a menu grid,
+    // but still has slack so it never feels like a static, fixed portrait."
+    return (vh * 0.98) / WORLD_H;
+  }
+  function clamp(tx, ty, s) {
+    const marginX = Math.min(0, vw - WORLD_W * s);
+    const marginY = Math.min(0, vh - WORLD_H * s);
+    return {
+      tx: Math.min(60, Math.max(marginX - 60, tx)),
+      ty: Math.min(60, Math.max(marginY - 60, ty)),
+    };
+  }
+  function apply() { world.style.transform = `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})`; }
+  function center() {
+    vw = vp.clientWidth; vh = vp.clientHeight;
+    cam.s = fitScale();
+    const c = clamp(vw / 2 - 550 * cam.s, vh / 2 - 750 * cam.s, cam.s);
+    cam.tx = c.tx; cam.ty = c.ty;
+    apply();
+  }
+  window.addEventListener('resize', center);
+  center();
+
+  let drag = null, suppressTap = false, pointerId = null;
+  vp.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY, tx: cam.tx, ty: cam.ty, moved: false };
+    pointerId = e.pointerId;
+    vp.setPointerCapture(e.pointerId);
+    world.classList.add('no-anim');
+  });
+  vp.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) > SLOP) drag.moved = true;
+    if (drag.moved) {
+      const c = clamp(drag.tx + dx, drag.ty + dy, cam.s);
+      cam.tx = c.tx; cam.ty = c.ty;
+      apply();
+    }
+  });
+  function endDrag() {
+    if (drag?.moved) { suppressTap = true; setTimeout(() => suppressTap = false, 80); }
+    drag = null;
+    world.classList.remove('no-anim');
+    if (pointerId != null && vp.hasPointerCapture?.(pointerId)) vp.releasePointerCapture(pointerId);
+  }
+  vp.addEventListener('pointerup', endDrag);
+  vp.addEventListener('pointercancel', endDrag);
+
+  const focusEl = document.getElementById('focus');
+  const focusImg = document.getElementById('focusImg');
+  const focusTitle = document.getElementById('focusTitle');
+  document.querySelectorAll('.pin').forEach((pin) => {
+    pin.addEventListener('click', () => {
+      if (suppressTap) return;
+      focusImg.src = pin.dataset.src;
+      focusTitle.textContent = pin.dataset.name;
+      focusEl.classList.add('show');
+    });
+  });
+  document.getElementById('focusBack').addEventListener('click', () => focusEl.classList.remove('show'));
+  document.querySelectorAll('.fog').forEach((fog) => {
+    fog.addEventListener('click', () => { if (!suppressTap) fog.style.animation = 'mist 0.6s ease-in-out 2'; });
+  });
+</script>
+</body>
+</html>

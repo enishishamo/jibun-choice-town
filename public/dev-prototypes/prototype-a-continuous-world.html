@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototype A — One Continuous World (NOT PRODUCTION)</title>
+<style>
+  :root {
+    --cream: #faf5e9; --text: #4a3b2e; --line: #eadfc8;
+    --shadow: 0 4px 14px rgba(120, 96, 60, 0.13);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: var(--cream); font-family: "Hiragino Maru Gothic ProN", "Zen Maru Gothic", sans-serif; color: var(--text); }
+  .badge { position: fixed; top: 6px; left: 6px; z-index: 50; font-size: 10px; background: #d95b43; color: #fff; padding: 3px 8px; border-radius: 999px; font-weight: bold; opacity: 0.85; }
+  .viewport { position: relative; width: 100vw; height: 100vh; overflow: hidden; touch-action: none; cursor: grab; }
+  .viewport:active { cursor: grabbing; }
+  .world {
+    position: absolute; left: 0; top: 0; width: 2400px; height: 1700px;
+    transform-origin: 0 0;
+    transition: transform 0.5s cubic-bezier(0.22,0.8,0.3,1);
+  }
+  .world.no-anim { transition: none; }
+
+  /* one continuous abstract terrain — no separate "district tiles", just
+     soft blended color fields sharing one coordinate space, so there is no
+     seam to notice */
+  .terrain { position: absolute; inset: 0; }
+
+  /* ambient drifting cloud shadows — cheap CSS-only "world feels alive" */
+  .cloud { position: absolute; width: 420px; height: 160px; background: radial-gradient(ellipse, rgba(255,255,255,0.35), transparent 70%); border-radius: 50%; filter: blur(6px); animation: drift linear infinite; }
+  @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(2600px); } }
+
+  .pin {
+    position: absolute; width: 84px; height: 84px; border-radius: 50%;
+    border: 4px solid #fffdf6; box-shadow: 0 4px 10px rgba(80,60,30,0.35);
+    background-size: 230%; background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    display: flex; align-items: flex-end; justify-content: center;
+    animation: breathe 4.2s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.035); } }
+  .pin .pin-label {
+    position: absolute; top: 90px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; font-weight: bold; background: rgba(255,253,246,0.92);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap; box-shadow: var(--shadow);
+  }
+  .pin.town { width: 108px; height: 108px; }
+  .pin.town .pin-label { top: 114px; }
+
+  .fog { position: absolute; border-radius: 50%; background: radial-gradient(ellipse, #cfd4d9, #dde1e4); opacity: 0.92; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #7d858d; animation: mist 3.4s ease-in-out infinite; }
+  @keyframes mist { 0%,100% { opacity: 0.85; } 50% { opacity: 0.98; } }
+
+  .road { position: absolute; height: 14px; background: repeating-linear-gradient(90deg, #e9e0c8 0 10px, transparent 10px 26px); border-radius: 8px; transform-origin: left center; }
+
+  /* edge vignette hints the world continues beyond the frame */
+  .viewport::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 70px 20px rgba(60,80,40,0.18);
+  }
+
+  .toast { position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%) translateY(20px); opacity: 0; transition: opacity 0.25s, transform 0.25s; background: rgba(255,253,246,0.96); border: 2px solid var(--line); padding: 10px 18px; border-radius: 999px; font-weight: bold; font-size: 14px; box-shadow: var(--shadow); pointer-events: none; z-index: 40; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+  <div class="badge">PROTOTYPE A — NOT PRODUCTION</div>
+  <div class="viewport" id="vp">
+    <div class="world no-anim" id="world">
+      <svg class="terrain" width="2400" height="1700" viewBox="0 0 2400 1700">
+        <rect width="2400" height="1700" fill="#dcead0"/>
+        <path d="M0,1150 C350,1100 520,1250 620,1700 L0,1700 Z" fill="#a8cfe3"/>
+        <path d="M0,1220 C320,1180 480,1320 570,1700 L0,1700 Z" fill="#8fbfda" opacity="0.7"/>
+        <ellipse cx="1900" cy="280" rx="420" ry="260" fill="#bfe0b0" opacity="0.55"/>
+        <ellipse cx="1650" cy="1230" rx="380" ry="230" fill="#f0e3b8" opacity="0.5"/>
+        <ellipse cx="450" cy="330" rx="360" ry="220" fill="#d9ecc9" opacity="0.55"/>
+        <path d="M1900,300 C1650,520 1400,650 1200,850 C950,1050 700,1150 560,1250" fill="none" stroke="#9fc8de" stroke-width="34" stroke-linecap="round" opacity="0.85"/>
+      </svg>
+      <!-- roads: one continuous network sharing the terrain, drawn between
+           every pin so the whole thing reads as connected geography -->
+      <svg class="terrain" width="2400" height="1700" viewBox="0 0 2400 1700" style="pointer-events:none">
+        <path d="M1200,850 L520,1050" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <path d="M1200,850 L1650,1230" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <path d="M1200,850 L1900,300" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <path d="M1200,850 L450,330" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <path d="M1650,1230 L2150,1080" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <path d="M450,330 L120,650" fill="none" stroke="#e9e0c8" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/>
+      </svg>
+
+      <div class="cloud" style="top:120px; animation-duration: 46s;"></div>
+      <div class="cloud" style="top:700px; animation-duration: 61s; animation-delay: -20s;"></div>
+      <div class="cloud" style="top:1350px; animation-duration: 53s; animation-delay: -8s;"></div>
+
+      <!-- landmark pins: a SINGLE consistent size/frame for every place —
+           the fix for the scale-mismatch problem structurally: nothing here
+           is a full competing illustration, every place is "the same kind
+           of thing" (a pin), so there is nothing to feel mismatched. -->
+      <div class="pin town" data-name="まちの中心" style="left:1200px; top:850px; background-image:url('/jibun-choice-town/assets/map-thumb/town-hero.png'); background-position:center 55%;"></div>
+      <div class="pin" data-name="港" style="left:520px; top:1050px; background-image:url('/jibun-choice-town/assets/map-thumb/harbor-district.png'); background-position:30% 55%;"><span class="pin-label">港</span></div>
+      <div class="pin" data-name="森と川" style="left:1900px; top:300px; background-image:url('/jibun-choice-town/assets/map-thumb/forest-district.png'); background-position:center 40%;"><span class="pin-label">森と川</span></div>
+      <div class="pin" data-name="駅前" style="left:1650px; top:1230px; background-image:url('/jibun-choice-town/assets/map-thumb/station-district.png'); background-position:center 45%;"><span class="pin-label">駅前</span></div>
+      <div class="pin" data-name="丘の上" style="left:450px; top:330px; background-image:url('/jibun-choice-town/assets/map-thumb/hill-district.png'); background-position:center 40%;"><span class="pin-label">丘の上</span></div>
+
+      <div class="fog" style="left:2050px; top:1000px; width:150px; height:110px;">？</div>
+      <div class="fog" style="left:80px; top:600px; width:130px; height:100px;">？</div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+  const vp = document.getElementById('vp');
+  const world = document.getElementById('world');
+  const toastEl = document.getElementById('toast');
+  const WORLD_W = 2400, WORLD_H = 1700;
+  let vw = vp.clientWidth, vh = vp.clientHeight;
+  let cam = { s: 1, tx: 0, ty: 0 };
+  const SLOP = 8;
+
+  function fitScale() {
+    // start closer-in than "fit everything" — same philosophy as the real
+    // map's mobile pass: show the town large and let the rest peek at the
+    // edges, inviting a pan instead of a full legible overview on load.
+    return Math.max(vw / 900, vh / 900);
+  }
+  function clamp(tx, ty, s) {
+    return {
+      tx: Math.min(0, Math.max(vw - WORLD_W * s, tx)),
+      ty: Math.min(0, Math.max(vh - WORLD_H * s, ty)),
+    };
+  }
+  function apply() {
+    world.style.transform = `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})`;
+  }
+  function center() {
+    vw = vp.clientWidth; vh = vp.clientHeight;
+    cam.s = fitScale();
+    const c = clamp(vw / 2 - 1200 * cam.s, vh / 2 - 850 * cam.s, cam.s);
+    cam.tx = c.tx; cam.ty = c.ty;
+    apply();
+  }
+  window.addEventListener('resize', center);
+  center();
+
+  let drag = null, suppressTap = false, pointerId = null;
+  vp.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY, tx: cam.tx, ty: cam.ty, moved: false };
+    pointerId = e.pointerId;
+    vp.setPointerCapture(e.pointerId);
+    world.classList.add('no-anim');
+  });
+  vp.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) > SLOP) drag.moved = true;
+    if (drag.moved) {
+      const c = clamp(drag.tx + dx, drag.ty + dy, cam.s);
+      cam.tx = c.tx; cam.ty = c.ty;
+      apply();
+    }
+  });
+  function endDrag(e) {
+    if (drag?.moved) { suppressTap = true; setTimeout(() => suppressTap = false, 80); }
+    drag = null;
+    world.classList.remove('no-anim');
+    if (pointerId != null && vp.hasPointerCapture?.(pointerId)) vp.releasePointerCapture(pointerId);
+  }
+  vp.addEventListener('pointerup', endDrag);
+  vp.addEventListener('pointercancel', endDrag);
+
+  document.querySelectorAll('.pin').forEach((pin) => {
+    pin.addEventListener('click', () => {
+      if (suppressTap) return;
+      const name = pin.dataset.name;
+      toastEl.textContent = `${name} — prototypeのため中身は未実装`;
+      toastEl.classList.add('show');
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 1400);
+    });
+  });
+  document.querySelectorAll('.fog').forEach((fog) => {
+    fog.addEventListener('click', () => {
+      if (suppressTap) return;
+      toastEl.textContent = 'まだ、もやの向こう。';
+      toastEl.classList.add('show');
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 1400);
+    });
+  });
+</script>
+</body>
+</html>

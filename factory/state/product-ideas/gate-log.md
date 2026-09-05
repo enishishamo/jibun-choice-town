@@ -68,3 +68,18 @@
   district単位のCSS微調整（例: `district-focus-camera-zoom-tuning`）は
   この決定が出るまで単独では追加投資しない方針とした
   （`factory/state/backlog/ui-ux-backlog.md`に反映済み）。
+
+**追記（同日、Human Product Decisionによる絞り込み後）**: Humanの判断で
+最終候補をA（連続世界地図）とC（階層的atlas）の2案に絞り、production
+実装なしのLOW-COST prototype（`public/dev-prototypes/`、既存assetのみ・
+新規GPT art生成なし）を作成して比較した。詳細は
+`factory/state/expansion/map-architecture-prototype-comparison-2026-09-04.md`。
+最重要指標（GAME_DESIRE/DISCOVERY_CURIOSITY/WORLD_FEEL）ではCodex独立
+レビューがAを推奨（Cプロトタイプのoverviewが「menuに見える」という、
+Human自身が事前に定義したFAIL条件に一部該当したため）。Claudeは
+SCALABILITY_50_WORLDSの構造的懸念と、今回のCプロトタイプの弱さが
+実装判断（overviewで全地点をほぼ同時に見せた）に起因する可能性を理由に、
+最終推奨をロードマップの前提（50 world規模を本当に見込むか）次第として
+留保——2つの独立評価が偽の一致を作らず、そのまま報告した。
+production実装・選定はまだ行っていない。HUMAN_PRODUCT_DECISION_REQUIRED
+のまま。
