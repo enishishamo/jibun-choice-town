@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototype A2 — Continuous World + Semantic Zoom (NOT PRODUCTION)</title>
+<style>
+  :root { --cream: #faf5e9; --text: #4a3b2e; --line: #eadfc8; --shadow: 0 4px 14px rgba(120,96,60,0.13); }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; height:100%; overflow:hidden; background:var(--cream); font-family:"Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif; color:var(--text); }
+  .badge { position:fixed; top:6px; left:6px; z-index:60; font-size:10px; background:#d95b43; color:#fff; padding:3px 8px; border-radius:999px; font-weight:bold; opacity:0.85; }
+  .hud { position:fixed; top:6px; right:6px; z-index:60; font-size:10px; background:rgba(255,253,246,0.9); border:1px solid var(--line); padding:3px 8px; border-radius:999px; font-weight:bold; }
+  .stage { position:relative; width:100vw; height:100vh; overflow:hidden; touch-action:none; cursor:grab; }
+  .stage:active { cursor:grabbing; }
+  .world { position:absolute; left:0; top:0; transform-origin:0 0; transition:transform 0.55s cubic-bezier(0.22,0.8,0.3,1); }
+  .world.no-anim { transition:none; }
+  .terrain { position:absolute; left:0; top:0; }
+  .cloud { position:absolute; width:360px; height:140px; background:radial-gradient(ellipse, rgba(255,255,255,0.35), transparent 70%); border-radius:50%; filter:blur(6px); animation:drift linear infinite; }
+  @keyframes drift { from{transform:translateX(-200px);} to{transform:translateX(3400px);} }
+
+  /* LEVEL 1: area landmarks — one consistent pin size, never full competing illustrations */
+  .area-pin { position:absolute; border-radius:50%; border:4px solid #fffdf6; box-shadow:0 4px 10px rgba(80,60,30,0.35); background-size:230%; background-repeat:no-repeat; background-color:#cfe0b8; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; font-size:28px; animation:breathe 4.4s ease-in-out infinite; cursor:pointer; }
+  @keyframes breathe { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.03);} }
+  .area-pin.town { animation-duration:5.2s; }
+  .pin-label { position:absolute; left:50%; transform:translateX(-50%); font-size:12px; font-weight:bold; background:rgba(255,253,246,0.92); padding:2px 9px; border-radius:999px; white-space:nowrap; box-shadow:var(--shadow); pointer-events:none; }
+  .fog { position:absolute; border-radius:50%; background:radial-gradient(ellipse,#cfd4d9,#dde1e4); opacity:0.92; display:flex; align-items:center; justify-content:center; font-size:22px; color:#7d858d; animation:mist 3.4s ease-in-out infinite; cursor:pointer; }
+  @keyframes mist { 0%,100%{opacity:0.85;} 50%{opacity:0.98;} }
+
+  /* LEVEL 2: sub-locations — only ever mounted for the ACTIVE area */
+  .subloc { position:absolute; width:52px; height:52px; border-radius:16px; background:#fffdf6; border:2px solid var(--line); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:center; font-size:22px; transform:translate(-50%,-50%) scale(0); transition:transform 0.35s cubic-bezier(0.34,1.4,0.4,1); cursor:pointer; }
+  .subloc.in { transform:translate(-50%,-50%) scale(1); }
+  .subloc .pin-label { top:38px; font-size:10px; }
+
+  /* LEVEL 3: events — only ever mounted for the ACTIVE sub-location */
+  .event { position:absolute; width:34px; height:34px; border-radius:50%; background:#fff; border:3px solid #d97b4a; display:flex; align-items:center; justify-content:center; font-size:15px; transform:translate(-50%,-50%) scale(0); transition:transform 0.3s cubic-bezier(0.34,1.4,0.4,1); box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+  .event.in { transform:translate(-50%,-50%) scale(1); }
+  .event.signal { animation:beckon 1.6s ease-in-out infinite; }
+  @keyframes beckon { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.22);} }
+
+  .stage::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 70px 20px rgba(60,80,40,0.16); }
+  .lead { position:fixed; top:8px; left:0; right:0; text-align:center; font-size:13px; font-weight:bold; z-index:5; opacity:0.85; pointer-events:none; }
+  .zoomout { position:fixed; left:12px; bottom:16px; z-index:40; background:rgba(255,253,246,0.94); border:2px solid var(--line); border-radius:999px; padding:9px 16px; font-weight:bold; font-size:13px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity 0.25s; }
+  .zoomout.show { opacity:1; pointer-events:auto; }
+  .toast { position:fixed; left:50%; bottom:34px; transform:translateX(-50%) translateY(20px); opacity:0; transition:opacity .25s, transform .25s; background:rgba(255,253,246,0.96); border:2px solid var(--line); padding:10px 18px; border-radius:999px; font-weight:bold; font-size:14px; box-shadow:var(--shadow); pointer-events:none; z-index:40; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+  <div class="badge">PROTOTYPE A2 — NOT PRODUCTION</div>
+  <div class="hud" id="hud">LEVEL 1 — WORLD</div>
+  <p class="lead" id="lead">どこへ行く？</p>
+  <div class="stage" id="stage">
+    <div class="world no-anim" id="world"></div>
+  </div>
+  <button class="zoomout" id="zoomOut">← ひとつ戻る</button>
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ---- world data (procedurally generated for a ~50-event stress test —
+  // hand-authoring 50 positions is not the point of this prototype; the
+  // point is proving the RENDERING/CAMERA MODEL never mounts more than one
+  // tier's worth of markers at once). ----
+  const WORLD_W = 3400, WORLD_H = 2400;
+  const M = (n) => `/jibun-choice-town/assets/map-thumb/${n}.png`;
+  const AREAS = [
+    { id:'center', name:'まちの中心', cx:1700, cy:1300, r:280, img:M('town-hero'), emoji:null, town:true },
+    { id:'minato', name:'港', cx:600, cy:1750, r:190, img:M('harbor-district'), emoji:null },
+    { id:'mori', name:'森と川', cx:2750, cy:400, r:210, img:M('forest-district'), emoji:null },
+    { id:'eki', name:'駅前', cx:2550, cy:1950, r:190, img:M('station-district'), emoji:null },
+    { id:'oka', name:'丘の上', cx:580, cy:420, r:190, img:M('hill-district'), emoji:null },
+    // these two exist only to prove the architecture scales PAST today's 5
+    // districts without new district illustrations — a plain functional
+    // color+emoji placeholder (same language the app used before GPT art
+    // arrived), never presented as production quality.
+    { id:'kawaguchi', name:'河口', cx:2150, cy:2200, r:160, img:null, emoji:'🌊', color:'#bfe0e8' },
+    { id:'shotengai', name:'商店街', cx:3050, cy:1200, r:160, img:null, emoji:'🏮', color:'#f0dba8' },
+  ];
+  const FOG = [ { cx:3250, cy:2150, r:130 }, { cx:180, cy:1050, r:120 } ];
+  const SUBLOC_TYPES = [
+    ['🏫','学校'], ['🏥','病院'], ['📚','本屋'], ['🌳','公園'], ['🏪','商店'],
+    ['🚉','駅舎'], ['🏛','施設'], ['🍞','パン屋'], ['🎣','漁協'], ['🛠','工房'],
+  ];
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const rand = mulberry32(20260904);
+  // 6-8 sub-locations per area, 2-4 events per sub-location — totals to
+  // roughly 45 sub-locations and ~110 events across 7 areas, comparable in
+  // order of magnitude to a "50 world" registry spread across a two-level
+  // hierarchy (matches the founding decision doc's "7-8地区×5-10地点" scale
+  // note in factory/state/expansion/map-architecture-decision.md).
+  for (const area of AREAS) {
+    const n = 6 + Math.floor(rand() * 3);
+    area.sublocs = [];
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 + rand() * 0.4;
+      const rr = area.r * (0.45 + rand() * 0.25);
+      const type = SUBLOC_TYPES[Math.floor(rand() * SUBLOC_TYPES.length)];
+      const sub = {
+        id: `${area.id}-s${i}`, name: type[1], emoji: type[0],
+        cx: area.cx + Math.cos(ang) * rr, cy: area.cy + Math.sin(ang) * rr,
+        events: [],
+      };
+      const m = 2 + Math.floor(rand() * 3);
+      for (let j = 0; j < m; j++) {
+        const eang = (j / m) * Math.PI * 2 + rand();
+        sub.events.push({
+          id: `${sub.id}-e${j}`, cx: sub.cx + Math.cos(eang) * 46, cy: sub.cy + Math.sin(eang) * 46,
+          signal: rand() < 0.3,
+        });
+      }
+      area.sublocs.push(sub);
+    }
+  }
+  const TOTAL_SUBLOC = AREAS.reduce((a, d) => a + d.sublocs.length, 0);
+  const TOTAL_EVENTS = AREAS.reduce((a, d) => a + d.sublocs.reduce((b, s) => b + s.events.length, 0), 0);
+
+  // ---- rendering: ONLY the current level's markers are ever in the DOM ----
+  const worldEl = document.getElementById('world');
+  const stage = document.getElementById('stage');
+  const hud = document.getElementById('hud');
+  const leadEl = document.getElementById('lead');
+  const toastEl = document.getElementById('toast');
+  const zoomOutBtn = document.getElementById('zoomOut');
+
+  let state = { level: 1, areaId: null, sublocId: null };
+
+  function renderTerrain() {
+    return `
+      <svg class="terrain" width="${WORLD_W}" height="${WORLD_H}" viewBox="0 0 ${WORLD_W} ${WORLD_H}">
+        <rect width="${WORLD_W}" height="${WORLD_H}" fill="#dcead0"/>
+        <path d="M0,1650 C450,1600 650,1800 800,${WORLD_H} L0,${WORLD_H} Z" fill="#a8cfe3"/>
+        <path d="M0,1720 C420,1680 600,1850 730,${WORLD_H} L0,${WORLD_H} Z" fill="#8fbfda" opacity="0.7"/>
+        <path d="M2750,420 C2400,700 2000,900 1700,1300 C1450,1620 1050,1850 700,1980" fill="none" stroke="#9fc8de" stroke-width="30" stroke-linecap="round" opacity="0.85"/>
+        ${AREAS.map((a) => AREAS.filter((b) => b !== a).map((b) =>
+          `<path d="M${a.cx},${a.cy} L${b.cx},${b.cy}" stroke="#e9e0c8" stroke-width="12" stroke-dasharray="2 20" stroke-linecap="round" opacity="0.55"/>`
+        ).join('')).join('')}
+      </svg>`;
+  }
+
+  function renderLevel1() {
+    return AREAS.map((a) => {
+      const style = a.img
+        ? `background-image:url('${a.img}'); background-position:center ${a.town ? '55%' : '45%'};`
+        : `background-color:${a.color};`;
+      const size = a.town ? 116 : 92;
+      return `<div class="area-pin ${a.town ? 'town' : ''}" data-area="${a.id}"
+        style="left:${a.cx}px; top:${a.cy}px; width:${size}px; height:${size}px; ${style}">
+        ${a.img ? '' : a.emoji}
+        <span class="pin-label" style="top:${size + 8}px">${a.name}</span>
+      </div>`;
+    }).join('') + FOG.map((f, i) => `<div class="fog" data-fog="${i}" style="left:${f.cx - f.r}px; top:${f.cy - f.r * 0.75}px; width:${f.r * 2}px; height:${f.r * 1.5}px;">？</div>`).join('')
+      + `<div style="position:absolute; left:${WORLD_W - 40}px; top:40px; font-size:11px; color:#7d8a72; background:rgba(255,255,255,0.6); padding:2px 8px; border-radius:8px;">dummy registry: ${TOTAL_SUBLOC} sub-locations / ${TOTAL_EVENTS} events (not rendered at Level 1)</div>`;
+  }
+
+  function renderLevel2(area) {
+    return area.sublocs.map((s) => `<div class="subloc in" data-subloc="${s.id}" style="left:${s.cx}px; top:${s.cy}px;">
+      ${s.emoji}<span class="pin-label">${s.name}</span>
+    </div>`).join('');
+  }
+
+  function renderLevel3(sub) {
+    return sub.events.map((e) => `<div class="event in ${e.signal ? 'signal' : ''}" data-event="${e.id}" style="left:${e.cx}px; top:${e.cy}px;">${e.signal ? '🔥' : '📍'}</div>`).join('');
+  }
+
+  function findArea(id) { return AREAS.find((a) => a.id === id); }
+  function findSubloc(area, id) { return area.sublocs.find((s) => s.id === id); }
+
+  function render() {
+    let html = renderTerrain();
+    if (state.level === 1) {
+      html += renderLevel1();
+      hud.textContent = `LEVEL 1 — WORLD (${AREAS.length} areas visible, 0 of ${TOTAL_SUBLOC + TOTAL_EVENTS} sub-items mounted)`;
+      leadEl.textContent = 'どこへ行く？';
+      zoomOutBtn.classList.remove('show');
+    } else if (state.level === 2) {
+      const area = findArea(state.areaId);
+      html += renderLevel2(area);
+      hud.textContent = `LEVEL 2 — AREA "${area.name}" (${area.sublocs.length} of ${TOTAL_SUBLOC} sub-locations mounted)`;
+      leadEl.textContent = `${area.name} — 気になるところへ`;
+      zoomOutBtn.classList.add('show');
+    } else if (state.level === 3) {
+      const area = findArea(state.areaId);
+      const sub = findSubloc(area, state.sublocId);
+      html += renderLevel3(sub);
+      hud.textContent = `LEVEL 3 — EVENT "${sub.name}" (${sub.events.length} of ${TOTAL_EVENTS} events mounted)`;
+      leadEl.textContent = `${sub.name} — タップしてみよう`;
+      zoomOutBtn.classList.add('show');
+    }
+    worldEl.innerHTML = html;
+    worldEl.style.width = WORLD_W + 'px';
+    worldEl.style.height = WORLD_H + 'px';
+    attachHandlers();
+  }
+
+  // ---- camera ----
+  let vw = stage.clientWidth, vh = stage.clientHeight;
+  let cam = { s: 1, tx: 0, ty: 0 };
+  function clamp(tx, ty, s, slack) {
+    slack = slack || 0;
+    const marginX = Math.min(slack, vw - WORLD_W * s - slack);
+    const marginY = Math.min(slack, vh - WORLD_H * s - slack);
+    return { tx: Math.min(slack, Math.max(marginX, tx)), ty: Math.min(slack, Math.max(marginY, ty)) };
+  }
+  function applyCam() { worldEl.style.transform = `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})`; }
+  function camFor(level) {
+    vw = stage.clientWidth; vh = stage.clientHeight;
+    if (level === 1) {
+      const s = (vh * 0.85) / (WORLD_H * 0.62);
+      const c = clamp(vw / 2 - AREAS[0].cx * s, vh / 2 - AREAS[0].cy * s, s);
+      return { s, ...c };
+    }
+    if (level === 2) {
+      const area = findArea(state.areaId);
+      const s = Math.min(Math.max((Math.min(vw, vh) * 0.9) / (area.r * 2.1), 1.1), 3.2);
+      return { s, tx: vw / 2 - area.cx * s, ty: vh / 2 - area.cy * s };
+    }
+    const area = findArea(state.areaId);
+    const sub = findSubloc(area, state.sublocId);
+    const s = 4.4;
+    return { s, tx: vw / 2 - sub.cx * s, ty: vh / 2 - sub.cy * s };
+  }
+  function goTo(level, areaId, sublocId, opts) {
+    state = { level, areaId: areaId ?? null, sublocId: sublocId ?? null };
+    render();
+    const c = camFor(level);
+    cam = c; applyCam();
+  }
+  function resize() { const c = camFor(state.level); cam = c; applyCam(); }
+  window.addEventListener('resize', resize);
+
+  // ---- gesture arbitration (same validated pattern as the production fix
+  // this session: setPointerCapture + onPointerCancel + 8px Euclidean slop) ----
+  const SLOP = 8;
+  let drag = null, suppressTap = false, pointerId = null;
+  stage.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY, tx: cam.tx, ty: cam.ty, moved: false };
+    pointerId = e.pointerId;
+    stage.setPointerCapture(e.pointerId);
+    worldEl.classList.add('no-anim');
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) > SLOP) drag.moved = true;
+    if (drag.moved && state.level === 1) { // pan is a Level-1 (world) affordance
+      const c = clamp(drag.tx + dx, drag.ty + dy, cam.s, 80);
+      cam.tx = c.tx; cam.ty = c.ty; applyCam();
+    }
+  });
+  function endDrag() {
+    if (drag?.moved) { suppressTap = true; setTimeout(() => (suppressTap = false), 80); }
+    drag = null;
+    worldEl.classList.remove('no-anim');
+    if (pointerId != null && stage.hasPointerCapture?.(pointerId)) stage.releasePointerCapture(pointerId);
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('click', (e) => {
+    if (suppressTap) return;
+    // "empty space" includes the terrain SVG/background (a descendant of
+    // #world, not #world itself) — only an actual marker should suppress
+    // the zoom-out-on-tap-away affordance.
+    const onMarker = e.target.closest('[data-area],[data-subloc],[data-event],[data-fog]');
+    if (!onMarker) {
+      if (state.level === 3) goTo(2, state.areaId);
+      else if (state.level === 2) goTo(1);
+    }
+  });
+
+  function attachHandlers() {
+    worldEl.querySelectorAll('[data-area]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation();
+      goTo(2, el.dataset.area);
+    }));
+    worldEl.querySelectorAll('[data-fog]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation();
+      showToast('まだ、もやの向こう。');
+    }));
+    worldEl.querySelectorAll('[data-subloc]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation();
+      goTo(3, state.areaId, el.dataset.subloc);
+    }));
+    worldEl.querySelectorAll('[data-event]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation();
+      showToast('イベント — prototypeのため中身は未実装');
+    }));
+  }
+  function showToast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    clearTimeout(toastEl._t); toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 1400);
+  }
+  zoomOutBtn.addEventListener('click', () => {
+    if (state.level === 3) goTo(2, state.areaId);
+    else if (state.level === 2) goTo(1);
+  });
+
+  goTo(1);
+</script>
+</body>
+</html>

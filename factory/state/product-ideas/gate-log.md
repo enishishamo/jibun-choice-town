@@ -83,3 +83,26 @@ SCALABILITY_50_WORLDSの構造的懸念と、今回のCプロトタイプの弱�
 留保——2つの独立評価が偽の一致を作らず、そのまま報告した。
 production実装・選定はまだ行っていない。HUMAN_PRODUCT_DECISION_REQUIRED
 のまま。
+
+**追記（同日、Human Decision確定後）**: Humanが基本architectureとして
+A（連続世界地図）を採用し、「50 worldを一枚に全表示しない」ための
+洗練案として「A2: Continuous World + Semantic Zoom」（3階層: WORLD→
+AREA→EVENT、同一canvas上でカメラpan/zoomのみ、画面遷移なし）を指定。
+production実装なしのprototypeを作成・自動検証・Codex独立レビューを
+実施した結果（詳細:
+`factory/state/expansion/map-a2-prototype-report-2026-09-04.md`）:
+SCALABILITY_50_WORLDS=93（PASS、DOM node数がtier scopeで収まることを
+実測）、gesture arbitration（pan/tap分離・誤操作耐性）は自動テスト
+6/6 PASS——技術的な骨格は健全。一方GAME_DESIRE=34/DISCOVERY_CURIOSITY=48/
+WORLD_FEEL=43/MOBILE_INTERACTION=58/MAP_CLUTTER=36はいずれも閾値未達で
+overall FAIL。根本原因はCodex曰く「LEVEL 2/3のsub-locationが地区中心の
+周りにリング状に散らされているだけで、場所同士の空間的な意味的つながりが
+なく、結局『地図上の選択メニュー』に戻ってしまっている」——これは
+C案を却下した理由（overviewがmenuに見える）と**同じ失敗モードが、
+今回はzoom後の階層で再発した**ことを意味する。ClaudeもCodexに同意し、
+これは見た目（placeholder art）の問題である前に配置ロジックの問題である
+可能性が高いと判断——GPT_ASSET_REQUESTはまだ作成せず、次のイテレーション
+（Level1の道路網をLevel2/3のローカルストリートへ延長する等の
+レイアウト再設計）を先に試すべきと記録した。production実装・GPT資産
+発注のいずれも行わず、Humanの確認・次の指示待ちで停止。
+HUMAN_PRODUCT_DECISION_REQUIRED = true。
