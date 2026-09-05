@@ -140,6 +140,16 @@ GPT画像そのものの再生成・Claudeによる描き直しは行ってい�
 BLOCKER/HIGH=0＋max-iterations明示停止」）に従い、4roundで打ち切り、
 正直に残存FAILを報告する。虚偽のPASS報告はしない。
 
+**追記（同日、Autonomy Boundary是正）**: 上記のGPT_ASSET_REQUEST
+（`true-home-mascot-character`）は、その後のHuman Reviewで
+Product Identity Gate違反（brand character/mascotの新設はHUMAN_PRODUCT_DECISION_REQUIRED
+区分であり、QA score未達を理由にAIが自動発行してよいものではなかった）と
+判定され、REJECTED_NOT_APPROVEDへ差し戻された。詳細は
+`../../rules/product-identity-gate.md` と `../product-ideas/gate-log.md`
+を参照。HOME_GAME_FEELの根本対応（mascot新設の可否）はHuman Product
+Decision待ちとなり、`../backlog/ui-ux-backlog.md`の`true-home-game-feel`
+に反映済み。
+
 ## 7. Release Safety
 
 すべてfeature/harness-bootstrap（Development Track）上で実施。
