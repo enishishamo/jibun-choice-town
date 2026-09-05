@@ -318,26 +318,50 @@ export default function HomeScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focus, vp, regionScale, pan]);
 
-  // drag-to-pan (region mode only); a real drag suppresses the tap
+  // Drag-to-pan (region mode only); a real drag suppresses the tap.
+  // 2026-09-04 (Experience Design Harness — Interaction blocker repair):
+  // Human Review on a real iPhone found that placing a finger near/on a
+  // district while trying to pan could fire that district's tap and open a
+  // world unintentionally, even though this file already tracked a "moved"
+  // flag and functional (mouse, no-movement) QA passed. Two concrete gaps,
+  // both textbook causes of exactly this class of bug in a canvas-with-
+  // nested-hotspots + custom-pan implementation:
+  // 1. No setPointerCapture — without it, a touch that starts on a nested
+  //    <button> (district-node / world-marker) is not GUARANTEED to keep
+  //    delivering pointermove/pointerup to this container on every engine;
+  //    capturing to the container removes that ambiguity entirely.
+  // 2. No onPointerCancel — if the browser ever cancels the gesture (a
+  //    system gesture, an OS interruption) mid-drag, drag.current was never
+  //    cleared, which could leave the arbitration state stale for the next
+  //    touch.
+  // The movement threshold also moved from a 6px Manhattan sum (~4px on a
+  // single axis) to an 8px Euclidean distance — closer to the touch-slop
+  // constants real platforms use (Android ~8dp, iOS ~10pt) — so a real
+  // finger's natural first-frame jitter cannot itself register as "moved".
+  const TOUCH_SLOP = 8;
   const onPointerDown = (e: React.PointerEvent) => {
     if (focus) return;
     drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y, moved: false };
+    e.currentTarget.setPointerCapture(e.pointerId);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     const d = drag.current;
     if (!d) return;
     const dx = e.clientX - d.x;
     const dy = e.clientY - d.y;
-    if (Math.abs(dx) + Math.abs(dy) > 6) d.moved = true;
+    if (!d.moved && Math.hypot(dx, dy) > TOUCH_SLOP) d.moved = true;
     if (d.moved) { setPan({ x: d.px + dx, y: d.py + dy }); setDragging(true); }
   };
-  const onPointerUp = () => {
+  const endDrag = (e?: React.PointerEvent) => {
     const d = drag.current;
     drag.current = null;
     setDragging(false);
     if (d?.moved) suppressTap.current = true;
     window.setTimeout(() => (suppressTap.current = false), 80);
+    if (e?.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
   };
+  const onPointerUp = (e: React.PointerEvent) => endDrag(e);
+  const onPointerCancel = (e: React.PointerEvent) => endDrag(e);
   const suppressTap = useRef(false);
   const [dragging, setDragging] = useState(false);
 
@@ -388,6 +412,7 @@ export default function HomeScreen() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
           onPointerLeave={onPointerUp}
         >
           <div

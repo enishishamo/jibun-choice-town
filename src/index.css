@@ -5330,6 +5330,13 @@ img {
   top: 0;
   transform-origin: 0 0;
   transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.3, 1);
+  /* 2026-09-04 (Interaction & Motion Harness — perceived-performance pass):
+     this element's transform changes continuously during drag-to-pan and on
+     every district-focus zoom; hinting the compositor up front avoids a
+     layer-promotion stutter on the first touch of a session on mobile
+     Safari, which is when a dropped frame is most noticeable ("does the
+     screen feel like it's following my finger"). */
+  will-change: transform;
 }
 .region-terrain { position: absolute; left: 0; top: 0; }
 .town-tile {
