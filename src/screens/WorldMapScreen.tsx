@@ -36,8 +36,23 @@ import type { WorldState } from "../state/GameState";
 const WORLD_IMG = `${import.meta.env.BASE_URL}assets/world/continuous-world.png`;
 const CANVAS_W = 1774;
 const CANVAS_H = 887;
-/** at most this many "something is happening" signals on the region view (§15) */
+/** at most this many "something is happening" signals on the region view (§15)
+ * — a freshness glow (pulsing crowd icon), unrelated to which markers are
+ * visible at all (see MAX_INITIAL_OVERVIEW below). A marker can be signal,
+ * overview-visible, both, or neither. */
 const MAX_SIGNALS = 5;
+/** 2026-09-05 (Human Review — Map V1 minimum repair #2, Progressive
+ * Disclosure): the Continuous World Base Illustration made simultaneous
+ * event markers read as too many at once on a 375px initial viewport. Caps
+ * how many markers show at region overview BEFORE any pan/focus — capped
+ * to the "center" district specifically (not a freshness pick like
+ * MAX_SIGNALS), since "center" is what the default camera always frames;
+ * picking by freshness alone could select markers in districts the initial
+ * camera doesn't even show, leaving nothing visible at all. Every other
+ * marker (including the rest of center's) reveals via the EXISTING
+ * focus-reveal mechanism (`inFocus`) once its district is entered — no new
+ * reveal mechanism, no marker architecture change. */
+const MAX_INITIAL_OVERVIEW = 4;
 
 /** small always-visible "compass" — a MINIATURE PAINTING of the same canvas
  * geography (green ground, blue sea corner, terrain-colored district
@@ -246,6 +261,15 @@ export default function HomeScreen() {
   const signalIds = useMemo(() => {
     const fresh = markers.filter((m) => m.state === "DISCOVERED" || m.state === "UPDATED");
     return new Set(fresh.slice(-MAX_SIGNALS).map((m) => m.eventId));
+  }, [markers]);
+
+  // Progressive Disclosure (Map V1 minimum repair #2): capped to "center"
+  // specifically — the district the default camera always frames — so the
+  // initial overview is never left with zero visible markers just because
+  // the freshness-based `signalIds` happened to pick markers elsewhere.
+  const overviewVisibleIds = useMemo(() => {
+    const centerMarkers = markers.filter((m) => m.districtId === "center");
+    return new Set(centerMarkers.slice(0, MAX_INITIAL_OVERVIEW).map((m) => m.eventId));
   }, [markers]);
 
   // ---- camera --------------------------------------------------------------
@@ -508,6 +532,17 @@ export default function HomeScreen() {
                     inFocus ? "in-focus" : "far",
                     signal ? "signal" : "",
                     idx % 2 === 1 ? "label-up" : "",
+                    // 2026-09-05 (Human Review — Map V1 minimum repair #2,
+                    // Progressive Disclosure): at the region overview, only
+                    // `overviewVisibleIds` stays visible — the rest are
+                    // hidden via CSS (.region-viewport.is-region
+                    // .world-marker.hidden-until-focus), not unmounted, so
+                    // nothing about marker positions/click handling changes.
+                    // Once a district is focused, `inFocus` is true for its
+                    // own markers regardless of this class, so they always
+                    // show in full — the existing focus mechanism IS the
+                    // "reveal more" step, reused as-is.
+                    !inFocus && !overviewVisibleIds.has(m.eventId) ? "hidden-until-focus" : "",
                   ].join(" ")}
                   style={{ left: m.x, top: m.y }}
                   onClick={() => {

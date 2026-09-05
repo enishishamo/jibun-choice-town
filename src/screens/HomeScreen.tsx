@@ -6,7 +6,13 @@
 // No world list, no map, no long instructional paragraphs here.
 import { useGame } from "../state/GameState";
 
-const M = (n: string) => `${import.meta.env.BASE_URL}assets/map-thumb/${n}.png`;
+/** 2026-09-05 (Human Review — Map V1 minimum repair #1): the primary card
+ * used to show the old town-hero art, while tapping it now leads to the
+ * Continuous World Base Illustration map — a visible "different world"
+ * jump. This is a non-destructive crop of the SAME approved
+ * continuous-world.png (town-center plaza, matching WorldMapScreen's
+ * "center" district framing), not a new illustration. */
+const WORLD_CROP = `${import.meta.env.BASE_URL}assets/world/town-center-crop.png`;
 
 /** 2026-09-04 (Experience Design Harness — Visual Design System §ICONOGRAPHY):
  * OS emoji (📖🌱) render as photorealistic/platform-dependent glyphs that
@@ -58,7 +64,7 @@ export default function HomeScreen() {
         <button
           className="home-card home-card-primary"
           onClick={() => navigate({ name: "map" })}
-          style={{ backgroundImage: `url(${M("town-hero")})` }}
+          style={{ backgroundImage: `url(${WORLD_CROP})` }}
         >
           <span className="home-card-sparkle" aria-hidden="true">✨</span>
           <span className="home-card-scrim" />

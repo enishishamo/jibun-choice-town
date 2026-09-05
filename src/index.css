@@ -5500,6 +5500,15 @@ img {
 .region-viewport.is-region .world-marker.far { opacity: 0.72; }
 .region-viewport.is-region .world-marker.far .marker-face { width: 18px; height: 18px; }
 .region-viewport.is-region .world-marker.far .marker-fire { font-size: 9.5px; }
+/* 2026-09-05 (Human Review — Map V1 minimum repair #2, Progressive
+   Disclosure): the Continuous World Base Illustration made simultaneous
+   event markers read as too many at once on a 375px initial viewport.
+   Scoped to region overview ONLY — once a district is focused, `focus`
+   flips region-viewport to .is-district and this rule no longer applies,
+   so a focused district's own markers (never carrying this class, see
+   WorldMapScreen.tsx) always show, and other districts' markers revert to
+   their normal (small/faded) look rather than staying hidden. */
+.region-viewport.is-region .world-marker.hidden-until-focus { display: none; }
 /* state looks */
 .world-marker.st-completed .marker-face { border-color: #7fae6a; background: #eef5e4; }
 .world-marker.st-completed .marker-fire { filter: grayscale(0.7); opacity: 0.7; }
@@ -5653,7 +5662,12 @@ img {
    compass-forest-overlap). Bottom-right keeps it clear of every district's
    signpost at the new initial framing. */
 @media (max-width: 700px) {
-  .compass-wrap { transform: scale(0.78); transform-origin: bottom right; }
+  /* 2026-09-05 (Human Review — Map V1 minimum repair #3): this is not a
+     navigation game — the minimap overlay competed with the World Art and
+     event exploration on a 375px screen. Desktop keeps it (scale is
+     unaffected there); this query only removes it below the mobile/desktop
+     breakpoint already used throughout this file. */
+  .compass-wrap { display: none; }
 }
 .compass-dot { cursor: pointer; }
 .compass-dot text { pointer-events: none; user-select: none; }
