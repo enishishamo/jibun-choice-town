@@ -5388,33 +5388,27 @@ img {
      screen feel like it's following my finger"). */
   will-change: transform;
 }
-.region-terrain { position: absolute; left: 0; top: 0; }
-.town-tile {
+/* 2026-09-05 (Map V1 — Human-approved Continuous World Base Illustration):
+   ONE image now covers the whole region canvas, replacing the old
+   town-tile + separate district-illustration composite (their rules used
+   to live here — removed, no longer referenced anywhere in the app). It is
+   rendered at its native pixel size (width/height attrs match CANVAS_W/H
+   exactly, no stretch) and needs no mask/feathering of its own — there is
+   no seam between "districts" to hide, since it was authored as one piece. */
+.world-illustration {
   position: absolute;
-  border-radius: 22px;
-  cursor: pointer;
-  object-fit: cover;
-  /* soft feathered edge instead of a hard drop-shadow "card" — blends into
-     the terrain beneath it (map repair §5, 2026-09-04) */
-  -webkit-mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
-  mask-image: radial-gradient(ellipse 56% 62% at 50% 50%, #000 62%, transparent 100%);
-  /* the url(#worldGrain) SVG feTurbulence filter this used to carry alongside
-     drop-shadow was removed 2026-09-04 (Mobile Map Simplification perf pass)
-     — SVG filter references force expensive software compositing on mobile
-     WebKit and were a measured contributor to the "重い/カクつく" Human
-     Review finding. A plain CSS drop-shadow is native-composited and much
-     cheaper; the grain texture's visual contribution at map-thumbnail scale
-     was negligible next to its cost. */
-  filter: drop-shadow(0 4px 10px rgba(60, 50, 30, 0.15));
-}
-.district-illustration {
-  position: absolute;
-  object-fit: contain;
+  left: 0;
+  top: 0;
+  display: block;
   pointer-events: none;
-  /* source PNGs already carry a soft alpha-feathered vignette edge, so no
-     additional mask is applied here. See .town-tile above for why the
-     url(#worldGrain) SVG filter was dropped in favor of plain drop-shadow. */
-  filter: drop-shadow(0 3px 8px rgba(60, 50, 30, 0.12));
+}
+/* invisible tap target standing in for the old town-tile <img>'s onClick —
+   see WorldMapScreen.tsx comment at its use site. */
+.town-hitzone {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 .district-node {
   position: absolute;

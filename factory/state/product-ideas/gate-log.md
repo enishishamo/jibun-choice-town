@@ -127,3 +127,16 @@ gpt-asset-requests.json`へ記録した——**これは生成の承認ではな
 "IDENTIFIED_NOT_YET_APPROVED"`）。production実装・GPT art生成のいずれも
 行わず、Humanの確認・次の指示待ちで停止。HUMAN_PRODUCT_DECISION_REQUIRED
 = true。
+
+**追記（2026-09-05、GPT_ASSET_REQUEST承認・生成・Development実装完了）**:
+Humanが`continuous-world-base-illustration`の詳細ブリーフ（mobile初期
+viewport・future expansion・district integration・perspective/scale・
+no embedded UI・art style等）を追記した上で`HUMAN_APPROVED_FOR_GPT_
+GENERATION`として承認。画像はHumanがGPTで生成しiCloud経由で提供
+（Claudeは生成していない、Art Ownership遵守）。Map architectureの
+再検討・追加prototypeなしで、Human Decision済みの方針通りDevelopment
+Mapへ実装完了（`factory/state/expansion/
+map-v1-implementation-2026-09-05.md`）。自動テスト（gesture arbitration
+5/5・smoke QA 0 blocker・flow bot 2件）すべてPASS。production
+実装ではなくDevelopment Trackのみ、Stable/remote pushは未実施。
+Human Reviewを待つ。

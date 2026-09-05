@@ -1,11 +1,23 @@
 // Region map data ("生きた町のアトラス" — factory/state/expansion/map-architecture-decision.md).
-// ONE continuous region canvas: the existing town illustration stays as the
-// center tile; new districts attach around it; foggy silhouettes tease what is
-// not open yet. Worlds are assigned to districts here (not in content modules)
-// so existing modules stay untouched and new worlds add one line.
+// 2026-09-05 (Map V1 — Human-approved Continuous World Base Illustration):
+// the region canvas is now ONE single continuous illustration
+// (public/assets/world/continuous-world.png) instead of a town tile +
+// separate per-district raster illustrations composited together — see
+// factory/state/expansion/map-v1-implementation-2026-09-05.md for the full
+// before/after. cx/cy/r below are positions WITHIN that image (in the
+// image's own native pixel space, which is also this file's CANVAS_W/H —
+// see WorldMapScreen.tsx), tuned by eye to sit over the matching landmark
+// in the new art (plaza/fountain, harbor lighthouse+pier, station+tracks,
+// forest waterfall, hill/civic dome building). Foggy districts are NOT
+// drawn into the art (per the Human's "no embedded UI/no reserved blank
+// space" instruction) — they reuse the existing signpost+silhouette+teaser
+// mechanic, repositioned over plausible distant/hazy parts of the image
+// (the small offshore island, the far mountain backdrop).
 //
-// Coordinates: virtual region canvas, 1200 x 820 (px units at scale 1 —
-// must match CANVAS_W/CANVAS_H in HomeScreen).
+// Coordinates: virtual region canvas, 1774 x 887 (px units at scale 1 —
+// must match CANVAS_W/CANVAS_H in WorldMapScreen, and is this image's own
+// native pixel size — the <img> is rendered 1:1 into the canvas, never
+// stretched, per the Human's Image Rendering requirement).
 
 export interface District {
   id: string;
@@ -30,11 +42,15 @@ export interface District {
 }
 
 export const TOWN_TILE = {
-  // where the existing town illustration sits on the region canvas
-  x: 300,
+  // 2026-09-05: no longer a separate raster tile — this is now just the
+  // bounding box, WITHIN the single continuous-world image, that the
+  // existing percentage-based `mapPos` marker positions (in ../data,
+  // authored against "the town tile area") scatter across. Sized around
+  // the plaza/fountain/clock-tower cluster in the new art.
+  x: 610,
   y: 210,
-  w: 620,
-  h: 413, // 1536x1024 aspect
+  w: 480,
+  h: 340,
 };
 
 export const DISTRICTS: District[] = [
@@ -44,7 +60,7 @@ export const DISTRICTS: District[] = [
     lead: "いつもの町。今日も、あちこちで何かが起きている。",
     cx: TOWN_TILE.x + TOWN_TILE.w / 2,
     cy: TOWN_TILE.y + TOWN_TILE.h / 2,
-    r: 300,
+    r: 240,
     terrain: "town",
     landmarkEmoji: "🏙",
   },
@@ -52,9 +68,9 @@ export const DISTRICTS: District[] = [
     id: "minato",
     name: "港",
     lead: "海のそば。大きな船と、夜も動きつづける仕事の場所。",
-    cx: 240,
-    cy: 690,
-    r: 150,
+    cx: 220,
+    cy: 520,
+    r: 200,
     terrain: "harbor",
     landmarkEmoji: "⚓",
   },
@@ -62,9 +78,9 @@ export const DISTRICTS: District[] = [
     id: "mori-kawa",
     name: "森と川",
     lead: "川の上流と森。しずかに見えて、手入れがつづいている。",
-    cx: 950,
-    cy: 185,
-    r: 160,
+    cx: 1480,
+    cy: 480,
+    r: 190,
     terrain: "forest",
     landmarkEmoji: "🌲",
   },
@@ -72,9 +88,9 @@ export const DISTRICTS: District[] = [
     id: "ekimae",
     name: "駅前",
     lead: "駅とオフィスのまわり。画面の向こうを作る人たちもいる。",
-    cx: 930,
-    cy: 600,
-    r: 140,
+    cx: 1080,
+    cy: 230,
+    r: 180,
     terrain: "station",
     landmarkEmoji: "🚉",
   },
@@ -82,20 +98,24 @@ export const DISTRICTS: District[] = [
     id: "oka-bunka",
     name: "丘の上",
     lead: "図書館と、まちの記憶が集まる丘。",
-    cx: 245,
-    cy: 165,
-    r: 130,
+    cx: 1650,
+    cy: 140,
+    r: 170,
     terrain: "hill",
     landmarkEmoji: "🏛",
   },
   // ---- not yet open: silhouettes in the mist (§15 discovery signal) --------
+  // 2026-09-05: repositioned over plausible distant/hazy parts of the new
+  // continuous-world art (the small offshore island; the far mountain
+  // backdrop) rather than a drawn "empty gray patch" — no change to the
+  // existing teaser mechanic itself, just where it sits.
   {
     id: "fog-sky",
     name: "？？？",
     lead: "",
-    cx: 585,
-    cy: 52,
-    r: 100,
+    cx: 230,
+    cy: 90,
+    r: 90,
     terrain: "fog",
     landmarkEmoji: "🌫",
     foggy: true,
@@ -111,8 +131,8 @@ export const DISTRICTS: District[] = [
     id: "fog-yuki",
     name: "？？？",
     lead: "",
-    cx: 1090,
-    cy: 420,
+    cx: 950,
+    cy: 55,
     r: 90,
     terrain: "fog",
     landmarkEmoji: "🌫",

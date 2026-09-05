@@ -1,8 +1,18 @@
 // HOME: 「生きた町のアトラス」 (factory/state/expansion/map-architecture-decision.md)
-// ONE continuous region canvas — the existing town illustration stays as the
-// center tile, new districts attach around it, foggy silhouettes tease what is
-// not open yet. The camera ZOOMS (CSS transform, no screen cuts) from the
-// region view into a district; worlds are tapped inside a district.
+// 2026-09-05 (Map V1 — Human-approved Continuous World Base Illustration):
+// the region is now ONE single continuous illustration
+// (public/assets/world/continuous-world.png), replacing the earlier
+// town-tile + separate per-district raster composite (which Human Visual
+// Review + independent Codex review — factory/state/expansion/
+// map-a3-codex-review-2026-09-04.json — found could never read as one world
+// no matter how the CSS blended the pieces, because the source images were
+// generated at different camera angles/scales). See
+// factory/state/expansion/map-v1-implementation-2026-09-05.md for the full
+// before/after. The camera still ZOOMS (CSS transform, no screen cuts) from
+// the region view into a district; worlds are tapped inside a district —
+// this part of the architecture (already validated across the A2/A3
+// prototypes: pan/tap separation, DOM-scoped markers, scalability) is
+// unchanged and reused as-is, per instruction not to rebuild it.
 // No profession lists. No NEW-badge walls: a capped set of living signals
 // (people gathering / sparks) marks where something is happening right now.
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -14,46 +24,20 @@ import type { District } from "../data/districts";
 import { useGame } from "../state/GameState";
 import type { WorldState } from "../state/GameState";
 
-/** 2026-09-04 (True Home / Mobile Map perf pass): the map only ever displays
- * these images at a few hundred CSS px wide, but the source GPT/approved
- * assets are full-resolution (1536x1024, 2.3-3MB each) — five of them
- * loading and filter-compositing at once was a real measured cost on the
- * region view. `map-thumb/` holds non-destructive, resized-only copies
- * (640px wide, ~0.4-0.6MB each) made for this map display specifically;
- * the original full-resolution files are untouched and still used wherever
- * else they might matter later. No illustration content changed. */
-const M = (n: string) => `${import.meta.env.BASE_URL}assets/map-thumb/${n}.png`;
-/** GPT-authored district ground illustrations (2026-09-04 Art Ownership
- * replacement — see factory/state/art/gpt-asset-requests.json). Claude does
- * not draw these; only CSS sizing/position/crop is adjusted here. */
-const DISTRICT_ILLUSTRATION: Partial<Record<District["terrain"], string>> = {
-  harbor: "harbor-district",
-  forest: "forest-district",
-  station: "station-district",
-  hill: "hill-district",
-};
-const CANVAS_W = 1200;
-const CANVAS_H = 820;
+/** Human-approved (factory/state/art/gpt-asset-requests.json,
+ * continuous-world-base-illustration, status HUMAN_APPROVED_FOR_GPT_GENERATION)
+ * single continuous world illustration — one camera angle/scale/light
+ * source across the whole region. Rendered 1:1 at its native pixel size
+ * (see CANVAS_W/H below, which match the file exactly) so it is never
+ * stretched; the CSS transform on `.region-canvas` handles all zoom, not
+ * object-fit or a resized <img>. No UI (badges/labels/markers) is baked
+ * into this file — those are all separate DOM overlays, per the Human's
+ * "no embedded UI" instruction. */
+const WORLD_IMG = `${import.meta.env.BASE_URL}assets/world/continuous-world.png`;
+const CANVAS_W = 1774;
+const CANVAS_H = 887;
 /** at most this many "something is happening" signals on the region view (§15) */
 const MAX_SIGNALS = 5;
-
-// ============================================================================
-// Map repair (2026-09-04, Home/World Map Human Visual Review): every district
-// used to be a flat color ellipse + one emoji + a text pill — it read as a UI
-// icon, not a place. This kit draws a small, GENERIC (terrain-class-driven,
-// never per-district hand-authored) illustrated ground for every district so
-// the whole canvas shares one visual language instead of "photo card in the
-// middle, flat menu icons around it." `warmth` (0..1) is how many of the
-// district's worlds are engaged (in-progress/completed) — building windows
-// light up warm instead of a badge, per the research principle "工事→煙→灯り"
-// (state shows as world change, not UI decoration).
-// 2026-09-04: harbor/forest/station/hill (the only terrains that ever reach
-// this point — see DISTRICTS in ../data/districts) now render as
-// GPT-authored raster illustrations (DISTRICT_ILLUSTRATION + the <img> pass
-// in the JSX below) instead of the hand-drawn SVG ground kit this file used
-// to have. The `warmth`-driven lit-window detail that kit drew is not
-// reproduced on the illustrations; district-level progress is still visible
-// via the separate "living signal" markers (👥, see signalIds below).
 
 /** small always-visible "compass" — a MINIATURE PAINTING of the same canvas
  * geography (green ground, blue sea corner, terrain-colored district
@@ -87,11 +71,6 @@ function Compass({ focus, onPick, cam, vp }: {
       <circle cx={cx0} cy={cy0} r={48} fill="#dcead0" stroke="#c9b895" strokeWidth={1.5} />
       <clipPath id="compassClip"><circle cx={cx0} cy={cy0} r={47} /></clipPath>
       <g clipPath="url(#compassClip)">
-        {/* echo the sea corner so the compass is visibly THE SAME place */}
-        {(() => {
-          const a = toXY(0, 540), b = toXY(170, 530), c = toXY(300, 820), e = toXY(0, 820);
-          return <path d={`M${a.x},${a.y} C${b.x},${b.y} ${c.x},${c.y} ${c.x},${c.y} L${e.x},${e.y} Z`} fill="#8fbfda" opacity={0.8} />;
-        })()}
         {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => {
           const { x, y } = toXY(d.cx, d.cy);
           return <ellipse key={d.id} cx={x} cy={y} rx={5} ry={4} fill={TERRAIN_FILL[d.terrain] ?? "#cddcae"} opacity={0.95} />;
@@ -272,15 +251,35 @@ export default function HomeScreen() {
   // ---- camera --------------------------------------------------------------
   // region mode fills the viewport height and is PANNABLE (the map is a place,
   // not a thumbnail); district mode zooms the camera onto the district.
-  // mobile (2026-09-04, True Home / Mobile Map Simplification — Option A of
-  // 3 compared, see factory/state/expansion/mobile-map-repair-2026-09-04.md):
-  // the initial slice was tightened from ~840px to ~600px so the town center
-  // reads at a natural, comfortable size and fills most of the screen — all
-  // 4 districts + 2 fog patches no longer try to fit at once. Districts peek
-  // in only partially at the edges, inviting a pan rather than presenting a
-  // fully-legible overview on first paint. Desktop is unchanged (fits the
-  // whole atlas, where the extra room is not a density problem).
-  const regionScale = vp.w < 700 ? vp.w / 600 : Math.min(vp.w / CANVAS_W, vp.h / CANVAS_H);
+  // 2026-09-05 (Map V1, Human Directive §3/§4/§19): mobile is the PRIMARY
+  // target, sized so the town center reads as the main focus with adjacent
+  // districts peeking at the edges — never the whole 1774x887 world shrunk
+  // to fit (that reads as "a big list", not "a world you're standing in").
+  // Fit by HEIGHT against a fixed reference (not a width breakpoint split)
+  // so desktop does NOT get to see more of the world just because it has a
+  // bigger viewport (§19 explicitly forbids "PC basis then shrink to
+  // mobile" and the reverse — showing more world on a bigger screen). A
+  // taller viewport (mobile portrait) naturally shows a bit more vertical
+  // context than a short wide desktop window at the same reference height,
+  // which is the desired "vertical exploration exists too" (§6) without a
+  // separate code path.
+  // Two independent constraints, both driven by the SAME formula regardless
+  // of device (no separate mobile/desktop branch):
+  // 1. height must be overscanned a bit past a bare fill (x1.15), or a tall
+  //    portrait viewport exactly matches this image's short (887px) native
+  //    height and vertical pan becomes mathematically impossible (§6
+  //    requires up/down pan to actually work, not just be wired up).
+  // 2. width must never reveal more than ~46% of the image at once — this
+  //    image is much wider than any viewport is tall, so on a WIDE desktop
+  //    window the height constraint alone would happily reveal most of the
+  //    world in one glance (measured: ~80% at a typical desktop size),
+  //    which is exactly what §19 forbids ("desktop shouldn't see more of
+  //    the world just because it has more room"). Whichever constraint
+  //    wants the tighter (larger) scale wins.
+  const MAX_VISIBLE_WIDTH_FRACTION = 0.46;
+  const heightFitScale = (vp.h * 1.15) / CANVAS_H;
+  const widthCapScale = vp.w / (CANVAS_W * MAX_VISIBLE_WIDTH_FRACTION);
+  const regionScale = Math.min(Math.max(Math.max(heightFitScale, widthCapScale), 0.35), 1.6);
   const clampPan = (tx: number, ty: number, s: number) => ({
     tx: Math.min(0, Math.max(vp.w - CANVAS_W * s, tx)),
     ty: Math.min(0, Math.max(vp.h - CANVAS_H * s, ty)),
@@ -289,7 +288,15 @@ export default function HomeScreen() {
     if (!focus) {
       const s = regionScale;
       const center = getDistrict("center")!;
-      const base = clampPan(vp.w / 2 - center.cx * s, vp.h / 2 - center.cy * s, s);
+      // §5/§7: don't center the camera exactly on the plaza/fountain — a
+      // dead-center lock on the strongest landmark reads as "a finished
+      // plaza screen", not "midway through a bigger world". Bias the focal
+      // point up-and-left within the town so harbor (lower-left) and
+      // station/hill (upper-right) both have more room to peek at the
+      // opposite edges.
+      const focalX = center.cx - center.r * 0.22;
+      const focalY = center.cy - center.r * 0.12;
+      const base = clampPan(vp.w / 2 - focalX * s, vp.h / 2 - focalY * s, s);
       const c = clampPan(base.tx + pan.x, base.ty + pan.y, s);
       return { s, tx: c.tx, ty: c.ty };
     }
@@ -419,80 +426,42 @@ export default function HomeScreen() {
             className={`region-canvas ${dragging ? "no-anim" : ""}`}
             style={{ width: CANVAS_W, height: CANVAS_H, transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})` }}
           >
-            {/* terrain */}
-            <svg className="region-terrain" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} width={CANVAS_W} height={CANVAS_H}>
-              <rect width={CANVAS_W} height={CANVAS_H} fill="#dcead0" />
-              {/* sea (harbor corner) */}
-              <path d="M0,540 C170,530 250,600 300,820 L0,820 Z" fill="#a8cfe3" />
-              <path d="M0,585 C160,575 235,640 275,820 L0,820 Z" fill="#8fbfda" opacity="0.7" />
-              {/* river: forest -> town -> sea */}
-              <path d="M950,140 C880,250 760,300 640,330 C480,370 340,470 250,660" fill="none" stroke="#9fc8de" strokeWidth="26" strokeLinecap="round" opacity="0.85" />
-              {/* district grounds: a soft base tint (still terrain-field
-                  driven, §30) UNDER an illustrated kit — closes the fidelity
-                  gap that made districts read as flat UI icons (repair §1). */}
-              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center" && TERRAIN_FILL[d.terrain]).map((d) => (
-                <ellipse key={d.id} cx={d.cx} cy={d.cy - d.r * 0.15} rx={d.r * 1.0} ry={d.r * 0.72} fill={TERRAIN_FILL[d.terrain]!} opacity={0.6} />
-              ))}
-              {/* roads: center to districts */}
-              {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => (
-                <path
-                  key={d.id}
-                  d={`M${TOWN_TILE.x + TOWN_TILE.w / 2},${TOWN_TILE.y + TOWN_TILE.h / 2} Q${(TOWN_TILE.x + TOWN_TILE.w / 2 + d.cx) / 2 + 40},${(TOWN_TILE.y + TOWN_TILE.h / 2 + d.cy) / 2 - 40} ${d.cx},${d.cy}`}
-                  fill="none"
-                  stroke="#e9e0c8"
-                  strokeWidth="16"
-                  strokeDasharray="2 22"
-                  strokeLinecap="round"
-                />
-              ))}
-              {/* fog patches */}
-              {DISTRICTS.filter((d) => d.foggy).map((d) => (
-                <g key={d.id} opacity="0.9">
-                  <ellipse cx={d.cx} cy={d.cy} rx={d.r + 30} ry={d.r * 0.7} fill="#cfd4d9" />
-                  <ellipse cx={d.cx - 30} cy={d.cy + 10} rx={d.r * 0.7} ry={d.r * 0.45} fill="#dde1e4" />
-                </g>
-              ))}
-            </svg>
-
-            {/* the existing town illustration — its hard card edge is now
-                feathered into the terrain via CSS mask, and it shares the
-                same grain filter as the district kits (repair §5) */}
+            {/* Human-approved single continuous world illustration — one
+                camera angle/scale/light source for the whole region.
+                Rendered 1:1 at native pixel size (width/height match
+                CANVAS_W/H exactly), never stretched — the .region-canvas
+                transform above handles all zoom. Replaces the old town-tile
+                + separate district-illustration composite entirely (see
+                file header comment). No UI is drawn into the image itself;
+                district-node/world-marker below are separate DOM overlays. */}
             <img
-              className="town-tile"
-              src={M("town-hero")}
-              alt="まちの中心"
-              width={640}
-              height={426}
+              className="world-illustration"
+              src={WORLD_IMG}
+              alt="JIBUN CHOICE WORLD"
+              width={CANVAS_W}
+              height={CANVAS_H}
               decoding="async"
-              style={{ left: TOWN_TILE.x, top: TOWN_TILE.y, width: TOWN_TILE.w, height: TOWN_TILE.h }}
-              onClick={() => { if (!suppressTap.current && !focus) setFocus("center"); }}
             />
 
-            {/* district ground illustrations — GPT-authored (2026-09-04 Art
-                Ownership replacement of the earlier Claude-drawn SVG
-                placeholders). Each source PNG already carries its own soft
-                alpha-feathered edge, so no additional mask is needed; only
-                size/position is tuned here per district's cx/cy/r. */}
-            {DISTRICTS.filter((d) => !d.foggy && d.id !== "center" && DISTRICT_ILLUSTRATION[d.terrain]).map((d) => {
-              const w = d.r * 2.7;
-              const h = w * (1024 / 1536);
-              return (
-                <img
-                  key={d.id}
-                  className="district-illustration"
-                  src={M(DISTRICT_ILLUSTRATION[d.terrain]!)}
-                  alt=""
-                  width={640}
-                  height={426}
-                  decoding="async"
-                  style={{ left: d.cx - w / 2, top: d.cy - h * 0.58, width: w, height: h }}
-                />
-              );
-            })}
+            {/* invisible tap zone over the plaza/town area — the old
+                town-tile <img> carried its own onClick for entering the
+                town; now that the whole region is one image, this
+                recreates the same "tap the town to focus it" affordance
+                without adding a visible signpost over the richest, most
+                detailed part of the illustration (world-markers already
+                sitting inside this area, painted after this in DOM order,
+                take priority — a marker tap never falls through to this). */}
+            <button
+              className="town-hitzone"
+              style={{ left: TOWN_TILE.x, top: TOWN_TILE.y, width: TOWN_TILE.w, height: TOWN_TILE.h }}
+              onClick={() => { if (!suppressTap.current && !focus) setFocus("center"); }}
+              aria-label="まちの中心"
+            />
 
-            {/* district signposts: now a SMALL marker sitting on top of the
-                illustrated ground kit above, not the district's entire
-                visual content (repair §1 — closing the fidelity gap) */}
+            {/* district signposts: a small tappable marker + label sitting
+                on top of the illustration at each named place (repair §1 —
+                the marker is a small hotspot, never the district's entire
+                visual content). */}
             {DISTRICTS.filter((d) => d.id !== "center").map((d) => (
               <button
                 key={d.id}
