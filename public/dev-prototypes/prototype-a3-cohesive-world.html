@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototype A3 — Cohesive Continuous World (NOT PRODUCTION)</title>
+<style>
+  :root { --cream:#faf5e9; --text:#4a3b2e; --line:#eadfc8; --shadow:0 4px 14px rgba(120,96,60,0.13); }
+  * { box-sizing:border-box; }
+  html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#cfe3ef; font-family:"Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif; color:var(--text); }
+  .badge { position:fixed; top:6px; left:6px; z-index:60; font-size:10px; background:#d95b43; color:#fff; padding:3px 8px; border-radius:999px; font-weight:bold; opacity:0.85; }
+  .hud { position:fixed; top:6px; right:6px; z-index:60; font-size:9px; background:rgba(255,253,246,0.9); border:1px solid var(--line); padding:3px 8px; border-radius:999px; font-weight:bold; max-width:58%; text-align:right; }
+  .stage { position:relative; width:100vw; height:100vh; overflow:hidden; touch-action:none; cursor:grab; }
+  .stage:active { cursor:grabbing; }
+  .world { position:absolute; left:0; top:0; transform-origin:0 0; transition:transform 0.6s cubic-bezier(0.22,0.8,0.3,1); }
+  .world.no-anim { transition:none; }
+
+  /* ---- ONE cohesive terrain: layered blurred color fields (no hard region
+     boundaries) + a single canvas-wide light gradient, so every element
+     painted on top shares the same "sun direction" and never looks like a
+     separately-lit sticker (visual-design-system.md §ILLUSTRATION_INTEGRATION /
+     §DEPTH — feather edges to the surroundings, unify light source). ---- */
+  .terrain-base { position:absolute; inset:0; }
+  .light-gradient { position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,252,230,0.16) 0%, rgba(255,252,230,0.04) 45%, rgba(40,55,30,0.07) 100%); mix-blend-mode:soft-light; pointer-events:none; }
+  .grain { position:absolute; inset:0; opacity:0.05; pointer-events:none; background-image:radial-gradient(circle, #3a4a2a 1px, transparent 1px); background-size:5px 5px; }
+
+  .cloud { position:absolute; width:420px; height:170px; background:radial-gradient(ellipse, rgba(255,255,255,0.4), transparent 70%); border-radius:50%; filter:blur(8px); animation:drift linear infinite; }
+  @keyframes drift { from{transform:translateX(-240px);} to{transform:translateX(4000px);} }
+
+  /* ---- landmarks: feathered into the terrain (radial mask, no hard edge,
+     no white ring "avatar" border), grounded with a soft contact shadow,
+     and passed through ONE shared filter so every illustration + the
+     terrain sit in the same color/light key. ---- */
+  .place { position:absolute; transform-origin:center bottom; cursor:pointer; filter:saturate(1.04) brightness(0.99) drop-shadow(0 10px 14px rgba(50,45,25,0.28)); animation:sway 6s ease-in-out infinite; }
+  @keyframes sway { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+  .place img, .place .placeholder {
+    display:block; object-fit:cover;
+    -webkit-mask-image:radial-gradient(ellipse 62% 68% at 50% 55%, #000 60%, transparent 100%);
+    mask-image:radial-gradient(ellipse 62% 68% at 50% 55%, #000 60%, transparent 100%);
+  }
+  .place .placeholder { background:radial-gradient(ellipse at 40% 35%, #dfe9cf, #c7d8b0 70%); display:flex; align-items:center; justify-content:center; font-size:34px; opacity:0.88; }
+  .place-label { position:absolute; left:50%; bottom:-8px; transform:translate(-50%,100%); font-size:12px; font-weight:bold; background:rgba(255,253,246,0.9); padding:2px 10px; border-radius:999px; box-shadow:var(--shadow); white-space:nowrap; pointer-events:none; opacity:0; transition:opacity 0.3s; }
+  .stage[data-level="1"] .place-label.always,
+  .place:hover .place-label { opacity:1; }
+
+  /* discovery hooks: light/motion, not extra menu icons */
+  .glow { position:absolute; width:26px; height:26px; border-radius:50%; background:radial-gradient(circle, rgba(255,214,120,0.95), rgba(255,214,120,0) 70%); filter:blur(1px); animation:pulse 1.8s ease-in-out infinite; pointer-events:none; }
+  @keyframes pulse { 0%,100%{opacity:0.55; transform:scale(1);} 50%{opacity:1; transform:scale(1.3);} }
+  .sparkle { position:absolute; font-size:16px; animation:twinkle 2.4s ease-in-out infinite; pointer-events:none; filter:drop-shadow(0 0 4px rgba(255,255,255,0.8)); }
+  @keyframes twinkle { 0%,100%{opacity:0.4; transform:scale(0.85) rotate(-8deg);} 50%{opacity:1; transform:scale(1.15) rotate(8deg);} }
+
+  .fog { position:absolute; border-radius:50%; background:radial-gradient(ellipse, rgba(210,216,220,0.94), rgba(225,229,230,0.7)); filter:blur(1px); cursor:pointer; }
+  .fog::after { content:"？"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:20px; color:#8a8f92; animation:mist 3.4s ease-in-out infinite; }
+  @keyframes mist { 0%,100%{opacity:0.8;} 50%{opacity:1;} }
+
+  /* event hotspots: sit DIRECTLY on the illustration, not floating apart */
+  .event { position:absolute; width:30px; height:30px; border-radius:50%; transform:translate(-50%,-50%) scale(0); transition:transform 0.3s cubic-bezier(0.34,1.4,0.4,1); display:flex; align-items:center; justify-content:center; font-size:15px; background:rgba(255,255,255,0.92); border:2px solid #e0862c; box-shadow:0 2px 8px rgba(0,0,0,0.25); cursor:pointer; }
+  .event.in { transform:translate(-50%,-50%) scale(1); }
+  .event.signal { animation:beckon 1.6s ease-in-out infinite; }
+  @keyframes beckon { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.24);} }
+
+  .stage::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 90px 26px rgba(40,55,30,0.20); }
+  .lead { position:fixed; top:8px; left:0; right:0; text-align:center; font-size:13px; font-weight:bold; z-index:5; opacity:0.9; pointer-events:none; text-shadow:0 1px 6px rgba(255,255,255,0.7); }
+  .zoomout { position:fixed; left:12px; bottom:16px; z-index:40; background:rgba(255,253,246,0.94); border:2px solid var(--line); border-radius:999px; padding:9px 16px; font-weight:bold; font-size:13px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity 0.25s; }
+  .zoomout.show { opacity:1; pointer-events:auto; }
+  .toast { position:fixed; left:50%; bottom:34px; transform:translateX(-50%) translateY(20px); opacity:0; transition:opacity .25s, transform .25s; background:rgba(255,253,246,0.96); border:2px solid var(--line); padding:10px 18px; border-radius:999px; font-weight:bold; font-size:14px; box-shadow:var(--shadow); pointer-events:none; z-index:40; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+  <div class="badge">PROTOTYPE A3 — NOT PRODUCTION</div>
+  <div class="hud" id="hud">LEVEL 1</div>
+  <p class="lead" id="lead">どこか、気になるところは？</p>
+  <div class="stage" id="stage" data-level="1">
+    <div class="world no-anim" id="world"></div>
+  </div>
+  <button class="zoomout" id="zoomOut">← 世界へもどる</button>
+  <div class="toast" id="toast"></div>
+
+<script>
+  const WORLD_W = 2600, WORLD_H = 1900;
+  const M = (n) => `/jibun-choice-town/assets/map-thumb/${n}.png`;
+  // Real approved illustrations, sized so their apparent "building scale"
+  // reads as roughly consistent with each other (the current production
+  // map's core complaint) — width chosen per image rather than one global
+  // multiplier, since each was authored at its own implied camera distance.
+  const PLACES = [
+    { id:'center', name:'まちの中心', cx:1300, cy:920, w:760, img:M('town-hero'), events:5 },
+    { id:'minato', name:'港', cx:520, cy:1280, w:420, img:M('harbor-district'), events:4 },
+    { id:'mori', name:'森と川', cx:2080, cy:340, w:460, img:M('forest-district'), events:3 },
+    { id:'eki', name:'駅前', cx:2000, cy:1460, w:430, img:M('station-district'), events:5 },
+    { id:'oka', name:'丘の上', cx:470, cy:330, w:420, img:M('hill-district'), events:3 },
+    // scalability stress-test areas beyond today's 4 district assets — kept
+    // deliberately HAZIER/less detailed (a soft tinted silhouette, not a
+    // cartoon icon-in-a-circle) so the gap in art reads as "not fully
+    // discovered yet" rather than as a jarring placeholder.
+    { id:'kawaguchi', name:'河口', cx:1720, cy:1750, w:300, emoji:'🌊', events:2, hazy:true },
+    { id:'shotengai', name:'商店街', cx:2350, cy:900, w:300, emoji:'🏮', events:3, hazy:true },
+    { id:'kojo', name:'こうじょう地帯', cx:900, cy:1650, w:300, emoji:'🏭', events:2, hazy:true },
+  ];
+  const FOG = [ { cx:2480, cy:1650, r:100 }, { cx:120, cy:800, r:95 } ];
+  function mulberry32(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  const rand = mulberry32(20260904);
+  for (const p of PLACES) {
+    p.h = p.w * (426 / 640);
+    p.eventList = [];
+    for (let i = 0; i < p.events; i++) {
+      const ang = (i / p.events) * Math.PI * 2 + rand() * 0.5;
+      p.eventList.push({
+        id: `${p.id}-e${i}`,
+        x: p.cx + Math.cos(ang) * p.w * 0.28,
+        y: p.cy + Math.sin(ang) * p.h * 0.22,
+        signal: rand() < 0.35,
+      });
+    }
+    p.glowAt = { x: p.cx + (rand() - 0.5) * p.w * 0.3, y: p.cy - p.h * 0.15 };
+  }
+  const TOTAL_EVENTS = PLACES.reduce((a, p) => a + p.eventList.length, 0);
+
+  const worldEl = document.getElementById('world');
+  const stage = document.getElementById('stage');
+  const hud = document.getElementById('hud');
+  const leadEl = document.getElementById('lead');
+  const toastEl = document.getElementById('toast');
+  const zoomOutBtn = document.getElementById('zoomOut');
+  let state = { level: 1, placeId: null };
+
+  function terrainSVG() {
+    return `<svg class="terrain-base" width="${WORLD_W}" height="${WORLD_H}" viewBox="0 0 ${WORLD_W} ${WORLD_H}">
+      <defs>
+        <radialGradient id="g1" cx="30%" cy="25%" r="70%"><stop offset="0%" stop-color="#eaf1da"/><stop offset="100%" stop-color="#cfe0b8"/></radialGradient>
+      </defs>
+      <rect width="${WORLD_W}" height="${WORLD_H}" fill="url(#g1)"/>
+      <ellipse cx="2100" cy="300" rx="620" ry="420" fill="#bfe0b0" opacity="0.55"/>
+      <ellipse cx="1900" cy="1550" rx="560" ry="380" fill="#e9dcae" opacity="0.45"/>
+      <ellipse cx="450" cy="1350" rx="520" ry="360" fill="#a9cdb8" opacity="0.4"/>
+      <ellipse cx="850" cy="1700" rx="480" ry="300" fill="#b7c0a0" opacity="0.35"/>
+      <path d="M0,1450 C500,1380 750,1600 900,1900 L0,1900 Z" fill="#a8cfe3"/>
+      <path d="M0,1520 C470,1460 700,1660 830,1900 L0,1900 Z" fill="#8fbfda" opacity="0.7"/>
+      <path d="M2080,340 C1850,650 1550,850 1300,1050 C1050,1250 800,1450 620,1620" fill="none" stroke="#9fc8de" stroke-width="46" stroke-linecap="round" opacity="0.8"/>
+      <path d="M2080,340 C1850,650 1550,850 1300,1050 C1050,1250 800,1450 620,1620" fill="none" stroke="#bfdcec" stroke-width="18" stroke-linecap="round" opacity="0.7"/>
+    </svg>`;
+  }
+
+  function render() {
+    let html = terrainSVG() + `<div class="light-gradient"></div><div class="grain"></div>`;
+    html += `<div class="cloud" style="top:60px; animation-duration:52s;"></div><div class="cloud" style="top:520px; animation-duration:66s; animation-delay:-18s;"></div>`;
+    if (state.level === 1) {
+      html += PLACES.map((p) => {
+        const inner = p.img
+          ? `<img src="${p.img}" width="${p.w}" height="${p.h}" style="width:${p.w}px; height:${p.h}px;">`
+          : `<div class="placeholder" style="width:${p.w}px; height:${p.w * 0.66}px; ${p.hazy ? 'opacity:0.72; filter:blur(0.4px) saturate(0.75);' : ''}">${p.emoji}</div>`;
+        return `<div class="place" data-place="${p.id}" style="left:${p.cx - p.w / 2}px; top:${p.cy - p.h / 2}px;">
+          ${inner}
+          <span class="place-label always">${p.name}</span>
+          <span class="glow" style="left:${p.glowAt.x - p.cx + p.w / 2 - 13}px; top:${p.glowAt.y - p.cy + p.h / 2 - 13}px;"></span>
+        </div>`;
+      }).join('');
+      html += FOG.map((f, i) => `<div class="fog" data-fog="${i}" style="left:${f.cx - f.r}px; top:${f.cy - f.r * 0.8}px; width:${f.r * 2}px; height:${f.r * 1.6}px;"></div>`).join('');
+      hud.textContent = `L1 · ${PLACES.length} places · 0/${TOTAL_EVENTS} events mounted`;
+      leadEl.textContent = 'どこか、気になるところは？';
+      zoomOutBtn.classList.remove('show');
+      stage.dataset.level = '1';
+    } else {
+      const p = PLACES.find((x) => x.id === state.placeId);
+      const inner = p.img
+        ? `<img src="${p.img}" width="${p.w}" height="${p.h}" style="width:${p.w}px; height:${p.h}px;">`
+        : `<div class="placeholder" style="width:${p.w}px; height:${p.w * 0.66}px;">${p.emoji}</div>`;
+      html += `<div class="place" style="left:${p.cx - p.w / 2}px; top:${p.cy - p.h / 2}px; animation:none;">${inner}</div>`;
+      html += p.eventList.map((e) => `<div class="event in ${e.signal ? 'signal' : ''}" data-event="${e.id}" style="left:${e.x}px; top:${e.y}px;">${e.signal ? '🔥' : '📍'}</div>`).join('');
+      hud.textContent = `L2 · "${p.name}" · ${p.eventList.length}/${TOTAL_EVENTS} events mounted`;
+      leadEl.textContent = `${p.name} — 気になる出来事をタップ`;
+      zoomOutBtn.classList.add('show');
+      stage.dataset.level = '2';
+    }
+    worldEl.innerHTML = html;
+    worldEl.style.width = WORLD_W + 'px';
+    worldEl.style.height = WORLD_H + 'px';
+    attachHandlers();
+  }
+
+  let vw = stage.clientWidth, vh = stage.clientHeight;
+  let cam = { s: 1, tx: 0, ty: 0 };
+  function clamp(tx, ty, s, slack) {
+    slack = slack || 60;
+    const marginX = Math.min(slack, vw - WORLD_W * s - slack);
+    const marginY = Math.min(slack, vh - WORLD_H * s - slack);
+    return { tx: Math.min(slack, Math.max(marginX, tx)), ty: Math.min(slack, Math.max(marginY, ty)) };
+  }
+  function applyCam() { worldEl.style.transform = `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})`; }
+  function camFor(level) {
+    vw = stage.clientWidth; vh = stage.clientHeight;
+    if (level === 1) {
+      const s = (vh * 0.86) / (WORLD_H * 0.66);
+      const c = clamp(vw / 2 - PLACES[0].cx * s, vh / 2 - PLACES[0].cy * s, s);
+      return { s, ...c };
+    }
+    const p = PLACES.find((x) => x.id === state.placeId);
+    const s = Math.min(Math.max((Math.min(vw, vh) * 0.92) / (p.w * 0.85), 1.2), 2.6);
+    return { s, tx: vw / 2 - p.cx * s, ty: vh / 2 - p.cy * s };
+  }
+  function goTo(level, placeId) {
+    state = { level, placeId: placeId ?? null };
+    render();
+    cam = camFor(level);
+    applyCam();
+  }
+  window.addEventListener('resize', () => { cam = camFor(state.level); applyCam(); });
+
+  const SLOP = 8;
+  let drag = null, suppressTap = false, pointerId = null;
+  stage.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY, tx: cam.tx, ty: cam.ty, moved: false };
+    pointerId = e.pointerId;
+    stage.setPointerCapture(e.pointerId);
+    worldEl.classList.add('no-anim');
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) > SLOP) drag.moved = true;
+    if (drag.moved && state.level === 1) {
+      const c = clamp(drag.tx + dx, drag.ty + dy, cam.s);
+      cam.tx = c.tx; cam.ty = c.ty; applyCam();
+    }
+  });
+  function endDrag() {
+    if (drag?.moved) { suppressTap = true; setTimeout(() => (suppressTap = false), 80); }
+    drag = null;
+    worldEl.classList.remove('no-anim');
+    if (pointerId != null && stage.hasPointerCapture?.(pointerId)) stage.releasePointerCapture(pointerId);
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('click', (e) => {
+    if (suppressTap) return;
+    const onMarker = e.target.closest('[data-place],[data-event],[data-fog]');
+    if (!onMarker && state.level === 2) goTo(1);
+  });
+
+  function attachHandlers() {
+    worldEl.querySelectorAll('[data-place]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation(); goTo(2, el.dataset.place);
+    }));
+    worldEl.querySelectorAll('[data-fog]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation(); showToast('まだ、もやの向こう。');
+    }));
+    worldEl.querySelectorAll('[data-event]').forEach((el) => el.addEventListener('click', (e) => {
+      if (suppressTap) return; e.stopPropagation(); showToast('出来事 — prototypeのため中身は未実装');
+    }));
+  }
+  function showToast(msg) { toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastEl._t); toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 1400); }
+  zoomOutBtn.addEventListener('click', () => goTo(1));
+
+  goTo(1);
+</script>
+</body>
+</html>

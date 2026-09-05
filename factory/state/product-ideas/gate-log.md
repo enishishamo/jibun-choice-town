@@ -106,3 +106,24 @@ C案を却下した理由（overviewがmenuに見える）と**同じ失敗モ�
 レイアウト再設計）を先に試すべきと記録した。production実装・GPT資産
 発注のいずれも行わず、Humanの確認・次の指示待ちで停止。
 HUMAN_PRODUCT_DECISION_REQUIRED = true。
+
+**追記（同日、Human Correction後 — A3）**: Humanから重要な補正:
+Continuous Worldの目的は空間探索ゲームの構築ではなく、production Mapの
+VISUAL COHESION（視覚的一体感）の修復である、との明確化。これを受けて
+A2の抽象sub-location層を廃止した「A3: Cohesive Continuous World」
+（2階層、eventはillustration上へ直接配置）を作成・検証した結果
+（`factory/state/expansion/map-a3-prototype-report-2026-09-04.md`）:
+gesture arbitration・scalabilityは自動テストでPASSしたが、
+**VISUAL_COHESION=24**（閾値90）を筆頭にoverall FAIL。Codex独立
+レビューの結論: 既存district illustrationは互いに異なるカメラ角度・
+縮尺で生成されており、CSSのフェザー処理・統一filterでは投影法・縮尺の
+不一致そのものを解消できない——これはHuman Directive自身が事前に
+警告していたCURRENT_ASSET_COMPATIBILITYの限界であり、実装力の不足では
+ない。Codexの結論に基づき`continuous-world-base-illustration`
+（JIBUN CHOICE世界全体を単一カメラ角度・縮尺・光源で描く新しい連続
+illustration）のGPT_ASSET_REQUESTを`factory/state/art/
+gpt-asset-requests.json`へ記録した——**これは生成の承認ではなく、
+必要になるコストをHumanへ提示するもの**（`status:
+"IDENTIFIED_NOT_YET_APPROVED"`）。production実装・GPT art生成のいずれも
+行わず、Humanの確認・次の指示待ちで停止。HUMAN_PRODUCT_DECISION_REQUIRED
+= true。
