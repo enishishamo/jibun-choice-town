@@ -1,0 +1,316 @@
+{
+  "tasks": {
+    "selftest-B": {
+      "task_id": "selftest-B",
+      "task_type": "bugfix",
+      "status": "SUPERSEDED",
+      "repair_count": 1,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:08:39.473Z",
+      "updated_at": "2026-09-06T23:11:21.118Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:08:39.474Z",
+          "event": "created",
+          "type": "bugfix",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:08:39.512Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-06T23:08:39.550Z",
+          "event": "repair_refused",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-06T23:11:21.119Z",
+          "event": "status_change",
+          "from": "REPAIR",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "selftest-C": {
+      "task_id": "selftest-C",
+      "task_type": "game-content",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "/tmp/selftest-C-review.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:08:52.100Z",
+      "updated_at": "2026-09-06T23:11:21.156Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:08:52.101Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:08:52.137Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": null
+        },
+        {
+          "at": "2026-09-06T23:09:09.694Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "evidencePath": "/tmp/selftest-C-review.json",
+          "score": 88
+        },
+        {
+          "at": "2026-09-06T23:11:21.157Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "selftest-D": {
+      "task_id": "selftest-D",
+      "task_type": "feature",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": "PASS",
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": true,
+      "identity_impact_approval_note": "Human approved this specific mascot proposal on 2026-09-07 per chat decision",
+      "created_at": "2026-09-06T23:09:25.196Z",
+      "updated_at": "2026-09-06T23:11:21.193Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:09:25.197Z",
+          "event": "created",
+          "type": "feature",
+          "identityImpact": "YES"
+        },
+        {
+          "at": "2026-09-06T23:09:25.233Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": null
+        },
+        {
+          "at": "2026-09-06T23:09:25.308Z",
+          "event": "identity_impact_approved",
+          "note": "Human approved this specific mascot proposal on 2026-09-07 per chat decision"
+        },
+        {
+          "at": "2026-09-06T23:11:21.194Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "selftest-E": {
+      "task_id": "selftest-E",
+      "task_type": "bugfix",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": "FAIL",
+      "qa_evidence": "public-safety-smoke-qa found 2 blockers",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:09:25.386Z",
+      "updated_at": "2026-09-06T23:11:21.230Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:09:25.387Z",
+          "event": "created",
+          "type": "bugfix",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:09:25.423Z",
+          "event": "qa_recorded",
+          "verdict": "FAIL",
+          "evidence": "public-safety-smoke-qa found 2 blockers"
+        },
+        {
+          "at": "2026-09-06T23:11:21.231Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "selftest-F": {
+      "task_id": "selftest-F",
+      "task_type": "bugfix",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc/build/lint/public-safety-smoke-qa all clean",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:09:25.498Z",
+      "updated_at": "2026-09-06T23:11:21.267Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:09:25.499Z",
+          "event": "created",
+          "type": "bugfix",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:09:25.535Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc/build/lint/public-safety-smoke-qa all clean"
+        },
+        {
+          "at": "2026-09-06T23:11:21.268Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "selftest-G-areascreen-fix": {
+      "task_id": "selftest-G-areascreen-fix",
+      "task_type": "bugfix",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc/build/lint clean, public-safety-smoke-qa 0 blockers 14/14 worlds (this session)",
+      "deploy_status": null,
+      "release_commit": "59f43a1df4ca85fda768136a534e94276d785878",
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:10:06.230Z",
+      "updated_at": "2026-09-06T23:11:21.305Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:10:06.230Z",
+          "event": "created",
+          "type": "bugfix",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:10:06.267Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc/build/lint clean, public-safety-smoke-qa 0 blockers 14/14 worlds (this session)"
+        },
+        {
+          "at": "2026-09-06T23:10:06.303Z",
+          "event": "release_commit_set",
+          "sha": "59f43a1"
+        },
+        {
+          "at": "2026-09-06T23:10:42.904Z",
+          "event": "release_commit_set",
+          "sha": "59f43a1df4ca85fda768136a534e94276d785878",
+          "given": "59f43a1"
+        },
+        {
+          "at": "2026-09-06T23:11:21.306Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "SUPERSEDED",
+          "note": "self-test scenario, recorded 2026-09-07, not real work"
+        }
+      ]
+    },
+    "enforcement-foundation-2026-09-07": {
+      "task_id": "enforcement-foundation-2026-09-07",
+      "task_type": "factory-infra",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": false,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc clean, npm run lint exit 0, npm run build clean, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gesture-arbitration-qa 6/6 PASS incl. pan-boundary regression; self-test scenarios A-F all verified (see factory/state/enforcement-foundation-self-test-2026-09-07.md)",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-06T23:14:42.221Z",
+      "updated_at": "2026-09-06T23:14:42.288Z",
+      "history": [
+        {
+          "at": "2026-09-06T23:14:42.222Z",
+          "event": "created",
+          "type": "factory-infra",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:14:42.255Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc clean, npm run lint exit 0, npm run build clean, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gesture-arbitration-qa 6/6 PASS incl. pan-boundary regression; self-test scenarios A-F all verified (see factory/state/enforcement-foundation-self-test-2026-09-07.md)"
+        },
+        {
+          "at": "2026-09-06T23:14:42.289Z",
+          "event": "identity_impact_set",
+          "impact": "NONE"
+        }
+      ]
+    }
+  }
+}
