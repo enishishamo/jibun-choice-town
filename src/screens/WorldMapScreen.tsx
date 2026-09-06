@@ -308,19 +308,27 @@ export default function HomeScreen() {
     tx: Math.min(0, Math.max(vp.w - CANVAS_W * s, tx)),
     ty: Math.min(0, Math.max(vp.h - CANVAS_H * s, ty)),
   });
+  // Region-mode camera anchor BEFORE any drag offset — shared by the
+  // render-time camera (cam, below) and onPointerMove's pan clamping so the
+  // two can never drift apart (2026-09-06, REAL_USER_OBSERVED pan blocker:
+  // they used to duplicate this math informally through `pan`, and only
+  // cam's OUTPUT was clamped — see onPointerMove for the actual bug).
+  // §5/§7: don't center the camera exactly on the plaza/fountain — a
+  // dead-center lock on the strongest landmark reads as "a finished plaza
+  // screen", not "midway through a bigger world". Bias the focal point
+  // up-and-left within the town so harbor (lower-left) and station/hill
+  // (upper-right) both have more room to peek at the opposite edges.
+  const regionBase = (s: number) => {
+    const center = getDistrict("center")!;
+    const focalX = center.cx - center.r * 0.22;
+    const focalY = center.cy - center.r * 0.12;
+    return { tx: vp.w / 2 - focalX * s, ty: vp.h / 2 - focalY * s };
+  };
   const cam = useMemo(() => {
     if (!focus) {
       const s = regionScale;
-      const center = getDistrict("center")!;
-      // §5/§7: don't center the camera exactly on the plaza/fountain — a
-      // dead-center lock on the strongest landmark reads as "a finished
-      // plaza screen", not "midway through a bigger world". Bias the focal
-      // point up-and-left within the town so harbor (lower-left) and
-      // station/hill (upper-right) both have more room to peek at the
-      // opposite edges.
-      const focalX = center.cx - center.r * 0.22;
-      const focalY = center.cy - center.r * 0.12;
-      const base = clampPan(vp.w / 2 - focalX * s, vp.h / 2 - focalY * s, s);
+      const rb = regionBase(s);
+      const base = clampPan(rb.tx, rb.ty, s);
       const c = clampPan(base.tx + pan.x, base.ty + pan.y, s);
       return { s, tx: c.tx, ty: c.ty };
     }
@@ -381,7 +389,25 @@ export default function HomeScreen() {
     const dx = e.clientX - d.x;
     const dy = e.clientY - d.y;
     if (!d.moved && Math.hypot(dx, dy) > TOUCH_SLOP) d.moved = true;
-    if (d.moved) { setPan({ x: d.px + dx, y: d.py + dy }); setDragging(true); }
+    if (d.moved) {
+      // 2026-09-06 (REAL_USER_OBSERVED — Map pan blocker): `pan` used to be
+      // an unbounded accumulator — only the DERIVED cam.tx/ty (via clampPan,
+      // inside the `cam` useMemo) were clamped for rendering. Dragging far
+      // enough to hit an edge let `pan` keep drifting past the point where
+      // that render-time clamp saturates; the NEXT gesture then re-based its
+      // delta on that still-unclamped `pan` (onPointerDown snapshots it
+      // as `px`), so reversing direction produced zero visible movement
+      // until the drag had "walked back" the entire invisible overshoot —
+      // often more than a single real swipe covers. Clamping `pan` itself
+      // here (using the SAME regionBase/clampPan the render path uses) keeps
+      // it always in sync with what's actually on screen, so any reversal
+      // moves immediately, from any edge, in either axis.
+      const s = regionScale;
+      const rb = regionBase(s);
+      const clamped = clampPan(rb.tx + d.px + dx, rb.ty + d.py + dy, s);
+      setPan({ x: clamped.tx - rb.tx, y: clamped.ty - rb.ty });
+      setDragging(true);
+    }
   };
   const endDrag = (e?: React.PointerEvent) => {
     const d = drag.current;
