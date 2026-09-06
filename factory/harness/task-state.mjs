@@ -30,6 +30,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 import { validateReviewEvidenceFile } from "./review-evidence.mjs";
 
 const HARNESS = dirname(fileURLToPath(import.meta.url));
@@ -270,12 +271,19 @@ switch (cmd) {
   }
 
   case "set-release-commit": {
-    const [id, sha] = rest;
-    if (!id || !sha) fail("usage: set-release-commit <task_id> <sha>");
+    const [id, shaArg] = rest;
+    if (!id || !shaArg) fail("usage: set-release-commit <task_id> <sha>");
+    // 2026-09-07 self-test finding: a short sha ("59f43a1") stored as-is
+    // never string-matches the full 40-char sha release-gate-check.mjs
+    // reads from `git rev-parse HEAD` in CI — always normalize to the
+    // full sha at write time so the two sides can never silently drift.
+    const resolved = spawnSync("git", ["rev-parse", shaArg], { cwd: ROOT, encoding: "utf8" });
+    if (resolved.status !== 0) fail(`could not resolve ${shaArg} as a git commit: ${resolved.stderr}`);
+    const sha = resolved.stdout.trim();
     const t = getTask(id);
     t.release_commit = sha;
     t.updated_at = now();
-    log(t, "release_commit_set", { sha });
+    log(t, "release_commit_set", { sha, given: shaArg });
     saveState(state);
     console.log(JSON.stringify(t, null, 2));
     break;
