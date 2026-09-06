@@ -7,21 +7,27 @@
    "scope": "HomeScreen (all worlds)",
    "finding": "8 event balloons overlap each other and cover map landmarks on mobile; clamp added for edge clipping but placement is not collision-aware",
    "repair_sketch": "collision-aware balloon layout (grid slots or force layout) + longer pointers into negative space",
-   "source": "presentation-audit/town-map.json"
+   "source": "presentation-audit/town-map.json",
+   "status": "superseded_by_map_v1_rebuild",
+   "status_note": "2026-09-06 (Autonomous Execution Mode, backlog audit): the map/marker system this referred to (old HomeScreen-hosted district balloons) was fully replaced by the Continuous World rebuild (src/screens/WorldMapScreen.tsx, factory/state/expansion/map-v1-implementation-2026-09-05.md). Marker de-collision and Progressive Disclosure now handled there; re-open a fresh item against WorldMapScreen.tsx if a real collision is observed on the new markers."
   },
   {
    "id": "map-mobile-crop",
    "scope": "HomeScreen",
    "finding": "mobile crop keeps desktop-oriented hotspot coordinates; much of the scene width lost",
    "repair_sketch": "mobile-specific map crop + per-viewport mapPos",
-   "source": "presentation-audit/town-map.json"
+   "source": "presentation-audit/town-map.json",
+   "status": "superseded_by_map_v1_rebuild",
+   "status_note": "2026-09-06: superseded — the coordinate system is now districts.ts against a single 1774x887 continuous illustration with a viewport-agnostic camera scale formula (regionScale = max(heightFitScale, widthCapScale)), not per-viewport hand-tuned hotspots."
   },
   {
    "id": "map-bottom-edge",
    "scope": "HomeScreen",
    "finding": "scene ends in a hard horizontal boundary over a featureless beige area",
    "repair_sketch": "terrain fade / framed mask at map bottom",
-   "source": "presentation-audit/town-map.json"
+   "source": "presentation-audit/town-map.json",
+   "status": "superseded_by_map_v1_rebuild",
+   "status_note": "2026-09-06: superseded — this described the old separately-composited HomeScreen map art, which no longer exists. Not re-verified against the new Continuous World illustration; re-open if a real hard-edge is observed there."
   },
   {
    "id": "area-callout-component",
