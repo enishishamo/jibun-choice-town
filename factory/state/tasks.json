@@ -276,7 +276,7 @@
     "enforcement-foundation-2026-09-07": {
       "task_id": "enforcement-foundation-2026-09-07",
       "task_type": "factory-infra",
-      "status": "READY",
+      "status": "RELEASED",
       "repair_count": 0,
       "review_status": null,
       "review_evidence": null,
@@ -291,7 +291,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-06T23:14:42.221Z",
-      "updated_at": "2026-09-06T23:14:42.288Z",
+      "updated_at": "2026-09-06T23:32:04.086Z",
       "history": [
         {
           "at": "2026-09-06T23:14:42.222Z",
@@ -309,6 +309,13 @@
           "at": "2026-09-06T23:14:42.289Z",
           "event": "identity_impact_set",
           "impact": "NONE"
+        },
+        {
+          "at": "2026-09-06T23:32:04.087Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "RELEASED",
+          "note": "Live on https://enishishamo.github.io/jibun-choice-town/ via commits 755f997 (main), confirmed by real GitHub Actions runs 34066700565 and 34066899483"
         }
       ]
     }
