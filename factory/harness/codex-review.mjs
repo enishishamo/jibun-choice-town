@@ -96,6 +96,11 @@ function runCodexOnce(prompt) {
   return new Promise((resolve) => {
     const dir = mkdtempSync(join(tmpdir(), "jc-codex-"));
     const lastMsgFile = join(dir, "last-message.txt");
+    // 2026-09-06 (factory/state/backlog/factory-harness-backlog.md
+    // codex-review-malformed-truncation): every resolve path below now
+    // carries this path so a CODEX_MALFORMED result can point back to the
+    // full, untruncated file instead of losing it once this function
+    // returns — this file is NOT cleaned up on purpose (see below).
     const started = Date.now();
     const child = spawn(
       "codex",
@@ -130,7 +135,7 @@ function runCodexOnce(prompt) {
       setTimeout(() => {
         if (!settled) {
           settled = true;
-          resolve({ kind: "timeout", stdout, stderr, elapsed: (Date.now() - started) / 1000 });
+          resolve({ kind: "timeout", stdout, stderr, elapsed: (Date.now() - started) / 1000, lastMsgFile });
         }
       }, 10000);
     }, timeoutSec * 1000);
@@ -141,21 +146,21 @@ function runCodexOnce(prompt) {
       clearTimeout(timer);
       if (settled) return;
       settled = true;
-      resolve({ kind: "spawn_error", error: String(err), elapsed: (Date.now() - started) / 1000 });
+      resolve({ kind: "spawn_error", error: String(err), elapsed: (Date.now() - started) / 1000, lastMsgFile });
     });
     child.on("close", (code) => {
       clearTimeout(timer);
       if (settled) return;
       settled = true;
       const elapsed = (Date.now() - started) / 1000;
-      if (timedOut) return resolve({ kind: "timeout", stdout, stderr, elapsed });
+      if (timedOut) return resolve({ kind: "timeout", stdout, stderr, elapsed, lastMsgFile });
       let lastMsg = "";
       try {
         lastMsg = readFileSync(lastMsgFile, "utf8");
       } catch {
         /* no final message written */
       }
-      resolve({ kind: "done", code, stdout, stderr, lastMsg, elapsed });
+      resolve({ kind: "done", code, stdout, stderr, lastMsg, elapsed, lastMsgFile });
     });
     child.stdin.write(prompt);
     child.stdin.end();
@@ -195,6 +200,7 @@ function validateVerdict(v) {
 
 let totalElapsed = 0;
 let lastRaw = "";
+let lastMsgFilePath = null;
 for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   const prompt =
     attempt === 1
@@ -211,6 +217,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   }
   const raw = (r.lastMsg || "").trim() || r.stdout.trim();
   lastRaw = raw;
+  lastMsgFilePath = r.lastMsgFile ?? lastMsgFilePath;
   if (r.code !== 0 && !raw) {
     emit({
       ok: false,
@@ -244,10 +251,19 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   // else: loop for one retry
 }
 
+// 2026-09-06 repair: previously sliced `raw` to 4000 chars with no way to
+// recover the rest — the full text was already sitting in memory as
+// `lastRaw`, it was just discarded here. Emit it in full (this harness's
+// own result JSONs already routinely hold several KB of reviewer output,
+// see factory/projects/*/*.result.json), plus the still-on-disk
+// `--output-last-message` file path as a second, independent way to
+// recover the exact raw reviewer output later — that temp file is
+// deliberately left in place (not cleaned up) for exactly this case.
 emit({
   ok: false,
   status: "CODEX_MALFORMED",
   error: "reviewer output was not a valid verdict JSON after retry",
-  raw: lastRaw.slice(0, 4000),
+  raw: lastRaw,
+  raw_output_file: lastMsgFilePath,
   elapsed_sec: totalElapsed,
 });
