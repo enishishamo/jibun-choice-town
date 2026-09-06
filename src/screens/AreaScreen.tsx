@@ -21,20 +21,23 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
   const doneAny = event?.incidents.some((i) => hasCompleted(i.experienceId));
   // The opening picture is shown the first time only.
   const [showOpening, setShowOpening] = useState(!!opening && !doneAny);
-  // Hooks must run unconditionally, so these are declared before the
-  // `!event` early return even though they only matter when it exists.
+  // Hooks must run unconditionally — ALL of them, and every value only
+  // THEY depend on, live above the `!event` early return below (2026-09-07:
+  // useRef/useEffect used to be declared after the early return, a
+  // react-hooks/rules-of-hooks violation caught once `npm run lint` was
+  // finally wired into CI — see factory-architecture-audit-2026-09-06.md
+  // §16#1/#6 and factory/rules/deploy-release-policy.md's release gate).
   const [chapterPick, setChapterPick] = useState<number | null>(null);
   const [lockNote, setLockNote] = useState<string | null>(null);
-  if (!event) return null;
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
 
-  const doneCount = event.incidents.filter((i) => hasCompleted(i.experienceId)).length;
-
+  const doneCount = event ? event.incidents.filter((i) => hasCompleted(i.experienceId)).length : 0;
   // ---- 章（前半／後半）----
-  const chapters = event.chapters;
+  const chapters = event?.chapters;
   const chapterDone = (idx: number) =>
     !!chapters &&
     chapters[idx].incidentIds.every((id) => {
-      const inc = event.incidents.find((x) => x.id === id);
+      const inc = event?.incidents.find((x) => x.id === id);
       return inc ? hasCompleted(inc.experienceId) : true;
     });
   const chapterOpen = (idx: number) => idx === 0 || chapterDone(idx - 1);
@@ -43,6 +46,16 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
     ? Math.max(0, chapters.findIndex((_, i) => !chapterDone(i)))
     : 0;
   const chapterIdx = chapterPick ?? defaultChapter;
+
+  // the currently playable spot centers itself in the scene scroller so the
+  // initial mobile crop never hides the thing to do next (presentation audit)
+  useEffect(() => {
+    const el = scrollerRef.current?.querySelector<HTMLElement>(".map-spot.active");
+    if (el) el.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [chapterIdx, doneCount]);
+
+  if (!event) return null;
+
   const chapter = chapters?.[chapterIdx];
   const spots = chapter
     ? chapter.incidentIds
@@ -50,14 +63,6 @@ export default function AreaScreen({ eventId }: { eventId: string }) {
         .filter((x): x is NonNullable<typeof x> => !!x)
     : event.incidents;
   const showLenses = !!event.lensSummary && doneCount >= 2;
-
-  // the currently playable spot centers itself in the scene scroller so the
-  // initial mobile crop never hides the thing to do next (presentation audit)
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const el = scrollerRef.current?.querySelector<HTMLElement>(".map-spot.active");
-    if (el) el.scrollIntoView({ inline: "center", block: "nearest" });
-  }, [chapterIdx, doneCount]);
   const allDone = doneCount === event.incidents.length;
   const wrapUp =
     allDone && event.wrapUp ? (
