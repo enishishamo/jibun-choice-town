@@ -173,6 +173,16 @@ EVIDENCE・PRINCIPLE SUPPORTS THIS?** を確認する。説明できなければ
 Research → Design → Critic → Implement → QA → Release/Backlog → NEXT、
 まで1つを閉じてから次へ進む。
 
+**2026-09-06 明確化（Human訂正）**: WIP LIMITは「同一taskへの追加修正」に
+限定される規律であり、Factory全体を1 task直列でしか進められないという
+意味ではない。あるtaskがHUMAN_DECISION_REQUIREDへ到達したら、それは
+`factory/state/blocked-queue.md`へ移し（3回目の自力repairを重ねて粘らない
+——これはAUTO REPAIR RULEそのもの）、Continuous Product Loopは**止まらず**
+次に価値の高い独立taskへ進む。「1つのtaskが止まった＝Factoryが止まる」
+にしない。blocked queueの項目はHuman Decisionが下りるまで再着手しない
+（同じ独立レビューを無意味に繰り返さない、DUPLICATE WORK DETECTORと同じ
+精神）。
+
 ## HUMANを呼ぶ条件
 
 Humanへ途中確認するのは原則:
