@@ -1,3 +1,17 @@
+> **2026-09-07 一部supersede通知（削除ではなく修正履歴として残す）**:
+> 本ファイルの「Release Candidate → STABLE は常に人間判断」
+> 「remote pushは人間の明示指示があるまで禁止」「STABLE_AUTO_PROMOTION
+> = false」という記述は、2026-09-06制定の
+> [`factory/rules/deploy-release-policy.md`](../../rules/deploy-release-policy.md)
+> によって**Human-approved Product Direction内の日常的な変更
+> （bug fix・UI polish・content repair等、Product Identity Gate非該当）**
+> に限り上書きされている——該当条件を満たす変更は、個別のHuman承認
+> 停止なしに`main`へ反映してよい。優先順位は
+> [`CLAUDE.md`](../../../CLAUDE.md)の「Canonical rules」節を正本とする。
+> 本ファイルの他の記述（Track分離の考え方、REAL_USER_FEEDBACKルーティング表、
+> Art Ownership等）はそのまま有効。矛盾を検出した場合は
+> `deploy-release-policy.md`を優先すること。
+
 # Two-Track Operating Model（2026-09-04 制定）
 
 JIBUN CHOICEの運用を以下の2レーンに分離する。既存の

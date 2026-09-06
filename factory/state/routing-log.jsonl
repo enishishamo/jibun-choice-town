@@ -262,3 +262,6 @@
 {"at":"2026-09-06T08:08:40.898Z","agent":"codex","kind":"delegated-task","label":"lab-check-repair-verify","promptFile":"factory/projects/q1-improve-lab-check/final-review-prompt.md","status":"OK","elapsed_sec":71.736}
 {"at":"2026-09-06T09:11:02.704Z","agent":"codex","kind":"delegated-task","label":"clue-board-independent-review","promptFile":"factory/projects/q1-improve-clue-board/final-review-prompt.md","status":"OK","elapsed_sec":67.751}
 {"at":"2026-09-06T09:18:16.248Z","agent":"codex","kind":"delegated-task","label":"clue-board-repair-verify","promptFile":"factory/projects/q1-improve-clue-board/final-review-prompt.md","status":"OK","elapsed_sec":47.202}
+{"ts":"2026-09-06T09:23:40.571Z","tool":"codex-review","label":"harness-smoke-test","prompt_file":".tmp-review-smoke-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":5.143}
+{"ts":"2026-09-06T09:24:06.342Z","tool":"codex-review","label":"harness-smoke-malformed","prompt_file":".tmp-review-malformed-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":10.571000000000002}
+{"ts":"2026-09-06T22:59:32.234Z","tool":"codex-review","label":"gate-smoke-test","prompt_file":".tmp-gate-smoke-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":6.083}

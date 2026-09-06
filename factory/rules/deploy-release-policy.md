@@ -4,6 +4,22 @@
 Stable（`main`、GitHub Pagesで実配布——`.github/workflows/deploy.yml`が
 `main`へのpush毎に`npm run build`→GitHub Pagesへ自動デプロイする）への反映。
 
+## 正本関係（2026-09-07追記）
+
+本ファイルは`factory/state/release/two-track-model.md`と
+`release-lifecycle.md`の「Stable昇格・remote pushは常に人間判断」という
+記述を**削除・上書きせず、Product Identity Gate非該当かつHuman-approved
+Product Direction内の変更に限り、この範囲でsupersedeする**——両ファイル
+側にも同旨のsupersession noticeを追記済み（git historyは保持）。
+矛盾を見つけた場合、優先順位は`CLAUDE.md`の「Canonical rules」節を正本と
+する（要旨: Product Identity Gate＞principles.md＞本ファイル＞その他）。
+
+機械的なゲート判定は`factory/harness/task-state.mjs can-deploy <task_id>`
+とCI（`factory/scripts/release-gate-check.mjs`）が行う——「blockerなし」を
+自己申告するだけでなく、この2つのスクリプトが実際にチェックする
+（詳細は`factory/state/factory-architecture-audit-2026-09-06.md` §15の
+指摘を受けて2026-09-07に追加）。
+
 ## きっかけ・段階の変化
 
 JIBUN CHOICEは「AI内部で完成度を上げ続ける段階」から、
