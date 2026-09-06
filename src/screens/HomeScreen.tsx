@@ -49,17 +49,27 @@ export default function HomeScreen() {
             : "今日は、どこ行く？"}
         </p>
 
+        {/* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"):
+           the old full-bleed photo-card + small PLAY icon read as a generic
+           "photo card" (SaaS/app pattern). Replaced with the approved
+           "World window + PLAY" CTA — a tilted, thick-bordered window onto
+           the SAME town-center crop (a postcard/sticker, not a plain photo
+           card), with an overlapping PLAY banner below it — translating the
+           JC flyer's collage/sticker visual language, not a new graphic. */}
         <button
-          className="home-card home-card-primary"
+          className="home-hero"
           onClick={() => navigate({ name: "map" })}
-          style={{ backgroundImage: `url(${WORLD_CROP})` }}
+          aria-label="社会を冒険する。まちへ出て、ゲームをする。"
         >
-          <span className="home-card-sparkle" aria-hidden="true">✨</span>
-          <span className="home-card-scrim" />
-          <span className="home-card-play" aria-hidden="true">▶</span>
-          <span className="home-card-label">
-            <span className="home-card-title">社会を冒険する</span>
-            <span className="home-card-sub">まちへ出て、ゲームをする</span>
+          <span className="home-hero-window">
+            <img className="home-hero-window-img" src={WORLD_CROP} alt="" />
+          </span>
+          <span className="home-hero-playbar">
+            <span className="home-hero-play-icon" aria-hidden="true">▶</span>
+            <span className="home-hero-copy">
+              <span className="home-hero-title">社会を冒険する</span>
+              <span className="home-hero-sub">まちへ出て、ゲームをする</span>
+            </span>
           </span>
         </button>
 

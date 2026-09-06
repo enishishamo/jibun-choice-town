@@ -231,15 +231,14 @@ img {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  /* 2026-09-05 (Home Visual Refresh, Human Review): the previous pale
-     wash + thin type read as "quiet education service", not a game a
-     child wants to open. Same non-destructive technique as before
-     (blurred/darkened background bleed of an approved illustration, a
-     scrim on top for legibility) but now sourced from the Human-approved
-     Continuous World Base Illustration (the same art the primary card and
-     the Map itself use) rather than the old town-hero, and pushed less
-     pale — a game world behind the UI, not a faint backdrop. */
-  background: linear-gradient(180deg, rgba(60, 82, 48, 0.42) 0%, rgba(250, 245, 233, 0.88) 62%);
+  /* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"): the
+     Human Review after the 2026-09-05 refresh judged the result still
+     "generic education/SaaS" — root cause was that the World was blurred
+     into an abstract pastel wash instead of staying recognizable. Kept
+     the same non-destructive bleed technique (no new art) but the actual
+     tinting now lives in ::before's own gradient layer (see below) so this
+     base tone only needs to cover the unmasked edges. */
+  background: var(--cream);
   /* Human Review §Font: headings should read as bold/friendly gothic, not
      the rounded "maru" style used elsewhere in the app — that specific
      roundness was flagged as reading generic-education/beauty-app here.
@@ -250,22 +249,31 @@ img {
   content: "";
   position: absolute;
   inset: -6%;
-  background-image: url("/jibun-choice-town/assets/world/continuous-world.png");
-  background-size: cover;
+  /* 2026-09-06: a warm color-band layer ON TOP of the photo (first-listed
+     background layer paints above later ones) — this is the same trick a
+     flyer uses to lay bold type over a busy photo (a duotone/color-band,
+     not a blur) instead of diffusing the image itself into an abstract
+     wash. The photo underneath now stays recognizable as the town. */
+  background-image:
+    linear-gradient(180deg, rgba(250, 245, 233, 0.82) 0%, rgba(250, 245, 233, 0.32) 34%, rgba(250, 245, 233, 0) 58%),
+    url("/jibun-choice-town/assets/world/continuous-world.png");
+  background-size: cover, cover;
+  background-position: center, 48% 40%;
   /* town plaza is at roughly (850,380) of the 1774x887 source — the same
-     landmark the primary card crops (town-center-crop.png) and the Map's
+     landmark the hero window crops (town-center-crop.png) and the Map's
      "center" district frame, so Home visually continues into the Map. */
-  background-position: 48% 40%;
-  filter: blur(11px) saturate(1.15) brightness(1.03);
-  transform: scale(1.08);
+  filter: blur(3px) saturate(1.25);
+  transform: scale(1.06);
   z-index: 0;
   /* fade the bled illustration out toward the bottom of the screen instead
      of covering it edge-to-edge — on a tall viewport with unused space
-     below the cards, a full-height blur reads as a smear rather than an
-     extension of the world; fading back to the plain scrim keeps the
-     "one place" effect near the hero card without that risk. */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 92%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 92%);
+     below the cards, a full-height photo reads as a smear rather than an
+     extension of the world; fading back to the plain cream keeps the
+     "one place" effect near the hero without that risk. Reveals more of
+     the image than the previous 60%-then-fade curve, per Human Decision
+     "背景はWorldを認識できる程度に見せる". */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 97%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 97%);
 }
 .true-home-inner {
   position: relative;
@@ -293,125 +301,138 @@ img {
   text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8), 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .true-home-lead {
-  /* 2026-09-05 (Home Visual Refresh): promoted from a small muted
-     "tagline" under the logo to the screen's real headline — short,
-     action-oriented copy ("今日は、どこ行く？"), bold and sized to be the
-     most prominent text on screen after the primary card itself. */
-  margin: 2px 0 4px;
+  /* 2026-09-06 (Home Design Review — Human Decision "大胆に、ただし幼児的
+     手書き文字にはしない"): bigger/heavier than the 2026-09-05 pass, and
+     the soft blurred halo-shadow (a refined lifestyle-app technique) is
+     replaced with a hard 2px offset shadow — the same "flat layer stacked
+     on a layer" language as the hero's box-shadows — for a poster-type
+     read. No rotation/script font on the text itself, so it stays bold
+     without reading as handwritten. */
+  margin: 0 0 2px;
   text-align: center;
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 30px;
+  line-height: 1.18;
+  font-weight: 900;
+  letter-spacing: -0.2px;
   color: var(--text);
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85), 0 1px 0 rgba(255, 255, 255, 0.55);
+  text-shadow: 2px 2px 0 rgba(255, 251, 240, 0.95);
 }
 @media (min-width: 980px) {
   .true-home-inner { max-width: 720px; padding-top: 11dvh; }
-  .home-card-primary { height: 300px; }
+  .home-hero-window { width: 70%; }
 }
 
-.home-card {
+/* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"): the old
+   .home-card-primary was a plain full-bleed photo with soft radius/shadow —
+   exactly the "generic app photo card" pattern the review's Independent
+   Critic flagged. Replaced by .home-hero: a tilted, thick-cream-bordered
+   "postcard" window onto the World with a hard offset shadow (not a soft
+   blur), plus an overlapping "ticket" PLAY banner tilted the other way —
+   translating the JC flyer's collage/sticker layering into UI chrome
+   itself, not just decorating the one photo. Single <button> (one nav
+   action), two visual zones. */
+.home-hero {
   position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   border: none;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: none;
+  padding: 0;
   cursor: pointer;
-  overflow: hidden;
-  text-align: left;
   font-family: inherit;
   color: var(--text);
 }
-.home-card:active { transform: scale(0.98); }
-
-.home-card-primary {
-  /* 2026-09-05 (Home Visual Refresh): taller than before — with the
-     coming-soon slot removed, the primary CTA should read as clearly the
-     dominant thing on screen, not just "the first of a few equal cards". */
-  height: 250px;
-  align-items: flex-end;
-  background-size: cover;
-  background-position: center 62%;
-  padding: 0;
-  /* 2026-09-04 (Codex review follow-up: HOME_GAME_FEEL was scored too low,
-     "static, no sense of ongoing play"): a slow, gentle breathing scale —
-     purely decorative CSS, no new art, cheap to composite (transform only,
-     no layout/paint work). */
-  animation: home-card-breathe 4.5s ease-in-out infinite;
+.home-hero-window {
+  display: block;
+  width: 92%;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 6px solid var(--card);
+  box-shadow: 5px 7px 0 rgba(74, 59, 46, 0.22);
+  transform: rotate(-1.6deg);
+  transition: transform 0.15s ease;
+  /* 2026-09-04 origin (HOME_GAME_FEEL too low, "static, no sense of ongoing
+     play"): a slow breathing scale — purely decorative CSS, cheap
+     transform-only composite. Kept, now combined with the tilt. */
+  animation: home-hero-breathe 5s ease-in-out infinite;
 }
-@keyframes home-card-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.012); }
+@keyframes home-hero-breathe {
+  0%, 100% { transform: rotate(-1.6deg) scale(1); }
+  50% { transform: rotate(-1.3deg) scale(1.012); }
 }
-.home-card-sparkle {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  z-index: 2;
-  font-size: 20px;
-  animation: home-card-sparkle 2.6s ease-in-out infinite;
+.home-hero-window-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+  display: block;
 }
-@keyframes home-card-sparkle {
-  0%, 100% { opacity: 0.55; transform: scale(0.9) rotate(-6deg); }
-  50% { opacity: 1; transform: scale(1.15) rotate(6deg); }
-}
-.home-card-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(74, 59, 46, 0) 35%, rgba(52, 40, 28, 0.72) 100%);
-}
-.home-card-label {
+.home-hero-playbar {
   position: relative;
   z-index: 1;
-  padding: 16px 18px 18px;
+  margin-top: -24px;
+  width: 84%;
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-/* 2026-09-04 (Codex review follow-up: "画像カード全体がタップ可能だと即座に
-   理解できない"): an explicit play chip, not just an implicit "the whole
-   photo is a button" affordance. */
-.home-card-play {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  align-items: center;
+  gap: 12px;
   background: var(--orange);
-  color: #fff;
+  border: 4px solid var(--card);
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 3px 5px 0 rgba(74, 59, 46, 0.22);
+  transform: rotate(0.9deg);
+  transition: transform 0.15s ease;
+}
+.home-hero:active .home-hero-window { transform: rotate(-1.6deg) scale(0.98); }
+.home-hero:active .home-hero-playbar { transform: rotate(0.9deg) scale(0.97); }
+.home-hero-play-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--orange);
   display: grid;
   place-items: center;
-  font-size: 15px;
-  box-shadow: 0 3px 10px rgba(224, 134, 44, 0.5);
+  font-size: 14px;
 }
-.home-card-primary .home-card-title {
+.home-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+}
+.home-hero-title {
   color: #fff;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 800;
   letter-spacing: 0.5px;
 }
-.home-card-primary .home-card-sub {
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 13px;
+.home-hero-sub {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12.5px;
+  font-weight: 600;
 }
 
 /* 2026-09-05 (Home Visual Refresh): secondary action — deliberately a slim
-   pill-shaped bar, not a card the same shape/size as the primary. With
-   "毎日のチャレンジ" removed from Home entirely (not a Human-decided core
+   bar, not a card the same shape/size as the primary. With "毎日の
+   チャレンジ" removed from Home entirely (not a Human-decided core
    feature; see factory/rules/product-identity-gate.md), しごと図鑑 is the
-   only secondary item — sizing it as a low-key bar rather than letting it
-   expand to fill a now-empty row keeps it from reading as equal-weight to
-   the primary CTA. */
+   only secondary item. 2026-09-06: border thickened/warmed to match the
+   hero's frame language instead of the previous thin generic-app pill
+   border, without changing its size or weight relative to the hero. */
 .home-secondary-bar {
   display: flex;
   align-items: center;
   gap: 10px;
   background: var(--card);
-  border: 2px solid var(--line);
-  border-radius: 999px;
+  border: 3px solid var(--line);
+  border-radius: 16px;
   padding: 11px 18px;
-  box-shadow: var(--shadow);
+  box-shadow: 3px 4px 0 rgba(74, 59, 46, 0.1);
   position: relative;
   color: var(--text-soft);
   font-family: inherit;
