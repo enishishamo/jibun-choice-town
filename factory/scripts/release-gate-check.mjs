@@ -86,9 +86,21 @@ if (!existsSync(TASKS_JSON)) {
 }
 
 const tasks = JSON.parse(readFileSync(TASKS_JSON, "utf8")).tasks ?? {};
-const matches = Object.values(tasks).filter((t) => t.release_commit === head);
+// A task's release_commit cannot literally equal the commit that RECORDS
+// it (the sha isn't known until after that commit is made — recording it
+// requires a follow-up commit, e.g. "set release_commit" bookkeeping).
+// So this accepts release_commit == head OR release_commit being an
+// ANCESTOR of head — i.e. the gated commit is somewhere in what's being
+// pushed, not necessarily the exact tip. Still fail-closed: an
+// unreferenced app change anywhere in the range is refused.
+function isAncestorOrSelf(candidate, of) {
+  if (candidate === of) return true;
+  if (!resolvesToCommit(candidate)) return false;
+  return run("git", ["merge-base", "--is-ancestor", candidate, of]).status === 0;
+}
+const matches = Object.values(tasks).filter((t) => t.release_commit && isAncestorOrSelf(t.release_commit, head));
 if (matches.length === 0) {
-  console.error(`FAIL: no task in ${TASKS_JSON} has release_commit == ${head}. Record the release (factory/harness/task-state.mjs set-release-commit <task_id> ${head}) after the gate passes locally, and commit the updated tasks.json in the SAME push.`);
+  console.error(`FAIL: no task in ${TASKS_JSON} has a release_commit that is ${head} or an ancestor of it. Record the release (factory/harness/task-state.mjs set-release-commit <task_id> <sha>) after the gate passes locally, and commit the updated tasks.json in the SAME push.`);
   process.exit(1);
 }
 
