@@ -225,6 +225,75 @@ await sleep(900);
   }
 }
 
+// ---- Case 5: pan must reverse immediately from either edge -----------------
+// (2026-09-06, REAL_USER_OBSERVED: on a real phone, panning to the right
+// edge of the Continuous World Map could leave horizontal pan "stuck" —
+// dragging back left produced no visible movement. Root cause: `pan` (the
+// raw drag accumulator in WorldMapScreen.tsx) was never clamped itself —
+// only the DERIVED camera transform was — so a drag past the edge let `pan`
+// keep drifting long after the rendered position had saturated; reversing
+// direction then had to "walk back" that whole invisible overshoot, often
+// more than one real swipe covers, before any movement resumed. Fixed by
+// clamping `pan` itself (see regionBase()/onPointerMove in
+// WorldMapScreen.tsx). This case reproduces the exact repro steps from the
+// report — drive to an edge with SEVERAL large drags (a real finger can't
+// cross the whole canvas in one gesture), then confirm the very FIRST
+// reversal already moves the camera, from both the right and left edges.
+await page.reload({ waitUntil: "networkidle2" });
+await sleep(1200);
+await page.evaluate(() => {
+  const btn = [...document.querySelectorAll("button, [role=button], *")].find((e) =>
+    e.textContent && e.textContent.trim().startsWith("社会を冒険する") && e.children.length < 5,
+  );
+  const card = btn?.closest(".home-card-primary") || document.querySelector(".home-card-primary");
+  (card ?? btn)?.click();
+});
+await sleep(900);
+
+async function canvasTx() {
+  return page.evaluate(() => {
+    const el = document.querySelector(".region-canvas");
+    const m = el?.getAttribute("style")?.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+    return m ? { tx: parseFloat(m[1]), ty: parseFloat(m[2]) } : null;
+  });
+}
+// drag over empty canvas only (a point unlikely to land on any hotspot at
+// any scroll position) so this case measures pure pan, not tap arbitration
+const EMPTY_X = 190, EMPTY_Y = 760;
+async function driveToEdge(dx) {
+  let last = null;
+  for (let i = 0; i < 8; i++) {
+    await touchDrag(EMPTY_X, EMPTY_Y, dx, 0, 5);
+    await sleep(60);
+    last = await canvasTx();
+  }
+  return last;
+}
+async function reverseMoves(dx) {
+  const before = await canvasTx();
+  await touchDrag(EMPTY_X, EMPTY_Y, dx, 0, 5);
+  await sleep(150);
+  const after = await canvasTx();
+  return before && after && after.tx !== before.tx;
+}
+
+{
+  const atRight = await driveToEdge(-260); // repeated leftward swipes -> pan east
+  const reversedFromRight = await reverseMoves(120); // one swipe back west
+  const backNearCenter = await driveToEdge(180); // walk back toward center/left edge
+  const atLeft = await driveToEdge(260); // repeated rightward swipes -> pan west (left edge)
+  const reversedFromLeft = await reverseMoves(-120); // one swipe back east
+  const pass = !!(atRight && atLeft && reversedFromRight && reversedFromLeft);
+  results.cases.push({
+    case: "pan-reverses-immediately-from-either-edge",
+    pass,
+    atRightEdgeTx: atRight?.tx, reversedFromRightOnFirstSwipe: reversedFromRight,
+    afterWalkBackTx: backNearCenter?.tx,
+    atLeftEdgeTx: atLeft?.tx, reversedFromLeftOnFirstSwipe: reversedFromLeft,
+  });
+  if (!pass) results.blockers.push("Pan did not resume immediately on reversal from an edge — MAP_PAN_BOUNDARY_BLOCKER (2026-09-06 REAL_USER_OBSERVED)");
+}
+
 await browser.close();
 
 const summary = {
