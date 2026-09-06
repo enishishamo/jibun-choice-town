@@ -1,3 +1,17 @@
+> **2026-09-07 partial supersession notice (kept, not deleted)**: The
+> STABLE stage below describes promotion as "never automatic, never
+> inferred" — this is superseded, for changes within Human-approved
+> product direction and outside the Product Identity Gate
+> (`factory/rules/product-identity-gate.md`), by
+> [`factory/rules/deploy-release-policy.md`](../../rules/deploy-release-policy.md)
+> (2026-09-06): such changes may reach STABLE (`main` → GitHub Pages)
+> once the release gate passes (`factory/harness/task-state.mjs
+> can-deploy`), without a per-change human approval stop. Product
+> Identity Gate items remain categorically excluded from auto-promotion.
+> Everything else below (the stage definitions, AI_VERIFIED evidence
+> requirements, rollback model, REAL_USER_FEEDBACK re-entry point) is
+> still accurate and in force. Conflict order: see `CLAUDE.md`.
+
 # JIBUN CHOICE Release Lifecycle (established 2026-09-04)
 
 This document defines the stages a body of work passes through before it may

@@ -1,4 +1,10 @@
 # Build the Vite app and publish it to GitHub Pages on every push to main.
+# 2026-09-07 (factory-architecture-audit-2026-09-06.md §16#1/#6): this
+# workflow used to run `npm run build` and deploy unconditionally — no
+# lint, no release gate, no Product Identity / QA / independent-review
+# check of any kind. `release-gate-check.mjs` now fails this job (so
+# nothing deploys) if the push touches src/ or public/ without a task in
+# factory/state/tasks.json recording a passing gate for that exact commit.
 name: Deploy to GitHub Pages
 
 on:
@@ -20,11 +26,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # release-gate-check.mjs diffs HEAD against HEAD~1 / the push's
+          # prior sha — the default fetch-depth:1 shallow clone has no
+          # parent commit to diff against.
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Release gate (Product Identity / QA / independent review)
+        run: node factory/scripts/release-gate-check.mjs --base "${{ github.event.before }}" --head "${{ github.sha }}"
+      - run: npm run lint
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
