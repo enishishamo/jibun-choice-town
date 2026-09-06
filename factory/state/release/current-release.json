@@ -86,5 +86,17 @@
     "note": "Full per-world gameplay was not re-clicked step-by-step against production (already covered by the pre-deploy Public Smoke QA + this session's flow-bot regression against the identical build); this pass specifically confirms the deployed artifact matches the verified build and serves correctly to a real browser at the public URL."
   },
   "development_track_status": "PRESERVED -- feature/harness-bootstrap remains the active Development Track branch, untouched in content by this promotion (main was fast-forwarded to it, not merged backwards). factory/state/backlog/, feedback routing, and continuous-development-queue.md are all unaffected and continue forward from here.",
-  "extra_cost_incurred": 0
+  "extra_cost_incurred": 0,
+  "routine_releases": [
+    {
+      "date": "2026-09-06",
+      "policy": "factory/rules/deploy-release-policy.md (first application) — routine UI/UX change, within Human-approved product direction, 0 QA blockers, released without a per-change Human approval stop per Human's explicit new Deploy Policy.",
+      "content": "Continuous World Map V1 + minimum repairs (2026-09-05) + Home Visual Refresh (2026-09-05) + Home Design Review C65%+B25%+A10% reimplementation (2026-09-06, factory/rules/visual-production-flow.md Auto Review Team PASS).",
+      "commit": "9a99291",
+      "qa": "tsc/build clean, public-safety-smoke-qa 0 blockers (mobile+desktop, 14/14 worlds), gesture-arbitration-qa 5/5 PASS, Home->Zukan nav 0 console errors",
+      "github_actions_run": "https://github.com/enishishamo/jibun-choice-town/actions/runs/34002026004 (success)",
+      "production_verified": "2026-09-06, live https://enishishamo.github.io/jibun-choice-town/ navigated directly, Home renders as built, 0 console errors",
+      "note": "world_count/worlds/stable_tag fields above are unchanged (still 14 worlds, still stable-prototype-v0.1) -- this was a Map/Home visual change, not a new content world or a formal STABLE tag cut."
+    }
+  ]
 }
