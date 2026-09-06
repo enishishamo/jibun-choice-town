@@ -4,33 +4,13 @@
 //     数字や情報になって見えるようになる」
 // 精度管理・再検査・測り直しの判断はここでは扱わない（小学生には細かすぎる）。
 // 検査技師に診断もさせない。作った情報は医師へ返す。
+//
+// 2026-09-06: 「何を調べるか選ぶ」を実際の判断にした（詳細は labCheckLogic.ts）。
+// 血液は1本だけ・3つ全部は調べられない、という制約の中で、直前の場面
+// （熱・せき・息苦しさ）から「今知りたいこと」に合う2つを選ぶ。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-interface Test {
-  id: string;
-  icon: string;
-  name: string;
-  hint: string;
-  /** 分かること（＝見えなかったものが情報になる） */
-  found: { label: string; value: string; means: string; off: boolean }[];
-}
-
-// ※数値はプロトタイプ用の簡略モデル。基準値の暗記はさせない。
-const TESTS: Test[] = [
-  {
-    id: "cells", icon: "🔬", name: "血のつぶを数える", hint: "ばい菌とたたかう係が、どれくらいいる？",
-    found: [{ label: "たたかう係（白血球）", value: "13,200", means: "ふだんよりずっと多い。からだが何かとたたかっている", off: true }],
-  },
-  {
-    id: "fire", icon: "🔥", name: "炎症のしるしを調べる", hint: "からだのどこかが「もえている」ときに増えるもの",
-    found: [{ label: "炎症のしるし（CRP）", value: "12.4", means: "強い炎症が起きているときの数字", off: true }],
-  },
-  {
-    id: "oxy", icon: "🫁", name: "酸素のはこび役を調べる", hint: "血が酸素をはこべているか",
-    found: [{ label: "はこび役（ヘモグロビン）", value: "13.2", means: "こちらは、ふだんどおり", off: false }],
-  },
-];
+import { canRunAnother, isCompletePicture, MAX_TESTS_RUNNABLE, TESTS } from "./labCheckLogic";
 
 type Step = "intro" | "run" | "result" | "done";
 
@@ -39,8 +19,10 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
   const [picked, setPicked] = useState<string[]>([]);
   const [running, setRunning] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
+  const [retried, setRetried] = useState(false);
 
-  const rows = TESTS.filter((t) => picked.includes(t.id)).flatMap((t) => t.found);
+  const rows = TESTS.filter((t) => picked.includes(t.id));
+  const complete = isCompletePicture(picked);
 
   // ---------- Before：ただの血液 ----------
   if (step === "intro") {
@@ -53,6 +35,7 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
         <div className="blood-before">
           <span className="blood-tube">🩸</span>
           <p>ぱっと見は、ただの赤い液体。<br />ここから、からだの中が分かるの？</p>
+          <p className="game-line soft center-line">とどいた血液は、この1本だけ。</p>
         </div>
         <button className="btn primary big" onClick={() => setStep("run")}>
           ▶ 調べてみる
@@ -67,19 +50,24 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
       <div className="game board-game">
         <div className="task-bar">
           <span className="task-now">何を調べる？</span>
-          <span className="task-sub">えらぶと、装置が血液を調べてくれる</span>
+          <span className="task-sub">
+            {retried
+              ? "医師はまだ知りたいことがあるみたい。もう一度えらぼう。"
+              : `血液はこれだけ。${MAX_TESTS_RUNNABLE}つまでしか調べられない。`}
+          </span>
         </div>
 
         <div className="stack">
           {TESTS.map((t) => {
             const on = picked.includes(t.id);
+            const capped = !canRunAnother(picked) && !on;
             return (
               <button
                 key={t.id}
                 className={`btn choice ${on ? "on" : ""}`}
-                disabled={!!running}
+                disabled={!!running || on || capped}
                 onClick={() => {
-                  if (on) return;
+                  if (on || capped) return;
                   setRunning(t.id);
                   setNote(null);
                   window.setTimeout(() => {
@@ -91,7 +79,7 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
                 <span className="tweak-check">{on ? "✓" : running === t.id ? "…" : "＋"}</span>
                 <span className="tweak-body">
                   <b>{t.icon} {t.name}</b>
-                  <small>{running === t.id ? "装置が動いている…" : on ? "調べた" : t.hint}</small>
+                  <small>{running === t.id ? "装置が動いている…" : on ? "調べた" : capped ? "血液が足りない" : t.hint}</small>
                 </span>
               </button>
             );
@@ -115,8 +103,8 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
         <button
           className="btn primary big"
           onClick={() => {
-            if (picked.length < TESTS.length) {
-              setNote(`まだ ${picked.length}つ。3つとも調べると、からだの中のようすがそろうよ。`);
+            if (picked.length < MAX_TESTS_RUNNABLE) {
+              setNote(`まだ ${picked.length}つ。あと${MAX_TESTS_RUNNABLE - picked.length}つ調べられるよ。`);
               return;
             }
             setNote(null);
@@ -151,12 +139,33 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
           ))}
         </div>
         {note && <p className="game-note">{note}</p>}
-        <p className="game-line soft center-line">
-          どこで何が起きているかを決めるのは医師。検査技師は、<strong>たしかな情報</strong>を届ける。
-        </p>
-        <button className="btn primary big" onClick={() => setStep("done")}>
-          ▶ 医師へ結果を届ける
-        </button>
+        {complete ? (
+          <>
+            <p className="game-line soft center-line">
+              どこで何が起きているかを決めるのは医師。検査技師は、<strong>たしかな情報</strong>を届ける。
+            </p>
+            <button className="btn primary big" onClick={() => setStep("done")}>
+              ▶ 医師へ結果を届ける
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="game-line soft center-line">
+              医師から連絡が来た：「うーん……これだけだと、まだよく分からないな」
+            </p>
+            <button
+              className="btn primary big"
+              onClick={() => {
+                setPicked([]);
+                setNote(null);
+                setRetried(true);
+                setStep("run");
+              }}
+            >
+              ▶ もう一度、選び直す
+            </button>
+          </>
+        )}
       </div>
     );
   }

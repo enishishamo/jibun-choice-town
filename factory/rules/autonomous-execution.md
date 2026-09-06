@@ -106,12 +106,72 @@ AIだけで95点を追わない。以下を満たしたらV1 COMPLETE:
 必要ならrelease可能性を判断し、minorならbacklog、majorならHuman escalation
 （`deploy-release-policy.md`のSAFETY節と同じfail-closed原則）。
 
-## USER TESTING FIRST（STOP CONDITION）
+## TWO PARALLEL LOOPS（2026-09-06 修正・重要）
 
-現在のJIBUN CHOICEは実ユーザー検証フェーズ。AI内部で改善できることより、
-子どもに触ってもらわないと分からないことが残った時点で、それをSTOP
-CONDITIONとする。その場合、「さらにAIで改善」ではなく **READY FOR USER
-TESTING** へstatusを変更する（新規taskを自作して継続しない）。
+**READY FOR USER TESTINGはFactory全体のSTOP CONDITIONではない。** ある画面/
+機能が「子どもに見せられる」状態になったことを示す、その部分のstatusに
+すぎない。実ユーザー検証を待っている間も、Human-approved Product Boundary
+内で価値のある仕事が存在する限りFactoryは継続して動く。Factoryは常に
+2つのloopを管理する。
+
+**A. USER LEARNING LOOP** — 実際の子ども・親・利用者からfeedback
+（`factory/state/feedback/`）が入った場合、それを最優先のevidenceとして
+扱う: Observation → Structure → Severity → Hypothesis → Task → Repair/
+Design → QA → Release → 次のUser Test。AI内部評価より優先する。
+
+**B. CONTINUOUS PRODUCT LOOP** — User feedback待ちの間も停止しない。既存
+Productを継続的に監査し、次に価値の高い改善taskを自ら選択して進める。
+見る優先順位（概ね）:
+
+1. **BROKEN / BLOCKER** — bug、操作不能、表示崩れ、fact error等
+2. **GAME EXPERIENCE** — 既存worldを実際にplayし直し、本当にゲームに
+   なっているか（読んで答えるだけ・2択クイズ化・C不要で攻略可能になって
+   いないか）、操作→結果→再試行、仕事固有のC⇄D、Job Revealの発見感を
+   継続的に再点検する（`game-critic-v2.md`、`factory/state/audits/
+   q1-audit.json`の既存監査を土台にする——監査を毎回作り直さない）
+3. **KIDS UX / FUN** — 375px primaryで最初の数秒の触りたさ、退屈な説明
+   画面の有無、テンポ、generic EdTech/SaaS化していないか、visual feedback
+4. **WORK / FACT QUALITY** — 実際の仕事との乖離、専門性の有無、一般常識
+   問題化していないか、Fact Researcher/Fact Criticで確認
+5. **CONTENT BREADTH / BIAS** — 業界偏り、ホワイトカラー/医療偏重、性別
+   ステレオタイプ、mechanic偏重の監査
+6. **NEW CONTENT** — 上記監査から明確なcoverage gapが見つかった場合のみ
+   候補化。「数を増やすこと」自体を目的にしない。WHY THIS WORLD? / WHAT
+   NEW SOCIAL ENCOUNTER? / WHAT NEW PROFESSION? / WHAT UNIQUE C⇄D? / WHAT
+   MECHANIC DIFFERENCE? に答えられるものだけ優先する
+7. **POLISH / TECH DEBT** — accessibility/responsive/performance/code
+   structure等。ただし実ユーザー価値より優先しない
+
+### GAME RESEARCHの継続利用
+
+Game Researcher（`.claude/agents/jc-researcher`、`/game-lab research`）は
+新規world制作時だけでなく既存world改善にも使う。puzzle/simulation/
+management/strategy/sandbox/party game/mobile casual/board game/escape
+game/tycoon/creative play等から「なぜ触り続けたくなるか」「失敗がなぜ
+面白いか」「もう1回がなぜ起きるか」の原理を研究し、表面的コピーはせず
+`factory/taxonomy/mechanics-library.json`へ保存、JIBUN CHOICEの仕事固有
+C⇄Dへ翻訳する。
+
+### ANTI-IDLE RULE
+
+以下を理由にFactoryを止めない: 「User feedbackがまだないので停止します」
+「全blockerがないので仕事はありません」「V1が公開済みなので待ちます」。
+Factory ManagerはUser feedback待ちでもCONTINUOUS PRODUCT LOOPから
+NEXT TASKを選ぶ。
+
+### ANTI-BUSYWORK RULE
+
+ただし、動き続けるためだけの仕事を作らない。禁止: 意味のないpixel polish、
+同じ画面の無限redesign、点数を95→96にするためだけのrepair、根拠なく
+新機能を発明、根拠なくworldを量産、Human-approved Product Identity変更。
+各task開始時に内部で必ず **WHY NOW? / EXPECTED USER VALUE? / WHAT
+EVIDENCE・PRINCIPLE SUPPORTS THIS?** を確認する。説明できなければ実行しない。
+
+### WIP LIMIT
+
+一度に大量のworldを半端に触らない。原則: 1 task/worldを選択 →
+Research → Design → Critic → Implement → QA → Release/Backlog → NEXT、
+まで1つを閉じてから次へ進む。
 
 ## HUMANを呼ぶ条件
 
@@ -167,6 +227,14 @@ Boundaryの中で、調査・制作・批評・修正・QA・release・次task�
 
 ## 適用実績
 
+- 2026-09-06（訂正）: 初回loop実行時、READY FOR USER TESTINGをFactory全体の
+  停止条件として扱ってしまった。Human訂正により、これは個々の画面/機能の
+  statusであり、Continuous Product Loop（既存Productの継続監査・改善）は
+  User feedback待ちでも止めないことを明記。CONTINUOUS PRODUCT LOOPの
+  優先順位に沿い、既存の`factory/state/audits/q1-audit.json`（全Q1独立
+  Codex監査、2026-09-01）からGAME_QUALITY最下位の`lab_check`（GQ18/CA41、
+  「検査を全選択すれば必ず成功」——select-all exploit、C⇄D不成立）を
+  次taskとして選択、実行した。詳細: `factory/projects/q1-improve-lab-check/`。
 - 2026-09-06: 初回loop実行。backlog全件（`ui-ux-backlog.md` /
   `factory-harness-backlog.md` / `career-path-backlog.md` /
   `language-furigana-backlog.md` / `experience-backlog.json` /
