@@ -8,18 +8,25 @@
 // 2026-09-06: 「何を調べるか選ぶ」を実際の判断にした（詳細は labCheckLogic.ts）。
 // 血液は1本だけ・3つ全部は調べられない、という制約の中で、直前の場面
 // （熱・せき・息苦しさ）から「今知りたいこと」に合う2つを選ぶ。
+//
+// 2026-09-06 repair（独立Codexレビューで検出したHIGH是正）: 選び直しを
+// その場で無制限に許すと、症例を読まずに3通りの組み合わせを総当たりすれば
+// 必ず成功できてしまう（旧select-all exploitの縮小版）。1回の挑戦で判断を
+// 固定し、外した場合はその場の再選択ではなく「情報が足りないまま結果を
+// 送った」という別の結末へ進む——進行はブロックしない（Job Reveal等は
+// 変わらず起きる）が、内容を読まずに数を撃つ戦略には意味を持たせない。
+// アプリ自体の「← もどる」でこの章へ入り直せば、本当のやり直しはできる。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import { canRunAnother, isCompletePicture, MAX_TESTS_RUNNABLE, TESTS } from "./labCheckLogic";
 
-type Step = "intro" | "run" | "result" | "done";
+type Step = "intro" | "run" | "result" | "done" | "done-partial";
 
 export default function LabCheckGame({ onComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("intro");
   const [picked, setPicked] = useState<string[]>([]);
   const [running, setRunning] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
-  const [retried, setRetried] = useState(false);
 
   const rows = TESTS.filter((t) => picked.includes(t.id));
   const complete = isCompletePicture(picked);
@@ -50,11 +57,7 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
       <div className="game board-game">
         <div className="task-bar">
           <span className="task-now">何を調べる？</span>
-          <span className="task-sub">
-            {retried
-              ? "医師はまだ知りたいことがあるみたい。もう一度えらぼう。"
-              : `血液はこれだけ。${MAX_TESTS_RUNNABLE}つまでしか調べられない。`}
-          </span>
+          <span className="task-sub">血液はこれだけ。{MAX_TESTS_RUNNABLE}つまでしか調べられない。</span>
         </div>
 
         <div className="stack">
@@ -153,19 +156,39 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
             <p className="game-line soft center-line">
               医師から連絡が来た：「うーん……これだけだと、まだよく分からないな」
             </p>
-            <button
-              className="btn primary big"
-              onClick={() => {
-                setPicked([]);
-                setNote(null);
-                setRetried(true);
-                setStep("run");
-              }}
-            >
-              ▶ もう一度、選び直す
+            <button className="btn primary big" onClick={() => setStep("done-partial")}>
+              ▶ このまま結果を送る
             </button>
           </>
         )}
+      </div>
+    );
+  }
+
+  // ---------- E（惜しい）：情報は届いたが、今回の疑問には足りなかった ----------
+  if (step === "done-partial") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">からだの中は、少しだけ見えた</span>
+          <div className="ba-mini">
+            <span className="ba-mini-item">
+              <span className="ba-mini-emoji">🩸</span>
+              <small>見ただけでは<br />分からなかった</small>
+            </span>
+            <span className="ba-mini-arrow">→</span>
+            <span className="ba-mini-item">
+              <span className="ba-mini-emoji">📄</span>
+              <small>数字は届いたけど<br />知りたいことには足りない</small>
+            </span>
+          </div>
+        </div>
+        <p className="game-line soft center-line">
+          何を調べるかで、医師に届く情報は変わる。次はちがう組み合わせを試してみよう。
+        </p>
+        <button className="btn primary big" onClick={onComplete}>
+          結果を送る
+        </button>
       </div>
     );
   }

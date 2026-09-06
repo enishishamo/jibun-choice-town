@@ -234,7 +234,26 @@ Boundaryの中で、調査・制作・批評・修正・QA・release・次task�
   優先順位に沿い、既存の`factory/state/audits/q1-audit.json`（全Q1独立
   Codex監査、2026-09-01）からGAME_QUALITY最下位の`lab_check`（GQ18/CA41、
   「検査を全選択すれば必ず成功」——select-all exploit、C⇄D不成立）を
-  次taskとして選択、実行した。詳細: `factory/projects/q1-improve-lab-check/`。
+  次taskとして選択、実行した。Round1実装→独立Codexレビュー FAIL（HIGH2件）
+  →AUTO REPAIR 1回→再レビューもFAIL（新たなHIGH: 選択肢名自体が答えを
+  漏らしている、という構造的な問題）。AUTO REPAIR RULE（最大1回）と
+  ANTI-BUSYWORK RULEに従い3回目の自力設計はせず、ESCALATION条件#9
+  （Repairしても release threshold未達）としてHuman Decision Requiredで
+  停止した——Developmentにのみ実装済み、Stable未反映。詳細:
+  `factory/projects/q1-improve-lab-check/redesign-proposals.md`。
+- 2026-09-06（同日、並行して発生）: REAL_USER_OBSERVED — 本番Continuous
+  World Mapで「端までpanした後、反対方向へ戻れないことがある」という
+  実機報告を受け、USER LEARNING LOOP（Continuous Product Loopより優先）
+  としてlab_check作業を安全な地点（コミット済み・未release）で一時中断し
+  即座に対応。原因は`WorldMapScreen.tsx`の`pan`状態（drag蓄積値）が
+  render時のcamera変換だけclampされ、`pan`自体は無制限に増減し続けて
+  いたこと——端で反転してもrender位置が動き出すまで「見えない超過分」を
+  歩いて戻る必要があり、実機の1スワイプでは足りないことがあった。
+  `regionBase()`を抽出し`pan`自体をclampする修正、および
+  `gesture-arbitration-qa.mjs`に修正前で確実にFAILする回帰ケースを追加
+  （修正前後で再現・解消を実機的に確認）。tsc/build/smoke QA全PASSを経て
+  Deploy Policyに従いHuman承認待ちせずmainへcherry-pick・push・本番反映
+  （GitHub Actions run成功、本番URLで回帰ケース再PASSを確認）。
 - 2026-09-06: 初回loop実行。backlog全件（`ui-ux-backlog.md` /
   `factory-harness-backlog.md` / `career-path-backlog.md` /
   `language-furigana-backlog.md` / `experience-backlog.json` /

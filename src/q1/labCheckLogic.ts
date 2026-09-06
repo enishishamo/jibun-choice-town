@@ -13,6 +13,23 @@
 // symptom text, WITHOUT reintroducing precision-management/retest jargon
 // (deliberately excluded per this component's original design note — that
 // was previously judged too technical for the target age).
+//
+// 2026-09-06 repair (independent Codex review,
+// factory/projects/q1-improve-lab-check/final-review.result.json, verdict
+// FAIL, 2 HIGH): (1) white cell count and hemoglobin are normally drawn
+// together in ONE panel (CBC) in real practice, not competing single-
+// purpose tests fighting over the same limited tube — replaced the
+// hemoglobin/oxygen-carrying test with kidney function (creatinine), a
+// genuinely separate assay a real lab runs distinctly from a CBC, commonly
+// checked as a baseline in an elderly patient but not informative for THIS
+// case's infection/inflammation question — a medically honest distractor.
+// (2) the unlimited "pick again" retry meant a player could brute-force
+// all 3 possible pairs within this one experience without ever reading the
+// case, still always reaching the good ending — closed in LabCheckGame.tsx
+// by removing the in-place retry loop (a wrong pair now ends the
+// experience honestly, not blocked from progressing, but not silently
+// re-tried into eventual success either; the app's own "← もどる" already
+// provides a real do-over by leaving and re-entering the chapter).
 export interface LabTest {
   id: string;
   icon: string;
@@ -38,8 +55,8 @@ export const TESTS: LabTest[] = [
     label: "炎症のしるし（CRP）", value: "12.4", means: "強い炎症が起きているときの数字", off: true, relevant: true,
   },
   {
-    id: "oxy", icon: "🫁", name: "酸素のはこび役を調べる", hint: "血が酸素をはこべているか",
-    label: "はこび役（ヘモグロビン）", value: "13.2", means: "こちらは、ふだんどおり", off: false, relevant: false,
+    id: "kidney", icon: "💧", name: "腎臓のはたらきを調べる", hint: "からだの中の老廃物を、うまく出せているか",
+    label: "腎臓のはたらき（クレアチニン）", value: "0.8", means: "こちらは、ふだんどおり", off: false, relevant: false,
   },
 ];
 
