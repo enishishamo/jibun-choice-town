@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "status": "OK",
+  "json": {
+    "verdict": "FAIL",
+    "score": 24,
+    "career_authenticity_score": 58,
+    "game_quality_score": 24,
+    "blockers": [
+      "Two incorrect review submissions call onComplete(), so a player can reach the good ending without reading or correctly judging any vital-sign data."
+    ],
+    "high": [
+      "The fixed row order makes selecting the first three rows a deterministic no-reading shortcut; every abnormal vital precedes the sole normal vital.",
+      "Gathered history and examination findings never affect the final judgment or outcome, making the apparent multi-source clinical investigation largely ceremonial rather than authentic synthesis."
+    ],
+    "medium": [
+      "Failure is communicated only by a generic text note; the second failure immediately becomes completion, so the implemented consequence does not honestly represent the player's clinical judgment.",
+      "The case, values, abnormal set, and ordering never vary, so one successful play teaches a reusable position/memorization solution and offers little replay or mastery depth."
+    ],
+    "low": [
+      "The .vital-row.off CSS rule still exists, but ClueBoardGame never applies the off class during gathering or review; it is dormant here and does not currently leak the answer.",
+      "MIN_TOOLS is currently vacuous: ASK has at most 4 clues, EXAM 2, and VITALS 4, so reaching MIN_CLUES=5 already necessarily uses at least two tools. It could matter only if future content gives one tool five or more clues."
+    ],
+    "evidence": [
+      "src/q1/ClueBoardGame.tsx:71 — a correct flag set completes normally.",
+      "src/q1/ClueBoardGame.tsx:75 — every incorrect report increments the attempt counter regardless of what was selected.",
+      "src/q1/ClueBoardGame.tsx:77 — reaching MAX_REVIEW_ATTEMPTS enters the failure-cap branch.",
+      "src/q1/ClueBoardGame.tsx:81 — the failure-cap branch calls onComplete() despite an incorrect judgment, enabling arbitrary-submit-twice completion.",
+      "src/q1/clueBoardLogic.ts:46 — temp, the first review row, is marked off=true.",
+      "src/q1/clueBoardLogic.ts:47 — SpO₂, the second row, is marked off=true.",
+      "src/q1/clueBoardLogic.ts:48 — respiratory rate, the third row, is marked off=true.",
+      "src/q1/clueBoardLogic.ts:49 — blood pressure, the fourth and final row, is the only off=false item; selecting rows 1–3 always wins without reading values or ranges.",
+      "src/q1/ClueBoardGame.tsx:50 — review rows use only className=\"vital-row\"; no conditional off styling is applied.",
+      "src/q1/ClueBoardGame.tsx:169 — gather-phase rows likewise use only className=\"vital-row\", so labels, icons, and row CSS do not reveal off status.",
+      "src/index.css:4120 — .vital-row.off still provides red abnormal styling globally, but this component does not apply that class.",
+      "src/q1/clueBoardLogic.ts:23 — ASK contains four clue-bearing entries at most.",
+      "src/q1/clueBoardLogic.ts:31 — EXAM contains two clue-bearing entries at most.",
+      "src/q1/clueBoardLogic.ts:45 — VITALS contains four clue-bearing entries.",
+      "src/q1/clueBoardLogic.ts:59 — MIN_CLUES is 5, which already forces combining tools before the explicit MIN_TOOLS check can add a constraint.",
+      "src/q1/ClueBoardGame.tsx:84 — failure copy only asks the child to compare numbers and ranges; it identifies no correct row and is neither punitive nor answer-leaking.",
+      "src/q1/ClueBoardGame.tsx:139 — history choices only add clues; their contents are not consumed by the review validator.",
+      "src/q1/ClueBoardGame.tsx:152 — examination choices likewise only add clues and do not alter the final judgment.",
+      "src/q1/clueBoardLogic.ts:72 — final validation considers only the flagged IDs against the fixed OFF_VITAL_IDS set.",
+      "factory/state/audits/audit-summary.md:53 — the original defect was content-blind completion after collecting five clues; the new review adds judgment but its second-miss completion preserves a direct content-blind route."
+    ],
+    "recommended_actions": [
+      "Replace the second-miss onComplete() path with an explicit unsuccessful outcome or return to gathering/review; never award the good ending for an incorrect flag set.",
+      "Randomize row order at minimum, and preferably vary clinically coherent vital values and derive off status from those values so position and memorized ID sets cannot solve the case.",
+      "Make gathered history and examination evidence participate in a consequential judgment, prioritization, or report rather than serving only as an entry toll.",
+      "Add visible, non-answer-leaking failure feedback tied to the report outcome. The current generic retry sentence can remain as supportive copy.",
+      "Unlimited retry is unnecessary and would permit enumeration of 16 flag sets; a bounded retry is reasonable, but exhausting it must produce an honest failure/alternate outcome rather than successful completion."
+    ]
+  },
+  "output": "{\"verdict\":\"FAIL\",\"score\":24,\"career_authenticity_score\":58,\"game_quality_score\":24,\"blockers\":[\"Two incorrect review submissions call onComplete(), so a player can reach the good ending without reading or correctly judging any vital-sign data.\"],\"high\":[\"The fixed row order makes selecting the first three rows a deterministic no-reading shortcut; every abnormal vital precedes the sole normal vital.\",\"Gathered history and examination findings never affect the final judgment or outcome, making the apparent multi-source clinical investigation largely ceremonial rather than authentic synthesis.\"],\"medium\":[\"Failure is communicated only by a generic text note; the second failure immediately becomes completion, so the implemented consequence does not honestly represent the player's clinical judgment.\",\"The case, values, abnormal set, and ordering never vary, so one successful play teaches a reusable position/memorization solution and offers little replay or mastery depth.\"],\"low\":[\"The .vital-row.off CSS rule still exists, but ClueBoardGame never applies the off class during gathering or review; it is dormant here and does not currently leak the answer.\",\"MIN_TOOLS is currently vacuous: ASK has at most 4 clues, EXAM 2, and VITALS 4, so reaching MIN_CLUES=5 already necessarily uses at least two tools. It could matter only if future content gives one tool five or more clues.\"],\"evidence\":[\"src/q1/ClueBoardGame.tsx:71 — a correct flag set completes normally.\",\"src/q1/ClueBoardGame.tsx:75 — every incorrect report increments the attempt counter regardless of what was selected.\",\"src/q1/ClueBoardGame.tsx:77 — reaching MAX_REVIEW_ATTEMPTS enters the failure-cap branch.\",\"src/q1/ClueBoardGame.tsx:81 — the failure-cap branch calls onComplete() despite an incorrect judgment, enabling arbitrary-submit-twice completion.\",\"src/q1/clueBoardLogic.ts:46 — temp, the first review row, is marked off=true.\",\"src/q1/clueBoardLogic.ts:47 — SpO₂, the second row, is marked off=true.\",\"src/q1/clueBoardLogic.ts:48 — respiratory rate, the third row, is marked off=true.\",\"src/q1/clueBoardLogic.ts:49 — blood pressure, the fourth and final row, is the only off=false item; selecting rows 1–3 always wins without reading values or ranges.\",\"src/q1/ClueBoardGame.tsx:50 — review rows use only className=\\\"vital-row\\\"; no conditional off styling is applied.\",\"src/q1/ClueBoardGame.tsx:169 — gather-phase rows likewise use only className=\\\"vital-row\\\", so labels, icons, and row CSS do not reveal off status.\",\"src/index.css:4120 — .vital-row.off still provides red abnormal styling globally, but this component does not apply that class.\",\"src/q1/clueBoardLogic.ts:23 — ASK contains four clue-bearing entries at most.\",\"src/q1/clueBoardLogic.ts:31 — EXAM contains two clue-bearing entries at most.\",\"src/q1/clueBoardLogic.ts:45 — VITALS contains four clue-bearing entries.\",\"src/q1/clueBoardLogic.ts:59 — MIN_CLUES is 5, which already forces combining tools before the explicit MIN_TOOLS check can add a constraint.\",\"src/q1/ClueBoardGame.tsx:84 — failure copy only asks the child to compare numbers and ranges; it identifies no correct row and is neither punitive nor answer-leaking.\",\"src/q1/ClueBoardGame.tsx:139 — history choices only add clues; their contents are not consumed by the review validator.\",\"src/q1/ClueBoardGame.tsx:152 — examination choices likewise only add clues and do not alter the final judgment.\",\"src/q1/clueBoardLogic.ts:72 — final validation considers only the flagged IDs against the fixed OFF_VITAL_IDS set.\",\"factory/state/audits/audit-summary.md:53 — the original defect was content-blind completion after collecting five clues; the new review adds judgment but its second-miss completion preserves a direct content-blind route.\"],\"recommended_actions\":[\"Replace the second-miss onComplete() path with an explicit unsuccessful outcome or return to gathering/review; never award the good ending for an incorrect flag set.\",\"Randomize row order at minimum, and preferably vary clinically coherent vital values and derive off status from those values so position and memorized ID sets cannot solve the case.\",\"Make gathered history and examination evidence participate in a consequential judgment, prioritization, or report rather than serving only as an entry toll.\",\"Add visible, non-answer-leaking failure feedback tied to the report outcome. The current generic retry sentence can remain as supportive copy.\",\"Unlimited retry is unnecessary and would permit enumeration of 16 flag sets; a bounded retry is reasonable, but exhausting it must produce an honest failure/alternate outcome rather than successful completion.\"]}",
+  "elapsed_sec": 47.202
+}
