@@ -57,6 +57,12 @@ if (!resolvesToCommit(base)) {
   // "no app changes".
   const parent = run("git", ["rev-parse", `${head}~1`]).stdout.trim();
   if (resolvesToCommit(parent)) {
+    // 2026-09-07 (found by this session's own first real CI run, 34066700565):
+    // this fallback only checks the single last commit, not the whole
+    // push -- a multi-commit push whose base doesn't resolve (e.g. a
+    // shallow clone) can silently under-check earlier commits' app
+    // changes. Loud on purpose so it's never a silent narrowing.
+    console.warn(`WARNING: --base did not resolve; falling back to ${head}~1 = ${parent}. This checks ONLY the most recent commit, not the full push range. If this push landed multiple commits, earlier ones' src/public changes may not have been checked. Prefer fetch-depth: 0 in the checkout step so --base (github.event.before) always resolves.`);
     base = parent;
   } else {
     console.error(`FAIL: no usable --base and ${head}~1 does not resolve (shallow clone? first commit?) — cannot compute a diff, refusing to guess. Ensure the checkout step uses fetch-depth: 2 or more.`);

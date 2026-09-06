@@ -27,10 +27,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # release-gate-check.mjs diffs HEAD against HEAD~1 / the push's
-          # prior sha — the default fetch-depth:1 shallow clone has no
-          # parent commit to diff against.
-          fetch-depth: 2
+          # release-gate-check.mjs diffs the push's prior sha
+          # (github.event.before) against HEAD. fetch-depth:2 was tried
+          # first and found NOT to be enough by this session's own first
+          # real run of this workflow (run 34066700565): a single push
+          # landing several commits at once (a normal git push, not a
+          # rebase/squash) means `before` can be more than 1-2 commits
+          # back, so it didn't resolve within a depth-2 shallow clone and
+          # the script silently fell back to diffing only HEAD~1 --
+          # correctly checking the last commit alone, but blind to
+          # earlier commits' app changes in the SAME push. Full history
+          # avoids this whole class of bug; this repo is small enough
+          # that the extra checkout cost is negligible.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
