@@ -386,8 +386,8 @@
       "task_type": "game-content",
       "status": "READY",
       "repair_count": 0,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/q1-improve-lab-check/round3-review.result.json",
       "review_required": true,
       "qa_status": null,
       "qa_evidence": null,
@@ -399,13 +399,23 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-07T00:20:54.143Z",
-      "updated_at": "2026-09-07T00:20:54.144Z",
+      "updated_at": "2026-09-07T04:29:49.610Z",
       "history": [
         {
           "at": "2026-09-07T00:20:54.144Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T04:29:49.611Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-lab-check/round3-review.result.json",
+          "score": 48,
+          "high_count": 3,
+          "override_note": null
         }
       ]
     }

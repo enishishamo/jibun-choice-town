@@ -45,13 +45,24 @@ export interface LabTest {
 
 export const MAX_TESTS_RUNNABLE = 2;
 
+// 2026-09-07 repair (Human Decision — Q1 First-Play Standard V1, HIGH:
+// "患者文脈を使わない固定攻略が成立する" — the pre-run `name`/`hint` text
+// used to spell out each test's diagnostic category ("ばい菌とたたかう係",
+// "からだのどこかが「もえている」とき"), so a first-time player could win
+// by pattern-matching those words against "熱・せき" without ever
+// connecting them to THIS patient. `name`/`hint` (shown before running,
+// during selection) now describe only the literal, neutral thing being
+// measured — no diagnostic-category words. The rich, category-revealing
+// explanation still lives in `label`/`means` (shown only AFTER running),
+// so the education is not lost, only moved past the point where it could
+// leak the answer.
 export const TESTS: LabTest[] = [
   {
-    id: "cells", icon: "🔬", name: "血のつぶを数える", hint: "ばい菌とたたかう係が、どれくらいいる？",
+    id: "cells", icon: "🔬", name: "血のつぶを数える", hint: "血液の中に、小さな粒がいくつあるかを調べる。",
     label: "たたかう係（白血球）", value: "13,200", means: "ふだんよりずっと多い。からだが何かとたたかっている", off: true, relevant: true,
   },
   {
-    id: "fire", icon: "🔥", name: "炎症のしるしを調べる", hint: "からだのどこかが「もえている」ときに増えるもの",
+    id: "fire", icon: "🧪", name: "血液中のある物質を調べる", hint: "調べると、その物質の量が数字で分かるよ。",
     label: "炎症のしるし（CRP）", value: "12.4", means: "強い炎症が起きているときの数字", off: true, relevant: true,
   },
   {

@@ -300,7 +300,7 @@ export const medical: ContentModule = {
     {
       id: "med-lab", professionId: "labtech", eventId: "er-patient", gameType: "lab_check",
       place: { name: "検査室", image: M("lab"), fit: "cover", focus: "center 30%" },
-      mission: { title: "この血液から、\n何が分かるだろう？", lines: ["見えないからだの中を、情報にしよう。"] },
+      mission: { title: "この血液から、\n何が分かるだろう？", lines: ["熱・せき・息苦しさがある人の血液。", "見えないからだの中を、情報にしよう。"] },
       tools: [], resolution: { title: "結果を、医師へ報告した", lines: [] },
       discoveryEcho: "さっき、血液を調べて、見えなかったからだの中を数字や情報にしたよね。それが、この仕事の中心です。",
       seeds: ["何を調べるか選ぶ", "数字を見る", "見えないものを調べる", "情報を届ける", "特にない"],

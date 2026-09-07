@@ -51,5 +51,27 @@ check("order does not matter (same set, reversed)", isCompletePicture([...comple
 check("empty pick is incomplete", !isCompletePicture([]));
 check("single relevant pick alone is incomplete (must gather both)", !isCompletePicture([RELEVANT_IDS[0]]));
 
+// ---- 2026-09-07 repair (Q1 First-Play Standard, HIGH: "患者文脈を使わない
+// 固定攻略が成立する" — the pre-run name/hint text used to spell out each
+// test's diagnostic category, so a first-time player could win by
+// pattern-matching category words against the case's own symptom words
+// ("熱", "せき", "苦し") without reading anything about THIS patient).
+// Verify the SELECTION-TIME text (name/hint) no longer contains those
+// category-revealing words; the richer explanation may still appear in
+// label/means, which are only shown AFTER a test has been run. ----
+{
+  const leakyWords = ["たたかう", "炎症", "もえ"];
+  const caseWords = ["熱", "せき", "息苦し"];
+  const preRunLeaks = TESTS.filter((t) =>
+    leakyWords.some((w) => t.name.includes(w) || t.hint.includes(w)) ||
+    caseWords.some((w) => t.name.includes(w) || t.hint.includes(w)),
+  );
+  check(
+    "no test's pre-run name/hint contains a diagnostic-category or case-matching word",
+    preRunLeaks.length === 0,
+    preRunLeaks.map((t) => t.id).join(","),
+  );
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

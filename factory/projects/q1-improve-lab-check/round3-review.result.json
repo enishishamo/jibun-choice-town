@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "lab-check-round3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 58,
+    "game_quality_score": 48,
+    "blockers": [],
+    "high": [
+      "正解2項目は測定目的を伏せた曖昧な文言なのに、不正解だけ「腎臓」「老廃物」と目的を具体的に示している。初見でも呼吸器症状と無関係そうな腎臓を除外するだけで正解でき、検査目的を患者文脈へ適用する判断になっていない。Gate C/D/Eを満たさない。",
+      "label/異常状態は2検査を選び終えた後ではなく、各検査の実行直後に選択画面へ表示される。1つ目が白血球またはCRPなら、診断カテゴリーと異常色を見てから2つ目を選べるため、「教育を選択後へ移した」という修正主張はコード上成立せず、FIRST-PLAY中のUI answer leakが残る。",
+      "成功・partialの社会的結果は、主として説明文と静的な絵文字の血液→紙／グラフ表示だけで表現される。医師や検査工程の可視的状態変化がなく、WORLD_FEEDBACK_QUALITYおよびVISUAL_GAMEPLAY_LEGIBILITYを満たさない。"
+    ],
+    "medium": [
+      "誤答後はその場で判断を修正できずpartial終端へ進む。「次はちがう組み合わせ」と表示するだけで、再考には章を退出して入り直す必要があり、Gate Gの初回体験内の考え直しが弱い。",
+      "「血液1本から任意の2検査」という共通予算モデルは、白血球計数とCRP・クレアチニンで検体容器や処理が異なり得る実務を表現せず、検査技師固有の制約として誤解を招く。"
+    ],
+    "low": [
+      "自動QAは禁則語の完全一致だけを検査しており、選択肢間の具体性の非対称、実行途中に表示されるlabel/off状態、同義語による漏洩を検出できない。"
+    ],
+    "evidence": [
+      "src/data/content/medical.ts:293 — 直前のmed-doctorは同じ患者を熱・咳・息苦しさとして提示している。",
+      "src/data/content/medical.ts:303 — med-lab自身にも同じ症状が再掲され、症例文脈の欠落は修正されているが、これ単独では検査目的を判断できない。",
+      "src/q1/labCheckLogic.ts:61 — 白血球検査の事前文言は「血のつぶ」「小さな粒」としか説明せず、患者症状への関連を判断できる目的情報がない。",
+      "src/q1/labCheckLogic.ts:65 — CRPの事前文言は「ある物質」「その物質の量」と循環的で、何を知る検査か判断できない。",
+      "src/q1/labCheckLogic.ts:69 — 不正解だけが「腎臓のはたらき」「老廃物を出せているか」と目的を具体的に明示し、非対称な消去法を成立させる。",
+      "src/q1/LabCheckGame.tsx:84 — 選択前にはname/hintが表示される。",
+      "src/q1/LabCheckGame.tsx:92 — 1件選んだ時点からlab-screenが選択画面内に出現する。",
+      "src/q1/LabCheckGame.tsx:96 — 選択途中の画面にlabel、value、off由来の強調色が表示される。",
+      "src/index.css:4152 — off結果は赤系の色で強調され、正常／異常状態を選択完了前に視覚的に漏らす。",
+      "src/q1/LabCheckGame.tsx:145 — 正誤分岐は2件選び終えた後に行われ、途中表示された結果を2件目の判断に利用できる。",
+      "src/q1/LabCheckGame.tsx:156 — partial結果は医師の説明文で通知される。",
+      "src/q1/LabCheckGame.tsx:173 — partialの世界フィードバックは静的な血液→紙の表示と説明文に留まる。",
+      "src/q1/LabCheckGame.tsx:187 — 誤答後は別の組み合わせを促すが再選択操作はなく、そのまま終端へ進む。",
+      "src/q1/LabCheckGame.tsx:199 — 成功側も静的な血液→グラフと説明文が中心で、患者・医師・検査室の状態変化はない。",
+      "factory/harness/gameplay-qa-lab-check.mjs:63 — 漏洩検査は限定された語句の包含判定のみである。",
+      "factory/rules/q1-first-play-standard.md:33 — Gate Cは仕事固有の情報・見方を攻略上必要とする。",
+      "factory/rules/q1-first-play-standard.md:34 — Gate Dは一般常識的な消去法ではなく仕事らしい判断を要求する。",
+      "factory/rules/q1-first-play-standard.md:35 — Gate Eは説明文やUI hierarchyからの初回answer leakを禁止する。",
+      "factory/rules/game-critic-v2.md:81 — 主要結果は文章ではなく世界の変化で示すことが必須とされる。"
+    ],
+    "recommended_actions": [
+      "3項目すべてを同じ粒度で、測定対象と臨床目的が正直に推論できる事前説明へそろえる。正解項目だけを曖昧にせず、腎臓だけを具体的にしない。",
+      "各検査のlabel/value/off表現は2件の選択確定後まで隠す。逐次結果を残すなら、それを利用して残り検査を判断する別の真正なメカニクスとして設計する。",
+      "QAに選択肢間の具体性・目的語彙の非対称検査と、最初の実行後もlabel/value/offが非表示であるUIテストを追加する。",
+      "誤答時に答えを直接教えず一度だけ選択を修正できる仕組みを設け、同時に総当たり成功を防ぐコストまたは選択ロックを設計する。",
+      "医師・患者・検査報告の状態が操作結果に応じて視覚的に変わるworld feedbackを追加する。",
+      "採血管の種類・必要量・同一検体で併用可能な検査を確認し、任意の2-of-3ではなく医学的に成立する制約へ置き換える。"
+    ]
+  },
+  "elapsed_sec": 116.883
+}
