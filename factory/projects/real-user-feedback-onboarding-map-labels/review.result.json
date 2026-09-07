@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "onboarding-map-labels",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "career_authenticity_score": 64,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "375px初期表示で4件目の「イベントやるって！」ラベルが右端から大きく切れており、4つすべてが実際に読めるという要件を満たさない。ラベルを表示した一方、画面端を考慮した配置補正がない。"
+    ],
+    "medium": [
+      "実ユーザーフィードバックは混乱した画面や最初の行動を特定していないため、この修正が真因を解消するとの確証はない。マーカーの具体的な誘因は改善するが、子どもによる再テストが必要。",
+      "ラベル衝突回避はキャンバス座標上の概算だけで、現在のカメラ、折り返し後の実寸、画面端、コンパスなど固定UIの矩形を考慮しない。現データのデスクトップ表示は概ね成立しているが、レスポンシブ安全性は不十分。"
+    ],
+    "low": [
+      "初期ラベルはキャンバスと一緒に縮小され、13px指定より小さく表示されるため、背景上での可読性には改善余地がある。"
+    ],
+    "evidence": [
+      "src/screens/WorldMapScreen.tsx:270 — overviewVisibleIdsはcenterマーカー先頭4件を選び、初期対象は「給食が間に合わない！」「街が暑すぎる！」「アイスが高くなってる！」「イベントやるって！」になる。",
+      "src/screens/WorldMapScreen.tsx:565 — showLabelはinFocusまたはoverviewVisibleIds所属で真となるため、初回・未選択でも対象4件にlabel-visibleが付く。",
+      "src/screens/WorldMapScreen.tsx:586 — 対象4件以外は引き続きhidden-until-focusとなり、Progressive Disclosureの件数制限は維持される。",
+      "src/index.css:5513 — label-visibleでopacity:1とscale(1)が適用され、タップやhoverなしでラベル自体は表示される。",
+      "factory/state/release/smoke-shots/mobile-home.png:1 — 375px相当の初期マップで3件は読めるが、右下の「イベントやるって！」は画面右端に切られて全文を読めない。",
+      "src/screens/WorldMapScreen.tsx:198 — de-collisionはマーカー同士をキャンバス座標で処理するだけで、表示ビューポート端や固定UIとの衝突を扱わない。",
+      "src/index.css:5499 — ラベルにはmax-widthしかなく、画面端に収めるための移動、左右寄せ、clampがない。",
+      "src/screens/WorldMapScreen.tsx:589 — 変更差分はクリック処理に触れておらず、既存のフォーカス後680ms遷移を維持している。",
+      "src/screens/WorldMapScreen.tsx:551 — MAX_SIGNALS由来のsignal判定は独立したままで、パルス対象の選択は変更されていない。",
+      "src/screens/AreaScreen.tsx:198 — sceneMapの初回プレイ可能スポットには持続表示ラベルが付く。",
+      "src/screens/AreaScreen.tsx:311 — デフォルトAreaScreenの各hotspotにもタイトルラベルが常時付く。",
+      "src/screens/AreaScreen.tsx:245 — AreaScreenには「ぜんぶやらなくてもOK」の短い補助文があり、長い説明画面ではない。",
+      "src/screens/HomeScreen.tsx:68 — Homeには再生アイコンと「社会を冒険する」「まちへ出て、ゲームをする」という明確な主CTAがあり、より手前の明白な行き止まりはコード上確認できない。",
+      "src/data/content/schoolLunch.ts:29 — 「給食が間に合わない！」は問題状況のティーザーであり、攻略の答えを漏らしていない。",
+      "src/data/content/townEvent.ts:29 — 「イベントやるって！」も発見を促す状況提示で、ゲームの解答や展開の核心ではない。",
+      "factory/state/feedback/real-user-feedback.jsonl:1 — 実報告はabandoned_confusedだが、具体的な画面・混乱地点・最初の操作は未特定である。",
+      "factory/rules/autonomous-execution.md:75 — USER LEARNING LOOPは実ユーザーフィードバックをAI内部評価より優先すると定めており、修正後も実児童確認が必要。"
+    ],
+    "recommended_actions": [
+      "初期4ラベルについて、変換後の実DOM矩形をビューポート内へ収める左右寄せ・オフセット処理を追加し、特に右下マーカーの全文を375pxで表示する。",
+      "375pxと広幅で、4ラベル相互・画面端・コンパス・戻るボタンとの交差をgetBoundingClientRectで検査する自動回帰テストを追加する。",
+      "修正後に同じ子ども層でHome→Map→最初のイベント選択を観察し、説明なしで自発的にラベルをタップできるか確認する。"
+    ]
+  },
+  "elapsed_sec": 104.07
+}

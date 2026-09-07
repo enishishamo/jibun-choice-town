@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "onboarding-map-labels-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 78,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "エッジ補正は画面pxで算出した値を、カメラスケールが掛かる`.region-canvas`内のラベルへそのまま適用しているため、実際の画面上の移動量は`labelShift * cam.s`となる。したがって「正確なoverflow量」の補正ではなく、カメラスケールや初期フレーミング変更後も正しく保たれるという要件を満たさない。また固定80px判定は実ラベル幅を測定しておらず、既に収まっていたラベルまで移動させ得る。"
+    ],
+    "medium": [
+      "375×812相当の安定後初期カメラでは「イベントやるって！」は左へ十分移動し、左右端とも概ねビューポート内に入る。一方、「アイスが高くなってる！」もmarker中心が約320pxとなり、固定80px判定によって約25px超のoverflow扱いになって左へ移動するため、round 1で収まっていた他3件をshift≈0のまま保つという主張は成立しない。",
+      "補正はラベルの実DOM幅、折り返し、縦方向、固定UI矩形、他ラベル矩形を考慮しない。現行375px overviewではコンパスが非表示で、戻るボタンもviewport外にあるため今回の4件で新たな固定UI衝突は確認できないが、一般的な回帰安全性は不足している。",
+      "修正後の実児童再テストがなく、ラベル常時表示によって最初の選択肢は理解しやすくなったものの、説明なしで自発的にタップできるかは未確認のまま。"
+    ],
+    "low": [
+      "overviewラベルは引き続きキャンバスと一緒に縮小されるため、指定13pxより小さく表示され、背景上での可読性に改善余地がある。"
+    ],
+    "evidence": [
+      "src/screens/WorldMapScreen.tsx:571 — markerの画面中心は`cam.tx + m.x * cam.s`として画面pxで算出される。",
+      "src/screens/WorldMapScreen.tsx:578 — `labelShift`は画面端との差から直接算出され、`cam.s`でキャンバス座標へ逆変換されていない。",
+      "src/screens/WorldMapScreen.tsx:580 — ラベル半幅を実測せず常に80pxと仮定している。",
+      "src/screens/WorldMapScreen.tsx:609 — 画面px由来のshiftを変形済み`.region-canvas`内部のCSS custom propertyへそのまま設定している。",
+      "src/screens/WorldMapScreen.tsx:328 — cameraはviewport、focus、panに応じて再計算されるため値自体はstaleではないが、shiftの単位変換が欠けている。",
+      "src/screens/WorldMapScreen.tsx:426 — 初回sweep中もpanが変化し、補正計算は再レンダーされる。",
+      "src/screens/WorldMapScreen.tsx:566 — 初回overview対象4件には操作前から`label-visible`が付く。",
+      "src/screens/WorldMapScreen.tsx:607 — それ以外のoverview markerは従来どおりhiddenとなり、最大4件のProgressive Disclosureは維持される。",
+      "src/index.css:5399 — `.region-canvas`全体にcamera transformが適用されるため、子要素のラベル移動もcamera scaleの影響を受ける。",
+      "src/index.css:5499 — labelは`max-width:150px`であり、実幅は文言と折り返しに依存する。",
+      "src/index.css:5513 — shiftはmarkerやiconではなく`.marker-label`のtransformだけに適用され、クリック処理とmarker位置は直接変更しない。",
+      "src/index.css:5693 — 375pxではcompassが非表示なので、今回の右端補正がcompassへ重なることはない。",
+      "factory/projects/real-user-feedback-onboarding-map-labels/review.result.json:8 — round 1のHIGHは4件目の右端クリップであり、今回の現行375px初期配置ではその具体的症状は概ね解消される。"
+    ],
+    "recommended_actions": [
+      "ラベル要素の`getBoundingClientRect()`とviewport矩形から実overflowを測定し、画面座標で補正できるviewport直下overlayにするか、キャンバス内で適用するならshiftを`cam.s`で割ってCSSへ渡す。",
+      "固定80pxではなく実ラベル矩形を使い、既に収まるラベルにはcustom propertyを設定しない。",
+      "375px初期表示で4ラベルの左右端がviewport内、既存3件のshiftが0、ラベル同士と固定UIが非交差であることをDOM矩形で検証する回帰テストを追加する。",
+      "修正後に対象年齢の子どもでHome→Map→最初のイベント選択を再テストする。"
+    ]
+  },
+  "elapsed_sec": 136.648
+}

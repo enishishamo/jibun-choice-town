@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "onboarding-map-labels-round4",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 88,
+    "career_authenticity_score": 88,
+    "game_quality_score": 92,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "修正後の実児童テストはまだなく、ラベル常時表示が最初のタップ理解を実際に解消したかは未検証。コード上の誘因は明確に改善しており、出荷阻害ではなく観察テスト対象と判断する。",
+      "横方向クランプはviewport端だけを扱い、他ラベルやデスクトップのcompassなど固定UIとの矩形衝突は検査しない。現行375pxではcompassが非表示だが、将来の文言・配置・広幅表示に対する一般的な回帰余地が残る。"
+    ],
+    "low": [
+      "overviewではラベルもregion-canvasと一緒に縮小されるため、cam.s<1では13px指定より小さく表示される。",
+      "region-canvasの0.65秒camera transition中は計算済みのtarget camと画面上の補間中transformが一時的に一致せず、遷移途中だけedge clampが過不足になる可能性がある。ただし遷移終了後には正しい位置へ収束し、誤測定値が永続する問題ではない。"
+    ],
+    "evidence": [
+      "src/screens/WorldMapScreen.tsx:297 — useLayoutEffectはcommit後に実行されるため、refが設定されたspan DOMを初回paint前に測定できる。focusで非表示markerが表示対象になった場合もfocus依存により再実行される。",
+      "src/screens/WorldMapScreen.tsx:301 — 測定対象のspanが存在し、showLabelが真の場合だけoffsetWidthを保存する。display:noneの対象で得る0は保存せず、後のfocus変更で再測定される。",
+      "src/screens/WorldMapScreen.tsx:305 — offsetWidthは整数化されたlayout border-box幅であり、opacityはlayout寸法を変えず、要素自身のscale(0.8→1)および祖先region-canvasのtransformはlayout後の描画処理なので、どちらのtransition途中でも測定幅に混入しない。",
+      "src/index.css:5499 — marker-labelのpaddingとmax-widthを含むlayout boxがoffsetWidthの測定対象である。",
+      "src/index.css:5509 — revealはopacityとtransformだけを0.35秒遷移させ、width・padding・font-sizeなどlayout寸法をアニメーションしていない。",
+      "src/screens/WorldMapScreen.tsx:636 — measured widthと150px fallbackはいずれもcam.s倍されてscreen幅へ変換され、その半幅にscreen-pxの4px余白だけを加えている。",
+      "src/screens/WorldMapScreen.tsx:637 — screenX=cam.tx+m.x*cam.sもscreen座標であり、halfLabelScreenWおよびvp.wとの比較は同一座標系になった。",
+      "src/screens/WorldMapScreen.tsx:643 — screenShift/cam.sをCSS custom propertyへ渡す変換は正しい。祖先scale後の画面移動量はcam.s*(screenShift/cam.s)=screenShiftとなる。",
+      "src/index.css:5519 — 最終表示状態はscale(1) translateX(var(--label-shift))であり、定常状態ではラベル自身のscaleが補正量を変えない。",
+      "src/screens/WorldMapScreen.tsx:636 — 「アイスが高くなってる！」をoffsetWidth≈150px、cam.s≈0.95、screenX≈320pxとすると、実画面半幅は約71.25px、判定半幅は余白込み約75.25px、右overflowは約20.25pxとなる。screenShiftは約-28.25px、canvas内labelShiftは約-29.7pxで、右端を約12px内側へ収める小さく妥当な補正になる。実幅がより短く右端が収まる場合はoverflowRight<=0となりshiftは0になる。",
+      "src/screens/WorldMapScreen.tsx:310 — dependencyはmarkers、focus、overviewVisibleIdsを含み、表示対象・文言・world stateによるmarker再生成時に再測定する。labelWidthsを依存に含めず、値が変わった場合だけstate更新するため更新ループもない。",
+      "src/index.css:34 — markerが継承するフォントはローカル/system fallback列で、このCSSには非同期web fontの@font-faceや外部importがないため、現構成では遅延font swapによる永続的なstale幅は確認できない。将来web fontを導入する場合はResizeObserverまたはdocument.fonts.ready後の再測定が必要になる。",
+      "src/screens/WorldMapScreen.tsx:667 — 補正はmarker buttonのleft/topではなくlabel専用CSS custom propertyだけを変更するため、marker位置やhit targetを移動しない。",
+      "src/screens/WorldMapScreen.tsx:668 — click処理、focus設定、680ms後のArea遷移は変更されておらず、pan/zoom/focus architectureへの新しい機能回帰は認められない。",
+      "src/screens/WorldMapScreen.tsx:602 — overview先頭4件またはfocused districtのラベルが操作前から可視化され、初回の裸アイコン問題は解消されている。",
+      "src/index.css:5540 — overview対象外markerは引き続き非表示で、Progressive Disclosureの上限は維持される。",
+      "src/index.css:5693 — 375pxを含む700px以下ではcompassが非表示なので、今回の主要な初回mobile表示でcompass衝突は起きない。"
+    ],
+    "recommended_actions": [
+      "375pxおよび広幅viewportで、表示ラベルのgetBoundingClientRectがviewport内に入り、ラベル相互・compass・戻るUIと交差しないことを遷移完了後に検証する自動回帰テストを追加する。",
+      "対象年齢の子どもにHomeから最初のworld選択まで説明なしで操作してもらい、ラベルまたはmarkerを自発的にタップできるか観察する。",
+      "将来web fontを導入する場合は、label要素のResizeObserverまたはdocument.fonts.readyを使ってfont swap後にも幅を更新する。"
+    ]
+  },
+  "elapsed_sec": 93.36
+}

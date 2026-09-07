@@ -64,3 +64,14 @@ As of 2026-09-04: the schema and this workflow exist; NO automatic
 improvement loop runs yet. A human (or an explicitly-instructed agent
 session) must read new feedback and decide whether/how to route it — this
 was intentional per the setup directive ("今回は自動改善までは実行しない").
+
+**Superseded 2026-09-07** (Human Decision, on the first real
+REAL_USER_FEEDBACK entry — see `real-user-feedback.jsonl`,
+feedback_id `e67d8587-189f-4c1d-8825-121a06e5e35d`): a new BLOCKER/HIGH
+REAL_USER_FEEDBACK entry now automatically interrupts the Continuous
+Product Loop and routes through Observation → triage → repair → independent
+review → QA → release **without waiting for a human to trigger each step**,
+per `factory/rules/autonomous-execution.md`'s USER LEARNING LOOP section.
+Human Decision is still required only when the fix would touch the Product
+Identity Gate (`factory/rules/product-identity-gate.md`) — never for the
+routing/triage/repair/QA/release mechanics themselves.

@@ -5510,7 +5510,14 @@ img {
   transform: scale(0.8);
   transition: opacity 0.35s, transform 0.35s;
 }
-.world-marker.in-focus .marker-label { opacity: 1; transform: scale(1); }
+.world-marker.in-focus .marker-label,
+.world-marker.label-visible .marker-label {
+  opacity: 1;
+  /* 2026-09-07: --label-shift (set inline per-marker, only when the label
+     would otherwise clip past the viewport edge) nudges it back into view
+     without fighting the flex-centered layout or this scale transition. */
+  transform: scale(1) translateX(var(--label-shift, 0px));
+}
 .world-marker.far .marker-face { width: 22px; height: 22px; border-width: 2px; }
 .world-marker.far .marker-fire { font-size: 11px; }
 .world-marker.far .marker-state { font-size: 10px; top: -6px; right: -6px; }
