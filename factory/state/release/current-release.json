@@ -9,9 +9,20 @@
   "release_date": "2026-09-04",
   "world_count": 14,
   "worlds": [
-    "lunch-late", "heat-wave", "ice-price", "town-festival", "er-patient",
-    "school-trip", "waste-journey", "shop-opening", "zoo-baby",
-    "night-port", "forest-care", "river-health", "game-studio", "library-detective"
+    "lunch-late",
+    "heat-wave",
+    "ice-price",
+    "town-festival",
+    "er-patient",
+    "school-trip",
+    "waste-journey",
+    "shop-opening",
+    "zoo-baby",
+    "night-port",
+    "forest-care",
+    "river-health",
+    "game-studio",
+    "library-detective"
   ],
   "q1_experience_count": 63,
   "map_version": "Living Town Atlas v1 (post Human Visual Review repair, 2026-09-04)",
@@ -56,7 +67,12 @@
   },
   "gpt_asset_placement_2026_09_04": {
     "status": "COMPLETE",
-    "assets_placed": ["harbor-district.png", "hill-district.png", "station-district.png", "forest-district.png"],
+    "assets_placed": [
+      "harbor-district.png",
+      "hill-district.png",
+      "station-district.png",
+      "forest-district.png"
+    ],
     "asset_path": "public/assets/districts/",
     "implementation": "src/screens/HomeScreen.tsx DISTRICT_ILLUSTRATION map + <img class=district-illustration>, CSS sizing/position/object-fit only in src/index.css -- no pixel editing of the supplied images. Dead SVG placeholder code (districtKit()) and its now-unused districtWarmth computation were removed.",
     "quality_reevaluation": "factory/state/art/gpt-asset-quality-reeval-2026-09-04.md -- ASSET_PRESENTATION_QUALITY/SUBJECT_CROP/FOCAL_OBJECT_VISIBILITY/CONTAINER_FIT/VISUAL_INTEGRATION/MOBILE_CROP/DESKTOP_CROP/SERIES_STYLE_MATCH all PASS, verified via real mobile 375px + desktop browser screenshots (region overview + each district's focused view)",
@@ -70,7 +86,10 @@
   "remote_push": {
     "performed": true,
     "date": "2026-09-04",
-    "pushed": ["main (fast-forwarded d8ddb38 -> 12f3ed5, 36 commits)", "tag stable-prototype-v0.1"],
+    "pushed": [
+      "main (fast-forwarded d8ddb38 -> 12f3ed5, 36 commits)",
+      "tag stable-prototype-v0.1"
+    ],
     "github_actions_run": "https://github.com/enishishamo/jibun-choice-town/actions/runs/33836489723 (build+deploy, success)"
   },
   "github_pages_deployment": {
@@ -97,6 +116,19 @@
       "github_actions_run": "https://github.com/enishishamo/jibun-choice-town/actions/runs/34002026004 (success)",
       "production_verified": "2026-09-06, live https://enishishamo.github.io/jibun-choice-town/ navigated directly, Home renders as built, 0 console errors",
       "note": "world_count/worlds/stable_tag fields above are unchanged (still 14 worlds, still stable-prototype-v0.1) -- this was a Map/Home visual change, not a new content world or a formal STABLE tag cut."
+    },
+    {
+      "date": "2026-09-08",
+      "policy": "factory/rules/deploy-release-policy.md (routine repair, product_identity_impact NONE) via factory/rules/q1-autonomous-factory.md legacy LOCAL_REPAIR path",
+      "content": "forecast_and_balance (PowerGame): scarce one-hour hydro reserve + peak needing all sources (closes the select-all exploit, audit GQ48/CA57); forward-looking badge/bar labels; last-hour outcome consistent with the badge",
+      "commit": "b6c9180dd06a130072928dc6d98e822daa5d1b9b",
+      "bookkeeping_commit": "fed2d2c768136f55fd3db0b95b19663c81c028cc",
+      "task": "q1-rebuild-forecast-and-balance",
+      "pipeline": "factory/projects/legacy-forecast-and-balance/q1-pipeline.json",
+      "qa": "gameplay-qa-power.mjs 23/23; tsc/build/lint clean; browser QA; public-safety-smoke-qa 0 blockers; independent Codex impl review PASS 70 (CA70/GQ76) factory/projects/legacy-forecast-and-balance/impl-review-r1.result.json; release-gate-check PASS locally and in CI",
+      "github_actions_run": "34095091821",
+      "production_verified": "live bundle assets/index-NFSaAj9q.js contains the released strings (見通し / 貯水池が空になった)",
+      "note": "First release produced by the Q1 Autonomous Game Factory (trigger LEGACY_AUDIT_REQUIRED → q1-legacy-audit start → q1-pipeline release-ready → task-state can-deploy)."
     }
   ]
 }
