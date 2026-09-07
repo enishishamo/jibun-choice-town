@@ -1056,14 +1056,14 @@
       "qa_status": "PASS",
       "qa_evidence": "tsc/build/lint clean; gameplay-qa-power.mjs 23/23; browser-verified 17:00 consistency + labels; public-safety-smoke-qa --viewport both TOTAL BLOCKER-CLASS FINDINGS: 0 (2026-09-08)",
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "b6c9180dd06a130072928dc6d98e822daa5d1b9b",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-07T23:13:17.410Z",
-      "updated_at": "2026-09-07T23:29:55.554Z",
+      "updated_at": "2026-09-07T23:33:22.622Z",
       "history": [
         {
           "at": "2026-09-07T23:13:17.411Z",
@@ -1086,6 +1086,12 @@
           "score": 70,
           "high_count": 0,
           "override_note": null
+        },
+        {
+          "at": "2026-09-07T23:33:22.623Z",
+          "event": "release_commit_set",
+          "sha": "b6c9180dd06a130072928dc6d98e822daa5d1b9b",
+          "given": "b6c9180dd06a130072928dc6d98e822daa5d1b9b"
         }
       ]
     },
