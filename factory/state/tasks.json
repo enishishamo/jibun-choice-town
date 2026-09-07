@@ -411,7 +411,7 @@
     "real-user-feedback-onboarding-map-labels": {
       "task_id": "real-user-feedback-onboarding-map-labels",
       "task_type": "bugfix",
-      "status": "REPAIR",
+      "status": "RELEASED",
       "repair_count": 1,
       "review_status": "PASS",
       "review_evidence": "factory/projects/real-user-feedback-onboarding-map-labels/round4-review.result.json",
@@ -426,7 +426,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-07T04:43:59.105Z",
-      "updated_at": "2026-09-07T05:27:00.008Z",
+      "updated_at": "2026-09-07T05:33:26.211Z",
       "history": [
         {
           "at": "2026-09-07T04:43:59.105Z",
@@ -495,6 +495,13 @@
           "event": "release_commit_set",
           "sha": "8f304151d8fa314be5be3d7949fd2dfdc808c2c3",
           "given": "8f30415"
+        },
+        {
+          "at": "2026-09-07T05:33:26.212Z",
+          "event": "status_change",
+          "from": "REPAIR",
+          "to": "RELEASED",
+          "note": "Released to main at commit 8f30415 (cherry-picked from feature branch's 9c661cd; small routing-log.jsonl conflict resolved). Live: https://enishishamo.github.io/jibun-choice-town/ . Deploy verified via gh run 34087150023 (Release Gate + lint + build all green) and via fetching the deployed bundle + live functional check (all 4 overview map labels render within viewport on a fresh session)."
         }
       ]
     }
