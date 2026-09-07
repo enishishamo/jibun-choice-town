@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-07T23:08:49.870Z",
+      "updated_at": "2026-09-07T23:13:15.817Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -981,6 +981,32 @@
           "at": "2026-09-07T23:08:49.871Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-07T23:13:15.469Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "selftest fixture"
+        },
+        {
+          "at": "2026-09-07T23:13:15.506Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "/Users/nishimuraemiri/jibun-choice-town/factory/state/selftests/fixtures/q-task-review.json",
+          "score": 82,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T23:13:15.702Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-07T23:13:15.817Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
         }
       ]
     },
@@ -1016,6 +1042,78 @@
           "from": "READY",
           "to": "SUPERSEDED",
           "note": "q1-factory self-test fixture 2026-09-07, not real work"
+        }
+      ]
+    },
+    "q1-rebuild-forecast-and-balance": {
+      "task_id": "q1-rebuild-forecast-and-balance",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-forecast-and-balance/impl-review-r1.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc/build/lint clean; gameplay-qa-power.mjs 23/23; browser-verified 17:00 consistency + labels; public-safety-smoke-qa --viewport both TOTAL BLOCKER-CLASS FINDINGS: 0 (2026-09-08)",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T23:13:17.410Z",
+      "updated_at": "2026-09-07T23:29:55.554Z",
+      "history": [
+        {
+          "at": "2026-09-07T23:13:17.411Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T23:25:42.467Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc/build/lint clean; gameplay-qa-power.mjs 23/23; browser-verified 17:00 consistency + labels; public-safety-smoke-qa --viewport both TOTAL BLOCKER-CLASS FINDINGS: 0 (2026-09-08)"
+        },
+        {
+          "at": "2026-09-07T23:29:55.555Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-forecast-and-balance/impl-review-r1.result.json",
+          "score": 70,
+          "high_count": 0,
+          "override_note": null
+        }
+      ]
+    },
+    "q1-new-weather-forecaster": {
+      "task_id": "q1-new-weather-forecaster",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T23:13:35.261Z",
+      "updated_at": "2026-09-07T23:13:35.262Z",
+      "history": [
+        {
+          "at": "2026-09-07T23:13:35.262Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
         }
       ]
     }

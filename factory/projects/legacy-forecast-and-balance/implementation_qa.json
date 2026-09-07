@@ -1,0 +1,18 @@
+{
+  "first_5_seconds": true,
+  "touch_targets": true,
+  "mobile_375": true,
+  "direct_manipulation": true,
+  "reaction_timing": true,
+  "c_to_d": true,
+  "consequence": true,
+  "retry": true,
+  "answer_leak": false,
+  "brute_force": false,
+  "visual_affordance": true,
+  "no_manual": true,
+  "job_reveal": true,
+  "pass": true,
+  "evidence": "npx tsc -b clean; npm run build clean; npm run lint (no findings in touched files); node factory/harness/gameplay-qa-power.mjs 23/23 PASS incl. the two new last-hour checks; Browser pane (dev server :5177, real clicks): 13:00 badge reads '14:00 の見通し 🔴 足りない' with demand bar '14:00 に使う量（予想）'; correct path (thermal+buy, hydro added at 14:00) reaches 17:00; switching every source off at 17:00 shows 'この時こく 🔴 足りない' and pressing '夕方まで進める' produces the 17時 blackout screen (display and outcome agree); no console errors. public-safety-smoke-qa.mjs --viewport both: see /tmp/smoke-legacy-power.log and factory/state/release/smoke-qa-result.json (0 blocker-class findings required before set-qa).",
+  "scope_note": "Legacy LOCAL_REPAIR: the first-5-seconds / no-manual / brute-force booleans reflect the unchanged design (previously verified in factory/projects/q1-improve-power round 1-2 reviews); this QA re-verified the two changed behaviours and regression-ran the exploit harness."
+}

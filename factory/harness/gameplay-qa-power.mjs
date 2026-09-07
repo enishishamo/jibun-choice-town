@@ -25,7 +25,13 @@ function simulate(plan) {
   for (let step = 0; step < HOURS.length; step++) {
     on = plan(step, hydroLeft, on);
     if (hydroLeft <= 0) on = on.filter((x) => x !== "hydro"); // exhausted -- can't be reactivated
-    if (step + 1 >= HOURS.length) return { result: "success" };
+    if (step + 1 >= HOURS.length) {
+      // 2026-09-08 legacy LOCAL_REPAIR: the final hour is judged against its
+      // own demand (mirrors PowerGame.advance), so the badge and the outcome
+      // agree at 17:00 too.
+      if (!canCover(computeSupply(on), HOURS[step].demand)) return { result: "blackout", blackoutAt: HOURS[step].h };
+      return { result: "success" };
+    }
     const supply = computeSupply(on);
     const next = HOURS[step + 1];
     if (!canCover(supply, next.demand)) return { result: "blackout", blackoutAt: next.h };
@@ -130,6 +136,21 @@ for (let step = 0; step < HOURS.length - 1; step++) {
   check(`checkDemandFor(${HOURS[step].h}:00) previews the next hour (${HOURS[step + 1].h}:00)'s demand`, checkDemandFor(step) === HOURS[step + 1].demand);
 }
 check(`checkDemandFor(${HOURS[HOURS.length - 1].h}:00, the last hour) falls back to its own demand (nothing left to preview)`, checkDemandFor(HOURS.length - 1) === HOURS[HOURS.length - 1].demand);
+
+// ---- legacy LOCAL_REPAIR 2026-09-08: at the last hour, display and outcome must agree ----
+{
+  // correct play through 16:00, then switch everything OFF at 17:00: the badge
+  // shows red (supply 4700 < 4800) and the day must NOT end in success.
+  const r = simulate((step, hydroLeft, on) => {
+    if (step === 0) return ["thermal", "buy"];
+    if (step === 1) return ["thermal", "buy", "hydro"];
+    if (step === HOURS.length - 1) return [];
+    return on.filter((x) => x !== "hydro");
+  });
+  check("switching every source off at the last hour (badge red) is a blackout at 17:00, not an unconditional success", r.result === "blackout" && r.blackoutAt === 17, JSON.stringify(r));
+  const badgeAtLast = marginLevel(computeSupply([]), checkDemandFor(HOURS.length - 1));
+  check("the last-hour badge for that state is red — i.e. the display and the advance() outcome agree", badgeAtLast === "red", badgeAtLast);
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

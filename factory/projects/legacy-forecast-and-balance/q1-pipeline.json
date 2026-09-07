@@ -1,0 +1,186 @@
+{
+  "game_id": "legacy-forecast-and-balance",
+  "profession": "電力の需給や系統運用に関わる仕事",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "forecast_and_balance",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "implementation": {
+      "artifact_id": "legacy-forecast-and-balance:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-forecast-and-balance/implementation.json",
+      "payload": {
+        "component_files": [
+          "src/q1/PowerGame.tsx"
+        ],
+        "logic_module": "src/q1/powerLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-power.mjs",
+        "spec_version": "legacy-local-repair (no game_spec: design accepted as-is per factory/state/legacy/reverse-audits/forecast_and_balance.json)",
+        "art_version_or_none": "none",
+        "d_preserved_statement": "D unchanged: the child still decides which sources to run and when to spend the one-hour hydro reserve so the plan survives the next hour. This repair only (1) labels the badge/bar with the hour they forecast (\"15:00 の見通し\", \"15:00 に使う量（予想）\") so the current-usage readout and the forward-looking judgment no longer read as a contradiction, and (2) judges the final hour against its own demand in advance(), so a red badge at 17:00 can no longer be followed by an unconditional success (round-2 review HIGH #1 and #2, factory/projects/q1-improve-power/round2-review.result.json).",
+        "changes": [
+          "src/q1/PowerGame.tsx: nextHour derived; badge text prefixed with the forecast hour; demand bar label names the forecast hour; advance() at the last step requires canCover(supply, cur.demand) before setDone",
+          "factory/harness/gameplay-qa-power.mjs: simulate() mirrors the last-hour rule; +2 checks (all-off at 17:00 is a blackout; badge for that state is red) — 23/23 PASS"
+        ]
+      },
+      "creator": "claude-code",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:24:56.834Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-forecast-and-balance/implementation.json",
+          "created_at": "2026-09-07T23:24:56.835Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-forecast-and-balance:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-forecast-and-balance/implementation_qa.json",
+      "payload": {
+        "first_5_seconds": true,
+        "touch_targets": true,
+        "mobile_375": true,
+        "direct_manipulation": true,
+        "reaction_timing": true,
+        "c_to_d": true,
+        "consequence": true,
+        "retry": true,
+        "answer_leak": false,
+        "brute_force": false,
+        "visual_affordance": true,
+        "no_manual": true,
+        "job_reveal": true,
+        "pass": true,
+        "evidence": "npx tsc -b clean; npm run build clean; npm run lint (no findings in touched files); node factory/harness/gameplay-qa-power.mjs 23/23 PASS incl. the two new last-hour checks; Browser pane (dev server :5177, real clicks): 13:00 badge reads '14:00 の見通し 🔴 足りない' with demand bar '14:00 に使う量（予想）'; correct path (thermal+buy, hydro added at 14:00) reaches 17:00; switching every source off at 17:00 shows 'この時こく 🔴 足りない' and pressing '夕方まで進める' produces the 17時 blackout screen (display and outcome agree); no console errors. public-safety-smoke-qa.mjs --viewport both: see /tmp/smoke-legacy-power.log and factory/state/release/smoke-qa-result.json (0 blocker-class findings required before set-qa).",
+        "scope_note": "Legacy LOCAL_REPAIR: the first-5-seconds / no-manual / brute-force booleans reflect the unchanged design (previously verified in factory/projects/q1-improve-power round 1-2 reviews); this QA re-verified the two changed behaviours and regression-ran the exploit harness."
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-forecast-and-balance:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:24:56.888Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-forecast-and-balance/implementation_qa.json",
+          "created_at": "2026-09-07T23:24:56.889Z",
+          "creator": "claude-code"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 70,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-forecast-and-balance/impl-review-r1.result.json",
+    "input": "factory/projects/legacy-forecast-and-balance/impl-review-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-07T23:29:55.514Z"
+  },
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "task_id": "q1-rebuild-forecast-and-balance",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-07T23:13:17.449Z",
+  "updated_at": "2026-09-07T23:29:55.633Z",
+  "history": [
+    {
+      "at": "2026-09-07T23:13:17.450Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "IMPLEMENTATION",
+      "legacy_game_type": "forecast_and_balance"
+    },
+    {
+      "at": "2026-09-07T23:13:17.526Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-forecast-and-balance"
+    },
+    {
+      "at": "2026-09-07T23:13:17.565Z",
+      "event": "legacy_release_mode_set",
+      "mode": "local_repair",
+      "reason": "コア搾取は解消済み。残りは表示の時間軸ラベルと最終時刻判定の整合（HONEST OUTCOME表示バグ）"
+    },
+    {
+      "at": "2026-09-07T23:24:56.835Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-07T23:24:56.835Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-forecast-and-balance:implementation:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-07T23:24:56.889Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-07T23:24:56.889Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-forecast-and-balance:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-forecast-and-balance:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:29:55.515Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-forecast-and-balance/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-07T23:29:55.632Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-07T23:29:55.633Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ],
+  "legacy_release_mode": "local_repair",
+  "legacy_release_reason": "コア搾取は解消済み。残りは表示の時間軸ラベルと最終時刻判定の整合（HONEST OUTCOME表示バグ）"
+}

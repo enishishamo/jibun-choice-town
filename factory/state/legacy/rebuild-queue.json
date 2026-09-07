@@ -1,6 +1,6 @@
 {
   "note": "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.",
-  "generated_at": "2026-09-07T23:08:51.363Z",
+  "generated_at": "2026-09-07T23:13:17.294Z",
   "wip_limit": 2,
   "items": [
     {
@@ -12,7 +12,9 @@
       ],
       "priority_score": 1.48,
       "evidence": "factory/projects/q1-improve-power/round2-review.result.json",
-      "status": "queued"
+      "status": "in_progress",
+      "game_id": "legacy-forecast-and-balance",
+      "started_at": "2026-09-07T23:13:17.570Z"
     },
     {
       "game_type": "lab_check",

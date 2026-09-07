@@ -1,0 +1,12 @@
+{
+  "component_files": ["src/q1/PowerGame.tsx"],
+  "logic_module": "src/q1/powerLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-power.mjs",
+  "spec_version": "legacy-local-repair (no game_spec: design accepted as-is per factory/state/legacy/reverse-audits/forecast_and_balance.json)",
+  "art_version_or_none": "none",
+  "d_preserved_statement": "D unchanged: the child still decides which sources to run and when to spend the one-hour hydro reserve so the plan survives the next hour. This repair only (1) labels the badge/bar with the hour they forecast (\"15:00 の見通し\", \"15:00 に使う量（予想）\") so the current-usage readout and the forward-looking judgment no longer read as a contradiction, and (2) judges the final hour against its own demand in advance(), so a red badge at 17:00 can no longer be followed by an unconditional success (round-2 review HIGH #1 and #2, factory/projects/q1-improve-power/round2-review.result.json).",
+  "changes": [
+    "src/q1/PowerGame.tsx: nextHour derived; badge text prefixed with the forecast hour; demand bar label names the forecast hour; advance() at the last step requires canCover(supply, cur.demand) before setDone",
+    "factory/harness/gameplay-qa-power.mjs: simulate() mirrors the last-hour rule; +2 checks (all-off at 17:00 is a blackout; badge for that state is red) — 23/23 PASS"
+  ]
+}

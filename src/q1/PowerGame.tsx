@@ -28,6 +28,7 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
   const [done, setDone] = useState(false);
 
   const cur = HOURS[step];
+  const nextHour = HOURS[step + 1] ?? null;
   const supply = computeSupply(on);
   // 2026-09-07 repair round 2: see powerLogic.ts's checkDemandFor for why
   // the badge/bars/warning judge "will this plan survive the next
@@ -45,6 +46,17 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
   // 次の時間の需要に届いていなければ、成功が続くのではなく停電が起きる。
   const advance = () => {
     if (step + 1 >= HOURS.length) {
+      // 2026-09-08 legacy LOCAL_REPAIR (factory/state/legacy/reverse-audits/
+      // forecast_and_balance.json, round-2 review HIGH #2): the last hour
+      // used to end the day unconditionally, so a "🔴 足りない" badge at
+      // 17:00 could be followed by an unconditional success. The final hour
+      // is now judged against its own demand -- the same value the badge
+      // shows there (checkDemandFor falls back to it) -- so display and
+      // outcome can never disagree.
+      if (!canCover(supply, cur.demand)) {
+        setBlackoutAt(cur.h);
+        return;
+      }
       setDone(true);
       return;
     }
@@ -115,21 +127,25 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
           {cur.h}:00　気温{cur.temp}℃　電気の使用量：{cur.demand}万kW
         </span>
         <div className="mission-chips">
+          {/* 2026-09-08 legacy LOCAL_REPAIR (round-2 review HIGH #1): the
+             badge judges the NEXT hour, so it must say so -- otherwise it
+             sits next to the current-usage number and reads as a
+             contradiction. */}
           <span className={`mchip ${level === "green" ? "ok" : level === "yellow" ? "soft" : "bad"}`}>
-            {levelText}
+            {nextHour ? `${nextHour.h}:00 の見通し ` : "この時こく "}{levelText}
           </span>
           <span className="mchip">供給 {supply}万kW</span>
         </div>
       </div>
 
-      {/* balance gauge = live feedback */}
+      {/* balance gauge = live feedback (next hour's forecast vs this plan) */}
       <div className="balance-box">
         <div className="balance-bar">
           <div
             className="balance-demand"
             style={{ width: `${Math.min(100, (checkDemand / 6000) * 100)}%` }}
           >
-            <span>使う量</span>
+            <span>{nextHour ? `${nextHour.h}:00 に使う量（予想）` : "使う量"}</span>
           </div>
           <div
             className={`balance-supply ${level}`}

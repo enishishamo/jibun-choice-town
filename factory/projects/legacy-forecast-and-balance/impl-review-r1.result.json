@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-power-impl-r1",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 70,
+    "career_authenticity_score": 70,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "停電結果は静的な絵文字列と説明文が中心で、街灯や信号の消灯を視覚的な状態変化としては表現していない。既存のHuman-approved TEXT_ONLY_CONSEQUENCE前例に従い、非blockingの改善事項とする。",
+      "火力の起動遅延や地域間融通の運用制約はメカニクス化されておらず、実際の系統運用より単純化された固定需要パズルである。水力の有限予算と需給判断は職業固有だが、キャリア真正性の深さは限定的。"
+    ],
+    "low": [
+      "ハーネスは主要回帰を23件検査するが、全step・全電源組合せについてbadgeのred/non-redとadvance結果の同値性を列挙するプロパティテストにはなっていない。現コードでは同じ需要値とcanCover境界を使うため不一致は見つからない。",
+      "失敗後のrestartは運用状態を正しく初期化する一方、openTemp/openGraphは閉じない。攻略状態の漏れではなく、再考時に資料が開いたままになるだけなのでrelease阻害とはしない。"
+    ],
+    "evidence": [
+      "src/q1/PowerGame.tsx:30 — nextHour、checkDemand、levelを一箇所で導出し、13:00–16:00の表示判定を次時刻需要へ統一している。",
+      "src/q1/PowerGame.tsx:47 — 非最終stepはnext.demand、最終stepはcur.demandをcanCoverで検査し、不足時は対応時刻のblackoutへ分岐する。",
+      "src/q1/PowerGame.tsx:77 — restartはstep、電源選択、水力残量、blackoutAtを初期化し、失敗状態や消費済み水力を次回へ漏らさない。",
+      "src/q1/PowerGame.tsx:127 — mission-barの数値は現在時刻の使用量として時刻付きで表示される。",
+      "src/q1/PowerGame.tsx:135 — badgeは13:00–16:00で明示的に『次時刻 の見通し』、17:00で『この時こく』と表示され、現在需要との読み違いを解消している。",
+      "src/q1/PowerGame.tsx:148 — 需要バーも13:00–16:00では『次時刻 に使う量（予想）』と明記される。『の見通し』『予想』『この時こく』はいずれも10–12歳に理解可能で、17:00は直上の時刻表示により対象も明確である。",
+      "src/q1/powerLogic.ts:32 — 需要は13–17時で4650、4950、5300、5100、4800万kW。",
+      "src/q1/powerLogic.ts:40 — 基礎供給4700に火力300、水力200、融通250を加え、火力＋融通は5250、全電源は5450万kWとなる。",
+      "src/q1/powerLogic.ts:59 — 水力予算は一日1時間であり、早期投入後はピークに再利用できない。",
+      "src/q1/powerLogic.ts:65 — redは供給不足の場合だけで、yellow/greenはいずれも供給が需要以上である。したがって17:00ではredなら必ず停電、yellow/greenなら必ず成功する。",
+      "src/q1/powerLogic.ts:82 — checkDemandForは13:00–16:00で次時刻需要、17:00で自身の4800を返し、PowerGame.advanceが検査する値とoff-by-oneなく一致する。",
+      "算術検証 — 正解経路は13:00に火力＋融通5250対14:00需要4950、14:00に全電源5450対15:00需要5300、消費後は15:00で5250対16:00需要5100、16:00で5250対17:00需要4800、17:00で5250対自身の4800となり、各画面のbadge・バーとadvance結果が一致する。",
+      "算術検証 — naive全投入は13:00で5450対4950を通過して水力を消費し、14:00画面では5250対15:00需要5300でred、そのまま進めると15時停電になる。",
+      "算術検証 — 火力＋融通だけではピークで5250対5300となり50不足する。全三電源だけが5450でピークを覆うため、水力の15時向け温存は引き続き必須であり、Dとバランスは変更されていない。",
+      "factory/harness/gameplay-qa-power.mjs:22 — simulateは非最終stepの次時刻判定、水力消費、自動停止をcomponentと同じ順序で実行する。",
+      "factory/harness/gameplay-qa-power.mjs:28 — 最終stepもcomponent同様に自身の需要を検査してからsuccessを返す。",
+      "factory/harness/gameplay-qa-power.mjs:140 — 正解経路後に17:00で全電源を切る回帰は17時停電とred badgeの両方を検査する。実行結果は23 passed、0 failed。",
+      "src/q1/PowerGame.tsx:186 — 需要予測グラフは元から全時刻の相対需要と15時ピークを示すため、修正後のバーが予測対象時刻を名指ししても新たな答え漏れにはならない。またバーは需要の数値自体を表示せず、供給源の組合せと水力投入時刻の判断は残る。",
+      "Gate A-I — 猛暑と増加需要への興味、直接的な電源操作、予測・需給表示C、供給計画D、非露骨な解法表示、操作依存の停電、restartによる再考、表示と一致する正直な結果、完了後の仕事接続が成立しており、LOCAL_REPAIRはrelease-readyである。"
+    ],
+    "recommended_actions": [
+      "非blocking backlogとして、停電時に街灯・信号が実際に消える視覚状態変化を追加する。",
+      "火力の起動遅延や地域間融通の上限を将来メカニクス化し、系統運用の真正性を高める。",
+      "全時刻・全到達可能電源状態について、badge色と直後のadvance結果が一致するプロパティテストを追加する。"
+    ]
+  },
+  "elapsed_sec": 133.526
+}

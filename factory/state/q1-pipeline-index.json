@@ -1,3 +1,28 @@
 {
-  "pipelines": {}
+  "pipelines": {
+    "legacy-forecast-and-balance": {
+      "game_id": "legacy-forecast-and-balance",
+      "profession": "電力の需給や系統運用に関わる仕事",
+      "state": "RELEASE_CANDIDATE",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "forecast_and_balance",
+      "task_id": "q1-rebuild-forecast-and-balance",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-07T23:29:55.633Z",
+      "depends_on": []
+    },
+    "weather-forecaster": {
+      "game_id": "weather-forecaster",
+      "profession": "気象予報士・予報官",
+      "state": "REPAIRING",
+      "trigger": "NEW_Q1_REQUEST",
+      "legacy_game_type": null,
+      "task_id": "q1-new-weather-forecaster",
+      "repair_count": 1,
+      "redesign_count": 0,
+      "updated_at": "2026-09-07T23:24:56.793Z",
+      "depends_on": []
+    }
+  }
 }

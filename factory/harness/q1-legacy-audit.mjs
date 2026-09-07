@@ -178,7 +178,8 @@ switch (cmd) {
   case "queue": {
     const audits = loadAudits();
     const idx = existsSync(INDEX) ? JSON.parse(readFileSync(INDEX, "utf8")) : { pipelines: {} };
-    const inPipeline = new Set(Object.values(idx.pipelines).map((p) => p.legacy_game_type).filter(Boolean));
+    const released = new Set(Object.values(idx.pipelines).filter((p) => p.state === "RELEASED").map((p) => p.legacy_game_type).filter(Boolean));
+    const inPipeline = new Set(Object.values(idx.pipelines).filter((p) => p.state !== "RELEASED").map((p) => p.legacy_game_type).filter(Boolean));
     const prev = existsSync(QUEUE) ? JSON.parse(readFileSync(QUEUE, "utf8")) : { items: [] };
     const prevStatus = Object.fromEntries(prev.items.map((i) => [i.game_type, i.status]));
     const items = audits
@@ -193,7 +194,7 @@ switch (cmd) {
           priority_reasons: a.priority_reasons,
           priority_score: Number((best + gq / 100).toFixed(2)), // lower = more urgent; ties broken by lower GQ
           evidence: a.classification_evidence,
-          status: inPipeline.has(a.game_type) ? "in_progress" : (prevStatus[a.game_type] === "done" ? "done" : "queued"),
+          status: released.has(a.game_type) || prevStatus[a.game_type] === "done" ? "done" : inPipeline.has(a.game_type) ? "in_progress" : "queued",
         };
       })
       .sort((x, y) => x.priority_score - y.priority_score);
@@ -221,6 +222,14 @@ switch (cmd) {
     const p = run(PIPELINE, ["init", gameId, "--profession", a.current_profession, "--trigger", "LEGACY_AUDIT_REQUIRED", "--legacy-game-type", gameType, "--entry-stage", entry]);
     if (p.status !== 0) { console.error(p.stdout || p.stderr); process.exit(1); }
     run(PIPELINE, ["link-task", gameId, taskId]);
+    // LOCAL_REPAIR keeps the existing design (the reverse audit says only the
+    // implementation is wrong). Requiring a fresh "≥3 seeds / ≥3 translations"
+    // chain for that would be busywork and could not be backfilled honestly
+    // from one existing game, so the pipeline records legacy_release_mode and
+    // release-ready checks impl QA + independent impl review + can-deploy
+    // instead of the full design chain. Every other classification re-enters
+    // the design pipeline and must pass the full GAME_DESIGN_READY gate.
+    if (a.classification === "LOCAL_REPAIR") run(PIPELINE, ["set-legacy-mode", gameId, "local_repair", "--reason", a.classification_reason ?? "reverse audit: LOCAL_REPAIR"]);
     const backfilled = [];
     if (hasFlag("backfill")) {
       // Preserve what the reverse audit says is currently true as v1 of the

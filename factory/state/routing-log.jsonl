@@ -286,3 +286,5 @@
 {"ts":"2026-09-07T09:25:41.453Z","tool":"codex-review","label":"power-round2","prompt_file":"factory/projects/q1-improve-power/round2-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":116.625}
 {"ts":"2026-09-07T09:48:34.675Z","tool":"codex-review","label":"safety-plan-review","prompt_file":"factory/projects/q1-improve-safety-plan/review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":153.382}
 {"ts":"2026-09-07T10:07:03.312Z","tool":"codex-review","label":"safety-plan-round2","prompt_file":"factory/projects/q1-improve-safety-plan/round2-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":152.928}
+{"ts":"2026-09-07T23:23:20.746Z","tool":"codex-review","label":"weather-forecaster-design-r1","prompt_file":"factory/projects/weather-forecaster/design/design-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":182.452}
+{"ts":"2026-09-07T23:28:41.005Z","tool":"codex-review","label":"legacy-power-impl-r1","prompt_file":"factory/projects/legacy-forecast-and-balance/impl-review-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":133.526}

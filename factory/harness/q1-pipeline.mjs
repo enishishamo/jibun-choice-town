@@ -587,12 +587,13 @@ switch (cmd) {
   case "release-ready": {
     const p = loadPipeline(rest[0] ?? fail("usage: release-ready <game_id>"));
     const reasons = [];
-    for (const r of gameDesignReadyReasons(p)) reasons.push(`design: ${r.reason}`);
+    const localRepair = p.legacy_release_mode === "local_repair";
+    if (!localRepair) for (const r of gameDesignReadyReasons(p)) reasons.push(`design: ${r.reason}`);
     const spec = p.artifacts.game_spec;
-    if (!spec || spec.status === "STALE") reasons.push("game_spec missing or STALE");
+    if (!localRepair && (!spec || spec.status === "STALE")) reasons.push("game_spec missing or STALE");
     const brief = p.artifacts.art_brief;
-    if (!brief || brief.status === "STALE") reasons.push("art_brief missing or STALE (submit one with no_art_required:true if no art is needed)");
-    else if (brief.payload.no_art_required !== true) {
+    if (!localRepair && (!brief || brief.status === "STALE")) reasons.push("art_brief missing or STALE (submit one with no_art_required:true if no art is needed)");
+    else if (brief && brief.status !== "STALE" && brief.payload.no_art_required !== true) {
       if (!p.artifacts.art_production || p.artifacts.art_production.status === "STALE") reasons.push("art_production missing or STALE");
       if (!(p.art_review?.verdict === "PASS" && p.art_review?.independent)) reasons.push("art review must be an independent PASS");
     }
@@ -630,6 +631,19 @@ switch (cmd) {
     if (p.impl_review) { p.impl_review.stale = true; }
     savePipeline(p);
     console.log(JSON.stringify({ accepted: true, state: p.state, trigger, reason }, null, 2));
+    break;
+  }
+
+  case "set-legacy-mode": {
+    const [gameId, mode] = rest;
+    if (!gameId || mode !== "local_repair") fail('usage: set-legacy-mode <game_id> local_repair --reason "..."');
+    const p = loadPipeline(gameId);
+    if (!p.legacy_game_type) refuse({ accepted: false, reason: "legacy mode is only valid on a pipeline opened from a reverse audit (legacy_game_type set)" });
+    p.legacy_release_mode = mode;
+    p.legacy_release_reason = flag("reason", null);
+    log(p, "legacy_release_mode_set", { mode, reason: p.legacy_release_reason });
+    savePipeline(p);
+    console.log(JSON.stringify({ accepted: true, legacy_release_mode: mode }, null, 2));
     break;
   }
 
