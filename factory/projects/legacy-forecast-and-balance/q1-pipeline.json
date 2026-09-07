@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "forecast_and_balance",
   "creator": "claude-code",
-  "state": "RELEASE_CANDIDATE",
+  "state": "RELEASED",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
@@ -107,10 +107,10 @@
   "failures": [],
   "human_decisions": [],
   "task_id": "q1-rebuild-forecast-and-balance",
-  "version": null,
+  "version": "main@b6c9180",
   "depends_on": [],
   "created_at": "2026-09-07T23:13:17.449Z",
-  "updated_at": "2026-09-07T23:29:55.633Z",
+  "updated_at": "2026-09-07T23:33:44.428Z",
   "history": [
     {
       "at": "2026-09-07T23:13:17.450Z",
@@ -179,6 +179,18 @@
       "at": "2026-09-07T23:29:55.633Z",
       "event": "gate_passed",
       "gate": "RELEASE"
+    },
+    {
+      "at": "2026-09-07T23:33:44.428Z",
+      "event": "state_change",
+      "from": "RELEASE_CANDIDATE",
+      "to": "RELEASED",
+      "note": "version main@b6c9180"
+    },
+    {
+      "at": "2026-09-07T23:33:44.428Z",
+      "event": "version_set",
+      "version": "main@b6c9180"
     }
   ],
   "legacy_release_mode": "local_repair",

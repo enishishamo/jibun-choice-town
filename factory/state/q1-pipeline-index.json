@@ -3,13 +3,13 @@
     "legacy-forecast-and-balance": {
       "game_id": "legacy-forecast-and-balance",
       "profession": "電力の需給や系統運用に関わる仕事",
-      "state": "RELEASE_CANDIDATE",
+      "state": "RELEASED",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "forecast_and_balance",
       "task_id": "q1-rebuild-forecast-and-balance",
       "repair_count": 0,
       "redesign_count": 0,
-      "updated_at": "2026-09-07T23:29:55.633Z",
+      "updated_at": "2026-09-07T23:33:44.428Z",
       "depends_on": []
     },
     "weather-forecaster": {
