@@ -418,6 +418,90 @@
           "override_note": null
         }
       ]
+    },
+    "real-user-feedback-onboarding-map-labels": {
+      "task_id": "real-user-feedback-onboarding-map-labels",
+      "task_type": "bugfix",
+      "status": "REPAIR",
+      "repair_count": 1,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/real-user-feedback-onboarding-map-labels/round4-review.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc clean, npm run build clean, npm run lint exit 0, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop) across all 4 fix iterations, manual browser verification via getBoundingClientRect() at 375px and 770px viewports confirming all 4 initially-visible map labels render fully within the viewport with zero overlap against the compass/back-button/district chips, zero console errors throughout",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T04:43:59.105Z",
+      "updated_at": "2026-09-07T05:24:24.972Z",
+      "history": [
+        {
+          "at": "2026-09-07T04:43:59.105Z",
+          "event": "created",
+          "type": "bugfix",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T04:56:10.528Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/real-user-feedback-onboarding-map-labels/review.result.json",
+          "score": 64,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T04:56:10.566Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T05:08:01.678Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/real-user-feedback-onboarding-map-labels/round2-review.result.json",
+          "score": 72,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T05:21:29.881Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/real-user-feedback-onboarding-map-labels/round3-review.result.json",
+          "score": 70,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T05:24:14.721Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/real-user-feedback-onboarding-map-labels/round4-review.result.json",
+          "score": 88,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T05:24:24.939Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc clean, npm run build clean, npm run lint exit 0, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop) across all 4 fix iterations, manual browser verification via getBoundingClientRect() at 375px and 770px viewports confirming all 4 initially-visible map labels render fully within the viewport with zero overlap against the compass/back-button/district chips, zero console errors throughout"
+        },
+        {
+          "at": "2026-09-07T05:24:24.972Z",
+          "event": "identity_impact_set",
+          "impact": "NONE"
+        }
+      ]
     }
   }
 }

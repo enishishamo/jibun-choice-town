@@ -119,6 +119,22 @@ AIだけで95点を追わない。以下を満たしたらV1 COMPLETE:
 扱う: Observation → Structure → Severity → Hypothesis → Task → Repair/
 Design → QA → Release → 次のUser Test。AI内部評価より優先する。
 
+**2026-09-07 確立（Human Decision — 初回REAL_USER_FEEDBACK実例）**: REAL_USER_
+FEEDBACKが届いた時点で、たとえContinuous Product Loopが別taskの途中で
+あっても、都度Humanへ「切り替えていいですか」と確認しない。安全な地点まで
+現在のtaskを一時中断し（進行中の変更はcommit、task状態は正直に記録——
+「repair待ち」等——してから中断する。実装途中のまま放置しない）、
+即座にUSER LEARNING LOOPへ切り替える。severity/BLOCKER候補かどうかの
+一次判断はFactory Manager自身が行ってよい（Humanの判断を待たない）——
+ただし記録自体は`factory/state/feedback/real-user-feedback-schema.json`
+の形式で必ず残す。Fix→独立review→QA→releaseまで自律実行してよいのは、
+Product Identity Gate（mascot/経済/分類system/core gameplay等）に
+触れない範囲に限る。触れる場合のみHuman Decisionへ上げる。完了後は
+Continuous Product Loopへ戻り、中断したtaskがあれば状態を確認して
+再開するか次のtaskへ進むか判断する（`factory/state/feedback/README.md`
+の「NO自動改善ループ」注記は、この決定により2026-09-07付けで上書き
+される——README側にも同日付で追記すること）。
+
 **B. CONTINUOUS PRODUCT LOOP** — User feedback待ちの間も停止しない。既存
 Productを継続的に監査し、次に価値の高い改善taskを自ら選択して進める。
 見る優先順位（概ね）:

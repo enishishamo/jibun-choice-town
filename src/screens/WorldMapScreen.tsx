@@ -15,7 +15,8 @@
 // unchanged and reused as-is, per instruction not to rebuild it.
 // No profession lists. No NEW-badge walls: a capped set of living signals
 // (people gathering / sparks) marks where something is happening right now.
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { events, places } from "../data";
 import {
   DISTRICTS, TOWN_TILE, WORLD_DISTRICT, DISTRICT_CAPACITY, TERRAIN_FILL, districtSlot, getDistrict,
@@ -142,6 +143,14 @@ export default function HomeScreen() {
   const drag = useRef<{ x: number; y: number; px: number; py: number; moved: boolean } | null>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [vp, setVp] = useState({ w: 375, h: 480 });
+  // 2026-09-07 (REAL_USER_FEEDBACK onboarding fix, round-2 independent
+  // review HIGH): the edge-clamp below needs each label's REAL rendered
+  // width, not a guessed constant (a guess can under/over-correct, or shift
+  // a label that already fit). `offsetWidth` is unaffected by the
+  // `transform: translateX(...)` the clamp itself applies, so measuring it
+  // here never feeds back into its own input.
+  const labelRefs = useRef<Record<string, HTMLSpanElement | null>>({});
+  const [labelWidths, setLabelWidths] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -271,6 +280,34 @@ export default function HomeScreen() {
     const centerMarkers = markers.filter((m) => m.districtId === "center");
     return new Set(centerMarkers.slice(0, MAX_INITIAL_OVERVIEW).map((m) => m.eventId));
   }, [markers]);
+
+  // 2026-09-07 (REAL_USER_FEEDBACK onboarding fix, round-2/round-3
+  // independent review HIGHs): measure each currently-shown label's REAL
+  // width via `offsetWidth`, deliberately NOT `getBoundingClientRect()` —
+  // a first attempt at this used getBoundingClientRect() reasoning that it
+  // already includes the ancestor `.region-canvas` scale, but it ALSO
+  // includes the label's OWN opacity/scale REVEAL transition (this element
+  // animates scale 0.8 -> 1 over 0.35s when it becomes visible), so a
+  // measurement taken mid-transition silently locked in a too-small width.
+  // `offsetWidth` is a pure layout value: unaffected by ANY transform, on
+  // this element or any ancestor, so it can never catch a transition
+  // mid-flight. It IS in the canvas's own (pre-`.region-canvas`-scale)
+  // units though, so the render below explicitly multiplies it by `cam.s`
+  // to reach the same screen-px space as `vp.w` / `cam.tx + m.x * cam.s`.
+  useLayoutEffect(() => {
+    setLabelWidths((prev) => {
+      let changed = false;
+      const next = { ...prev };
+      for (const m of markers) {
+        const showLabel = focus === m.districtId || overviewVisibleIds.has(m.eventId);
+        const el = labelRefs.current[m.eventId];
+        if (!showLabel || !el) continue;
+        const w = el.offsetWidth;
+        if (w > 0 && next[m.eventId] !== w) { next[m.eventId] = w; changed = true; }
+      }
+      return changed ? next : prev;
+    });
+  }, [markers, focus, overviewVisibleIds]);
 
   // ---- camera --------------------------------------------------------------
   // region mode fills the viewport height and is PANNABLE (the map is a place,
@@ -549,6 +586,62 @@ export default function HomeScreen() {
             {markers.map((m, idx) => {
               const inFocus = focus === m.districtId;
               const signal = signalIds.has(m.eventId);
+              // 2026-09-07 (REAL_USER_FEEDBACK, first-play onboarding —
+              // "子どもが、どうやって使ったらいいかわからない"): the label
+              // used to stay invisible (opacity 0) for every marker until
+              // its district was `inFocus`, INCLUDING the up-to-4 markers
+              // Progressive Disclosure (2026-09-05) deliberately keeps
+              // visible on the very first region view. A first-time child
+              // landing on the map saw only bare, unlabeled flame icons —
+              // nothing said what tapping one would do, so there was
+              // nothing to look at and understand before tapping blind.
+              // Showing the label for those SAME already-visible markers
+              // (never for the still-hidden ones) closes that gap with a
+              // one-line CSS/class change — no new marker, no new reveal
+              // mechanism, no instruction text.
+              const showLabel = inFocus || overviewVisibleIds.has(m.eventId);
+              // 2026-09-07 (independent review of the label-visible fix
+              // above, HIGH: the 4th overview label clipped off the right
+              // edge of a 375px screen — showing the label is pointless if
+              // it isn't actually readable). The label is centered on the
+              // marker's SCREEN x (cam.tx + m.x * cam.s, since markers live
+              // inside the transformed `.region-canvas`), which can put half
+              // the label off either edge for a marker near the border.
+              // Shift it back in by exactly the overflow amount via a CSS
+              // custom property, additive to the existing opacity/scale
+              // transition — 0px (no shift, no visual change) for every
+              // marker that already fits.
+              //
+              // 2026-09-07 round-2 review HIGH (2 bugs in the first pass):
+              // (1) a guessed half-width (80px) could shift a label that
+              // already fit, or under/over-correct one that didn't — now
+              // uses the label's REAL measured width (`labelWidths`, a
+              // `useLayoutEffect` above); a label not yet measured (first
+              // paint only) falls back to the CSS max-width as a safe
+              // upper-bound estimate, corrected before the browser ever
+              // paints the frame. (2) the correction was computed in SCREEN
+              // px but applied as a CSS custom property INSIDE
+              // `.region-canvas`, which itself is `scale(cam.s)`d — so the
+              // actually-rendered shift was `labelShift * cam.s`, not
+              // `labelShift`. Dividing by `cam.s` before handing it to CSS
+              // makes the requested screen-px correction and the rendered
+              // one the same value regardless of camera zoom.
+              //
+              // 2026-09-07 round-3 review HIGH: `labelWidths` (like the
+              // 150px fallback) is in the canvas's own pre-scale px — both
+              // are multiplied by `cam.s` here to reach the same screen-px
+              // space as `vp.w` / `screenX` before they're compared.
+              let labelShift = 0;
+              if (showLabel) {
+                const halfLabelScreenW = ((labelWidths[m.eventId] ?? 150) * cam.s) / 2 + 4;
+                const screenX = cam.tx + m.x * cam.s;
+                const overflowRight = screenX + halfLabelScreenW - vp.w;
+                const overflowLeft = halfLabelScreenW - screenX;
+                let screenShift = 0;
+                if (overflowRight > 0) screenShift = -(overflowRight + 8);
+                else if (overflowLeft > 0) screenShift = overflowLeft + 8;
+                labelShift = cam.s ? screenShift / cam.s : 0;
+              }
               return (
                 <button
                   key={m.eventId}
@@ -556,6 +649,7 @@ export default function HomeScreen() {
                     "world-marker",
                     `st-${m.state.toLowerCase()}`,
                     inFocus ? "in-focus" : "far",
+                    showLabel ? "label-visible" : "",
                     signal ? "signal" : "",
                     idx % 2 === 1 ? "label-up" : "",
                     // 2026-09-05 (Human Review — Map V1 minimum repair #2,
@@ -570,7 +664,7 @@ export default function HomeScreen() {
                     // "reveal more" step, reused as-is.
                     !inFocus && !overviewVisibleIds.has(m.eventId) ? "hidden-until-focus" : "",
                   ].join(" ")}
-                  style={{ left: m.x, top: m.y }}
+                  style={{ left: m.x, top: m.y, ...(labelShift ? { "--label-shift": `${labelShift}px` } as CSSProperties : {}) }}
                   onClick={() => {
                     if (suppressTap.current) return;
                     if (!inFocus) {
@@ -591,7 +685,12 @@ export default function HomeScreen() {
                   <span className="marker-face">
                     <span className="marker-fire">{STATE_FACE[m.state]}</span>
                   </span>
-                  <span className="marker-label">{m.label}</span>
+                  <span
+                    className="marker-label"
+                    ref={(el) => { labelRefs.current[m.eventId] = el; }}
+                  >
+                    {m.label}
+                  </span>
                 </button>
               );
             })}

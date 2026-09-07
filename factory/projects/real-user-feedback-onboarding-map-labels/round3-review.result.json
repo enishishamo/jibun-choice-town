@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "onboarding-map-labels-round3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 70,
+    "career_authenticity_score": 82,
+    "game_quality_score": 70,
+    "blockers": [],
+    "high": [
+      "実測した`offsetWidth`は`.region-canvas`の未変換レイアウト座標pxだが、コードはそれを画面pxとしてviewport端判定に使用している。実際の画面上のラベル幅は`offsetWidth * cam.s`なので、`cam.s < 1`では必要以上に早く補正して過剰移動し、`cam.s > 1`ではoverflowを過小評価する。round 2の固定幅問題を実測値へ置換したものの、測定値側の座標系変換が欠けており、ズーム非依存の正確なedge clampにはなっていない。"
+    ],
+    "medium": [
+      "横方向補正はラベル同士や固定UIの矩形を再評価しないため、端から内側へ移動したラベルが別ラベル、デスクトップのcompass、focused時の地域全体ボタン、districtの「？？？」表示と衝突する一般的可能性が残る。現行データ・特定viewportでの手動結果だけでは回帰安全性を保証できない。",
+      "ラベル常時表示により初回のタップ対象は以前より明確だが、混乱して離脱した子どもと同等の対象者による再テストがなく、根本のREAL_USER_FEEDBACKが解消されたかは未確認である。"
+    ],
+    "low": [
+      "overviewラベルはキャンバスと一緒に縮小されるため、`cam.s < 1`ではCSS指定の13pxより小さく表示され、子ども向け可読性が低下する。"
+    ],
+    "evidence": [
+      "src/screens/WorldMapScreen.tsx:290 — `useLayoutEffect`は表示対象のspanから`offsetWidth`を取得する。`offsetWidth`は要素自身および祖先のCSS transformを含まないため、`translateX(--label-shift)`の結果が測定入力へ戻るフィードバックループはない。",
+      "src/screens/WorldMapScreen.tsx:298 — 測定値`w`は未変換のレイアウト幅であり、画面上の幅ではない。",
+      "src/screens/WorldMapScreen.tsx:299 — 幅が変わった場合だけstateを更新し、src/screens/WorldMapScreen.tsx:301で変更なしなら同一の`prev`を返すため、通常の無限更新ループは生じない。依存配列もmarkers/focus/overviewVisibleIdsに限定され、labelWidths自体を含まない。",
+      "src/screens/WorldMapScreen.tsx:303 — effectは表示対象が変わるfocusと、対象集合・文言・状態を担うmarkers/overviewVisibleIdsの変化後に再測定されるため、この範囲ではstaleにならない。",
+      "src/screens/WorldMapScreen.tsx:507 — `.region-canvas`には`translate(cam.tx, cam.ty) scale(cam.s)`が適用され、その子のレイアウト寸法と移動量はいずれも最終的に`cam.s`倍される。",
+      "src/screens/WorldMapScreen.tsx:625 — `(labelWidths[eventId] ?? 150) / 2 + 4`を画面半幅として扱うが、正しい画面半幅は概ね`labelWidths[eventId] * cam.s / 2 + screenMargin`である。fallbackの150にも同じ単位誤りがある。",
+      "src/screens/WorldMapScreen.tsx:626 — marker中心`cam.tx + m.x * cam.s`は画面座標であり、未変換の`offsetWidth`との直接比較は座標系が一致しない。",
+      "src/screens/WorldMapScreen.tsx:632 — 算出済みの画面移動量を`cam.s`で割る処理自体は正しい。CSS内のtranslateをLとすると、祖先scaleとの合成後の画面移動は`cam.s * L`となり、`L = screenShift / cam.s`なら画面移動はscreenShiftになる。",
+      "src/index.css:5519 — `transform: scale(1) translateX(var(--label-shift))`のscaleは1なのでラベル内の移動量を変更せず、祖先`.region-canvas`のscaleだけがその移動を`cam.s`倍する。",
+      "src/screens/WorldMapScreen.tsx:625 — 「アイスが高くなってる！」でも実測幅が正しく得られる一方、`cam.s < 1`のoverviewではその全幅を画面幅として判定するため、中心約320pxで実際には収まる場合にも旧実装と同様に不要な左shiftが発生し得る。round 2の具体例は完全には解消されていない。",
+      "src/screens/WorldMapScreen.tsx:656 — shiftはラベルのCSS custom propertyだけに渡され、marker buttonのleft/topやクリック処理は変更しない。",
+      "src/screens/WorldMapScreen.tsx:657 — markerクリックのfocus後680ms遷移は維持されている。",
+      "src/screens/WorldMapScreen.tsx:654 — overview対象外のmarkerは引き続き`hidden-until-focus`となる。",
+      "src/screens/WorldMapScreen.tsx:270 — signal対象はDISCOVERED/UPDATEDから独立して最大`MAX_SIGNALS`件に制限され、今回のラベル測定・shift変更による選択ロジックの回帰はない。",
+      "src/index.css:5693 — 375pxではcompassが非表示だが、広幅では表示されるため、一般的な固定UI衝突検査は依然必要である。"
+    ],
+    "recommended_actions": [
+      "端判定を`const halfLabelScreenW = labelWidth * cam.s / 2`として画面座標へ統一し、marginも画面pxとして別に加える。その後に得た`screenShift`だけを`cam.s`で割ってCSS custom propertyへ渡す。",
+      "375pxと広幅viewportについて、全表示ラベルの`getBoundingClientRect()`がviewport内に収まり、相互およびcompass・戻るボタン・district chipsと交差しないことを自動回帰テストにする。特に「アイスが高くなってる！」が実際に収まるcamera状態ではshiftが0であることを検証する。",
+      "修正後、対象年齢の子どもにHomeから最初のイベント選択まで説明なしで操作してもらい、自発的にラベルまたはmarkerをタップできるか再確認する。"
+    ]
+  },
+  "elapsed_sec": 113.657
+}
