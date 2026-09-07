@@ -9,15 +9,7 @@ import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
 import { BANDS } from "./tripBands";
-
-interface Adult { id: string; name: string; icon: string }
-const ADULTS: Adult[] = [
-  { id: "homeroom", name: "担任の先生", icon: "🧑‍🏫" },
-  { id: "vice", name: "副担任の先生", icon: "👩‍🏫" },
-  { id: "head", name: "学年主任の先生", icon: "🧑‍💼" },
-  { id: "nurse", name: "養護の先生", icon: "👨‍⚕️" },
-  { id: "parent", name: "保護者代表", icon: "👵" },
-];
+import { ADULTS, computeIssues } from "./safetyPlanLogic";
 
 type Step = "assign" | "roles";
 
@@ -30,7 +22,15 @@ export default function SafetyPlanGame({ onComplete }: Q1GameProps) {
   const [tail, setTail] = useState<string | null>(null); // 最後尾 adultId
   const [medic, setMedic] = useState<string | null>(null); // 救急用品 adultId
   const [contact, setContact] = useState<string | null>(null); // 緊急連絡先 adultId
-  const [checked, setChecked] = useState(false);
+  // 2026-09-07 repair round 2 (independent review medium finding: once
+  // checked flipped true it stayed true forever, so every subsequent role
+  // change re-rendered issues live -- a free, instant oracle a player
+  // could brute-force through every combination with, no re-reading
+  // required). `revealed` now hides feedback again the moment any role
+  // changes, so seeing updated feedback costs a fresh, deliberate
+  // "安全チェックをする" click each time -- same one-attempt-at-a-time
+  // shape as TimetableGame/BusOpsGame's submit-gated hints.
+  const [revealed, setRevealed] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
@@ -62,15 +62,15 @@ export default function SafetyPlanGame({ onComplete }: Q1GameProps) {
       body: <p>晴れ、最高気温24℃の予報（この計画づくりには直接関係ない）。</p> },
   ];
 
-  const issues: string[] = [];
-  if (!allAssigned) issues.push("引率の大人がいない班があるよ。");
-  if (!head) issues.push("先頭を歩く担当が決まっていないよ。");
-  if (!tail) issues.push("最後尾を歩く担当が決まっていないよ。");
-  if (head && tail && head === tail) issues.push("先頭と最後尾、同じ人になっているよ。別の人にしよう。");
-  if (!medic) issues.push("救急用品の担当が決まっていないよ。");
-  if (!contact) issues.push("緊急連絡先の担当が決まっていないよ。");
-  if (!openedDocs.includes("hana")) issues.push("🥜アレルギーの情報を確認していないよ。花組の担当と共有しよう。");
-  if (!openedDocs.includes("tsuki")) issues.push("🚌乗り物酔いの情報を確認していないよ。月組の担当と共有しよう。");
+  // 2026-09-07 repair (Continuous Product Loop, factory/state/audits/
+  // audit-summary.md GQ48/CA47): see safetyPlanLogic.ts's computeIssues
+  // for why opening the allergy/motion-sickness cards now has to
+  // actually change who holds the medic/先頭 role, not just be clicked --
+  // and why the feedback text itself never states that rule outright.
+  const issues = computeIssues(
+    BANDS.map((b) => b.id),
+    { placed, head, tail, medic, contact, openedDocs },
+  );
   const ok = issues.length === 0;
 
   if (done) {
@@ -175,7 +175,7 @@ export default function SafetyPlanGame({ onComplete }: Q1GameProps) {
                     <button
                       key={a.id}
                       className={`btn choice ${val === a.id ? "on" : ""}`}
-                      onClick={() => setter(val === a.id ? null : a.id)}
+                      onClick={() => { setter(val === a.id ? null : a.id); setRevealed(false); }}
                     >
                       <span className="tweak-check">{val === a.id ? "✓" : "＋"}</span>
                       <span className="tweak-body"><b>{a.icon} {a.name}</b></span>
@@ -185,14 +185,14 @@ export default function SafetyPlanGame({ onComplete }: Q1GameProps) {
               </div>
             ))}
           </div>
-          {checked && issues.length > 0 && (
+          {revealed && issues.length > 0 && (
             <div className="sched-issues">{issues.map((i) => <p key={i}>{i}</p>)}</div>
           )}
           <InfoCards cards={docs} label="こまったら見る資料" onOpen={(id) => setOpenedDocs((o) => (o.includes(id) ? o : [...o, id]))} />
           {!ok ? (
             <button
               className="btn primary big"
-              onClick={() => setChecked(true)}
+              onClick={() => setRevealed(true)}
             >
               ▶ 安全チェックをする
             </button>

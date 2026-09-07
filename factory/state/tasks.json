@@ -837,6 +837,65 @@
           "human_decision": false
         }
       ]
+    },
+    "q1-improve-safety-plan": {
+      "task_id": "q1-improve-safety-plan",
+      "task_type": "game-content",
+      "status": "BLOCKED",
+      "repair_count": 1,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/q1-improve-safety-plan/round2-review.result.json",
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "Q1 First-Play Standard V1 Gate C/D（月組の配慮情報がゲーム内のどの役割とも因果的に結びつかない）に該当し続け、既定のAuto Repair上限（1回）を超過。新しい役割/仕組みの追加を要するゲームデザイン人間判断が必要",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T09:29:51.995Z",
+      "updated_at": "2026-09-07T10:07:38.853Z",
+      "history": [
+        {
+          "at": "2026-09-07T09:29:51.996Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T09:51:02.392Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-safety-plan/review.result.json",
+          "score": 38,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T09:51:15.576Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T10:07:28.097Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-safety-plan/round2-review.result.json",
+          "score": 48,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T10:07:38.854Z",
+          "event": "blocked",
+          "reason": "Q1 First-Play Standard V1 Gate C/D（月組の配慮情報がゲーム内のどの役割とも因果的に結びつかない）に該当し続け、既定のAuto Repair上限（1回）を超過。新しい役割/仕組みの追加を要するゲームデザイン人間判断が必要",
+          "human_decision": false
+        }
+      ]
     }
   }
 }

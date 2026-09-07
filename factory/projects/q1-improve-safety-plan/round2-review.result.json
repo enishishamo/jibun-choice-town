@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "safety-plan-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 48,
+    "game_quality_score": 55,
+    "blockers": [
+      "Gate C/D: 月組資料の内容は「バスの窓側席・こまめな休憩・酔い止め」だが、正解操作は徒歩隊列の「先頭」に月組担当者を置くことである。画面内には先頭担当がバス休憩を決定するという説明も操作もなく、資料を正しく読んでもこの対応を導けない。したがって専門情報を適用する判断ではなく、ゲーム固有の隠れた固定規則を推測・探索する構造が残る。"
+    ],
+    "high": [
+      "Gate E/HINT_LEAKAGE: 開封後の最初の誤答から、班を名指しして「その班を担当している人」と可視の役割名を比較するよう指示する。特に🥜花組では4役中「救急用品」だけが明白に医療系で、資料本文が示していない対応を実質的に一意に示す。bus_opsの具体的資料誘導は2回目以降、timetableも初回は超過結果だけであるのに対し、本作は初回から対象班・担当者・比較対象を同時に特定しており、同じ許容水準ではない。"
+    ],
+    "medium": [
+      "`revealed`は役割変更時にはリセットされるが、資料開封時にはリセットされない。未開封状態でチェック後にカードを開くと、再チェックなしで未確認メッセージが不一致ヒントへ変化、または役割が偶然正しければ消滅するため、資料開封が現在の割当の正誤を即時に知らせる残存ライブフィードバック経路がある。",
+      "QAハーネスの「ANY reachable state」は実際には7個の手書きシナリオだけで、openedDocs・placed・4役の全到達組合せを列挙していない。漏洩検査も4つの部分文字列ブラックリストに限定され、同義表現や意味的に一意な誘導、Reactの`revealed`状態遷移を検出できない。",
+      "失敗はissues文章だけ、成功も班と担当成人の静的一覧だけで、選んだ4役や安全上の因果を世界状態として示さない。ただし`factory/state/blocked-queue.md:12`では同型のTEXT_ONLY_CONSEQUENCEがclue_board前例によりPLUS QUALITY backlogの非blocking項目と確定している。本変更で結果表現がさらに悪化した証拠はないため、本件単独ではoverride対象のMEDIUMとする。"
+    ],
+    "low": [
+      "班配置は5人の成人を1対1に強制し、先頭と最後尾の同一人物も拒否するため、「全役を同一人物」は成功しない。一方、固定された班順を知って`head=月組担当、medic=花組担当、tail=別人、contact=任意`と置く内容非依存パターンは常に成功するが、これは正解規則そのものを事前に知る必要があり、初見で自然に発見できる単純ヒューリスティックとは別である。"
+    ],
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md:19 — Gate Cは仕事固有情報を攻略上使うこと、Gate Dは仕事らしい判断、Gate EはUIからの露骨な正解漏れ防止を要求する。",
+      "factory/rules/q1-first-play-standard.md:32 — Cを使わない突破、UIによる答え漏れ、重大な職業上の誤りはrelease blocker候補である。",
+      "src/q1/SafetyPlanGame.tsx:57 — 花組資料は成分確認だけを示し、救急用品担当との対応根拠を示さない。",
+      "src/q1/SafetyPlanGame.tsx:58 — 月組資料はバスの座席・休憩・酔い止めを示すが、徒歩隊列の先頭担当との関係を示さない。",
+      "src/q1/SafetyPlanGame.tsx:166 — 「先頭を歩く」という役割表示にも、バス休憩の決定や乗り物酔い児の観察責任は記載されていない。",
+      "src/q1/safetyPlanLogic.ts:67 — 花組の正解は資料内容ではなく`medic === placed.hana`という固定対応で判定される。",
+      "src/q1/safetyPlanLogic.ts:68 — 初回から花組担当者と役割名の比較を指示し、🥜と可視の🩹役割の組合せが正解を強く示唆する。",
+      "src/q1/safetyPlanLogic.ts:73 — 月組の正解は`head === placed.tsuki`という固定対応で、資料に含まれない因果を要求する。",
+      "src/q1/SafetyPlanGame.tsx:178 — 4役の変更では`setRevealed(false)`が実行され、役割変更中の常時オラクルは閉じている。",
+      "src/q1/SafetyPlanGame.tsx:191 — 資料開封コールバックはopenedDocsだけを更新し、`revealed`をリセットしない。",
+      "src/q1/InfoCards.tsx:34 — カードを開くと即時にonOpenが発火するため、表示中issuesが同じレンダー系列で更新される。",
+      "src/q1/BusOpsGame.tsx:96 — bus_opsは初回失敗を結果だけに留め、道路資料への具体的誘導は次回以降である。",
+      "src/q1/TimetableGame.tsx:186 — timetableも初回は超過量と一般的再考だけで、資料指定は2回目以降である。",
+      "factory/harness/gameplay-qa-safety-plan.mjs:47 — 漏洩判定は4つの文字列を含むかだけで、意味的漏洩を検査しない。",
+      "factory/harness/gameplay-qa-safety-plan.mjs:56 — 「全到達状態」という主張に対し、検査対象は7つの固定シナリオに限られる。",
+      "src/q1/SafetyPlanGame.tsx:188 — 失敗結果は文章issuesの表示のみである。",
+      "src/q1/SafetyPlanGame.tsx:79 — 成功画面は班と成人の一覧を表示するが、4役や安全対策の因果を可視化しない。",
+      "factory/state/blocked-queue.md:12 — TEXT_ONLY_CONSEQUENCEをclue_board同型のPLUS QUALITY backlogとして非blocking扱いしたHuman-approved precedentが記録されている。"
+    ],
+    "recommended_actions": [
+      "月組の正解操作を資料から直接かつ真正に導けるものへ変更する。例えば、座席配置、休憩計画、酔い止め確認、観察担当の選択を実際の操作対象にし、徒歩の先頭役との架空の対応を削除する。",
+      "花組も一般的な救急用品担当ではなく、成分確認担当、個別薬・自己注射薬の所在、訓練済み成人、緊急連絡経路など資料本文と因果が一致する操作にする。",
+      "初回失敗では対象班・担当成人・参照先を同時に特定せず、観察可能な安全上の不足だけを返す。具体的資料誘導を残すならbus_ops/timetable同様に段階化する。",
+      "InfoCardsのonOpen時にも`setRevealed(false)`を実行し、資料開閉やステップ遷移を含む全入力変更後は明示的な再チェックを必須にする。",
+      "QAでopenedDocsの全部分集合、全1対1配置、nullを含む4役の全組合せを列挙し、全文言の意味的レビューに加えてReact状態遷移として「チェック→資料開封」「チェック→役割変更」を検査する。"
+    ]
+  },
+  "elapsed_sec": 152.928
+}
