@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "clue-board-round3b-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 82,
+    "game_quality_score": 68,
+    "blockers": [],
+    "high": [
+      "TEXT_ONLY_CONSEQUENCE / WORLD_FEEDBACK_QUALITY: 誤答1回目は説明文が表示されるだけで、患者・報告・選択したバイタル等の視覚的な世界状態が変化しない。2回目のpartial画面も既存メモと説明を再掲するだけで、誤った報告による具体的結果を世界の変化として示していない。"
+    ],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "src/q1/ClueBoardGame.tsx:74 — 正しいID集合だけが直接onComplete()へ到達する。",
+      "src/q1/ClueBoardGame.tsx:78 — 誤答時だけattemptsを加算する。",
+      "src/q1/ClueBoardGame.tsx:80 — MAX_REVIEW_ATTEMPTS到達時は成功処理ではなくdone-partialへ分岐する。",
+      "src/q1/ClueBoardGame.tsx:89 — 1回目の誤答フィードバックは「もう一度…見比べてみよう」という文章のみで、視覚的 consequence がない。",
+      "src/q1/ClueBoardGame.tsx:99 — done-partial画面は到達可能であり、先へ進むボタンも存在するためデッドエンドではない。",
+      "src/q1/ClueBoardGame.tsx:103 — partial結果は見立てが定まらないと明示し、成功として偽装していないためGate Hは満たす。",
+      "src/q1/ClueBoardGame.tsx:121 — partial画面は収集済みメモをそのまま再掲するが、誤って選んだ項目や患者・報告先の状態変化は描画しない。",
+      "src/q1/ClueBoardGame.tsx:135 — partial終了はonPartialCompleteを呼び、通常配線では成功用onCompleteと区別される。",
+      "src/screens/Q1Screen.tsx:75 — completion結果はsuccessとpartialの別値として保持される。",
+      "src/screens/Q1Screen.tsx:87 — onCompleteはsuccess、onPartialCompleteはpartialへ明示的に別配線されている。",
+      "src/screens/Q1Screen.tsx:102 — Job Reveal前の結果表示もpartial専用文言へ分岐し、成功用resolutionを表示しない。",
+      "src/q1/ClueBoardGame.tsx:26 — useStateの遅延初期化でshuffledVitals()をマウント時のプレイ状態として保持し、再レンダーごとには並べ替えない。",
+      "src/q1/clueBoardLogic.ts:64 — 正解集合はVITALSのoff属性からIDとして生成される。",
+      "src/q1/clueBoardLogic.ts:72 — 正誤判定はflaggedのID集合とOFF_VITAL_IDSを比較し、表示位置や配列indexに依存しない。",
+      "src/q1/clueBoardLogic.ts:87 — shuffledVitalsはデフォルトでMath.randomを使用し、固定seedを与えていない。",
+      "src/q1/clueBoardLogic.ts:88 — シャッフル前にVITALSを複製するため元配列を破壊しない。",
+      "src/q1/clueBoardLogic.ts:89 — Fisher–Yates交換のみを行うため、通常のMath.random入力では項目を重複・欠落させない。",
+      "src/q1/clueBoardLogic.ts:46 — 各バイタルのclue文は数値のみで、高い・低い等の正解評価語を含まない。",
+      "src/q1/ClueBoardGame.tsx:53 — reviewの全行に同一vital-row構造を使用し、off属性をCSSクラスへ露出していない。",
+      "factory/harness/gameplay-qa-clue-board.mjs:1 — 実行結果は19 passed, 0 failedで、順序の多様化、ID保存、先頭3行戦略26.9%、盲目的選択12.4%を確認した。"
+    ],
+    "recommended_actions": [
+      "誤答送信時、選択したバイタルが実際の報告メモへ移動・反映され、患者または医療チームの反応が変化する視覚的フィードバックを追加する。",
+      "1回目の誤答では答えを漏らさず、選択内容に対応した視覚的な不整合や保留状態を示したうえで同じデータを再検討させる。",
+      "done-partialでは既存の収集メモ再掲だけでなく、誤った報告が保留・差し戻しになったことを具体的な画面状態として示す。"
+    ]
+  },
+  "elapsed_sec": 61.76
+}

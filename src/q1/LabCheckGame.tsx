@@ -22,7 +22,7 @@ import { canRunAnother, isCompletePicture, MAX_TESTS_RUNNABLE, TESTS } from "./l
 
 type Step = "intro" | "run" | "result" | "done" | "done-partial";
 
-export default function LabCheckGame({ onComplete }: Q1GameProps) {
+export default function LabCheckGame({ onComplete, onPartialComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("intro");
   const [picked, setPicked] = useState<string[]>([]);
   const [running, setRunning] = useState<string | null>(null);
@@ -186,7 +186,7 @@ export default function LabCheckGame({ onComplete }: Q1GameProps) {
         <p className="game-line soft center-line">
           何を調べるかで、医師に届く情報は変わる。次はちがう組み合わせを試してみよう。
         </p>
-        <button className="btn primary big" onClick={onComplete}>
+        <button className="btn primary big" onClick={() => (onPartialComplete ?? onComplete)()}>
           結果を送る
         </button>
       </div>

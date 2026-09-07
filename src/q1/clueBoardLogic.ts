@@ -74,3 +74,21 @@ export function isCorrectVitalFlagSet(flagged: string[]): boolean {
   if (set.size !== OFF_VITAL_IDS.length) return false;
   return OFF_VITAL_IDS.every((id) => set.has(id));
 }
+
+/** 2026-09-07 repair (Human Decision — Q1 First-Play Standard, HIGH: "the
+ * fixed row order makes selecting the first three rows a deterministic
+ * no-reading shortcut; every abnormal vital precedes the sole normal
+ * one"). This is a FIRST-PLAY-relevant answer leak (a brand-new player
+ * can win with a positional heuristic, never reading a single number) —
+ * not a replay/mastery-only concern, so it stays a required fix under the
+ * new standard. Shuffling the row order per playthrough removes the
+ * positional signal without touching the judgment logic itself (still
+ * keyed by id, never by position). */
+export function shuffledVitals(rand: () => number = Math.random): typeof VITALS {
+  const arr = [...VITALS];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}

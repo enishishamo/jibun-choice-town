@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "clue-board-round3-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 72,
+    "game_quality_score": 48,
+    "blockers": [
+      "Incorrect play still reaches the same successful completion path: after two wrong submissions, done-partial's 「先へ進む」 calls onComplete; Q1Screen then unconditionally records the experience as completed and shows the same discovery/resolution screen used for a correct answer. Thus submitting incorrectly twice still guarantees completion and success-framed progression after one extra click, violating Gate H."
+    ],
+    "high": [
+      "Wrong-answer consequence is predominantly text-only: the first miss merely displays a note, and the terminal partial outcome uses explanatory text/static symbols without a patient or clinical-world state change. This fails the binding WORLD_FEEDBACK_QUALITY/TEXT_ONLY_CONSEQUENCE requirement and weakens Gate F."
+    ],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "src/q1/ClueBoardGame.tsx:74 — A correct flag set calls onComplete immediately.",
+      "src/q1/ClueBoardGame.tsx:78 — An incorrect submission increments the attempt count.",
+      "src/q1/ClueBoardGame.tsx:80 — Reaching MAX_REVIEW_ATTEMPTS branches to done-partial rather than immediately calling onComplete.",
+      "src/q1/ClueBoardGame.tsx:89 — The first incorrect attempt provides a nonspecific comparison prompt and preserves one retry, satisfying Gate G without leaking a specific answer.",
+      "src/q1/ClueBoardGame.tsx:103 — done-partial honestly states that the assessment remains unresolved, but this distinction is only local to that screen.",
+      "src/q1/ClueBoardGame.tsx:119 — The done-partial advance button calls the same onComplete callback used by correct play.",
+      "src/screens/Q1Screen.tsx:76 — The shared onComplete callback has no success/partial parameter.",
+      "src/screens/Q1Screen.tsx:78 — Every onComplete call records completeExperience, including the incorrect done-partial route.",
+      "src/screens/Q1Screen.tsx:79 — Every onComplete call enters the same discovery phase.",
+      "src/screens/Q1Screen.tsx:93 — The shared discovery phase presents the experience resolution with celebratory framing regardless of correctness.",
+      "src/q1/ClueBoardGame.tsx:26 — useState's lazy initializer invokes shuffledVitals once for each component mount, so rerenders do not reshuffle.",
+      "src/q1/clueBoardLogic.ts:87 — shuffledVitals copies VITALS before applying an in-place Fisher–Yates shuffle, preventing mutation, duplication, or loss in production.",
+      "src/q1/clueBoardLogic.ts:90 — Shuffle indices are generated from unseeded Math.random in production, not a fixed deterministic seed.",
+      "src/q1/clueBoardLogic.ts:72 — Correctness converts selected vital IDs to a Set.",
+      "src/q1/clueBoardLogic.ts:75 — Correctness compares selected IDs against OFF_VITAL_IDS and does not depend on row position.",
+      "src/q1/clueBoardLogic.ts:46 — All four review rows use neutral value/range data; abnormality is not encoded in an evaluative label.",
+      "src/q1/ClueBoardGame.tsx:50 — Gather and review phases use the same per-mount shuffled order, with no fixed first-three positional answer.",
+      "src/q1/ClueBoardGame.tsx:70 — First-miss feedback is only a text note.",
+      "src/q1/ClueBoardGame.tsx:101 — Terminal failure feedback consists of a result card, static emoji sequence, and explanatory text rather than a clinical-world consequence."
+    ],
+    "recommended_actions": [
+      "Give onComplete an explicit outcome such as \"success\" or \"partial\", and ensure the partial route does not call completeExperience or enter the same celebratory resolution/discovery state as correct play.",
+      "Provide a distinct partial handoff or retry/restart route whose downstream framing preserves the unresolved assessment and does not award successful completion.",
+      "Add visible clinical-world feedback for incorrect reports—for example, an unresolved triage/report state or patient/team reaction—while retaining the nonspecific first-attempt retry prompt.",
+      "Add an integration test asserting that two incorrect submissions plus advancing from done-partial cannot record successful completion or render the success resolution."
+    ]
+  },
+  "elapsed_sec": 49.283
+}

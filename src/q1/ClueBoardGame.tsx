@@ -7,21 +7,24 @@
 //    clueBoardLogic.ts）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import { ASK, EXAM, hasGatheredEnough, isCorrectVitalFlagSet, MAX_REVIEW_ATTEMPTS, VITALS } from "./clueBoardLogic";
+import { ASK, EXAM, hasGatheredEnough, isCorrectVitalFlagSet, MAX_REVIEW_ATTEMPTS, shuffledVitals } from "./clueBoardLogic";
 import type { Clue } from "./clueBoardLogic";
 
 type Tab = "ask" | "exam" | "vital";
+type Step = "gather" | "review" | "done-partial";
 
-export default function ClueBoardGame({ onComplete }: Q1GameProps) {
+export default function ClueBoardGame({ onComplete, onPartialComplete }: Q1GameProps) {
   const [tab, setTab] = useState<Tab | null>(null);
   const [clues, setClues] = useState<Clue[]>([]);
   const [toolsUsed, setToolsUsed] = useState<Set<Tab>>(new Set());
   const [said, setSaid] = useState<Record<string, string>>({});
   const [openNormal, setOpenNormal] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
-  // 2026-09-06 repair: reviewing gates completion on actually reading the
-  // vitals against their own normal range, not just tallying clue count.
-  const [reviewing, setReviewing] = useState(false);
+  // 2026-09-07 repair (Human Decision — Q1 First-Play Standard): row order
+  // is shuffled once per playthrough (not on every render) so "always
+  // flag the first three rows" stops being a no-reading shortcut.
+  const [vitals] = useState(() => shuffledVitals());
+  const [step, setStep] = useState<Step>("gather");
   const [flagged, setFlagged] = useState<string[]>([]);
   const [attempts, setAttempts] = useState(0);
 
@@ -36,7 +39,7 @@ export default function ClueBoardGame({ onComplete }: Q1GameProps) {
 
   const enough = hasGatheredEnough(clues.length, toolsUsed);
 
-  if (reviewing) {
+  if (step === "review") {
     return (
       <div className="game board-game">
         <div className="task-bar">
@@ -44,7 +47,7 @@ export default function ClueBoardGame({ onComplete }: Q1GameProps) {
           <span className="task-sub">「気になる」と思うものだけ選んでね</span>
         </div>
         <div className="vital-list">
-          {VITALS.map((v) => {
+          {vitals.map((v) => {
             const on = flagged.includes(v.id);
             return (
               <div key={v.id} className="vital-row">
@@ -75,16 +78,62 @@ export default function ClueBoardGame({ onComplete }: Q1GameProps) {
             const next = attempts + 1;
             setAttempts(next);
             if (next >= MAX_REVIEW_ATTEMPTS) {
-              // bounded cost, not an infinite free enumeration of the 16
-              // possible flag-sets: the chapter still isn't blocked, but a
-              // second miss moves on without a third free look.
-              onComplete();
+              // 2026-09-07 repair (Human Decision — Q1 First-Play Standard,
+              // BLOCKER: "2回誤答すると正解と同じonCompleteへ進む"): a
+              // second miss must NOT complete the chapter as if correct —
+              // it moves to an honest, different (weaker) outcome instead.
+              setNote(null);
+              setStep("done-partial");
               return;
             }
             setNote("もう一度、数字とふつうの範囲を見比べてみよう。");
           }}
         >
           ▶ これで医師に報告する
+        </button>
+      </div>
+    );
+  }
+
+  // ---------- E（惜しい）：情報は届いたが、見立てはまだそろっていない ----------
+  if (step === "done-partial") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">手がかりは集まったが、まだ見立てが定まらない</span>
+          <div className="ba-mini">
+            <span className="ba-mini-item">
+              <span className="ba-mini-emoji">🔍</span>
+              <small>話・診察・バイタルは<br />集めた</small>
+            </span>
+            <span className="ba-mini-arrow">→</span>
+            <span className="ba-mini-item">
+              <span className="ba-mini-emoji">🤔</span>
+              <small>気になる数字を<br />うまく選べなかった</small>
+            </span>
+          </div>
+        </div>
+        {/* 2026-09-07 (Q1 First-Play Standard, HIGH: text-only consequence):
+           show the ACTUAL gathered clue state, not just a static
+           explanation — the child's own investigation results, honestly
+           carried forward as "collected but not yet used correctly",
+           instead of a purely textual "you failed" message. */}
+        <div className="clue-memo">
+          <span className="memo-title">🔍 医師に送った、たんていメモ</span>
+          <div className="memo-list">
+            {clues.map((c) => (
+              <span key={c.id} className="memo-item">
+                <b>{c.from}</b>
+                {c.text}
+              </span>
+            ))}
+          </div>
+        </div>
+        <p className="game-line soft center-line">
+          数字をふつうの範囲と見比べることで、医師に伝わる情報は変わる。次はどこに注目するか考えてみよう。
+        </p>
+        <button className="btn primary big" onClick={() => (onPartialComplete ?? onComplete)()}>
+          先へ進む
         </button>
       </div>
     );
@@ -165,7 +214,7 @@ export default function ClueBoardGame({ onComplete }: Q1GameProps) {
              which row turned red while gathering. Same value/normal-range
              text as the review step; the player just doesn't yet have to
              DO anything with the comparison. */}
-          {VITALS.map((v) => (
+          {vitals.map((v) => (
             <div key={v.id} className="vital-row">
               <span className="vital-label">{v.label}</span>
               <span className="vital-value">{v.value}</span>
@@ -196,7 +245,7 @@ export default function ClueBoardGame({ onComplete }: Q1GameProps) {
             return;
           }
           setNote(null);
-          setReviewing(true);
+          setStep("review");
         }}
       >
         {enough ? "▶ ここまでで考えてみる" : "手がかりを集めよう"}

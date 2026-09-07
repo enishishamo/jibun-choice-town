@@ -6,7 +6,7 @@
 //
 // Usage: node factory/harness/gameplay-qa-clue-board.mjs
 
-import { ASK, EXAM, MAX_REVIEW_ATTEMPTS, MIN_CLUES, MIN_TOOLS, OFF_VITAL_IDS, VITALS, hasGatheredEnough, isCorrectVitalFlagSet } from "../../src/q1/clueBoardLogic.ts";
+import { ASK, EXAM, MAX_REVIEW_ATTEMPTS, MIN_CLUES, MIN_TOOLS, OFF_VITAL_IDS, VITALS, hasGatheredEnough, isCorrectVitalFlagSet, shuffledVitals } from "../../src/q1/clueBoardLogic.ts";
 
 let passed = 0, failed = 0;
 function check(name, ok, detail = "") {
@@ -47,6 +47,34 @@ check("one extra (correct set + the normal one) fails — over-flagging is also 
 }
 check("every vital produces a clue when inspected — clue PRESENCE is not itself a tell", VITALS.every((v) => !!v.clue));
 check("review attempts are bounded, not free-enumerate-16-combinations", MAX_REVIEW_ATTEMPTS >= 1 && MAX_REVIEW_ATTEMPTS <= 3, `MAX_REVIEW_ATTEMPTS=${MAX_REVIEW_ATTEMPTS}`);
+
+// ---- 2026-09-07 repair (Q1 First-Play Standard, FIRST-PLAY-relevant HIGH):
+// the fixed row order let "always flag the first three rows" win without
+// reading anything, even on a brand-new player's first attempt. Verify
+// the order actually varies across playthroughs and the judgment logic
+// stays keyed by id regardless of order. ----
+{
+  const rand = (() => { let s = 3; return () => (s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296; })();
+  const orders = new Set();
+  for (let i = 0; i < 30; i++) orders.add(shuffledVitals(rand).map((v) => v.id).join(","));
+  check("vital row order actually varies across playthroughs (positional shortcut is not reliable)", orders.size > 1, `${orders.size} distinct orders in 30 draws`);
+  const shuffled = shuffledVitals(rand);
+  check("shuffling preserves the same 4 ids (just reordered)", new Set(shuffled.map((v) => v.id)).size === VITALS.length);
+
+  // Before this repair, "always flag the first 3 rows" won 100% of the
+  // time (fixed order, bp always last). Confirm it's no longer a
+  // guaranteed win — only as good as chance (~1/4, since it wins exactly
+  // when the shuffle happens to put bp last).
+  const rand2 = (() => { let s = 11; return () => (s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296; })();
+  let firstThreeWins = 0;
+  const N = 1000;
+  for (let i = 0; i < N; i++) {
+    const order = shuffledVitals(rand2);
+    if (isCorrectVitalFlagSet(order.slice(0, 3).map((v) => v.id))) firstThreeWins++;
+  }
+  const rate = firstThreeWins / N;
+  check("'always flag the first 3 rows' is no longer a guaranteed win (was 100% under the fixed order)", rate < 0.4, `${(rate * 100).toFixed(1)}% (chance floor ~25%)`);
+}
 
 // ---- blind/random flagging should not be a dominant strategy, even ----
 // across the full MAX_REVIEW_ATTEMPTS budget a real player gets.
