@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "timetable-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 78,
+    "game_quality_score": 48,
+    "blockers": [],
+    "high": [
+      "Gate C/D failure remains: from the declared initial order, removing any one of the five optional acts and immediately submitting succeeds without opening the changeover document, reordering anything, or understanding setup grouping. Thus the first-play solution is still content-independent; the player can click any visible × once and win."
+    ],
+    "medium": [
+      "Act cards still show only name and runtime, not the assigned band/light/none setup type. Even a player who opens the changeover document must infer each act's hidden category from its name or experimentally inspect transition values.",
+      "The new QA check does not verify the component's actual initial state. It computes the schedule for ACTS.map(...) but never imports, renders, or inspects TimetableGame's useState initializer, so it would continue passing if the component later initialized a different lineup."
+    ],
+    "low": [
+      "Pinned-boundary controls remain misleadingly enabled: opening's down button, ending's up button, and optional-act controls directed into a pinned boundary call move(), which silently rejects them.",
+      "overAttempts is cumulative across lineup edits. This is not currently correctness-breaking, but after one failed submission, even a substantially revised lineup receives the second-stage hint on its next failure rather than restarting the hint sequence."
+    ],
+    "evidence": [
+      "src/q1/TimetableGame.tsx:27 — line genuinely initializes to ACTS.map(a => a.id), containing open, all five optional acts, and end.",
+      "src/q1/timetableLogic.ts:37 — The declared initial order is open-band-dance-magic-singer-quiz-end; independent calculation gives 170 runtime minutes plus 70 changeover minutes, finishing at minute 840 (14:00), 20 minutes after END.",
+      "src/q1/TimetableGame.tsx:101 — waiting is exactly the acts absent from line, and line 143 renders the pool only when waiting.length > 0, so it is hidden initially and appears after removal.",
+      "src/q1/TimetableGame.tsx:151 — Re-adding inserts the selected missing act immediately before ending and removes it from waiting on rerender; no duplicate-add path is exposed.",
+      "src/q1/TimetableGame.tsx:174 — Overtime is checked before the minimum-length gate, and no full-five ordering can pass; therefore the old initial add-two path is structurally impossible.",
+      "src/q1/TimetableGame.tsx:186 — The first overtime failure reports only the overage and asks the player to change count or order; it does not disclose same-setup grouping.",
+      "src/q1/TimetableGame.tsx:188 — The second failure points to the 🔁 document but still does not state the grouping solution.",
+      "src/q1/InfoCards.tsx:24 — Documents start closed and require a tap to expose their bodies, so staged hints remain meaningful even though the rule card is always accessible.",
+      "src/q1/TimetableGame.tsx:129 — Every optional row exposes the same × action; no particular cut or use of job-specific information is required.",
+      "src/q1/timetableLogic.ts:37 — Keeping the untouched declared order after one arbitrary cut yields: band cut 13:00, dance cut 13:25, magic cut 13:30, singer cut 13:15, quiz cut 13:35; all beat the 13:40 deadline.",
+      "src/q1/TimetableGame.tsx:192 — Success still requires only line.length >= 4 once the schedule fits; it does not require opening the rule document, making a reorder, or demonstrating changeover reasoning.",
+      "factory/rules/q1-first-play-standard.md:31 — Gate C requires job-specific information or expertise to have gameplay significance; the arbitrary-one-cut solution bypasses it.",
+      "factory/rules/q1-first-play-standard.md:45 — The release-blocker criteria explicitly include being able to clear without using C, which applies to the first-play arbitrary-one-cut path.",
+      "factory/harness/gameplay-qa-timetable.mjs:42 — The added check validates computeSchedule(ACTS.map(...)) only; it does not connect that array to TimetableGame's actual state initializer.",
+      "src/q1/TimetableGame.tsx:118 — Initial overflow rendering correctly marks rows whose endAt exceeds END, while lines 108 and 138 mark the finish as bad/over; no initial-state color inversion is evident.",
+      "src/q1/TimetableGame.tsx:183 — overAttempts increments only on overtime submissions, persists through edits, and resets naturally only when the component remounts.",
+      "src/q1/TimetableGame.tsx:124 — Boundary-adjacent move buttons are not disabled even though move rejects destinations at indices 0 and line.length−1.",
+      "factory/harness/gameplay-qa-timetable.mjs:92 — The supplied harness executes successfully with 10 passed and 0 failed, but its assertions do not cover the arbitrary-one-cut first-play exploit."
+    ],
+    "recommended_actions": [
+      "Rebalance the initial order and timing so at least some arbitrary first cuts still overflow and successful completion requires a changeover-aware reorder, or require an explicit scheduling objective that cannot be satisfied by any single blind deletion.",
+      "Add visible, neutral setup-type labels/icons to each act so the rule document provides actionable information rather than requiring name-based inference.",
+      "Extend the QA harness with a component-level assertion of the actual initial lineup and a first-play exploit check that rejects the strategy 'remove each optional act in turn without reordering; every result passes.'",
+      "Disable move buttons whenever their requested destination is a pinned opening/ending slot.",
+      "Consider resetting overAttempts when the lineup changes if each substantially revised schedule should receive the first-stage feedback before escalation."
+    ]
+  },
+  "elapsed_sec": 431.348
+}

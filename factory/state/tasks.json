@@ -660,6 +660,65 @@
           "note": "Released to main at commit c35806e (cherry-picked from this branch's f388042; routing-log.jsonl append-only conflict resolved). Live: https://enishishamo.github.io/jibun-choice-town/ . Deploy verified via gh run 34094947982 (Release Gate + lint + build all green) and via fetching the deployed bundle for a rx_check done-partial text marker."
         }
       ]
+    },
+    "q1-improve-timetable": {
+      "task_id": "q1-improve-timetable",
+      "task_type": "game-content",
+      "status": "BLOCKED",
+      "repair_count": 1,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/q1-improve-timetable/round2-review.result.json",
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 1 genuine HIGH per Q1 First-Play Standard V1 Gate C/D (explicitly on the BLOCKER-adjacent list: 'can clear without using C'): from the declared initial (all-5-acts, already-overflowing) lineup, removing ANY SINGLE arbitrary optional act (no reordering, no reading the changeover rule card, no understanding of stage-setup grouping) always succeeds -- round4-review's own arithmetic confirms all 5 single-act cuts (with the untouched declared order) finish under the 13:40 deadline. This is a genuine, non-overridable content-independent shortcut: a first-time player can win by deleting literally any one row without ever engaging with the job-specific C (changeover/setup-type reasoning) the game exists to teach. Fixing this requires either a further numeric rebalance (harder to get right without ALSO reopening the 'no ordering ever fits' failure mode from round 1, given only 5 acts/2 setup categories to work with) or a structural change (e.g. requiring an explicit reorder step, or making at least one arbitrary single-cut also fail) -- both are real game-design judgment calls beyond this task's already-used 1 auto-repair.",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T07:26:12.784Z",
+      "updated_at": "2026-09-07T07:59:09.855Z",
+      "history": [
+        {
+          "at": "2026-09-07T07:26:12.785Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T07:42:08.536Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-timetable/review.result.json",
+          "score": 45,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T07:42:08.571Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T07:58:53.473Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-timetable/round2-review.result.json",
+          "score": 48,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T07:59:09.856Z",
+          "event": "blocked",
+          "reason": "After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 1 genuine HIGH per Q1 First-Play Standard V1 Gate C/D (explicitly on the BLOCKER-adjacent list: 'can clear without using C'): from the declared initial (all-5-acts, already-overflowing) lineup, removing ANY SINGLE arbitrary optional act (no reordering, no reading the changeover rule card, no understanding of stage-setup grouping) always succeeds -- round4-review's own arithmetic confirms all 5 single-act cuts (with the untouched declared order) finish under the 13:40 deadline. This is a genuine, non-overridable content-independent shortcut: a first-time player can win by deleting literally any one row without ever engaging with the job-specific C (changeover/setup-type reasoning) the game exists to teach. Fixing this requires either a further numeric rebalance (harder to get right without ALSO reopening the 'no ordering ever fits' failure mode from round 1, given only 5 acts/2 setup categories to work with) or a structural change (e.g. requiring an explicit reorder step, or making at least one arbitrary single-cut also fail) -- both are real game-design judgment calls beyond this task's already-used 1 auto-repair.",
+          "human_decision": false
+        }
+      ]
     }
   }
 }

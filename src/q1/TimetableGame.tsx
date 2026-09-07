@@ -4,55 +4,32 @@
 //    分からないので、単純に演目の分数だけ足すと必ず溢れる。
 // D: タイムライン上に演目を並べ替え・出し入れする。終演時刻と
 //    ステージ転換の条件を満たす組み合わせは複数ある。
+//
+// 2026-09-07 repair (Continuous Product Loop, factory/state/audits/
+// audit-summary.md GQ43/CA67): see timetableLogic.ts for why the end time
+// was shortened -- selecting every act used to fit regardless of order.
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import { ACTS, END, SAME, START, SWAP, computeSchedule, fmt } from "./timetableLogic";
 
-const P = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
-
-interface Act {
-  id: string;
-  name: string;
-  img: string;
-  min: number;
-  /** ステージの作り（バンド編成など）。変わると転換に時間がかかる */
-  setup: "band" | "light" | "none";
-  must?: boolean;
-}
-
-const ACTS: Act[] = [
-  { id: "open", name: "オープニング", img: P("a_mc"), min: 10, setup: "none", must: true },
-  { id: "band", name: "バンド演奏", img: P("a_musician"), min: 45, setup: "band" },
-  { id: "dance", name: "ダンスショー", img: P("a_dancer"), min: 30, setup: "light" },
-  { id: "magic", name: "マジックショー", img: P("a_magician"), min: 25, setup: "light" },
-  { id: "singer", name: "うたのステージ", img: P("a_singer"), min: 30, setup: "band" },
-  { id: "quiz", name: "◯×クイズ", img: P("a_mascot"), min: 20, setup: "none" },
-  { id: "end", name: "エンディング", img: P("a_mc"), min: 10, setup: "none", must: true },
-];
-
-const START = 10 * 60; // 10:00
-const END = 15 * 60; // 15:00 終演
-const SWAP = 15; // 作りが変わるときの転換
-const SAME = 5; // 同じ作りのままの転換
-
-const fmt = (m: number) => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")}`;
+const A = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
 
 export default function TimetableGame({ onComplete }: Q1GameProps) {
-  const [line, setLine] = useState<string[]>(["open", "end"]);
+  // 2026-09-07 repair round 2 (independent review HIGH: the submit gate
+  // only required 2+ optional acts, so a player could add just any two and
+  // always win regardless of choice or order -- the whole "can't fit all
+  // 5" rebalance was irrelevant if the game never forced reaching that
+  // point). The lineup now starts with EVERY act already in it -- matching
+  // the mission's own "このままだと時間どおり終わらない" framing (it's
+  // already overfull) -- so the player's first move must be removing at
+  // least one act, not just adding a couple.
+  const [line, setLine] = useState<string[]>(ACTS.map((a) => a.id));
   const [note, setNote] = useState<string | null>(null);
+  const [overAttempts, setOverAttempts] = useState(0);
   const [done, setDone] = useState(false);
 
-  const acts = line.map((id) => ACTS.find((a) => a.id === id)!);
-  // walk the timeline adding each act + the changeover before it
-  let t = START;
-  const rows = acts.map((a, i) => {
-    const prev = i > 0 ? acts[i - 1] : null;
-    const change = prev ? (prev.setup === a.setup ? SAME : SWAP) : 0;
-    const startAt = t + change;
-    t = startAt + a.min;
-    return { act: a, change, startAt, endAt: t };
-  });
-  const finish = t;
+  const { rows, finish } = computeSchedule(line);
   const over = finish > END;
 
   const docs = [
@@ -78,7 +55,13 @@ export default function TimetableGame({ onComplete }: Q1GameProps) {
 
   const move = (i: number, d: number) => {
     const j = i + d;
+    // 2026-09-07: keep オープニング/エンディング pinned to the first/last
+    // slot -- neither can move, and nothing can be moved into their spot
+    // either. They are structurally "must" acts; letting them drift into
+    // the middle never made narrative sense and only complicated the
+    // schedule math for no gameplay benefit.
     if (j < 0 || j >= line.length) return;
+    if (i === 0 || i === line.length - 1 || j === 0 || j === line.length - 1) return;
     const n = [...line];
     [n[i], n[j]] = [n[j], n[i]];
     setLine(n);
@@ -94,7 +77,7 @@ export default function TimetableGame({ onComplete }: Q1GameProps) {
             {rows.map((r) => (
               <span key={r.act.id} className="tl-row done">
                 <b>{fmt(r.startAt)}</b>
-                <img src={r.act.img} alt="" />
+                <img src={A(r.act.img)} alt="" />
                 <span>{r.act.name}</span>
                 <small>{r.act.min}分</small>
               </span>
@@ -134,7 +117,7 @@ export default function TimetableGame({ onComplete }: Q1GameProps) {
             )}
             <div className={`tl-row ${r.endAt > END ? "over" : ""}`}>
               <b>{fmt(r.startAt)}</b>
-              <img src={r.act.img} alt="" />
+              <img src={A(r.act.img)} alt="" />
               <span className="tl-name">{r.act.name}</span>
               <small>{r.act.min}分</small>
               <span className="tl-ctrl">
@@ -173,7 +156,7 @@ export default function TimetableGame({ onComplete }: Q1GameProps) {
                   setNote(null);
                 }}
               >
-                <img src={a.img} alt="" />
+                <img src={A(a.img)} alt="" />
                 <span className="act-name">{a.name}</span>
                 <small>{a.min}分</small>
               </button>
@@ -189,7 +172,21 @@ export default function TimetableGame({ onComplete }: Q1GameProps) {
         className="btn primary big"
         onClick={() => {
           if (over) {
-            setNote(`${finish - END}分オーバー。演目を減らすか、同じ作りの演目を続けて転換をへらしてみよう（🔁の資料）。`);
+            // 2026-09-07 repair round 2 (independent review HIGH: the very
+            // first overtime attempt used to hand over the full strategy
+            // -- "keep same-setup acts consecutive" -- for free. The first
+            // miss now shows only the consequence (how far over); the
+            // grouping strategy is only pointed at (not stated outright)
+            // from the second attempt on, nudging the player toward the
+            // rule card they can already see rather than reading the
+            // answer directly here.
+            const next = overAttempts + 1;
+            setOverAttempts(next);
+            setNote(
+              next === 1
+                ? `${finish - END}分オーバー。演目の数や順番を変えて、もう一度試してみよう。`
+                : `${finish - END}分オーバー。演目を減らすか、順番を変えてみよう。🔁の資料も見てみて。`,
+            );
             return;
           }
           if (line.length < 4) {

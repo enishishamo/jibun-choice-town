@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "timetable-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 45,
+    "career_authenticity_score": 78,
+    "game_quality_score": 45,
+    "blockers": [],
+    "high": [
+      "Gate C/D failure: the player can blindly add any two optional acts and submit successfully. Every two-act lineup fits comfortably, so neither the changeover document nor meaningful scheduling judgment is required on the first playthrough.",
+      "Answer-leaking retry hint: the first overtime submission immediately states the core solution—reduce acts or place same-setup acts consecutively—and points directly to the changeover document, contrary to the required staged-hint approach."
+    ],
+    "medium": [
+      "Act cards display only name and runtime, not their band/light/none setup type. The rule explains setup categories, but the player cannot directly inspect the category assigned to each act and must infer it from names or observed transition values.",
+      "The new QA harness validates schedule arithmetic but does not test the exploitable minimum-content success path or the component's pinning behavior; its final two checks verify only must=true metadata.",
+      "The mission says the current program cannot finish on time, yet gameplay starts with only opening and ending. A player who adds two acts never encounters the stated overcrowded schedule or the repaired trade-off."
+    ],
+    "low": [
+      "Pinned-boundary controls appear enabled even though move() rejects them: opening's down button, ending's up button, and adjacent optional-act buttons toward a pinned slot can be clicked with no effect."
+    ],
+    "evidence": [
+      "src/q1/timetableLogic.ts:37 — Independent arithmetic from ACTS: all five acts have 170 minutes of runtime including opening/ending; the best setup grouping has 60 minutes of changeovers, finishing at 13:50, 10 minutes after END.",
+      "src/q1/timetableLogic.ts:38 — Best full ordering example open-quiz-band-singer-dance-magic-end: runtime 170 + changeovers 5+15+5+15+5+15=60, total 230 minutes versus the 220-minute window.",
+      "src/q1/timetableLogic.ts:38 — After cutting quiz, alternating open-band-dance-singer-magic-end has runtime 150 + five 15-minute changes=225 minutes, finishing 13:45 and exceeding END by 5 minutes.",
+      "src/q1/timetableLogic.ts:39 — After cutting band, even worst-order open-dance-singer-quiz-magic-end has runtime 125 + five 15-minute changes=200 minutes, finishing 13:20 and fitting by 20 minutes.",
+      "factory/harness/gameplay-qa-timetable.mjs:21 — The recursive permutation function selects every possible head and permutes the remainder, producing all 5!=120 distinct full-act orders.",
+      "factory/harness/gameplay-qa-timetable.mjs:37 — The harness evaluates computeSchedule for every generated full ordering; its observed best finish of minute 830 (13:50) agrees with the independent calculation, so no full-five ordering fits.",
+      "factory/harness/gameplay-qa-timetable.mjs:51 — All 24 permutations for each four-act cut are evaluated; reported worst finishes agree that only cutting quiz can overflow, while cuts of band/dance/magic/singer always fit.",
+      "src/q1/TimetableGame.tsx:169 — Success requires only line.length>=4, meaning opening, ending, and any two optional acts; all such schedules fit without using setup information.",
+      "src/q1/TimetableGame.tsx:139 — Optional-act cards expose only image, name, and runtime; setup type is omitted.",
+      "src/q1/TimetableGame.tsx:165 — Overtime correctly prevents success, but the first failure immediately reveals the grouping strategy at line 166.",
+      "src/q1/TimetableGame.tsx:47 — Pinning itself preserves valid optional reordering, but the guard silently rejects moves involving either boundary while button disabled states cover only absolute first/last direction.",
+      "src/data/content/townEvent.ts:389 — The mission asserts an already-overfull situation, while the component initializes with only open/end at src/q1/TimetableGame.tsx:19.",
+      "src/data/content/townEvent.ts:395 — The job reveal accurately connects runtime calculation and changeover-aware ordering to event progression work."
+    ],
+    "recommended_actions": [
+      "Require a genuinely constrained lineup before success—for example, require exactly four optional acts or initialize all five acts—so first-play completion necessarily involves choosing a cut and, for at least some cuts, ordering judgment.",
+      "Show a neutral setup-type label or icon on every act card without visually privileging any answer.",
+      "On the first overtime attempt, show only the changed schedule/overrun consequence; defer the explicit same-setup grouping hint until a later failed attempt.",
+      "Extend the harness with component-level checks for blind two-act submission, over-time rejection, open/end pinning, enabled-button behavior, and setup-type visibility.",
+      "Disable every move button whose requested destination is a pinned slot, or omit controls from the mandatory opening/ending rows."
+    ]
+  },
+  "elapsed_sec": 110.414
+}
