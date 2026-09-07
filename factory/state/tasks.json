@@ -508,7 +508,7 @@
     "q1-improve-rx-check": {
       "task_id": "q1-improve-rx-check",
       "task_type": "game-content",
-      "status": "REPAIR",
+      "status": "RELEASED",
       "repair_count": 1,
       "review_status": "PASS",
       "review_evidence": "factory/projects/q1-improve-rx-check/round2-review.result.json",
@@ -523,7 +523,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-07T06:40:28.305Z",
-      "updated_at": "2026-09-07T07:15:48.884Z",
+      "updated_at": "2026-09-07T07:21:29.335Z",
       "history": [
         {
           "at": "2026-09-07T06:40:28.305Z",
@@ -572,6 +572,13 @@
           "event": "release_commit_set",
           "sha": "c35806e427473ebd154cee5c0b2a415e119a7873",
           "given": "c35806e"
+        },
+        {
+          "at": "2026-09-07T07:21:29.335Z",
+          "event": "status_change",
+          "from": "REPAIR",
+          "to": "RELEASED",
+          "note": "Released to main at commit c35806e (cherry-picked from feature branch's f388042; routing-log.jsonl append-only conflict resolved). Live: https://enishishamo.github.io/jibun-choice-town/ . Deploy verified via gh run 34094947982 (Release Gate + lint + build all green) and via fetching the deployed bundle for a rx_check done-partial text marker."
         }
       ]
     }
