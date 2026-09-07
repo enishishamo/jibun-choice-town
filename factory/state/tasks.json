@@ -530,6 +530,65 @@
           "note": "Released to main at commit 8f30415 (cherry-picked from this branch's 9c661cd; small routing-log.jsonl conflict resolved). Live: https://enishishamo.github.io/jibun-choice-town/ . Deploy verified via gh run 34087150023 (Release Gate + lint + build all green) and via fetching the deployed bundle + live functional check (all 4 overview map labels render within viewport on a fresh session)."
         }
       ]
+    },
+    "q1-improve-line-debug": {
+      "task_id": "q1-improve-line-debug",
+      "task_type": "game-content",
+      "status": "BLOCKED",
+      "repair_count": 1,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/q1-improve-line-debug/round2-review.result.json",
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 2 genuine HIGH per Q1 First-Play Standard V1 Gate C/D/E: (1) the task-bar header displays totals computed directly from the bottleneck station's own row (steps[4]) from the very start of the game, before any diagnosis -- since this equals s5's exact rate/stop/loss, a player can just open stations one by one and find the one whose numbers MATCH the already-visible header, without any real comparison. Also stop/queue remain single-field-sufficient (only loss was made comparable-but-lesser for s6 in round 2). (2) more fundamentally, the 3 tweak options (guide/speed/switch) have NO distinguishing data in the game at all -- nothing observable tells the player WHICH of the 3 candidate causes matches this case; 'guide' is simply hardcoded as correct with no in-game evidence pointing to it, making the D (tweak choice) a content-blind guess dressed up as data-driven judgment, not a real application of C. Fix (1) is a mechanical bug (compute genuine line-wide aggregate totals -- e.g. sums across all stations -- instead of quoting one station's row) I could fix quickly, but fix (2) requires real game-design work: inventing an actual observable signal (e.g. a secondary data field, or a symptom pattern) that lets a player derive which of the 3 tweaks the case data supports, which is a genuine design judgment call beyond a mechanical correction. Needs Human game-design input on what that signal should be, matching lab_check's precedent for this exact class of escalation.",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T06:13:34.411Z",
+      "updated_at": "2026-09-07T06:37:29.492Z",
+      "history": [
+        {
+          "at": "2026-09-07T06:13:34.411Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T06:33:42.813Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-line-debug/review.result.json",
+          "score": 34,
+          "high_count": 4,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T06:33:42.848Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T06:37:13.084Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-line-debug/round2-review.result.json",
+          "score": 52,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T06:37:29.493Z",
+          "event": "blocked",
+          "reason": "After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 2 genuine HIGH per Q1 First-Play Standard V1 Gate C/D/E: (1) the task-bar header displays totals computed directly from the bottleneck station's own row (steps[4]) from the very start of the game, before any diagnosis -- since this equals s5's exact rate/stop/loss, a player can just open stations one by one and find the one whose numbers MATCH the already-visible header, without any real comparison. Also stop/queue remain single-field-sufficient (only loss was made comparable-but-lesser for s6 in round 2). (2) more fundamentally, the 3 tweak options (guide/speed/switch) have NO distinguishing data in the game at all -- nothing observable tells the player WHICH of the 3 candidate causes matches this case; 'guide' is simply hardcoded as correct with no in-game evidence pointing to it, making the D (tweak choice) a content-blind guess dressed up as data-driven judgment, not a real application of C. Fix (1) is a mechanical bug (compute genuine line-wide aggregate totals -- e.g. sums across all stations -- instead of quoting one station's row) I could fix quickly, but fix (2) requires real game-design work: inventing an actual observable signal (e.g. a secondary data field, or a symptom pattern) that lets a player derive which of the 3 tweaks the case data supports, which is a genuine design judgment call beyond a mechanical correction. Needs Human game-design input on what that signal should be, matching lab_check's precedent for this exact class of escalation.",
+          "human_decision": false
+        }
+      ]
     }
   }
 }

@@ -4715,31 +4715,12 @@ img {
   color: var(--text-soft);
   white-space: nowrap;
 }
-.fstep.jam {
-  border-color: var(--red);
-  background: #fdeae4;
-  animation: conflictblink 0.9s ease-in-out infinite;
-}
 .fstep.open {
   border-color: var(--blue);
   z-index: 3;
 }
 .fstep.picked {
   border-color: var(--orange);
-}
-.fstep-alert {
-  position: absolute;
-  top: -8px;
-  right: -6px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--red);
-  color: #fff;
-  font-size: 13px;
-  font-weight: bold;
-  display: grid;
-  place-items: center;
 }
 .fstep-data {
   position: absolute;
@@ -4770,15 +4751,37 @@ img {
 .flow-ice.smooth {
   animation: iceSmooth 3.2s linear forwards;
 }
+.flow-ice.stutter {
+  animation: iceStutter 3.2s ease-in-out forwards;
+}
+/* 2026-09-07 repair round 2 (independent review HIGH: the old stuck
+   keyframe settled at left:64%, which lines up with the bottleneck's own
+   position on the 6-station board -- a positional answer leak visible
+   before any data is opened). Wobbles near the very START of the line
+   instead, well before any station's board position, so it reads only as
+   "the line generally isn't flowing", never as "look here". */
 @keyframes iceStuck {
   0% { left: 2%; }
-  45% { left: 62%; }
-  55% { left: 64%; }
-  70% { left: 63%; }
-  100% { left: 64%; }
+  40% { left: 16%; }
+  55% { left: 19%; }
+  75% { left: 15%; }
+  100% { left: 17%; }
 }
 @keyframes iceSmooth {
   0% { left: 2%; }
+  100% { left: 92%; }
+}
+/* partial fix: still reaches the end, but visibly hesitates along the way
+   -- distinct from smooth's steady glide, honestly echoing that the
+   underlying (waste) problem wasn't actually solved. */
+@keyframes iceStutter {
+  0% { left: 2%; }
+  30% { left: 34%; }
+  38% { left: 30%; }
+  46% { left: 34%; }
+  70% { left: 62%; }
+  78% { left: 58%; }
+  86% { left: 62%; }
   100% { left: 92%; }
 }
 .btn.choice.on {

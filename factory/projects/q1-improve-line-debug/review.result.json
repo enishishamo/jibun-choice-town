@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "line-debug-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 34,
+    "career_authenticity_score": 58,
+    "game_quality_score": 34,
+    "blockers": [
+      "全選択が依然として必勝手順になっている。「いくつでも」と明示され、guideを含む全3項目を選べばisFullFixが必ずtrueになるため、調整内容を判断せず初回で完全成功できる。Gate C/D/E違反。",
+      "診断も内容非依存の総当たりで突破できる。任意の3工程を開くだけで選択肢が現れ、誤答回数・コスト・ロックがなく、6工程を順に押せば必ずs5へ進める。"
+    ],
+    "high": [
+      "赤い警告は消えたが、running中のアイスは固定されたleft:64%地点で停止・揺動する。工程列上の停止位置を観察するだけで原因領域を示すため、データを開く前の視覚的な答え漏れが残る。Gate E違反。",
+      "複数フィールド比較は必要ではない。BASEではlossが非ゼロなのはs5だけであり、stopの最大値もs5だけなので、どちらか一列だけで一意に特定できる。MIN_STEPS_SEENは任意の3工程を開いた回数しか検証せず、比較や必要フィールドの閲覧を保証しない。",
+      "調整選択肢自体が答えを強く漏らす。課題が「詰まり」であるのにguideの説明だけが「ひっかかりを減らす」と直接対応し、症例データを解釈しなくても正解を選べる。Gate C/D/E違反。",
+      "partialとfullの再実行はどちらも同じsmoothアニメーションでライン全体を通過する。partialではロス27・停止6が残るのに世界上は完全復旧と同じ動きを見せ、差は終了後の文章と数値カードだけであるため、WORLD_FEEDBACK_QUALITYとGate F/Hが弱い。"
+    ],
+    "medium": [
+      "実務モデルの数値関係が不明瞭。直列ラインでs6が200個/h、s5が240個/hなのにs5をボトルネックと断定し、s6を「s5に飢餓させられた」工程として扱うが、測定期間・能力値・仕掛品在庫の区別がない。さらにstarvedとされるs6に停止8分・たまり10個があり、児童へ誤ったライン診断観を与え得る。",
+      "speed単独、switch単独、両方選択がすべて同一PARTIAL表になるため、guide有無以外の個々の操作は結果へ反映されない。元の完全固定結果より改善したが、3つの設備調整としての因果はまだ粗い。",
+      "QAハーネスは純粋ロジック14件だけを検査し、Reactのphase遷移、任意3工程閲覧、誤診総当たり、全選択必勝、CSSの固定停止位置、partial/fullの同一アニメーション、onPartialComplete統合を検証していない。"
+    ],
+    "low": [
+      "tuning画面の説明は「ほかの工程は400個/h」と述べるが、BASEには390、200個/hの工程もあり、表示データと説明が矛盾する。",
+      "未使用の.fstep.jamおよび.fstep-alert CSSが残り、将来の再利用で答え漏れを再導入しやすい。"
+    ],
+    "evidence": [
+      "src/index.css:4767 — .flow-ice.stuckはiceStuckアニメーションを使用する。",
+      "src/index.css:4773 — iceStuckは最終的にleft:64%へ固定され、データ閲覧前に停止位置を表示する。",
+      "src/q1/FactoryLineGame.tsx:147 — running中はjam条件によりstuckクラスが付く。",
+      "src/q1/FactoryLineGame.tsx:182 — 診断UIの条件はseenData.lengthだけで、閲覧内容を検証しない。",
+      "src/q1/FactoryLineGame.tsx:191 — 誤診はnoteを表示するだけで回数制限も状態上のコストもない。",
+      "src/q1/factoryLineLogic.ts:34 — s5はloss 30で、BASE中唯一の非ゼロlossかつ最大stop 12である。",
+      "src/q1/factoryLineLogic.ts:61 — MIN_STEPS_SEENは3だが、特定フィールドや比較対象を要求しない。",
+      "src/q1/factoryLineLogic.ts:64 — guideの説明が「ひっかかりを減らす」と症状への直接回答になっている。",
+      "src/q1/FactoryLineGame.tsx:226 — UIは調整を「いくつでも」選べると明示する。",
+      "src/q1/factoryLineLogic.ts:70 — guideが配列に含まれるだけでfull fixになるため全選択で成功する。",
+      "src/q1/FactoryLineGame.tsx:253 — 実コードパスはisFullFix(tweaks)でfull/partialを分岐する。",
+      "src/q1/FactoryLineGame.tsx:148 — rerunではfull/partialの双方がsmoothになり、残存不良を視覚化しない。",
+      "src/q1/FactoryLineGame.tsx:87 — partial結果は別タイトル・別数値を表示する。",
+      "src/q1/FactoryLineGame.tsx:110 — partialはonPartialCompleteを呼び、進行は継続する。",
+      "src/screens/Q1Screen.tsx:88 — onPartialCompleteはpartialとしてdiscoveryへ接続される。",
+      "src/q1/FactoryLineGame.tsx:223 — 「ほかの工程は400個/h」という説明はBASEの390および200個/hと矛盾する。",
+      "factory/harness/gameplay-qa-line-debug.mjs:10 — ハーネスはfactoryLineLogicの定数とisFullFixのみを直接検査する。",
+      "factory/harness/gameplay-qa-line-debug.mjs:41 — guide/full分岐は検査するが、全選択を成功させない要件は検査せず、むしろ全選択成功を期待している。",
+      "factory/rules/q1-first-play-standard.md:33 — 内容を読まない全選択・総当たり・C不使用・UI答え漏れはHIGH/BLOCKER対象。"
+    ],
+    "recommended_actions": [
+      "全選択必勝を廃止する。調整を1つだけ選ばせるか、速度・切替えを同時に変更すると品質悪化などの実在するトレードオフを設け、正しい組合せだけをデータ判断で導けるようにする。",
+      "running時の固定停止位置を削除または原因を特定できない全体的な挙動へ変更し、原因位置はデータ比較後にのみ可視化する。",
+      "診断前に必要な比較を実装する。例えば複数工程を固定せず抽出し、stopとlossの両フィールドを比較した操作履歴を要求する。データも単独列では一意にならないよう再設計する。",
+      "誤診に有限の試行またはpartial分岐を設け、全工程を順番に押すだけでは完全成功できないようにする。",
+      "調整説明から「ひっかかりを減らす」という直接的な答えを除き、各候補の効果と副作用を同程度の具体性で示す。",
+      "partial再実行では包装付近の断続停止、廃棄物、流量低下を視覚化し、fullのsmooth挙動と明確に区別する。",
+      "rateを実測流量・設備能力・一定期間平均のいずれとして扱うか明示し、直列工程として整合する数値、停止、仕掛品、ロスへ修正する。",
+      "ブラウザ統合QAを追加し、CSS停止位置、3工程閲覧ゲート、誤答連打、全選択、再トグル、full/partial表示差、Job Reveal到達、console errorを検査する。"
+    ]
+  },
+  "elapsed_sec": 111.275
+}

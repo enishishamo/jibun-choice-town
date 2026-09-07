@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "line-debug-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 58,
+    "game_quality_score": 52,
+    "blockers": [],
+    "high": [
+      "調整判断に必要な診断情報が存在しない。表示データは包装工程の低速・停止・たまり・ロスを示すだけで、原因がガイド位置、ライン速度、フィルム交換条件のどれなのかを区別できない。それでもguideだけが完全成功するため、Dはデータに基づく設備診断ではなく、選択肢の語感で「詰まりに関係しそうなもの」を当てるクイズになっている。Gate C/D/E違反。",
+      "工程特定は依然として単一フィールドで可能であり、複数指標を解釈する必要がない。stopはs5だけが12分で一意の最大値、queueも25で一意の最大値、lossも30対次点4という露骨な外れ値である。さらに画面上部が最初からs5由来の240個/h・12分・30個を表示するため、その数値と一致する工程を探すだけでも特定できる。Gate Cの専門的比較が実質的に弱い。"
+    ],
+    "medium": [
+      "診断失敗時の結果表示が「BASEから数値 unchanged」という実装意図と矛盾する。実際の初期表示は240個/hだが、失敗画面は「400個 → 240個」と表示し、何も変更していないのに生産数が悪化したように見せる。完全・調整失敗結果も同じ誤った400個基準を使用しており、Gate F/Hの結果説明が不正確。",
+      "QAハーネスの18件は純粋データと関数を確認するだけで、診断クリック回数、single-select UI、disabled状態、phase遷移、diagFailed表示、CSSアニメーション、離脱・再入場、console errorを実行していない。特にisFullFix.length===1はJavaScriptの仮引数個数しか検査せず、「全選択不能」を証明しない。またstop単独で答えが確定するデータを肯定する検査になっている。"
+    ],
+    "low": [
+      "MAX_DIAGNOSIS_ATTEMPTS=1では内容を読まないランダム選択でも最大2工程を試せるため、6工程から重複なしで押せば完全成功率は1/3ある。必勝総当たりではなくなったためrelease blockerとはしないが、初回の内容非依存成功率としてはまだ高い。"
+    ],
+    "evidence": [
+      "src/q1/factoryLineLogic.ts:37 — BASEではs5のstop=12、queue=25、loss=30がそれぞれ単独で一意の最大値になっている。",
+      "src/q1/FactoryLineGame.tsx:54 — task-bar用totalsを常にsteps[4]、つまり正解工程s5から取得している。",
+      "src/q1/FactoryLineGame.tsx:184 — 診断前からs5由来の240個/h・12分・30個を画面上部に公開している。",
+      "src/q1/factoryLineLogic.ts:79 — 3候補は操作名だけで、どの観測値がguide、speed、switchを区別するかを示す情報がない。",
+      "src/q1/factoryLineLogic.ts:88 — データによる原因判定規則なしにguideだけを完全成功としている。",
+      "src/q1/FactoryLineGame.tsx:135 — 工程を開く操作はseenDataだけを更新し、wrongGuessesを消費しない。",
+      "src/q1/FactoryLineGame.tsx:221 — wrongGuessesはstateとして保持され、2回目の誤診（next>1）でdiagFailedへ到達する。",
+      "src/q1/FactoryLineGame.tsx:272 — tweakは単一のstring stateへ代入され、別候補のクリックで前候補が置換される。",
+      "src/q1/FactoryLineGame.tsx:287 — tweak=nullの間は確認ボタンがdisabledである。",
+      "src/q1/FactoryLineGame.tsx:97 — diagFailedとwrong-tweakで異なる終了タイトル・本文を表示する。",
+      "src/q1/FactoryLineGame.tsx:102 — 診断失敗でも硬直した基準値400からBASE値240への変化として表示する。",
+      "src/index.css:4763 — iceStuckは15–19%付近で揺れ、6等分された工程のs5中心約75%とは一致しない。",
+      "src/index.css:4777 — wrong-tweakのiceStutterは34%・62%付近で後退し、iceSmoothとは視覚的に異なる。",
+      "src/index.css:4684 — 工程CSSにjam/alert規則はなく、全工程の通常スタイルは同一である。",
+      "factory/harness/gameplay-qa-line-debug.mjs:39 — stopについて『他工程が近くない』ことを合格条件にし、stop単独識別の残存を見逃している。",
+      "factory/harness/gameplay-qa-line-debug.mjs:70 — Function.lengthだけでsingle-select UIを検証したと扱っている。"
+    ],
+    "recommended_actions": [
+      "停止・ロス・たまりだけではなく、フィルム蛇行、速度別の停止傾向、交換直後だけ発生する停止など、3候補をデータ上で区別できる観測情報を追加し、その証拠に基づいて調整を選ばせる。",
+      "工程データを再設計し、stop・queue・lossのどの一列だけでもs5が一意に確定しないようにする。task-barには正解工程そのものの数値ではなく、ライン全体の集計値を表示する。",
+      "結果画面のBefore値をBASEの実値に統一し、diagFailedでは240→240、12→12、30→30と明示する。",
+      "React統合テストを追加し、3工程閲覧、誤診1回許容・2回目終了、single-select置換、null時disabled、full/partial/diagFailed、離脱再入場、animation class、console errorを実操作で検証する。"
+    ]
+  },
+  "elapsed_sec": 111.77
+}
