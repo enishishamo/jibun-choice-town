@@ -330,14 +330,14 @@
       "qa_status": "PASS",
       "qa_evidence": "tsc clean, npm run lint exit 0, npm run build clean, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gameplay-qa-clue-board.mjs 19/19 PASS, gameplay-qa-lab-check.mjs 9/9 PASS (shared Q1Screen onPartialComplete change regression-checked), manual browser playtest of both success and partial paths with 0 console errors",
       "deploy_status": null,
-      "release_commit": "667b4d96fbb0363b99f83664c0993e6aaf9b0500",
+      "release_commit": "6bd43761872e160abe3ef65573e96e33fea4c1e5",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-07T00:20:54.101Z",
-      "updated_at": "2026-09-07T03:48:39.721Z",
+      "updated_at": "2026-09-07T03:59:17.462Z",
       "history": [
         {
           "at": "2026-09-07T00:20:54.106Z",
@@ -371,6 +371,12 @@
           "event": "release_commit_set",
           "sha": "667b4d96fbb0363b99f83664c0993e6aaf9b0500",
           "given": "HEAD"
+        },
+        {
+          "at": "2026-09-07T03:59:17.463Z",
+          "event": "release_commit_set",
+          "sha": "6bd43761872e160abe3ef65573e96e33fea4c1e5",
+          "given": "6bd4376"
         }
       ]
     },
