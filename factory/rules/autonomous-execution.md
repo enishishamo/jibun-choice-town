@@ -128,7 +128,12 @@ Productを継続的に監査し、次に価値の高い改善taskを自ら選択
    なっているか（読んで答えるだけ・2択クイズ化・C不要で攻略可能になって
    いないか）、操作→結果→再試行、仕事固有のC⇄D、Job Revealの発見感を
    継続的に再点検する（`game-critic-v2.md`、`factory/state/audits/
-   q1-audit.json`の既存監査を土台にする——監査を毎回作り直さない）
+   q1-audit.json`の既存監査を土台にする——監査を毎回作り直さない）。
+   **2026-09-07〜**: Q1のprimary quality gateは
+   [`factory/rules/q1-first-play-standard.md`](q1-first-play-standard.md)
+   （FIRST-PLAY EXPERIENCE、固定単一症例のMASTERY/REPLAY欠如だけを理由
+   にBLOCKERにしない）。Independent Reviewのprompt作成時は必ずこの
+   ファイルを参照する。
 3. **KIDS UX / FUN** — 375px primaryで最初の数秒の触りたさ、退屈な説明
    画面の有無、テンポ、generic EdTech/SaaS化していないか、visual feedback
 4. **WORK / FACT QUALITY** — 実際の仕事との乖離、専門性の有無、一般常識

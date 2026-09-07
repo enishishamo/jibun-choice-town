@@ -4,6 +4,26 @@ Bootstrap（XrayGame ループ）の較正裁定を反映した Critic の正本
 旧 Critic 規約（qa-rules.md 内の game 評価部分）より本書が優先する。
 reviewer は必ず `factory/harness/design-principles.md` の較正ルールも読むこと。
 
+> **2026-09-07 amendment（Human Decision — Q1 GAME QUALITY STANDARD V1）**:
+> Q1のprimary quality gateは
+> [`factory/rules/q1-first-play-standard.md`](q1-first-play-standard.md)
+> （FIRST-PLAY EXPERIENCE、9軸A-I、BLOCKER条件）が正本となる。本書の
+> 以下2点は、そちらの範囲でsupersedeされる（削除ではなく、適用条件を
+> 明確化）:
+> 1. 下記「必須評価項目」の`mastery`/`replay`/`variation`、および
+>    「必須ステートメント」のMASTERY STATEMENT/REPLAY STATEMENT/
+>    NOVICE VS EXPERT DIFFERENCEは、**PLUS QUALITY**（高ければ望ましいが
+>    書けない/弱いことだけを理由にPASS不可にしない）。CORE LOOP
+>    STATEMENTのみ必須のまま。
+> 2. 「閾値の正本」の二軸60点floorは、New World制作パイプライン
+>    （`/new-world`、`loop.mjs`）ではそのまま有効。**既存Q1改善task**
+>    （lab_check/clue_board等、`/game-lab improve`系）では
+>    `q1-first-play-standard.md`のPRIMARY QUALITY GATE・BLOCKER条件が
+>    スコアより優先する——スコアは比較・優先順位付けの参考値に留める。
+> それ以外（C_required較正、BLOCKER定義、v3のWORLD_FEEDBACK_QUALITY/
+> TEXT_ONLY_CONSEQUENCE/HINT_LEAKAGE/VISUAL_GAMEPLAY_LEGIBILITY等）は
+> そのまま有効。
+
 ## 必須評価項目
 
 | 項目 | 問い |
@@ -13,9 +33,9 @@ reviewer は必ず `factory/harness/design-principles.md` の較正ルールも�
 | failure | 意味のある失敗が成立するか。失敗に実害（コスト・差し戻し・症例失敗等）があるか |
 | feedback | 行動の結果が理解可能な形で返るか |
 | skill_expression | プレイヤーの理解・観察・予測が結果に反映されるか |
-| mastery | 上手さの余地。何が上達するのか |
-| replay | 2回目に違う体験・違う戦略があるか |
-| variation | 条件・症例・配置等のバリエーションがあるか |
+| mastery *(PLUS QUALITY, 2026-09-07〜)* | 上手さの余地。何が上達するのか |
+| replay *(PLUS QUALITY, 2026-09-07〜)* | 2回目に違う体験・違う戦略があるか |
+| variation *(PLUS QUALITY, 2026-09-07〜)* | 条件・症例・配置等のバリエーションがあるか |
 | constraint | 資源・時間・品質等の制約が実在するか |
 | action_result_causality | 操作→結果の因果がコードで実装されているか（文言分岐だけでないか） |
 | C_required | C（仕事固有の情報・道具・データ）を使わずに突破できないか |
@@ -26,12 +46,13 @@ reviewer は必ず `factory/harness/design-principles.md` の較正ルールも�
 | spam_success | 連打で成功しないか |
 | all_select_success | 全部選べば成功しないか |
 
-## 必須ステートメント（意味のある内容で書けなければ PASS 不可）
+## 必須ステートメント
 
-1. **CORE LOOP STATEMENT** — プレイヤーは何を繰り返し、どこが考えどころ／面白さか
-2. **MASTERY STATEMENT** — 初回プレイヤーと上手いプレイヤーでは何が違うか
-3. **REPLAY STATEMENT** — 2回目には何を違って試せるか
-4. **NOVICE VS EXPERT DIFFERENCE** — 上手いプレイヤーは何を理解／予測／操作できるか
+1. **CORE LOOP STATEMENT**（必須・意味のある内容で書けなければPASS不可）
+   — プレイヤーは何を繰り返し、どこが考えどころ／面白さか
+2. **MASTERY STATEMENT**（PLUS QUALITY, 2026-09-07〜）— 初回プレイヤーと上手いプレイヤーでは何が違うか
+3. **REPLAY STATEMENT**（PLUS QUALITY, 2026-09-07〜）— 2回目には何を違って試せるか
+4. **NOVICE VS EXPERT DIFFERENCE**（PLUS QUALITY, 2026-09-07〜）— 上手いプレイヤーは何を理解／予測／操作できるか
 
 ## 二軸 QUALITY GATE（完成判定）
 
@@ -119,6 +140,9 @@ JOB-SPECIFIC DIFFICULTY → REFERENCE GAME PRINCIPLE → MECHANIC → IMPLEMENTE
   仕様の変更であり、世界の human_interventions には数えないが、最終レポートで開示する。
 
 ## 閾値の正本
-- 各軸 60 = loop.mjs が機械強制する二軸の最低床（これ未満は即FAIL）
+- 各軸 60 = loop.mjs が機械強制する二軸の最低床（これ未満は即FAIL）——New World制作パイプラインで有効
 - 75+ = 完成候補の目安（rubric）
 - **完成の必要十分条件は「二軸PASS かつ BLOCKER=0 かつ HIGH=0」**（点数だけでは完成にならない）
+- **既存Q1改善task（2026-09-07〜）**: `factory/rules/q1-first-play-standard.md`の
+  PRIMARY QUALITY GATE・BLOCKER条件がスコアより優先する。スコアは比較・
+  優先順位付けの参考値。
