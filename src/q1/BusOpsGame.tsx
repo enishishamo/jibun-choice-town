@@ -2,13 +2,25 @@
 // B: 3台のバスで、100人を安全に走らせる計画を作る。
 // C: 定員・道路情報の資料。開かないと「山道ルートは工事で通行止め中」
 //    が分からず、出発してから気づく。
-// D: 班をバスへ・運転者をバスへ割りあて、経路を選ぶ → 出発してみて、
-//    通行止めに当たったら経路を選び直す。
+// D: 班をバスへ・運転者をバスへ割りあて、経路と出発時こくを選ぶ → 出発
+//    してみて、通行止めに当たったら選びなおす。
+//
+// 2026-09-07 repair (Continuous Product Loop, factory/state/audits/
+// audit-summary.md GQ43/CA55): see busOpsLogic.ts for why the mountain
+// route no longer ALWAYS fails regardless of choice.
+//
+// 2026-09-07 repair round 2 (independent review BLOCKER: an all-coast
+// fleet, at any departure time, produced the identical full-success
+// screen as correctly using mountain -- so the road-info card and the
+// departure-time picker were never actually needed). isOptimalPlan now
+// distinguishes that outcome; see busOpsLogic.ts.
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
 import { BANDS } from "./tripBands";
+import { DEPARTURE_TIMES, ROUTES, hitsClosure, isOptimalPlan } from "./busOpsLogic";
+import type { RouteId } from "./busOpsLogic";
 
 interface Bus { id: string; name: string; icon: string }
 const BUSES: Bus[] = [
@@ -25,23 +37,23 @@ const DRIVERS: Driver[] = [
   { id: "d3", name: "運転士・鈴木さん", icon: "🧑‍✈️" },
 ];
 
-type RouteId = "mountain" | "coast";
-const ROUTES: { id: RouteId; name: string; min: number; needsRest: boolean }[] = [
-  { id: "mountain", name: "山道ルート（45分）", min: 45, needsRest: false },
-  { id: "coast", name: "海沿いルート（65分）", min: 65, needsRest: true },
-];
-
 type Phase = "assign" | "route" | "run";
 
-export default function BusOpsGame({ onComplete, hasCompleted }: Q1GameProps) {
+export default function BusOpsGame({ onComplete, onPartialComplete, hasCompleted }: Q1GameProps) {
   const [phase, setPhase] = useState<Phase>("assign");
   const [bandBus, setBandBus] = useState<Record<string, string>>({}); // bandId -> busId
   const [driverBus, setDriverBus] = useState<Record<string, string>>({}); // driverId -> busId
   const [selected, setSelected] = useState<string | null>(null);
   const [route, setRoute] = useState<Record<string, RouteId>>({});
   const [rest, setRest] = useState<Record<string, boolean>>({});
+  const [departureId, setDepartureId] = useState<string | null>(null);
   const [blocked, setBlocked] = useState(false);
   const [note, setNote] = useState<string | null>(null);
+  // 2026-09-07 repair round 2: staged hint on the closure failure, matching
+  // TimetableGame's overAttempts pattern -- the first failure shows only
+  // the consequence, later failures nudge toward (but don't name outright)
+  // the road-info card's two solution dimensions.
+  const [blockAttempts, setBlockAttempts] = useState(0);
 
   const putBand = (bandId: string, busId: string) => {
     setBandBus((p) => ({ ...p, [bandId]: busId }));
@@ -61,34 +73,50 @@ export default function BusOpsGame({ onComplete, hasCompleted }: Q1GameProps) {
     { id: "cap", icon: "🪑", title: "定員の資料",
       body: <p>1台につき、乗れるのは<strong>2つの班まで</strong>。それ以上は乗り切れない。</p> },
     { id: "road", icon: "🚧", title: "道路情報",
-      body: <p>今日は<strong>山道ルートで工事が入り、通行止めになる時間帯がある</strong>。海沿いルートはいつも通行できる。</p> },
+      body: (
+        <p>
+          今日は山道ルートで工事が入り、<strong>9:00〜13:00の間は通行止め</strong>になる。
+          それ以外の時こくなら山道ルートも通れる。海沿いルートはいつでも通行できる。
+        </p>
+      ) },
     { id: "rest", icon: "☕", title: "休憩の資料",
       body: <p>運転時間が長くなるときは、運転士の<strong>休憩</strong>をルートに入れる。</p> },
   ];
 
   if (phase === "run") {
-    const hitClosed = BUSES.find((bus) => route[bus.id] === "mountain");
-    if (blocked && hitClosed) {
+    const hitClosed = blocked ? BUSES.find((bus) => route[bus.id] === "mountain") : undefined;
+    if (hitClosed) {
       return (
         <div className="game board-game">
           <div className="alert-box">
             <span className="big-emoji">🚧</span>
             <p>{hitClosed.name}が山道ルートへ向かうと、「本日、通行止め」の看板が…！</p>
           </div>
-          <p className="game-line soft">🚧道路情報の資料も見てみよう。別のルートに変えられる。</p>
+          <p className="game-line soft">
+            {blockAttempts === 0
+              ? "予定どおりには走れなかった。組みなおしてみよう。"
+              : "🚧道路情報の資料をもう一度見てみよう。手がかりがあるはず。"}
+          </p>
           <button
             className="btn primary big"
-            onClick={() => { setBlocked(false); setPhase("route"); }}
+            onClick={() => {
+              setBlockAttempts((n) => n + 1);
+              setBlocked(false);
+              setPhase("route");
+            }}
           >
-            🗺 経路を選びなおす
+            🗺 選びなおす
           </button>
         </div>
       );
     }
+    const optimal = isOptimalPlan(departureId, route);
     return (
       <div className="game board-game">
-        <div className="result-card good">
-          <span className="result-title">3台とも、無事に走らせられた！</span>
+        <div className={`result-card ${optimal ? "good" : ""}`}>
+          <span className="result-title">
+            {optimal ? "3台とも、無事に走らせられた！" : "3台とも走らせられたけど、ちょっと遠回りだった"}
+          </span>
           {hasCompleted("safety-trip") && (
             <p className="game-line soft">さっき決めた5つの班が、そのままバスに乗りこんでいく。</p>
           )}
@@ -106,9 +134,11 @@ export default function BusOpsGame({ onComplete, hasCompleted }: Q1GameProps) {
           </div>
         </div>
         <p className="game-line soft center-line">
-          運ぶだけじゃない。定員・運転士・経路・休憩、すべてがそろって「安全に走る」になる。
+          {optimal
+            ? "運ぶだけじゃない。定員・運転士・経路・休憩、すべてがそろって「安全に走る」になる。"
+            : "この時こくなら山道も安全だった。海沿いルートは、こういうときは遠回りになる。"}
         </p>
-        <button className="btn primary big" onClick={onComplete}>
+        <button className="btn primary big" onClick={() => (optimal ? onComplete : (onPartialComplete ?? onComplete))()}>
           出発進行！
         </button>
       </div>
@@ -158,6 +188,24 @@ export default function BusOpsGame({ onComplete, hasCompleted }: Q1GameProps) {
             );
           })}
         </div>
+
+        {/* 2026-09-07 repair: departure time now genuinely determines
+           whether the mountain route is safe (see busOpsLogic.ts) -- this
+           is the single, shared time all 3 buses leave at. */}
+        <p className="doc-label">出発する時こく</p>
+        <div className="choice-row wrap">
+          {DEPARTURE_TIMES.map((t) => (
+            <button
+              key={t.id}
+              className={`btn choice ${departureId === t.id ? "on" : ""}`}
+              onClick={() => setDepartureId(t.id)}
+            >
+              <span className="tweak-check">{departureId === t.id ? "✓" : "＋"}</span>
+              <span className="tweak-body"><b>{t.label}</b></span>
+            </button>
+          ))}
+        </div>
+
         {restMissing.length > 0 && (
           <div className="sched-issues">
             {restMissing.map((bus) => <p key={bus.id}>{bus.name}は運転時間が長いのに、休憩がまだないよ。</p>)}
@@ -166,14 +214,14 @@ export default function BusOpsGame({ onComplete, hasCompleted }: Q1GameProps) {
         <InfoCards cards={docs} label="こまったら見る資料" />
         <button
           className="btn primary big"
-          disabled={!allRouted}
+          disabled={!allRouted || !departureId}
           onClick={() => {
             if (restMissing.length > 0) return;
-            setBlocked(true);
+            setBlocked(hitsClosure(departureId, route));
             setPhase("run");
           }}
         >
-          {allRouted ? "🚌 出発する！" : "3台とも経路を決めよう"}
+          {!allRouted ? "3台とも経路を決めよう" : !departureId ? "出発する時こくを決めよう" : "🚌 出発する！"}
         </button>
       </div>
     );

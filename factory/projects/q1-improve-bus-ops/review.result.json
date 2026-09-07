@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "bus-ops-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 43,
+    "career_authenticity_score": 66,
+    "game_quality_score": 43,
+    "blockers": [
+      "Gate C violation: a first-play, content-independent guaranteed-win path remains. Assign five bands within the visibly stated two-band limit, assign one driver per bus, select coast for every bus, add each newly displayed rest button, and choose any departure time. The road-information card and closure judgment are never needed. A conservative fallback is authentic only if its slower travel and rest cost affect an objective; here both routes receive the identical full-success outcome, so coast is mechanically dominant rather than a meaningful tradeoff."
+    ],
+    "high": [
+      "Blind mountain play is too permissive: 2 of 3 departure choices succeed, giving a 66.7% first-attempt success rate without reading C. If the sole unsafe choice is tried first, changing to either remaining time guarantees success on the second submission without interpreting the closure window. The first displayed time, 9:00, also succeeds deterministically.",
+      "The central consequence is text-only. Failure replaces the board with a warning emoji and explanatory sentences; there is no visible bus movement, route state, time progression, or closure interaction. This matches the binding TEXT_ONLY_CONSEQUENCE pattern and does not satisfy strong Gate F/world feedback.",
+      "The first failure immediately directs the player to the specific road-information document and identifies both solution dimensions—change the time or route. This violates the required staged-hint behavior and further enables content-light retry."
+    ],
+    "medium": [
+      "The harness validates pure metadata and hitsClosure truth cases but not the component behaviors it is relied on to establish: departure gating, capacity enforcement, driver assignment, rest enforcement, retry-state clearing, rendered hints, or success/failure screens. Its 'coast needs rest' check only inspects needsRest=true.",
+      "Career depiction includes plausible dispatcher concerns, but the model is shallow: drivers are interchangeable, band needs do not affect assignments, route duration has no deadline or arrival consequence, and adding rest has no modeled time/fatigue effect. Thus capacity, drivers, and rest are mostly completion gates rather than a balancing problem."
+    ],
+    "low": [],
+    "evidence": [
+      "src/q1/busOpsLogic.ts:33 — two of three departure options are marked safe, so blind mountain selection succeeds with probability 2/3.",
+      "src/q1/busOpsLogic.ts:48 — hitsClosure returns true exactly when a recognized in-closure departure is combined with at least one mountain route; enumerated valid UI inputs produce neither false negatives nor false positives.",
+      "src/q1/BusOpsGame.tsx:67 — the closure window is disclosed only inside the road-information card; no departure button itself visually identifies safety.",
+      "src/q1/BusOpsGame.tsx:76 — blocked is consumed only in the run phase and retry clears it, while the next submission recomputes it; no stale blocked-state path was found.",
+      "src/q1/BusOpsGame.tsx:82 — failure is communicated through an emoji and explanatory text rather than simulated world-state feedback.",
+      "src/q1/BusOpsGame.tsx:84 — the first failure explicitly names the road-information document and says to change time or route.",
+      "src/q1/BusOpsGame.tsx:125 — every bus must have a route; coast routes generate restMissing until their rest control is selected.",
+      "src/q1/BusOpsGame.tsx:154 — selecting coast exposes a self-explanatory rest control, allowing compliance without opening the rest document.",
+      "src/q1/BusOpsGame.tsx:193 — departure selection is genuinely required before submission.",
+      "src/q1/BusOpsGame.tsx:195 — missing coast rests prevent phase transition, although the submit button remains visually enabled.",
+      "src/q1/BusOpsGame.tsx:196 — the component delegates closure outcome to hitsClosure on every departure attempt, preventing blocked-state leakage after retry.",
+      "src/q1/BusOpsGame.tsx:210 — the capacity rule is exposed directly in the task bar, so the capacity document is unnecessary.",
+      "src/q1/BusOpsGame.tsx:57 — over-capacity assignments are detected; with five bands across three buses and capacity two, valid completion requires a 2/2/1 distribution.",
+      "factory/harness/gameplay-qa-bus-ops.mjs:33 — the harness explicitly codifies all-coast-at-any-time as success rather than adversarially rejecting the residual shortcut.",
+      "factory/harness/gameplay-qa-bus-ops.mjs:52 — duration/rest assertions inspect route constants only and do not verify gameplay consequences or component enforcement.",
+      "factory/rules/q1-first-play-standard.md:48 — the canonical release criteria identify success without using C as a HIGH/BLOCKER-class defect.",
+      "factory/rules/game-critic-v2.md:87 — text-only action-to-explanation-to-retry consequences are presumptively HIGH.",
+      "factory/state/audits/audit-summary.md:57 — the original always-failing mountain defect is corrected, but the earlier always-coast solution remains a guaranteed bypass."
+    ],
+    "recommended_actions": [
+      "Make the slower coast fallback produce a real, visible operational tradeoff—such as missing an arrival window unless departure timing, rest placement, or fleet routing is planned—while retaining at least one valid conservative solution that still requires road/schedule information.",
+      "Reduce blind success by using conditions where the safe plan must be derived from the closure window and travel/rest timing, rather than making two of three mountain times plus every all-coast plan full successes.",
+      "Show buses moving along routes against a clock, visibly stopping at the closure or arriving late/on time, and preserve that world state during retry.",
+      "On the first failure, show only the route/closure consequence; introduce a generic missed-information hint on a later failure and name the road document only after repeated difficulty.",
+      "Add component-level tests covering the guaranteed all-coast path, blind-time success rate, departure gating, capacity and driver constraints, rest enforcement, failure-to-success retry, and rendered consequence/hint behavior."
+    ]
+  },
+  "elapsed_sec": 115.634
+}

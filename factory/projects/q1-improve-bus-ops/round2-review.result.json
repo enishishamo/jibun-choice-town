@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "bus-ops-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 68,
+    "game_quality_score": 52,
+    "blockers": [
+      "Gate C remains violated by a deterministic first-play shortcut: choose coast for all buses, add the automatically revealed rest controls, and select the first listed departure (9:30). This produces the full green optimal outcome without opening or interpreting the road-information card. The repair closes equivalence on the safe 14:00 case, but does not close the broader content-independent dominant-path defect class."
+    ],
+    "high": [
+      "Blind all-mountain play can still be solved by submitting the three departure options in order, regardless of content: 9:30 fails, 11:00 fails, and 14:00 succeeds. With only three options and preserved route selections, this remains an easy exhaustive-submit path under the canonical standard."
+    ],
+    "medium": [
+      "The central consequence remains text-only: the board is replaced by a warning emoji and sentences, with no visible bus movement, route progression, clock, or closure interaction. This matches the established clue_board/lab_check/line_debug/rx_check TEXT_ONLY_CONSEQUENCE precedent and is therefore override-eligible/non-blocking; bus_ops is not categorically worse than those precedents.",
+      "The harness correctly checks the pure route/timing truth table and the new safe-day optimality distinction, but its claim that an unsafe first option prevents a deterministic first-try win is incomplete: all-coast plus that first option yields full success. It also does not test rendered hint timing, retry state, rest enforcement, or partial/full callback behavior.",
+      "Career content is plausible but shallow: driver identity and group composition never affect planning, while rest is an automatically revealed completion gate rather than a modeled fatigue, duration, or arrival-time tradeoff."
+    ],
+    "low": [],
+    "evidence": [
+      "src/q1/busOpsLogic.ts:35 — departure options are ordered 9:30 unsafe, 11:00 unsafe, and 14:00 safe.",
+      "src/q1/busOpsLogic.ts:50 — an unsafe departure only fails when at least one route is mountain, so an all-coast fleet never hits the closure.",
+      "src/q1/busOpsLogic.ts:76 — isOptimalPlan returns true for every unsafe departure without examining routes; consequently all-coast plus first-listed 9:30 receives full optimal success.",
+      "src/q1/busOpsLogic.ts:78 — on safe 14:00, every route must be mountain; all-coast and mixed fleets correctly receive weaker outcomes, closing the exact safe-day equivalence case.",
+      "src/q1/BusOpsGame.tsx:75 — the closure window needed to reason about route quality appears in the road-information card.",
+      "src/q1/BusOpsGame.tsx:96 — blockAttempts===0 displays only the consequence and names neither the document nor either solution dimension.",
+      "src/q1/BusOpsGame.tsx:98 — second and later failures name only the road-information document without restating the answer.",
+      "src/q1/BusOpsGame.tsx:103 — blockAttempts increments when leaving the first failure screen, so the immediately following second failure correctly receives the escalated hint with no off-by-one error.",
+      "src/q1/BusOpsGame.tsx:104 — retry clears blocked, and src/q1/BusOpsGame.tsx:220 recomputes it on the next submission; no stale blocked-state leak was found.",
+      "src/q1/BusOpsGame.tsx:116 — optimal outcomes alone receive the green result-card styling.",
+      "src/q1/BusOpsGame.tsx:118 — suboptimal safe-day coast use is honestly labeled as a detour rather than full success.",
+      "src/q1/BusOpsGame.tsx:141 — suboptimal plans invoke onPartialComplete when available, while optimal plans invoke onComplete.",
+      "src/q1/BusOpsGame.tsx:178 — choosing coast reveals its rest control directly, allowing the all-coast shortcut to satisfy rest enforcement without consulting the rest document.",
+      "src/q1/BusOpsGame.tsx:197 — the first selectable departure presented by the UI is the unsafe 9:30 option defined first in DEPARTURE_TIMES.",
+      "factory/harness/gameplay-qa-bus-ops.mjs:71 — the harness labels first-listed unsafe timing as preventing a deterministic first-try win but does not combine it with the always-safe all-coast route.",
+      "factory/harness/gameplay-qa-bus-ops.mjs:96 — the regression checks cover safe-day all-coast and mixed partial outcomes plus unsafe-day all-coast optimality; all 23 checks execute and pass.",
+      "factory/rules/q1-first-play-standard.md:48 — the canonical blocker list includes easy exhaustive submission and success without using C.",
+      "factory/state/blocked-queue.md:12 — the established TEXT_ONLY_CONSEQUENCE precedent classifies the same text-only pattern as non-blocking PLUS QUALITY backlog."
+    ],
+    "recommended_actions": [
+      "Park bus_ops for Human Decision under the final-round rule; do not auto-repair again.",
+      "Remove the fixed all-coast-plus-first-time full-success shortcut by making full success depend on an operational objective derived from road and schedule information, while retaining coast as a rational fallback when mountain is closed.",
+      "Ensure no fixed traversal of the three departure buttons can guarantee success through repeated submission without interpreting the closure window.",
+      "Add an exhaustive component-level matrix test over every departure and fleet route composition, asserting failure, partial, or full outcome and the callback invoked.",
+      "Backlog visible route/time progression as the precedent-covered non-blocking consequence-quality improvement."
+    ]
+  },
+  "elapsed_sec": 99.655
+}

@@ -719,6 +719,65 @@
           "human_decision": false
         }
       ]
+    },
+    "q1-improve-bus-ops": {
+      "task_id": "q1-improve-bus-ops",
+      "task_type": "game-content",
+      "status": "BLOCKED",
+      "repair_count": 1,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/q1-improve-bus-ops/round2-review.result.json",
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "Q1 First-Play Standard V1 §3 BLOCKER項目（C不要で攻略可能）に該当し続け、既定のAuto Repair上限（1回）を超過。数値バランス/ゲームデザインの人間判断が必要",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T08:03:02.801Z",
+      "updated_at": "2026-09-07T08:50:34.457Z",
+      "history": [
+        {
+          "at": "2026-09-07T08:03:02.802Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T08:22:52.021Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-bus-ops/review.result.json",
+          "score": 43,
+          "high_count": 3,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T08:22:52.056Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T08:50:24.711Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-bus-ops/round2-review.result.json",
+          "score": 52,
+          "high_count": 1,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T08:50:34.458Z",
+          "event": "blocked",
+          "reason": "Q1 First-Play Standard V1 §3 BLOCKER項目（C不要で攻略可能）に該当し続け、既定のAuto Repair上限（1回）を超過。数値バランス/ゲームデザインの人間判断が必要",
+          "human_decision": false
+        }
+      ]
     }
   }
 }

@@ -280,3 +280,5 @@
 {"ts":"2026-09-07T07:09:52.666Z","tool":"codex-review","label":"rx-check-round2","prompt_file":"factory/projects/q1-improve-rx-check/round2-review-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":75.823}
 {"ts":"2026-09-07T07:41:15.488Z","tool":"codex-review","label":"timetable-review","prompt_file":"factory/projects/q1-improve-timetable/review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":110.414}
 {"ts":"2026-09-07T07:58:32.708Z","tool":"codex-review","label":"timetable-round2","prompt_file":"factory/projects/q1-improve-timetable/round2-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":431.348}
+{"ts":"2026-09-07T08:21:38.197Z","tool":"codex-review","label":"bus-ops-review","prompt_file":"factory/projects/q1-improve-bus-ops/review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":115.634}
+{"ts":"2026-09-07T08:49:57.235Z","tool":"codex-review","label":"bus-ops-round2","prompt_file":"factory/projects/q1-improve-bus-ops/round2-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":99.655}
