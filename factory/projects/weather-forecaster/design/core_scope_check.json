@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "CORE（命を守るために間に合う時刻に予報・警報を出す）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は同一の判断を指す。A-EのCはfact_sheet.tools/information_usedの実在項目のみ（レーダー・アメダス・土壌雨量指数・市町村別基準・リードタイム3〜6h・ガイダンス）で構成し、ゲーム化のために歪めていない。DはFACT_CHECK_REQUIRED項目（決裁の流れ・修正率）に依存しない範囲で書いた。Eは『警報→市町村長の避難指示→住民の避難』という実在の連鎖（fact_sheet.outputs_or_value・adjacent_profession_boundaries: 避難指示の主体は市町村長）どおりで、予報官が避難指示を出すとは書いていない。"
+}

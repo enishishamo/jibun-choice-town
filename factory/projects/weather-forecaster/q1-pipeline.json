@@ -1,0 +1,1016 @@
+{
+  "game_id": "weather-forecaster",
+  "profession": "気象予報士・予報官",
+  "trigger": "NEW_Q1_REQUEST",
+  "legacy_game_type": null,
+  "creator": "claude-code",
+  "state": "REPAIRING",
+  "current_stage": "PROFESSION_RESEARCH",
+  "design_iteration": 1,
+  "repair_count": 1,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "weather-forecaster:fact_sheet:v1",
+      "artifact_type": "fact_sheet",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/fact_sheet.json",
+      "payload": {
+        "profession": "気象予報士・予報官",
+        "sources": [
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/faq/faq15.html",
+            "type": "official_institution",
+            "title": "気象庁の仕事について（気象庁FAQ）",
+            "used_for": "予報官には気象予報士資格が不要で、研修と長年の予報業務経験で予報官になること"
+          },
+          {
+            "url": "https://www.data.jma.go.jp/maebashi/annai/shigoto.html",
+            "type": "official_institution",
+            "title": "気象台の仕事（前橋地方気象台）",
+            "used_for": "天気予報の発表時刻（5時・11時・17時）、使用資料（観測データ・天気図・数値予報資料）、アメダス、自治体・報道機関との連携"
+          },
+          {
+            "url": "https://laws.e-gov.go.jp/api/1/lawdata/327AC0000000165",
+            "type": "regulatory_body",
+            "title": "気象業務法（e-Gov法令API）",
+            "used_for": "予報・警報の定義、気象庁の予報・警報義務、警報の通知義務、予報業務の許可、気象予報士の設置義務、警報の制限、気象予報士試験・登録"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/arikata/part1/siryou3.pdf",
+            "type": "official_institution",
+            "title": "予報業務許可制度の概要（国土交通省・洪水及び土砂災害の予報のあり方に関する検討会 資料3）",
+            "used_for": "気象庁と民間事業者の役割分担、気象予報士が行う現象の予想、警報の一元発表、名称制限、台風独自予報の制限、津波・高潮予報の提供条件"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/bosai/warning.html",
+            "type": "official_institution",
+            "title": "気象警報・注意報（気象庁）",
+            "used_for": "市町村単位の発表、基準設定の考え方、土壌雨量指数・表面雨量指数・流域雨量指数、警報のリードタイム（概ね3〜6時間前）、早期注意情報、伝達経路"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/faq/faq10.html",
+            "type": "official_institution",
+            "title": "警報・注意報について（気象庁FAQ）",
+            "used_for": "基準を都道府県防災機関と協議して決めること、発表タイミングの考え方、解除の判断、警報発表理由の3類型"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/kijun/index.html",
+            "type": "official_institution",
+            "title": "特別警報の指標及び危険警報・警報・注意報発表基準一覧表（気象庁）",
+            "used_for": "特別警報・危険警報・警報・注意報の4階層、基準に使う気象要素、暫定基準"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/whitep/1-3-1.html",
+            "type": "official_institution",
+            "title": "数値予報とは（気象庁）",
+            "used_for": "数値予報の仕組みとモデルの種類（全球モデル・メソモデル・局地モデル・アンサンブル予報）"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/books/nwpreport/64/chapter1.pdf",
+            "type": "official_institution",
+            "title": "数値予報技術報告第64号 第1章 ガイダンスの概要（気象庁予報部）",
+            "used_for": "ガイダンスの役割、予報作業支援システム、ガイダンスで補正できる誤差とできない誤差（予報官が修正する余地）"
+          },
+          {
+            "url": "https://www.data.jma.go.jp/fcd/yoho/kensho/explanation.html",
+            "type": "official_institution",
+            "title": "予報精度検証の解説（気象庁）",
+            "used_for": "適中率・見逃し率・空振り率・RMSE・降水確率の信頼度など、予報が外れる型の公式指標"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/kurashi/yoho.html",
+            "type": "official_institution",
+            "title": "天気予報の解説（気象庁・くらし）",
+            "used_for": "府県天気予報の発表時刻と随時修正、一次細分区域、予報要素、降水確率の定義（1mm以上・6時間ごと・10%単位）"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/know/yougo_hp/yoho.html",
+            "type": "official_institution",
+            "title": "予報用語（気象庁）",
+            "used_for": "週間天気予報の信頼度A/B/C、地域時系列予報、予報区・細分区域の定義"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/intro/recruit/r1panfu.pdf",
+            "type": "official_institution",
+            "title": "気象庁職員募集案内（平成31年3月）",
+            "used_for": "地方気象台の観測・予報業務の5ステップ（観測→予測シナリオ検討→実況監視→防災気象情報発表→天気予報発表）、日勤・夜勤のタイムスケジュール、台風・大雨時の体制Q&A、職員の一人称の語り、航空気象台の業務、研修制度"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/intro/gyomu/index_jett.html",
+            "type": "official_institution",
+            "title": "JETT（気象庁防災対応支援チーム）について（気象庁）",
+            "used_for": "災害対策本部への気象台職員派遣、気象解説による防災対応支援、派遣実績"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/books/hakusho/2026/index4.html",
+            "type": "official_institution",
+            "title": "気象業務はいま2026 特集2 地域防災支援の取組（気象庁）",
+            "used_for": "ホットライン（気象台長から市町村長への直接電話）、あなたの町の予報官、気象防災ワークショップ、気象防災アドバイザー、新防災気象情報（令和8年5月運用開始）"
+          },
+          {
+            "url": "https://www.data.jma.go.jp/sapporo/bosai/tiikibosai/tiikibosai.html",
+            "type": "official_institution",
+            "title": "地域の防災対策を支援します（札幌管区気象台）",
+            "used_for": "緊急時（JETT・ホットライン・説明会）と平常時（避難判断マニュアル協力・ワークショップ・訓練シナリオ）の自治体支援"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/shinsei/onestop/yohoshi_touroku.html",
+            "type": "official_institution",
+            "title": "気象予報士の登録の申請（気象庁）",
+            "used_for": "試験合格後の登録手続、手数料、欠格事由"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/minkan/yohoushi.html",
+            "type": "official_institution",
+            "title": "気象予報士について（統計データ）（気象庁）",
+            "used_for": "気象予報士登録者数（令和8年3月31日現在）と地域分布"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/minkan/minkan.html",
+            "type": "official_institution",
+            "title": "民間気象業務 予報業務許可事業者一覧（気象庁）",
+            "used_for": "気象・地象の予報業務許可事業者数（令和8年7月時点）"
+          },
+          {
+            "url": "https://www.jma.go.jp/jma/kishou/minkan/yohoushi_tyousakekka_gaiyo.pdf",
+            "type": "official_institution",
+            "title": "令和2年度 気象予報士の現況に関する調査 概要（気象庁）",
+            "used_for": "気象予報士の就業実態（予報業務許可事業者への就業12%、資格が役立った業務、活用できる場が少ないという不満）"
+          },
+          {
+            "url": "https://www.jmbsc.or.jp/jp/examination/examination-2.html",
+            "type": "professional_association",
+            "title": "気象予報士試験（一般財団法人気象業務支援センター）",
+            "used_for": "試験が認定する3能力、学科一般・学科専門・実技の科目、試験形式・合格基準"
+          },
+          {
+            "url": "https://yoho.jp/detail/about_camj/yohoshi.html",
+            "type": "professional_association",
+            "title": "気象予報士について（一般社団法人日本気象予報士会）",
+            "used_for": "1993年の制度創設、気象予報士の法的位置づけ、自ら責任を持って予報を行うという役割、試験は年2回"
+          },
+          {
+            "url": "https://jp.weathernews.com/the-backbone",
+            "type": "company_official",
+            "title": "ウェザーニューズの予測技術とサービスフロー",
+            "used_for": "民間気象会社の観測データ収集（独自観測網・ウェザーリポート・顧客データ）、複数モデル＋AI解析、予報センターの24時間監視、市場別提供"
+          },
+          {
+            "url": "https://jp.weathernews.com/your-industry/shipping",
+            "type": "company_official",
+            "title": "航海気象サービス（ウェザーニューズ）",
+            "used_for": "船舶向けの最適航路設定・安全監視・ビデオブリーフィングなど、顧客の意思決定を支援する具体内容"
+          },
+          {
+            "url": "https://jp.weathernews.com/recruit/caster/",
+            "type": "company_official",
+            "title": "キャスター採用（ウェザーニューズ）",
+            "used_for": "気象キャスターは気象予報士資格が原則必須であること、事務所所属・放送局派遣という形態、解説・伝達という役割"
+          },
+          {
+            "url": "https://www.jwa.or.jp/service/",
+            "type": "company_official",
+            "title": "サービス（一般財団法人日本気象協会）",
+            "used_for": "防災・交通インフラ・エネルギー・メディア・環境の各分野で民間気象事業者が提供する予測サービス"
+          },
+          {
+            "url": "https://micos-sa.jwa.or.jp/metro/saiyou/career/",
+            "type": "company_official",
+            "title": "キャリア（日本気象協会 採用）",
+            "used_for": "防災事業部の業務（高速道路・物流・自治体システム）、24時間交代制、プロジェクトベースの働き方"
+          },
+          {
+            "url": "https://www.data.jma.go.jp/nagoya/shosai/info/shikumi.html",
+            "type": "official_institution",
+            "title": "天気予報のしくみ（名古屋地方気象台）",
+            "used_for": "多くの観測データと数値予報に地域特性を加味して天気予報を発表するという基本の流れ"
+          }
+        ],
+        "who_or_what_they_serve": "予報官（気象庁職員）は、国民の生命・財産を自然災害から守るため、担当予報区の住民、市町村長・都道府県（避難指示などの防災判断）、警察・消防・海上保安庁・NHKなどの関係機関、学校や交通機関、航空管制官・航空会社に対して、天気予報と注意報・警報・特別警報を発表し解説する。気象予報士（主に民間の予報業務許可事業者に所属）は、気象庁の警報を出せない代わりに、契約先（船舶運航者・航空会社・道路や鉄道の事業者・電力会社・流通業・自治体）や一般利用者（天気アプリ・番組の視聴者）に向けて、自ら責任を持って現象の予想と解説を提供する。",
+        "representative_duties": [
+          "地上気象観測（気圧・気温・湿度・風・降水量・雲・視程）を定時に行い、決められた形式で通報する",
+          "実況の経過と地上・高層の実況図・予想図から、低気圧や雨域の動向を分析して担当予報区の「予測シナリオ」を組み立てる",
+          "アメダス・気象レーダー・ウインドプロファイラ・衛星画像などの最新観測で、天気が予測シナリオどおりに推移しているかを監視し、ずれがあればシナリオを修正する",
+          "災害をもたらす顕著現象が予測されるとき、防災対応に必要な時間を考慮し、市町村ごとに定めた基準に基づいて注意報・警報・特別警報や府県気象情報を発表・解除する",
+          "毎日5時・11時・17時に、明後日までの天気・風・波・6時間ごとの降水確率・最高最低気温を府県天気予報として、3時間ごとの天気等を地域時系列予報として発表し、急変時は随時修正する",
+          "台風接近や大雨時に、関係省庁・自治体・報道機関向けの説明会を開き、必要なら気象台長から市町村長へホットラインで危機感を伝え、JETTとして災害対策本部で見通しを解説する",
+          "（民間の気象予報士）気象庁提供データと独自観測をもとに現象を予想し、船舶の最適航路や荒天回避、航空の運航判断、道路・鉄道の運行、電力需要などの意思決定を支援する",
+          "（民間の気象予報士・キャスター）気象庁の予報・警報を利用者に迅速に伝え、日常の天気相談から緊急時の避難判断まで分かりやすい言葉で解説する"
+        ],
+        "expertise": [
+          "気象学の基礎（大気の構造、熱力学、降水過程、放射、大気の力学、各種気象現象、気候変動）",
+          "観測結果の利用、数値予報の仕組みとその誤差特性、短期・中期・長期予報、局地予報、短時間予報",
+          "気象災害と防災配慮の知識（土壌雨量指数・表面雨量指数・流域雨量指数など災害に結びつく指標の読み方）",
+          "予報精度の評価（適中率・見逃し率・空振り率・RMSE・降水確率の信頼度）",
+          "気象概況とその変動の把握、台風等緊急時の対応（気象予報士試験の実技科目）",
+          "気象業務法などの関連法規（警報の一元発表、予報業務許可、名称制限）",
+          "担当地域の地形・海陸分布による局地特性（数値予報の系統誤差の出方を含む）",
+          "自治体・管制官・報道など相手に応じて危機感や見通しを正確に伝えるコミュニケーション"
+        ],
+        "tools": [
+          "地上気象観測装置（気圧・気温・湿度・風向風速・降水量）と観測者の目視（雲・視程）",
+          "アメダス（地域気象観測システム、全国約1,300か所）",
+          "気象レーダー、ウインドプロファイラ",
+          "気象衛星画像",
+          "高層観測（高層実況図）",
+          "地上実況天気図・高層実況図・予想図",
+          "数値予報モデル（全球モデル、メソモデル、局地モデル、アンサンブル予報）",
+          "ガイダンス（気温・降水量・天気・発雷確率・降水確率・風・最大降水量・最大降雪量、航空用の視程・雲・乱気流指数など）",
+          "予報作業支援システム（ガイダンスをベースに予報・警報を作成・発表するシステム）",
+          "市町村ごとの警報・注意報発表基準表（雨量指数・風速・波高・積雪等）と暫定基準",
+          "予報精度検証（適中率・見逃し率・空振り率・RMSE）",
+          "自治体との連絡手段（ホットライン電話、説明会の映像・音声、JETT派遣）",
+          "（民間）独自観測網・利用者からの天気報告・船舶や航空機からの報告、複数の予測モデルとAI解析、顧客ごとのパフォーマンスモデル"
+        ],
+        "information_used": [
+          "最新時刻の地上観測値・アメダス実況（雨量・風・気温の推移）",
+          "レーダーで見る雨域の位置と移動、衛星画像で見る雲の種類・広がり",
+          "地上・高層天気図で見る低気圧・前線・気圧配置の位置と予想",
+          "数値予報の予測値と、それを補正したガイダンス値（気温・降水量・降水確率・発雷確率など）",
+          "ガイダンスが補正できない誤差の兆候（擾乱の位置ずれ・発達の外れ、海陸風の入るタイミング、放射冷却の有無）",
+          "市町村ごとの注意報・警報基準値と、現在の土壌雨量指数・表面雨量指数・流域雨量指数",
+          "過去の降雨による土壌の飽和状況、局地的な降雨分布",
+          "防災機関や住民に伝わって避難行動がとられるまでに要する時間（警報は概ね3〜6時間前を目安）",
+          "地震・噴火後など災害条件が変わったときの暫定基準",
+          "週間予報の信頼度（A/B/C）、早期注意情報（5日先まで）",
+          "（民間）契約先の運航スケジュール・航路・燃料コストなど顧客固有の条件"
+        ],
+        "decisions": [
+          "実況経過と予想図からどの予測シナリオを採るか、複数の数値予報・ガイダンスのどれをどう重みづけするかを決める",
+          "最新観測がシナリオとずれたとき、シナリオを修正するか維持するかを判断し、予報を随時修正する",
+          "定時予報で発表する天気・風・波・最高最低気温を決め、6時間ごとの降水確率を10%刻みで決める（不確実性は確率と週間予報の信頼度A/B/Cで表現する）",
+          "顕著現象について、市町村ごとの基準に達すると予想した区域に対し、注意報・警報・特別警報のどの段階をいつ発表するかを決める（早すぎる空振りと遅すぎる見逃しの間で、避難に要する時間を考慮する）",
+          "基準を下回り再び上回らないと判断したときに警報を解除するか注意報に切り替えるかを決める",
+          "地震や噴火で災害条件が変わったとき、暫定基準を適用するかを判断する",
+          "台風接近時などに自治体・報道への説明会やホットラインで、どの程度の危機感を、どの言葉で伝えるかを判断する",
+          "（民間）気象庁の警報と矛盾しない範囲で、顧客に対して最小コスト・最小燃料・到着時刻のどれを優先した航路や運航判断を提案するかを決める"
+        ],
+        "outputs_or_value": "予報官は、府県天気予報（1日3回）、地域時系列予報、週間天気予報、注意報・警報・特別警報、府県気象情報、早期注意情報、および自治体・関係機関への解説（説明会・ホットライン・JETT）を出す。これらは市町村長の避難指示、学校の休校、交通機関の運行判断、住民の自主避難など他機関の判断のきっかけとなり、災害による人命・財産の被害を減らす。民間の気象予報士は、契約先向けの最適航路・運航支援・防災情報・電力需要予測などの特定向け予報と、一般向けの天気予報・解説（アプリ・番組）を出し、企業の安全性・経済性と一般利用者の日常の行動判断を支える。気象庁の警報事項を利用者に迅速に伝えることも民間事業者の義務である。",
+        "adjacent_profession_boundaries": "予報官と気象予報士の境界: 予報官は気象庁職員（国家公務員）で気象予報士資格は不要、警報・注意報・特別警報を発表できるのは気象庁のみ（気象業務法23条）。気象予報士は国家資格で、民間の予報業務許可事業者が第三者に予報を提供するには気象予報士に現象の予想を行わせる義務があるが（同法19条の2・3）、警報や紛らわしい名称は使えず、一般向け予報では台風の独自予報に制限がある。自治体の防災担当者との境界: 避難指示の発令主体は市町村長で、気象台はホットライン・JETT・あなたの町の予報官として危機感と技術的助言を伝えるが決定はしない。航空管制官との境界: 航空地方気象台の職員が飛行場予報を作成し管制官からの問い合わせにホットラインで答えるが、管制そのものは行わない。研究者との境界: 数値予報モデルやガイダンスの開発は本庁数値予報課などが担い、気象研究所へ国家公務員試験合格者を直接採用することはない。テレビの気象キャスターとの境界: ウェザーニューズの場合は気象予報士資格が原則必須で、提携事務所所属・放送局派遣という形態、役割は予報・警報の解説と伝達。気象防災アドバイザーとの境界: 気象庁退職者や研修修了の気象予報士に国交大臣が委嘱し、自治体側で防災の専門家として活動する。観測担当との境界: 地方気象台では観測と予報を同じ職員が交替制の中で担う場合がある。",
+        "uncertainties": [
+          "FACT_CHECK_REQUIRED: 警報・注意報・特別警報の正確な種類数と一覧。取得したページ要約は不完全（特別警報を4種のみと返したが大雨・高潮等を含むはず）で、かつ令和8年5月運用開始の新防災気象情報（危険警報区分）で体系が変わっているため、最新の区分表を原典で再確認すること",
+          "FACT_CHECK_REQUIRED: 予報業務許可事業者数。取得ページ要約では89者（令和8年7月17日時点）、検索スニペットでは87者（令和8年3月27日時点）で時点差の可能性が高いが未確認",
+          "FACT_CHECK_REQUIRED: 気象予報士登録者数12,921名（令和8年3月31日現在）は取得ページの要約による数値。原典表で再確認",
+          "FACT_CHECK_REQUIRED: 予報官の警報発表における最終判断者の役職・人数・決裁の流れ。採用パンフに「予報官と予報検討」の時間帯があることまでしか確認できていない",
+          "FACT_CHECK_REQUIRED: 民間気象会社の気象予報士の「よくある失敗」の類型。企業公式ページに具体記述がなく、気象庁の予報精度検証指標（見逃し・空振り）を準用しているにすぎない",
+          "FACT_CHECK_REQUIRED: 民間気象会社の予報センターの具体的なシフト時刻・人数。「24時間体制」「24時間交代制」までしか確認できていない",
+          "FACT_CHECK_REQUIRED: 予報官が数値予報・ガイダンスをどの程度そのまま採用し、どの程度修正しているかの実態（修正の頻度・割合）",
+          "FACT_CHECK_REQUIRED: 降水確率の値を最終的に決める手順（ガイダンス値の丸め方や予報官の修正ルール）。定義（1mm以上・6時間ごと・10%単位）のみ確認",
+          "FACT_CHECK_REQUIRED: 気象庁職員募集案内（平成31年3月版）に記載の勤務時間帯・作業タイムラインが現在も同じか。同資料に「一部体制を変更している地方気象台があります」との注記があり、最新版パンフレットは未読",
+          "FACT_CHECK_REQUIRED: 予報作業支援システムの現行の名称・画面構成（2004年運用開始という記述のみ確認）"
+        ]
+      },
+      "creator": "jc-researcher",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:13:35.420Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/fact_sheet.json",
+          "created_at": "2026-09-07T23:13:35.420Z",
+          "creator": "jc-researcher"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "weather-forecaster:scope_core:v1",
+      "artifact_type": "scope_core",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/scope_core.json",
+      "payload": {
+        "core": "予報官は、観測と予測から「これから空で何が起きるか」と「それがどれくらい確かか」を判断し、人の命と暮らしを災害から守るために、予報と注意報・警報を『間に合う時刻に』出す職業である。出した情報が、市町村長の避難指示や学校・交通機関の判断のきっかけになる。",
+        "scope": "地方気象台の予報官が、夜、大雨の雨雲が山側の町にかかりはじめた場面。レーダーとアメダスの実況を予測シナリオと照らし、市町村ごとの基準と『避難に必要な時間』を考えて、どの町に・いつ警報を出すか（出さないか）を決める。",
+        "scope_is_representative_because": "気象庁職員募集案内が示す予報業務5ステップ（観測→予測シナリオ→実況監視→防災気象情報発表→天気予報発表）のうち、防災気象情報（警報）の発表判断はCOREの『命を守るために間に合う時刻に出す』そのものであり、気象業務法23条で気象庁の予報官だけが担う中核業務。観測通報や天気キャスターの解説は周辺業務なのでSCOPEにしない。fact_sheet: decisions[4]（早すぎる空振りと遅すぎる見逃しの間で避難時間を考慮）、information_used[6][8]（土壌雨量指数・3〜6時間前）に直接対応する。",
+        "profession_name_hidden_test": "職業名を隠したまま『動く雨雲を見て、町ごとの土のうるおいが赤い線を超える前に、間に合う時刻に正しい町へ警報を出す』体験をした子どもに、最後に『気象庁の予報官』と明かされたとき、「天気予報の人が、避難を間に合わせる仕事だったのか」と自然につながる。天気予報＝『明日は晴れ』の読み上げという子どもの既存イメージを、判断の仕事として更新できる。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:fact_sheet:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.001Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/scope_core.json",
+          "created_at": "2026-09-07T23:19:08.002Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "weather-forecaster:ae:v1",
+      "artifact_type": "ae",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/ae.json",
+      "payload": {
+        "A": "地方気象台の予報現業室。夜勤。壁のレーダー画面とアメダスの雨量表示、机の上に担当予報区の市町村ごとの警報基準表。窓の外は雨。",
+        "B": "山側の町に線状の雨雲が次々とかかりはじめた。これまでの雨で土はすでに湿っている。まだどの町も警報の基準には達していないが、このまま降り続けば夜中に土砂災害の危険が高まる。町の人はもう寝ている。避難には時間がかかる。",
+        "C": "雨雲レーダー（雨域の位置と1時間ごとの動き）、アメダスの雨量の推移、土壌雨量指数（これまでの雨で土がどれだけ水を含んでいるか）、市町村ごとに違う警報の発表基準（山の町ほど低い）、警報から避難行動までに必要なリードタイム（概ね3〜6時間前に出す目安）、数値予報・ガイダンスによる今後の雨量の見込み。",
+        "D": "実況が予測シナリオどおりか監視し、雨雲が次にどの町にかかり続けるかを推定し、その町の土壌雨量指数が基準を超えるのはいつかを見積もる。『早すぎる空振り（避難させたのに何も起きない・信頼を失う）』と『遅すぎる見逃し（避難が間に合わない）』の間で、どの町に・いつ警報を出すか、出さないかを決める。雨雲が予想とずれたらシナリオを修正し、警報を出し直す・解除する。",
+        "E": "警報を出した町では、市町村長が避難指示を出し、住民が夜中になる前に避難所へ移動できた。明け方、その町で崖崩れが起きたが家に人はいなかった。警報を出さなかった町は何も起きず、いつもの朝を迎えた。予報官の判断が『何も起きなかった朝』と『人がいなかった家』を作った。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:scope_core:v1",
+        "weather-forecaster:fact_sheet:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.040Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/ae.json",
+          "created_at": "2026-09-07T23:19:08.041Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "weather-forecaster:core_scope_check:v1",
+      "artifact_type": "core_scope_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/core_scope_check.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "CORE（命を守るために間に合う時刻に予報・警報を出す）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は同一の判断を指す。A-EのCはfact_sheet.tools/information_usedの実在項目のみ（レーダー・アメダス・土壌雨量指数・市町村別基準・リードタイム3〜6h・ガイダンス）で構成し、ゲーム化のために歪めていない。DはFACT_CHECK_REQUIRED項目（決裁の流れ・修正率）に依存しない範囲で書いた。Eは『警報→市町村長の避難指示→住民の避難』という実在の連鎖（fact_sheet.outputs_or_value・adjacent_profession_boundaries: 避難指示の主体は市町村長）どおりで、予報官が避難指示を出すとは書いていない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:ae:v1",
+        "weather-forecaster:scope_core:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.080Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/core_scope_check.json",
+          "created_at": "2026-09-07T23:19:08.081Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "weather-forecaster:play_seeds:v1",
+      "artifact_type": "play_seeds",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/play_seeds.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-radar-timing",
+            "authentic_causal_loop": "雨雲の帯が動く → かかった町の土壌雨量指数が上がる → 基準（町ごとに違う）を超えると土砂災害の危険 → 警報は避難に必要な時間の前に出さないと間に合わない → 早すぎれば空振りで信頼を失う。fact_sheet.decisions[4]・information_used[5][6][8]。",
+            "player_action": "1時間ごとに進む雨雲レーダーを見て、次に雨雲がかかり続ける町を推定し、その町の『土のうるおいメーター』と赤い基準線を見比べて、警報ボタンを押す町と押す時刻を自分で決める（押さない・取り消すも選べる）。",
+            "system_reaction": "警報を出した町は2時間後に住民が避難所へ移動する（町の灯りが避難所へ集まる）。出していない町でメーターが赤線を超えると崖が崩れ、家に人がいる。空振り（メーターが赤線に届かないまま朝）が続くと、その町は次の警報を1時間遅れて信じる。",
+            "information_gained": "雨雲の進み方（毎時1コマずつ・曲がることがある）、各町のメーターの上がる速さ（山の町は赤線が低く、早く超える）、避難に2時間かかること。",
+            "next_judgment_or_action": "『次のコマで雨雲はどの町に残る？』『この町はあと何コマで超える？』『今出せば間に合う？早すぎる？』を毎コマ判断し、雨雲が曲がったら警報を出し直す／取り消す。",
+            "C_used": "レーダー（雨域の位置・動き）、土壌雨量指数（メーター）、市町村ごとの基準線、リードタイム（2コマ）。",
+            "D_expressed": "実況監視→シナリオ推定→基準到達の見積り→空振りと見逃しの間で発表時刻を決める、という予報官の判断そのもの。",
+            "E_reached": "朝のマップ: 警報が間に合った町は『家に人がいなかった』、出さなくてよかった町は『いつもの朝』、遅れた町は『避難が間に合わなかった』が世界の状態として見える。",
+            "risks": "メーターの将来値を表示すると答えが漏れる（現在値のみ表示）。全町に警報を出す全選択を空振り信頼低下で塞ぐ必要。雨雲の進路が固定だと2周目に暗記できるが初回体験の妨げではない（PLUS QUALITY）。"
+          },
+          {
+            "seed_id": "s2-scenario-update",
+            "authentic_causal_loop": "予測シナリオ（雨雲がこの町に居座る／東へ抜ける）を立てる → 新しい観測が入る → シナリオどおりか照合 → ずれていれば修正する。fact_sheet.representative_duties[1][2]・decisions[0][1]。",
+            "player_action": "2つの予測シナリオから1つを選び、レーダーの新しいコマが出るたびに『このままでいく／シナリオを切り替える』を決める。",
+            "system_reaction": "選んだシナリオに沿って警報の準備状態が変わり、実況とのずれが大きいと町の被害が出る。",
+            "information_gained": "実況がシナリオと合っているかどうか。",
+            "next_judgment_or_action": "維持か修正か。",
+            "C_used": "レーダー実況、数値予報の2シナリオ。",
+            "D_expressed": "シナリオ維持／修正の判断。",
+            "E_reached": "修正が早ければ被害なし、遅ければ被害。",
+            "risks": "2択クイズに縮退しやすい（どちらのシナリオが正しいかは実況を見れば一意）。警報の発表そのものをシステムが代行するとDがシステム側へ移る。"
+          },
+          {
+            "seed_id": "s3-probability-dial",
+            "authentic_causal_loop": "ガイダンスの降水確率を、地域特性（海風・放射冷却）を加味して10%刻みで決める → 翌日の検証で適中・空振り・見逃しが分かる。fact_sheet.decisions[2]・expertise[3]・information_used[3][4]。",
+            "player_action": "6時間ごとの降水確率ダイヤルを地域ごとに回す。",
+            "system_reaction": "翌日、実際の天気と照合して適中率・空振り率が表示される。",
+            "information_gained": "ガイダンスの誤差の癖（この地域は海風で雨が遅れる等）。",
+            "next_judgment_or_action": "次の日の確率をどう補正するか。",
+            "C_used": "ガイダンス値、地域特性。",
+            "D_expressed": "数値をそのまま出さず補正する判断。",
+            "E_reached": "検証スコア。",
+            "risks": "結果が数字（スコア）で返るだけで世界が変わらない（TEXT_ONLY/NUMBER_ONLY CONSEQUENCE）。小4-6には確率の補正が抽象的で、初見で『次に何をすれば』が推測しにくい。"
+          }
+        ],
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:ae:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.121Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/play_seeds.json",
+          "created_at": "2026-09-07T23:19:08.121Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "weather-forecaster:reference_research:v1",
+      "artifact_type": "reference_research",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/reference_research.json",
+      "payload": {
+        "references": [
+          {
+            "seed": "s1-radar-timing",
+            "reference": "Mini Metro (Dinosaur Polo Club)",
+            "relevant_mechanic": "生きたシステムを眺め、駅の混雑が限界に達する前に介入する。介入が遅いと路線が止まる。",
+            "borrowed_principle": "『上がり続けるメーターが限界線に達する前に、間に合う時刻に手を打つ』。判断の対象は現在値ではなく『あと何コマで超えるか』という見積り。",
+            "surface_elements_not_to_copy": "地下鉄・路線描画・抽象ミニマル画面。JIBUN CHOICEでは町・雨雲・土のうるおいの3D clay表現にする。"
+          },
+          {
+            "seed": "s1-radar-timing",
+            "reference": "Return of the Obra Dinn / The Case of the Golden Idol",
+            "relevant_mechanic": "証拠の『位置』と時間順から真実を推理する。誰も答えを言わない。",
+            "borrowed_principle": "連続するレーダーの2〜3コマの『位置の変化』から進路を子ども自身が推定する。次の位置はシステムが教えない。",
+            "surface_elements_not_to_copy": "死因帳簿・殺人ミステリー・モノクロ画面。"
+          },
+          {
+            "seed": "s1-radar-timing",
+            "reference": "Papers, Please",
+            "relevant_mechanic": "時間の圧力の中で規則（町ごとの基準）と目の前の情報を照合し、判断の結果が翌日の世界（家族・信頼）に返ってくる。",
+            "borrowed_principle": "『規則は表として見えているが、当てはめるのは自分』。空振りが続くと信頼が下がるという遅延した社会的結果。",
+            "surface_elements_not_to_copy": "国境検問・パスポート・ディストピア的トーン。"
+          },
+          {
+            "seed": "s2-scenario-update",
+            "reference": "Her Story / hypothesis-updating puzzles",
+            "relevant_mechanic": "新しい断片が入るたびに仮説を更新する。",
+            "borrowed_principle": "仮説（シナリオ）を実況で検証し、ずれたら捨てる勇気。s1でも『雨雲が曲がったら警報を出し直す』として取り込む。",
+            "surface_elements_not_to_copy": "動画検索インターフェース・大人向けの物語。"
+          },
+          {
+            "seed": "s3-probability-dial",
+            "reference": "7 Billion Humans（数値の最適化ループ）",
+            "relevant_mechanic": "数値目標に対する試行と検証の反復。",
+            "borrowed_principle": "検証指標（適中・空振り・見逃し）を子どもにも分かる『当たった/空振り/見逃し』の3語にする——s1の朝の結果表示に流用。",
+            "surface_elements_not_to_copy": "プログラミング風の命令列。"
+          },
+          {
+            "seed": "s1-radar-timing",
+            "reference": "JIBUN CHOICE 既存Q1: water_trace（river-health）",
+            "relevant_mechanic": "限られた採水ボトルを、仮説を分けられる地点に使う（factory/taxonomy/gameplay-references.json water_trace）。",
+            "borrowed_principle": "『一つの観測だけで結論を出さない』。s1では1コマの雨だけで警報を出すと空振りになりやすい設計にする。",
+            "surface_elements_not_to_copy": "川・ボトルの見た目。"
+          }
+        ],
+        "mechanics_library_ids": [
+          "dynamic_state",
+          "time_pressure",
+          "partial_information",
+          "uncertainty_management",
+          "risk_reward",
+          "delayed_feedback",
+          "justified_refusal"
+        ],
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:play_seeds:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.162Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/reference_research.json",
+          "created_at": "2026-09-07T23:19:08.162Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "weather-forecaster:c_compression:v1",
+      "artifact_type": "c_compression",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/c_compression.json",
+      "payload": {
+        "original_C": "雨雲レーダー、アメダス雨量の推移、土壌雨量指数・表面雨量指数・流域雨量指数、数値予報（全球・メソ・局地・アンサンブル）とガイダンス、市町村ごとの警報・注意報・特別警報・危険警報の基準表（雨量指数・風速・波高等）、暫定基準、警報のリードタイム（概ね3〜6時間前）、週間予報の信頼度、早期注意情報、気象業務法上の発表権限。",
+        "compressed_C": "3つの『見て使う』表示に圧縮する。(1) 雨雲レーダー: 雨雲の帯が1時間ごとに1コマ動く。町に触れると、その町に今どれだけ雨が降っているかが分かる。(2) 町ごとの『土のうるおいメーター』（土壌雨量指数の子ども向け表現）: 雨がかかると上がり、やむとゆっくり下がる。メーターには町ごとに高さの違う『赤い線』（警報の基準）があり、山の町ほど低い位置にある。(3) 『避難にかかる時間』: 警報を出してから町の人が避難できるまで2コマかかる（時計アイコンで常時表示）。",
+        "removed_complexity": "表面雨量指数と流域雨量指数の区別、数値予報モデルの種類とガイダンスの補正、注意報／警報／特別警報／危険警報の4階層（警報1段階のみに）、確率・信頼度の表現、暫定基準、法的手続き、風・波・雪の基準、実際の基準値の単位（mm・指数値）。",
+        "reason_for_removal": "小4〜6が初見で判断できる観察量は『どこに雨雲がかかっているか』『メーターが赤線にどれだけ近いか』『間に合うか』の3つで足りる。指数の名前や計算方法は判断の質を変えない一方、読む量を増やして遊びを説明問題に変えてしまう。階層や単位は判断（どの町に・いつ）ではなく表現の問題なので落とす。",
+        "preserved_D": "実況（雨雲の動き）から次の1〜2コマ先を自分で予測し、町ごとに違う基準線と2コマのリードタイムを合わせて、『赤線を超える前に、間に合う時刻に、正しい町だけへ』警報を出す。早すぎれば空振り（信頼低下）、遅すぎれば見逃し（避難が間に合わない）。雨雲が曲がったら警報を出し直す／取り消す。",
+        "how_player_still_performs_D": "システムは『次にどの町にかかるか』『あと何コマで超えるか』を一切表示しない。子どもは連続するコマの雨雲の位置から進路を推定し（Obra Dinn型の推理）、メーターの現在値と赤線の距離、上がる速さ（雨がかかっている間だけ上がる）から到達時刻を見積もり、2コマ前に警報を押す町と押すコマを自分で決める。押さない判断も正解になりうる（雨雲が抜ける町）。",
+        "failure_risk": "(a) メーターに『あと1コマ』などの予測表示を付けると答えが漏れる→現在値のみ。(b) 全町に警報を押す全選択で突破される→空振りは信頼メーターを下げ、次の警報が1コマ遅れて信じられるため、本当に必要な町の避難が間に合わなくなる（世界が反応する罰）。(c) 雨雲の進路が固定だと2周目に暗記できる→3進路からランダム（初回体験には影響しない、PLUS QUALITY）。(d) 圧縮しすぎて『雨が降ったら押す』になる恐れ→山の町と平地の町で赤線の高さが違うため、同じ雨でも判断が分かれる。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:play_seeds:v1",
+        "weather-forecaster:ae:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.201Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/c_compression.json",
+          "created_at": "2026-09-07T23:19:08.202Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "weather-forecaster:game_translations:v1",
+      "artifact_type": "game_translations",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/game_translations.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-storm-night",
+            "play_seed": "s1-radar-timing",
+            "goal": "大雨の夜、4つの町のうち土砂災害の危険が高まる町にだけ、避難が間に合う時刻に警報を出す。朝、家に人がいない状態で崖が崩れる（＝間に合った）町を作る。",
+            "first_visible_state": "夜のミニチュア地図に4つの町（山の町2つ・平地の町2つ）。左から明るい雨雲の帯がゆっくり入ってくる（アニメーション）。各町の下に小さな『土のうるおいメーター』と赤い線。右下に▶（1時間すすむ）と時計アイコン『警報→避難まで2時間』。雨雲が最初に触れる町がわずかに脈打つ。",
+            "primary_action": "町をタップ→その町のカードが開き（メーター・赤線・雨量）、『警報を出す／取り消す』ボタン。▶で1時間進める。",
+            "C_interaction": "レーダーの帯を毎コマ見比べて進路を読む。メーターと赤線の距離、山の町は赤線が低いことを見る。時計アイコンで2コマ必要なことを知る。数値は出さない（見て比べる）。",
+            "system_reaction": "▶ごとに雨雲が1コマ動き、かかっている町のメーターが上がる（かかっていない町はゆっくり下がる）。警報を出した町は2コマ後に町の灯りが避難所へ集まる（人が動く）。警報なしで赤線を超えた町は崖のアイコンが崩れ、家の灯りが消える。警報を出したのに朝まで赤線に届かなかった町は『空振り』となり、その町の信頼バッジが下がって次の警報を1コマ遅れて信じる。",
+            "information_gained": "雨雲は毎コマ同じ向きに進むとは限らない（3進路のどれか）。山の町はメーターが早く赤線に達する。2コマ前に出さないと避難が間に合わない。",
+            "player_next_judgment": "『次のコマで雨雲はどの町に残る？』『この町のメーターはあと何コマで超える？』『今出すと早すぎる？』を毎コマ考え、雨雲が曲がったら別の町へ警報を出し直す／不要になった警報を取り消す。",
+            "D_externalization": "警報ボタンを押す『町』と『コマ』の組み合わせ、および取り消しの操作そのものが、子どもの予測と判断を表現する。システムは推奨も採点もしない。",
+            "E_consequence": "6コマ後の朝の地図: 各町に『家に人がいなかった（間に合った）』『いつもの朝（出さなくてよかった）』『避難が間に合わなかった』『空振りで疲れた町』のいずれかの世界状態が残る。全町間に合った／必要な町だけ出せた＝成功。1町でも間に合わなかった＝正直な失敗（partial outcomeで進行は可能）。",
+            "retry_or_rethink": "朝の結果画面から『もう一度この夜へ』で同じ夜をやり直せる（雨雲の進路は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、崩れた崖の町のメーター推移（いつ赤線を超えたか）と警報を出したコマが並んで見えるだけ。2回目の失敗からは『2時間前に出せていたか見てみよう』の一言。",
+            "job_reveal_bridge": "『きみがさっき決めた「どの町に・いつ」は、気象台の予報官が毎晩やっている判断だよ。警報を出すのは予報官、避難の指示を出すのは町長さん。』",
+            "strengths": "C（レーダー・メーター・基準線・リードタイム）が全部『使う』情報で、Dが押す町とコマの組み合わせとして外在化される。結果が世界（灯り・崖・避難所）で返る。押さない判断（justified refusal）が正解になる町がある。",
+            "weaknesses": "町4つ×6コマの状態を子どもが追えるか（1コマ1判断に絞る必要）。空振り信頼メーターの説明が要る（アイコン＋一言で済ませる）。",
+            "risk": "予測表示を足したくなる誘惑（答え漏れ）。雨雲進路が単純だと全町警報が最適になる→空振りペナルティが効くよう平地の町は赤線が高く『出すと損』にする。",
+            "adoption_or_rejection_reason": "採用。3案の中で唯一、C→D→Eが世界の状態変化として閉じ、D（時刻と対象の決定）が子どもの操作そのものになる。"
+          },
+          {
+            "translation_id": "t2-scenario-switch",
+            "play_seed": "s2-scenario-update",
+            "goal": "2つの予測シナリオのうち正しい方を、新しい観測で見極めて切り替える。",
+            "first_visible_state": "レーダー画面と2枚のシナリオカード（居座る／東へ抜ける）。",
+            "primary_action": "シナリオを選び、新コマごとに『このまま／切り替え』をタップ。",
+            "C_interaction": "実況とシナリオ図を見比べる。",
+            "system_reaction": "選んだシナリオに沿って警報が自動で準備・発表される。",
+            "information_gained": "実況とシナリオの一致・不一致。",
+            "player_next_judgment": "維持か切り替えか。",
+            "D_externalization": "2択のタップ。",
+            "E_consequence": "シナリオが合っていれば被害なし。",
+            "retry_or_rethink": "やり直し可。",
+            "job_reveal_bridge": "予測シナリオを立てて修正する仕事。",
+            "strengths": "『仮説を捨てる』という予報官の本物の判断を含む。",
+            "weaknesses": "警報発表をシステムが代行し、Dの中核（どこに・いつ）がシステム側に移る。実況を見れば正解が一意な2択クイズに縮退する。",
+            "risk": "D_PERFORMED_BY_SYSTEM／obvious binary choice（principles.md BLOCKER）。",
+            "adoption_or_rejection_reason": "不採用。2択化とDのシステム代行が原理的に避けにくい。『雨雲が曲がったら出し直す』としてt1に吸収する。"
+          },
+          {
+            "translation_id": "t3-probability-dial",
+            "play_seed": "s3-probability-dial",
+            "goal": "地域ごとの降水確率をガイダンスから補正して決め、翌日の検証で当てる。",
+            "first_visible_state": "地域ごとのダイヤルとガイダンス値。",
+            "primary_action": "ダイヤルを回す。",
+            "C_interaction": "ガイダンス値と地域の癖（海風で遅れる等）を読む。",
+            "system_reaction": "翌日、当たり／空振り／見逃しの表が出る。",
+            "information_gained": "誤差の癖。",
+            "player_next_judgment": "次回の補正方向。",
+            "D_externalization": "数値の設定。",
+            "E_consequence": "スコア表。",
+            "retry_or_rethink": "翌日をもう一度。",
+            "job_reveal_bridge": "定時の天気予報を作る仕事。",
+            "strengths": "定時予報という日常業務を扱える。",
+            "weaknesses": "結果が数字の表だけで世界が変わらない（TEXT/NUMBER-ONLY CONSEQUENCE）。確率の補正は小4-6に抽象的で、初見で次の操作を推測しにくい（FIRST_ACTION_NOT_INFERABLE）。",
+            "risk": "説明問題化。",
+            "adoption_or_rejection_reason": "不採用。Gate F（CONSEQUENCE）とFIRST 5 SECONDSを満たしにくい。"
+          }
+        ],
+        "adopted_translation_id": "t1-storm-night",
+        "adoption_rationale": "t1は、Cが『読む説明』ではなく毎コマ使う情報で、D（どの町に・いつ・出さない）が押す町とコマの組み合わせとして子どもの操作に外在化され、Eが灯り・崖・避難所という世界の状態で返る。t2はDの中核をシステムが代行し2択に縮退、t3は結果が数字のみで世界が変わらない。よってt1を採用し、t2の『シナリオ修正』はt1の『雨雲が曲がったら出し直す』として保存する。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:play_seeds:v1",
+        "weather-forecaster:c_compression:v1",
+        "weather-forecaster:reference_research:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.241Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/game_translations.json",
+          "created_at": "2026-09-07T23:19:08.242Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "weather-forecaster:first_5_seconds:v1",
+      "artifact_type": "first_5_seconds",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/first_5_seconds.json",
+      "payload": {
+        "zero_to_two_seconds": "夜のミニチュア地図に4つの町の灯りがともっている。左から明るい雨雲の帯がゆっくり地図へ入ってくる（自動アニメーション、操作不要）。雨雲が最初に触れる町のカードがわずかに脈打ち、その町の下の小さなメーターがほんの少し上がる。",
+        "two_to_five_seconds": "雨雲がその町にかかり続け、メーターがじわじわ上がって赤い線に近づくのが見える。画面下に一言だけ『雨雲がかかった町をタップ』。右下に▶ボタンと、時計アイコン『警報→避難 2時間』が静かに置かれている。",
+        "first_expected_touch": "脈打っている（雨雲がかかっている）町をタップする。理由: 動いているもの＝雨雲、反応しているもの＝その町、という2つの視覚的手がかりが同じ場所を指す。",
+        "first_system_reaction": "町のカードが大きく開き、土のうるおいメーターと赤い線が拡大表示され、大きな『警報を出す』ボタンが現れる。メーターの横に山のアイコン（山の町＝赤線が低い）。ここまで文章はカード名と『警報を出す』の6文字だけ。",
+        "next_expected_inference": "『メーターが赤い線に届くと、何か悪いことが起きる』『警報を出しても避難まで2時間かかる（時計アイコン）』→『今出すべき？それとも次のコマ？』。",
+        "next_expected_action": "『警報を出す』を押すか、いったん閉じて▶で1時間進めて雨雲の動きを見る。どちらでも世界が反応する（押せば町の人が動きだす準備、進めれば雨雲が動きメーターが変わる）。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:game_translations:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.281Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/first_5_seconds.json",
+          "created_at": "2026-09-07T23:19:08.282Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "weather-forecaster:no_manual_exploit_check:v1",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": true,
+          "contextual_cue_only": true,
+          "cues_used": [
+            "『雨雲がかかった町をタップ』（1行）",
+            "時計アイコン『警報→避難 2時間』（アイコン＋4文字）",
+            "脈打つ町カード（動きで指す）"
+          ],
+          "explanation_screen": "なし。ルールは『触る→メーターが動く→赤線を見る→▶で雨雲が動く』の順に体験から理解する。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": false,
+          "select_all_note": "全町に警報を出すと、赤線に届かない平地の町は空振り。空振りの町は信頼が下がり、次に本当に必要なとき避難が1コマ遅れる設計で、全選択が『安全策』にならない。さらに最終評価で『必要な町だけ出せた』が成功条件に含まれる。",
+          "tap_all": false,
+          "tap_all_note": "町をタップして情報を見るのは自由（Cを見る行為に罰は不要）。タップだけでは何も進まない。",
+          "spam_submit": false,
+          "spam_submit_note": "▶を連打すると警報なしで夜が明け、山の町で崖が崩れる（見逃し）。連打は必ず失敗する。",
+          "fixed_failure_pattern": false,
+          "fixed_failure_pattern_note": "雨雲の進路は3種類からランダム。『いつも2番目の町』のような固定解はない。ただし1回の夜の中では進路は固定（やり直しで判断だけ変えられる）。",
+          "color_leak": false,
+          "color_leak_note": "赤い線は『基準』であり答えではない。メーターは現在値のみで、将来の到達を色や点滅で示さない。",
+          "label_leak": false,
+          "label_leak_note": "町の名前は中立（北町・川沿い町・峠町・浜町）。『危険町』のような名前は使わない。山のアイコンは基準線が低い理由（C）であり、今夜危ないかどうかは進路次第。",
+          "position_leak": false,
+          "position_leak_note": "雨雲の入口は左固定だが、どの町に残るかは進路次第。画面位置で正解が決まらない。",
+          "visual_hierarchy_leak": false,
+          "visual_hierarchy_leak_note": "4町のカードは同じ大きさ。脈打つのは『いま雨雲がかかっている町』であって『警報すべき町』ではない（かかっても抜ける町がある）。",
+          "brute_force_note": "6コマ×4町の警報ON/OFFを総当たりで試すには、やり直しごとに夜1回分を見直す必要があり、初回プレイでの総当たりは現実的でない。総当たりに見合う『途中で答えが分かる表示』は置かない。",
+          "pass": true
+        },
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:game_translations:v1",
+        "weather-forecaster:first_5_seconds:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.322Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check.json",
+          "created_at": "2026-09-07T23:19:08.322Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "weather-forecaster:core_back_check:v1",
+      "artifact_type": "core_back_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/weather-forecaster/design/core_back_check.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "採用案t1-storm-nightをCOREへ逆照合: (1) 命を守るために『間に合う時刻に』出す＝2コマのリードタイムと赤線到達前の発表判断としてそのまま残っている。(2) 警報を出すのは予報官、避難指示は町長という実在の役割分担をE・Job Revealで崩していない。(3) ゲーム都合でCOREを歪めた点: 注意報/特別警報の階層と指数の種類を落としたが、これは表現の圧縮であり『どの町に・いつ』という判断の中身は変えていない（c_compression.preserved_D）。(4) 予報官が『雨を止める』『避難させる』などCOREにない力を持つ表現はない。(5) 空振りで信頼が下がるという結果は、fact_sheet.decisions[4]『早すぎる空振りと遅すぎる見逃しの間で』に対応する本物のトレードオフ。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "weather-forecaster:game_translations:v1",
+        "weather-forecaster:scope_core:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-07T23:19:08.362Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/weather-forecaster/design/core_back_check.json",
+          "created_at": "2026-09-07T23:19:08.363Z",
+          "creator": "claude-code"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "FAIL",
+    "score": 55,
+    "blockers": 0,
+    "high": 5,
+    "evidence": "factory/projects/weather-forecaster/design/design-review-r1.result.json",
+    "input": "factory/projects/weather-forecaster/design/design-review-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-07T23:24:56.751Z"
+  },
+  "impl_review": null,
+  "art_review": null,
+  "failures": [
+    {
+      "failure_id": "f-1",
+      "failure_code": "FACTUAL_PROFESSION_ERROR",
+      "failure_reason": "Design review r1 FAIL (score 55, CA68/GQ55, 0 blockers, 5 HIGH). Primary: warning issuance/decision authority at a 地方気象台 is FACT_CHECK_REQUIRED yet the core action + Job Reveal assert '予報官が単独で発表'. Also routed downstream in the same repair: AE_NOT_REPRESENTATIVE (mountain=low threshold rule; fictional deterministic trust delay), CORE_DISTORTED_BY_GAME (warning => automatic evacuation, mayor's 避難情報 skipped), C_NOT_NEEDED_FOR_D + BRUTE_FORCE_SUCCESS + GAME_SPEC_MISSING_STATE (no path/threshold/deadline table, so fixed strategies incl. warn-all-then-cancel cannot be shown to fail).",
+      "evidence": "factory/projects/weather-forecaster/design/design-review-r1.result.json",
+      "return_to": "PROFESSION_RESEARCH",
+      "preserve": "fact sheet sources, CORE, SCOPE, seeds, reference research",
+      "must_change": "fact sheet: decision/issuance authority + cancellation/解除 + mayor's 避難情報 chain; A-E: neutral per-town thresholds, real same-night trade-off instead of trust delay, mayor step in E; translation: explicit 3-path x 6-step x 4-town state table with simulated exploit results",
+      "design_iteration": 1,
+      "at": "2026-09-07T23:24:56.793Z"
+    }
+  ],
+  "human_decisions": [],
+  "task_id": "q1-new-weather-forecaster",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-07T23:13:35.300Z",
+  "updated_at": "2026-09-07T23:24:56.793Z",
+  "history": [
+    {
+      "at": "2026-09-07T23:13:35.301Z",
+      "event": "init",
+      "trigger": "NEW_Q1_REQUEST",
+      "entry_stage": "PROFESSION_RESEARCH",
+      "legacy_game_type": null
+    },
+    {
+      "at": "2026-09-07T23:13:35.376Z",
+      "event": "task_linked",
+      "task_id": "q1-new-weather-forecaster"
+    },
+    {
+      "at": "2026-09-07T23:13:35.421Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-07T23:13:35.421Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-07T23:19:08.002Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.002Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:scope_core:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:fact_sheet:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.041Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.041Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:ae:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:scope_core:v1",
+        "weather-forecaster:fact_sheet:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.081Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.081Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:ae:v1",
+        "weather-forecaster:scope_core:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.122Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.122Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:ae:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.163Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.163Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.202Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.202Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v1",
+        "weather-forecaster:ae:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.242Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.242Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v1",
+        "weather-forecaster:c_compression:v1",
+        "weather-forecaster:reference_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.282Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.282Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.322Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.322Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v1",
+        "weather-forecaster:first_5_seconds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.363Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-07T23:19:08.363Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v1",
+        "weather-forecaster:scope_core:v1"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:19:08.402Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "independent_review_pass"
+      ]
+    },
+    {
+      "at": "2026-09-07T23:24:56.752Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/weather-forecaster/design/design-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-07T23:24:56.793Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "REPAIRING",
+      "note": "FACTUAL_PROFESSION_ERROR -> PROFESSION_RESEARCH (repair 1/1)"
+    },
+    {
+      "at": "2026-09-07T23:24:56.793Z",
+      "event": "failure_routed",
+      "failure_id": "f-1",
+      "code": "FACTUAL_PROFESSION_ERROR",
+      "return_to": "PROFESSION_RESEARCH",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    }
+  ]
+}

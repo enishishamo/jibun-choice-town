@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用案t1-storm-nightをCOREへ逆照合: (1) 命を守るために『間に合う時刻に』出す＝2コマのリードタイムと赤線到達前の発表判断としてそのまま残っている。(2) 警報を出すのは予報官、避難指示は町長という実在の役割分担をE・Job Revealで崩していない。(3) ゲーム都合でCOREを歪めた点: 注意報/特別警報の階層と指数の種類を落としたが、これは表現の圧縮であり『どの町に・いつ』という判断の中身は変えていない（c_compression.preserved_D）。(4) 予報官が『雨を止める』『避難させる』などCOREにない力を持つ表現はない。(5) 空振りで信頼が下がるという結果は、fact_sheet.decisions[4]『早すぎる空振りと遅すぎる見逃しの間で』に対応する本物のトレードオフ。",
+  "pass": true
+}

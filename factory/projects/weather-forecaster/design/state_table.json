@@ -1,0 +1,41 @@
+{
+  "note": "Design-stage state table for translation t1-storm-night (repair 1 after design review r1: GAME_SPEC_MISSING_STATE / BRUTE_FORCE_SUCCESS / C_NOT_NEEDED_FOR_D). Every number here is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence.",
+  "scale": "土のうるおいメーター 0-12。町ごとの赤い線（警報の基準）は市町村ごとに違う数値として画面に表示する（地形アイコンで暗示しない）。",
+  "steps": [
+    { "step": 1, "clock": "21:00" }, { "step": 2, "clock": "22:00" }, { "step": 3, "clock": "23:00" },
+    { "step": 4, "clock": "0:00" }, { "step": 5, "clock": "1:00" }, { "step": 6, "clock": "2:00" }
+  ],
+  "morning": "3:00",
+  "towns": [
+    { "id": "kita", "name": "北町", "threshold": 7, "start": 1 },
+    { "id": "kawa", "name": "川沿い町", "threshold": 9, "start": 2 },
+    { "id": "toge", "name": "峠町", "threshold": 6, "start": 1 },
+    { "id": "hama", "name": "浜町", "threshold": 8, "start": 1 }
+  ],
+  "meter_rule": "各コマ: 雨がかかっている町は meter += 雨の強さ(1-3)。かかっていない町は meter -= 1（最小0）。コマ終了時に meter >= 赤い線 なら『超えた』。",
+  "warning_rule": {
+    "issue": "コマtで警報を出す（進める前）。町（市町村）はそのコマの終わりに避難情報を出し（t+1の画面で『避難情報が出た』と見える）、住民はコマt+2の開始から避難済み。",
+    "lead_time_steps": 2,
+    "cancel": "取り消しは同じコマ内なら無料（避難情報はまだ出ていない）。町が避難情報を出した後の取り消しは、住民が家へ戻るのに1コマかかり、その町が朝まで超えなければ『空振り』として残る。",
+    "why": "fact_sheet: 警報を出すのは気象庁、避難指示は市町村長。警報→市町村の判断→住民の行動、という実在の連鎖を世界状態として挟む。"
+  },
+  "outcome_rule": {
+    "town": "超えた町: 超えたコマの開始時点で避難済みなら『家に人がいなかった（間に合った）』、そうでなければ『避難が間に合わなかった』。超えなかった町: 避難情報が出ていなければ『いつもの朝』、出ていれば『空振り（避難したのに何も起きなかった）』。",
+    "night": "満点 = 超えた町が全部間に合った かつ 空振り0。成功 = 超えた町が全部間に合った かつ 空振り1以下。それ以外 = 間に合わなかった町がある（正直なpartial outcome、進行は可能）。"
+  },
+  "paths": {
+    "P1_sit_west": {
+      "label": "西に居座る",
+      "rain": { "kita": [2, 3, 2, 2, 1, 0], "toge": [2, 2, 3, 2, 1, 0], "kawa": [0, 0, 1, 1, 1, 0], "hama": [0, 0, 0, 1, 1, 1] }
+    },
+    "P2_sweep_east": {
+      "label": "東へ抜ける",
+      "rain": { "kita": [2, 3, 2, 0, 0, 0], "toge": [2, 2, 2, 1, 0, 0], "kawa": [0, 1, 2, 3, 2, 1], "hama": [0, 0, 1, 2, 3, 2] }
+    },
+    "P3_turn_north": {
+      "label": "北へ曲がる",
+      "rain": { "kita": [2, 3, 3, 3, 2, 1], "kawa": [0, 1, 2, 3, 3, 2], "toge": [1, 1, 0, 0, 0, 0], "hama": [0, 0, 0, 0, 1, 1] }
+    }
+  },
+  "first_step_visible": "コマ1の開始時点で、雨雲は北町・峠町にかかっている（3進路とも同じ）。ここから先の進路は見て推定する。"
+}
