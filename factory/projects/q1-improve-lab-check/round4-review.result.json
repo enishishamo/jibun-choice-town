@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "lab-check-round4",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 56,
+    "career_authenticity_score": 68,
+    "game_quality_score": 56,
+    "blockers": [],
+    "high": [
+      "事前ヒントの新しい非対称性により、患者の具体的な「熱・せき・息苦しさ」と各検査目的を結び付けなくても、「ばい菌」「炎症」という病気特異的に聞こえる2項目を選び、「いつもチェックする一般的な目安」を除外する固定攻略が初回から成立する。名称の具体性は揃ったが、ヒントの臨床的特異性が揃っておらず、Gate C/D/Eをなお満たさない。"
+    ],
+    "medium": [
+      "誤答後は「次はちがう組み合わせを試してみよう」と促すが、その体験内では再考・再選択できずpartial終了する。章への再入場は可能だが、Gate GのFIRST-PLAY EXPERIENCEとしての考え直しは弱い。",
+      "「血液1本だから白血球・CRP・クレアチニンから任意の2つ」という共通予算は、検体容器・検査パネル・必要量の実務を強く単純化している。旧CBC内競合より改善したが、臨床検査技師固有の制約としてはなお誤解の余地がある。"
+    ],
+    "low": [
+      "成功・partialとも結果は静的な絵文字と文章が中心で、医師・患者・報告書などの可視的な状態変化が乏しい。ただしclue_boardと同型のWEAK_WORLD_FEEDBACKとしてHuman-approved backlogに記録された前例があり、本件だけをrelease-blocking HIGHとはしない。",
+      "自動QAの新規チェックは限定語の完全一致と4種類のgeneric phraseだけを検査するため、今回のようなヒント間の特異性非対称、同義語による状態漏洩、Reactの中間画面におけるlabel/off表示回帰を検出できない。"
+    ],
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md:31 — Gate Cは仕事固有情報を攻略上必要とし、同:32-33のGate D/Eは一般的消去法とUI・説明文からの答え漏れを禁じる。",
+      "src/data/content/medical.ts:295 — 先行するmed-doctorで患者は熱・咳・息苦しさとして提示される。",
+      "src/data/content/medical.ts:303 — med-labのミッションでも同じ症状が再掲され、患者文脈自体は利用可能である。",
+      "src/q1/labCheckLogic.ts:69 — 白血球ヒントは「ばい菌などとたたかう」と病気対応を明示する。",
+      "src/q1/labCheckLogic.ts:73 — CRPヒントは「炎症が起きていないか」と病的状態への特異的目的を明示する。",
+      "src/q1/labCheckLogic.ts:77 — 唯一の不正解だけが「からだ全体」「いつもチェック」という一般・routine用途で、2正解との非対称な消去手掛かりになる。",
+      "src/q1/LabCheckGame.tsx:64 — 選択肢は固定順だが、成功判定はID集合であり、位置そのものには依存しない。",
+      "src/q1/LabCheckGame.tsx:71 — 実行中・選択済み・上限到達後はボタンが無効になり、連打や3項目全選択は防止されている。",
+      "src/q1/LabCheckGame.tsx:92 — 1検査実行後に中間lab-screenが表示される。",
+      "src/q1/LabCheckGame.tsx:103 — 中間画面は全経路でclassName=\"lab-line\"、name、valueだけを描画し、labelおよびoff由来クラスを出していない。",
+      "src/index.css:4148 — 中間行の通常色は一律であり、残存する.lab-line.off規則は現在のrenderから参照されない。",
+      "src/q1/LabCheckGame.tsx:139 — result画面では選択済みrowsを両方描画する。",
+      "src/q1/LabCheckGame.tsx:142 — 2検査確定後のresult画面ではoff由来の強調色が維持される。",
+      "src/q1/LabCheckGame.tsx:143 — result画面でタップするとlabelとmeansが表示され、教育情報は失われていない。",
+      "src/q1/LabCheckGame.tsx:152 — cellsとfireの完全な組だけがsuccess側へ分岐する。",
+      "src/q1/LabCheckGame.tsx:161 — 不完全な組は医師の不足反応とdone-partialへ分岐し、成功に偽装されない。",
+      "src/q1/LabCheckGame.tsx:196 — partialは通常配線でonPartialCompleteを呼ぶ。",
+      "src/screens/Q1Screen.tsx:87 — successとpartialの完了コールバックは別のoutcomeへ配線されている。",
+      "factory/harness/gameplay-qa-lab-check.mjs:65 — leak検査は症状3語と状態語の部分一致に限定され、意味的・比較的非対称を評価しない。",
+      "factory/harness/gameplay-qa-lab-check.mjs:86 — generic検査は4つの固定フレーズをnameだけで探し、hintの非対称性や別表現を検査しない。",
+      "factory/harness/gameplay-qa-lab-check.mjs:95 — 実行結果は11 passedだが、React renderの中間label/off非表示を検査する項目自体がない。",
+      "factory/state/experience-backlog.json:40 — clue_boardの同型WEAK_WORLD_FEEDBACKは§3のBLOCKERに該当しないPLUS QUALITY backlogとして明示されている。"
+    ],
+    "recommended_actions": [
+      "3つのヒントを臨床目的の同じ粒度にそろえ、正解2つだけが「病気を探す検査」、不正解だけが「routine/general」と読めない候補構成にする。患者の具体的な症状または医師の問いと比較して初めて優先順位が決まる設計にする。",
+      "QAへ、全候補のhintを含む意味的・構造的な対称性レビューと、最初の検査後にlabel・means・offクラスがDOMへ出ないことを確認するコンポーネントテストを追加する。",
+      "誤答後に答えを漏らさない一度の再考操作を与えつつ、全3ペアの総当たり成功はできない制約を設計する。",
+      "検体制約を「1本なら任意の2項目」に固定せず、採血管・残量・検査パネルの関係を年齢相応かつ医学的に正直な表現へ調整する。",
+      "world feedbackはrelease後のPLUS QUALITY改善として、選択した検査が報告書の対応欄を埋め、医師側の判断可能範囲が視覚的に変わる表現を追加する。"
+    ]
+  },
+  "elapsed_sec": 88.678
+}

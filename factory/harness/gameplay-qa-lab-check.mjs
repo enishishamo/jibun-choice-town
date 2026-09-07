@@ -51,25 +51,44 @@ check("order does not matter (same set, reversed)", isCompletePicture([...comple
 check("empty pick is incomplete", !isCompletePicture([]));
 check("single relevant pick alone is incomplete (must gather both)", !isCompletePicture([RELEVANT_IDS[0]]));
 
-// ---- 2026-09-07 repair (Q1 First-Play Standard, HIGH: "患者文脈を使わない
-// 固定攻略が成立する" — the pre-run name/hint text used to spell out each
-// test's diagnostic category, so a first-time player could win by
-// pattern-matching category words against the case's own symptom words
-// ("熱", "せき", "苦し") without reading anything about THIS patient).
-// Verify the SELECTION-TIME text (name/hint) no longer contains those
-// category-revealing words; the richer explanation may still appear in
-// label/means, which are only shown AFTER a test has been run. ----
+// ---- 2026-09-07 repair round 1 (Q1 First-Play Standard, HIGH: "患者文脈を
+// 使わない固定攻略が成立する" — the pre-run name/hint text used to spell
+// out each test's diagnostic category with words that directly echo the
+// case's own symptom vocabulary). Verify the SELECTION-TIME text doesn't
+// literally restate the case's own symptom words, and never states an
+// off/normal/abnormal STATUS before a test is run (that status is
+// legitimately revealed only after running, in label/means). Describing a
+// test's real PURPOSE (e.g. "counts cells that fight germs") is NOT itself
+// a leak and is required for genuine Gate C reasoning — only restating the
+// case's exact words, or pre-announcing off/normal, is. ----
 {
-  const leakyWords = ["たたかう", "炎症", "もえ"];
   const caseWords = ["熱", "せき", "息苦し"];
+  const statusWords = ["ふつう", "正常", "異常", "高い", "低い", "多い", "少ない", "強い", "弱い"];
   const preRunLeaks = TESTS.filter((t) =>
-    leakyWords.some((w) => t.name.includes(w) || t.hint.includes(w)) ||
-    caseWords.some((w) => t.name.includes(w) || t.hint.includes(w)),
+    caseWords.some((w) => t.name.includes(w) || t.hint.includes(w)) ||
+    statusWords.some((w) => t.name.includes(w) || t.hint.includes(w)),
   );
   check(
-    "no test's pre-run name/hint contains a diagnostic-category or case-matching word",
+    "no test's pre-run name/hint restates the case's own symptom words or states an off/normal status",
     preRunLeaks.length === 0,
     preRunLeaks.map((t) => t.id).join(","),
+  );
+}
+
+// ---- 2026-09-07 repair round 2 (independent review HIGH: round 1 made
+// the two RELEVANT tests' pre-run text fully circular/generic ("ある物質",
+// "ある種類の細胞") while leaving the distractor specifically organ-named
+// ("腎臓のはたらき") — the same shortcut in the opposite direction,
+// "eliminate the one that names a real organ". All three now use an
+// equally specific real test name; verify none regresses to a generic
+// placeholder phrase. ----
+{
+  const genericPhrases = ["ある物質", "ある種類", "別の数値", "別の物質"];
+  const vagueTests = TESTS.filter((t) => genericPhrases.some((p) => t.name.includes(p)));
+  check(
+    "no test's pre-run name uses a generic placeholder phrase instead of a real, equally-specific test name",
+    vagueTests.length === 0,
+    vagueTests.map((t) => t.id).join(","),
   );
 }
 

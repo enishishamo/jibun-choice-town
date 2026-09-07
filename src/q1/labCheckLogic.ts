@@ -46,27 +46,35 @@ export interface LabTest {
 export const MAX_TESTS_RUNNABLE = 2;
 
 // 2026-09-07 repair (Human Decision — Q1 First-Play Standard V1, HIGH:
-// "患者文脈を使わない固定攻略が成立する" — the pre-run `name`/`hint` text
-// used to spell out each test's diagnostic category ("ばい菌とたたかう係",
-// "からだのどこかが「もえている」とき"), so a first-time player could win
-// by pattern-matching those words against "熱・せき" without ever
-// connecting them to THIS patient. `name`/`hint` (shown before running,
-// during selection) now describe only the literal, neutral thing being
-// measured — no diagnostic-category words. The rich, category-revealing
-// explanation still lives in `label`/`means` (shown only AFTER running),
-// so the education is not lost, only moved past the point where it could
-// leak the answer.
+// "患者文脈を使わない固定攻略が成立する" — round 1 of this repair made
+// cells/fire's pre-run text fully circular ("ある物質"/"ある種類の細胞")
+// while leaving kidney's specifically organ-named ("腎臓のはたらき"),
+// which independent review correctly flagged as the SAME shortcut in the
+// opposite direction: "the one that names an actual organ = probably not
+// it" replaces the original "the one that sounds unrelated = probably not
+// it". Fixed by giving all three an EQUALLY specific real test name
+// (白血球/CRP/クレアチニン — a child likely doesn't already know any of
+// these terms, so none is a free giveaway) and a hint that describes real
+// PURPOSE/function (needed for genuine Gate C reasoning — see
+// q1-first-play-standard.md — a purely circular hint gives the player
+// nothing to connect to the patient's symptoms with) without stating
+// off/normal status. Kidney's hint is deliberately framed as a routine,
+// general-purpose check (which is medically honest — creatinine IS a
+// common baseline test in an unwell patient) rather than "clearly
+// unrelated to breathing", so eliminating it requires actually recognizing
+// it doesn't specifically address THIS patient's respiratory/infection
+// presentation — not just noticing it "sounds different".
 export const TESTS: LabTest[] = [
   {
-    id: "cells", icon: "🔬", name: "血のつぶを数える", hint: "血液の中に、小さな粒がいくつあるかを調べる。",
+    id: "cells", icon: "🔬", name: "白血球の数を調べる", hint: "からだの中で、ばい菌などとたたかう細胞の数を調べる。",
     label: "たたかう係（白血球）", value: "13,200", means: "ふだんよりずっと多い。からだが何かとたたかっている", off: true, relevant: true,
   },
   {
-    id: "fire", icon: "🧪", name: "血液中のある物質を調べる", hint: "調べると、その物質の量が数字で分かるよ。",
+    id: "fire", icon: "🧪", name: "CRPの量を調べる", hint: "からだのどこかで炎症が起きていないかを示す、目印になる数字。",
     label: "炎症のしるし（CRP）", value: "12.4", means: "強い炎症が起きているときの数字", off: true, relevant: true,
   },
   {
-    id: "kidney", icon: "💧", name: "腎臓のはたらきを調べる", hint: "からだの中の老廃物を、うまく出せているか",
+    id: "kidney", icon: "💧", name: "クレアチニンの量を調べる", hint: "からだ全体の調子をみるために、いつもチェックしておく目安の一つ。",
     label: "腎臓のはたらき（クレアチニン）", value: "0.8", means: "こちらは、ふだんどおり", off: false, relevant: false,
   },
 ];

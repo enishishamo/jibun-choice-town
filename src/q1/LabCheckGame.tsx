@@ -92,9 +92,16 @@ export default function LabCheckGame({ onComplete, onPartialComplete }: Q1GamePr
         {picked.length > 0 && (
           <div className="lab-screen">
             <span className="lab-screen-title">画面に出てきた情報</span>
+            {/* 2026-09-07 repair (Human Decision — Q1 First-Play Standard V1,
+               HIGH: 1つ目の検査を終えた時点で診断名つきlabelとoff由来の色が
+               この選択画面自体に出ていたため、2つ目を選ぶ前にどちらが
+               「あたり」か分かってしまっていた（clue_boardのバイタル欄と
+               同じ種類の中間画面での答え漏れ）。ここでは選択時と同じ中立な
+               名前（t.name）と生の数値だけを示し、診断名（label）と
+               off/normalの色分けは、両方選び終えたresult stepまで出さない。 */}
             {rows.map((r) => (
-              <span key={r.label} className={`lab-line ${r.off ? "off" : ""}`}>
-                <b>{r.label}</b>
+              <span key={r.id} className="lab-line">
+                <b>{r.name}</b>
                 <span className="lab-num">{r.value}</span>
               </span>
             ))}
