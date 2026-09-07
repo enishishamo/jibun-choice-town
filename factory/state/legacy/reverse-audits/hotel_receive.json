@@ -1,0 +1,49 @@
+{
+  "game_type": "hotel_receive",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "ホテル・旅館の団体受入担当",
+  "current_SCOPE": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_CORE": "団体情報を確認し、設備へ班を割り振り、段階ごとの安全・容量検査を受けて配置を直す",
+  "current_A": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_B": "学校から届いた班情報を使い、部屋配置、食事種別、3枠の入浴時間を順番に決めて団体受入計画を完成させる",
+  "current_C": "花組の卵・乳製品アレルギー、月組の到着後休憩、使用可能な9部屋、引率者を班の近くに置く条件、入浴1枠2班の容量",
+  "current_D": "班と引率者を部屋グリッドへ配置し、班ごとの食事を指定し、容量を超えないよう入浴枠へ各班を配分する",
+  "current_E": "各段階で指摘を確認し、配置または選択をその場で変更して再判定する",
+  "actual_first_screen": null,
+  "actual_player_actions": "班と引率者を部屋グリッドへ配置し、班ごとの食事を指定し、容量を超えないよう入浴枠へ各班を配分する",
+  "actual_feedback": "引率者と花組が離れる、資料を開かない、食事が不正解、入浴枠が未設定または3班以上になると次段階へ進めない。失敗による運営上のコストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "学校から届いた班情報を使い、部屋配置、食事種別、3枠の入浴時間を順番に決めて団体受入計画を完成させる",
+  "actual_failure_path": "引率者と花組が離れる、資料を開かない、食事が不正解、入浴枠が未設定または3班以上になると次段階へ進めない。失敗による運営上のコストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 59,
+    "career_authenticity": 65,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/HotelReceiveGame.tsx:59 — 全6対象の配置と、花組から引率者まで縦横1マス以内という近接条件を判定する",
+    "src/q1/HotelReceiveGame.tsx:69 — 学校から届いた情報カードを開いた履歴自体が部屋段階の必須条件になっている",
+    "src/q1/HotelReceiveGame.tsx:72 — 食事成功は花組だけがアレルギー対応食で、他班が対応食ではないという固定条件である",
+    "src/q1/HotelReceiveGame.tsx:79 — 資料は月組を到着後に休ませたいと伝えるが、その条件を部屋・食事・入浴の判定には使用していない",
+    "src/q1/HotelReceiveGame.tsx:74 — 入浴は全班の割当と各枠2班以下だけで判定される"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=59, CA=65",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.193Z"
+}

@@ -1,0 +1,49 @@
+{
+  "game_type": "life_plan",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "医療ソーシャルワーカー",
+  "current_SCOPE": "医療編／一人暮らしの患者の退院後生活を組み立てる場面",
+  "current_CORE": "本人の希望と生活課題を確認し、支援を組み、本人の反応と未対応表示を見て過不足を調整する。",
+  "current_A": "医療編／一人暮らしの患者の退院後生活を組み立てる場面",
+  "current_B": "本人の希望を聞き、生活上の心配を全件確認し、複数の支援を組み合わせて不足と過剰支援を避ける",
+  "current_C": "本人の生活希望、買い物・食事・入浴・服薬・通院・緊急時の困りごと、各支援の機能、娘が来られる頻度",
+  "current_D": "困りごとの網羅性、家族の限界、本人の自立希望を同時に考え、必要な支援の組み合わせを調整する",
+  "current_E": "本人の反応後に計画画面へ戻り、支援を追加または解除して再提案する",
+  "actual_first_screen": null,
+  "actual_player_actions": "困りごとの網羅性、家族の限界、本人の自立希望を同時に考え、必要な支援の組み合わせを調整する",
+  "actual_feedback": "家族だけ、支援過剰、未対応の困りごとには本人の拒否・不安が返るが、何度でも無損失で計画へ戻れる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "本人の希望を聞き、生活上の心配を全件確認し、複数の支援を組み合わせて不足と過剰支援を避ける",
+  "actual_failure_path": "家族だけ、支援過剰、未対応の困りごとには本人の拒否・不安が返るが、何度でも無損失で計画へ戻れる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 72,
+    "career_authenticity": 86,
+    "exploit": "select-all",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/LifePlanGame.tsx:21 — 6つの生活課題ごとに対応可能な支援が複数定義されている",
+    "src/q1/LifePlanGame.tsx:45 — 「できることは自分で」など本人の希望を常時表示する",
+    "src/q1/LifePlanGame.tsx:60 — 全生活課題が選択支援のどれかで覆われたかを判定する",
+    "src/q1/LifePlanGame.tsx:63 — foodとhandを含む5件以上の選択を過剰支援として扱う",
+    "src/q1/LifePlanGame.tsx:191 — 家族依存、過剰支援、未対応、成功で本人の反応を分岐させる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=select-all, GQ=72, CA=86",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.198Z"
+}

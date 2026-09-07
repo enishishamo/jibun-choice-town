@@ -1,0 +1,48 @@
+{
+  "game_type": "delay_recover",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "添乗員・旅程管理担当",
+  "current_SCOPE": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_CORE": "影響を踏まえて行動カードを選び、時系列に並べ、指摘を受けて連絡漏れや承認順序を直す",
+  "current_A": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_B": "30分の列車遅延が各予約先へ及ぼす影響を確認し、連絡・変更案・承認・共有の行動カードを選択して時系列に並べる",
+  "current_C": "遅延が見学先、バス、宿へ波及する影響マップと、学校が最終承認者であるという権限上の制約",
+  "current_D": "必要な連絡先と変更案を選び、状況確認を先頭、変更案より後に学校承認、共有を最後に置く対応手順を組み立てる",
+  "current_E": "カードを追加・削除・上下移動し、同じ状況で何度でも判定を再実行する",
+  "actual_first_screen": null,
+  "actual_player_actions": "必要な連絡先と変更案を選び、状況確認を先頭、変更案より後に学校承認、共有を最後に置く対応手順を組み立てる",
+  "actual_feedback": "必要な連絡、変更案、承認、共有または順序が不適切だと個別の指摘を受けて未完了となる。関係先への影響や残り時間などの進行コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "30分の列車遅延が各予約先へ及ぼす影響を確認し、連絡・変更案・承認・共有の行動カードを選択して時系列に並べる",
+  "actual_failure_path": "必要な連絡、変更案、承認、共有または順序が不適切だと個別の指摘を受けて未完了となる。関係先への影響や残り時間などの進行コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 64,
+    "career_authenticity": 73,
+    "exploit": "select-all",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/DelayRecoverGame.tsx:31 — 30分遅延が見学先、バス、宿へ及ぼす三つの影響を表示する",
+    "src/q1/DelayRecoverGame.tsx:43 — プレイヤーはカードを上下に移動して対応順序を変更できる",
+    "src/q1/DelayRecoverGame.tsx:160 — 判定は状況確認、学校連絡、任意の関係先2件以上、任意の変更案1件以上を要求する",
+    "src/q1/DelayRecoverGame.tsx:166 — 変更案後の承認と、末尾での全員共有という順序制約を検査する"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=select-all, GQ=64, CA=73",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.194Z"
+}

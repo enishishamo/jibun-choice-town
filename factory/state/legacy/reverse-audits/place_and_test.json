@@ -1,0 +1,50 @@
+{
+  "game_type": "place_and_test",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "公園の暑さ対策を考える仕事",
+  "current_SCOPE": "街（猛暑）／猛暑の公園",
+  "current_CORE": "地点を観察して対策を置き、試験結果と地点別フィードバックを読み、3地点が改善するまで配置を修正する。",
+  "current_A": "街（猛暑）／猛暑の公園",
+  "current_B": "4地点に暑さ対策を1つずつ配置して試験し、有効な地点を3か所以上つくる配置パズル",
+  "current_C": "公園上の日射・表面温度・風のデータレイヤー、地点別データ、樹木・日よけ・遮熱／保水舗装・ミスト、有効／弱効果の試験結果",
+  "current_D": "レイヤーを切り替えて地点を観察し、対策を配置して試験し、失敗地点の反応を基に再配置する",
+  "current_E": "各地点を随時上書きするか、「ぜんぶ置き直す」で全配置と結果を消して再試行する",
+  "actual_first_screen": null,
+  "actual_player_actions": "レイヤーを切り替えて地点を観察し、対策を配置して試験し、失敗地点の反応を基に再配置する",
+  "actual_feedback": "3地点を冷却できない試験結果は失敗として残り、未改善地点と理由が表示される。ただし資源消費や回数制限はなく、配置を直す以外のコストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "4地点に暑さ対策を1つずつ配置して試験し、有効な地点を3か所以上つくる配置パズル",
+  "actual_failure_path": "3地点を冷却できない試験結果は失敗として残り、未改善地点と理由が表示される。ただし資源消費や回数制限はなく、配置を直す以外のコストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 68,
+    "career_authenticity": 76,
+    "exploit": "brute force",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/ParkHeatGame.tsx:33 — 4地点ごとに日射・表面温度・風と有効な対策集合が固定定義されている",
+    "src/q1/ParkHeatGame.tsx:119 — 冷却成功は配置した部品が地点のgood配列に含まれるかで決まる",
+    "src/q1/ParkHeatGame.tsx:189 — 日射・地面温度・風のレイヤーは任意に開閉でき、未閲覧でも配置と試験を実行できる",
+    "src/q1/ParkHeatGame.tsx:245 — 不成功時は各地点の弱効果または未配置理由が表示される",
+    "src/q1/ParkHeatGame.tsx:273 — 3地点成功でクリアでき、配置済みなら全消去して再試行できる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=brute force, GQ=68, CA=76",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.195Z"
+}

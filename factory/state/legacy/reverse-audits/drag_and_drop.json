@@ -1,0 +1,49 @@
+{
+  "game_type": "drag_and_drop",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "栄養教諭・学校栄養職員",
+  "current_SCOPE": "給食編",
+  "current_CORE": "候補を献立へ入れ、4軸の結果を確認し、資料と照合して別候補へ交換する比較ループが中心である",
+  "current_A": "給食編",
+  "current_B": "調達不能になった副菜を候補料理と交換し、栄養・予算・調達・調理の評価を比較して献立を成立させる",
+  "current_C": "栄養基準、食材価格、旬と調達状況、残食記録、各候補の4軸評価",
+  "current_D": "候補をトレーへ移し、変化した4軸評価と資料を比較しながら、何を優先するか決める",
+  "current_E": "別の候補を何度でもトレーへ入れ直して再確認できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "候補をトレーへ移し、変化した4軸評価と資料を比較しながら、何を優先するか決める",
+  "actual_feedback": "調達不能な料理または栄養不足の料理では確定できず、その場で理由を示されて選び直す。進行差し戻し以外の資源コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "調達不能になった副菜を候補料理と交換し、栄養・予算・調達・調理の評価を比較して献立を成立させる",
+  "actual_failure_path": "調達不能な料理または栄養不足の料理では確定できず、その場で理由を示されて選び直す。進行差し戻し以外の資源コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 78,
+    "career_authenticity": 84,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/MenuGame.tsx:35 — 栄養・予算・調達・調理の値が異なる4候補を定義している",
+    "src/q1/MenuGame.tsx:71 — 栄養、予算、旬・調達、残食記録を参照資料として提供している",
+    "src/q1/MenuGame.tsx:139 — 成立条件は調達1以上かつ栄養1以上で、複数候補が通る",
+    "src/q1/MenuGame.tsx:195 — 調達不能と栄養ゼロを別々に判定し、確定を拒否している",
+    "src/q1/MenuGame.tsx:211 — 成立する組み合わせが一つではないことを画面でも明示している"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=memorize, GQ=78, CA=84",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.200Z"
+}

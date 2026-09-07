@@ -1,0 +1,49 @@
+{
+  "game_type": "move_try",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "理学療法士",
+  "current_SCOPE": "医療編／退院後に自力でトイレへ行けるか確かめる場面",
+  "current_CORE": "動作を試して問題を観察し、工夫を1つ選び、成功するまで選び直して次の固定動作へ進む。",
+  "current_A": "医療編／退院後に自力でトイレへ行けるか確かめる場面",
+  "current_B": "起き上がり、立ち上がり、歩行を固定順で試し、現れた問題に対応する補助具や環境調整を1つ選ぶ",
+  "current_C": "各動作で生じるぐらつき、筋力不足、息切れと、手すり、杖、高さ調整、休憩、練習の用途説明",
+  "current_D": "動作上の問題と各工夫の作用を比較し、その動作を直ちに安全にする工夫を選択する",
+  "current_E": "同じ動作で5つの工夫を何度でも選び直せる",
+  "actual_first_screen": null,
+  "actual_player_actions": "動作上の問題と各工夫の作用を比較し、その動作を直ちに安全にする工夫を選択する",
+  "actual_feedback": "誤った工夫には理由が表示されるが状態悪化や時間損失はなく、正しい選択を押すまで同じ場面に留まるだけ",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "起き上がり、立ち上がり、歩行を固定順で試し、現れた問題に対応する補助具や環境調整を1つ選ぶ",
+  "actual_failure_path": "誤った工夫には理由が表示されるが状態悪化や時間損失はなく、正しい選択を押すまで同じ場面に留まるだけ",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 58,
+    "career_authenticity": 72,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/MoveTryGame.tsx:23 — 3動作と、それぞれに成功する工夫の固定リストが定義されている",
+    "src/q1/MoveTryGame.tsx:38 — 各工夫の用途が資料として明示されている",
+    "src/q1/MoveTryGame.tsx:52 — 配列順の単一ステップで動作を進める固定進行になっている",
+    "src/q1/MoveTryGame.tsx:121 — 選択した工夫が固定リストに含まれるかだけで即時成功を判定する",
+    "src/q1/MoveTryGame.tsx:124 — 誤答は説明表示だけで、選択状態や資源にコストを与えない"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=58, CA=72",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.192Z"
+}

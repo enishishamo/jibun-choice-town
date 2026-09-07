@@ -1,0 +1,50 @@
+{
+  "game_type": "loan_screen",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "日本政策金融公庫の創業融資審査担当者",
+  "current_SCOPE": "商店街・開店編",
+  "current_CORE": "書類を開いて数値と履歴を比較し、審査項目を記入して不足情報だけを面談へ送り、返済計器で借入負担を確かめて承認額を決める。",
+  "current_A": "商店街・開店編",
+  "current_B": "計画書・通帳・見積書を突き合わせて審査項目を○または▲で記入し、金額差を面談で確認した後、返済負担を比較して融資額を決める。",
+  "current_C": "創業計画書v2、4ページの通帳履歴、280万円の工事見積書、月利益9万円、借入額ごとの月返済額を示す返済計器。",
+  "current_D": "自己資金の形成過程、書類間の金額差、売上根拠を判定し、面談回答と返済額対利益を踏まえて250万円または280万円を承認する。",
+  "current_E": "書類を再閲覧して○・▲を何度でも上書きでき、承認前なら返済計器も自由に動かせる。",
+  "actual_first_screen": null,
+  "actual_player_actions": "自己資金の形成過程、書類間の金額差、売上根拠を判定し、面談回答と返済額対利益を踏まえて250万円または280万円を承認する。",
+  "actual_feedback": "照合記入を誤ると面談へ進めず、根拠のある計画を見送ろうとしても拒否される。ただし損失や回数制限はなく、最終的には両承認額が成功になる。",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "計画書・通帳・見積書を突き合わせて審査項目を○または▲で記入し、金額差を面談で確認した後、返済負担を比較して融資額を決める。",
+  "actual_failure_path": "照合記入を誤ると面談へ進めず、根拠のある計画を見送ろうとしても拒否される。ただし損失や回数制限はなく、最終的には両承認額が成功になる。",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 74,
+    "career_authenticity": 84,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/LoanScreenGame.tsx:19 — 通帳は3年間の定期的な入金を4ページで示す。",
+    "src/q1/LoanScreenGame.tsx:49 — 貯蓄判定には通帳最終ページ、金額判定には計画書と見積書双方の閲覧が要求される。",
+    "src/q1/LoanScreenGame.tsx:69 — 金額だけが▲、貯蓄と売上は○でなければ面談へ進めない。",
+    "src/q1/LoanScreenGame.tsx:139 — 計画書は借入希望250万円と月利益9万円を提示し、見積書は280万円を提示する。",
+    "src/q1/LoanScreenGame.tsx:204 — 返済計器は220～310万円の返済額を利益と比較表示する。",
+    "src/q1/LoanScreenGame.tsx:218 — 250万円と280万円の双方が承認可能で、異なる結果文と後続予算を生む。"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=memorize, GQ=74, CA=84",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.200Z"
+}

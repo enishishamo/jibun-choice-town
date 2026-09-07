@@ -43,6 +43,24 @@ const manifestPath = worldArg.endsWith(".json")
   : path.join(ROOT, `factory/projects/${worldArg}/art-manifest.json`);
 const confirm = flag("--confirm");
 const force = flag("--force");
+
+// 2026-09-08 (Q1 Factory Phase 0 audit G10): this script is the one remaining
+// pay-per-use path in the repo and contradicts CLAUDE.md §8 / factory/harness/
+// art/README.md ("従量課金 API 禁止"); the canonical free path is
+// factory/harness/art/art-loop.mjs (codex_imagegen) with human_boundary as the
+// fallback. A prose HUMAN_REQUIRED stop is not enforcement. Dry-run stays
+// allowed (it calls no API); any --confirm run is refused unless a Human
+// Decision is named explicitly via an environment variable whose value is
+// the gate-log entry id that authorized the spend.
+if (confirm && !process.env.JC_PAID_ART_HUMAN_DECISION) {
+  console.error(
+    "REFUSED: --confirm would call the paid OpenAI Images API. Paid APIs are forbidden by policy " +
+    "(CLAUDE.md §8, factory/harness/art/README.md). Use `node factory/harness/art/art-loop.mjs run --request <req.json>` " +
+    "(codex_imagegen, subscription-included) or its human_boundary package instead. To override, a Human Decision must " +
+    "be recorded in factory/state/product-ideas/gate-log.md and its entry id passed as JC_PAID_ART_HUMAN_DECISION=<entry-id>.",
+  );
+  process.exit(3);
+}
 const useRefs = CONFIG.useReferenceImages && !flag("--no-refs");
 const onlyIds = opt("--ids", "").split(",").filter(Boolean);
 const limit = Number(opt("--limit", CONFIG.maxImagesPerRun));

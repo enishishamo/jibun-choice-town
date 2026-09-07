@@ -1,0 +1,49 @@
+{
+  "game_type": "venue_layout",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "会場をつくる仕事",
+  "current_SCOPE": "イベント編／なんかイベントをやることになった！",
+  "current_CORE": "設備をマスへ置き、試行結果から視認性・通路・静けさの問題を読み、位置を修正する",
+  "current_A": "イベント編／なんかイベントをやることになった！",
+  "current_B": "3×3会場に4設備を配置し、ステージの視認性、入口の通行、休憩場所の静けさを同時に満たす",
+  "current_C": "入口位置と会場の奥行き、ステージ・店舗・休憩場所に関する配置規則、各設備の性質、試行後の問題点表示",
+  "current_D": "設備をドラッグまたはタップで配置・移動し、複数の空間条件を照合してレイアウトを修正する",
+  "current_E": "問題の設備を持ち上げて別マスへ置き直し、何度でも試せる",
+  "actual_first_screen": null,
+  "actual_player_actions": "設備をドラッグまたはタップで配置・移動し、複数の空間条件を照合してレイアウトを修正する",
+  "actual_feedback": "4設備を置いても規則違反があれば設営へ進めず、具体的な問題点が返る。配置は保持され、累積コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "3×3会場に4設備を配置し、ステージの視認性、入口の通行、休憩場所の静けさを同時に満たす",
+  "actual_failure_path": "4設備を置いても規則違反があれば設営へ進めず、具体的な問題点が返る。配置は保持され、累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 69,
+    "career_authenticity": 76,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/VenueLayoutGame.tsx:23 — 入口側と奥側を持つ固定3×3グリッドが定義されている",
+    "src/q1/VenueLayoutGame.tsx:38 — 配置操作が一設備一マスのplaced状態を実際に変更する",
+    "src/q1/VenueLayoutGame.tsx:64 — ステージ、入口通路、休憩場所の3条件から成否を計算する",
+    "src/q1/VenueLayoutGame.tsx:80 — 資料が入口、ステージ、休憩場所の配置原則を提示する",
+    "src/q1/VenueLayoutGame.tsx:181 — 試行後に違反している条件が個別表示される"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=69, CA=76",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.197Z"
+}

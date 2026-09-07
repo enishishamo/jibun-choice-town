@@ -1,0 +1,49 @@
+{
+  "game_type": "plan_coach",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "商工会議所の経営指導員",
+  "current_SCOPE": "商店街・開店編",
+  "current_CORE": "計画書の欄を質問し、得た回答を審査観点と比較して弱点を指摘し、改善案を選ぶ。考えどころは、単に数字が小さいか大きいかではなく、その根拠や漏れを判断する点にある。",
+  "current_A": "商店街・開店編",
+  "current_B": "創業計画書の各欄について面談し、資料の観点と回答を照合して2つの弱点を特定し、それぞれに適切な改善助言を選ぶ。",
+  "current_C": "創業計画書6欄、本人への面談回答、売上算定・経費・自己資金に関するチェック観点カード。",
+  "current_D": "確認したい欄を質問し、その回答と計画書を観点カードに照らして弱点を指摘し、事業の特徴を損なわない直し方を選ぶ。",
+  "current_E": "同じ欄や助言を回数制限なく選び直せる。閉じた助言画面も弱点欄から再度開ける。",
+  "actual_first_screen": null,
+  "actual_player_actions": "確認したい欄を質問し、その回答と計画書を観点カードに照らして弱点を指摘し、事業の特徴を損なわない直し方を選ぶ。",
+  "actual_feedback": "誤った欄の指摘や不適切な助言は拒否されて進行しないが、時間・回数・信用などの累積コストはない。",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "創業計画書の各欄について面談し、資料の観点と回答を照合して2つの弱点を特定し、それぞれに適切な改善助言を選ぶ。",
+  "actual_failure_path": "誤った欄の指摘や不適切な助言は拒否されて進行しないが、時間・回数・信用などの累積コストはない。",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 62,
+    "career_authenticity": 76,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/PlanCoachGame.tsx:22 — 6つの計画欄と、固定された2つの弱点および面談回答が定義されている。",
+    "src/q1/PlanCoachGame.tsx:75 — 未質問欄は指摘できず、非弱点の指摘は拒否される。",
+    "src/q1/PlanCoachGame.tsx:95 — 助言はgood属性で判定され、誤答には理由付きフィードバックが返る。",
+    "src/q1/PlanCoachGame.tsx:189 — 売上、経費、自己資金を判断する仕事固有の観点カードが提示される。",
+    "src/q1/PlanCoachGame.tsx:203 — 2件すべてに正しい助言を出した場合だけ書き直しへ進める。"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=memorize, GQ=62, CA=76",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.193Z"
+}

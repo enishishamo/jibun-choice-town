@@ -1,0 +1,54 @@
+{
+  "game_type": "line_debug",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "工場のラインをよくする仕事",
+  "current_SCOPE": "物価高編／アイス工場",
+  "current_CORE": "固定演出を一度見て、表示された工程を選び、任意の調整を選んで固定の改善結果を見る一本道",
+  "current_A": "物価高編／アイス工場",
+  "current_B": "ラインを動かして停止箇所を観察し、工程データからボトルネックを選び、設備調整を選択して再稼働結果を比較する",
+  "current_C": "6工程の処理数、停止時間、滞留数、ロス、ライン上の詰まり表示、および3種類の設備調整案",
+  "current_D": "ラインを起動し、工程を開いてデータを比較し、原因工程を選んで一つ以上の調整案を選択し再稼働する",
+  "current_E": "原因工程は無制限に選び直せる。調整後は必ず成功するため、修理結果を受けた再調整は存在しない",
+  "actual_first_screen": null,
+  "actual_player_actions": "ラインを起動し、工程を開いてデータを比較し、原因工程を選んで一つ以上の調整案を選択し再稼働する",
+  "actual_feedback": "誤った原因工程を選ぶと説明が出るだけで進行や成績へのコストはない。調整段階ではどの案を一つ選んでも必ず完全修復する",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "ラインを動かして停止箇所を観察し、工程データからボトルネックを選び、設備調整を選択して再稼働結果を比較する",
+  "actual_failure_path": "誤った原因工程を選ぶと説明が出るだけで進行や成績へのコストはない。調整段階ではどの案を一つ選んでも必ず完全修復する",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 39,
+    "career_authenticity": 57,
+    "exploit": "select-all",
+    "C_required": false,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/FactoryLineGame.tsx:20 — 異常データは毎回包装工程s5に固定されている",
+    "src/q1/FactoryLineGame.tsx:37 — ボトルネックの正解IDがs5へ固定されている",
+    "src/q1/FactoryLineGame.tsx:62 — 初回と再実行はいずれも3.2秒後に自動で次段階へ進む",
+    "src/q1/FactoryLineGame.tsx:103 — 包装工程にjamクラスと警告記号が表示され、データを比較せず場所を特定できる",
+    "src/q1/FactoryLineGame.tsx:167 — どれか一工程のデータを見るだけで全工程の原因選択肢が解禁される",
+    "src/q1/FactoryLineGame.tsx:176 — 不正解は説明表示だけで、選択コストや状態悪化がない",
+    "src/q1/FactoryLineGame.tsx:209 — 調整案は複数選択可能",
+    "src/q1/FactoryLineGame.tsx:229 — 一つ以上選ぶことだけが条件で、選択内容を検証せずfixedをtrueにする",
+    "src/q1/FactoryLineGame.tsx:70 — 成功結果は常に400個から460個、停止12分から3分、ロス30個から10個へ固定"
+  ],
+  "classification": "AE_REBUILD",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "3つの調整候補を区別する観測情報がゲーム内に存在しない（C→Dの因果自体が欠落）— A-EのC/D定義から作り直す必要",
+  "classification_evidence": "factory/projects/q1-improve-line-debug/round2-review.result.json",
+  "priority_reasons": [
+    "severe_c_d_failure",
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.188Z"
+}

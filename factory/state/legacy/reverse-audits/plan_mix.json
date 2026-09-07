@@ -1,0 +1,53 @@
+{
+  "game_type": "plan_mix",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "イベントを企画する仕事",
+  "current_SCOPE": "イベント編／打ち合わせ（からっぽの広場）",
+  "current_CORE": "企画を組み合わせ、時間と来場者適性を見て検証し、超過や不足のフィードバックに応じて構成を修正する",
+  "current_A": "イベント編／打ち合わせ（からっぽの広場）",
+  "current_B": "7つの企画候補を組み合わせ、来場者適合、ステージ時間、会場制限、終日コンテンツの有無を満たすプランを作る",
+  "current_C": "家族連れと大人という想定来場者、火気禁止とステージ・キッチンカー条件、ステージ150分という時間枠、各企画の所要時間と対象適性",
+  "current_D": "企画を追加・削除し、時間と対象別評価を比較してプランを検証し、指摘された不足を修正する",
+  "current_E": "不成立メッセージを受けたまま候補を追加・削除して何度でも再検証できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "企画を追加・削除し、時間と対象別評価を比較してプランを検証し、指摘された不足を修正する",
+  "actual_feedback": "時間超過、子ども向け不足、終日企画不足、火気禁止への抵触で不成立になるが、予算・手数・評判などのコストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "7つの企画候補を組み合わせ、来場者適合、ステージ時間、会場制限、終日コンテンツの有無を満たすプランを作る",
+  "actual_failure_path": "時間超過、子ども向け不足、終日企画不足、火気禁止への抵触で不成立になるが、予算・手数・評判などのコストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 68,
+    "career_authenticity": 74,
+    "exploit": "memorize",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/PlanEventGame.tsx:25 — 各企画に固定の時間、子ども適性、大人適性、説明が設定されている",
+    "src/q1/PlanEventGame.tsx:33 — キャンプファイヤーだけがblockedとして選択前に拒否される",
+    "src/q1/PlanEventGame.tsx:44 — ステージ時間は毎回150分に固定される",
+    "src/q1/PlanEventGame.tsx:57 — 来場者、会場、時間の3資料が用意されている",
+    "src/q1/PlanEventGame.tsx:145 — 選択中に子ども・大人評価がリアルタイム表示される",
+    "src/q1/PlanEventGame.tsx:158 — 火気企画は資料を読んでいなくてもコードが選択を拒否して答えを教える",
+    "src/q1/PlanEventGame.tsx:177 — 資料は任意表示で、閲覧済み状態は成功条件に使われない",
+    "src/q1/PlanEventGame.tsx:183 — 成功判定は150分以下、子ども適性3以上、終日企画ありの3条件",
+    "src/q1/PlanEventGame.tsx:195 — 大人適性は表示されるが成功条件には含まれない"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=memorize, GQ=68, CA=74",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.195Z"
+}

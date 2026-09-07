@@ -1,0 +1,51 @@
+{
+  "game_type": "sort_out",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "食品残渣を選別し肥料化するリサイクル工場作業員",
+  "current_SCOPE": "給食編",
+  "current_CORE": "道具を選び、異物へ適用し、取れたかまたは取れない理由を確認して次の道具や対象へ切り替える",
+  "current_A": "給食編",
+  "current_B": "ライン上の異物を観察し、磁選機、ふるい、手選別の性質を使い分けて食品だけの状態にする",
+  "current_C": "工場の受入規則、異物の材質と大きさ、磁選機・ふるい・手選別の機能、誤った道具を使った際の結果",
+  "current_D": "道具を持ち替え、各異物の材質や大きさを観察して適切な道具を適用する",
+  "current_E": "道具を持ち替えて同じ異物を何度でも再選別でき、正しく除去した異物は消える",
+  "actual_first_screen": null,
+  "actual_player_actions": "道具を持ち替え、各異物の材質や大きさを観察して適切な道具を適用する",
+  "actual_feedback": "不適切な道具では異物を除去できず理由が表示されるが、異物や資源は失われず即座に別の道具を試せる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "ライン上の異物を観察し、磁選機、ふるい、手選別の性質を使い分けて食品だけの状態にする",
+  "actual_failure_path": "不適切な道具では異物を除去できず理由が表示されるが、異物や資源は失われず即座に別の道具を試せる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 66,
+    "career_authenticity": 76,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/RecycleGame.tsx:26 — 金属スプーン、大きなビニール袋、プラスチックスプーンに個別の正解道具を設定している",
+    "src/q1/RecycleGame.tsx:59 — 磁石は鉄、網は大きさ、手選別は目視という道具特性を示している",
+    "src/q1/RecycleGame.tsx:74 — 食品以外を受け入れない工場規則と異物混入の影響を資料化している",
+    "src/q1/RecycleGame.tsx:140 — 残っている異物を個別に選択でき、処理順は固定されていない",
+    "src/q1/RecycleGame.tsx:149 — 道具が対象の正解値と異なる場合は除去せず、理由を返す",
+    "src/q1/RecycleGame.tsx:153 — 正しい道具の操作だけが異物を除去して状態を変える",
+    "src/q1/RecycleGame.tsx:188 — 全異物を除去した場合だけ発酵工程へ進める"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=66, CA=76",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.194Z"
+}

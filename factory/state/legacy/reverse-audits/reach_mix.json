@@ -1,0 +1,49 @@
+{
+  "game_type": "reach_mix",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "広報・PRの仕事",
+  "current_SCOPE": "イベント編／なんかイベントをやることになった！",
+  "current_CORE": "媒体の特性を開いて確認し、組み合わせを変更しながら、手間と3対象への到達のバランスを整える",
+  "current_A": "イベント編／なんかイベントをやることになった！",
+  "current_B": "媒体カードの到達特性と手間を比較し、合計手間5以内で3つの対象グループすべての到達基準を満たす組み合わせを作る",
+  "current_C": "届けたい3グループと優先度、手間上限、各媒体の対象別到達値・特徴・コスト、選択中の到達メーター",
+  "current_D": "媒体の詳細を確認し、予算内で相互補完する媒体を選択・解除して、対象別の不足を調整する",
+  "current_E": "同じ画面で媒体を解除・追加し、何度でも再判定できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "媒体の詳細を確認し、予算内で相互補完する媒体を選択・解除して、対象別の不足を調整する",
+  "actual_feedback": "予算超過または対象別到達不足で確定できず、不足理由が表示される。進行差し戻しはあるが、時間・得点などの累積コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "媒体カードの到達特性と手間を比較し、合計手間5以内で3つの対象グループすべての到達基準を満たす組み合わせを作る",
+  "actual_failure_path": "予算超過または対象別到達不足で確定できず、不足理由が表示される。進行差し戻しはあるが、時間・得点などの累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 72,
+    "career_authenticity": 82,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/PromoGame.tsx:14 — 3対象それぞれに必要到達値が設定されている",
+    "src/q1/PromoGame.tsx:30 — 6媒体に異なる対象別到達値と手間が定義されている",
+    "src/q1/PromoGame.tsx:51 — 合計手間の上限が5に固定されている",
+    "src/q1/PromoGame.tsx:151 — 媒体の選択・解除がpicked状態を変更する",
+    "src/q1/PromoGame.tsx:184 — 予算超過と対象別到達不足が成功を阻止する"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=72, CA=82",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.198Z"
+}

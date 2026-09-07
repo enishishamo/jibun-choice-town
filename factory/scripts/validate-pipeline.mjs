@@ -7,6 +7,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateReviewEvidence } from "../harness/review-evidence.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const world = process.argv[2];
@@ -39,6 +40,27 @@ if (existsSync(P(`factory/harness/gameplay-qa-${alias}.mjs`))) {
 
 // binding gate: find the recorded impl review evidence and RE-READ the verdict
 // any iteration number counts — the LATEST PASS wins (reviews iterate)
+//
+// 2026-09-08 (Q1 Factory Phase 0 audit G10): this used to re-implement its
+// own PASS/blockers/high check, i.e. a second definition of "valid review
+// evidence" next to factory/harness/review-evidence.mjs — exactly the
+// drift that module exists to prevent. Now the shared validator decides;
+// this file only adds the two-axis >= 60 floor (game-critic-v2.md). Older
+// files that are a bare verdict object (no ok/status wrapper, written by
+// early loop runs) are still accepted but reported as legacy_bare_verdict
+// so the weaker provenance is visible, never silent.
+let bindingLegacyBare = false;
+function bindingPass(d) {
+  const wrapped = d && d.verdict && typeof d.verdict === "object";
+  const candidate = wrapped ? d : { ok: true, status: "OK", verdict: d, _legacy_bare_verdict: true };
+  const r = validateReviewEvidence(candidate);
+  if (!r.ok || r.verdict !== "PASS") return false;
+  const v = candidate.verdict;
+  if (!(typeof v.career_authenticity_score === "number" && typeof v.game_quality_score === "number")) return false;
+  if (!(v.career_authenticity_score >= 60 && v.game_quality_score >= 60)) return false;
+  if (!wrapped) bindingLegacyBare = true;
+  return true;
+}
 const stateDir = P("factory/state");
 const implCandidates = readdirSync(stateDir)
   .filter((f) => f.startsWith(`${alias}-impl-review-`) && f.endsWith(".json"))
@@ -49,12 +71,7 @@ for (const f of implCandidates) {
   if (!existsSync(f)) continue;
   try {
     const d = JSON.parse(readFileSync(f, "utf8"));
-    const v = d.verdict && typeof d.verdict === "object" ? d.verdict : d;
-    if (v.verdict === "PASS" && (v.blockers || []).length === 0 && (v.high || []).length === 0
-        && typeof v.career_authenticity_score === "number" && typeof v.game_quality_score === "number"
-        && v.career_authenticity_score >= 60 && v.game_quality_score >= 60) {
-      bindingOk = true; bindingWhere = f; break;
-    }
+    if (bindingPass(d)) { bindingOk = true; bindingWhere = f; break; }
   } catch { /* unreadable = not evidence */ }
 }
 if (!bindingOk) {
@@ -76,12 +93,7 @@ if (!bindingOk) {
       for (const rf of runFiles.filter((x) => x.startsWith(runId + ".review-")).sort().reverse()) {
         try {
           const d = JSON.parse(readFileSync(join(runsDir, rf), "utf8"));
-          const v = d.verdict && typeof d.verdict === "object" ? d.verdict : d;
-          if (v.verdict === "PASS" && (v.blockers || []).length === 0 && (v.high || []).length === 0
-              && typeof v.career_authenticity_score === "number" && typeof v.game_quality_score === "number"
-              && v.career_authenticity_score >= 60 && v.game_quality_score >= 60) {
-            bindingOk = true; bindingWhere = join("factory/state/runs", rf); break outer;
-          }
+          if (bindingPass(d)) { bindingOk = true; bindingWhere = join("factory/state/runs", rf); break outer; }
         } catch { /* skip */ }
       }
     }
@@ -125,4 +137,4 @@ if (errs.length) {
   console.log(JSON.stringify({ world, ok: false, errors: errs }, null, 1));
   process.exit(1);
 }
-console.log(JSON.stringify({ world, ok: true, binding_review: bindingWhere?.replace(ROOT + "/", "") }, null, 1));
+console.log(JSON.stringify({ world, ok: true, binding_review: bindingWhere?.replace(ROOT + "/", ""), legacy_bare_verdict: bindingLegacyBare }, null, 1));

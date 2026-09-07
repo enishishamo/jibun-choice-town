@@ -1,0 +1,49 @@
+{
+  "game_type": "bus_ops",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "貸切バスの運行管理者",
+  "current_SCOPE": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_CORE": "班と運転士を配車し、経路と休憩を設定し、定員・休憩・通行止めのフィードバックを受けて修正する",
+  "current_A": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_B": "5班と3人の運転士を3台へ配置した後、各車の経路と必要な休憩を選び、通行止めに遭った車を再計画する",
+  "current_C": "1台2班までという定員、山道の時間帯通行止め、長時間運転時の休憩という運行資料",
+  "current_D": "班数が定員内になるよう配車し、各バスへ運転士を置き、山道か海沿いかを選択して海沿いには休憩を設定する",
+  "current_E": "エラー表示後も同じ状態で修正でき、山道失敗後は経路画面へ戻って海沿いを選び直す",
+  "actual_first_screen": null,
+  "actual_player_actions": "班数が定員内になるよう配車し、各バスへ運転士を置き、山道か海沿いかを選択して海沿いには休憩を設定する",
+  "actual_feedback": "定員超過と休憩不足は先へ進めず、山道を選ぶと出発後に必ず通行止めで経路選択へ戻される。時間、信用、到着遅延などの累積コストはない",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "5班と3人の運転士を3台へ配置した後、各車の経路と必要な休憩を選び、通行止めに遭った車を再計画する",
+  "actual_failure_path": "定員超過と休憩不足は先へ進めず、山道を選ぶと出発後に必ず通行止めで経路選択へ戻される。時間、信用、到着遅延などの累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 43,
+    "career_authenticity": 55,
+    "exploit": "memorize",
+    "C_required": false,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/BusOpsGame.tsx:19 — 各バスの容量は一律2班で、班ごとの人数差はない",
+    "src/q1/BusOpsGame.tsx:60 — 資料は定員2班、山道通行止め、長時間時の休憩を明示しているが開封履歴は検査していない",
+    "src/q1/BusOpsGame.tsx:69 — run状態では山道を選んだバスがある限りhitClosedとなり、時間帯にかかわらず通行止めになる",
+    "src/q1/BusOpsGame.tsx:120 — 海沿いルートを選ぶと休憩が必須になり、不足中は出発処理がreturnする"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "海沿い全選択＋先頭の出発時刻で資料なしに満点／3択総当たり — 選択構造の再翻訳",
+  "classification_evidence": "factory/projects/q1-improve-bus-ops/round2-review.result.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.190Z"
+}

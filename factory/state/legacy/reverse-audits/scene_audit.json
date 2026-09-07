@@ -1,0 +1,51 @@
+{
+  "game_type": "scene_audit",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "保健所の食品衛生監視員",
+  "current_SCOPE": "商店街・開店編",
+  "current_CORE": "現場の地点を観察し、見えた構造を基準と比較して○・✗を記入し、判定結果を受けて見直す。紛らわしい適合設備を外見だけで不合格にしないことが考えどころになる。",
+  "current_A": "商店街・開店編",
+  "current_B": "店舗内の7地点を観察して施設基準と比較し、各項目へ○または✗を記入した後、不備に改善指示を出して再検査と書類確認を行う。",
+  "current_C": "食品営業施設のチェックリスト、各地点で見える設備の具体的特徴、改善後の状態、食品衛生責任者の講習修了証。",
+  "current_D": "全地点を訪問し、古さや新しさに惑わされず構造上の適否を判定し、不備に対応する是正方法を選んで再確認する。",
+  "current_E": "現場を再閲覧して○・✗を上書きし、誤った改善指示もその場で何度でも選び直せる。",
+  "actual_first_screen": null,
+  "actual_player_actions": "全地点を訪問し、古さや新しさに惑わされず構造上の適否を判定し、不備に対応する是正方法を選んで再確認する。",
+  "actual_feedback": "未訪問・未記入・誤判定では検査を通過できず、誤った改善指示も拒否される。ただし開店遅延などの実コストは発生せず、無制限に修正できる。",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "店舗内の7地点を観察して施設基準と比較し、各項目へ○または✗を記入した後、不備に改善指示を出して再検査と書類確認を行う。",
+  "actual_failure_path": "未訪問・未記入・誤判定では検査を通過できず、誤った改善指示も拒否される。ただし開店遅延などの実コストは発生せず、無制限に修正できる。",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 73,
+    "career_authenticity": 83,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/SceneAuditGame.tsx:25 — 7地点には古い適合設備、レバー式水栓、固定不備、抽選候補が混在する。",
+    "src/q1/SceneAuditGame.tsx:69 — 古い手洗いは固定不備で、ゴミ箱または食器棚の一方がランダムに追加される。",
+    "src/q1/SceneAuditGame.tsx:90 — 全地点の訪問と全項目の記入が必須で、実際の不備集合との不一致件数が返される。",
+    "src/q1/SceneAuditGame.tsx:158 — 区画、水栓、2槽シンク、フタ、扉、トイレ専用手洗いの施設基準が常時表示される。",
+    "src/q1/SceneAuditGame.tsx:171 — 地点を訪問して観察文を見なければ○・✗を記入できない。",
+    "src/q1/SceneAuditGame.tsx:198 — 正しく判定した不備だけに改善指示を出し、その後に再検査と書類確認へ進む。"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=73, CA=83",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "major_factual_problem"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.199Z"
+}

@@ -50,6 +50,7 @@ one-line summaries below staying accurate:
 | QA checklist (superseded for game-scoring by `game-critic-v2.md`) | `qa-rules.md` |
 | Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) | `art-style.md`, `visual-design-system.md` |
 | Research sourcing rules | `research-rules.md` |
+| **Q1 Autonomous Game Factory** — design stages (research→CORE/SCOPE→A-E→seeds≥3→C compression→translations≥3→first-5-seconds→review), failure→stage routing, REPAIR(1)/REDESIGN(2) budgets, staleness, triggers/WIP, legacy reverse-audit queue, real-user evidence routing. Entry points: `factory/harness/q1-trigger.mjs`, `q1-pipeline.mjs`, `q1-legacy-audit.mjs`; rules-as-code in `q1-factory-schema.mjs`; self-test `q1-factory-selftest.mjs` | `q1-autonomous-factory.md` |
 
 ### Conflict resolution order
 

@@ -1,0 +1,51 @@
+{
+  "game_type": "tenant_match",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "商店街の空き店舗対策に関わる仕事",
+  "current_SCOPE": "商店街・開店編",
+  "current_CORE": "希望者と物件を比較して配置し、所有者へ条件を提案し、具体的な拒否理由を受けて組み合わせを調整する",
+  "current_A": "商店街・開店編",
+  "current_B": "出店希望者の要望、物件設備、既存業種、所有者の意向を比較して入居先を決め、元食堂の所有者へ契約条件を提案する",
+  "current_C": "希望者の設備・家賃要望、3物件の広さ・水回り・所有者意向、通りの既存業種構成、元食堂所有者の長期賃貸と値下げへの不安",
+  "current_D": "希望者と物件の適合を比較し、貸さない所有者を除外し、水回りが必要な定食屋を元食堂へ置き、所有者の不安に対する契約条件とA物件の業種を選ぶ",
+  "current_E": "拒否理由を読んで候補を選び直せるほか、全配置を解除して即座に再試行できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "希望者と物件の適合を比較し、貸さない所有者を除外し、水回りが必要な定食屋を元食堂へ置き、所有者の不安に対する契約条件とA物件の業種を選ぶ",
+  "actual_feedback": "貸す意思のないC、水回りを生かさないB配置、予算に合わない定食屋のA配置、不適切な契約条件は理由付きで拒否される。交渉機会や期限を失うことはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "出店希望者の要望、物件設備、既存業種、所有者の意向を比較して入居先を決め、元食堂の所有者へ契約条件を提案する",
+  "actual_failure_path": "貸す意思のないC、水回りを生かさないB配置、予算に合わない定食屋のA配置、不適切な契約条件は理由付きで拒否される。交渉機会や期限を失うことはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 74,
+    "career_authenticity": 82,
+    "exploit": "brute force",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/TenantMatchGame.tsx:15 — 希望者ごとに水回り、家賃上限、商店街内の業種重複という異なる要望が設定されている",
+    "src/q1/TenantMatchGame.tsx:28 — 各物件に設備、家賃、貸出意思、元食堂所有者の具体的な不安が設定されている",
+    "src/q1/TenantMatchGame.tsx:79 — C物件とB物件の不適合配置は即座に理由付きで拒否されるが、カルテ開封は要求されない",
+    "src/q1/TenantMatchGame.tsx:117 — 元食堂ではkeepだけ失敗し、termとrentupの二つが成立するため資料だけで単一解にはならない",
+    "src/q1/TenantMatchGame.tsx:129 — A物件は雑貨屋とパン屋のどちらでも成功し、選択内容をlocalStorageへ保存する",
+    "src/q1/TenantMatchGame.tsx:152 — 成功後に契約条件の負担と、新業種誘致またはパン屋同士の競争という異なる結果を表示する"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=brute force, GQ=74, CA=82",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.200Z"
+}

@@ -1,0 +1,51 @@
+{
+  "game_type": "allocate_and_forecast",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "水資源の管理・調整に関わる仕事",
+  "current_SCOPE": "街（猛暑）／ダム・水の施設",
+  "current_CORE": "降雨時期と貯水予測を見て3部門の利用率を調整し、7日進め、貯水率と影響を確認して次週の配分を決める。",
+  "current_A": "街（猛暑）／ダム・水の施設",
+  "current_B": "家庭・農業・工業への水配分を10%刻みで設定し、3週間後の雨まで貯水率を危険水準に落とさず維持する資源配分シミュレーション",
+  "current_C": "現在と予測貯水率、履歴、3週間後までの降雨予測、3部門の基礎消費量、配分を絞った際の社会的影響文",
+  "current_D": "3部門の利用率を調整し、7日進めて貯水率と各部門への影響を観察しながら雨までの配分を決める",
+  "current_E": "危険水準到達後に「今日からやり直す」で貯水率・週・履歴・失敗履歴を初期化する。利用率設定は初期化されない",
+  "actual_first_screen": null,
+  "actual_player_actions": "3部門の利用率を調整し、7日進めて貯水率と各部門への影響を観察しながら雨までの配分を決める",
+  "actual_feedback": "貯水率20%以下に一度でも落ちるとhitCriticalが永続し、その試行では成功不能になる。ただし明示的な失敗画面はなく、進行を続けられる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "家庭・農業・工業への水配分を10%刻みで設定し、3週間後の雨まで貯水率を危険水準に落とさず維持する資源配分シミュレーション",
+  "actual_failure_path": "貯水率20%以下に一度でも落ちるとhitCriticalが永続し、その試行では成功不能になる。ただし明示的な失敗画面はなく、進行を続けられる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 54,
+    "career_authenticity": 66,
+    "exploit": "select-all",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/WaterGame.tsx:22 — 家庭・農業・工業には異なる消費量と制限時の影響文が定義される",
+    "src/q1/WaterGame.tsx:58 — 3部門の利用率は初期100%、貯水率は63%から始まる",
+    "src/q1/WaterGame.tsx:66 — 大雨は固定で3週目に到来する",
+    "src/q1/WaterGame.tsx:70 — 週消費量は各部門の利用率に比例し、最低10%なら大幅に抑えられる",
+    "src/q1/WaterGame.tsx:73 — 7日進行で消費を引き、3週目以降は毎週22ポイントの雨を加える",
+    "src/q1/WaterGame.tsx:83 — 成功判定は雨到来、貯水率25%超、一度も20%以下でないことだけで、部門影響を含まない"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=select-all, GQ=54, CA=66",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.192Z"
+}

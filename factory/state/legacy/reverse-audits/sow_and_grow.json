@@ -1,0 +1,51 @@
+{
+  "game_type": "sow_and_grow",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "農家・生産者",
+  "current_SCOPE": "給食編",
+  "current_CORE": "品種をまき、月を進めて結果を見て、失敗ならリセットして別品種を試すループである",
+  "current_A": "給食編",
+  "current_B": "注文時期、播種適期、生育日数、耐暑性を照合して品種を選び、時間を進め、乾燥時に灌水して収穫する",
+  "current_C": "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性",
+  "current_D": "品種を畑へまき、生育結果を観察し、必要時に灌水し、失敗なら畑をリセットして別品種を試す",
+  "current_E": "失敗画面のリセットボタンで品種選択へ戻り、別の種を試す",
+  "actual_first_screen": null,
+  "actual_player_actions": "品種を畑へまき、生育結果を観察し、必要時に灌水し、失敗なら畑をリセットして別品種を試す",
+  "actual_feedback": "不適切な品種は発芽失敗または11月時点の生育不足となり、畑をリセットして最初から品種を選び直す",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "注文時期、播種適期、生育日数、耐暑性を照合して品種を選び、時間を進め、乾燥時に灌水して収穫する",
+  "actual_failure_path": "不適切な品種は発芽失敗または11月時点の生育不足となり、畑をリセットして最初から品種を選び直す",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 52,
+    "career_authenticity": 72,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/FarmGame.tsx:23 — 7〜8月播種で暑さに強い品種、秋播種品種、春播種で暑さに弱い品種を明示している",
+    "src/q1/FarmGame.tsx:30 — 各品種の生育結果は固定タイムラインで定義されている",
+    "src/q1/FarmGame.tsx:75 — 注文時期、猛暑予報、発芽適温、土壌状態を資料として示す",
+    "src/q1/FarmGame.tsx:101 — 選択品種だけでタイムライン、失敗、灌水必要性が決まる",
+    "src/q1/FarmGame.tsx:159 — 失敗後は畑をリセットして別の種を試す",
+    "src/q1/FarmGame.tsx:173 — 正解品種の乾燥場面では灌水ボタンだけが進行手段になる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=false, exploit=memorize, GQ=52, CA=72",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "severe_c_d_failure",
+    "answer_leak"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.191Z"
+}

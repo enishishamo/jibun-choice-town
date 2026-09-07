@@ -1,0 +1,50 @@
+{
+  "game_type": "crowd_flow",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "雑踏警備の仕事",
+  "current_SCOPE": "イベント編／なんかイベントをやることになった！",
+  "current_CORE": "混雑地点を観察し、原因に合う誘導道具を配置し、流れの変化と失敗理由を見て修正する",
+  "current_A": "イベント編／なんかイベントをやることになった！",
+  "current_B": "3地点の混雑原因を観察し、柵・方向案内・案内図・コーンから地点に合う対策を配置して全地点の混雑を解消する",
+  "current_C": "地点ごとの混雑度と詰まりの理由、4種類の誘導道具の性質、試行後の地点別混雑・誤配置フィードバック",
+  "current_D": "各地点を調査し、原因と道具の機能を比較して配置し、流れの変化を確認して置き直す",
+  "current_E": "道具を別地点へ上書き配置するか全配置を消去し、何度でも再確認できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "各地点を調査し、原因と道具の機能を比較して配置し、流れの変化を確認して置き直す",
+  "actual_feedback": "不適切または未配置の地点は混雑したままで完了できず、道具が効かなかった理由が表示される。事故、時間経過、資源消費などの累積コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "3地点の混雑原因を観察し、柵・方向案内・案内図・コーンから地点に合う対策を配置して全地点の混雑を解消する",
+  "actual_failure_path": "不適切または未配置の地点は混雑したままで完了できず、道具が効かなかった理由が表示される。事故、時間経過、資源消費などの累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 66,
+    "career_authenticity": 75,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/CrowdFlowGame.tsx:31 — 3地点に異なる混雑原因、有効道具、誤配置メッセージが定義されている",
+    "src/q1/CrowdFlowGame.tsx:71 — 柵・方向案内・案内図・コーンに異なる人流機能が設定されている",
+    "src/q1/CrowdFlowGame.tsx:86 — 配置道具が地点のfix一覧に含まれる場合だけ混雑度が0になる",
+    "src/q1/CrowdFlowGame.tsx:155 — 道具配置または地点観察がplaced・looked状態を変更する",
+    "src/q1/CrowdFlowGame.tsx:190 — 確認後、未解決地点ごとに誤配置の理由が表示される",
+    "src/q1/CrowdFlowGame.tsx:205 — 全地点が解消されるまで完了操作へ進めない"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=66, CA=75",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.195Z"
+}

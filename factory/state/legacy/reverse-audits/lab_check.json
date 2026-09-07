@@ -1,0 +1,52 @@
+{
+  "game_type": "lab_check",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "臨床検査技師",
+  "current_SCOPE": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_CORE": "未実施の検査を押して固定値を一つずつ表示する反復であり、比較、優先順位、品質判断の考えどころはない",
+  "current_A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_B": "3種類の血液検査を順不同で全て実行し、表示された固定検査値を医師へ送る一本道の操作",
+  "current_C": "白血球13,200、CRP 12.4、ヘモグロビン13.2という検査値と、それぞれが炎症・通常値など何を意味するかの説明",
+  "current_D": "検査ボタンを押して装置を動かし、3検査を完了後に各数値をタップして意味を閲覧し、結果を送る",
+  "current_E": "失敗状態はなく、未実施の検査を同じ画面で追加するだけ",
+  "actual_first_screen": null,
+  "actual_player_actions": "検査ボタンを押して装置を動かし、3検査を完了後に各数値をタップして意味を閲覧し、結果を送る",
+  "actual_feedback": "意味のある失敗はない。3検査未完了ではまとめられないが、誤検査、品質不良、時間・検体コストは存在しない",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "3種類の血液検査を順不同で全て実行し、表示された固定検査値を医師へ送る一本道の操作",
+  "actual_failure_path": "意味のある失敗はない。3検査未完了ではまとめられないが、誤検査、品質不良、時間・検体コストは存在しない",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 18,
+    "career_authenticity": 41,
+    "exploit": "select-all",
+    "C_required": false,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/LabCheckGame.tsx:20 — 3検査とその固定値・意味・異常フラグが静的に定義されている",
+    "src/q1/LabCheckGame.tsx:43 — 表示結果はpickedに含まれる検査の固定foundデータを連結するだけ",
+    "src/q1/LabCheckGame.tsx:74 — 全検査が常に選択肢として並び、実施済み以外を自由に押せる",
+    "src/q1/LabCheckGame.tsx:85 — 検査実行は700ms後にpickedへ追加するだけで、操作精度や条件判定がない",
+    "src/q1/LabCheckGame.tsx:118 — TESTS.length未満なら止まり、3つ全て選べば結果画面へ進む",
+    "src/q1/LabCheckGame.tsx:142 — 数値タップはあらかじめ用意された意味を表示するだけで、閲覧は完了条件でもない",
+    "src/data/content/medical.ts:301 — med-labは臨床検査技師、検査室、gameType lab_checkとして登録されている"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "選択肢名/ヒントのclinical registerが答えを漏らす（Gate E）が3回の形を変えて再発 — 選択肢設計そのものの再翻訳が必要",
+  "classification_evidence": "factory/projects/q1-improve-lab-check/round4-review.result.json",
+  "priority_reasons": [
+    "answer_leak",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.186Z"
+}

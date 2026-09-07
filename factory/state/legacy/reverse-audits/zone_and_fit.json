@@ -1,0 +1,50 @@
+{
+  "game_type": "zone_and_fit",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "店舗デザイナー・内装設計担当者",
+  "current_SCOPE": "商店街・開店編",
+  "current_CORE": "資料を読んで設備や客席を配置し、基準と営業のチェック結果を受けて位置や構成を直す。限られた床面で法令、動線、席数、希望を両立させることが考えどころになる。",
+  "current_A": "商店街・開店編",
+  "current_B": "固定物のある6×5の平面へ厨房設備、衛生設備、客席などを配置し、給排水、施設基準、席数、動線、予算を同時に満たす空間設計パズル。",
+  "current_C": "柱・トイレ・既存2槽シンク・給排水位置を示す現況図、保健所の施設基準、8席とカウンターを望む依頼者要望、前段の融資額、水栓ごとの価格。",
+  "current_D": "設備の種類、水栓方式、配置場所、テーブル席とカウンター席の構成を選び、基準・営業チェックの指摘を受けて図面を反復修正する。",
+  "current_E": "個々の設備をタップして外すか、全配置を消して再設計し、何度でも保健所チェックを実行できる。",
+  "actual_first_screen": null,
+  "actual_player_actions": "設備の種類、水栓方式、配置場所、テーブル席とカウンター席の構成を選び、基準・営業チェックの指摘を受けて図面を反復修正する。",
+  "actual_feedback": "不適合配置、設備不足、通路閉塞、席数不足、予算超過では図面を決定できない。配置のやり直しという手戻りはあるが、資金や回数の消費はない。",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "固定物のある6×5の平面へ厨房設備、衛生設備、客席などを配置し、給排水、施設基準、席数、動線、予算を同時に満たす空間設計パズル。",
+  "actual_failure_path": "不適合配置、設備不足、通路閉塞、席数不足、予算超過では図面を決定できない。配置のやり直しという手戻りはあるが、資金や回数の消費はない。",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": false,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 86,
+    "career_authenticity": 88,
+    "exploit": "none-found",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/ZoneFitGame.tsx:27 — 水栓は安い不適合ハンドル式、適合レバー式、高価なセンサー式から選ぶ。",
+    "src/q1/ZoneFitGame.tsx:33 — 柱、トイレ、既存2槽シンクが動かせない固定物として盤面に置かれる。",
+    "src/q1/ZoneFitGame.tsx:56 — 前段の融資額250万円または280万円を設計予算として読み込む。",
+    "src/q1/ZoneFitGame.tsx:81 — 厨房と手洗いの配管位置、トイレ専用手洗いの近接、予算超過が配置時に制約される。",
+    "src/q1/ZoneFitGame.tsx:106 — 区画、水栓、衛生設備、8席、ドアと厨房周辺の空き動線、予算をまとめて検査する。",
+    "src/q1/ZoneFitGame.tsx:142 — カウンター配置の有無によって完成時の顧客希望の達成結果が変化する。"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=none-found, GQ=86, CA=88",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.202Z"
+}

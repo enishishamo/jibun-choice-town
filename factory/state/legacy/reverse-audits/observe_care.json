@@ -1,0 +1,49 @@
+{
+  "game_type": "observe_care",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "看護師",
+  "current_SCOPE": "医療編／入院患者の回復を支える場面",
+  "current_CORE": "観察箇所を選んで所見を蓄積し、所見同士を関連づけて見立て、ケアを選んで患者の状態を改善する。",
+  "current_A": "医療編／入院患者の回復を支える場面",
+  "current_B": "患者の観察項目を選んで情報を集め、症状の見立てを選び、複数のケアを組み合わせる",
+  "current_C": "顔色、食事、水分、排尿、睡眠、体温、SpO₂の観察結果と、各ケアが役立つ理由",
+  "current_D": "重要そうな観察項目を選び、複数の所見を関連づけて原因を見立て、今行うケアを複数選択する",
+  "current_E": "同じ画面で別の見立てを押すか、ケアの選択を外して即座に再試行できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "重要そうな観察項目を選び、複数の所見を関連づけて原因を見立て、今行うケアを複数選択する",
+  "actual_feedback": "意味のある失敗コストはない。誤った見立ては説明が表示されるだけで、ケアに「ようすを見るだけ」を含めると完了を拒否される",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "患者の観察項目を選んで情報を集め、症状の見立てを選び、複数のケアを組み合わせる",
+  "actual_failure_path": "意味のある失敗コストはない。誤った見立ては説明が表示されるだけで、ケアに「ようすを見るだけ」を含めると完了を拒否される",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 68,
+    "career_authenticity": 82,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/NurseObserveGame.tsx:12 — 7種類の観察項目に正常・異常所見が個別定義されている",
+    "src/q1/NurseObserveGame.tsx:47 — 観察済みの異常所見数を進行条件として数えている",
+    "src/q1/NurseObserveGame.tsx:132 — 集めた情報に対して3つの見立てを選ばせ、正しい見立てだけがケア段階へ進む",
+    "src/q1/NurseObserveGame.tsx:181 — 有効なケアを2つ以上選ぶことが完了条件になっている",
+    "src/q1/NurseObserveGame.tsx:183 — 「ようすを見るだけ」を含めた場合は完了を拒否する"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=68, CA=82",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.196Z"
+}

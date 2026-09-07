@@ -1,0 +1,53 @@
+{
+  "game_type": "rx_check",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "薬剤師",
+  "current_SCOPE": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_CORE": "資料を開いてから懸念点と対応を選ぶが、各段階は正解するまで固定3択を押し直す構造で、量やリスクを比較する操作はない",
+  "current_A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_B": "患者関連文書を3枚以上開いた後、固定3択で懸念点を選び、続く固定3択で医師への問い合わせを選ぶ二段階クイズ",
+  "current_C": "処方内容、年齢・体重・食事状況、炎症値と腎機能、併用薬とアレルギー歴",
+  "current_D": "文書を開いて照合し、腎機能低下を懸念点として選び、処方をそのまま出す・医師へ問い合わせる・自己判断で中止する、の中から対応を選ぶ",
+  "current_E": "同じ選択肢を無制限・無コストで押し直す。文書閲覧も3枚でよく、重要な検査結果を開かず進行可能",
+  "actual_first_screen": null,
+  "actual_player_actions": "文書を開いて照合し、腎機能低下を懸念点として選び、処方をそのまま出す・医師へ問い合わせる・自己判断で中止する、の中から対応を選ぶ",
+  "actual_feedback": "意味のある失敗はない。不正解では説明文が出るだけでステップ、患者状態、時間、信用などを失わず即再選択できる",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "患者関連文書を3枚以上開いた後、固定3択で懸念点を選び、続く固定3択で医師への問い合わせを選ぶ二段階クイズ",
+  "actual_failure_path": "意味のある失敗はない。不正解では説明文が出るだけでステップ、患者状態、時間、信用などを失わず即再選択できる",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 42,
+    "career_authenticity": 72,
+    "exploit": "brute force",
+    "C_required": false,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/RxCheckGame.tsx:16 — 処方、患者、検査、薬歴の4文書が固定され、検査カードだけがkey指定されている",
+    "src/q1/RxCheckGame.tsx:23 — 検査カード本文が腎臓の値は普通より低めと直接提示する",
+    "src/q1/RxCheckGame.tsx:31 — 懸念点は固定3択でkidneyだけがok=true",
+    "src/q1/RxCheckGame.tsx:40 — 対応は固定3択で医師への問い合わせだけがok=true",
+    "src/q1/RxCheckGame.tsx:95 — 文書を開くと内容に関係なくseenへカードIDを追加する",
+    "src/q1/RxCheckGame.tsx:121 — 不正解はnote表示だけで、正解時のみ次ステップへ進む",
+    "src/q1/RxCheckGame.tsx:138 — 対応の不正解にもコストがなく、正解なら600ms後に完了する",
+    "src/q1/RxCheckGame.tsx:155 — 進行条件はseen.length >= 3だけで、key付き検査カードの閲覧を要求していない",
+    "src/data/content/medical.ts:325 — med-pharmは薬剤師、薬剤部、gameType rx_checkとして登録されている"
+  ],
+  "classification": "PASS",
+  "classification_source": "released_repair",
+  "classification_reason": "repair task q1-improve-rx-check RELEASED with independent review PASS (factory/projects/q1-improve-rx-check/round2-review.result.json) — supersedes the 42/72 audit row",
+  "classification_evidence": "factory/projects/q1-improve-rx-check/round2-review.result.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.189Z"
+}

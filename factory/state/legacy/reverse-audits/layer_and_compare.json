@@ -1,0 +1,51 @@
+{
+  "game_type": "layer_and_compare",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "都市の暑さを分析し、街づくりを考える仕事",
+  "current_SCOPE": "街（猛暑）／暑い市街地",
+  "current_CORE": "地点を選んでデータレイヤーを比較し、原因に合う場所へ対策を置き、再シミュレーションの温度変化を確認する。",
+  "current_A": "街（猛暑）／暑い市街地",
+  "current_B": "3地点から2地点を比較し、日射・風・建物・樹木レイヤーで原因を調べ、1地点へ暑さ対策を置いて再シミュレーションする分析パズル",
+  "current_C": "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After",
+  "current_D": "レイヤーを重ね、比較地点を選び、暑さの原因から対策地点を判断してシミュレーションする",
+  "current_E": "失敗後に対策地点を解除して選び直すか、選択肢から別地点を直接指定して再シミュレーションする",
+  "actual_first_screen": null,
+  "actual_player_actions": "レイヤーを重ね、比較地点を選び、暑さの原因から対策地点を判断してシミュレーションする",
+  "actual_feedback": "もともと涼しいB地点へ置くと温度が変わらず、理由と再比較の促しが表示される。失う資源はなく、別地点へ即座に置き直せる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "3地点から2地点を比較し、日射・風・建物・樹木レイヤーで原因を調べ、1地点へ暑さ対策を置いて再シミュレーションする分析パズル",
+  "actual_failure_path": "もともと涼しいB地点へ置くと温度が変わらず、理由と再比較の促しが表示される。失う資源はなく、別地点へ即座に置き直せる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 52,
+    "career_authenticity": 69,
+    "exploit": "brute force",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/UrbanHeatGame.tsx:32 — AとCは初期heat 2かつfixable、Bだけheat 0かつ改善不能と固定定義される",
+    "src/q1/UrbanHeatGame.tsx:91 — シミュレーションはfixableなら温度を1へ下げ、そうでなければ説明だけを返す",
+    "src/q1/UrbanHeatGame.tsx:88 — 成功は任意地点の温度が初期値より下がったかだけで判定される",
+    "src/q1/UrbanHeatGame.tsx:153 — 4レイヤーは任意切り替えで、閲覧数は成功条件に使われない",
+    "src/q1/UrbanHeatGame.tsx:165 — 地図は初期状態から各地点のヒート段階を表示する",
+    "src/q1/UrbanHeatGame.tsx:225 — 比較地点が2つ未満でも、対策地点さえ選べばシミュレーションできる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=brute force, GQ=52, CA=69",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.191Z"
+}

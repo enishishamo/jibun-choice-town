@@ -1,0 +1,49 @@
+{
+  "game_type": "safety_plan",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "学校の引率責任者・教員",
+  "current_SCOPE": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_CORE": "大人を班へ配置し、全体役割を選び、安全チェックの不足指摘を受けて修正する",
+  "current_A": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "current_B": "5つの班に大人を1人ずつ配置し、その大人たちから先頭・最後尾・救急用品・緊急連絡先の担当を選んで安全チェックを通す",
+  "current_C": "花組の食物アレルギー、月組の乗り物酔い、点呼場所、天気の資料と、5人の引率者一覧",
+  "current_D": "資料を開き、班へ引率者を配置し、4つの全体役割を割り当てる。ただし個々の配慮情報や職能は配置判定に使われない",
+  "current_E": "指摘を見たまま配置や役割を変更し、何度でも即時に安全チェックを再実行できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "資料を開き、班へ引率者を配置し、4つの全体役割を割り当てる。ただし個々の配慮情報や職能は配置判定に使われない",
+  "actual_feedback": "未配置、役割不足、先頭と最後尾の兼任、必須資料の未確認は安全チェックで差し戻される。失う資源や悪化する状況はなく、修正コストは数回のタップだけ",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "5つの班に大人を1人ずつ配置し、その大人たちから先頭・最後尾・救急用品・緊急連絡先の担当を選んで安全チェックを通す",
+  "actual_failure_path": "未配置、役割不足、先頭と最後尾の兼任、必須資料の未確認は安全チェックで差し戻される。失う資源や悪化する状況はなく、修正コストは数回のタップだけ",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 48,
+    "career_authenticity": 47,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/SafetyPlanGame.tsx:54 — 花組のアレルギー、月組の乗り物酔い、点呼場所、無関係な天気を資料として提示している",
+    "src/q1/SafetyPlanGame.tsx:65 — 成功判定は全班配置、4役割、先頭と最後尾の分離、花組・月組資料の開封だけを検査する",
+    "src/q1/SafetyPlanGame.tsx:72 — 配慮資料は内容の適用ではなくopenedDocsへの記録だけが要求される",
+    "src/q1/SafetyPlanGame.tsx:174 — どの役割にも配置済みの全大人が同条件で表示され、養護教員などの職能差は判定されない"
+  ],
+  "classification": "AE_REBUILD",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "月組の配慮情報が既存4役のどれとも因果的に結びつかない — CとDの対応をA-Eから設計し直す必要",
+  "classification_evidence": "factory/projects/q1-improve-safety-plan/round2-review.result.json",
+  "priority_reasons": [
+    "severe_c_d_failure",
+    "answer_leak"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.190Z"
+}

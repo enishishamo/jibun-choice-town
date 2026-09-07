@@ -1,0 +1,51 @@
+{
+  "game_type": "load_and_route",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "給食食材の配送員",
+  "current_SCOPE": "給食編",
+  "current_CORE": "食材を温度帯へ配置して検収結果を受け、学校順を選んで到着時刻を確認し、失敗箇所へ戻って修正する",
+  "current_A": "給食編",
+  "current_B": "食材を保存温度別の荷室へ積み分けた後、2校の移動時間と納品期限から配送順を決め、検収結果を受ける",
+  "current_C": "注文書、食品別保存温度、冷凍・冷蔵・常温の荷室、学校間の所要時間、出発時刻、各校の納品期限",
+  "current_D": "各食材を荷室へ配置し、2校を訪問する順番を選び、検収と到着時刻の結果から積載または経路を修正する",
+  "current_E": "温度失敗は積載画面、遅配はルート画面へ差し戻され、既存の選択を修正できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "各食材を荷室へ配置し、2校を訪問する順番を選び、検収と到着時刻の結果から積載または経路を修正する",
+  "actual_feedback": "誤った温度帯では学校が食材を受け取らずセンターへ戻され、誤ルートでは締切に遅れてルート選択へ戻される",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "食材を保存温度別の荷室へ積み分けた後、2校の移動時間と納品期限から配送順を決め、検収結果を受ける",
+  "actual_failure_path": "誤った温度帯では学校が食材を受け取らずセンターへ戻され、誤ルートでは締切に遅れてルート選択へ戻される",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 58,
+    "career_authenticity": 80,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/LogisticsGame.tsx:25 — 4食材それぞれの正解荷室と配送先を固定している",
+    "src/q1/LogisticsGame.tsx:32 — 冷凍、冷蔵、常温の3荷室を固定している",
+    "src/q1/LogisticsGame.tsx:62 — 注文、保存温度、所要時間、締切を資料にすべて明記している",
+    "src/q1/LogisticsGame.tsx:103 — 選んだ先着校だけで両校の到着時刻が固定計算される",
+    "src/q1/LogisticsGame.tsx:107 — みなみ小を先にした場合だけ遅配になると直接定義している",
+    "src/q1/LogisticsGame.tsx:114 — 配置値と食材の固定正解荷室が異なる場合に検収失敗となる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=false, exploit=memorize, GQ=58, CA=80",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "severe_c_d_failure",
+    "answer_leak"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.192Z"
+}

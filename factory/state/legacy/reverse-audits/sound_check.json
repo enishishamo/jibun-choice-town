@@ -1,0 +1,50 @@
+{
+  "game_type": "sound_check",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "音響の仕事",
+  "current_SCOPE": "イベント編／なんかイベントをやることになった！",
+  "current_CORE": "機材を調整し、リハーサルで3地点の聞こえ方を測り、不適正な席を手掛かりに再調整する",
+  "current_A": "イベント編／なんかイベントをやることになった！",
+  "current_B": "音量、スピーカーの向き、後方スピーカーを調整し、リハーサル結果を観察して前・中央・後方すべてを適正音量にする",
+  "current_C": "距離による音量低下、向きを広げた際の前後のトレードオフ、後方スピーカーの効果、3客席位置のリハーサルメーター",
+  "current_D": "3つの機材設定を操作し、リハーサルで席別結果を観察して再調整する",
+  "current_E": "機材設定を変更すると試行状態が解除され、何度でもリハーサルできる",
+  "actual_first_screen": null,
+  "actual_player_actions": "3つの機材設定を操作し、リハーサルで席別結果を観察して再調整する",
+  "actual_feedback": "1席でも適正外なら本番へ進めず、該当席が聞こえない・小さい・うるさいのどれか表示される。累積コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "音量、スピーカーの向き、後方スピーカーを調整し、リハーサル結果を観察して前・中央・後方すべてを適正音量にする",
+  "actual_failure_path": "1席でも適正外なら本番へ進めず、該当席が聞こえない・小さい・うるさいのどれか表示される。累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 74,
+    "career_authenticity": 81,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/SoundCheckGame.tsx:28 — 音量、向き、後方スピーカーの3操作状態が定義されている",
+    "src/q1/SoundCheckGame.tsx:37 — 各操作と座席距離から聞こえ方を計算するモデルが実装されている",
+    "src/q1/SoundCheckGame.tsx:50 — 3席すべてが適正レベル2の場合だけallGoodになる",
+    "src/q1/SoundCheckGame.tsx:60 — 資料が各機材の異なる効果と距離減衰を説明する",
+    "src/q1/SoundCheckGame.tsx:189 — 失敗後に適正外の席と状態が個別表示される",
+    "src/q1/SoundCheckGame.tsx:203 — リハーサル操作が観測状態を更新し、不成功時は再調整を促す"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=74, CA=81",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.199Z"
+}

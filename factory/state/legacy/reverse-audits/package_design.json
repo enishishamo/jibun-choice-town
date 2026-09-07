@@ -1,0 +1,51 @@
+{
+  "game_type": "package_design",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "包装・パッケージを考える仕事",
+  "current_SCOPE": "物価高編／包装・パッケージ開発室",
+  "current_CORE": "素材・形・サイズを構成してテストし、壊れた条件または費用超過を確認して構成を交換する",
+  "current_A": "物価高編／包装・パッケージ開発室",
+  "current_B": "素材・形・サイズを一つずつ組み合わせ、冷凍耐性、運搬強度、表示面積、開けやすさ、費用をテストする",
+  "current_C": "素材の冷凍耐性・強度・費用、形の強度・開けやすさ・費用、サイズの費用倍率・表示面積、および14円以下の費用制約",
+  "current_D": "3カテゴリを組み合わせてテストし、不合格になった性能や費用を基に部品を交換する",
+  "current_E": "不合格後に素材・形・サイズのどれでも選び直し、即座に再テストできる",
+  "actual_first_screen": null,
+  "actual_player_actions": "3カテゴリを組み合わせてテストし、不合格になった性能や費用を基に部品を交換する",
+  "actual_feedback": "冷凍、運搬、表示、費用のいずれかを満たさないと不合格になるが、試作資材や回数の損失はない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "素材・形・サイズを一つずつ組み合わせ、冷凍耐性、運搬強度、表示面積、開けやすさ、費用をテストする",
+  "actual_failure_path": "冷凍、運搬、表示、費用のいずれかを満たさないと不合格になるが、試作資材や回数の損失はない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 75,
+    "career_authenticity": 80,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/PackageGame.tsx:19 — 素材ごとに費用、冷凍耐性、強度、説明が設定されている",
+    "src/q1/PackageGame.tsx:35 — 形ごとに費用、強度、開けやすさが異なる",
+    "src/q1/PackageGame.tsx:48 — サイズは費用倍率と表示面積を変える",
+    "src/q1/PackageGame.tsx:66 — 選択した3要素から費用と各性能が計算される",
+    "src/q1/PackageGame.tsx:72 — 合格には冷凍、運搬、表示、14円以下が必要だが、開けやすさは含まれない",
+    "src/q1/PackageGame.tsx:117 — 選択時に説明が表示され、再テスト状態へ戻る",
+    "src/q1/PackageGame.tsx:178 — 不合格になった各条件が個別にフィードバックされる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=75, CA=80",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.200Z"
+}

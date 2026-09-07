@@ -1,0 +1,54 @@
+{
+  "game_type": "clue_join",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "医師",
+  "current_SCOPE": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_CORE": "手がかりを選んで判定し、ヒントを受けて肺カードを増減する反復だが、症例仮説の比較ではなく固定カテゴリへの仕分けが中心になる",
+  "current_A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_B": "6枚の情報カードから肺を指す手がかりを3枚以上選び、無関係な正常血圧を除外して固定の見立てへ進む分類パズル",
+  "current_C": "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説",
+  "current_D": "同じ部位を示すと思うカードを複数選び、解説を参照しながら肺に関連する情報をまとめる",
+  "current_E": "同じ固定カード上で選択を解除・追加し、何度でも無コストで再判定する",
+  "actual_first_screen": null,
+  "actual_player_actions": "同じ部位を示すと思うカードを複数選び、解説を参照しながら肺に関連する情報をまとめる",
+  "actual_feedback": "症例失敗やコストはない。肺カードが3枚未満、または正常血圧を含むとヒントが出て同じ選択を修正できる",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "6枚の情報カードから肺を指す手がかりを3枚以上選び、無関係な正常血圧を除外して固定の見立てへ進む分類パズル",
+  "actual_failure_path": "症例失敗やコストはない。肺カードが3枚未満、または正常血圧を含むとヒントが出て同じ選択を修正できる",
+  "prerequisite_explanation": null,
+  "answer_leak": true,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 49,
+    "career_authenticity": 70,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/DiagnoseGame.tsx:18 — 各カードにはlung、general、noneの正解属性と、その意味を説明する固定noteが埋め込まれている",
+    "src/q1/DiagnoseGame.tsx:19 — 問診・胸音・SpO₂・X線の4枚はlung、炎症値はgeneral、血圧はnoneに固定される",
+    "src/q1/DiagnoseGame.tsx:33 — 選択カード中のlung属性数とnone属性の有無だけで判定値を作る",
+    "src/q1/DiagnoseGame.tsx:81 — 「？」を開くと各カードが肺、炎症、無関係のどれを示すか直接説明される",
+    "src/q1/DiagnoseGame.tsx:95 — lungが3枚未満ならヒントを出す",
+    "src/q1/DiagnoseGame.tsx:99 — noneの正常血圧が含まれる場合だけ追加で拒否し、generalの炎症カードは選んでも罰されない",
+    "src/q1/DiagnoseGame.tsx:103 — 条件通過後は選択内容にかかわらず右肺炎症という同じ結論になる",
+    "src/data/content/medical.ts:317 — med-diagnoseは医師、救急外来、gameType clue_joinとして登録されている"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=false, exploit=brute force, GQ=49, CA=70",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure",
+    "answer_leak"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.191Z"
+}

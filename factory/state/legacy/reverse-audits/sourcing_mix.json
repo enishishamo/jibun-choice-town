@@ -1,0 +1,51 @@
+{
+  "game_type": "sourcing_mix",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "食品メーカーの「調達」の仕事",
+  "current_SCOPE": "物価高編／材料・倉庫",
+  "current_CORE": "仕入先ごとの量を配分して発注し、量・納期・費用・集中の結果を見て配分を直す",
+  "current_A": "物価高編／材料・倉庫",
+  "current_B": "3社への発注量を20kg単位で配分し、必要量と納期を満たしながら費用と供給集中を比較する",
+  "current_C": "各仕入先の単価、供給上限、品質、納期、安定性と、必要量120kg・予算目安96000円",
+  "current_D": "各社の発注量を増減し、合計量と費用を確認して発注を実行し、納期遅れや集中リスクを見て配分を修正する",
+  "current_E": "結果表示後も配分を変更でき、変更すると判定が消える。全配分をゼロに戻すボタンもある",
+  "actual_first_screen": null,
+  "actual_player_actions": "各社の発注量を増減し、合計量と費用を確認して発注を実行し、納期遅れや集中リスクを見て配分を修正する",
+  "actual_feedback": "量不足または納期遅れで不成立になるが、資金消費や手数制限などの持続的コストはなく、その場で修正できる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "3社への発注量を20kg単位で配分し、必要量と納期を満たしながら費用と供給集中を比較する",
+  "actual_failure_path": "量不足または納期遅れで不成立になるが、資金消費や手数制限などの持続的コストはなく、その場で修正できる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 65,
+    "career_authenticity": 76,
+    "exploit": "memorize",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/SourcingGame.tsx:24 — 3社の単価・上限・納期・安定性は固定データ",
+    "src/q1/SourcingGame.tsx:48 — 発注量は0から各社上限まで20kg刻みで変更される",
+    "src/q1/SourcingGame.tsx:60 — 成功条件は120kg以上かつ納期遅れ0kgだけ",
+    "src/q1/SourcingGame.tsx:63 — 予算超過は成功後の表示に留まり、不合格にはならない",
+    "src/q1/SourcingGame.tsx:85 — 一社集中も警告表示だけで成功可能",
+    "src/q1/SourcingGame.tsx:150 — 品質・納期・供給上限・安定性は詳細を開いたときに表示される",
+    "src/q1/SourcingGame.tsx:169 — 詳細未閲覧でも＋ボタンを上限まで押せるため、A社120kgだけで突破できる"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=false, judgment=true, exploit=memorize, GQ=65, CA=76",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.194Z"
+}

@@ -1,0 +1,49 @@
+{
+  "game_type": "meal_fit",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "管理栄養士",
+  "current_SCOPE": "医療編／回復中の患者が食べられる食事を整える場面",
+  "current_CORE": "食事条件を組み、提供し、実際に食べられた量と残食を確認して、量・回数・形態を再調整する。",
+  "current_A": "医療編／回復中の患者が食べられる食事を整える場面",
+  "current_B": "患者への聞き取り後、1回量、食事回数、食形態を調整し、実際の摂取エネルギーを試算して目標を満たす",
+  "current_C": "必要エネルギー1400kcal、最低目標となる8割、現在の摂取率、本人の「一度に食べられない」という訴え、提供量と実摂取量のメーター",
+  "current_D": "少量化、回数増加、食べやすさの組み合わせを設計し、試食結果を比較して必要量と食べ残しの両方を調整する",
+  "current_E": "設定を変更すると試行状態が解除され、何度でも「この食事を出してみる」で再計算できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "少量化、回数増加、食べやすさの組み合わせを設計し、試食結果を比較して必要量と食べ残しの両方を調整する",
+  "actual_feedback": "不足または出しすぎが失敗として表示されるが、患者への悪影響、資源消費、試行回数制限などの意味あるコストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "患者への聞き取り後、1回量、食事回数、食形態を調整し、実際の摂取エネルギーを試算して目標を満たす",
+  "actual_failure_path": "不足または出しすぎが失敗として表示されるが、患者への悪影響、資源消費、試行回数制限などの意味あるコストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 73,
+    "career_authenticity": 84,
+    "exploit": "brute force",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/MealFitGame.tsx:18 — 1回量ごとに提供量と異なる摂取率が設定されている",
+    "src/q1/MealFitGame.tsx:37 — 提供量、摂取率、実摂取量を選択内容から計算している",
+    "src/q1/MealFitGame.tsx:41 — 目標の8割以上に加えて出しすぎでないことを成功条件にしている",
+    "src/q1/MealFitGame.tsx:85 — 本人への聞き取りで「一度に食べられない」という制約を提示する",
+    "src/q1/MealFitGame.tsx:147 — 摂取不足と過剰提供に異なるフィードバックを返す"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=brute force, GQ=73, CA=84",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "brute_force_exploit"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.198Z"
+}

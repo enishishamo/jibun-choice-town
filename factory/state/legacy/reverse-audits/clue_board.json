@@ -1,0 +1,51 @@
+{
+  "game_type": "clue_board",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "医師",
+  "current_SCOPE": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_CORE": "問診・診察・バイタルから項目を開いて手がかりを増やすが、考えどころは情報の優先順位ではなく5個という閾値を満たす速さに限られる",
+  "current_A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_B": "問診・身体診察・バイタルの項目を自由に開き、5個以上の手がかりを集めて次へ進む探索型チェックリスト",
+  "current_C": "患者の訴え、左右の胸の聴診結果、顔や呼吸の観察、体温・SpO₂・呼吸数・血圧と簡略基準値",
+  "current_D": "調べ方と項目を選び、結果をメモへ追加する。バイタルでは基準値を開いて数値と比較する",
+  "current_E": "同じ画面で別の項目を追加して、完了ボタンを再度押す",
+  "actual_first_screen": null,
+  "actual_player_actions": "調べ方と項目を選び、結果をメモへ追加する。バイタルでは基準値を開いて数値と比較する",
+  "actual_feedback": "意味のある失敗はない。手がかりが5個未満なら進行を止めるメッセージが出るだけで、患者状態や資源へのコストはない",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "問診・身体診察・バイタルの項目を自由に開き、5個以上の手がかりを集めて次へ進む探索型チェックリスト",
+  "actual_failure_path": "意味のある失敗はない。手がかりが5個未満なら進行を止めるメッセージが出るだけで、患者状態や資源へのコストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": false,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 31,
+    "career_authenticity": 54,
+    "exploit": "button spam",
+    "C_required": true,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/ClueBoardGame.tsx:12 — 問診項目ごとに固定回答と任意のclueが定義されている",
+    "src/q1/ClueBoardGame.tsx:20 — 身体診察には右胸などの有効項目と、左胸・喉などclueのない項目が混在する",
+    "src/q1/ClueBoardGame.tsx:28 — バイタル値、簡略基準、異常フラグが固定データとして与えられる",
+    "src/q1/ClueBoardGame.tsx:45 — 項目を押すと重複を除いて手がかりが自動追加される",
+    "src/q1/ClueBoardGame.tsx:50 — 成功条件は手がかりの内容ではなくclues.length >= 5",
+    "src/q1/ClueBoardGame.tsx:146 — 5個未満ではメッセージを出し、5個以上なら無条件でonCompleteする",
+    "src/data/content/medical.ts:293 — med-doctorは医師、救急外来、gameType clue_boardとして登録されている"
+  ],
+  "classification": "PASS",
+  "classification_source": "released_repair",
+  "classification_reason": "repair task q1-improve-clue-board RELEASED with independent review PASS (factory/projects/q1-improve-clue-board/round3b-review.result.json) — supersedes the 31/54 audit row",
+  "classification_evidence": "factory/projects/q1-improve-clue-board/round3b-review.result.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.188Z"
+}

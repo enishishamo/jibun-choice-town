@@ -1,0 +1,50 @@
+{
+  "game_type": "inspect_and_measure",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "給食調理員",
+  "current_SCOPE": "給食編",
+  "current_CORE": "測定箇所を選んで温度を得て、衛生基準と比較し、加熱や消毒を挟んでもう一度測るループである",
+  "current_A": "給食編",
+  "current_B": "中心温度計で厚さの異なる魚を測定し、衛生基準と比較して追加加熱、器具消毒、再測定、記録を行う",
+  "current_C": "作業工程表、中心75℃以上を1分保つ基準、3か所以上の測定規則、温度計の消毒規則、実測温度",
+  "current_D": "温度計を選び、測定箇所を操作し、測定値を基準と比較して追加加熱し、消毒後に再測定して記録する",
+  "current_E": "追加加熱後に測定状態がリセットされ、消毒して3か所を再測定する",
+  "actual_first_screen": null,
+  "actual_player_actions": "温度計を選び、測定箇所を操作し、測定値を基準と比較して追加加熱し、消毒後に再測定して記録する",
+  "actual_feedback": "不足温度のまま記録へ進めず、未消毒の選択も警告される。ただし食品廃棄や時間超過はなく、正しい操作までその場で止まる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "中心温度計で厚さの異なる魚を測定し、衛生基準と比較して追加加熱、器具消毒、再測定、記録を行う",
+  "actual_failure_path": "不足温度のまま記録へ進めず、未消毒の選択も警告される。ただし食品廃棄や時間超過はなく、正しい操作までその場で止まる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 69,
+    "career_authenticity": 88,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/CookGame.tsx:15 — 薄い、普通、最も厚い切り身の3測定箇所を定義している",
+    "src/q1/CookGame.tsx:21 — 初回と追加加熱後の箇所別温度を固定データとして持つ",
+    "src/q1/CookGame.tsx:54 — 75℃以上1分、厚い箇所を含む3か所、器具消毒、記録という衛生規則を示す",
+    "src/q1/CookGame.tsx:73 — 再測定前に未消毒なら衛生判断を挟む",
+    "src/q1/CookGame.tsx:83 — 全3か所の測定と最低温度75℃以上を成功条件にしている",
+    "src/q1/CookGame.tsx:223 — 測定後に追加加熱すると第2ラウンドへ進み、測定結果がリセットされる"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=memorize, GQ=69, CA=88",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.196Z"
+}

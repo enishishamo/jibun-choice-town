@@ -1,0 +1,390 @@
+// Q1 Autonomous Game Factory — shared, mechanical definitions.
+// 2026-09-08 (Human master request "Q1 AUTONOMOUS GAME FACTORY — END-TO-END
+// IMPLEMENTATION"). This module is DATA + pure validators only: the stage
+// order, the design state machine, the failure→return_to routing table,
+// the artifact schemas (required fields), the GAME_DESIGN_READY checklist,
+// the Human Decision domains, and the finite repair/redesign budgets.
+// Every other q1-*.mjs script imports from here so the rules are encoded
+// in exactly one place (same principle as review-evidence.mjs).
+//
+// Nothing here calls Claude/Codex or touches the filesystem.
+
+// ---------------------------------------------------------------- stages
+// Upstream design stages, in pipeline order. `artifact` is the artifact
+// type each stage produces (see ARTIFACT_SCHEMAS). Stages without an
+// artifact are pure gates/reviews.
+export const DESIGN_STAGES = [
+  { id: "PROFESSION_RESEARCH", artifact: "fact_sheet" },
+  { id: "SCOPE_CORE", artifact: "scope_core" },
+  { id: "AE", artifact: "ae" },
+  { id: "CORE_SCOPE_CHECK", artifact: "core_scope_check" },
+  { id: "PLAY_SEED", artifact: "play_seeds" },
+  { id: "EXISTING_GAME_RESEARCH", artifact: "reference_research" },
+  { id: "C_COMPRESSION", artifact: "c_compression" },
+  { id: "GAME_TRANSLATION", artifact: "game_translations" },
+  { id: "FIRST_PLAY_UX", artifact: "first_5_seconds" },
+  { id: "NO_MANUAL_EXPLOIT_CHECK", artifact: "no_manual_exploit_check" },
+  { id: "CORE_BACK_CHECK", artifact: "core_back_check" },
+  { id: "INDEPENDENT_REVIEW", artifact: null },
+];
+
+// Downstream (post GAME_DESIGN_READY) stages. Reviews/QA are recorded as
+// evidence on the pipeline; RELEASE delegates to task-state.mjs can-deploy.
+export const DOWNSTREAM_STAGES = [
+  { id: "GAME_SPEC", artifact: "game_spec" },
+  { id: "ART_BRIEF", artifact: "art_brief" },
+  { id: "ART_PRODUCTION", artifact: "art_production" },
+  { id: "ART_REVIEW", artifact: null },
+  { id: "IMPLEMENTATION", artifact: "implementation" },
+  { id: "IMPLEMENTATION_QA", artifact: "implementation_qa" },
+  { id: "INDEPENDENT_IMPL_REVIEW", artifact: null },
+  { id: "RELEASE", artifact: null },
+];
+
+export const ALL_STAGE_IDS = [...DESIGN_STAGES, ...DOWNSTREAM_STAGES].map((s) => s.id);
+
+// ----------------------------------------------------------- state machine
+export const DESIGN_STATES = [
+  "DRAFT", "RESEARCHING", "RESEARCHED", "CORE_READY", "AE_READY", "PLAY_SEEDS_READY",
+  "TRANSLATING", "FIRST_PLAY_READY", "UNDER_REVIEW", "RETURNED", "REPAIRING",
+  "REDESIGNING", "GAME_DESIGN_READY", "ESCALATED",
+  // downstream
+  "SPEC_READY", "ART_BRIEF_READY", "ART_PRODUCED", "ART_APPROVED", "IMPLEMENTED",
+  "IMPL_QA_PASSED", "RELEASE_CANDIDATE", "RELEASED", "REAUDIT_REQUIRED",
+];
+
+// Which state an artifact submission moves the pipeline into (only if the
+// pipeline is not currently RETURNED/REPAIRING/REDESIGNING/ESCALATED).
+export const STATE_AFTER_ARTIFACT = {
+  fact_sheet: "RESEARCHED",
+  scope_core: "CORE_READY",
+  ae: "AE_READY",
+  core_scope_check: "AE_READY",
+  play_seeds: "PLAY_SEEDS_READY",
+  reference_research: "PLAY_SEEDS_READY",
+  c_compression: "TRANSLATING",
+  game_translations: "TRANSLATING",
+  first_5_seconds: "FIRST_PLAY_READY",
+  no_manual_exploit_check: "FIRST_PLAY_READY",
+  core_back_check: "FIRST_PLAY_READY",
+  game_spec: "SPEC_READY",
+  art_brief: "ART_BRIEF_READY",
+  art_production: "ART_PRODUCED",
+  implementation: "IMPLEMENTED",
+  implementation_qa: "IMPL_QA_PASSED",
+};
+
+// ------------------------------------------------------------ budgets
+// repair_count semantics are identical to task-state.mjs (AUTO REPAIR max 1
+// per design iteration). A REDESIGN starts a new iteration (different seed
+// or translation) and resets repair_count. Redesigns themselves are finite.
+export const REPAIR_MAX_PER_ITERATION = 1;
+export const REDESIGN_MAX = 2;
+// Anti-idle / WIP (autonomous-execution.md WIP LIMIT: close one before
+// half-touching many). Mechanical default for concurrently ACTIVE pipelines.
+export const WIP_MAX_ACTIVE_PIPELINES = 2;
+export const ACTIVE_STATES = new Set([
+  "RESEARCHING", "RESEARCHED", "CORE_READY", "AE_READY", "PLAY_SEEDS_READY", "TRANSLATING",
+  "FIRST_PLAY_READY", "UNDER_REVIEW", "RETURNED", "REPAIRING", "REDESIGNING",
+  "SPEC_READY", "ART_BRIEF_READY", "ART_PRODUCED", "ART_APPROVED", "IMPLEMENTED", "IMPL_QA_PASSED",
+]);
+
+// ---------------------------------------------------------- failure routing
+// failure_code -> { return_to: stage id(s), preserve, must_change }.
+// `return_to` is an ordered list: the first entry is the default; a
+// structured failure may pick a later one with an explicit reason.
+export const FAILURE_ROUTES = {
+  FACTUAL_PROFESSION_ERROR: { return_to: ["PROFESSION_RESEARCH"], preserve: "nothing downstream of the wrong fact", must_change: "fact sheet with sources; everything derived from the wrong fact is STALE" },
+  PERIPHERAL_JOB_TASK: { return_to: ["SCOPE_CORE"], preserve: "fact sheet", must_change: "SCOPE must be a representative part of CORE" },
+  CORE_SCOPE_MISMATCH: { return_to: ["SCOPE_CORE"], preserve: "fact sheet", must_change: "CORE and/or SCOPE" },
+  AE_NOT_REPRESENTATIVE: { return_to: ["AE"], preserve: "fact sheet, CORE, SCOPE", must_change: "A-E" },
+  C_IS_ONLY_EXPLANATION: { return_to: ["C_COMPRESSION", "GAME_TRANSLATION"], preserve: "A-E, seeds", must_change: "C must be used, not read" },
+  C_NOT_NEEDED_FOR_D: { return_to: ["AE", "GAME_TRANSLATION"], preserve: "fact sheet, CORE/SCOPE", must_change: "D must require C; if A-E themselves lack the causal link, fix A-E" },
+  D_REPLACED_BY_TRIVIA: { return_to: ["GAME_TRANSLATION"], preserve: "A-E, seeds, C compression", must_change: "D as profession-specific judgment, not general knowledge" },
+  D_PERFORMED_BY_SYSTEM: { return_to: ["GAME_TRANSLATION"], preserve: "A-E, seeds", must_change: "the child's own action must express the judgment" },
+  FIRST_ACTION_NOT_INFERABLE: { return_to: ["FIRST_PLAY_UX"], preserve: "translation", must_change: "first_expected_touch must be inferable from the first visible state" },
+  REACTION_DOES_NOT_TEACH_NEXT_ACTION: { return_to: ["GAME_TRANSLATION"], preserve: "seeds", must_change: "system_reaction must imply the next judgment" },
+  ANSWER_LEAK: { return_to: ["GAME_TRANSLATION", "FIRST_PLAY_UX"], preserve: "A-E, seeds", must_change: "labels/colors/positions/hints/UI hierarchy must not reveal the answer" },
+  BRUTE_FORCE_SUCCESS: { return_to: ["GAME_TRANSLATION"], preserve: "A-E, seeds", must_change: "select-all / tap-all / N-submit / fixed-pattern paths must not succeed" },
+  NO_CONSEQUENCE: { return_to: ["GAME_TRANSLATION"], preserve: "A-E, seeds", must_change: "the world/state must change in response to the action" },
+  FAILURE_DISGUISED_AS_SUCCESS: { return_to: ["GAME_TRANSLATION"], preserve: "A-E, seeds", must_change: "honest outcome: failure must not be processed as success" },
+  CORE_DISTORTED_BY_GAME: { return_to: ["GAME_TRANSLATION", "SCOPE_CORE"], preserve: "fact sheet", must_change: "the game must not distort what the profession produces" },
+  VISUAL_AFFORDANCE_FAILURE: { return_to: ["ART_BRIEF", "FIRST_PLAY_UX"], preserve: "translation, spec", must_change: "interactive objects must read as touchable in the art / first screen" },
+  FACTUAL_VISUAL_ERROR: { return_to: ["PROFESSION_RESEARCH", "ART_BRIEF"], preserve: "translation", must_change: "art must match the profession's facts" },
+  IMPLEMENTATION_CHANGED_D: { return_to: ["IMPLEMENTATION"], preserve: "design, spec, art", must_change: "implementation must restore the specified D" },
+  GAME_SPEC_MISSING_STATE: { return_to: ["GAME_SPEC"], preserve: "design", must_change: "spec must enumerate every state the translation implies" },
+  ART_ANSWER_LEAK: { return_to: ["ART_BRIEF", "GAME_TRANSLATION"], preserve: "spec", must_change: "art must not bake the answer into the image" },
+  FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION: { return_to: ["FIRST_PLAY_UX", "GAME_TRANSLATION"], preserve: "implementation", must_change: "first-play design" },
+  CORE_DISTORTION_FOUND_AFTER_ART: { return_to: ["GAME_TRANSLATION", "SCOPE_CORE"], preserve: "fact sheet", must_change: "translation and possibly scope" },
+};
+
+export const FAILURE_CODES = Object.keys(FAILURE_ROUTES);
+
+// --------------------------------------------------------- human decision
+// product-identity-gate.md / deploy-release-policy.md domains. An artifact
+// or failure that declares one of these is HUMAN_DECISION_REQUIRED.
+export const HUMAN_DECISION_DOMAINS = [
+  "mascot", "brand_character", "core_gameplay_loop", "collection_system", "growth_system",
+  "points", "currency", "rewards", "streak", "interest_classification", "aptitude_classification",
+  "major_home_feature", "world_unlock", "monetization", "mission", "target_age", "core_philosophy",
+];
+
+// ---------------------------------------------------------------- triggers
+export const TRIGGERS = [
+  "NEW_Q1_REQUEST", "LEGACY_AUDIT_REQUIRED", "REAL_USER_FEEDBACK", "QA_FAILURE",
+  "STANDARD_UPDATED", "SHARED_UI_CHANGED", "SHARED_ART_CHANGED", "DEPENDENCY_CHANGED",
+];
+export const REAUDIT_TRIGGERS = new Set(["STANDARD_UPDATED", "SHARED_UI_CHANGED", "SHARED_ART_CHANGED", "DEPENDENCY_CHANGED", "MAJOR_REAL_USER_EVIDENCE"]);
+
+// --------------------------------------------------------- artifact schemas
+// required: top-level required keys. list: {key, min, itemRequired} for
+// array artifacts with a mechanical minimum count and per-item fields.
+const PLAY_SEED_FIELDS = ["seed_id", "authentic_causal_loop", "player_action", "system_reaction", "information_gained", "next_judgment_or_action", "C_used", "D_expressed", "E_reached", "risks"];
+const TRANSLATION_FIELDS = ["translation_id", "play_seed", "goal", "first_visible_state", "primary_action", "C_interaction", "system_reaction", "information_gained", "player_next_judgment", "D_externalization", "E_consequence", "retry_or_rethink", "job_reveal_bridge", "strengths", "weaknesses", "risk", "adoption_or_rejection_reason"];
+const REFERENCE_FIELDS = ["reference", "relevant_mechanic", "borrowed_principle", "surface_elements_not_to_copy"];
+
+export const ARTIFACT_SCHEMAS = {
+  fact_sheet: {
+    stage: "PROFESSION_RESEARCH",
+    required: ["profession", "sources", "who_or_what_they_serve", "representative_duties", "expertise", "tools", "information_used", "decisions", "outputs_or_value", "adjacent_profession_boundaries", "uncertainties"],
+    list: { key: "sources", min: 1, itemRequired: ["url", "type"] },
+  },
+  scope_core: {
+    stage: "SCOPE_CORE",
+    required: ["core", "scope", "scope_is_representative_because", "profession_name_hidden_test"],
+  },
+  ae: {
+    stage: "AE",
+    required: ["A", "B", "C", "D", "E"],
+  },
+  core_scope_check: {
+    stage: "CORE_SCOPE_CHECK",
+    required: ["core_consistent", "scope_representative", "profession_name_hidden_test_pass", "notes"],
+  },
+  play_seeds: {
+    stage: "PLAY_SEED",
+    required: ["seeds"],
+    list: { key: "seeds", min: 3, itemRequired: PLAY_SEED_FIELDS },
+  },
+  reference_research: {
+    stage: "EXISTING_GAME_RESEARCH",
+    required: ["references"],
+    list: { key: "references", min: 1, itemRequired: REFERENCE_FIELDS },
+  },
+  c_compression: {
+    stage: "C_COMPRESSION",
+    required: ["original_C", "compressed_C", "removed_complexity", "reason_for_removal", "preserved_D", "how_player_still_performs_D", "failure_risk"],
+  },
+  game_translations: {
+    stage: "GAME_TRANSLATION",
+    required: ["translations", "adopted_translation_id", "adoption_rationale"],
+    list: { key: "translations", min: 3, itemRequired: TRANSLATION_FIELDS },
+  },
+  first_5_seconds: {
+    stage: "FIRST_PLAY_UX",
+    required: ["zero_to_two_seconds", "two_to_five_seconds", "first_expected_touch", "first_system_reaction", "next_expected_inference", "next_expected_action"],
+  },
+  no_manual_exploit_check: {
+    stage: "NO_MANUAL_EXPLOIT_CHECK",
+    required: ["no_manual_check", "exploit_check"],
+    nested: {
+      no_manual_check: ["operation_before_rules", "contextual_cue_only", "pass"],
+      exploit_check: ["select_all", "tap_all", "spam_submit", "fixed_failure_pattern", "color_leak", "label_leak", "position_leak", "visual_hierarchy_leak", "pass"],
+    },
+  },
+  core_back_check: {
+    stage: "CORE_BACK_CHECK",
+    required: ["core_still_intact", "scope_still_representative", "d_still_performed_by_child", "notes", "pass"],
+  },
+  // downstream
+  game_spec: {
+    stage: "GAME_SPEC",
+    required: ["goal", "initial_visual_state", "interactive_objects", "primary_action", "C", "D", "system_reactions", "state_transitions", "failure_behavior", "retry_behavior", "E", "job_reveal", "first_5_seconds", "no_manual_requirements", "mobile_constraints", "asset_requirements"],
+  },
+  art_brief: {
+    stage: "ART_BRIEF",
+    // `no_art_required: true` short-circuits the art stages (must still be submitted explicitly).
+    required: ["no_art_required"],
+    requiredUnless: { no_art_required: true, fields: ["asset_purpose", "scene", "required_objects", "interactive_object_visual_hierarchy", "what_must_be_visually_obvious", "what_must_not_be_baked_into_image", "required_state_variations", "success_state", "failure_state", "mobile_composition", "clay_style_requirements", "existing_series_references", "prohibited_mascot_invention", "text_UI_separation", "touch_affordance_requirements"] },
+  },
+  art_production: {
+    stage: "ART_PRODUCTION",
+    required: ["assets"],
+    list: { key: "assets", min: 1, itemRequired: ["asset_id", "path", "producer", "request_file"] },
+  },
+  implementation: {
+    stage: "IMPLEMENTATION",
+    required: ["component_files", "logic_module", "qa_harness", "spec_version", "art_version_or_none", "d_preserved_statement"],
+  },
+  implementation_qa: {
+    stage: "IMPLEMENTATION_QA",
+    required: ["first_5_seconds", "touch_targets", "mobile_375", "direct_manipulation", "reaction_timing", "c_to_d", "consequence", "retry", "answer_leak", "brute_force", "visual_affordance", "no_manual", "job_reveal", "pass", "evidence"],
+  },
+};
+
+export const ARTIFACT_TYPES = Object.keys(ARTIFACT_SCHEMAS);
+
+// Upstream dependency map: submitting a NEW VERSION of a key invalidates
+// (marks STALE) every artifact listed under it, transitively.
+export const DOWNSTREAM_OF = {
+  fact_sheet: ["scope_core"],
+  scope_core: ["ae"],
+  ae: ["core_scope_check", "play_seeds"],
+  core_scope_check: [],
+  play_seeds: ["reference_research", "c_compression", "game_translations"],
+  reference_research: [],
+  c_compression: ["game_translations"],
+  game_translations: ["first_5_seconds", "no_manual_exploit_check", "core_back_check", "game_spec"],
+  first_5_seconds: ["no_manual_exploit_check"],
+  no_manual_exploit_check: [],
+  core_back_check: [],
+  game_spec: ["art_brief", "implementation"],
+  art_brief: ["art_production"],
+  art_production: ["implementation"],
+  implementation: ["implementation_qa"],
+  implementation_qa: [],
+};
+
+export function transitiveDownstream(type) {
+  const out = new Set();
+  const stack = [...(DOWNSTREAM_OF[type] ?? [])];
+  while (stack.length) {
+    const t = stack.pop();
+    if (out.has(t)) continue;
+    out.add(t);
+    for (const d of DOWNSTREAM_OF[t] ?? []) stack.push(d);
+  }
+  return [...out];
+}
+
+// --------------------------------------------------------------- validators
+function isNonEmpty(v) {
+  if (v === null || v === undefined) return false;
+  if (typeof v === "string") return v.trim().length > 0;
+  if (Array.isArray(v)) return v.length > 0;
+  if (typeof v === "object") return Object.keys(v).length > 0;
+  return true; // numbers/booleans count as present
+}
+
+/** Validate an artifact payload against ARTIFACT_SCHEMAS. Returns {ok, problems[]}. */
+export function validateArtifact(type, payload) {
+  const schema = ARTIFACT_SCHEMAS[type];
+  if (!schema) return { ok: false, problems: [`unknown artifact type: ${type}`] };
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) return { ok: false, problems: ["artifact payload must be a JSON object"] };
+  const problems = [];
+  for (const k of schema.required) if (!isNonEmpty(payload[k])) problems.push(`missing required field: ${k}`);
+  if (schema.requiredUnless) {
+    const { fields } = schema.requiredUnless;
+    const skipKey = Object.keys(schema.requiredUnless).find((k) => k !== "fields");
+    const skipVal = schema.requiredUnless[skipKey];
+    if (payload[skipKey] !== skipVal) for (const k of fields) if (!isNonEmpty(payload[k])) problems.push(`missing required field: ${k} (required unless ${skipKey}=${JSON.stringify(skipVal)})`);
+  }
+  if (schema.list) {
+    const arr = payload[schema.list.key];
+    if (!Array.isArray(arr)) problems.push(`${schema.list.key} must be an array`);
+    else {
+      if (arr.length < schema.list.min) problems.push(`${schema.list.key} has ${arr.length} item(s); minimum is ${schema.list.min}`);
+      arr.forEach((item, i) => {
+        for (const k of schema.list.itemRequired) if (!item || !isNonEmpty(item[k])) problems.push(`${schema.list.key}[${i}] missing: ${k}`);
+      });
+    }
+  }
+  if (schema.nested) {
+    for (const [k, fields] of Object.entries(schema.nested)) {
+      const obj = payload[k];
+      if (!obj || typeof obj !== "object") continue; // already reported by required
+      for (const f of fields) if (!(f in obj)) problems.push(`${k}.${f} missing`);
+    }
+  }
+  // Semantic invariants that are still mechanical:
+  if (type === "game_translations" && Array.isArray(payload.translations) && payload.adopted_translation_id) {
+    if (!payload.translations.some((t) => t.translation_id === payload.adopted_translation_id)) problems.push(`adopted_translation_id ${payload.adopted_translation_id} is not one of translations[].translation_id`);
+  }
+  if (type === "c_compression" && isNonEmpty(payload.original_C) && payload.original_C === payload.compressed_C) problems.push("compressed_C is identical to original_C — nothing was compressed");
+  if (type === "no_manual_exploit_check") {
+    if (payload.no_manual_check && payload.no_manual_check.pass !== true) problems.push("no_manual_check.pass is not true");
+    if (payload.exploit_check && payload.exploit_check.pass !== true) problems.push("exploit_check.pass is not true");
+  }
+  if (type === "core_back_check" && payload.pass !== true) problems.push("core_back_check.pass is not true");
+  if (type === "core_scope_check" && payload.profession_name_hidden_test_pass !== true) problems.push("profession_name_hidden_test_pass is not true");
+  if (type === "implementation_qa" && payload.pass !== true) problems.push("implementation_qa.pass is not true");
+  return { ok: problems.length === 0, problems };
+}
+
+// ----------------------------------------------- GAME_DESIGN_READY checklist
+// Each entry: {id, check(pipeline) -> string|null (null = satisfied)}.
+// `pipeline` is the per-game record maintained by q1-pipeline.mjs.
+function art(p, type) {
+  const a = p.artifacts?.[type];
+  return a && a.status !== "STALE" ? a : null;
+}
+export const GAME_DESIGN_READY_CHECKS = [
+  { id: "fact_sheet_exists", check: (p) => (art(p, "fact_sheet") ? null : "FACT SHEET missing or STALE") },
+  { id: "sources_exist", check: (p) => ((art(p, "fact_sheet")?.payload?.sources?.length ?? 0) >= 1 ? null : "fact sheet has no sources") },
+  { id: "scope_exists", check: (p) => (art(p, "scope_core")?.payload?.scope ? null : "SCOPE missing or STALE") },
+  { id: "core_exists", check: (p) => (art(p, "scope_core")?.payload?.core ? null : "CORE missing or STALE") },
+  ...["A", "B", "C", "D", "E"].map((k) => ({ id: `${k}_exists`, check: (p) => (art(p, "ae")?.payload?.[k] ? null : `${k} missing or STALE`) })),
+  { id: "core_check_exists", check: (p) => (art(p, "core_scope_check") ? null : "CORE/SCOPE check missing or STALE") },
+  { id: "play_seeds_gte_3", check: (p) => ((art(p, "play_seeds")?.payload?.seeds?.length ?? 0) >= 3 ? null : `play_seeds < 3 (have ${art(p, "play_seeds")?.payload?.seeds?.length ?? 0})`) },
+  { id: "reference_research_exists", check: (p) => (art(p, "reference_research") ? null : "reference research missing or STALE") },
+  { id: "c_compression_complete", check: (p) => (art(p, "c_compression") ? null : "C compression missing or STALE") },
+  { id: "original_C_exists", check: (p) => (art(p, "c_compression")?.payload?.original_C ? null : "original_C missing") },
+  { id: "compressed_C_exists", check: (p) => (art(p, "c_compression")?.payload?.compressed_C ? null : "compressed_C missing") },
+  { id: "preserved_D_exists", check: (p) => (art(p, "c_compression")?.payload?.preserved_D ? null : "preserved_D missing") },
+  { id: "game_translations_gte_3", check: (p) => ((art(p, "game_translations")?.payload?.translations?.length ?? 0) >= 3 ? null : `game_translations < 3 (have ${art(p, "game_translations")?.payload?.translations?.length ?? 0})`) },
+  { id: "adoption_rationale_exists", check: (p) => (art(p, "game_translations")?.payload?.adoption_rationale ? null : "adoption rationale missing") },
+  { id: "first_5_seconds_complete", check: (p) => (art(p, "first_5_seconds") ? null : "First 5 Seconds missing or STALE") },
+  { id: "no_manual_check_complete", check: (p) => (art(p, "no_manual_exploit_check")?.payload?.no_manual_check?.pass === true ? null : "no-manual check missing/failed/STALE") },
+  { id: "exploit_check_complete", check: (p) => (art(p, "no_manual_exploit_check")?.payload?.exploit_check?.pass === true ? null : "exploit check missing/failed/STALE") },
+  { id: "core_back_check_complete", check: (p) => (art(p, "core_back_check")?.payload?.pass === true ? null : "CORE back-check missing/failed/STALE") },
+  { id: "independent_review_pass", check: (p) => (p.independent_review?.verdict === "PASS" && p.independent_review?.independent === true && p.independent_review?.stale !== true ? null : `independent review is ${JSON.stringify(p.independent_review?.verdict ?? null)} (independent=${p.independent_review?.independent ?? false}, stale=${p.independent_review?.stale ?? false})`) },
+  { id: "unresolved_human_decision_false", check: (p) => ((p.human_decisions ?? []).some((h) => h.status === "open") ? "an open Human Decision exists" : null) },
+  { id: "not_escalated", check: (p) => (p.state === "ESCALATED" ? "pipeline is ESCALATED" : null) },
+];
+
+export function gameDesignReadyReasons(pipeline) {
+  return GAME_DESIGN_READY_CHECKS.map((c) => ({ id: c.id, reason: c.check(pipeline) })).filter((r) => r.reason);
+}
+
+// ----------------------------------------------------- real user evidence
+export const REAL_USER_EVIDENCE_REQUIRED = ["evidence_id", "game_id", "version", "observation", "interpretation", "severity", "affected_stage", "suggested_failure_code", "source_context", "status"];
+export const SEVERITIES = ["LOW", "MEDIUM", "HIGH", "BLOCKER"];
+
+export function validateRealUserEvidence(e) {
+  const problems = [];
+  for (const k of REAL_USER_EVIDENCE_REQUIRED) if (!isNonEmpty(e?.[k])) problems.push(`missing: ${k}`);
+  if (e?.severity && !SEVERITIES.includes(e.severity)) problems.push(`bad severity: ${e.severity}`);
+  if (e?.affected_stage && !ALL_STAGE_IDS.includes(e.affected_stage)) problems.push(`bad affected_stage: ${e.affected_stage}`);
+  if (e?.suggested_failure_code && !FAILURE_CODES.includes(e.suggested_failure_code)) problems.push(`bad suggested_failure_code: ${e.suggested_failure_code}`);
+  if (e?.observation && e?.interpretation && e.observation === e.interpretation) problems.push("observation and interpretation are identical — they must be separated");
+  return { ok: problems.length === 0, problems };
+}
+
+// ------------------------------------------------------- legacy audit
+export const LEGACY_CLASSIFICATIONS = ["PASS", "LOCAL_REPAIR", "GAME_TRANSLATION_REBUILD", "AE_REBUILD", "SCOPE_CORE_REBUILD", "FACTUAL_RESEARCH_REQUIRED"];
+export const REVERSE_AUDIT_REQUIRED = [
+  "game_type", "current_profession", "current_SCOPE", "current_CORE", "current_A", "current_B", "current_C", "current_D", "current_E",
+  "actual_first_screen", "actual_player_actions", "actual_feedback", "actual_next_decision", "actual_success_path", "actual_failure_path",
+  "prerequisite_explanation", "answer_leak", "brute_force", "profession_reveal", "classification", "priority_reasons",
+];
+// classification -> which pipeline stage a rebuild re-enters at
+export const CLASSIFICATION_ENTRY_STAGE = {
+  PASS: null,
+  LOCAL_REPAIR: "IMPLEMENTATION",
+  GAME_TRANSLATION_REBUILD: "GAME_TRANSLATION",
+  AE_REBUILD: "AE",
+  SCOPE_CORE_REBUILD: "SCOPE_CORE",
+  FACTUAL_RESEARCH_REQUIRED: "PROFESSION_RESEARCH",
+};
+// priority: lower number = more urgent (autonomous-execution.md ordering + §24 of the master request)
+export const PRIORITY_REASONS = {
+  release_blocker: 0, serious_first_play_failure: 1, core_distortion: 2, answer_leak: 3,
+  brute_force_exploit: 4, major_factual_problem: 5, severe_c_d_failure: 6, other: 9,
+};
+export function validateReverseAudit(a) {
+  const problems = [];
+  for (const k of REVERSE_AUDIT_REQUIRED) if (!(k in (a ?? {}))) problems.push(`missing: ${k}`);
+  if (a?.classification && !LEGACY_CLASSIFICATIONS.includes(a.classification)) problems.push(`bad classification: ${a.classification}`);
+  if (a?.priority_reasons && (!Array.isArray(a.priority_reasons) || a.priority_reasons.some((r) => !(r in PRIORITY_REASONS)))) problems.push(`priority_reasons must be from ${Object.keys(PRIORITY_REASONS).join(",")}`);
+  return { ok: problems.length === 0, problems };
+}

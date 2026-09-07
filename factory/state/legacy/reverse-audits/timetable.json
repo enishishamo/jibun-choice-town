@@ -1,0 +1,50 @@
+{
+  "game_type": "timetable",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "イベントの進行をつくる仕事",
+  "current_SCOPE": "イベント編／なんかイベントをやることになった！",
+  "current_CORE": "演目を追加・並べ替え、更新された転換時間と終演時刻を見て構成を修正する想定だが、実際には全選択で終了できる",
+  "current_A": "イベント編／なんかイベントをやることになった！",
+  "current_B": "演目を追加・削除・並べ替え、演目時間と編成変更による転換時間を含む終演時刻を制限内に収める",
+  "current_C": "各演目の所要時間とステージ編成、同編成5分・編成変更15分という転換規則、10時開始・15時終了の制限、計算済みタイムライン",
+  "current_D": "演目を選び、順序を変更して転換時間を調整し、終演時刻を確認する",
+  "current_E": "同じ画面で演目を削除・再追加・上下移動し、無制限に再判定できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "演目を選び、順序を変更して転換時間を調整し、終演時刻を確認する",
+  "actual_feedback": "15時超過または演目数不足では確定できず、その場で修正を求められる。累積コストはない",
+  "actual_next_decision": "none (per audit: player_judgment_required=false)",
+  "actual_success_path": "演目を追加・削除・並べ替え、演目時間と編成変更による転換時間を含む終演時刻を制限内に収める",
+  "actual_failure_path": "15時超過または演目数不足では確定できず、その場で修正を求められる。累積コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 43,
+    "career_authenticity": 67,
+    "exploit": "select-all",
+    "C_required": false,
+    "player_judgment_required": false,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/TimetableGame.tsx:23 — 全7演目の時間と編成が固定定義されている",
+    "src/q1/TimetableGame.tsx:33 — 開始10時、終了15時、転換5分または15分が設定されている",
+    "src/q1/TimetableGame.tsx:48 — 隣接演目の編成に応じて転換と終演時刻が再計算される",
+    "src/q1/TimetableGame.tsx:169 — 未使用演目はエンディング直前へ自由に追加できる",
+    "src/q1/TimetableGame.tsx:191 — 成功判定は時間超過なし、かつline.lengthが4以上だけである"
+  ],
+  "classification": "GAME_TRANSLATION_REBUILD",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "任意の1演目削除で必ず収まる（C不要）— 数値/構造の再翻訳",
+  "classification_evidence": "factory/projects/q1-improve-timetable/round2-review.result.json",
+  "priority_reasons": [
+    "brute_force_exploit",
+    "severe_c_d_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.189Z"
+}

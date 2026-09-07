@@ -1,0 +1,50 @@
+{
+  "game_type": "schedule_and_protect",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "工事現場の安全と工程を守る仕事",
+  "current_SCOPE": "街（猛暑）／工事現場",
+  "current_CORE": "時間別WBGTと作業負荷を照合して工程を配置し、実行後の危険度と進捗を見て、安全かつ75%以上になるまで組み直す。",
+  "current_A": "街（猛暑）／工事現場",
+  "current_B": "5つの時間枠へ作業を配置し、WBGTに応じた最大リスクを危険未満に保ちながら進捗75%以上を達成する工程編成パズル",
+  "current_C": "8～16時の時間別WBGT、作業カードの負荷と進捗、実行後の時間別リスク、安全状態、総進捗",
+  "current_D": "重作業・軽作業・屋内作業・休憩を時間枠へ配置し、安全と進捗の両条件を比較して工程を組み直す",
+  "current_E": "実行後に工程表を全消去して組み直すほか、各時間枠を上書きして再実行できる",
+  "actual_first_screen": null,
+  "actual_player_actions": "重作業・軽作業・屋内作業・休憩を時間枠へ配置し、安全と進捗の両条件を比較して工程を組み直す",
+  "actual_feedback": "最大リスクが危険になるか進捗が75%未満だとクリアできず、作業員のふらつきまたは進捗不足が表示される。工程を組み直す時間以外の永続的コストはない",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "5つの時間枠へ作業を配置し、WBGTに応じた最大リスクを危険未満に保ちながら進捗75%以上を達成する工程編成パズル",
+  "actual_failure_path": "最大リスクが危険になるか進捗が75%未満だとクリアできず、作業員のふらつきまたは進捗不足が表示される。工程を組み直す時間以外の永続的コストはない",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 70,
+    "career_authenticity": 78,
+    "exploit": "memorize",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/SiteHeatGame.tsx:17 — 5時間帯のWBGTが固定定義され、昼から午後が高い",
+    "src/q1/SiteHeatGame.tsx:33 — 各作業には負荷と進捗があり、同じカードを何度でも配置できる",
+    "src/q1/SiteHeatGame.tsx:41 — WBGTと負荷の積から3段階のリスクが計算される",
+    "src/q1/SiteHeatGame.tsx:64 — 配置から総進捗、時間別リスク、最大リスクが算出される",
+    "src/q1/SiteHeatGame.tsx:74 — 最大リスクが危険未満かつ進捗75%以上の場合だけ成功する",
+    "src/q1/SiteHeatGame.tsx:149 — 失敗時は危険時刻または進捗不足が具体的に返される"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=memorize, GQ=70, CA=78",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.197Z"
+}

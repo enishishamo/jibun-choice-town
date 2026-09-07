@@ -1,0 +1,56 @@
+{
+  "game_type": "xray_shoot",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "診療放射線技師",
+  "current_SCOPE": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_CORE": "依頼に合う部位を選び、呼吸を観察して撮影し、画像品質を評価して必要なら限られたX線予算内で撮り直すことが中心の反復になる",
+  "current_A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "current_B": "依頼票から撮影部位と制約を把握し、周期的に変わる呼吸を観察して撮影し、画質を確認して左右の肺を比較・報告する技能型ループ",
+  "current_C": "医師の撮影依頼票、撮影対象が肺であること、息を止めた瞬間に撮る条件、X線5回の上限、撮影画像と左右肺の視覚所見",
+  "current_D": "撮影部位を決め、呼吸周期を見てシャッターのタイミングを合わせ、部位とブレを確認して採用または再撮影し、左右を観察して所見を選ぶ",
+  "current_E": "不適切な画像は残りX線回数を消費して撮り直す。症例失敗後は状態をリセットし、ランダムな新症例で再挑戦する",
+  "actual_first_screen": null,
+  "actual_player_actions": "撮影部位を決め、呼吸周期を見てシャッターのタイミングを合わせ、部位とブレを確認して採用または再撮影し、左右を観察して所見を選ぶ",
+  "actual_feedback": "意味のある失敗がある。X線を5回使い切ると患者負担で撮影不能になり、誤所見を2回伝えると診断遅延として症例失敗になる",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "依頼票から撮影部位と制約を把握し、周期的に変わる呼吸を観察して撮影し、画質を確認して左右の肺を比較・報告する技能型ループ",
+  "actual_failure_path": "意味のある失敗がある。X線を5回使い切ると患者負担で撮影不能になり、誤所見を2回伝えると診断遅延として症例失敗になる",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": false,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 86,
+    "career_authenticity": 89,
+    "exploit": "none-found",
+    "C_required": true,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/XrayGame.tsx:30 — 症例は右・左・異常なしの3種類、X線上限は5回と定義される",
+    "src/q1/XrayGame.tsx:35 — 呼吸は4段階で循環し、hold=trueは1秒の停止区間だけに設定される",
+    "src/q1/XrayGame.tsx:42 — 症例はMath.randomで選択される",
+    "src/q1/XrayGame.tsx:64 — 失敗後は症例、撮影回数、誤読、観察状態をリセットし新症例を開始する",
+    "src/q1/XrayGame.tsx:107 — 依頼票を開く操作が記録され、肺、息止め、5回制約が提示される",
+    "src/q1/XrayGame.tsx:155 — 依頼票を開かない限り撮影工程へ進めない",
+    "src/q1/XrayGame.tsx:193 — シャッター時の呼吸状態でsharpまたはblurredが決まり、撮影ごとに被ばく回数が増える",
+    "src/q1/XrayGame.tsx:217 — 撮影部位と画質が実画像表示と採用可否を変える",
+    "src/q1/XrayGame.tsx:292 — 左右の肺を個別にタップし、両方を見た後でのみ所見選択肢が出る",
+    "src/q1/XrayGame.tsx:321 — 症例との一致で成功し、誤読2回で診断遅延の症例失敗になる",
+    "src/q1/XrayGame.tsx:369 — 1撮影・誤読ゼロ・初回症例の達成をperfectとして結果へ反映する",
+    "src/data/content/medical.ts:309 — med-radioは診療放射線技師、X線撮影室、gameType xray_shootとして登録されている"
+  ],
+  "classification": "PASS",
+  "classification_source": "seed",
+  "classification_reason": "seeded from q1-audit.json: C_required=true, judgment=true, exploit=none-found, GQ=86, CA=89",
+  "classification_evidence": "factory/state/audits/q1-audit.json",
+  "priority_reasons": [
+    "other"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.202Z"
+}
