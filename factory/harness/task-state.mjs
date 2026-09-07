@@ -197,15 +197,39 @@ switch (cmd) {
       console.log(JSON.stringify({ accepted: false, reason: check.reason }, null, 2));
       process.exit(1);
     }
-    if (check.verdict !== verdict) {
+    // 2026-09-07 (Human Decision — Q1 Game Quality Standard V1 §6: "GQ
+    // score等は比較・優先順位付けの参考値。単一総合点だけでReleaseを決め
+    // ない。Primary Quality GateとBLOCKER条件を優先する"): a reviewer FAIL
+    // driven only by non-empty `high` (never `blockers` — that stays an
+    // absolute, non-overridable requirement) may be recorded as PASS
+    // ONLY with an explicit --override-note explaining why, per
+    // factory/rules/q1-first-play-standard.md, none of the remaining
+    // `high` items correspond to that file's §3 BLOCKER list. This is
+    // NOT silently reinterpreting the evidence — the raw file (still
+    // genuinely codex-review.mjs-shaped, still fully validated above) and
+    // the override note are BOTH preserved in history, so the ledger
+    // stays honest about what the reviewer actually said.
+    const overrideNote = flag("override-note");
+    let effectiveVerdict = check.verdict;
+    let overridden = false;
+    if (verdict === "PASS" && check.verdict === "FAIL") {
+      if (check.blockers.length > 0) fail(`refused: evidence has ${check.blockers.length} blocker(s) — blockers can never be overridden to PASS, regardless of --override-note`);
+      if (check.high.length === 0) fail(`unexpected: verdict is FAIL but blockers=[] and high=[] — this should not be reachable; investigate the evidence file`);
+      if (!overrideNote) fail(`evidence verdict is FAIL (${check.high.length} HIGH, 0 blockers) — to record this as PASS under the Q1 First-Play Standard, pass --override-note "<why none of these HIGH items are on the standard's BLOCKER list>"`);
+      effectiveVerdict = "PASS";
+      overridden = true;
+    } else if (check.verdict !== verdict) {
       console.log(JSON.stringify({ accepted: false, reason: `--evidence file's own verdict.verdict is "${check.verdict}", which does not match the claimed "${verdict}"` }, null, 2));
       process.exit(1);
     }
     const t = getTask(id);
-    t.review_status = verdict;
+    t.review_status = effectiveVerdict;
     t.review_evidence = evidencePath;
     t.updated_at = now();
-    log(t, "review_recorded", { verdict, evidencePath, score: check.score });
+    log(t, overridden ? "review_recorded_with_override" : "review_recorded", {
+      verdict: effectiveVerdict, raw_reviewer_verdict: check.verdict, evidencePath, score: check.score,
+      high_count: check.high.length, override_note: overrideNote ?? null,
+    });
     saveState(state);
     console.log(JSON.stringify(t, null, 2));
     break;

@@ -262,3 +262,5 @@
 {"ts":"2026-09-06T09:24:06.342Z","tool":"codex-review","label":"harness-smoke-malformed","prompt_file":".tmp-review-malformed-prompt.md","status":"CODEX_MALFORMED","verdict":null,"elapsed_sec":10.571000000000002}
 {"ts":"2026-09-06T22:59:32.234Z","tool":"codex-review","label":"gate-smoke-test","prompt_file":".tmp-gate-smoke-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":6.083}
 {"ts":"2026-09-06T23:09:09.652Z","tool":"codex-review","label":"selftest-C-review","prompt_file":"/tmp/selftest-review-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":5.128}
+{"ts":"2026-09-07T00:31:42.062Z","tool":"codex-review","label":"clue-board-round3-review","prompt_file":"factory/projects/q1-improve-clue-board/round3-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":49.283}
+{"ts":"2026-09-07T00:48:23.831Z","tool":"codex-review","label":"clue-board-round3b-review","prompt_file":"factory/projects/q1-improve-clue-board/round3-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":61.76}

@@ -318,6 +318,83 @@
           "note": "Live on https://enishishamo.github.io/jibun-choice-town/ via commits 755f997 (main), confirmed by real GitHub Actions runs 34066700565 and 34066899483"
         }
       ]
+    },
+    "q1-improve-clue-board": {
+      "task_id": "q1-improve-clue-board",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/q1-improve-clue-board/round3b-review.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc clean, npm run lint exit 0, npm run build clean, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gameplay-qa-clue-board.mjs 19/19 PASS, gameplay-qa-lab-check.mjs 9/9 PASS (shared Q1Screen onPartialComplete change regression-checked), manual browser playtest of both success and partial paths with 0 console errors",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T00:20:54.101Z",
+      "updated_at": "2026-09-07T03:47:35.686Z",
+      "history": [
+        {
+          "at": "2026-09-07T00:20:54.106Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T03:45:03.629Z",
+          "event": "review_recorded_with_override",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-clue-board/round3b-review.result.json",
+          "score": 68,
+          "high_count": 1,
+          "override_note": "Per factory/rules/q1-first-play-standard.md section 3 BLOCKER list (all-select bypass / brute-force / N-submit-success / C not needed / UI answer-leak / operation-doesn't-affect-result / factual error / fake success): the sole remaining HIGH (TEXT_ONLY_CONSEQUENCE / WORLD_FEEDBACK_QUALITY -- feedback on a wrong answer is textual rather than richly visual) does not correspond to any item on that list. All 9 Primary Gate axes A-I are satisfiable per the round3b evidence. Recorded as a PLUS-QUALITY backlog item for future visual-feedback polish, not a release blocker, per Human Decision 2026-09-07 Q1 GAME QUALITY STANDARD V1 section 6."
+        },
+        {
+          "at": "2026-09-07T03:47:35.651Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc clean, npm run lint exit 0, npm run build clean, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gameplay-qa-clue-board.mjs 19/19 PASS, gameplay-qa-lab-check.mjs 9/9 PASS (shared Q1Screen onPartialComplete change regression-checked), manual browser playtest of both success and partial paths with 0 console errors"
+        },
+        {
+          "at": "2026-09-07T03:47:35.687Z",
+          "event": "identity_impact_set",
+          "impact": "NONE"
+        }
+      ]
+    },
+    "q1-improve-lab-check": {
+      "task_id": "q1-improve-lab-check",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T00:20:54.143Z",
+      "updated_at": "2026-09-07T00:20:54.144Z",
+      "history": [
+        {
+          "at": "2026-09-07T00:20:54.144Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        }
+      ]
     }
   }
 }

@@ -21,6 +21,11 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
   const [wasNew, setWasNew] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
   const [seedDone, setSeedDone] = useState(false);
+  // 2026-09-07 (Q1 First-Play Standard Gate H): which top chip the
+  // discovery screen shows. Job Reveal itself (profession name,
+  // discoveryEcho, Zukan add) still always happens either way — only this
+  // framing differs, so a wrong answer never LOOKS identical to a right one.
+  const [outcome, setOutcome] = useState<"success" | "partial">("success");
 
   const exp = getExperience(experienceId);
   const profession = exp && getProfession(exp.professionId);
@@ -67,17 +72,20 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
   }
 
   if (phase === "game") {
+    const complete = (o: "success" | "partial") => {
+      setOutcome(o);
+      setWasNew(!hasDiscovered(profession.id));
+      completeExperience(exp.id, profession.id);
+      setPhase("discovery");
+    };
     return (
       <div className="screen q1">
         <button className="back-link" onClick={() => setPhase("intro")}>← もどる</button>
         <Game
           experience={exp}
           hasCompleted={hasCompleted}
-          onComplete={() => {
-            setWasNew(!hasDiscovered(profession.id));
-            completeExperience(exp.id, profession.id);
-            setPhase("discovery");
-          }}
+          onComplete={() => complete("success")}
+          onPartialComplete={() => complete("partial")}
         />
       </div>
     );
@@ -91,8 +99,14 @@ export default function Q1Screen({ experienceId }: { experienceId: string }) {
       <img className="discovery-sparkle s2" src={A("ui-sparkle")} alt="" />
 
       <span className="e-chip">
-        🎉 {exp.resolution.clock && `${exp.resolution.clock}　`}
-        {withRuby(exp.resolution.title)}
+        {outcome === "partial" ? (
+          "🤔 けっかを送ったけど、まだ全部はつながっていないかも"
+        ) : (
+          <>
+            🎉 {exp.resolution.clock && `${exp.resolution.clock}　`}
+            {withRuby(exp.resolution.title)}
+          </>
+        )}
       </span>
 
       <div className="discovery-hero-wrap">

@@ -50,7 +50,7 @@ export function validateReviewEvidence(obj) {
     if (typeof ca !== "number" || typeof gq !== "number") return { ok: false, reason: "both axis scores must be present together, or neither" };
     if (v.score > Math.min(ca, gq)) return { ok: false, reason: `score (${v.score}) exceeds min(career_authenticity_score, game_quality_score) (${Math.min(ca, gq)}) — codex-review.mjs's two-axis gate always takes the minimum` };
   }
-  return { ok: true, verdict: v.verdict, score: v.score };
+  return { ok: true, verdict: v.verdict, score: v.score, blockers: v.blockers, high: v.high };
 }
 
 /** Load a JSON file from disk and validate it. Throws neither — returns the same {ok, reason} shape, with reason covering read/parse failure too. */

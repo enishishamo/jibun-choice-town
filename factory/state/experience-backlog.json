@@ -36,7 +36,8 @@
           "ClueBoardGame.tsx:62 — 世界の変化は患者反応ではなく文章の手がかりメモ追加に限定。",
           "ClueBoardGame.tsx:150 — 不足時の案内は調べ方全般で、特定の正解情報までは漏らしていない。"
         ],
-        "repair_sketch": "患者の顔色・呼吸・姿勢と測定器表示を観察対象として画面上に反映する。"
+        "repair_sketch": "患者の顔色・呼吸・姿勢と測定器表示を観察対象として画面上に反映する。",
+        "status_note_2026_09_07": "select-all/固定順answer leak/onCompleteの成功偽装は修正済み（factory/projects/q1-improve-clue-board/round3b-review.result.json、独立レビューでblockers=0を確認）。本行のWEAK_WORLD_FEEDBACK（テキストのみの誤答フィードバック）はfactory/rules/q1-first-play-standard.md §3のBLOCKERリストに該当しないためrelease非blocking——PLUS QUALITY backlogとして存置（Human Decision 2026-09-07 Q1 GAME QUALITY STANDARD V1 §6、task-state.mjsのreview_recorded_with_overrideとして記録済み）。"
       },
       {
         "component": "CookGame.tsx",

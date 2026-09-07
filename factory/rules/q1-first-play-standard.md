@@ -79,6 +79,31 @@ LEAK`/`C NECESSITY`違反であり、依然としてBLOCKER対象。
 上記PRIMARY QUALITY GATEとBLOCKER条件を優先する
 （`game-critic-v2.md`の二軸60点floorとの関係は同ファイルの追記を参照）。
 
+## 6b. Auto Repair上限後のFAIL — Human確認が不要な場合（2026-09-07追記）
+
+AUTO REPAIR（最大1回）を使い切った後もindependent reviewがFAILを返す場合、
+以下の条件を**すべて**満たすなら、Humanへ都度確認せず、このセッションが
+自律的に`review_status: PASS`（override）として記録し、release/QA/deploy
+まで進めてよい:
+
+1. `blockers.length === 0`（BLOCKERは1件でも残れば絶対にoverride不可。
+   これはHumanの承認があっても変えない）。
+2. 残る`high[]`の各項目が、本Standard §3のBLOCKERリストのいずれにも
+   該当しないと明確に説明できる（`task-state.mjs set-review ... PASS
+   --override-note "..."`に、その説明を該当ルールファイルの引用付きで
+   必ず記録する）。
+3. PRIMARY QUALITY GATE（§2 A-I）が全て満たされている。
+
+この場合、**必ず**以下をevidenceとして残す: 生のreview結果ファイル
+（改変しない）／override根拠（どのBLOCKERリスト項目にも該当しない
+理由）／適用したHuman-approved rule（本ファイルの節番号）／
+backlog化（該当するbacklogファイルへの追記）。
+
+**Humanへの確認が必要なのは、本Standard自体だけではBLOCKER相当か
+判断できない場合に限定する**（例: 新しい種類の欠陥で§3リストに
+明確に当てはまるかどうか自体が不明、複数のPrimary Gateが同時に
+弱く総合判断が必要、等）。
+
 ## 適用実績
 
 - 2026-09-07: `q1-improve-lab-check` / `q1-improve-clue-board`
