@@ -1,0 +1,353 @@
+{
+  "note": "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.",
+  "generated_at": "2026-09-07T23:13:17.294Z",
+  "wip_limit": 2,
+  "items": [
+    {
+      "game_type": "forecast_and_balance",
+      "classification": "LOCAL_REPAIR",
+      "entry_stage": "IMPLEMENTATION",
+      "priority_reasons": [
+        "serious_first_play_failure"
+      ],
+      "priority_score": 1.48,
+      "evidence": "factory/projects/q1-improve-power/round2-review.result.json",
+      "status": "in_progress",
+      "game_id": "legacy-forecast-and-balance",
+      "started_at": "2026-09-07T23:13:17.570Z"
+    },
+    {
+      "game_type": "lab_check",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "answer_leak",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 3.18,
+      "evidence": "factory/projects/q1-improve-lab-check/round4-review.result.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "safety_plan",
+      "classification": "AE_REBUILD",
+      "entry_stage": "AE",
+      "priority_reasons": [
+        "severe_c_d_failure",
+        "answer_leak"
+      ],
+      "priority_score": 3.48,
+      "evidence": "factory/projects/q1-improve-safety-plan/round2-review.result.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "clue_join",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure",
+        "answer_leak"
+      ],
+      "priority_score": 3.49,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "sow_and_grow",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "severe_c_d_failure",
+        "answer_leak"
+      ],
+      "priority_score": 3.52,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "load_and_route",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "severe_c_d_failure",
+        "answer_leak"
+      ],
+      "priority_score": 3.58,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "line_debug",
+      "classification": "AE_REBUILD",
+      "entry_stage": "AE",
+      "priority_reasons": [
+        "severe_c_d_failure",
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.39,
+      "evidence": "factory/projects/q1-improve-line-debug/round2-review.result.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "bus_ops",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.43,
+      "evidence": "factory/projects/q1-improve-bus-ops/round2-review.result.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "timetable",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.43,
+      "evidence": "factory/projects/q1-improve-timetable/round2-review.result.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "layer_and_compare",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.52,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "allocate_and_forecast",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.54,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "move_try",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.58,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "hotel_receive",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.59,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "delay_recover",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.64,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "crowd_flow",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.66,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "sort_out",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.66,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "observe_care",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.68,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "place_and_test",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.68,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "venue_layout",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.69,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "life_plan",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.72,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "reach_mix",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.72,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "meal_fit",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.73,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "scene_audit",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "major_factual_problem"
+      ],
+      "priority_score": 4.73,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "sound_check",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.74,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "tenant_match",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit",
+        "severe_c_d_failure"
+      ],
+      "priority_score": 4.74,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "package_design",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.75,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "recipe_balance",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.78,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "trip_plan",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "brute_force_exploit"
+      ],
+      "priority_score": 4.79,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "sourcing_mix",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "severe_c_d_failure"
+      ],
+      "priority_score": 6.65,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    },
+    {
+      "game_type": "plan_mix",
+      "classification": "GAME_TRANSLATION_REBUILD",
+      "entry_stage": "GAME_TRANSLATION",
+      "priority_reasons": [
+        "severe_c_d_failure"
+      ],
+      "priority_score": 6.68,
+      "evidence": "factory/state/audits/q1-audit.json",
+      "status": "queued"
+    }
+  ]
+}

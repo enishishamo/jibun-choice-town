@@ -1,0 +1,49 @@
+{
+  "game_type": "forecast_and_balance",
+  "audited_from": {
+    "file": "factory/state/audits/q1-audit.json",
+    "audited_at": "2026-09-01",
+    "auditor": "codex"
+  },
+  "current_profession": "電力の需給や系統運用に関わる仕事",
+  "current_SCOPE": "街（猛暑）／街の電気",
+  "current_CORE": "次時刻の需要を見越して供給源を切り替え、時間を1時間進め、需給状態または停電結果を確認する。",
+  "current_A": "街（猛暑）／街の電気",
+  "current_B": "13時から17時まで、固定された需要推移に対して3種類の追加供給を切り替え、毎時の供給不足を避ける逐次バランスゲーム",
+  "current_C": "現在の需要・供給・余裕表示、13～17時の気温予報、需要予測グラフ、火力・水力・地域間融通の追加量と説明",
+  "current_D": "将来需要を予測し、供給源をオン／オフして次の時刻へ進み、供給不足を回避する",
+  "current_E": "停電画面のボタンで13時、追加供給なしの状態へ戻る",
+  "actual_first_screen": null,
+  "actual_player_actions": "将来需要を予測し、供給源をオン／オフして次の時刻へ進み、供給不足を回避する",
+  "actual_feedback": "次時刻の需要より供給が少ないと即座に停電し、街の一部と信号が止まる。13時から全面的にやり直す必要がある",
+  "actual_next_decision": "yes (per audit)",
+  "actual_success_path": "13時から17時まで、固定された需要推移に対して3種類の追加供給を切り替え、毎時の供給不足を避ける逐次バランスゲーム",
+  "actual_failure_path": "次時刻の需要より供給が少ないと即座に停電し、街の一部と信号が止まる。13時から全面的にやり直す必要がある",
+  "prerequisite_explanation": null,
+  "answer_leak": false,
+  "brute_force": true,
+  "profession_reveal": "unconditional Job Reveal via Q1Screen (src/screens/Q1Screen.tsx)",
+  "audit_scores": {
+    "game_quality": 48,
+    "career_authenticity": 57,
+    "exploit": "select-all",
+    "C_required": false,
+    "player_judgment_required": true,
+    "action_changes_result": true
+  },
+  "audit_evidence": [
+    "src/q1/PowerGame.tsx:16 — 気温と需要は5時点の固定配列で、セッション間変動がない",
+    "src/q1/PowerGame.tsx:33 — 3供給源の説明には起動時間や量の限界があるが、実装値は単純な加算だけである",
+    "src/q1/PowerGame.tsx:48 — 選択中の全供給源が恒常的に基礎供給へ加算され、過剰供給コストは計算されない",
+    "src/q1/PowerGame.tsx:56 — 次時刻の需要未満なら停電、それ以外なら無条件で進行する",
+    "src/q1/PowerGame.tsx:151 — 気温予報と需要グラフは任意表示で、開かなくても供給操作と進行が可能"
+  ],
+  "classification": "LOCAL_REPAIR",
+  "classification_source": "independent_review_residual",
+  "classification_reason": "コア搾取は解消済み。残りは表示の時間軸ラベルと最終時刻判定の整合（HONEST OUTCOME表示バグ）",
+  "classification_evidence": "factory/projects/q1-improve-power/round2-review.result.json",
+  "priority_reasons": [
+    "serious_first_play_failure"
+  ],
+  "recorded_at": "2026-09-07T23:07:47.190Z"
+}
