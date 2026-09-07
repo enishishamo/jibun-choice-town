@@ -8,51 +8,45 @@
 // ※要ファクトチェック：実際の投与量調整は薬剤ごとに基準が異なる。
 //   ここでは具体的な薬剤名を出さず「腎臓のはたらきに合わせて量を
 //   見直す」という一般的な考え方だけを扱う。
+//
+// 2026-09-07 repair round 1 (Continuous Product Loop, factory/state/audits/
+// audit-summary.md GQ42/CA72 — "重要文書の確認が保証されず、答えを直接
+// 述べた固定選択肢を無コストで試せる"): see rxCheckLogic.ts for the fixes
+// (all 4 cards required, wrong-guess budget per step). Round-1 independent
+// review found 2 remaining HIGH, both fixed in round 2 (this version):
+// (1) the "stop unilaterally" wrong reply semantically named the correct
+// action ("まずは相談") -- reworded in rxCheckLogic.ts. (2) blind-guess
+// success across both steps was too high given the action step's correct
+// answer has generic professional face-validity independent of any data --
+// the action step's wrong-guess budget is now separately tighter
+// (MAX_ACTION_WRONG_ATTEMPTS = 0) than the concern step's. Also fixed a
+// real race: the correct action had a 600ms delay before completing, during
+// which the action buttons stayed clickable -- a second click in that
+// window could set done-partial only for the pending timer to overwrite it
+// back to done afterward. `resolving` now disables the buttons the instant
+// a correct pick is made, and the partial-outcome text now names the
+// SPECIFIC wrong action actually chosen, instead of always assuming one.
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
+import { ACTIONS, CARDS, CONCERNS, MAX_ACTION_WRONG_ATTEMPTS, MAX_CONCERN_WRONG_ATTEMPTS, hasSeenEnough } from "./rxCheckLogic";
+import type { CardId } from "./rxCheckLogic";
 
-type CardId = "rx" | "patient" | "lab" | "history";
+type Step = "look" | "concern" | "act" | "done" | "done-partial";
+type PartialReason = "concern" | "action" | null;
 
-const CARDS: { id: CardId; icon: string; title: string; lines: string[]; key?: boolean }[] = [
-  { id: "rx", icon: "📄", title: "処方せん", lines: [
-    "肺炎の治療につかう注射のくすり", "1日2回・7日分", "点滴でからだに入れる",
-  ] },
-  { id: "patient", icon: "🧑", title: "患者さんの情報", lines: [
-    "70代前半・男性", "体重 52kg", "食事があまりとれていない",
-  ] },
-  { id: "lab", icon: "🔬", title: "検査の結果", lines: [
-    "白血球・CRP：高い（炎症）", "腎臓のはたらきを示す値：ふつうより低め",
-  ], key: true },
-  { id: "history", icon: "💊", title: "今までの薬・アレルギー", lines: [
-    "血圧の薬を毎日のんでいる", "くすりのアレルギー：なし",
-  ] },
-];
-
-const CONCERNS = [
-  { id: "kidney", label: "腎臓のはたらきが弱っているかも", ok: true,
-    reply: "たしかに。腎臓のはたらきが弱いと、くすりがからだに残りやすくなることがある。" },
-  { id: "allergy", label: "アレルギーがあるかも", ok: false,
-    reply: "💊今までの薬・アレルギーのカードを見ると、アレルギーは「なし」と書いてある。" },
-  { id: "double", label: "同じ薬が2つ出ているかも", ok: false,
-    reply: "📄処方せんを見ると、出ているのは1種類だけ。" },
-];
-
-const ACTIONS = [
-  { id: "asis", label: "このまま出す", ok: false,
-    result: "気になることがあるまま出してしまうと、くすりがからだに残りすぎるかもしれない。" },
-  { id: "ask", label: "医師に問い合わせる", ok: true,
-    result: "「腎臓の値が低めですが、量はこのままでよいですか？」と確認した。" },
-  { id: "stop", label: "自分の判断でやめる", ok: false,
-    result: "薬剤師だけでやめてしまうと、肺炎の治療が始められない。まずは相談。" },
-];
-
-type Step = "look" | "concern" | "act" | "done";
-
-export default function RxCheckGame({ onComplete }: Q1GameProps) {
+export default function RxCheckGame({ onComplete, onPartialComplete }: Q1GameProps) {
   const [step, setStep] = useState<Step>("look");
   const [open, setOpen] = useState<CardId | null>(null);
   const [seen, setSeen] = useState<CardId[]>([]);
   const [note, setNote] = useState<string | null>(null);
+  const [concernWrong, setConcernWrong] = useState(0);
+  const [actionWrong, setActionWrong] = useState(0);
+  const [partialReason, setPartialReason] = useState<PartialReason>(null);
+  const [wrongActionTaken, setWrongActionTaken] = useState<string | null>(null);
+  // true from the instant a correct action is picked until the (delayed)
+  // transition to "done" actually fires -- disables the action buttons so
+  // a second click in that window can never race the pending timer.
+  const [resolving, setResolving] = useState(false);
 
   if (step === "done") {
     return (
@@ -68,6 +62,32 @@ export default function RxCheckGame({ onComplete }: Q1GameProps) {
           薬をわたすことがゴールじゃない。この人に安全に効くところまで。
         </p>
         <button className="btn primary big" onClick={onComplete}>
+          病棟へ届ける
+        </button>
+      </div>
+    );
+  }
+
+  // 2026-09-07 repair: an honest, weaker outcome for exhausting the guess
+  // budget -- either the concern was never correctly identified, or it was
+  // identified but the wrong action was taken. Progress isn't blocked (Job
+  // Reveal still happens), and neither is disguised as the safe outcome.
+  if (step === "done-partial") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">
+            {partialReason === "concern" ? "気になるところを、しぼりきれなかった" : "確認しないまま、話が進んでしまった"}
+          </span>
+        </div>
+        <p className="game-line soft center-line">
+          {partialReason === "concern"
+            ? "カードの内容と見比べきれず、今日は気になるところを見つけられなかった。次はもう一度、カードを見くらべてみよう。"
+            : wrongActionTaken === "asis"
+              ? "気になるところには気づけたけど、そのまま薬を出してしまった。気になることがあるときは、渡す前に確かめることが安全な一歩になる。"
+              : "気になるところには気づけたけど、自分の判断だけで薬をやめてしまった。ひとりで決めず、確かめることが安全な一歩になる。"}
+        </p>
+        <button className="btn primary big" onClick={() => (onPartialComplete ?? onComplete)()}>
           病棟へ届ける
         </button>
       </div>
@@ -119,8 +139,19 @@ export default function RxCheckGame({ onComplete }: Q1GameProps) {
               key={c.id}
               className="btn choice"
               onClick={() => {
+                if (c.ok) {
+                  setNote(c.reply);
+                  setStep("act");
+                  return;
+                }
+                const next = concernWrong + 1;
+                setConcernWrong(next);
+                if (next > MAX_CONCERN_WRONG_ATTEMPTS) {
+                  setPartialReason("concern");
+                  setStep("done-partial");
+                  return;
+                }
                 setNote(c.reply);
-                if (c.ok) setStep("act");
               }}
             >
               {c.label}
@@ -135,9 +166,24 @@ export default function RxCheckGame({ onComplete }: Q1GameProps) {
             <button
               key={a.id}
               className="btn choice"
+              disabled={resolving}
               onClick={() => {
+                if (resolving) return;
+                if (a.ok) {
+                  setResolving(true);
+                  setNote(a.result);
+                  setTimeout(() => setStep("done"), 600);
+                  return;
+                }
+                const next = actionWrong + 1;
+                setActionWrong(next);
+                if (next > MAX_ACTION_WRONG_ATTEMPTS) {
+                  setPartialReason("action");
+                  setWrongActionTaken(a.id);
+                  setStep("done-partial");
+                  return;
+                }
                 setNote(a.result);
-                if (a.ok) setTimeout(() => setStep("done"), 600);
               }}
             >
               {a.label}
@@ -152,8 +198,8 @@ export default function RxCheckGame({ onComplete }: Q1GameProps) {
         <button
           className="btn primary big"
           onClick={() => {
-            if (seen.length < 3) {
-              setNote(`まだ ${seen.length} まいしか見ていない。薬だけでは、この人に合うかどうか分からないかも。`);
+            if (!hasSeenEnough(seen)) {
+              setNote(`まだ ${seen.length} まいしか見ていない。ぜんぶのカードを見くらべてみよう。`);
               return;
             }
             setNote(null);

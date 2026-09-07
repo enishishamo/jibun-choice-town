@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "rx-check-review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 76,
+    "game_quality_score": 52,
+    "blockers": [],
+    "high": [
+      "Gate E violation: the wrong action feedback for 「自分の判断でやめる」 says 「まずは相談」, strongly disclosing that the remaining 「医師に問い合わせる」 option is correct.",
+      "Gates C/E remain weak on the first play: cards count as seen immediately when their headers are clicked, so a player can rapidly open all four without reading them. With two allowed selections at each three-option step, blind success is 4/9, and the professionally obvious 「医師に問い合わせる」 label makes content-independent success still easier."
+    ],
+    "medium": [
+      "After selecting the correct action, the component remains interactive for 600 ms. Further clicks can route it to done-partial, while the pending timer subsequently overwrites that state with done, producing contradictory outcomes and bypassing the intended terminal-state integrity.",
+      "The action-failure ending always claims the player issued the medicine without consulting the doctor, even when the exhausted guesses included only 「自分の判断でやめる」. The partial consequence therefore misstates what the child actually chose.",
+      "The QA harness tests only pure-data invariants. It does not exercise React transitions, repeated/rapid clicks, the delayed successful transition, partial-reason accuracy, or whether opened cards were meaningfully used. Its answer-leak test checks only exact inclusion of the correct label, so it misses synonymous disclosure such as 「まずは相談」."
+    ],
+    "low": [
+      "The successful result says the dose was adjusted even though the represented interaction only asks the physician whether the dose is appropriate and never depicts the physician's response.",
+      "The prescription supplies frequency but no drug identity, dose, or concrete renal-function measurement, so the renal-dose judgment is necessarily schematic rather than a fully evidence-based prescription check."
+    ],
+    "evidence": [
+      "src/q1/rxCheckLogic.ts:55 — hasSeenEnough uses CARDS.every(...), so every defined card ID is genuinely required at the actual gate.",
+      "src/q1/RxCheckGame.tsx:95 — merely opening a card immediately records it in seen; no reading, dwell time, or later use of its contents is required.",
+      "src/q1/RxCheckGame.tsx:177 — the sole transition from look to concern calls hasSeenEnough(seen), correctly preventing progress after only three cards.",
+      "src/q1/rxCheckLogic.ts:62 — MAX_WRONG_ATTEMPTS is 1, meaning two selections are available at each three-option step before partial failure.",
+      "src/q1/RxCheckGame.tsx:127 — concern errors increment against step-local state and the second ordinary wrong selection routes to concern partial failure.",
+      "src/q1/RxCheckGame.tsx:155 — action errors similarly route the second ordinary wrong selection to action partial failure.",
+      "src/q1/RxCheckGame.tsx:152 — correct action completion is delayed by setTimeout while action buttons remain enabled.",
+      "src/q1/RxCheckGame.tsx:157 — during that delay, a subsequent wrong action can set done-partial before the pending timer sets done.",
+      "src/q1/rxCheckLogic.ts:48 — the wrong stop-action feedback ends with 「まずは相談」, strongly identifying the inquiry option.",
+      "src/q1/RxCheckGame.tsx:68 — every action-budget failure is described as medicine having been issued before consultation, regardless of the actual wrong choices.",
+      "factory/harness/gameplay-qa-rx-check.mjs:39 — concern leakage detection is limited to exact correct-label substring matching.",
+      "factory/harness/gameplay-qa-rx-check.mjs:42 — action leakage detection likewise misses semantic or synonymous answer disclosure.",
+      "factory/harness/gameplay-qa-rx-check.mjs:11 — the harness imports only pure logic and never renders or drives RxCheckGame.",
+      "src/screens/Q1Screen.tsx:88 — done-partial correctly invokes the shell's distinct partial-completion path.",
+      "src/q1/rxCheckLogic.ts:20 — the scenario does model cross-referencing prescription, patient, laboratory, and medication/allergy information.",
+      "src/q1/rxCheckLogic.ts:46 — escalation to the physician, rather than unilateral discontinuation, is the designated correct professional action."
+    ],
+    "recommended_actions": [
+      "Remove the semantic answer leak from the stop feedback; explain only the harm caused by unilateral discontinuation without saying to consult or otherwise naming the correct next action.",
+      "Require an information-dependent interaction rather than counting header clicks—for example, have the child associate the renal result with the prescription or select supporting evidence before judging the concern.",
+      "Reduce blind success materially, such as by allowing only one submitted concern/action decision while preserving a separate non-revealing reconsideration interaction, or by increasing meaningful option/state complexity.",
+      "Make correct-action completion immediate or disable all action buttons as soon as an answer is accepted; cancel pending timers on state change/unmount.",
+      "Track the actual failed action and render an accurate partial outcome for issuing unchanged versus stopping unilaterally.",
+      "Add component-level tests covering all phase transitions, double/rapid clicks, delayed completion, both partial reasons, terminal-state stability, and semantic leakage assertions.",
+      "Show the physician's response before claiming dose adjustment, and consider adding an age-appropriate concrete dose/renal-value relationship to strengthen authenticity."
+    ]
+  },
+  "elapsed_sec": 191.419
+}
