@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "rx-check-round2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 74,
+    "career_authenticity_score": 79,
+    "game_quality_score": 74,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "The QA harness still exercises only pure logic. It does not render RxCheckGame or verify the realistic delayed-click lock, both action-specific partial endings, or terminal-state stability.",
+      "The 600ms timeout is not cancelled on unmount. Navigating back during resolution is benign in the current React flow and a revisited component starts unlocked, but timer lifecycle cleanup is still missing.",
+      "Gate C is mechanically enforced only by recording a card as seen immediately when its header is opened; rapid header clicking can satisfy the prerequisite without meaningful reading, although the remaining 2/9 blind-success probability no longer makes brute-force success easy."
+    ],
+    "low": [
+      "The successful ending says the dose was adjusted even though the interaction depicts only asking the physician whether the dose is appropriate and never depicts a physician response.",
+      "The scenario omits the medicine identity, prescribed dose, and a concrete renal measurement, making the professional judgment intentionally schematic rather than a fully evidence-based prescription review.",
+      "The semantic-leak keyword list is useful but necessarily incomplete and could miss future paraphrases; it should supplement, not replace, human semantic review."
+    ],
+    "evidence": [
+      "src/q1/rxCheckLogic.ts:49 — 「このまま出す」 describes drug accumulation risk without directing the player to consultation or inquiry.",
+      "src/q1/rxCheckLogic.ts:53 — 「自分の判断でやめる」 now describes only the treatment harm of unilateral discontinuation and contains no direct or synonymous pointer to the correct action.",
+      "src/q1/rxCheckLogic.ts:48 — All three action descriptions present two clinically harmful unilateral choices and one pharmacist-appropriate inquiry; there is no suspicious feedback leak, though the inquiry remains generically face-valid.",
+      "src/q1/RxCheckGame.tsx:169 — Every action button is disabled when resolving is true.",
+      "src/q1/RxCheckGame.tsx:171 — The handler also guards against processing an event after resolving has rendered true.",
+      "src/q1/RxCheckGame.tsx:173 — A correct action schedules resolving before starting the 600ms completion delay; React flushes a discrete click update before a separate realistic browser click, closing the reported race.",
+      "src/q1/RxCheckGame.tsx:113 — Document-header buttons remain interactive during resolution, but they can only change open/seen/note state and cannot create a partial or contradictory terminal outcome.",
+      "src/screens/Q1Screen.tsx:83 — The back control can unmount the game during the delay; revisiting mounts fresh state, so resolving does not remain permanently locked.",
+      "src/q1/RxCheckGame.tsx:86 — An asis failure renders the specific outcome that the medicine was issued unchanged.",
+      "src/q1/RxCheckGame.tsx:88 — A stop failure renders the specific outcome that the medicine was stopped unilaterally; only the two wrong action IDs can reach this branch.",
+      "src/q1/rxCheckLogic.ts:34 — There are three concerns with one correct answer.",
+      "src/q1/rxCheckLogic.ts:69 — One concern error is allowed, giving an optimal blind distinct-choice success probability of 2/3.",
+      "src/q1/rxCheckLogic.ts:48 — There are three actions with one correct answer.",
+      "src/q1/rxCheckLogic.ts:78 — No action error is allowed, giving blind success probability of 1/3; combined success is (2/3)×(1/3)=2/9≈22.2%.",
+      "factory/harness/gameplay-qa-rx-check.mjs:42 — The combined-rate calculation imports and uses the actual budget constants and actual array lengths rather than hardcoded counts.",
+      "factory/harness/gameplay-qa-rx-check.mjs:61 — The expanded action-leak check covers the former consultation leak and several inquiry synonyms; the harness completed with 15 passing checks.",
+      "src/q1/rxCheckLogic.ts:60 — Gate C requires all four information cards before progression.",
+      "src/q1/RxCheckGame.tsx:135 — Gate D requires identifying the case-specific renal concern before choosing the professional response.",
+      "src/q1/RxCheckGame.tsx:75 — Gate F provides a distinct partial consequence for failure rather than disguising it as success."
+    ],
+    "recommended_actions": [
+      "Add component-level tests using realistic separate events and fake timers for correct-click locking, both wrong-action endings, back-navigation/unmount during resolution, and terminal-state stability.",
+      "Store the timeout handle and clear it in an effect cleanup on unmount.",
+      "Strengthen evidence use beyond header-open tracking, such as requiring the player to select or connect the renal finding as supporting evidence.",
+      "Show the physician's response before stating that the dose was adjusted, or change the ending to say that dose adjustment was requested or considered.",
+      "Retain human semantic review for wrong-answer feedback instead of relying solely on a fixed synonym list."
+    ]
+  },
+  "elapsed_sec": 75.823
+}

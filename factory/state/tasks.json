@@ -504,6 +504,70 @@
           "note": "Released to main at commit 8f30415 (cherry-picked from feature branch's 9c661cd; small routing-log.jsonl conflict resolved). Live: https://enishishamo.github.io/jibun-choice-town/ . Deploy verified via gh run 34087150023 (Release Gate + lint + build all green) and via fetching the deployed bundle + live functional check (all 4 overview map labels render within viewport on a fresh session)."
         }
       ]
+    },
+    "q1-improve-rx-check": {
+      "task_id": "q1-improve-rx-check",
+      "task_type": "game-content",
+      "status": "REPAIR",
+      "repair_count": 1,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/q1-improve-rx-check/round2-review.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "tsc clean, npm run build clean, npm run lint exit 0, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gameplay-qa-rx-check.mjs 15/15 PASS, manual browser playtest of the all-4-cards gate, both budget-exhaustion partial endings, and the full success path (including a race-condition check on the correct-action button lock) with 0 console errors",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-07T06:40:28.305Z",
+      "updated_at": "2026-09-07T07:13:40.283Z",
+      "history": [
+        {
+          "at": "2026-09-07T06:40:28.305Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-07T06:55:33.342Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/q1-improve-rx-check/review.result.json",
+          "score": 52,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T06:55:33.376Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-07T07:10:20.989Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/q1-improve-rx-check/round2-review.result.json",
+          "score": 74,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-07T07:13:40.249Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "tsc clean, npm run build clean, npm run lint exit 0, public-safety-smoke-qa 0 blockers (14/14 worlds mobile+desktop), gameplay-qa-rx-check.mjs 15/15 PASS, manual browser playtest of the all-4-cards gate, both budget-exhaustion partial endings, and the full success path (including a race-condition check on the correct-action button lock) with 0 console errors"
+        },
+        {
+          "at": "2026-09-07T07:13:40.284Z",
+          "event": "identity_impact_set",
+          "impact": "NONE"
+        }
+      ]
     }
   }
 }
