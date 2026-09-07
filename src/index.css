@@ -2719,6 +2719,9 @@ img {
   border-color: var(--orange);
   background: var(--orange-soft);
 }
+.choice-card:disabled {
+  opacity: 0.45;
+}
 .choice-name {
   font-size: 14.5px;
   font-weight: bold;

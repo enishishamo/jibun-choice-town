@@ -4,52 +4,42 @@
 //    気温予報を見ないと「このあと需要がどこまで伸びるか」が分からない。
 // D: 供給を足す/減らす → 時間を進める → 需給バランスが変化。
 //    現在値だけ見て進めると15時に足りなくなる（＝失敗が結果で返る）。
+//
+// 2026-09-07 repair (Continuous Product Loop, factory/state/audits/
+// audit-summary.md GQ48/CA57): see powerLogic.ts for why hydro is now a
+// genuinely scarce, once-per-day resource instead of a free always-on
+// source -- this is what closes the "turn everything on at 13:00 and
+// never touch it again" guaranteed win.
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-interface Hour {
-  h: number;
-  temp: number;
-  demand: number; // 万kW
-}
-// 需要は気温とともに上がり、夕方に少し下がる（猛暑日の典型的な形）
-const HOURS: Hour[] = [
-  { h: 13, temp: 37, demand: 4600 },
-  { h: 14, temp: 38, demand: 4900 },
-  { h: 15, temp: 39, demand: 5200 },
-  { h: 16, temp: 38, demand: 5050 },
-  { h: 17, temp: 36, demand: 4800 },
-];
-
-const BASE_SUPPLY = 4700; // 万kW（今の供給力）
-
-interface Source {
-  id: string;
-  name: string;
-  emoji: string;
-  add: number;
-  note: string;
-}
-const SOURCES: Source[] = [
-  { id: "thermal", name: "火力発電を追加で動かす", emoji: "🏭", add: 300, note: "動かすまで少し時間がかかる" },
-  { id: "hydro", name: "水力（貯水）を使う", emoji: "💧", add: 200, note: "短い時間ならすぐ出せる" },
-  { id: "buy", name: "ほかの地域から電気を送ってもらう", emoji: "🔌", add: 250, note: "送れる量にかぎりがある" },
-];
+import { HOURS, HYDRO_BUDGET_HOURS, SOURCES, canCover, checkDemandFor, computeSupply, marginLevel } from "./powerLogic";
+import type { SourceId } from "./powerLogic";
 
 export default function PowerGame({ onComplete }: Q1GameProps) {
   const [step, setStep] = useState(0); // index into HOURS
-  const [on, setOn] = useState<string[]>([]);
+  const [on, setOn] = useState<SourceId[]>([]);
   const [openTemp, setOpenTemp] = useState(false);
   const [openGraph, setOpenGraph] = useState(false);
+  // 貯水池は一日合計1時間ぶんだけ。使うたびに減り、0になったら今日はもう
+  // 使えない（ボタンが押せなくなる）。
+  const [hydroLeft, setHydroLeft] = useState(HYDRO_BUDGET_HOURS);
   // 供給不足のまま時間を進めると、その時刻で停電（失敗）になる
   const [blackoutAt, setBlackoutAt] = useState<number | null>(null);
   const [done, setDone] = useState(false);
 
   const cur = HOURS[step];
-  const supply = BASE_SUPPLY + SOURCES.filter((s) => on.includes(s.id)).reduce((a, s) => a + s.add, 0);
-  const margin = supply - cur.demand;
-  const level = margin >= 400 ? "green" : margin >= 0 ? "yellow" : "red";
+  const supply = computeSupply(on);
+  // 2026-09-07 repair round 2: see powerLogic.ts's checkDemandFor for why
+  // the badge/bars/warning judge "will this plan survive the next
+  // advance", not the current (already-secured) hour's own demand.
+  const checkDemand = checkDemandFor(step);
+  const level = marginLevel(supply, checkDemand);
   const levelText = { green: "🟢 余裕あり", yellow: "🟡 余裕が少ない", red: "🔴 足りない" }[level];
+
+  const toggle = (id: SourceId) => {
+    if (id === "hydro" && hydroLeft <= 0 && !on.includes("hydro")) return; // 空の貯水池は入れられない
+    setOn((o) => (o.includes(id) ? o.filter((x) => x !== id) : [...o, id]));
+  };
 
   // 「進める」は今の供給計画で次の1時間をまかなう、という決定。
   // 次の時間の需要に届いていなければ、成功が続くのではなく停電が起きる。
@@ -59,9 +49,15 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
       return;
     }
     const next = HOURS[step + 1];
-    if (supply < next.demand) {
+    if (!canCover(supply, next.demand)) {
       setBlackoutAt(next.h);
       return;
+    }
+    // 水力を使っていた1時間ぶん、貯水池を消費する。使い切ったら自動で止まる。
+    if (on.includes("hydro")) {
+      const left = hydroLeft - 1;
+      setHydroLeft(left);
+      if (left <= 0) setOn((o) => o.filter((x) => x !== "hydro"));
     }
     setStep(step + 1);
   };
@@ -69,6 +65,7 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
   const restart = () => {
     setStep(0);
     setOn([]);
+    setHydroLeft(HYDRO_BUDGET_HOURS);
     setBlackoutAt(null);
   };
 
@@ -130,7 +127,7 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
         <div className="balance-bar">
           <div
             className="balance-demand"
-            style={{ width: `${Math.min(100, (cur.demand / 6000) * 100)}%` }}
+            style={{ width: `${Math.min(100, (checkDemand / 6000) * 100)}%` }}
           >
             <span>使う量</span>
           </div>
@@ -182,19 +179,32 @@ export default function PowerGame({ onComplete }: Q1GameProps) {
 
       {/* D: supply controls */}
       <div className="choice-row wrap">
-        {SOURCES.map((s) => (
-          <button
-            key={s.id}
-            className={`choice-card ${on.includes(s.id) ? "selected" : ""}`}
-            onClick={() =>
-              setOn((o) => (o.includes(s.id) ? o.filter((x) => x !== s.id) : [...o, s.id]))
-            }
-          >
-            <span className="choice-emoji">{s.emoji}</span>
-            <span className="choice-name">{s.name}</span>
-            <small>{on.includes(s.id) ? `+${s.add}万kW 稼働中` : `+${s.add}万kW`}</small>
-          </button>
-        ))}
+        {SOURCES.map((s) => {
+          const isHydro = s.id === "hydro";
+          const spent = isHydro && hydroLeft <= 0 && !on.includes(s.id);
+          return (
+            <button
+              key={s.id}
+              className={`choice-card ${on.includes(s.id) ? "selected" : ""}`}
+              disabled={spent}
+              onClick={() => toggle(s.id)}
+            >
+              <span className="choice-emoji">{s.emoji}</span>
+              <span className="choice-name">{s.name}</span>
+              <small>
+                {spent
+                  ? "貯水池が空になった（今日はもう使えない）"
+                  : isHydro
+                    ? on.includes(s.id)
+                      ? `+${s.add}万kW 稼働中（残り${hydroLeft}時間ぶん）`
+                      : `+${s.add}万kW（残り${hydroLeft}時間ぶん）`
+                    : on.includes(s.id)
+                      ? `+${s.add}万kW 稼働中`
+                      : `+${s.add}万kW`}
+              </small>
+            </button>
+          );
+        })}
       </div>
 
       <button className="btn primary big" onClick={advance}>

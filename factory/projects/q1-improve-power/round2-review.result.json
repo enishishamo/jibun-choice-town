@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "power-round2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 68,
+    "game_quality_score": 58,
+    "blockers": [],
+    "high": [
+      "需要バー・供給値・判定バッジの時間軸が明示されず、初期画面では現在需要4650万kW、供給4700万kWを並べながら「🔴 足りない」と表示する。実際には次時刻需要4950万kWへの警告だが、バーも「使う量」としか書かれていないため、10–12歳には同じ現在値同士の矛盾に見える。15:00の個別回帰は直ったが、表示整合性のHIGHは完全には閉じていない。",
+      "17:00ではcheckDemandForが現在需要4800万kWへフォールバックする一方、advance()は供給不足を検査せず無条件で成功にする。到達後に全電源をOFFにすれば供給4700万kWで「🔴 足りない」と表示されるのに、「夕方まで進める」で無停電成功となるため、表示と実処理が再び直接矛盾する。"
+    ],
+    "medium": [
+      "停電結果は静的な絵文字列と説明文だけで、街や信号が消灯する視覚的状態変化を持たない。ただしblocked-queueに記録された同型TEXT_ONLY_CONSEQUENCEのHuman-approved前例に照らし、単独ではblocking HIGHにしない。",
+      "QAの21件は通過するが、最終時刻のテストはフォールバック値そのものだけを肯定し、advance()が最終時刻で無条件成功することとの整合を検証していない。また全step・全on・hydroLeft状態について表示判定とadvance結果を比較しておらず、restart後UIも未検証。15:00のstale-vs-fixedテスト自体は実際の水力消費後状態を正しくモデル化している。",
+      "火力の「動かすまで少し時間がかかる」と地域間融通の「送れる量にかぎりがある」は操作規則として実装されず、両者とも即時・反復無制限に切替可能であるため、給電指令の真正性は限定的。"
+    ],
+    "low": [
+      "需要予測と気温予報が15時のピークを強く示すが、これは攻略に必要な職業固有情報Cであり、供給量の計算と投入判断が残るためGate Eの答え漏れとはしない。"
+    ],
+    "evidence": [
+      "src/q1/powerLogic.ts:32 — 需要列は4650, 4950, 5300, 5100, 4800で、checkDemandFor(0..4)は4950, 5300, 5100, 4800, 4800を返す。",
+      "src/q1/powerLogic.ts:82 — 最終stepだけ現在需要へフォールバックするため、次advance判定との同値性は成立しない。",
+      "src/q1/PowerGame.tsx:35 — バッジと需要バーは次時刻需要を使うが、その需要が次時刻の予測値であることを画面上で明示していない。",
+      "src/q1/PowerGame.tsx:47 — 最終stepでは需給判定を行わずsetDone(true)で成功する。",
+      "src/q1/PowerGame.tsx:65 — restartはstep、on、hydroLeft、blackoutAtを正しく初期化し、再開直後の状態漏れはない。",
+      "src/q1/PowerGame.tsx:113 — mission-barは現在需要を表示し、その直下に次時刻基準の無標識バッジと供給値を並べる。",
+      "src/q1/PowerGame.tsx:129 — 次時刻需要を描くバーのラベルは単に「使う量」であり、13:00初期画面では表示中の4650万kWではなく4950万kWを描く。",
+      "src/q1/PowerGame.tsx:210 — 17:00でも供給操作が可能で、全電源OFF後に赤表示のまま成功ボタンを押せる。",
+      "factory/harness/gameplay-qa-power.mjs:28 — シミュレータも最終stepを需給判定なしで成功にする。",
+      "factory/harness/gameplay-qa-power.mjs:100 — 15:00回帰テストは供給5250対現在需要5300ならred、対次需要5100ならyellowとなる実状態を正しく再現する。",
+      "factory/harness/gameplay-qa-power.mjs:132 — 最終時刻テストは4800へのフォールバックだけを検査し、無条件成功との矛盾を検査しない。",
+      "factory/state/blocked-queue.md:12 — lab_checkのTEXT_ONLY_CONSEQUENCEはclue_board同型のPLUS QUALITY backlog・非blockingと明記されている。",
+      "算術検証 — 全電源を13:00から稼働すると5450で14:00を通過して水力を消費し、15:00は5250対5300で必ず停電する。",
+      "算術検証 — 13:00は火力＋融通5250、14:00で水力を加えて5450とすれば15:00ピークを通過し、その後5250で16:00の5100と17:00の4800を覆って成功する。",
+      "Gate評価 — Cはピーク予測と有限水力が攻略上必要、Dは需給計画操作として成立、Eにblockingな答え漏れなし、Fは停電・成功分岐を持つ。ただし表示と結果が矛盾する到達状態が残り、HONEST OUTCOMEを含む初回体験はrelease-readyではない。"
+    ],
+    "recommended_actions": [
+      "表示対象を明示的に「次の時刻の予測需要」「次の1時間の供給計画」「このまま進めた場合」に改称し、mission-barの現在需要・現在時刻と視覚的に区別する。",
+      "17:00では需給バッジと操作カードを非表示または「今日の運用完了」に置換するか、最終ボタン前にも表示と同一の需給判定を行う。",
+      "全step、全電源組合せ、到達可能なhydroLeftについて、画面のred/non-redと直後のadvance失敗/成功が一致するプロパティテストを追加し、restart後と最終stepも含める。",
+      "TEXT_ONLY_CONSEQUENCEは非blocking backlogとして、街灯・信号の消灯など文章を読まなくても分かる状態変化を追加する。"
+    ]
+  },
+  "elapsed_sec": 116.625
+}
