@@ -245,7 +245,10 @@ switch (cmd) {
           invalidated.push(d);
         }
       }
-      if (p.independent_review && !p.independent_review.stale) {
+      // the DESIGN review is staled only by a new version of a DESIGN-stage artifact; downstream artifacts
+      // (game_spec, art, implementation) are produced AFTER the GAME_DESIGN_READY gate by design and must
+      // not invalidate it (2026-09-09: leak-detective release-ready was wrongly refused after game_spec v1->v2)
+      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
         p.independent_review.stale = true;
         p.independent_review.stale_because = `${type} changed v${prev.version}->v${version}`;
         invalidated.push("independent_review");

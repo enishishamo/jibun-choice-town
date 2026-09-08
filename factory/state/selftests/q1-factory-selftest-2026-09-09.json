@@ -1,0 +1,392 @@
+{
+  "ran_at": "2026-09-08T19:44:07.509Z",
+  "passed": 23,
+  "failed": 0,
+  "total": 23,
+  "results": [
+    {
+      "id": "A",
+      "name": "play_seeds = 2 → artifact refused AND gate FAIL",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "submit": [
+          "seeds has 2 item(s); minimum is 3"
+        ],
+        "gate": {
+          "id": "play_seeds_gte_3",
+          "reason": "play_seeds < 3 (have 0)"
+        }
+      }
+    },
+    {
+      "id": "B",
+      "name": "preserved_D missing → c_compression refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": [
+        "missing required field: preserved_D"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "game_translations = 1 → refused (minimum 3)",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": [
+        "translations has 1 item(s); minimum is 3"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "First 5 Seconds missing → GAME_DESIGN_READY refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": [
+        "first_5_seconds_complete",
+        "no_manual_check_complete",
+        "exploit_check_complete",
+        "core_back_check_complete",
+        "independent_review_pass"
+      ]
+    },
+    {
+      "id": "E",
+      "name": "review FAIL → gate refused; codex-task-shaped evidence refused; creator==reviewer never satisfies the gate",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "fail_gate": {
+          "id": "independent_review_pass",
+          "reason": "independent review is \"FAIL\" (independent=true, stale=false)"
+        },
+        "bogus": "evidence is not canonical independent-review evidence: evidence.verdict must be an object — a codex-task.mjs-shaped result (no `verdict` wrapper) is not accepted",
+        "not_independent": false
+      }
+    },
+    {
+      "id": "F",
+      "name": "FIRST_ACTION_NOT_INFERABLE → return_to FIRST_PLAY_UX, state REPAIRING, repair_count 1",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "id": "G",
+      "name": "PERIPHERAL_JOB_TASK → return_to SCOPE_CORE; an off-table return_to is refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "route": "SCOPE_CORE",
+        "refused": "--return-to ART_BRIEF is not a valid destination for PERIPHERAL_JOB_TASK (allowed: SCOPE_CORE)"
+      }
+    },
+    {
+      "id": "H",
+      "name": "repair 1 allowed; 2nd FAIL → REDESIGN_REQUIRED (no 2nd repair); same translation refused; different translation → iteration 2 / repair_count 0; redesign beyond budget → ESCALATED",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "f2": "REDESIGN_REQUIRED",
+        "same_translation": "translation t1 is the one that just failed — a REDESIGN must adopt a DIFFERENT translation/seed",
+        "redesign_count": 2,
+        "final_state": "ESCALATED",
+        "last_ok": 0
+      }
+    },
+    {
+      "id": "I",
+      "name": "reverse audit recorded → classified → in prioritized queue with entry_stage; malformed audit refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "item": {
+          "game_type": "selftest_legacy_game",
+          "classification": "GAME_TRANSLATION_REBUILD",
+          "entry_stage": "GAME_TRANSLATION",
+          "priority_reasons": [
+            "answer_leak",
+            "brute_force_exploit"
+          ],
+          "priority_score": 3.3,
+          "status": "queued"
+        },
+        "refused": [
+          "missing: current_profession",
+          "missing: current_SCOPE",
+          "missing: current_CORE"
+        ],
+        "queued_total": 31
+      }
+    },
+    {
+      "id": "J",
+      "name": "open Human Decision (mascot) blocks gate and submissions; resolving it re-enables the gate",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "before": true,
+        "during": [
+          "unresolved_human_decision_false"
+        ],
+        "after": true
+      }
+    },
+    {
+      "id": "K",
+      "name": "GAME_DESIGN_READY → game_spec accepted with provenance to game_translations@1 → SPEC_READY",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "state": "SPEC_READY",
+        "sources": [
+          "selftest-k:game_translations:v1"
+        ]
+      }
+    },
+    {
+      "id": "L",
+      "name": "no_art_required:true satisfies the art condition; a real brief then requires art_production + independent art review",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "after_no_art": [],
+        "after_brief": [
+          "art_production missing or STALE",
+          "art review must be an independent PASS"
+        ]
+      }
+    },
+    {
+      "id": "M",
+      "name": "art_brief → art-requests/*.json in art-loop.mjs format carrying touch affordance, hierarchy, forbidden bake-ins, provenance",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "file": "factory/projects/selftest-k/art-requests/k_scene.json",
+        "composition": "portrait safe area Interactive object hierarchy: lamp > bench Must be visually obvious: the lamp is touchable Touch affo",
+        "forbidden": [
+          "buttons",
+          "labels",
+          "readable text",
+          "UI buttons/badges/labels",
+          "mascot or brand character (prohibited_mascot_invention)"
+        ]
+      }
+    },
+    {
+      "id": "N",
+      "name": "self-review (reviewer==producer) cannot approve art; art review FAIL routes back to ART_BRIEF",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "self": "reviewer == producer: independent=false, cannot approve",
+        "fail_route": "ART_BRIEF"
+      }
+    },
+    {
+      "id": "O",
+      "name": "QA_FAILURE routes by cause: FIRST_PLAY→FIRST_PLAY_UX, VISUAL_AFFORDANCE→ART_BRIEF, IMPLEMENTATION_CHANGED_D→IMPLEMENTATION",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "a": "FIRST_PLAY_UX",
+        "b": "ART_BRIEF",
+        "c": "IMPLEMENTATION"
+      }
+    },
+    {
+      "id": "P",
+      "name": "implementation review FAIL → release-ready refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": [
+        "art review must be an independent PASS",
+        "independent implementation review must be a non-stale PASS"
+      ]
+    },
+    {
+      "id": "Q",
+      "name": "all design+spec+art(none)+impl+QA+reviews PASS and linked task passes can-deploy → RELEASE_CANDIDATE; without a linked task it is refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "without_task": [
+          "no linked task-state task (link-task) — deploy policy is enforced there"
+        ],
+        "with_task": true,
+        "state": "RELEASE_CANDIDATE"
+      }
+    },
+    {
+      "id": "R",
+      "name": "product_identity_impact=YES without approval blocks release-ready (via task-state can-deploy); an explicit approval record clears it",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "blocked_reason": "task-state can-deploy: product_identity_impact=YES requires an explicit approve-identity-impact record, which is missing — QA passing alone can never clear this"
+      }
+    },
+    {
+      "id": "S",
+      "name": "legacy start refused while WIP is full; forced start opens the pipeline at the classification's entry stage with upstream artifacts backfilled from the reverse audit (creator=reverse-audit), downstream left empty",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "wip_refusal": "WIP full (8/2)",
+        "backfilled": [
+          "fact_sheet:true",
+          "scope_core:true",
+          "ae:true"
+        ],
+        "current_stage": "GAME_TRANSLATION",
+        "task": "q1-rebuild-selftest-legacy-game"
+      }
+    },
+    {
+      "id": "T",
+      "name": "design rationale (scope why / core / A-E / seeds considered / adopted+rejected translations / C compression / creators / failures / redesigns) reconstructable from q1-pipeline.json alone",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "adopted": "t1",
+        "failures": [
+          [
+            "BRUTE_FORCE_SUCCESS",
+            "GAME_TRANSLATION"
+          ],
+          [
+            "BRUTE_FORCE_SUCCESS",
+            "GAME_TRANSLATION"
+          ]
+        ],
+        "redesigns": [
+          [
+            1,
+            2,
+            "t2"
+          ],
+          [
+            2,
+            3,
+            "s3"
+          ]
+        ],
+        "events": [
+          "init",
+          "state_change",
+          "artifact_submitted",
+          "failure_routed",
+          "repair_done",
+          "redesign_started"
+        ]
+      }
+    },
+    {
+      "id": "U",
+      "name": "scope_core v1→v2 marks ae/play_seeds/…/game_translations STALE + review stale; gate refused; building on a STALE source is refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "invalidated": [
+          "ae",
+          "play_seeds",
+          "game_translations",
+          "core_back_check",
+          "no_manual_exploit_check",
+          "first_5_seconds",
+          "c_compression",
+          "reference_research",
+          "core_scope_check",
+          "independent_review"
+        ],
+        "refused_on_stale": "--source play_seeds is STALE (scope_core changed v1->v2) — re-submit it first"
+      }
+    },
+    {
+      "id": "V",
+      "name": "evidence with observation==interpretation refused; LOW is logged only; HIGH on a RELEASED game returns it to FIRST_PLAY_UX (state REPAIRING)",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "bad": "observation and interpretation are identical — they must be separated",
+        "low": "LOGGED_ONLY",
+        "high": {
+          "action": "RETURNED_TO_STAGE",
+          "return_to": "FIRST_PLAY_UX",
+          "decision": {
+            "action": "REPAIR",
+            "repair_count": 1
+          },
+          "state": "REPAIRING",
+          "interrupt": "USER LEARNING LOOP takes priority over the Continuous Product Loop (autonomous-execution.md)"
+        }
+      }
+    },
+    {
+      "id": "W",
+      "name": "`next` never reports idle while a queued legacy item or a returned pipeline exists; WIP limit is reported and enforced at start",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "next": {
+          "kind": "resume_pipeline",
+          "game_id": "leak-detective",
+          "state": "UNDER_REVIEW",
+          "priority": 1
+        },
+        "wip": {
+          "active": 10,
+          "limit": 2,
+          "available": 0,
+          "active_pipelines": [
+            {
+              "game_id": "leak-detective",
+              "state": "UNDER_REVIEW"
+            },
+            {
+              "game_id": "selftest-a",
+              "state": "RESEARCHING"
+            },
+            {
+              "game_id": "selftest-d",
+              "state": "TRANSLATING"
+            },
+            {
+              "game_id": "selftest-e",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-g",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-k",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-o",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-o2",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-q",
+              "state": "REPAIRING"
+            },
+            {
+              "game_id": "selftest-s",
+              "state": "AE_READY"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cleanup": "fixtures removed; fixture tasks marked SUPERSEDED"
+}
