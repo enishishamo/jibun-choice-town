@@ -83,14 +83,13 @@ export function closeValve(s: LeakState, seg: Seg): ActionResult {
   if (s.outcome) return { state: s, ok: false, reason: "night_over" };
   if (s.closed === seg) return { state: s, ok: false, reason: "already_closed" };
   if (s.valveOps >= BUDGETS.valve) return { state: s, ok: false, reason: "valve_budget" };
+  // closing this segment implicitly reopens the previously closed one (one valve at a time)
   const next: LeakState = { ...s, closed: seg, valveOps: s.valveOps + 1 };
   next.flowLog = [...s.flowLog, { closed: seg, reading: flowReading(next) }];
   return { state: next, ok: true };
 }
-export function openValve(s: LeakState): ActionResult {
-  if (!s.closed) return { state: s, ok: false, reason: "nothing_closed" };
-  return { state: { ...s, closed: null }, ok: true };
-}
+// There is no separate "reopen" action: closing another valve implicitly reopens the
+// previous one, so the only scored operation is a close (design-sim: one op = close+reopen).
 export function setFocus(s: LeakState, seg: Seg | null): LeakState {
   return { ...s, focus: s.focus === seg ? null : seg };
 }
@@ -146,6 +145,14 @@ export interface PublicView {
 }
 export function publicView(s: LeakState): PublicView {
   return { closed: s.closed, flow: flowReading(s), budgets: { valve: BUDGETS.valve - s.valveOps, listens: BUDGETS.listens - s.listens, reports: BUDGETS.reports - s.reports }, readings: s.readings, flowLog: s.flowLog, misses: s.misses, unlocked: s.unlocked, focus: s.focus, outcome: s.outcome };
+}
+/** Reading at a point from the PUBLIC view (the component must use this, never the private state). */
+export function readingAt(v: PublicView, seg: Seg, point: number): Reading | undefined {
+  return v.readings.find((r) => r.seg === seg && r.point === point);
+}
+/** "もう一度この夜へ": a fresh night with the SAME hidden case (only the judgement changes). Lives here so the component never reads s.c. */
+export function restartSameCase(s: LeakState): LeakState {
+  return { ...newState(), c: s.c };
 }
 /** Only for the dawn screen AFTER the outcome is decided (hit animation / where the crew dug). */
 export function revealLeak(s: LeakState): Spot | null { return s.outcome ? s.c.leak : null; }

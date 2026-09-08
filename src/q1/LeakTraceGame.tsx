@@ -7,14 +7,14 @@
 import { useEffect, useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import {
-  SEGMENTS, SEGMENT_NAMES, POINTS, FLOW, newState, publicView, closeValve, openValve, listen, report,
-  reportBlocked, setFocus, heard, revealLeak,
+  SEGMENTS, SEGMENT_NAMES, POINTS, FLOW, newState, publicView, closeValve, listen, report,
+  reportBlocked, setFocus, readingAt, restartSameCase, revealLeak,
 } from "./leakLogic";
 import type { LeakState, Seg, Spot } from "./leakLogic";
 
 type Phase = "night" | "digging" | "hit" | "partial";
 
-const ROW_Y: Record<Seg, number> = { A: 62, B: 160, C: 258 };
+const ROW_Y: Record<Seg, number> = { A: 62, B: 150, C: 238 };
 const pointX = (p: number) => 64 + (p - 1) * 56; // 56 viewBox units ≈ 44px at 375px: each hit circle (r=28) is a full 44px target
 
 export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameProps) {
@@ -26,7 +26,9 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
   const [lastHeard, setLastHeard] = useState<Spot | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(1);
+  const [failedNights, setFailedNights] = useState(0); // terminal (partial) nights so far — gates the specific hint
   const v = publicView(s);
+  const heardAt = (seg: Seg, point: number) => readingAt(v, seg, point);
 
   useEffect(() => {
     if (!flashSeg) return;
@@ -36,7 +38,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
 
   const tapValve = (seg: Seg) => {
     if (phase !== "night") return;
-    if (v.closed === seg) { setS(openValve(s).state); setTimeline((l) => [...l, `🔧 弁${seg}を開けた`]); return; }
+    if (v.closed === seg) { setNote("この弁は閉めている。別の弁を閉めると、こちらは自動で戻る。"); return; }
     const r = closeValve(s, seg);
     if (!r.ok) { setNote(r.reason === "valve_budget" ? "今夜の弁の操作は、もう使い切った。" : null); return; }
     setS(r.state);
@@ -46,10 +48,10 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
   };
   const tapPoint = (seg: Seg, point: number) => {
     if (phase !== "night") return;
-    if (heard(s, seg, point)) { setSelected({ seg, point }); setNote(null); return; }
+    if (heardAt(seg, point)) { setSelected({ seg, point }); setNote(null); return; }
     const r = listen(s, seg, point);
     if (!r.ok) { setNote(r.reason === "listen_budget" ? "今夜、聴ける点はもうない。" : null); return; }
-    const rd = heard(r.state, seg, point)!;
+    const rd = readingAt(publicView(r.state), seg, point)!;
     setS(r.state);
     setLastHeard({ seg, point });
     setSelected({ seg, point });
@@ -67,21 +69,21 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
       if (r.hit) setPhase("hit");
       else {
         setSelected(null);
+        if (r.state.outcome === "partial") setFailedNights((n) => n + 1);
         setPhase(r.state.outcome === "partial" ? "partial" : "night");
         setNote(r.state.outcome === "partial" ? null : "乾いた管だった……埋め戻し。新しく聴いてから、もう一度考えよう。");
       }
     }, 1400);
   };
   const restart = () => {
-    const fresh = newState();
-    setS({ ...fresh, c: s.c }); // same night, same leak: only the judgement changes
+    setS(restartSameCase(s)); // same night, same leak: only the judgement changes (helper lives in the logic module)
     setPhase("night"); setSelected(null); setTimeline([]); setLastHeard(null); setNote(null);
     setAttempt((a) => a + 1);
   };
 
   const blocked = selected ? reportBlocked(s, selected.seg, selected.point) : reportBlocked(s);
   const missedHere = (seg: Seg, p: number) => v.misses.some((m) => m.seg === seg && m.point === p);
-  const lastReading = lastHeard ? heard(s, lastHeard.seg, lastHeard.point) : undefined;
+  const lastReading = lastHeard ? heardAt(lastHeard.seg, lastHeard.point) : undefined;
 
   // ---------- shared pieces ----------
   const gaugeAngle = (flow: number) => -90 + Math.min(1, flow / 3) * 180; // 0..3 m3/h over a half circle
@@ -125,8 +127,9 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     );
   }
   if (phase === "partial") {
-    const secondFail = v.misses.length >= 2 || attempt > 1;
-    const hint = v.misses.some((m) => heard(s, m.seg, m.point)?.continuity === "intermittent") ? "とぎれる音を報告していないか？" : "針が落ちた区間はどこだった？";
+    // the specific one-line hint appears only from the SECOND failed night (or two misses in one night), never on a first miss
+    const secondFail = v.misses.length >= 2 || failedNights >= 2;
+    const hint = v.misses.some((m) => heardAt(m.seg, m.point)?.continuity === "intermittent") ? "とぎれる音を報告していないか？" : "針が落ちた区間はどこだった？";
     return (
       <div className="game board-game">
         <div className="result-card"><span className="result-title">今夜は特定できなかった</span></div>
@@ -169,7 +172,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
         </div>
       </div>
 
-      <svg viewBox="0 0 400 300" width="100%" style={{ display: "block", background: "linear-gradient(#1f2a44, #2f3d5c)", borderRadius: 12, margin: "0 12px", width: "calc(100% - 24px)" }}>
+      <svg viewBox="0 0 400 284" width="100%" style={{ display: "block", background: "linear-gradient(#1f2a44, #2f3d5c)", borderRadius: 12, margin: "0 12px", width: "calc(100% - 24px)" }}>
         {SEGMENTS.map((seg) => {
           const y = ROW_Y[seg];
           const dim = v.focus !== null && v.focus !== seg;
@@ -193,18 +196,15 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
               <line x1={52} y1={y} x2={372} y2={y} stroke={flashSeg === seg ? "#1c2437" : closed ? "#5a6378" : "#9db7d8"} strokeWidth={5} strokeLinecap="round" style={{ transition: "stroke 0.25s" }} />
               {/* valve (tap) + segment label (tap = the child's hypothesis focus) */}
               <g onClick={() => tapValve(seg)} style={{ cursor: "pointer" }}>
-                <circle cx={30} cy={y} r={22} fill="transparent" />
+                <circle cx={30} cy={y} r={28} fill="transparent" />
                 <circle cx={30} cy={y} r={12} fill={closed ? "#c0392b" : "#8a7f6a"} stroke="#e6dccb" strokeWidth={2} />
                 <text x={30} y={y + 4} fontSize="10" textAnchor="middle" fill="#fff">{closed ? "閉" : "弁"}</text>
               </g>
-              <g onClick={() => setS(setFocus(s, seg))} style={{ cursor: "pointer" }}>
-                <rect x={44} y={y + 20} width={92} height={22} rx={6} fill={v.focus === seg ? "#f5b642" : "#2a3552"} stroke="#8a7f6a" />
-                <text x={90} y={y + 35} fontSize="10" textAnchor="middle" fill={v.focus === seg ? "#3b3325" : "#e6dccb"}>{v.focus === seg ? `区間${seg}を調べ中` : `区間${seg}を調べる`}</text>
-              </g>
+              <text x={30} y={y + 40} fontSize="9" textAnchor="middle" fill="#c9c2b3">{seg}</text>
               {/* listening points */}
               {Array.from({ length: POINTS }, (_, i) => i + 1).map((p) => {
                 const x = pointX(p);
-                const rd = heard(s, seg, p);
+                const rd = heardAt(seg, p);
                 const isSel = selected?.seg === seg && selected?.point === p;
                 const missed = missedHere(seg, p);
                 return (
@@ -229,6 +229,15 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
           <g className="leak-dig"><text x={pointX(selected.point)} y={ROW_Y[selected.seg] - 8} fontSize="22" textAnchor="middle">🚧</text></g>
         )}
       </svg>
+
+      {/* segment focus = the child's own hypothesis (44px buttons; never set by the system) */}
+      <div style={{ display: "flex", gap: 6, margin: "6px 12px 0" }}>
+        {SEGMENTS.map((seg) => (
+          <button key={seg} className="btn" style={{ flex: 1, minHeight: 44, padding: "4px 2px", fontSize: 12, background: v.focus === seg ? "#f5b642" : undefined }} onClick={() => setS(setFocus(s, seg))}>
+            {v.focus === seg ? `区間${seg}を調べ中` : `区間${seg}を調べる`}
+          </button>
+        ))}
+      </div>
 
       {/* last listening reaction: the waveform shows continuity without words */}
       {lastReading && lastHeard && (

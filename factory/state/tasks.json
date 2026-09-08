@@ -1138,8 +1138,8 @@
       "review_status": null,
       "review_evidence": null,
       "review_required": true,
-      "qa_status": null,
-      "qa_evidence": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/leak-detective/design/implementation_qa.json",
       "deploy_status": null,
       "release_commit": null,
       "blocked_reason": null,
@@ -1148,13 +1148,19 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-08T06:37:06.450Z",
-      "updated_at": "2026-09-08T06:37:06.455Z",
+      "updated_at": "2026-09-08T07:49:51.104Z",
       "history": [
         {
           "at": "2026-09-08T06:37:06.455Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-08T07:49:51.105Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/leak-detective/design/implementation_qa.json"
         }
       ]
     }

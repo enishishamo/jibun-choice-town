@@ -10,8 +10,9 @@
 
 import {
   SEGMENTS, POINTS, BUDGETS, rng, newCase, newState, flowReading, soundReading,
-  closeValve, listen, report, reportBlocked, openRecords, publicView, revealLeak, setFocus,
+  closeValve, listen, report, reportBlocked, openRecords, publicView, revealLeak, setFocus, readingAt, restartSameCase,
 } from "../../src/q1/leakLogic.ts";
+import { readFileSync } from "node:fs";
 
 let passed = 0, failed = 0;
 function check(name, ok, detail = "") { if (ok) passed++; else failed++; console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? "  — " + detail : ""}`); }
@@ -80,6 +81,14 @@ const S = {
     if (v.budgets.listens > 0 && v.readings.length < BUDGETS.listens) { const p = pickNew(rand, allPoints, used); if (p) { used.add(key(p)); return { type: "listen", ...p }; } }
     const sorted = v.readings.filter((r) => !v.misses.some((m) => m.seg === r.seg && m.point === r.point)).sort((a, b) => b.level - a.level);
     return sorted[0] && v.budgets.reports > 0 ? unlockOr(v, { type: "report", seg: sorted[0].seg, point: sorted[0].point }, rand, used) : { type: "end" }; }; },
+  // design-sim mirror: same random listening, but report only STEADY readings (continuity-aware baseline)
+  listen_random_report_loudest_steady: (rand) => { const used = new Set(); return (v) => {
+    if (v.budgets.listens > 0 && v.readings.length < BUDGETS.listens) { const p = pickNew(rand, allPoints, used); if (p) { used.add(key(p)); return { type: "listen", ...p }; } }
+    const sorted = v.readings.filter((r) => r.continuity === "steady" && !v.misses.some((m) => m.seg === r.seg && m.point === r.point)).sort((a, b) => b.level - a.level);
+    return sorted[0] && v.budgets.reports > 0 ? unlockOr(v, { type: "report", seg: sorted[0].seg, point: sorted[0].point }, rand, used) : { type: "end" }; }; },
+  // design-sim mirror of flow_then_two_distinct_reports, ADAPTED: the shipped game only lets a
+  // heard point be reported, so "flow-only, no gradient reading" = listen at one random point of
+  // the isolated segment and report it without looking at the level (then another distinct one).
   flow_then_guess_points: (rand) => { const used = new Set(); return (v) => {
     const seg = leakSegFromFlow(v); if (!seg) return nextValve(v);
     if (v.budgets.reports <= 0) return { type: "end" };
@@ -102,6 +111,7 @@ for (const [name, mk] of Object.entries(S)) {
 check("informed play (flow -> gradient) wins every random case", rates.flow_then_gradient === 1, `${rates.flow_then_gradient}`);
 check("random reporting mostly fails", rates.random_report < 0.2, `${rates.random_report.toFixed(3)}`);
 check("flow-less random listening is not reliable", rates.listen_random_report_loudest < 0.45, `${rates.listen_random_report_loudest.toFixed(3)}`);
+check("flow-less random listening (steady-only) is not reliable", rates.listen_random_report_loudest_steady < 0.45, `${rates.listen_random_report_loudest_steady.toFixed(3)}`);
 check("flow-only (no gradient reading) is not reliable", rates.flow_then_guess_points < 0.5, `${rates.flow_then_guess_points.toFixed(3)}`);
 check("ignoring the meter and guessing the segment is not reliable (no UI reveal)", rates.valves_ignored_guess_segment_gradient < 0.45, `${rates.valves_ignored_guess_segment_gradient.toFixed(3)}`);
 
@@ -144,6 +154,10 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   s = closeValve(s, "C").state; check("closing the leak segment drops the meter to base", flowReading(s) === 0.2);
   check("only one valve closed at a time", s.closed === "C");
   check("third valve op refused", closeValve(s, "B").ok === false && closeValve(s, "B").reason === "valve_budget");
+  check("closing another valve implicitly reopens the previous one (one at a time, one op)", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = closeValve(t, "B").state; return t.closed === "B" && t.valveOps === 2 && flowReading(t) === 2.2; })());
+  check("tapping the already-closed valve is refused and costs nothing", (() => { let t = stateFor(c); t = closeValve(t, "A").state; const r = closeValve(t, "A"); return r.ok === false && r.reason === "already_closed" && r.state.valveOps === 1; })());
+  check("restartSameCase keeps the hidden case and resets everything else", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = listen(t, "C", 5).state; const u = restartSameCase(t); return u.c === t.c && u.valveOps === 0 && u.listens === 0 && u.readings.length === 0 && u.closed === null && u.outcome === null; })());
+  check("readingAt reads from the public view", (() => { let t = stateFor(c); t = listen(t, "C", 5).state; const r = readingAt(publicView(t), "C", 5); return r && r.level === 5 && readingAt(publicView(t), "C", 4) === undefined; })());
   check("sound: loudest directly above, -1 per point", soundReading(c, "C", 5).level === 5 && soundReading(c, "C", 3).level === 3 && soundReading(c, "C", 1).level === 1);
   check("sound: other segments are faint and steady", soundReading(c, "A", 3).level === 1 && soundReading(c, "A", 3).continuity === "steady");
   check("sound: house point is level 4 intermittent", soundReading(c, "C", 2).level === 4 && soundReading(c, "C", 2).continuity === "intermittent");
@@ -161,8 +175,20 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   check("publicView has no leak/house/case fields", !("c" in publicView(s)) && !v.includes('"leak"') && !v.includes('"house"'));
   check("revealLeak is null until the outcome is decided", revealLeak(s) === null && revealLeak(report(listen(listen(s, "A", 3).state, "A", 4).state, "A", 4).state) !== null);
   // the meter is the only flow signal, and valve close reactions carry no correctness info
+  // closing the LEAK segment vs a non-leak segment: the public view must be identical except the
+  // meter number itself (and the log entry that carries it) — the only channel the UI may react to.
+  // drop the meter number, the log line that carries it, and which valve the CHILD tapped (a child-chosen input, not a correctness signal)
+  const strip = (pv) => { const { flow: _flow, flowLog, closed: _closed, ...rest } = pv; return JSON.stringify({ ...rest, flowLogLength: flowLog.length }); };
   const a = closeValve(s, "A").state, b = closeValve(s, "B").state;
-  check("valve reaction shape is identical for leak and non-leak segments (only the number differs)", Object.keys(publicView(a)).join() === Object.keys(publicView(b)).join());
+  check("public view after closing the leak segment vs another differs ONLY in the meter number", strip(publicView(a)) === strip(publicView(b)) && publicView(a).flow !== publicView(b).flow);
+  // source-level boundary: the component must not read the hidden case or private readings
+  const src = readFileSync(new URL("../../src/q1/LeakTraceGame.tsx", import.meta.url), "utf8");
+  // ".leak"/".house" as PROPERTY reads (not the CSS class names like .leak-needle)
+  const privateReads = (src.match(/\bs\.c\b|\bheard\(|(?<!FLOW)\.leak\b(?!-)|\.house\b(?!-)/g) || []); // FLOW.leak is a public constant
+  check("LeakTraceGame.tsx never reads s.c / heard(s) / .leak / .house", privateReads.length === 0, privateReads.join(","));
+  const revealUses = (src.match(/revealLeak\(/g) || []).length;
+  check("revealLeak is used exactly once (the post-hit dawn screen)", revealUses === 1, `${revealUses}`);
+  check("no openValve action exists (operations = closes only)", !src.includes("openValve"));
   check("cases vary", new Set(Array.from({ length: 40 }, (_, i) => key(newCase(rng(i)).leak))).size >= 10);
   check("house distractor never coincides with the leak", Array.from({ length: 500 }, (_, i) => newCase(rng(i))).every((c) => key(c.leak) !== key(c.house)));
 }
