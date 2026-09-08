@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T05:02:45.532Z",
+  "generated_at": "2026-09-08T05:25:10.032Z",
   "rules": {
     "lead_time_steps": 2,
     "steps": 6,
@@ -28,7 +28,8 @@
         "threshold": 8,
         "start": 1
       }
-    ]
+    ],
+    "cancel": "none (removed in round-3 repair; a warning stands until morning)"
   },
   "path_facts": {
     "P1_sit_west": {
@@ -80,8 +81,7 @@
           "toge": "late",
           "kawa": "quiet",
           "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P2_sweep_east": {
         "grade": "partial",
@@ -92,8 +92,7 @@
           "toge": "late",
           "kawa": "late",
           "hama": "late"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P3_turn_north": {
         "grade": "partial",
@@ -104,8 +103,7 @@
           "kawa": "late",
           "toge": "quiet",
           "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "wins_all_paths": false
     },
@@ -119,8 +117,7 @@
           "toge": "safe",
           "kawa": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P2_sweep_east": {
         "grade": "perfect",
@@ -131,8 +128,7 @@
           "toge": "safe",
           "kawa": "safe",
           "hama": "safe"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P3_turn_north": {
         "grade": "partial",
@@ -143,47 +139,7 @@
           "kawa": "safe",
           "toge": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "wins_all_paths": false
-    },
-    "all_step1_then_cancel_dry": {
-      "P1_sit_west": {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "P2_sweep_east": {
-        "grade": "partial",
-        "late": 1,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "safe",
-          "hama": "late"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "P3_turn_north": {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "kawa": "safe",
-          "toge": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "wins_all_paths": false
     },
@@ -197,8 +153,7 @@
           "toge": "safe",
           "kawa": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P2_sweep_east": {
         "grade": "perfect",
@@ -209,8 +164,7 @@
           "toge": "safe",
           "kawa": "safe",
           "hama": "safe"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P3_turn_north": {
         "grade": "partial",
@@ -221,8 +175,7 @@
           "kawa": "safe",
           "toge": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "wins_all_paths": false
     },
@@ -236,8 +189,7 @@
           "toge": "late",
           "kawa": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P2_sweep_east": {
         "grade": "partial",
@@ -248,8 +200,7 @@
           "toge": "late",
           "kawa": "safe",
           "hama": "safe"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P3_turn_north": {
         "grade": "partial",
@@ -260,8 +211,7 @@
           "kawa": "safe",
           "toge": "false_alarm",
           "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "wins_all_paths": false
     },
@@ -275,8 +225,7 @@
           "toge": "safe",
           "kawa": "quiet",
           "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P2_sweep_east": {
         "grade": "perfect",
@@ -287,8 +236,7 @@
           "toge": "safe",
           "kawa": "safe",
           "hama": "safe"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "P3_turn_north": {
         "grade": "perfect",
@@ -299,88 +247,9 @@
           "kawa": "safe",
           "toge": "quiet",
           "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
+        }
       },
       "wins_all_paths": true
-    },
-    "meter_lead_rule_with_cancel": {
-      "P1_sit_west": {
-        "grade": "perfect",
-        "late": 0,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "quiet",
-          "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "P2_sweep_east": {
-        "grade": "perfect",
-        "late": 0,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "safe",
-          "hama": "safe"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "P3_turn_north": {
-        "grade": "perfect",
-        "late": 0,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "kawa": "safe",
-          "toge": "quiet",
-          "hama": "quiet"
-        },
-        "illegalCancelsAttempted": 0
-      },
-      "wins_all_paths": true
-    },
-    "warn_all_step1_illegal_cancel_while_raining": {
-      "P1_sit_west": {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 8
-      },
-      "P2_sweep_east": {
-        "grade": "partial",
-        "late": 1,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "safe",
-          "hama": "late"
-        },
-        "illegalCancelsAttempted": 10
-      },
-      "P3_turn_north": {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "kawa": "safe",
-          "toge": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 11
-      },
-      "wins_all_paths": false
     }
   },
   "fixed_schedules": {
@@ -456,52 +325,9 @@
       }
     }
   },
-  "cancel_gate": {
-    "attempts_made": true,
-    "strategy_still_fails_or_no_worse": true,
-    "detail": [
-      {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 8
-      },
-      {
-        "grade": "partial",
-        "late": 1,
-        "falseAlarms": 0,
-        "outcome": {
-          "kita": "safe",
-          "toge": "safe",
-          "kawa": "safe",
-          "hama": "late"
-        },
-        "illegalCancelsAttempted": 10
-      },
-      {
-        "grade": "partial",
-        "late": 0,
-        "falseAlarms": 2,
-        "outcome": {
-          "kita": "safe",
-          "kawa": "safe",
-          "toge": "false_alarm",
-          "hama": "false_alarm"
-        },
-        "illegalCancelsAttempted": 11
-      }
-    ]
-  },
   "verdict": {
     "no_content_blind_strategy_wins_all_paths": true,
     "legitimate_meter_lead_rule_wins_all_paths": true,
-    "every_path_solvable": true,
-    "cancel_gate_enforced": true
+    "every_path_solvable": true
   }
 }

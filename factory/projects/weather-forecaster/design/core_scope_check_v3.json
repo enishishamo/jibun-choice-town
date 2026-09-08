@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "v3: CORE（当番チームが命を守るために間に合う時刻に警報を出す。避難情報は気象台とは別の組織である市町村が、危険が続く間は速やかに出す——独立した判断が分岐するとは主張しない）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は一致。Cは地形による自動判定（『山の町ほど低い』）を削除し、市町村ごとの基準は過去の災害実績と都道府県協議で決まるという確認済みの事実のみを使用（fact_check_r1.json #4）。Dの『警報を出し直す』は町を新たに指定する操作のみを指し、解除は本作のSCOPE外（現業では実在するが、検証可能な代理条件を設計できなかったための除外——c_compression_v3.jsonのremoved_complexity参照、design-review-r3で確認）。Eは警報→市町村の避難情報→住民避難という実在の連鎖（fact_check_r1.json #3: 避難指示・高齢者等避難は市町村長が発令、気象台とは別主体）をgame_translation側で決定論的な世界状態として描くことをmust_changeとして引き継ぎ、game_translations_v5.jsonで実現済み。"
+}

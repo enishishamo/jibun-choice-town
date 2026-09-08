@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "design_iteration 2, round3レビューFAIL是正後の再照合。(1) CORE_DISTORTED_BY_GAME -- 避難情報カードの文言は引き続き『気象台とは別の組織である市町村が、危険が続く間は続けて動く』という事実の提示のみで、独立した判断が分岐しうるとは主張しない。round3で、この誠実な表現をscope_core_v3/ae_v3/c_compression_v3/core_scope_check_v3にも伝播させ、game_translations_v5との一貫性を取った。(2) FACTUAL_PROFESSION_ERROR -- round2で追加した『今コマ雨が降っていない』解除ゲートは、実際の解除基準（基準を下回り再び上回らないと判断したとき）の代理として不十分であることがround3レビューの実例（P2/浜町の一時的な小康）で確認された。round-forward可能な代理条件を設計できなかったため、round3で解除機構そのものを撤去した。design-sim.mjs（解除なし版）を再実行し、meter_lead_ruleが3進路すべてを満点で解くこと、内容非依存の固定戦略・総当たり2401通りが全進路を制覇できないことを再確認済み（factory/projects/weather-forecaster/design/design-sim-result.json）。(3) COREの『当番チームが間に合う時刻に警報を出す』は変更なし。地形による基準の自動判定・架空の信頼遅延ペナルティは引き続き排除。",
+  "pass": true
+}
