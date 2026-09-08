@@ -15,6 +15,13 @@
 // warning_rule). meter_lead_rule below (no cancel at all) already wins every
 // path, so removing cancel does not affect solvability.
 //
+// round-4 review fix: the simulation only ever modeled the LEAD_TIME arithmetic
+// (a warning issued at step t makes that town "safe" from step t+LEAD onward) --
+// it never asserted anything about a municipality's action. `infoIssued`/
+// `evacuatedFrom` below are just internal bookkeeping for that arithmetic, not a
+// claim about what any other agency does; the design content around this
+// mechanic (game_translations, state_table.warning_rule) was reworded to match.
+//
 // Usage: node factory/projects/weather-forecaster/design/design-sim.mjs
 // Output: design-sim-result.json next to this file (+ summary on stdout).
 

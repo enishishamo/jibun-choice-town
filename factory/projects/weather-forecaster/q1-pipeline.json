@@ -4,11 +4,11 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "REDESIGNING",
   "current_stage": "CORE_BACK_CHECK",
-  "design_iteration": 2,
-  "repair_count": 1,
-  "redesign_count": 1,
+  "design_iteration": 3,
+  "repair_count": 0,
+  "redesign_count": 2,
   "artifacts": {
     "fact_sheet": {
       "artifact_id": "weather-forecaster:fact_sheet:v2",
@@ -445,26 +445,26 @@
       ]
     },
     "scope_core": {
-      "artifact_id": "weather-forecaster:scope_core:v3",
+      "artifact_id": "weather-forecaster:scope_core:v4",
       "artifact_type": "scope_core",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/scope_core_v3.json",
+      "file": "factory/projects/weather-forecaster/design/scope_core_v4.json",
       "payload": {
-        "core": "予報課の当番チーム（気象台）は、観測と予測から「これから空で何が起きるか」と「それがどれくらい確かか」を判断し、人の命と暮らしを災害から守るために、警報・注意報を『間に合う時刻に』発表する。警報を受けて避難情報を出すのは市町村という別の組織の役割で、危険が続く間はその警報を受けて速やかに動く（本作の範囲では、この応答が独立して分かれる場面までは扱わない）。",
-        "scope": "地方気象台の予報課、夜間当番の場面。大雨の雨雲が山側の町にかかりはじめた夜、レーダーとアメダスの実況を予測シナリオと照らし、市町村ごとに定められた基準（過去の災害実績をもとに都道府県と協議して決めたもので、地形だけで自動的に決まるものではない）と『警報から避難情報・避難行動までに必要な時間』を考えて、どの町に・いつ警報を出すか（出さないか）を決める。",
-        "scope_is_representative_because": "気象庁職員募集案内が示す予報業務5ステップ（観測→予測シナリオ→実況監視→防災気象情報発表→天気予報発表）のうち、防災気象情報（警報）の発表判断はCOREの『命を守るために間に合う時刻に出す』そのものであり、気象業務法で気象庁（運用上は気象台）が担う中核業務。fact_check_r1.json確認事項: 発表主体は気象台、予報課が24時間体制、市町村ごとの基準は過去災害と都道府県協議で決まり地形で自動的に決まらない、警報後の避難情報は市町村長の権限（災害対策基本法、気象台とは別主体）。観測通報や天気キャスターの解説は周辺業務なのでSCOPEにしない。",
+        "core": "予報課の当番チーム（気象台）は、観測と予測から「これから空で何が起きるか」と「それがどれくらい確かか」を判断し、人の命と暮らしを災害から守るために、警報・注意報を『間に合う時刻に』発表し、避難のための猶予（リードタイム）を作る。警報を受けて市町村・住民が実際にどう動くか（避難情報を出すかどうか、どの区域に、いつ）は市町村という別の組織の実際の判断であり、気象台の職務の外側にある——本作は、この応答が確実に起きるとも、独立して分かれるとも主張しない。気象台の仕事は、猶予を作るところまでで区切る。",
+        "scope": "地方気象台の予報課、夜間当番の場面。大雨の雨雲が山側の町にかかりはじめた夜、レーダーとアメダスの実況を予測シナリオと照らし、市町村ごとに定められた基準（過去の災害実績をもとに都道府県と協議して決めたもので、地形だけで自動的に決まるものではない）と『警報が確保する避難のためのリードタイム』を考えて、どの町に・いつ警報を出すか（出さないか）を決める。",
+        "scope_is_representative_because": "気象庁職員募集案内が示す予報業務5ステップ（観測→予測シナリオ→実況監視→防災気象情報発表→天気予報発表）のうち、防災気象情報（警報）の発表判断はCOREの『命を守るために間に合う時刻に出す』そのものであり、気象業務法で気象庁（運用上は気象台）が担う中核業務。fact_check_r1.json確認事項: 発表主体は気象台、予報課が24時間体制、市町村ごとの基準は過去災害と都道府県協議で決まり地形で自動的に決まらない、警報は市町村の避難情報発令の判断材料＝目安にとどまり、発令の可否・対象区域・タイミングは市町村長の実際の判断（災害対策基本法、気象台とは別主体）。観測通報や天気キャスターの解説は周辺業務なのでSCOPEにしない。",
         "profession_name_hidden_test": "職業名を隠したまま『動く雨雲を見て、町ごとに決められた基準線を超える前に、間に合う時刻に正しい町へ警報を出す』体験をした子どもに、最後に『気象庁の予報官・予報課』と明かされたとき、「天気予報の人たちが、避難を間に合わせる仕事だったのか」と自然につながる。天気予報＝『明日は晴れ』の読み上げという子どもの既存イメージを、判断の仕事として更新できる。",
         "human_decision_domains": [],
-        "revision_note": "v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME): coreの『避難情報を出すかどうかは市町村長が別に判断する』という、独立した判断が分岐しうることを示唆する表現を削除。実際にゲームが実装する（そして今後も実装しない）のは『気象台とは別の組織である市町村が、警報を受けて危険が続く間は速やかに動く』という決定論的な事実のみであり、coreの文言をこの事実に一致させた（round3レビュー: scope_core_v2/ae_v2/c_compression_v2がgame_translations_v4/state_table.jsonの誠実な表現に追いついていなかった、という指摘への対応）。市町村が気象台とは別主体であること自体はfact_check_r1.json #3で確認済みの事実として保持。"
+        "revision_note": "v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME): coreの『避難情報を出すかどうかは市町村長が別に判断する』という、独立した判断が分岐しうることを示唆する表現を削除し、『気象台とは別の組織である市町村が、危険が続く間は速やかに動く』という決定論的な事実に置き換えた。 v4 (design review r4 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, redesign #2 to t1c-storm-night-window): v3の『速やかに動く』という決定論的主張自体が、fact_check_r1.json #3（警報は市町村の判断材料＝目安にすぎない）と矛盾すると指摘されたため、coreを『気象台の仕事は猶予を作るところまで』と明確に区切り、市町村・住民の実際の行動については確実とも分岐するとも一切主張しない書き方に改めた。"
       },
       "creator": "claude-code",
       "source_artifacts": [
         "weather-forecaster:fact_sheet:v2"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:03.027Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:45:42.288Z",
       "versions": [
         {
           "version": 1,
@@ -483,32 +483,38 @@
           "file": "factory/projects/weather-forecaster/design/scope_core_v3.json",
           "created_at": "2026-09-08T05:32:03.028Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/scope_core_v4.json",
+          "created_at": "2026-09-08T05:45:42.289Z",
+          "creator": "claude-code"
         }
       ]
     },
     "ae": {
-      "artifact_id": "weather-forecaster:ae:v3",
+      "artifact_id": "weather-forecaster:ae:v4",
       "artifact_type": "ae",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/ae_v3.json",
+      "file": "factory/projects/weather-forecaster/design/ae_v4.json",
       "payload": {
         "A": "地方気象台の予報現業室。夜勤、予報課の当番チーム。壁のレーダー画面とアメダスの雨量表示、机の上に担当予報区の市町村ごとの警報基準（過去の災害と都道府県協議で決めた数値）。窓の外は雨。",
-        "B": "山側の町に線状の雨雲が次々とかかりはじめた。これまでの雨で土はすでに湿っている。まだどの町も警報の基準には達していないが、このまま降り続けば夜中に土砂災害の危険が高まる。町の人はもう寝ている。警報を出してから、市町村が避難情報を出し、住民が避難するまでには時間がかかる。",
-        "C": "雨雲レーダー（雨域の位置と1時間ごとの動き）、アメダスの雨量の推移、土壌雨量指数（これまでの雨で土がどれだけ水を含んでいるか）、市町村ごとに定められた警報の発表基準（過去の災害実績をもとに都道府県と協議して決めた数値。地形だけで自動的に低くなるものではない）、警報から避難情報・避難行動までに必要なリードタイム、数値予報・ガイダンスによる今後の雨量の見込み。",
-        "D": "実況が予測シナリオどおりか監視し、雨雲が次にどの町にかかり続けるかを推定し、その町が基準を超えるのはいつかを見積もる。『早すぎる空振り（避難情報が出たのに何も起きない）』と『遅すぎる見逃し（避難が間に合わない）』の間で、当番チームとしてどの町に・いつ警報を出すか、出さないかを決める。雨雲が予想とずれたら、まだ超えていない町へ新たに警報を出す。（実際の現業では、基準を下回って再び上回らないと判断したときに警報を解除する運用もあるが、この判定を検証可能な形で子どもに委ねる方法が設計できなかったため、本作のSCOPEでは解除は扱わない——出した警報は朝まで立ったままとする単純化。c_compression.jsonのremoved_complexity参照。）",
-        "E": "警報を出した町では、気象台とは別の組織である市町村が、危険が続く間は速やかに避難情報を出し、住民が夜中になる前に避難できた。明け方、その町で崖崩れが起きたが家に人はいなかった。警報を出さなかった町は何も起きず、いつもの朝を迎えた。予報課の判断が、『何も起きなかった朝』と『人がいなかった家』のきっかけになった。",
+        "B": "山側の町に線状の雨雲が次々とかかりはじめた。これまでの雨で土はすでに湿っている。まだどの町も警報の基準には達していないが、このまま降り続けば夜中に土砂災害の危険が高まる。町の人はもう寝ている。気象台の警報は、住民が安全な場所へ移るまでに必要な時間の目安（リードタイム）を作るためのものであり、その時間の中で町や住民が実際に何を判断しどう動くかは、気象台の仕事の外側にある。",
+        "C": "雨雲レーダー（雨域の位置と1時間ごとの動き）、アメダスの雨量の推移、土壌雨量指数（これまでの雨で土がどれだけ水を含んでいるか）、市町村ごとに定められた警報の発表基準（過去の災害実績をもとに都道府県と協議して決めた数値。地形だけで自動的に低くなるものではない）、警報が確保する避難のためのリードタイムの目安、数値予報・ガイダンスによる今後の雨量の見込み。",
+        "D": "実況が予測シナリオどおりか監視し、雨雲が次にどの町にかかり続けるかを推定し、その町が基準を超えるのはいつかを見積もる。『早すぎる空振り（避難情報が出たのに何も起きない）』と『遅すぎる見逃し（猶予が作れない）』の間で、当番チームとしてどの町に・いつ警報を出すか、出さないかを決める。雨雲が予想とずれたら、まだ超えていない町へ新たに警報を出す。（実際の現業では、基準を下回って再び上回らないと判断したときに警報を解除する運用もあるが、この判定を検証可能な形で子どもに委ねる方法が設計できなかったため、本作のSCOPEでは解除は扱わない——出した警報は朝まで立ったままとする単純化。c_compression.jsonのremoved_complexity参照。）",
+        "E": "警報を出した町では、リードタイムの目安どおりの猶予が生まれた。明け方、その町で崖崩れが起きたが、猶予があったので家に人はいなかった——この猶予の間に町や住民が実際にどう動いたかは、この場面の外側の出来事として描かない（気象台の仕事は、間に合う時刻に警報を出し、猶予を作るところまで）。警報を出さなかった町は何も起きず、いつもの朝を迎えた。予報課の判断が、『猶予が生まれた朝』と『猶予がなかった朝』の分かれ目になった。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1 FAIL): Cから『山の町ほど低い』という地形自動判定を削除（fact_check_r1.json #4: CLは地形を直接反映しないと公式資料が明記）。A/B/Dを『予報課の当番チーム』の判断として明示。Dの『取り消す』を確認された用語『解除』に修正。 v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME): Bの『市町村が避難情報を判断し』とEの同種の表現を、『気象台とは別の組織である市町村が、危険が続く間は速やかに避難情報を出す』という決定論的な事実の記述に変更（round2で導入したdistinct-organizationの区別自体は保持しつつ、独立した判断が分岐しうるという示唆を除去）。DのSCOPE外注記: 解除は実在する現業運用だが、本作は検証可能な解除条件を設計できなかったため扱わない——これはSCOPEの選択であり、事実の誤りではない、という区別を明記。"
+        "revision_note": "v2 (design review r1 FAIL): Cから『山の町ほど低い』という地形自動判定を削除（fact_check_r1.json #4: CLは地形を直接反映しないと公式資料が明記）。A/B/Dを『予報課の当番チーム』の判断として明示。Dの『取り消す』を確認された用語『解除』に修正。 v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME): Bの『市町村が避難情報を判断し』とEの同種の表現を、『気象台とは別の組織である市町村が、危険が続く間は速やかに避難情報を出す』という決定論的な事実の記述に変更。 v4 (design review r4 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, redesign #2 to t1c-storm-night-window): v3の『市町村が速やかに避難情報を出す』という決定論的主張自体が、fact_check_r1.json #3（警報は市町村の判断材料＝目安であり、発令の可否・対象区域・タイミングは市町村長の実際の判断）と矛盾すると指摘されたため、B/Eから市町村の行動に関する主張を完全に除去し、『警報が確保する猶予（リードタイム）』という気象台側の事実だけでCORE/D/Eを記述するよう書き換えた。市町村・住民が実際に何をするかは、独立した判断としても、確実な自動反応としても、この場面の外側の出来事として一貫して描かない。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:scope_core:v3",
+        "weather-forecaster:scope_core:v4",
         "weather-forecaster:fact_sheet:v2"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:12.858Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:45:49.044Z",
       "versions": [
         {
           "version": 1,
@@ -527,29 +533,35 @@
           "file": "factory/projects/weather-forecaster/design/ae_v3.json",
           "created_at": "2026-09-08T05:32:12.859Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/ae_v4.json",
+          "created_at": "2026-09-08T05:45:49.045Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_scope_check": {
-      "artifact_id": "weather-forecaster:core_scope_check:v3",
+      "artifact_id": "weather-forecaster:core_scope_check:v4",
       "artifact_type": "core_scope_check",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/core_scope_check_v3.json",
+      "file": "factory/projects/weather-forecaster/design/core_scope_check_v4.json",
       "payload": {
         "core_consistent": true,
         "scope_representative": true,
         "profession_name_hidden_test_pass": true,
-        "notes": "v3: CORE（当番チームが命を守るために間に合う時刻に警報を出す。避難情報は気象台とは別の組織である市町村が、危険が続く間は速やかに出す——独立した判断が分岐するとは主張しない）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は一致。Cは地形による自動判定（『山の町ほど低い』）を削除し、市町村ごとの基準は過去の災害実績と都道府県協議で決まるという確認済みの事実のみを使用（fact_check_r1.json #4）。Dの『警報を出し直す』は町を新たに指定する操作のみを指し、解除は本作のSCOPE外（現業では実在するが、検証可能な代理条件を設計できなかったための除外——c_compression_v3.jsonのremoved_complexity参照、design-review-r3で確認）。Eは警報→市町村の避難情報→住民避難という実在の連鎖（fact_check_r1.json #3: 避難指示・高齢者等避難は市町村長が発令、気象台とは別主体）をgame_translation側で決定論的な世界状態として描くことをmust_changeとして引き継ぎ、game_translations_v5.jsonで実現済み。"
+        "notes": "v4: CORE（当番チームが命を守るために間に合う時刻に警報を出し、避難のための猶予を作る。市町村・住民の実際の行動は気象台の職務の外側にあり、確実とも分岐するとも主張しない）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は一致。Cは地形による自動判定（『山の町ほど低い』）を削除し、市町村ごとの基準は過去の災害実績と都道府県協議で決まるという確認済みの事実のみを使用（fact_check_r1.json #4）。Dの『警報を出し直す』は町を新たに指定する操作のみを指し、解除は本作のSCOPE外（round3で機構ごと撤去、design-review-r3で確認）。Eは『警報がリードタイム内の猶予を作れたか』という気象台側の事実のみで世界の結果を決め（round4是正、game_translations_v7.jsonのt1c-storm-night-window）、避難情報の発令主体・可否・タイミングという市町村の実際の判断は、確実な自動反応としても（round4 FAIL）独立して分岐する判断としても（round2 FAIL）描かない。この二重の誤りを避ける設計方針が、CORE/SCOPE/AE/C_COMPRESSION/GAME_TRANSLATIONの全artifactにわたって一貫していることを確認済み。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:ae:v3",
-        "weather-forecaster:scope_core:v3"
+        "weather-forecaster:ae:v4",
+        "weather-forecaster:scope_core:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:24.216Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:45:56.137Z",
       "versions": [
         {
           "version": 1,
@@ -568,28 +580,34 @@
           "file": "factory/projects/weather-forecaster/design/core_scope_check_v3.json",
           "created_at": "2026-09-08T05:32:24.217Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/core_scope_check_v4.json",
+          "created_at": "2026-09-08T05:45:56.137Z",
+          "creator": "claude-code"
         }
       ]
     },
     "play_seeds": {
-      "artifact_id": "weather-forecaster:play_seeds:v3",
+      "artifact_id": "weather-forecaster:play_seeds:v4",
       "artifact_type": "play_seeds",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/play_seeds_v3.json",
+      "file": "factory/projects/weather-forecaster/design/play_seeds_v4.json",
       "payload": {
         "seeds": [
           {
             "seed_id": "s1-radar-timing",
-            "authentic_causal_loop": "雨雲の帯が動く → かかった町の土壌雨量指数が上がる → 町ごとに定められた基準（過去の災害実績と都道府県協議で決定、地形で自動的に決まらない）を超えると土砂災害の危険 → 警報は避難情報・避難行動に必要な時間の前に出さないと間に合わない → 早すぎれば空振り、遅すぎれば見逃し。fact_sheet_v2.decisions・information_used、fact_check_r1.json。",
+            "authentic_causal_loop": "雨雲の帯が動く → かかった町の土壌雨量指数が上がる → 町ごとに定められた基準（過去の災害実績と都道府県協議で決定、地形で自動的に決まらない）を超えると土砂災害の危険 → 警報は避難のための猶予（リードタイム）を作るために間に合う時刻に出さないと意味がない → 早すぎれば空振り、遅すぎれば猶予が作れない。fact_sheet_v2.decisions・information_used、fact_check_r1.json。",
             "player_action": "1時間ごとに進む雨雲レーダーを見て、次に雨雲がかかり続ける町を推定し、その町の『土のうるおいメーター』と基準線を見比べて、警報ボタンを押す町と押す時刻を自分で決める（押さないことも選べる。出した警報は朝まで立ったままで、解除する操作はない）。",
-            "system_reaction": "警報を出した町は、市町村の避難情報カードを経て2時間後に住民が避難所へ移動する（町の灯りが避難所へ集まる）。出していない町でメーターが基準線を超えると崖が崩れ、家に人がいる。空振り（メーターが基準線に届かないまま朝）はその夜の結果として記録される（次回への影響ではない）。",
-            "information_gained": "雨雲の進み方（毎時1コマずつ・曲がることがある）、各町のメーターの上がる速さと基準線の高さ（町ごとに違うが地形とは連動しない）、避難に2時間かかること、警報は取り消せないこと。",
-            "next_judgment_or_action": "『次のコマで雨雲はどの町に残る？』『この町はあと何コマで超える？』『今出せば間に合う？早すぎる？（出したら朝まで戻せない）』を毎コマ判断し、雨雲が曲がったら、まだ超えていない町へ新たに警報を出す。",
+            "system_reaction": "警報を出した町は、2コマ後まで猶予が生まれる（時計アイコンで常時表示）。この猶予の中で町や住民が実際にどう動くかはこの場面では描かない。出していない町でメーターが基準線を超えると崖が崩れ、猶予がなかったことになる。空振り（メーターが基準線に届かないまま朝）はその夜の結果として記録される（次回への影響ではない）。",
+            "information_gained": "雨雲の進み方（毎時1コマずつ・曲がることがある）、各町のメーターの上がる速さと基準線の高さ（町ごとに違うが地形とは連動しない）、警報が2コマの猶予を作ること、警報は取り消せないこと。",
+            "next_judgment_or_action": "『次のコマで雨雲はどの町に残る？』『この町はあと何コマで超える？』『今出せば猶予が間に合う？早すぎる？（出したら朝まで戻せない）』を毎コマ判断し、雨雲が曲がったら、まだ超えていない町へ新たに警報を出す。",
             "C_used": "レーダー（雨域の位置・動き）、土壌雨量指数（メーター）、市町村ごとの基準線、リードタイム（2コマ）。",
-            "D_expressed": "実況監視→シナリオ推定→基準到達の見積り→空振りと見逃しの間で発表時刻を決める、という予報課当番チームの判断そのもの。",
-            "E_reached": "朝のマップ: 警報が間に合った町は『家に人がいなかった』、出さなくてよかった町は『いつもの朝』、遅れた町は『避難が間に合わなかった』が世界の状態として見える。",
+            "D_expressed": "実況監視→シナリオ推定→基準到達の見積り→空振りと猶予不足の間で発表時刻を決める、という予報課当番チームの判断そのもの。",
+            "E_reached": "朝のマップ: 猶予が間に合った町は『崖が崩れたが猶予があった』、出さなくてよかった町は『いつもの朝』、猶予がなかった町は『猶予が作れなかった』が世界の状態として見える。市町村・住民の実際の行動は描かない。",
             "risks": "メーターの将来値を表示すると答えが漏れる（現在値のみ表示）。design-sim.mjsで、全町即時警報などの内容非依存の固定戦略が全進路で成功しないことを機械的に確認済み（架空の信頼ペナルティではなく空振り数の集計で塞ぐ）。雨雲の進路が固定だと2周目に暗記できるが初回体験の妨げではない（PLUS QUALITY）。"
           },
           {
@@ -618,14 +636,14 @@
           }
         ],
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1 HIGH: 地形による基準の自動判定／架空の信頼ペナルティを削除、fact_check_r1.json準拠)。seed本体（s1採用）は変更なし、s2/s3は元のまま不採用理由も維持。 v3 (design review r3 FAIL routing FACTUAL_PROFESSION_ERROR): s1のplayer_action/next_judgment_or_action/information_gainedから『解除する』を削除し、警報は取り消せない（一発勝負）という、game_translations_v5.jsonで実際に採用した設計に一致させた。"
+        "revision_note": "v2 (design review r1 HIGH: 地形による基準の自動判定／架空の信頼ペナルティを削除、fact_check_r1.json準拠)。 v3 (design review r3 FAIL routing FACTUAL_PROFESSION_ERROR): s1から『解除する』を削除し、警報は取り消せない設計に一致させた。 v4 (design review r4 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, redesign #2): s1のsystem_reaction/E_reachedから『避難情報』『避難が完了』という市町村・住民の行動に関する断定を除去し、『猶予が生まれたかどうか』という気象台側の事実のみで結果を記述するよう書き換えた（game_translations_v7.jsonのt1c-storm-night-windowと一致）。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:ae:v3"
+        "weather-forecaster:ae:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:29.816Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:46:04.110Z",
       "versions": [
         {
           "version": 1,
@@ -644,16 +662,22 @@
           "file": "factory/projects/weather-forecaster/design/play_seeds_v3.json",
           "created_at": "2026-09-08T05:32:29.816Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/play_seeds_v4.json",
+          "created_at": "2026-09-08T05:46:04.110Z",
+          "creator": "claude-code"
         }
       ]
     },
     "reference_research": {
-      "artifact_id": "weather-forecaster:reference_research:v3",
+      "artifact_id": "weather-forecaster:reference_research:v4",
       "artifact_type": "reference_research",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/reference_research_v3.json",
+      "file": "factory/projects/weather-forecaster/design/reference_research_v4.json",
       "payload": {
         "references": [
           {
@@ -709,14 +733,14 @@
           "justified_refusal"
         ],
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1 CORE_DISTORTED_BY_GAME): Papers, Pleaseからの借用原則を修正し、架空の遅延ペナルティを採用しない旨を明記。 v3: 内容変更なし。play_seeds_v3のredesign(cancel削除)によるSTALE伝播を解消するための再提出のみ（本ファイルは元々解除メカニクスに言及していない）。"
+        "revision_note": "v2 (design review r1 CORE_DISTORTED_BY_GAME): Papers, Pleaseからの借用原則を修正し、架空の遅延ペナルティを採用しない旨を明記。 v3: 内容変更なし。play_seeds_v3のredesign(cancel削除)によるSTALE伝播を解消するための再提出のみ（本ファイルは元々解除メカニクスに言及していない）。 v4: 内容変更なし。play_seeds_v4のredesign #2(避難情報の決定論的主張の除去)によるSTALE伝播を解消するための再提出のみ。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:play_seeds:v3"
+        "weather-forecaster:play_seeds:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:36.926Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:46:16.510Z",
       "versions": [
         {
           "version": 1,
@@ -735,34 +759,40 @@
           "file": "factory/projects/weather-forecaster/design/reference_research_v3.json",
           "created_at": "2026-09-08T05:32:36.927Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/reference_research_v4.json",
+          "created_at": "2026-09-08T05:46:16.512Z",
+          "creator": "claude-code"
         }
       ]
     },
     "c_compression": {
-      "artifact_id": "weather-forecaster:c_compression:v3",
+      "artifact_id": "weather-forecaster:c_compression:v4",
       "artifact_type": "c_compression",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/c_compression_v3.json",
+      "file": "factory/projects/weather-forecaster/design/c_compression_v4.json",
       "payload": {
         "original_C": "雨雲レーダー、アメダス雨量の推移、土壌雨量指数・表面雨量指数・流域雨量指数、数値予報（全球・メソ・局地・アンサンブル）とガイダンス、市町村ごとの警報・注意報・特別警報・危険警報の基準表（雨量指数・風速・波高等）、暫定基準、警報のリードタイム（概ね3〜6時間前）、週間予報の信頼度、早期注意情報、気象業務法上の発表権限。",
-        "compressed_C": "3つの『見て使う』表示に圧縮する。(1) 雨雲レーダー: 雨雲の帯が1時間ごとに1コマ動く。町に触れると、その町に今どれだけ雨が降っているかが分かる。(2) 町ごとの『土のうるおいメーター』（土壌雨量指数の子ども向け表現）: 雨がかかると上がり、やむとゆっくり下がる。メーターには町ごとに高さの違う基準線（過去の災害実績をもとに都道府県と決めた警報の基準。地形では自動的に決まらない）があり、数字で表示される。(3) 『避難にかかる時間』: 警報を出してから、市町村が避難情報を出し、住民が避難できるまで2コマかかる（時計アイコンで常時表示）。",
-        "removed_complexity": "表面雨量指数と流域雨量指数の区別、数値予報モデルの種類とガイダンスの補正、注意報／警報／特別警報／危険警報の4階層（警報1段階のみに）、確率・信頼度の表現、暫定基準、法的手続き、風・波・雪の基準、実際の基準値の単位（mm・指数値）、市町村基準の具体的な策定プロセス（都道府県協議・過去災害調査）、警報の解除（基準を下回って再び上回らないと判断したときに解除する現業運用——検証可能な代理条件を答え漏れなく設計できなかったため、本作では扱わず、出した警報は朝まで立ったままとする）。",
-        "reason_for_removal": "小4〜6が初見で判断できる観察量は『どこに雨雲がかかっているか』『メーターが基準線にどれだけ近いか』『間に合うか』の3つで足りる。指数の名前や計算方法は判断の質を変えない一方、読む量を増やして遊びを説明問題に変えてしまう。階層や単位は判断（どの町に・いつ）ではなく表現の問題なので落とす。基準の策定プロセス自体は職業的事実として重要だが、子どもが操作する情報ではないため、Job Reveal側の説明に譲る。解除は、判定に必要な将来の雨量情報を見せると答えが漏れ、見せなければ本物の小康と本当の終息を見分けられないため、この翻訳のSCOPEからは外す（design-review-r3で実例により確認された設計上の限界であり、事実誤りではない）。",
-        "preserved_D": "実況（雨雲の動き）から次の1〜2コマ先を自分で予測し、町ごとに違う基準線と2コマのリードタイムを合わせて、『基準を超える前に、間に合う時刻に、正しい町だけへ』警報を出す。早すぎれば空振り、遅すぎれば見逃し（避難が間に合わない）。雨雲が曲がって別の町へ移っても、既に出した警報は取り消さず、まだ超えていない町へ新たに警報を出す。",
+        "compressed_C": "3つの『見て使う』表示に圧縮する。(1) 雨雲レーダー: 雨雲の帯が1時間ごとに1コマ動く。町に触れると、その町に今どれだけ雨が降っているかが分かる。(2) 町ごとの『土のうるおいメーター』（土壌雨量指数の子ども向け表現）: 雨がかかると上がり、やむとゆっくり下がる。メーターには町ごとに高さの違う基準線（過去の災害実績をもとに都道府県と決めた警報の基準。地形では自動的に決まらない）があり、数字で表示される。(3) 『警報が作る猶予』: 警報を出してから2コマの間、避難のための猶予が生まれる（時計アイコンで常時表示）。この猶予の中で町や住民が実際に何をするかは、この場面では描かない——気象台の仕事は猶予を作るところまでである。",
+        "removed_complexity": "表面雨量指数と流域雨量指数の区別、数値予報モデルの種類とガイダンスの補正、注意報／警報／特別警報／危険警報の4階層（警報1段階のみに）、確率・信頼度の表現、暫定基準、法的手続き、風・波・雪の基準、実際の基準値の単位（mm・指数値）、市町村基準の具体的な策定プロセス（都道府県協議・過去災害調査）、警報の解除（基準を下回って再び上回らないと判断したときに解除する現業運用——検証可能な代理条件を答え漏れなく設計できなかったため、本作では扱わず、出した警報は朝まで立ったままとする）、避難情報の発令主体・可否・対象区域・タイミングという市町村の実際の判断（この判断自体は気象台の職務の外側にあり、確実とも分岐するとも主張しない）。",
+        "reason_for_removal": "小4〜6が初見で判断できる観察量は『どこに雨雲がかかっているか』『メーターが基準線にどれだけ近いか』『猶予が作れるか』の3つで足りる。指数の名前や計算方法は判断の質を変えない一方、読む量を増やして遊びを説明問題に変えてしまう。階層や単位は判断（どの町に・いつ）ではなく表現の問題なので落とす。基準の策定プロセス自体は職業的事実として重要だが、子どもが操作する情報ではないため、Job Reveal側の説明に譲る。解除は、判定に必要な将来の雨量情報を見せると答えが漏れ、見せなければ本物の小康と本当の終息を見分けられないため、この翻訳のSCOPEからは外す。避難情報の発令判断は、それ自体が気象台の職務ではなく別組織の実際の判断であり、確実な自動反応として描いても（round4 FAIL）、独立して分岐する判断として描いても（round2 FAIL）、どちらも実態を偽ることになるため、CORE/SCOPEの外側として一切描かない。",
+        "preserved_D": "実況（雨雲の動き）から次の1〜2コマ先を自分で予測し、町ごとに違う基準線と2コマのリードタイムを合わせて、『基準を超える前に、間に合う時刻に、正しい町だけへ』警報を出す。早すぎれば空振り、遅すぎれば猶予が作れない。雨雲が曲がって別の町へ移っても、既に出した警報は取り消さず、まだ超えていない町へ新たに警報を出す。",
         "how_player_still_performs_D": "システムは『次にどの町にかかるか』『あと何コマで超えるか』を一切表示しない。子どもは連続するコマの雨雲の位置から進路を推定し（Obra Dinn型の推理）、メーターの現在値と基準線の距離、上がる速さ（雨がかかっている間だけ上がる）から到達時刻を見積もり、2コマ前に警報を押す町と押すコマを自分で決める。押さない判断も正解になりうる（雨雲が抜ける町）。design-sim.mjsで、この判断規則（基準までの距離と雨の強さから逆算する）が3進路すべてで満点を取れる唯一のクラスの戦略であることを機械的に確認済み。",
-        "failure_risk": "(a) メーターに『あと1コマ』などの予測表示を付けると答えが漏れる→現在値のみ。(b) 全町に警報を押す全選択で突破される恐れ→design-sim-result.jsonで検証: 全選択は3進路中1つでしか成功せず（空振りが2件以上になる進路がある）、架空の『信頼低下』ではなく空振り数という機械的な集計で退けている。(c) 雨雲の進路が固定だと2周目に暗記できる→3進路からランダム（初回体験には影響しない、PLUS QUALITY）。(d) 圧縮しすぎて『雨が降ったら押す』になる恐れ→町ごとに基準線の高さが違うため、同じ雨でも判断が分かれる。地形（山・平地）と基準の高さは連動させない（fact_check_r1.json #4準拠）。(e) 解除を『今コマ雨が降っていない』という条件でゲートする案はround2で試みたが、実際の解除基準（一時的な小康と本当の終息を見分ける予報判断）の代理として不十分であることがround3で実例により確認されたため、機構自体を撤去した——meter_lead_ruleが解除なしで全進路を解けることも確認済みで、攻略上も不要。",
+        "failure_risk": "(a) メーターに『あと1コマ』などの予測表示を付けると答えが漏れる→現在値のみ。(b) 全町に警報を押す全選択で突破される恐れ→design-sim-result.jsonで検証: 全選択は3進路中1つでしか成功せず（空振りが2件以上になる進路がある）、架空の『信頼低下』ではなく空振り数という機械的な集計で退けている。(c) 雨雲の進路が固定だと2周目に暗記できる→3進路からランダム（初回体験には影響しない、PLUS QUALITY）。(d) 圧縮しすぎて『雨が降ったら押す』になる恐れ→町ごとに基準線の高さが違うため、同じ雨でも判断が分かれる。地形（山・平地）と基準の高さは連動させない（fact_check_r1.json #4準拠）。(e) 解除を『今コマ雨が降っていない』という条件でゲートする案はround2で試みたが、実際の解除基準の代理として不十分であることがround3で実例により確認されたため、機構自体を撤去した——meter_lead_ruleが解除なしで全進路を解けることも確認済み。(f) 避難情報の発表を確実な決定論的事実として描く案（round3是正）は、それ自体がfact_check_r1.json #3と矛盾することがround4で確認されたため、世界の結果（E）は気象台側の事実（猶予がリードタイム内に生まれたか）だけで判定し、避難情報の発表そのものをゲーム内の観測可能な状態として置かない設計（t1c-storm-night-window）へ変更した。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1 HIGH: 地形による基準の自動判定／架空の信頼ペナルティ)。fact_check_r1.jsonとdesign-sim-result.jsonの機械検証結果を反映。 v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR): 『市町村が避難情報を判断し』を『市町村が避難情報を出し』に修正（判断の分岐を示唆しない）。解除機構をremoved_complexity/preserved_D/failure_riskから正式に除去し、design-sim.mjs・game_translations_v5.jsonの実際の実装（解除なし）と整合させた。"
+        "revision_note": "v2 (design review r1 HIGH: 地形による基準の自動判定／架空の信頼ペナルティ)。fact_check_r1.jsonとdesign-sim-result.jsonの機械検証結果を反映。 v3 (design review r3 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR): 『市町村が避難情報を判断し』を『市町村が避難情報を出し』に修正、解除機構をremoved_complexity/preserved_D/failure_riskから正式に除去。 v4 (design review r4 FAIL routing CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, redesign #2 to t1c-storm-night-window): compressed_C(3)から『市町村が避難情報を出し』という決定論的主張を除去し、『警報が作る猶予』という気象台側の事実のみで記述。removed_complexity/reason_for_removal/failure_riskに、避難情報の発令判断そのものをCORE/SCOPEの外側として描かない、という設計方針を明記。preserved_Dの『猶予』表現をE定義の変更に合わせて調整。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:play_seeds:v3",
-        "weather-forecaster:ae:v3"
+        "weather-forecaster:play_seeds:v4",
+        "weather-forecaster:ae:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:43.847Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:46:22.779Z",
       "versions": [
         {
           "version": 1,
@@ -781,16 +811,22 @@
           "file": "factory/projects/weather-forecaster/design/c_compression_v3.json",
           "created_at": "2026-09-08T05:32:43.848Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/weather-forecaster/design/c_compression_v4.json",
+          "created_at": "2026-09-08T05:46:22.780Z",
+          "creator": "claude-code"
         }
       ]
     },
     "game_translations": {
-      "artifact_id": "weather-forecaster:game_translations:v5",
+      "artifact_id": "weather-forecaster:game_translations:v8",
       "artifact_type": "game_translations",
-      "version": 5,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/game_translations_v5.json",
+      "file": "factory/projects/weather-forecaster/design/game_translations_v8.json",
       "payload": {
         "translations": [
           {
@@ -817,21 +853,42 @@
           {
             "translation_id": "t1b-storm-night-team",
             "play_seed": "s1-radar-timing",
+            "status": "superseded_by_t1c (design review r4 FAIL: CORE_DISTORTED_BY_GAME / FACTUAL_PROFESSION_ERROR)",
+            "superseded_reason": "round3是正で避難情報カードの文言を『市町村が必ず避難情報を出す』という決定論的な事実の提示に変更したが、round4レビューでこの決定論そのものがfact_check_r1.json #3（警報は市町村の判断材料＝目安であり、発令の可否・対象区域・タイミングは市町村長の実際の判断）と矛盾すると指摘された。避難情報の発表を『独立した判断として分岐しうる』と主張するのも（round2）、『必ず起きる』と主張するのも（round4）、どちらも気象台の仕事の範囲外にある他組織の実際の判断を偽って確定的に描いてしまう。",
             "goal": "大雨の夜、4つの町のうち土砂災害の危険が高まる町にだけ、避難が間に合う時刻に警報を出す。朝、家に人がいない状態で崖が崩れる（＝間に合った）町を作る。",
             "first_visible_state": "夜のミニチュア地図に4つの町（北町・川沿い町・峠町・浜町）。左から明るい雨雲の帯がゆっくり入ってくる（アニメーション）。各町の下に小さな『土のうるおいメーター』と、町ごとに数字で示された基準線。右下に▶（1時間すすむ）と時計アイコン『警報→避難情報→避難まで2時間』。雨雲が最初に触れる町がわずかに脈打つ。",
-            "primary_action": "町をタップ→その町のカードが開き（メーター・基準線・雨量）、『警報を出す』ボタン。▶で1時間進める。警報は一度出したら朝まで立ったままで、解除する操作はない（round3レビューHIGH是正: 解除の代理条件を検証可能な形で作れなかったため、この翻訳では扱わない）。",
+            "primary_action": "町をタップ→その町のカードが開き（メーター・基準線・雨量）、『警報を出す』ボタン。▶で1時間進める。警報は一度出したら朝まで立ったままで、解除する操作はない。",
             "C_interaction": "レーダーの帯を毎コマ見比べて進路を読む。メーターと基準線の距離（町ごとに違う数字）を見る。時計アイコンで警報から避難完了まで2コマ必要なことを知る。",
-            "system_reaction": "▶ごとに雨雲が1コマ動き、かかっている町のメーターが上がる（かかっていない町はゆっくり下がる）。警報を出した町は、その直後の画面で『市町村が避難情報を出した』という別カードが一度だけ表示される（気象台の警報と市町村の避難情報は別の組織・別の情報であることが画面上で分かる。大雨で危険が続く間、市町村は気象台の警報を受けてすぐに動く、という事実の提示であり、ゲームの中でこの応答を分岐させることはしない）。そこからさらに1コマ後に町の灯りが避難所へ集まる。警報なしで基準線を超えた町は崖のアイコンが崩れ、家の灯りが消える。朝の結果画面では、基準を超えなかったのに警報を出していた町は『空振り』として数えられる（次の警報が信じられなくなるという架空の罰則はない）。",
+            "system_reaction": "（superseded: 警報を出した町では市町村が必ず避難情報を出すという決定論的な中間状態を明示していた——round4レビューHIGHで是正対象）",
             "information_gained": "雨雲は毎コマ同じ向きに進むとは限らない（3進路のどれか）。町ごとに基準の高さが違う（地形では決まらない）。警報から2コマ後に避難が完了する。警報は取り消せない——出すかどうかは一発勝負。",
             "player_next_judgment": "『次のコマで雨雲はどの町に残る？』『この町のメーターはあと何コマで基準を超える？』『今出すと早すぎる？（出したら朝まで戻せない）』を毎コマ考える。",
-            "D_externalization": "警報ボタンを押す『町』と『コマ』の組み合わせが、当番チームとしての子どもの予測と判断を表現する。システムは推奨も採点もしない。避難情報を出すのは市町村という別主体であることが画面上で区別されるが、ゲームがその主体に独立した判断力を持たせている、とは主張しない（round2レビュー是正: 分岐しない応答を『別の判断』と偽らない）。解除の操作は存在しない（round3レビュー是正: 検証不能な代理条件で『判断』を偽装しない）。",
-            "E_consequence": "6コマ後の朝の地図: 各町に『家に人がいなかった（間に合った）』『いつもの朝（出さなくてよかった）』『避難が間に合わなかった』『空振りだった』のいずれかの世界状態が残る。基準を超えた町が全部間に合い、かつ空振りが0〜1件＝成功（0件なら満点）。間に合わなかった町が1つでもあれば正直な失敗（partial outcomeで進行は可能）。",
+            "D_externalization": "警報ボタンを押す『町』と『コマ』の組み合わせが、当番チームとしての子どもの予測と判断を表現する。（superseded: 避難情報を出すのは市町村という別主体であることを画面上で区別し、それが必ず起きると明示していた点がround4レビューHIGH。）",
+            "E_consequence": "（superseded: 避難情報カードの表示有無を世界状態の一部として見せていた。）",
+            "retry_or_rethink": "朝の結果画面から『もう一度この夜へ』で同じ夜をやり直せる。",
+            "job_reveal_bridge": "気象台の予報課のチームが毎晩やっている判断。",
+            "strengths": "解除機構を排したことと、装飾レベルの文言の整合は保った。",
+            "weaknesses": "避難情報の発表を確実な自動反応として描いたこと自体が、確認済みの事実（気象台の警報はあくまで目安）と矛盾していた（round4 HIGH）。",
+            "risk": "FACTUAL_PROFESSION_ERROR / CORE_DISTORTED_BY_GAME（round4確認）。",
+            "adoption_or_rejection_reason": "採用したが、round4独立レビューで新たなHIGHが確認され、t1cへredesign。"
+          },
+          {
+            "translation_id": "t1c-storm-night-window",
+            "play_seed": "s1-radar-timing",
+            "goal": "大雨の夜、4つの町のうち土砂災害の危険が高まる町にだけ、避難が間に合う時刻に警報を出す。朝、崖が崩れた町では警報が間に合っていた（＝十分な猶予を作れた）町を作る。",
+            "first_visible_state": "夜のミニチュア地図に4つの町（北町・川沿い町・峠町・浜町）。左から明るい雨雲の帯がゆっくり入ってくる（アニメーション）。各町の下に小さな『土のうるおいメーター』と、町ごとに数字で示された基準線。右下に▶（1時間すすむ）と時計アイコン『警報から2時間、猶予が生まれる』。雨雲が最初に触れる町がわずかに脈打つ。町のカードを開くと最初に『いちど出したら、朝まで取り消せません』という一言が見える。",
+            "primary_action": "町をタップ→その町のカードが開き（メーター・基準線・雨量、そして『いちど出したら、朝まで取り消せません』の一言）、『警報を出す』ボタン。▶で1時間進める。警報は一度出したら朝まで立ったままで、解除する操作はない。",
+            "C_interaction": "レーダーの帯を毎コマ見比べて進路を読む。メーターと基準線の距離（町ごとに違う数字）を見る。時計アイコンで警報から2コマぶんの猶予が生まれることを知る。",
+            "system_reaction": "▶ごとに雨雲が1コマ動き、かかっている町のメーターが上がる（かかっていない町はゆっくり下がる）。警報を出した町のアイコンには、警報が立っていることを示す小さな印がつく（それ以上の中間演出はない——気象台の警報を受けて町や住民が実際に何を判断しどう動いたかは、この場面では描かない。気象台の仕事は、間に合う時刻に警報を出すところまでであり、その先は別の組織の実際の判断であって、必ず起きるとも独立して分岐するとも主張しない）。基準線を超えた町は崖のアイコンが崩れる。その町で警報が2コマ以上前から立っていれば、家の灯りは避難所へ移っていて『間に合った』。立っていなかった、または2コマに満たなければ、家に灯りが残ったままで『間に合わなかった』。朝の結果画面では、基準を超えなかったのに警報を出していた町は『空振り』として数えられる（次の警報が信じられなくなるという架空の罰則はない）。",
+            "information_gained": "雨雲は毎コマ同じ向きに進むとは限らない（3進路のどれか）。町ごとに基準の高さが違う（地形では決まらない）。警報から2コマの猶予が生まれること、その猶予を作れたかどうかだけが結果を分けること。警報は取り消せない——出すかどうかは一発勝負。",
+            "player_next_judgment": "『次のコマで雨雲はどの町に残る？』『この町のメーターはあと何コマで基準を超える？』『今出せば2コマの猶予が間に合う？（出したら朝まで戻せない）』を毎コマ考える。",
+            "D_externalization": "警報ボタンを押す『町』と『コマ』の組み合わせが、当番チームとしての子どもの予測と判断を表現する。システムは推奨も採点もしない。気象台の仕事の範囲（間に合う時刻に警報を出すこと）と、その先の別組織の実際の判断（この場面では描かない）を、はっきり切り分けている——round2/round4レビューで繰り返し問題になった『別組織の応答を確実な事実として描く／独立した判断として描く』のどちらも行わない。",
+            "E_consequence": "6コマ後の朝の地図: 各町に『警報が間に合っていた（崖は崩れたが猶予があった）』『いつもの朝（出さなくてよかった）』『警報が間に合わなかった（崖が崩れ、猶予がなかった）』『空振りだった』のいずれかの世界状態が残る。基準を超えた町が全部『間に合っていた』、かつ空振りが0〜1件＝成功（0件なら満点）。間に合わなかった町が1つでもあれば正直な失敗（partial outcomeで進行は可能）。世界の結果は、気象台側の事実（警報がリードタイム内に出ていたか）だけで決まる。",
             "retry_or_rethink": "朝の結果画面から『もう一度この夜へ』で同じ夜をやり直せる（雨雲の進路は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、崩れた崖の町のメーター推移（いつ基準を超えたか）と警報を出したコマが並んで見えるだけ。2回目の失敗からは、超えた町か空振りの町かに応じて『2時間前に出せていたか』または『雨雲が別の町へ移ったのを見逃していないか』のどちらか一言。",
-            "job_reveal_bridge": "『きみがさっき決めた「どの町に・いつ」は、気象台の予報課のチームが毎晩やっている判断だよ。警報を出すのは気象台、そのあと避難情報を出すのは町（市町村）――別の役割の人たちが、命を守るために続けて動くんだ。』",
-            "strengths": "C（レーダー・メーター・基準線・リードタイム）が全部『使う』情報で、Dが押す町とコマの組み合わせとして外在化される。結果が世界（灯り・崖・避難所）で返る。押さない判断（justified refusal）が正解になる町がある。警報と避難情報を別主体の役割として画面上で区別しつつ、応答を『判断』と偽らない。解除を扱わないことで、検証不能な代理条件を子どもに『これが正しい判断基準だ』と誤って示すリスクを排除した。",
-            "weaknesses": "町4つ×6コマの状態を子どもが追えるか（1コマ1判断に絞る必要）。警報が取り消せないことを、押す前に一言で伝える必要がある（誤タップの重さを理解してから押させる）。『避難情報』という言葉が小4-6にはやや硬い。",
-            "risk": "design-sim-result.json（round3後の再検証）で確認: meter_lead_rule（解除なし）は3進路すべてperfectで解ける。全町即時警報は3進路中1つのみ成功、7^4=2401通りの固定スケジュール総当たりでも全3進路成功は0件。",
-            "adoption_or_rejection_reason": "採用（t1-storm-nightのredesign、round3で解除機構を削除）。round2レビューの2件のHIGH（避難情報の判断を偽る決定論的因果、無条件解除）のうち、避難情報カードは『別組織が続けて動く』という誠実な表現へ是正。解除は、round2で追加した『雨が降っていない』ゲートが実際の解除基準（基準を下回り、再び上回らないと判断したとき）の代理として不十分であること（round3レビューが実例で確認）を受けて、round3で機構自体を削除した——design-sim.mjsのmeter_lead_ruleが解除なしで全3進路を満点で解けることが確認済みで、解除は攻略にもともと不要だった。"
+            "job_reveal_bridge": "『きみがさっき決めた「どの町に・いつ」は、気象台の予報課のチームが毎晩やっている判断だよ。気象台の警報は、そのあとに町（市町村）が避難情報を出すかどうかを決めるための目安。実際にどう動くかは町の仕事だけど、その町が動くための時間を作るのが、きみが今やった仕事なんだ。』",
+            "strengths": "C（レーダー・メーター・基準線・リードタイム）が全部『使う』情報で、Dが押す町とコマの組み合わせとして外在化される。結果が世界（灯り・崖）で返る。押さない判断（justified refusal）が正解になる町がある。気象台の仕事とその先の他組織の仕事を明確に切り分け、他組織の実際の判断について確実とも分岐するとも主張しないため、round2とround4の両方が指摘した種類の誤りを構造的に再発させない。同じlead-timeアルゴリズムをdesign-sim.mjsで既に機械検証済みで、ロジックの変更なし（文言と情報構造のみの変更）。",
+            "weaknesses": "町4つ×6コマの状態を子どもが追えるか（1コマ1判断に絞る必要）。避難情報カードという分かりやすい中間イベントが消えたため、警報を出した実感が『小さな印』だけになり、フィードバックがやや弱まる可能性がある。『猶予』という言葉が小4-6にはやや硬い。",
+            "risk": "design-sim-result.json（round3後の再検証、round4で再々確認）で確認: meter_lead_rule（解除なし）は3進路すべてperfectで解ける。全町即時警報は3進路中1つのみ成功、7^4=2401通りの固定スケジュール総当たりでも全3進路成功は0件。ロジックはt1bと同一（lead_time_stepsによるevacuatedFromの算出）なので、これらの数値はt1bのまま有効。",
+            "adoption_or_rejection_reason": "採用（t1bのredesign、round4で確認された『別組織の応答を確実な事実として描く』誤りを、その応答自体をゲーム内で主張しない設計へ変更することで解消）。"
           },
           {
             "translation_id": "t2-scenario-switch",
@@ -850,7 +907,7 @@
             "strengths": "『仮説を捨てる』という予報官の本物の判断を含む。",
             "weaknesses": "警報発表をシステムが代行し、Dの中核（どこに・いつ）がシステム側に移る。実況を見れば正解が一意な2択クイズに縮退する。",
             "risk": "D_PERFORMED_BY_SYSTEM／obvious binary choice（principles.md BLOCKER）。",
-            "adoption_or_rejection_reason": "不採用。2択化とDのシステム代行が原理的に避けにくい。『雨雲が曲がったら出し直す』としてt1bに吸収する。"
+            "adoption_or_rejection_reason": "不採用。2択化とDのシステム代行が原理的に避けにくい。『雨雲が曲がったら出し直す』としてt1系に吸収する。"
           },
           {
             "translation_id": "t3-probability-dial",
@@ -872,18 +929,18 @@
             "adoption_or_rejection_reason": "不採用。Gate F（CONSEQUENCE）とFIRST 5 SECONDSを満たしにくい。"
           }
         ],
-        "adopted_translation_id": "t1b-storm-night-team",
-        "adoption_rationale": "t1bを採用（t1-storm-nightのredesign）。round2レビューの2件のHIGH（避難情報の判断を偽る決定論的因果、無条件解除）のうち、避難情報カードは『別組織が続けて動く』という誠実な表現へ是正。解除については、round2の『雨が降っていない』ゲートが実際の基準（基準を下回り、再び上回らないと判断したとき）の代理として不十分であることがround3レビューで実例（P2/浜町の一時的な小康）により確認されたため、round3で解除機構自体を削除した。design-sim.mjsのmeter_lead_rule（解除なし）が全3進路を満点で解けることを確認済みで、解除は攻略に必要ではなかった。t2はDの中核をシステムが代行し2択に縮退するため不採用、t3は結果が数字のみで世界が変わらないため不採用のまま。",
+        "adopted_translation_id": "t1c-storm-night-window",
+        "adoption_rationale": "t1cを採用（t1bのredesign #2）。round4独立レビューが指摘した『避難情報の発表を確実な事実として描く』誤り（fact_check_r1.json #3の『警報はあくまで目安』という確認事実と矛盾）を、避難情報の発表そのものをゲーム内で主張しない設計へ変更することで解消した。世界の結果（E）は、気象台側の事実（警報がリードタイム内に出ていたか）だけで決まり、他組織の実際の判断については確実とも分岐するとも主張しない。CORE/SCOPE・レーダー/メーター/基準線/リードタイムの数値・解除なしのルールはt1bから変更なし（design-sim.mjsで機械検証済みのロジックをそのまま維持）。t2はDの中核をシステムが代行し2択に縮退するため不採用、t3は結果が数字のみで世界が変わらないため不採用のまま。",
         "human_decision_domains": [],
-        "revision_note": "v5 (design_iteration 2, repair after design review r3 FAIL): t1bから解除（解除する）アクションを完全に削除。警報は出したら朝まで立ったまま。avoidance/weaknesses/riskの記述をこれに合わせて更新。"
+        "revision_note": "v7 (design_iteration 3, post-redesign #2): adopted_translation_idをt1c-storm-night-windowへ切り替え。redesign_count 2/2（本イテレーションで許容される最後のredesign）。 v8: 翻訳本文は変更なし。scope_core_v4/ae_v4/c_compression_v4(round4是正の伝播)によるSTALE解消のための再提出のみ。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:play_seeds:v3",
-        "weather-forecaster:c_compression:v3"
+        "weather-forecaster:play_seeds:v4",
+        "weather-forecaster:c_compression:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:32:50.076Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:46:31.504Z",
       "versions": [
         {
           "version": 1,
@@ -914,32 +971,50 @@
           "file": "factory/projects/weather-forecaster/design/game_translations_v5.json",
           "created_at": "2026-09-08T05:32:50.076Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/weather-forecaster/design/game_translations_v6.json",
+          "created_at": "2026-09-08T05:42:31.150Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/weather-forecaster/design/game_translations_v7.json",
+          "created_at": "2026-09-08T05:43:09.991Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/weather-forecaster/design/game_translations_v8.json",
+          "created_at": "2026-09-08T05:46:31.504Z",
+          "creator": "claude-code"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "weather-forecaster:first_5_seconds:v4",
+      "artifact_id": "weather-forecaster:first_5_seconds:v5",
       "artifact_type": "first_5_seconds",
-      "version": 4,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/first_5_seconds_v4.json",
+      "file": "factory/projects/weather-forecaster/design/first_5_seconds_v5.json",
       "payload": {
         "zero_to_two_seconds": "夜のミニチュア地図に4つの町の灯りがともっている。左から明るい雨雲の帯がゆっくり地図へ入ってくる（自動アニメーション、操作不要）。雨雲が最初に触れる町のカードがわずかに脈打ち、その町の下の小さなメーターがほんの少し上がる。",
-        "two_to_five_seconds": "雨雲がその町にかかり続け、メーターがじわじわ上がって基準線に近づくのが見える。画面下に一言だけ『雨雲がかかった町をタップ』。右下に▶ボタンと、時計アイコン『警報→避難 2時間』が静かに置かれている。",
+        "two_to_five_seconds": "雨雲がその町にかかり続け、メーターがじわじわ上がって基準線に近づくのが見える。画面下に一言だけ『雨雲がかかった町をタップ』。右下に▶ボタンと、時計アイコン『警報から2時間、猶予が生まれる』が静かに置かれている。",
         "first_expected_touch": "脈打っている（雨雲がかかっている）町をタップする。理由: 動いているもの＝雨雲、反応しているもの＝その町、という2つの視覚的手がかりが同じ場所を指す。",
-        "first_system_reaction": "町のカードが大きく開き、土のうるおいメーターと（町ごとの数字で示された）基準線が拡大表示される。『警報を出す』ボタンと、同じ大きさの『閉じて様子を見る』ボタンが横に並ぶ（どちらも正当な最初の一手として同格に見える。地形アイコンや山の絵など、基準の高さを示唆する装飾は置かない）。ここまで文章はカード名・数字・ボタン名だけ。",
-        "next_expected_inference": "『メーターが基準線に届くと、何か悪いことが起きる』『警報を出しても避難まで2時間かかる（時計アイコン）』→『今出すべき？それとも次のコマまで様子を見る？』。",
-        "next_expected_action": "『警報を出す』を押すか、『閉じて様子を見る』→▶で1時間進めて雨雲の動きを見る。どちらでも世界が反応する（押せば避難情報カードが動きだす準備、進めれば雨雲が動きメーターが変わる）。",
+        "first_system_reaction": "町のカードが大きく開き、土のうるおいメーターと（町ごとの数字で示された）基準線が拡大表示される。カードの上部に小さく一言『いちど出したら、朝まで取り消せません』。『警報を出す』ボタンと、同じ大きさの『閉じて様子を見る』ボタンが横に並ぶ（どちらも正当な最初の一手として同格に見える。地形アイコンや山の絵など、基準の高さを示唆する装飾は置かない）。ここまで文章はカード名・数字・ボタン名・その一言だけ。",
+        "next_expected_inference": "『メーターが基準線に届くと、何か悪いことが起きる』『警報を出しても2時間の猶予しか生まれない（時計アイコン）』『出したら戻せない（一言）』→『今出すべき？それとも次のコマまで様子を見る？』。",
+        "next_expected_action": "『警報を出す』を押すか、『閉じて様子を見る』→▶で1時間進めて雨雲の動きを見る。どちらでも世界が反応する（押せばその町のアイコンに警報の印がつく、進めれば雨雲が動きメーターが変わる）。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1 MEDIUM: 山のアイコンが基準の高さを示唆する答え漏れ／警報ボタンだけが大きく現れ待つ判断と非対称)。地形アイコンを削除し、『警報を出す』と『閉じて様子を見る』を同格の初手として提示。 v3 (design_iteration 2, redesign to t1b-storm-night-team): first 5 seconds content unaffected by the municipal-response wording or cancel-gate fixes (both occur after the first screen); resubmitted unchanged to clear STALE from the game_translations redesign。 v4: 内容変更なし。round3是正（解除機構の撤去）によるgame_translations_v5からのSTALE伝播を解消するための再提出のみ。最初の画面には解除ボタンが元々登場しないため、この修正の影響を受けない。"
+        "revision_note": "v2 (design review r1 MEDIUM: 山のアイコンが基準の高さを示唆する答え漏れ／警報ボタンだけが大きく現れ待つ判断と非対称)。地形アイコンを削除し、『警報を出す』と『閉じて様子を見る』を同格の初手として提示。 v3 (design_iteration 2, redesign to t1b-storm-night-team): first 5 seconds content unaffected by the municipal-response wording or cancel-gate fixes; resubmitted unchanged to clear STALE。 v4: 内容変更なし。round3是正によるSTALE伝播を解消するための再提出のみ。 v5 (design review r4 MEDIUM是正, redesign #2 to t1c-storm-night-window): 時計アイコンの文言を『猶予が生まれる』表現に統一。first_system_reactionに『いちど出したら、朝まで取り消せません』という不可逆性の開示を、ボタンを押す前の最初のカード画面に確定配置した（round4: 将来の実装要件として述べるだけでは不十分、初回画面仕様として明記する必要があるという指摘への対応）。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:game_translations:v5"
+        "weather-forecaster:game_translations:v8"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:33:00.891Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:47:04.049Z",
       "versions": [
         {
           "version": 1,
@@ -964,36 +1039,43 @@
           "file": "factory/projects/weather-forecaster/design/first_5_seconds_v4.json",
           "created_at": "2026-09-08T05:33:00.892Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/weather-forecaster/design/first_5_seconds_v5.json",
+          "created_at": "2026-09-08T05:47:04.051Z",
+          "creator": "claude-code"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "weather-forecaster:no_manual_exploit_check:v4",
+      "artifact_id": "weather-forecaster:no_manual_exploit_check:v5",
       "artifact_type": "no_manual_exploit_check",
-      "version": 4,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check_v4.json",
+      "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check_v5.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": true,
           "contextual_cue_only": true,
           "cues_used": [
             "『雨雲がかかった町をタップ』（1行）",
-            "時計アイコン『警報→避難情報→避難 2時間』（アイコン＋短い文言）",
+            "時計アイコン『警報から2時間、猶予が生まれる』（アイコン＋短い文言）",
             "脈打つ町カード（動きで指す）",
-            "『警報を出す』と同格の『閉じて様子を見る』ボタン"
+            "『警報を出す』と同格の『閉じて様子を見る』ボタン",
+            "『いちど出したら、朝まで取り消せません』（最初の町カードに常設表示）"
           ],
           "explanation_screen": "なし。ルールは『触る→メーターが動く→基準線を見る→▶で雨雲が動く』の順に体験から理解する。",
           "pass": true
         },
         "exploit_check": {
           "select_all": false,
-          "select_all_note": "design-sim-result.json（state_table.jsonの機械シミュレーション、t1b版・解除なし）で確認: 全町step1即時警報（all_step1）は3進路中1進路でのみ成功。7^4=2401通りの固定スケジュール総当たりでも、全3進路で成功する固定スケジュールは0件。",
+          "select_all_note": "design-sim-result.json（state_table.jsonの機械シミュレーション、t1c版・ロジックはt1bと同一）で確認: 全町step1即時警報（all_step1）は3進路中1進路でのみ成功。7^4=2401通りの固定スケジュール総当たりでも、全3進路で成功する固定スケジュールは0件。",
           "tap_all": false,
           "tap_all_note": "町をタップして情報を見るのは自由（Cを見る行為に罰は不要）。タップだけでは何も進まない。",
           "spam_submit": false,
-          "spam_submit_note": "▶を連打すると警報なしで夜が明け、崖が崩れる町が出る（見逃し）。design-sim: neverストラテジーは3進路すべてpartial。",
+          "spam_submit_note": "▶を連打すると警報なしで夜が明け、崖が崩れる町が出る（猶予なし）。design-sim: neverストラテジーは3進路すべてpartial。",
           "fixed_failure_pattern": false,
           "fixed_failure_pattern_note": "雨雲の進路は3種類からランダム。design-sim-result.jsonで固定スケジュール2401通りのうち全3進路を成功させるものは0件と確認済み。",
           "color_leak": false,
@@ -1004,21 +1086,21 @@
           "position_leak_note": "雨雲の入口は左固定だが、どの町に残るかは進路次第。画面位置で正解が決まらない。",
           "visual_hierarchy_leak": false,
           "visual_hierarchy_leak_note": "4町のカードは同じ大きさ。『警報を出す』と『閉じて様子を見る』は同格表示。",
-          "irreversible_action_disclosure": "round3レビューHIGH是正で解除機構そのものを撤去した（round2の『雨が降っていない』ゲートは実際の解除基準の代理として不十分と実例で確認されたため）。警報は出したら朝まで取り消せない一発勝負になったので、ボタンを押す前に『出したら朝まで戻せない』ことを一言（またはボタン自体の文言、例: 『警報を出す（朝まで）』）で伝える必要がある——これはIMPLEMENTATIONで扱う表現上の要件であり、判断内容自体をD以外の場所で代行するものではない。",
+          "irreversible_action_disclosure": "round4レビューMEDIUM是正: 『いちど出したら、朝まで取り消せません』という一言が、警報ボタンを押す前の最初の町カード画面に常設表示として確定配置された（first_5_seconds_v5.jsonのfirst_system_reaction）。将来の実装要件としてではなく、初回画面の仕様そのものとして記述済み。",
           "brute_force_note": "6コマ×4町の警報ON/OFFを総当たりで試すには、やり直しごとに夜1回分を見直す必要があり、初回プレイでの総当たりは現実的でない。design-simで機械的に2401通りを検証済み（全て失敗）。",
           "pass": true,
           "sim_evidence": "factory/projects/weather-forecaster/design/design-sim-result.json"
         },
         "human_decision_domains": [],
-        "revision_note": "v2/v3: 解除ゲートの機械的検証(cancel_gate)を追加。 v4 (design review r3 FAIL routing FACTUAL_PROFESSION_ERROR是正の帰結): 解除機構自体を撤去したためcancel_gate関連の検証項目・cues_usedのグレーアウト言及を削除し、警報が不可逆であることの開示要件(irreversible_action_disclosure)に置き換えた。"
+        "revision_note": "v2/v3: 解除ゲートの機械的検証(cancel_gate)を追加。 v4 (round3是正): 解除機構自体を撤去したためcancel_gate関連の検証項目を削除し、不可逆性の開示要件(irreversible_action_disclosure)を追加。 v5 (design review r4 MEDIUM是正, redesign #2): irreversible_action_disclosureを『将来の実装要件』から『first_5_seconds_v5.jsonで実際に確定配置済み』に更新。cues_usedに実際の開示文言を追加。exploit_checkのnoteをt1c（避難情報カードなし）の表現に合わせて微修正（ロジック・数値は変更なし）。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:game_translations:v5",
-        "weather-forecaster:first_5_seconds:v4"
+        "weather-forecaster:game_translations:v8",
+        "weather-forecaster:first_5_seconds:v5"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:33:07.637Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:47:48.063Z",
       "versions": [
         {
           "version": 1,
@@ -1043,29 +1125,35 @@
           "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check_v4.json",
           "created_at": "2026-09-08T05:33:07.638Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/weather-forecaster/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-08T05:47:48.064Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "weather-forecaster:core_back_check:v4",
+      "artifact_id": "weather-forecaster:core_back_check:v5",
       "artifact_type": "core_back_check",
-      "version": 4,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/weather-forecaster/design/core_back_check_v4.json",
+      "file": "factory/projects/weather-forecaster/design/core_back_check_v5.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "design_iteration 2, round3レビューFAIL是正後の再照合。(1) CORE_DISTORTED_BY_GAME -- 避難情報カードの文言は引き続き『気象台とは別の組織である市町村が、危険が続く間は続けて動く』という事実の提示のみで、独立した判断が分岐しうるとは主張しない。round3で、この誠実な表現をscope_core_v3/ae_v3/c_compression_v3/core_scope_check_v3にも伝播させ、game_translations_v5との一貫性を取った。(2) FACTUAL_PROFESSION_ERROR -- round2で追加した『今コマ雨が降っていない』解除ゲートは、実際の解除基準（基準を下回り再び上回らないと判断したとき）の代理として不十分であることがround3レビューの実例（P2/浜町の一時的な小康）で確認された。round-forward可能な代理条件を設計できなかったため、round3で解除機構そのものを撤去した。design-sim.mjs（解除なし版）を再実行し、meter_lead_ruleが3進路すべてを満点で解くこと、内容非依存の固定戦略・総当たり2401通りが全進路を制覇できないことを再確認済み（factory/projects/weather-forecaster/design/design-sim-result.json）。(3) COREの『当番チームが間に合う時刻に警報を出す』は変更なし。地形による基準の自動判定・架空の信頼遅延ペナルティは引き続き排除。",
+        "notes": "design_iteration 3（redesign #2、t1c-storm-night-window）、round4レビューFAIL是正後の再照合。round4が確認した2件のHIGH: (1) FACTUAL_PROFESSION_ERROR -- 警報を出すと市町村が必ず避難情報を出すという決定論的な状態遷移は、fact_check_r1.json #3（警報は市町村の判断材料＝目安であり、発令の可否・対象区域・タイミングは市町村の実際の判断）と矛盾していた。(2) CORE_DISTORTED_BY_GAME -- 同じ理由で、気象台の仕事が社会へ作用する因果を過度に確定的に描いていた。是正: 避難情報の発表という中間状態そのものをゲームの状態機械・全artifactから撤去し、世界の結果（E）を『警報がリードタイム内に猶予を作れたか』という気象台側の事実だけで判定する設計（t1c）へ変更した。市町村・住民の実際の行動については、確実に起きるとも（round4）独立して分岐するとも（round2）、一貫して主張しない。この方針をscope_core_v4/ae_v4/c_compression_v4/core_scope_check_v4/play_seeds_v4/game_translations_v8の全てに反映し、相互の整合を確認済み。MEDIUM（不可逆性の開示）もfirst_5_seconds_v5.jsonへ確定配置して是正済み。COREの『当番チームが間に合う時刻に警報を出す』とDの中核（レーダー読み・メーター見積り・町とコマの選択）はt1bからt1cへのredesignで変更していない——design-sim.mjsのロジックは無変更で、meter_lead_ruleが3進路すべてを満点で解くことを再確認済み（factory/projects/weather-forecaster/design/design-sim-result.json）。redesign_count 2/2（本イテレーションで許容される最後のredesign、repair_countは新イテレーションで0/1にリセット）。",
         "pass": true
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "weather-forecaster:game_translations:v5"
+        "weather-forecaster:game_translations:v8"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T05:33:15.847Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T05:47:48.103Z",
       "versions": [
         {
           "version": 1,
@@ -1090,6 +1178,12 @@
           "file": "factory/projects/weather-forecaster/design/core_back_check_v4.json",
           "created_at": "2026-09-08T05:33:15.848Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/weather-forecaster/design/core_back_check_v5.json",
+          "created_at": "2026-09-08T05:47:48.104Z",
+          "creator": "claude-code"
         }
       ]
     }
@@ -1110,7 +1204,7 @@
     "repair_count_at_review": 0,
     "stale": true,
     "recorded_at": "2026-09-08T05:16:22.945Z",
-    "stale_because": "scope_core changed v2->v3"
+    "stale_because": "redesign"
   },
   "impl_review": null,
   "art_review": null,
@@ -1147,6 +1241,17 @@
       "must_change": "remove 解除 mid-game action from state_table.json/game_translations/design-sim.mjs; align scope_core/ae/c_compression wording on the municipal response with the honest framing already used in game_translations_v4",
       "design_iteration": 2,
       "at": "2026-09-08T05:16:54.343Z"
+    },
+    {
+      "failure_id": "f-4",
+      "failure_code": "CORE_DISTORTED_BY_GAME",
+      "failure_reason": "Design review r4 FAIL (score 55, CA55/GQ82, 0 blockers, 1 HIGH reported via 2 failure codes, 1 MEDIUM). Repair budget for iteration 2 already exhausted (1/1 used on the round-3 fix), so this routes to REDESIGN per budget, not a second repair. Finding: round-3's fix made the municipal response fully deterministic ('市町村は必ず避難情報を出す') to avoid round-2's 'claims independent judgment but fires deterministically' problem -- but round-4 found this determinism claim is ITSELF factually wrong per fact_check_r1.json #3 (警報 is only a 目安/guideline; the municipality's actual issuance decision, target area, and timing are a real, separate judgment this design does not and should not attempt to model). Both 'claims independent judgment that never diverges' (r2) and 'claims certain deterministic action' (r4) mischaracterize the same real fact: the post-warning chain is a genuine unmodeled human decision by another agency. Analysis: this cannot be fixed by re-wording the same t1b state machine again (that was the repair already spent) -- it requires a different information/state architecture for the intermediate step, i.e. a different Game Translation. Planned redesign: stop asserting anything about what the municipality does; judge the world outcome purely on whether the warning gave the officially-confirmed lead time before the meter crossed the threshold (a fact entirely within the player's own D), treating what happens after the warning as unmodeled/off-screen. This preserves the exact same underlying lead-time arithmetic (already mechanically verified via design-sim.mjs) while removing every claim about a separate agency's certain or judged behavior. Also carrying forward the r4 MEDIUM (irreversibility of a warning must be disclosed on the very first town-card screen, not just documented as a future implementation requirement).",
+      "evidence": "factory/projects/weather-forecaster/design/design-review-r4.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "t1b's core radar/meter/threshold/lead-time mechanic and its numeric rules in state_table.json, the no-cancel decision from the iteration-2 repair, meter_lead_rule as the winning strategy, fact_sheet_v2, all fact-checked facts",
+      "must_change": "remove the deterministic '市町村が必ず避難情報を出す' intermediate state/claim from state_table.json/game_translations/scope_core/ae/c_compression; redefine world outcome (E) purely on warning-lead-time-vs-threshold-crossing, without asserting what any agency other than the player's own team does; add explicit 'a warning cannot be undone until morning' disclosure to first_5_seconds' first screen",
+      "design_iteration": 2,
+      "at": "2026-09-08T05:40:04.108Z"
     }
   ],
   "human_decisions": [],
@@ -1154,7 +1259,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-07T23:13:35.300Z",
-  "updated_at": "2026-09-08T05:33:35.717Z",
+  "updated_at": "2026-09-08T05:47:48.104Z",
   "history": [
     {
       "at": "2026-09-07T23:13:35.301Z",
@@ -1751,6 +1856,165 @@
       "at": "2026-09-08T05:33:35.717Z",
       "event": "repair_done",
       "note": "round3 FAIL是正完了: (1) CORE_DISTORTED_BY_GAME -- scope_core_v3/ae_v3/c_compression_v3/core_scope_check_v3の『市町村長が別に判断する』という独立判断を示唆する文言を、game_translations_v4/state_table.jsonが既に採用していた『気象台とは別の組織である市町村が、危険が続く間は速やかに動く』という決定論的な事実の記述に統一。(2) FACTUAL_PROFESSION_ERROR -- round2で追加した『今コマ雨が降っていない』解除ゲートは実際の解除基準の代理として不十分（round3レビューがP2/浜町の一時的な小康という実例で確認）であったため、解除機構そのものをstate_table.json/design-sim.mjs/game_translations(v5)から撤去。design-sim.mjsを再実行し、meter_lead_rule（解除なし）が3進路すべてを満点で解くこと、内容非依存戦略・固定スケジュール総当たり2401通りが全進路制覇できないことを再確認（design-sim-result.json）。関連してplay_seeds_v3/reference_research_v3/first_5_seconds_v4/no_manual_exploit_check_v4/core_back_check_v4もSTALE解消のため再提出、内容不整合を解消。"
+    },
+    {
+      "at": "2026-09-08T05:40:04.109Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RETURNED",
+      "note": "CORE_DISTORTED_BY_GAME -> GAME_TRANSLATION; repair budget exhausted, REDESIGN required (redesign 1/2 used)"
+    },
+    {
+      "at": "2026-09-08T05:40:04.109Z",
+      "event": "failure_routed",
+      "failure_id": "f-4",
+      "code": "CORE_DISTORTED_BY_GAME",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REDESIGN_REQUIRED",
+        "reason": "repair_count=1 >= 1; run 'redesign' with a different seed/translation"
+      }
+    },
+    {
+      "at": "2026-09-08T05:42:31.150Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:game_translations:v6",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "weather-forecaster:play_seeds:v3",
+        "weather-forecaster:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:42:42.628Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "REDESIGNING",
+      "note": "iteration 3: translation t1c-storm-night-window"
+    },
+    {
+      "at": "2026-09-08T05:42:42.628Z",
+      "event": "redesign_started",
+      "seed": null,
+      "translation": "t1c-storm-night-window",
+      "reason": "Design review r4 FAIL (CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, f-4): t1b's iteration-2 repair made the municipal 避難情報 response fully deterministic to fix round-2's finding, but that determinism claim itself contradicts fact_check_r1.json #3 (警報 is only a 目安/guideline; the municipality's actual issuance decision is a real, separate judgment this design should not claim to model either as branching or as certain). Repair budget for iteration 2 was already exhausted, so this is redesign #2 of 2 (last allowed): t1c-storm-night-window keeps the exact same CORE/SCOPE, radar/meter/threshold/lead-time mechanic, and no-cancel rule (all mechanically unchanged in design-sim.mjs/state_table.json), but removes every claim about what the municipality does after the warning -- the world outcome (E) is now judged purely on whether the warning gave the confirmed lead time before the meter crossed the threshold, a fact entirely within the player's own team. Also carries the r4 MEDIUM fix: the first town-card screen now discloses upfront that a warning cannot be undone until morning.",
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-08T05:43:09.991Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:game_translations:v7",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v3",
+        "weather-forecaster:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:45:42.289Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:scope_core:v4",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "weather-forecaster:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:45:49.045Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:ae:v4",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:scope_core:v4",
+        "weather-forecaster:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:45:56.137Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:core_scope_check:v4",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:ae:v4",
+        "weather-forecaster:scope_core:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:46:04.110Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:play_seeds:v4",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:46:16.512Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:reference_research:v4",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:46:22.780Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:c_compression:v4",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v4",
+        "weather-forecaster:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:46:31.504Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:game_translations:v8",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:play_seeds:v4",
+        "weather-forecaster:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:47:04.051Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:first_5_seconds:v5",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v8"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:47:48.064Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:no_manual_exploit_check:v5",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v8",
+        "weather-forecaster:first_5_seconds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-08T05:47:48.104Z",
+      "event": "artifact_submitted",
+      "artifact_id": "weather-forecaster:core_back_check:v5",
+      "invalidated": [],
+      "sources": [
+        "weather-forecaster:game_translations:v8"
+      ]
     }
   ],
   "redesign": [
@@ -1761,6 +2025,14 @@
       "translation": "t1b-storm-night-team",
       "reason": "Round-2 design review FAIL (score 58, 0 blockers, 3 HIGH; 2 genuine: CORE_DISTORTED_BY_GAME on the deterministic municipal response falsely framed as independent judgment, FACTUAL_PROFESSION_ERROR on unconditional 解除). Local repair budget (1/1) exhausted for design_iteration 1. Redesigning translation t1-storm-night -> t1b-storm-night-team: (1) municipal 避難情報 card reworded to state a fact (a different organization acts promptly) rather than implying a judgment that could diverge; (2) 解除 gated on current rain=0 for that town, matching the confirmed criterion (fact_check_r1.json #2); mechanically verified via design-sim.mjs cancel_gate check (illegal cancel attempts while raining are rejected, 8-11 per path, strategy still fails).",
       "at": "2026-09-08T05:05:00.625Z"
+    },
+    {
+      "from_iteration": 2,
+      "to_iteration": 3,
+      "seed": null,
+      "translation": "t1c-storm-night-window",
+      "reason": "Design review r4 FAIL (CORE_DISTORTED_BY_GAME/FACTUAL_PROFESSION_ERROR, f-4): t1b's iteration-2 repair made the municipal 避難情報 response fully deterministic to fix round-2's finding, but that determinism claim itself contradicts fact_check_r1.json #3 (警報 is only a 目安/guideline; the municipality's actual issuance decision is a real, separate judgment this design should not claim to model either as branching or as certain). Repair budget for iteration 2 was already exhausted, so this is redesign #2 of 2 (last allowed): t1c-storm-night-window keeps the exact same CORE/SCOPE, radar/meter/threshold/lead-time mechanic, and no-cancel rule (all mechanically unchanged in design-sim.mjs/state_table.json), but removes every claim about what the municipality does after the warning -- the world outcome (E) is now judged purely on whether the warning gave the confirmed lead time before the meter crossed the threshold, a fact entirely within the player's own team. Also carries the r4 MEDIUM fix: the first town-card screen now discloses upfront that a warning cannot be undone until morning.",
+      "at": "2026-09-08T05:42:42.627Z"
     }
   ]
 }

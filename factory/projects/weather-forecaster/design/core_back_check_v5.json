@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "design_iteration 3（redesign #2、t1c-storm-night-window）、round4レビューFAIL是正後の再照合。round4が確認した2件のHIGH: (1) FACTUAL_PROFESSION_ERROR -- 警報を出すと市町村が必ず避難情報を出すという決定論的な状態遷移は、fact_check_r1.json #3（警報は市町村の判断材料＝目安であり、発令の可否・対象区域・タイミングは市町村の実際の判断）と矛盾していた。(2) CORE_DISTORTED_BY_GAME -- 同じ理由で、気象台の仕事が社会へ作用する因果を過度に確定的に描いていた。是正: 避難情報の発表という中間状態そのものをゲームの状態機械・全artifactから撤去し、世界の結果（E）を『警報がリードタイム内に猶予を作れたか』という気象台側の事実だけで判定する設計（t1c）へ変更した。市町村・住民の実際の行動については、確実に起きるとも（round4）独立して分岐するとも（round2）、一貫して主張しない。この方針をscope_core_v4/ae_v4/c_compression_v4/core_scope_check_v4/play_seeds_v4/game_translations_v8の全てに反映し、相互の整合を確認済み。MEDIUM（不可逆性の開示）もfirst_5_seconds_v5.jsonへ確定配置して是正済み。COREの『当番チームが間に合う時刻に警報を出す』とDの中核（レーダー読み・メーター見積り・町とコマの選択）はt1bからt1cへのredesignで変更していない——design-sim.mjsのロジックは無変更で、meter_lead_ruleが3進路すべてを満点で解くことを再確認済み（factory/projects/weather-forecaster/design/design-sim-result.json）。redesign_count 2/2（本イテレーションで許容される最後のredesign、repair_countは新イテレーションで0/1にリセット）。",
+  "pass": true
+}
