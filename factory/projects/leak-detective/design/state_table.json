@@ -1,0 +1,50 @@
+{
+  "note": "Design-stage state table for translation t1-night-listening. Every number is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence. Facts behind each rule: fact_sheet.json (representative_duties 2-3, decisions 2/4/6, expertise 0-1, tools 1/6/7/11).",
+  "block": {
+    "streets": [
+      { "id": "north", "name": "北通り", "valve": "v-north", "traffic": true },
+      { "id": "east", "name": "東通り", "valve": "v-east", "traffic": false },
+      { "id": "south", "name": "南通り", "valve": "v-south", "traffic": false },
+      { "id": "west", "name": "西通り", "valve": "v-west", "traffic": false }
+    ],
+    "points_per_street": 6,
+    "point_spacing_note": "聴取点は各道路に6点（等間隔）。実際の路面音聴もピックアップを順次置いて移動する（fact_sheet tools 1）。漏水点は必ずいずれかの聴取点の真下にある（『真上付近で最も大きく聴こえる』を成立させるための単純化）。",
+    "valve_note": "各道路の入口に制水弁が1本あり、閉めるとその道路の管だけ水が止まる（実際は制水弁で区切られた路線単位。150〜200m間隔、fact_sheet expertise 2）。"
+  },
+  "case_generation": {
+    "leak": "street ∈ 4通り, point ∈ 1..6 を一様乱数で1つ（24通り）",
+    "house_usage_distractor": "1点を一様乱数で選ぶ（漏水点と同じ点は避ける）。家の夜間使用（トイレ・給湯）の疑似音。",
+    "traffic_distractor": "north（幹線道路側）の6点すべてに交通の疑似音が乗る。",
+    "why": "疑似音があり熟練が必要（fact_sheet expertise 1、東京都水道局）。"
+  },
+  "flow_meter": {
+    "unit": "m3/h（区画量水器の夜間最小流量）",
+    "base_night_usage": 0.2,
+    "leak_flow": 2.0,
+    "per_street_house_share": 0.05,
+    "display_decimals": 1,
+    "rule": "表示 = base + leak_flow(漏水道路が開いていれば) − 0.05×(閉めている道路数)。漏水道路を閉めたときだけ針が大きく落ちる。閉めていない道路は表示上ほぼ変わらない（0.05差は1桁表示で見えないことがある）。",
+    "why": "夜間最小流量測定法: 路線ごとに流れを止め、流量の変化を監視して漏水路線を切り分ける（fact_sheet representative_duties 3、decisions 4）。"
+  },
+  "sound_reading": {
+    "fields": ["level 1-5（波形バー）", "tone high|low", "continuity steady|intermittent"],
+    "leak_street_rule": "dist = |point − leak_point|。level = max(1, 5 − dist)。tone = dist ≤ 1 ? high : low。continuity = steady。",
+    "other_street_rule": "level 1, tone low, continuity steady（遠くの漏水音がかすかに管を伝う）。",
+    "house_usage_override": "その点の表示を level 4, tone high, continuity intermittent に置き換える（漏水点の表示は上書きしない）。",
+    "traffic_override": "north の点は continuity intermittent、level は本来の値と 3 の大きい方、tone は本来の値（漏水がnorthにある場合、真上でも intermittent と表示される→『とぎれる音は除外』だけでは決められず、流量による路線特定と組み合わせて判断する必要がある）。",
+    "why": "漏水位置の真上付近で漏水音が一番大きく聴き取れる（東京都水道局）、低い音だけが届くなら漏水点はもっと遠い（WaQuAC資料・原典未取得のためfact_sheet uncertainties 2で明示）、疑似音との聴き分けに熟練が必要（東京都水道局）。"
+  },
+  "budgets": {
+    "valve_ops": 3,
+    "listens": 6,
+    "digs": 2,
+    "why": "夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（班の人数・延長はFACT_CHECK_REQUIRED 7、ゲーム上の単純化）。掘って外れると道路復旧費と時間を失う（decisions 6）。"
+  },
+  "dig_rule": "掘る地点 = (street, point)。漏水点と一致すれば当たり: 管の割れ目から噴き出す水→修理→明け方に道路の湿りが消え、流量計が base に戻る。外れ: 穴の中の管は濡れておらず埋め戻す（digs −1）。掘れるのは一晩2回まで（不可逆、掘る前に『あと◯回』を常時表示）。",
+  "outcome_rule": {
+    "perfect": "1回目の掘削で当たり",
+    "success": "2回目の掘削で当たり",
+    "partial": "2回とも外れ、または掘らずに夜が明けた（漏れは次の夜へ持ち越し。正直なpartial outcome、進行は可能）"
+  },
+  "first_step_visible": "深夜の区画。流量計の針が『夜なのに、まだ流れてる』位置。通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図には管・弁・聴取点のみ（濡れた場所・漏水マークは描かない）。"
+}

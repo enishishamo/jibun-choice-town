@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-09-08T07:02:34.207Z",
+  "rules": {
+    "streets": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "points_per_street": 6,
+    "budgets": {
+      "valve_ops": 3,
+      "listens": 6,
+      "digs": 2,
+      "why": "夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（班の人数・延長はFACT_CHECK_REQUIRED 7、ゲーム上の単純化）。掘って外れると道路復旧費と時間を失う（decisions 6）。"
+    }
+  },
+  "cases_per_strategy": 600,
+  "strategies": {
+    "random_dig": {
+      "perfect": 19,
+      "success": 27,
+      "partial": 554,
+      "win_rate": 0.077
+    },
+    "listen_random_dig_loudest_any": {
+      "perfect": 135,
+      "success": 0,
+      "partial": 465,
+      "win_rate": 0.225
+    },
+    "listen_random_dig_loudest_steady": {
+      "perfect": 135,
+      "success": 0,
+      "partial": 465,
+      "win_rate": 0.225
+    },
+    "flow_then_random_dig": {
+      "perfect": 89,
+      "success": 87,
+      "partial": 424,
+      "win_rate": 0.293
+    },
+    "flow_then_gradient": {
+      "perfect": 600,
+      "success": 0,
+      "partial": 0,
+      "win_rate": 1
+    }
+  },
+  "solvability": {
+    "solvable": 552,
+    "total": 552,
+    "worst_listens_used": 6,
+    "worst_valve_ops_used": 3
+  },
+  "verdict": {
+    "legitimate_strategy_wins_every_case": true,
+    "no_content_blind_strategy_wins_reliably": true,
+    "flow_without_listening_is_not_enough": true,
+    "every_case_solvable_within_budgets": true
+  }
+}
