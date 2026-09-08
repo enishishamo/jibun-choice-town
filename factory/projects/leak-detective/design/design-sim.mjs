@@ -3,6 +3,9 @@
 // v3 (design review r2): the second report is unlocked ONLY by a new listen; the
 // record view never unlocks (the old "compare" free unlock is removed); the gate
 // test now also verifies that opening the records and reporting again is refused.
+// v4 (design review r3): no automatic segment highlight exists — a strategy that taps
+// valves WITHOUT reading the meter gets no segment information from the UI and must
+// guess the segment (valves_ignored_guess_segment_gradient).
 // Reads state_table.json and evaluates strategies mechanically over every
 // generated case. Evidence for NO_MANUAL_EXPLOIT_CHECK: content-blind
 // strategies must not reliably win, the legitimate C->D strategy must win
@@ -117,9 +120,18 @@ const S = {
     if (v.budgets.reports <= 0) return { type: "end" };
     const p = pickNew(rand, allPoints.filter((x) => x.seg === seg), used); if (!p) return { type: "end" }; used.add(key(p));
     return unlockOr(v, { type: "report", ...p }, rand, used); }; },
+  // r3 adversarial: taps valves but never reads the meter; with no automatic highlight it must GUESS a segment, then does honest gradient listening there
+  valves_ignored_guess_segment_gradient: (rand) => { const seg = SEGS[Math.floor(rand() * SEGS.length)]; let tapped = 0; return (v) => {
+    if (tapped < B.valve_ops) { tapped++; return { type: "valve", seg: SEGS[tapped - 1] }; }
+    return gradientOn(seg, v); }; },
   // legitimate D: flow isolation -> gradient listening on that segment, steady readings only -> report the max
   flow_then_gradient: () => (v) => {
     const seg = leakSegFromFlow(v); if (!seg) return nextValve(v);
+    return gradientOn(seg, v);
+  },
+};
+function gradientOn(seg, v) {
+  {
     const mine = v.readings.filter((r) => r.seg === seg);
     const steady = mine.filter((r) => r.continuity === "steady");
     const best = steady.reduce((a, r) => (!a || r.level > a.level ? r : a), null);
@@ -140,8 +152,8 @@ const S = {
     }
     if (best && v.budgets.reports > 0 && v.secondReportUnlocked) return { type: "report", seg, point: best.point };
     return { type: "end" };
-  },
-};
+  }
+}
 
 // ---- run ----
 const N = 600;
@@ -178,6 +190,7 @@ const verdict = {
   flow_without_listening_is_not_reliable: results.flow_then_two_distinct_reports.win_rate < 0.5,
   every_case_solvable_within_budgets: solvable === total && worstListens <= B.listens && worstValves <= B.valve_ops,
   think_again_gate_enforced: gateBlocked === 200 && compareBlocked === 200 && listenUnlocks === 200,
+  no_ui_reveal_of_segment: results.valves_ignored_guess_segment_gradient.win_rate < 0.45,
 };
 const out = { generated_at: new Date().toISOString(), rules: { segments: SEGS, points_per_segment: P, budgets: B, reading_fields: T.sound_reading.fields }, cases_per_strategy: N, strategies: results, solvability: { solvable, total, first_try: firstTry, worst_listens_used: worstListens, worst_valve_ops_used: worstValves }, think_again_gate: { trials: 200, second_report_refused_without_new_evidence: gateBlocked, second_report_refused_after_compare_only: compareBlocked, second_report_allowed_after_new_listen: listenUnlocks }, verdict };
 writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

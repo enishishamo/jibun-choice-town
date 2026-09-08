@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v4（design_iteration 2、repair 1/1 after design review r3）。r3のHIGH（ANSWER_LEAK: 流量結果に連動して他区間を薄く・確定区間を大きくする自動強調が、針を読まなくても漏水区間をUIが答えてしまう）への対応: 自動強調を全廃し、区間の拡大は子どもが区間ラベルをタップして『この区間を調べる』と仮説を置いたときだけ（正誤は示さない）。design-sim v4に『弁をタップするが針を読まず区間を当て推量してから勾配聴取』戦略を追加し35.7%（正当戦略100%）でno_ui_reveal_of_segment:trueを確認。r2の考え直しゲートはr3で実質的と確認済み。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造（r1-r3すべてe_closes_inside_own_authority:true）、Cの必要性は変更なし。",
+  "pass": true
+}

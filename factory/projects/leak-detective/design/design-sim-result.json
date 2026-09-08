@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T07:22:01.461Z",
+  "generated_at": "2026-09-08T07:28:09.934Z",
   "rules": {
     "segments": [
       "A",
@@ -44,6 +44,12 @@
       "partial": 410,
       "win_rate": 0.317
     },
+    "valves_ignored_guess_segment_gradient": {
+      "perfect": 214,
+      "success": 0,
+      "partial": 386,
+      "win_rate": 0.357
+    },
     "flow_then_gradient": {
       "perfect": 600,
       "success": 0,
@@ -69,6 +75,7 @@
     "no_content_blind_strategy_wins_reliably": true,
     "flow_without_listening_is_not_reliable": true,
     "every_case_solvable_within_budgets": true,
-    "think_again_gate_enforced": true
+    "think_again_gate_enforced": true,
+    "no_ui_reveal_of_segment": true
   }
 }

@@ -4,10 +4,10 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "REDESIGNING",
+  "state": "UNDER_REVIEW",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 2,
-  "repair_count": 0,
+  "repair_count": 1,
   "redesign_count": 1,
   "artifacts": {
     "fact_sheet": {
@@ -718,12 +718,12 @@
       ]
     },
     "game_translations": {
-      "artifact_id": "leak-detective:game_translations:v4",
+      "artifact_id": "leak-detective:game_translations:v5",
       "artifact_type": "game_translations",
-      "version": 4,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/game_translations_v4.json",
+      "file": "factory/projects/leak-detective/design/game_translations_v5.json",
       "payload": {
         "translations": [
           {
@@ -752,19 +752,19 @@
             "play_seed": "s1-night-listening",
             "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（流量）と路面での音聴で絞り込み、『ここが漏水点』と特定して修理班に報告する（2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消える。",
             "first_visible_state": "夜の区画のミニチュア（道路、街灯、家々）。道路の下に薄く管の線が3つの区間に分かれて見え、区間の入口に制水弁の鉄ぶた（弁の記号）、管に沿って6つずつの聴取点（小さな丸）。左上に区画量水器の計器：針が『夜なのに、まだ流れてる』位置で、目盛りに『正常ならここ』の印。右に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。下に予算表示『弁 2回／聴く 5点／報告 2回』。濡れた場所や漏水マークは地図にない。操作手順の説明文はない。",
-            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（もう一度タップで戻す。閉められるのは同時に1本、操作は2回まで。弁の横に『ゲームでは1区間を1つの弁で表しています』）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、新しく1点聴くまで2回目の報告ボタンは押せない（『記録』はいつでも見られるが、見るだけでは解禁されない。聴く予算が残っていなければ、その夜は報告できずに明ける）。",
+            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（もう一度タップで戻す。閉められるのは同時に1本、操作は2回まで。弁の横に『ゲームでは1区間を1つの弁で表しています』）。区間ラベルをタップ→『この区間を調べる』（その区間の点を大きく表示、仮説の切り替えは自由、正誤は示さない）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、新しく1点聴くまで2回目の報告ボタンは押せない（『記録』はいつでも見られるが、見るだけでは解禁されない。聴く予算が残っていなければ、その夜は報告できずに明ける）。",
             "C_interaction": "計器の針が『大きく落ちた』のはどの弁を閉めたときかを見る。置いた点の2情報を並べて、大きくなる方向を読む。『とぎれる』音（家の水使用）を漏水音から除外する。",
-            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。流量で区間が確定したら、他の2区間の点は薄くなり、確定区間の点が大きく表示される。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする（説明文なしで『家の中で水を使っている』と絵で分かる）。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理班が管を直す短い演出→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。",
+            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。流量の読み値は『記録』ストリップに残るだけで、UIはどの区間が漏れているかを強調しない。子どもが区間ラベルをタップして『この区間を調べる』と選ぶと、その区間の点が大きく他が薄くなる（自分の仮説を置く操作。外れていてもよく、いつでも切り替えられる。正解かどうかは示さない）。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする（説明文なしで『家の中で水を使っている』と絵で分かる）。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理班が管を直す短い演出→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。",
             "information_gained": "どの区間の管が漏れているか（流量）。漏水点に近いほど音が大きい。とぎれる音は家で水を使っている音で、漏水ではない（窓の明かりが同じリズムで点滅する）。一晩に聴ける点数・弁の操作回数・報告できる回数に限りがある。報告すると戻せない。外れたら、新しく聴かないと次は報告できない。",
             "player_next_judgment": "『どの弁を閉めたら針が落ちる？』『次はどの点で聴けば近づいたか分かる？（両端を聴いてから、大きい方へ）』『この大きな音は本当に漏水？とぎれてない？』『証拠は2種類そろった？まだ聴く？もう報告する？』を毎手考える。",
-            "D_externalization": "閉める弁の順番、置く聴取点の順番、報告する地点の選択が、そのまま調査員としての子どもの推理を表現する。システムは『どの区間が漏れているか』『どこが漏水点か』『次にどこを聴くべきか』を一切示さず、推奨も採点もしない。掘るのは修理班であり、子どもの判断は『どこが漏水点か』の特定までで区切る（調査員の実際の役割、fact_sheet adjacent_profession_boundaries）。",
+            "D_externalization": "閉める弁の順番、『この区間を調べる』という仮説の選択、置く聴取点の順番、報告する地点の選択が、そのまま調査員としての子どもの推理を表現する。システムは『どの区間が漏れているか』『どこが漏水点か』『次にどこを聴くべきか』を一切示さず（流量の結果で区間を強調することもしない）、推奨も採点もしない。掘るのは修理班であり、子どもの判断は『どこが漏水点か』の特定までで区切る（調査員の実際の役割、fact_sheet adjacent_profession_boundaries）。",
             "E_consequence": "明け方の区画: 当たった夜は、修理班が掘った跡が埋め戻され路面が乾き、計器の針が正常に戻り、家々にいつもどおり水が出る。外れた夜は、埋め戻した穴と、まだ湿った路面、高いままの針——『漏れは次の夜へ持ち越し』という正直なpartial outcome（進行は可能、Job Revealは同じ）。1回目で当たり＝満点、2回目＝成功。",
             "retry_or_rethink": "外れた1回目の後は、必ず新しい聴取（新しい証拠）を1回行ってから2回目を報告する（機械的にゲート: design-sim think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけの再報告200/200拒否、新しい聴取後の再報告200/200許可）。聴く予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。朝の結果画面から『もう一度この夜へ』で同じ区画をやり直せる（漏水点は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、記録ストリップと閉めた弁の記録が残って見えるだけ。2回目の失敗からは『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』のどちらか一言。",
             "job_reveal_bridge": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』",
             "strengths": "C（施設図・流量計・音の2情報・予算）が全部『使う』情報で、Dが弁・聴取点・報告地点の選択として外在化される。2種類の証拠（流量と音）を突き合わせる本物の判断構造。疑似音（家の使用音）が『大きい音＝答え』を裏切る。結果が世界（路面の湿り・針・噴き出す水）で返り、外れも正直に返る。Eは調査員の位置特定→水道局の修理班の掘削・修理で閉じ、別主体の裁量判断が因果に入らない（r1レビュー確認）。考え直しの工程が『新しい証拠』でのみ成立するよう機械的に保証される（記録を開くだけの無料解除は存在しない）。",
             "weaknesses": "『とぎれる』を波形の間欠と窓明かりの同期で見せる演出の精度が要る（実装時のVISUAL_AFFORDANCE）。弁を閉める＝断水という重みを一言で伝える必要がある。375pxで18点を44px以上のタップ領域で置くレイアウトの検証が要る（state_table legibility_rules）。",
-            "risk": "design-sim-result.json（v3）: 正当戦略（流量→勾配→連続音のみ）は600/600、全306組合せを予算内（最悪 聴取4・弁2）で1回目に当てる。無作為報告13.0%、流量を使わない無作為聴取29.2%、流量だけで2点報告31.7%（理論値2/6）。考え直しゲート: 何も挟まない再報告・記録を開くだけの再報告はいずれも200/200拒否、新しい聴取後は200/200許可。",
-            "adoption_or_rejection_reason": "採用（t1-night-listeningのredesign #1）。r2レビューのHIGH（記録を開くだけの無料解除）を、2回目の報告を新しい聴取でのみ解禁する状態設計に変更して解消。MEDIUM 2件（375px可読性、連続性の発見可能なフィードバック）もstate_tableのlegibility_rules/continuity_feedbackとして仕様化。"
+            "risk": "design-sim-result.json（v4）: 正当戦略（流量→勾配→連続音のみ）は600/600、全306組合せを予算内（最悪 聴取4・弁2）で1回目に当てる。無作為報告13.0%、流量を使わない無作為聴取29.2%、流量だけで2点報告31.7%、弁をタップするが針を読まず区間を当て推量してから勾配聴取する戦略35.7%（UIが区間を教えないことの検証、no_ui_reveal_of_segment:true）。考え直しゲート: 何も挟まない再報告・記録のみの再報告200/200拒否、新しい聴取後200/200許可。",
+            "adoption_or_rejection_reason": "採用（t1-night-listeningのredesign #1）。r2レビューのHIGH（記録を開くだけの無料解除）を、2回目の報告を新しい聴取でのみ解禁する状態設計に変更して解消。MEDIUM 2件（375px可読性、連続性の発見可能なフィードバック）もstate_tableのlegibility_rules/continuity_feedbackとして仕様化。 r3レビューHIGH（流量結果に連動した自動強調がANSWER_LEAK）は、強調を子どもの仮説選択にのみ連動させることで是正（iteration 2 repair 1/1）。"
           },
           {
             "translation_id": "t2-valve-binary-search",
@@ -808,7 +808,7 @@
         "adopted_translation_id": "t1b-night-listening-evidence-gate",
         "adoption_rationale": "t1bを採用（t1のredesign #1）。r2独立レビューのHIGH（『記録を見比べる』が画面を開くだけで2回目の報告を解禁する無料解除）を、2回目の報告を『新しい聴取＝新しい証拠』でのみ解禁する状態設計へ変更して解消した（design-sim v3で機械検証）。流量→勾配→連続音という本物の判断構造、Eが水道局の内側で閉じる点、3区間×6点・2情報・弁2/聴取5/報告2はt1から維持。t2はEが中間結果で止まり二分探索クイズに縮退、t3は二値観察クイズでEがリスト。",
         "human_decision_domains": [],
-        "revision_note": "v4 (design_iteration 2, post-redesign #1): adopted_translation_idをt1b-night-listening-evidence-gateへ切り替え。"
+        "revision_note": "v5 (design_iteration 2, repair 1/1 after design review r3 ANSWER_LEAK): 流量結果に連動した自動の減光・拡大を削除し、区間の強調は子どもが『この区間を調べる』と選んだときだけに。"
       },
       "creator": "claude-code",
       "source_artifacts": [
@@ -816,7 +816,7 @@
         "leak-detective:c_compression:v3"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-08T07:23:53.209Z",
+      "created_at": "2026-09-08T07:29:38.459Z",
       "versions": [
         {
           "version": 1,
@@ -841,32 +841,38 @@
           "file": "factory/projects/leak-detective/design/game_translations_v4.json",
           "created_at": "2026-09-08T07:23:53.209Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/leak-detective/design/game_translations_v5.json",
+          "created_at": "2026-09-08T07:29:38.459Z",
+          "creator": "claude-code"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "leak-detective:first_5_seconds:v3",
+      "artifact_id": "leak-detective:first_5_seconds:v4",
       "artifact_type": "first_5_seconds",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/first_5_seconds_v3.json",
+      "file": "factory/projects/leak-detective/design/first_5_seconds_v4.json",
       "payload": {
         "zero_to_two_seconds": "深夜の区画のミニチュアが静かに現れる（街灯の明かり、寝静まった家々、道路）。道路の下に管の線が3つの区間に分かれて薄く見える。左上の区画量水器の針が、目盛りの『正常ならここ』を大きく超えた位置でかすかに震えている（自動、操作不要）。管に沿った聴取点が、ゆっくり順番に淡く光る。",
         "two_to_five_seconds": "右から通報カードが1枚すべり込む『晴れてるのに、道がぬれてる…（このあたりのどこか）』。3つの制水弁の鉄ぶたが一度だけ小さく光る。予算表示『弁 2回・聴く 5点・報告 2回』が静かに並ぶ。操作手順を書いた文はない（r1 MEDIUM是正: 『弁をしめて、針を見る／道路に置いて、聴く』の一行を削除）。地図に濡れた場所や漏水マークはない。",
         "first_expected_touch": "3つの制水弁のどれか、または光っている聴取点のどれかをタップする。理由: 反応しそうに光るものがこの2種類しかなく、どちらも正当な最初の一手。震える針が『夜なのに流れている』ことを状態で示し、弁の記号が『止められそう』に、聴取点のヘッドホン形の光が『聴けそう』に見える。",
         "first_system_reaction": "弁をタップした場合: その区間の管の線が一瞬暗くなり（水が止まった）、計器の針が動く——漏水区間なら『正常ならここ』まで大きく落ち、それ以外ならほとんど動かない。表示は『閉めた: 区間A』と針の値、弁の横に小さく『ゲームでは1区間を1つの弁で表しています』。聴取点をタップした場合: ヘッドホンの波形が鳴る——漏水音なら途切れずに流れ続け、家の使用音なら鳴って止まってを繰り返し、そのとき一番近い家の窓の明かりが同じリズムで点いたり消えたりする。地図の下の『記録』ストリップに、その点の波形バーと『ずっと/とぎれる』が1行増える（地図上の点には小さな波形の印だけ）。ここまで文章は計器の値・区間名・2情報の語・弁の注記だけ。",
         "next_expected_inference": "『針が落ちた＝この区間の下が漏れている』『針が落ちない＝ここじゃない、別の弁を試そう』／『音が大きい方へ行けば近づく？』『鳴ったり止まったりする音のとき、家の明かりも点いたり消えたりした＝家で水を使ってる音？』→『弁で区間を決めてから、その区間で聴けばいい』。",
-        "next_expected_action": "別の弁をタップして針を見比べる、または落ちた区間の聴取点を続けてタップする。どちらでも世界が反応する（針が動く／2情報が増えて地図に残る）。『ここが漏水点だと報告』はまだ押さなくてよい（報告ボタンに『報告したら戻せない、あと2回』が見えている）。",
+        "next_expected_action": "別の弁をタップして針を見比べる、区間ラベルをタップして『この区間を調べる』と仮説を置く、または聴取点を続けてタップする。どれでも世界が反応する（針が動く／その区間が大きくなる／記録が増える）。『ここが漏水点だと報告』はまだ押さなくてよい（報告ボタンに『報告したら戻せない、あと2回』が見えている）。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。"
+        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。 v4 (r3 ANSWER_LEAK repair): 自動強調なし。区間の拡大は子どもがラベルをタップして仮説を置いたときだけ。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v4"
+        "leak-detective:game_translations:v5"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-08T07:23:53.251Z",
+      "created_at": "2026-09-08T07:29:38.501Z",
       "versions": [
         {
           "version": 1,
@@ -885,29 +891,35 @@
           "file": "factory/projects/leak-detective/design/first_5_seconds_v3.json",
           "created_at": "2026-09-08T07:23:53.252Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/leak-detective/design/first_5_seconds_v4.json",
+          "created_at": "2026-09-08T07:29:38.502Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "leak-detective:core_back_check:v3",
+      "artifact_id": "leak-detective:core_back_check:v4",
       "artifact_type": "core_back_check",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/core_back_check_v3.json",
+      "file": "factory/projects/leak-detective/design/core_back_check_v4.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "v3（design_iteration 2、redesign #1: t1b-night-listening-evidence-gate）。r2レビューのHIGH（『記録を見比べる』が画面を開くだけの無料解除でGate Gが実質化していない）への対応: 2回目の報告を『新しい聴取＝新しい証拠』でのみ解禁する状態設計に変更し、記録パネルは閲覧専用にした。design-sim v3で、何も挟まない再報告と記録のみの再報告がいずれも200/200拒否、新しい聴取後は200/200許可されることを機械的に確認。r2 MEDIUM 2件（375px可読性、連続性の発見可能なフィードバック）はstate_table.json legibility_rules/continuity_feedbackとして実装拘束の仕様に。COREとSCOPE、Dの子ども側の実行（弁の順番・聴取点の順番・報告地点）、Eが水道局の内側で閉じる構造（r1/r2ともe_closes_inside_own_authority:true）、Cの必要性（正当戦略306/306、無作為13.0%、無流量聴取29.2%、流量のみ31.7%）は変更なし。",
+        "notes": "v4（design_iteration 2、repair 1/1 after design review r3）。r3のHIGH（ANSWER_LEAK: 流量結果に連動して他区間を薄く・確定区間を大きくする自動強調が、針を読まなくても漏水区間をUIが答えてしまう）への対応: 自動強調を全廃し、区間の拡大は子どもが区間ラベルをタップして『この区間を調べる』と仮説を置いたときだけ（正誤は示さない）。design-sim v4に『弁をタップするが針を読まず区間を当て推量してから勾配聴取』戦略を追加し35.7%（正当戦略100%）でno_ui_reveal_of_segment:trueを確認。r2の考え直しゲートはr3で実質的と確認済み。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造（r1-r3すべてe_closes_inside_own_authority:true）、Cの必要性は変更なし。",
         "pass": true
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v4"
+        "leak-detective:game_translations:v5"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-08T07:23:53.337Z",
+      "created_at": "2026-09-08T07:29:38.590Z",
       "versions": [
         {
           "version": 1,
@@ -926,16 +938,22 @@
           "file": "factory/projects/leak-detective/design/core_back_check_v3.json",
           "created_at": "2026-09-08T07:23:53.338Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/leak-detective/design/core_back_check_v4.json",
+          "created_at": "2026-09-08T07:29:38.591Z",
+          "creator": "claude-code"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "leak-detective:no_manual_exploit_check:v3",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v4",
       "artifact_type": "no_manual_exploit_check",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v3.json",
+      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v4.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": true,
@@ -967,8 +985,8 @@
           "position_leak": false,
           "position_leak_note": "漏水点はどの区間のどの点にも等確率。",
           "visual_hierarchy_leak": false,
-          "visual_hierarchy_leak_note": "18の聴取点は同じ大きさ・同じ光り方（流量で区間が確定した後は確定区間が大きく、他は薄く——これは子どもの判断の結果で、正解の点は示さない）。3つの弁は同格。『ここが漏水点だと報告』は聴取点を選んでから現れ、特定の点を強調しない。",
-          "c_necessity_note": "design-sim-result.json（v3）: 流量で区間を絞ってから聴かずに異なる2点を報告する内容軽量戦略は勝率31.7%（理論値2/6）、流量を使わない無作為聴取29.2%、正当戦略は100%（600ケース、306通りの全組合せを予算内・最悪聴取4点・弁2回で1回目に解決）。r1/r2レビュー: 流量というCを使うため§3『Cを使わなくても突破できる』には該当しない。",
+          "visual_hierarchy_leak_note": "18の聴取点は同じ大きさ・同じ光り方。3つの弁は同格。流量の結果でUIが区間を強調することはない（r3 HIGH是正）——区間の拡大は子どもが『この区間を調べる』と自分で選んだときだけで、正誤は示さない。『ここが漏水点だと報告』は聴取点を選んでから現れ、特定の点を強調しない。design-sim v4: 弁をタップするが針を読まずに区間を当て推量する戦略は35.7%（正当戦略100%）、no_ui_reveal_of_segment:true。",
+          "c_necessity_note": "design-sim-result.json（v4）: 流量で区間を絞ってから聴かずに異なる2点を報告する内容軽量戦略は勝率31.7%（理論値2/6）、流量を使わない無作為聴取29.2%、正当戦略は100%（600ケース、306通りの全組合せを予算内・最悪聴取4点・弁2回で1回目に解決）。r1/r2レビュー: 流量というCを使うため§3『Cを使わなくても突破できる』には該当しない。",
           "irreversible_action_disclosure": "報告は不可逆（2回まで）。『報告したら戻せない、あと◯回』を報告ボタンに常設表示し、first_5_seconds_v2.jsonの最初の画面から見えている。",
           "think_again_note": "1回目の報告が外れた後、2回目は『新しい聴取1回』を経るまで機械的に無効。記録パネルは常時閲覧可だが何も解禁しない（state_table think_again_gate、design-sim v3 think_again_gate_enforced:true）。聴く予算が残っていなければ報告できずに夜が明ける（正直なpartial）。",
           "brute_force_note": "18点×2回の総当たりは予算上不可能。やり直しごとに夜1回分を見直す必要があり、初回プレイでの総当たりは現実的でない。",
@@ -976,15 +994,15 @@
           "sim_evidence": "factory/projects/leak-detective/design/design-sim-result.json"
         },
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。"
+        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。 v4 (r3 ANSWER_LEAK repair): 流量結果連動の自動強調を削除、valves_ignored戦略の数値を追加。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v4",
-        "leak-detective:first_5_seconds:v3"
+        "leak-detective:game_translations:v5",
+        "leak-detective:first_5_seconds:v4"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-08T07:23:53.294Z",
+      "created_at": "2026-09-08T07:29:38.547Z",
       "versions": [
         {
           "version": 1,
@@ -1002,6 +1020,12 @@
           "version": 3,
           "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v3.json",
           "created_at": "2026-09-08T07:23:53.295Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v4.json",
+          "created_at": "2026-09-08T07:29:38.548Z",
           "creator": "claude-code"
         }
       ]
@@ -1032,6 +1056,17 @@
       "must_change": "second report unlock = new listen only; remove compare-as-unlock from state_table/sim/translation; sim gate test must refuse compare-then-report; legibility rules; continuity feedback spec",
       "design_iteration": 1,
       "at": "2026-09-08T07:21:01.909Z"
+    },
+    {
+      "failure_id": "f-3",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r3 FAIL (score 76, CA88/GQ76, 0 blockers, 1 HIGH ANSWER_LEAK fixable_by_local_repair:true; round-2 gate confirmed real; e_closes_inside_own_authority true). The legibility rule 'after flow isolation, dim the other segments and enlarge the identified one' makes the UI reveal the leak segment automatically — a child can tap valves without reading the needle and just listen on whichever segment the system enlarged, so the flow C->D collapses to sequential tapping. Iteration 2 repair (0/1 -> 1/1): remove every automatic highlight tied to the flow result; visual focus happens only when the child explicitly taps a segment label to 'investigate this segment' (a hypothesis the child states, which can be wrong); the record strip stays as the only place the flow readings are kept. design-sim gains a 'tap valves without reading, adopt whatever is highlighted' strategy which, with no automatic highlight, degrades to guessing the segment.",
+      "evidence": "factory/projects/leak-detective/design/design-review-r3.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "t1b evidence-only think-again gate, 3x6 layout, level+continuity readings, budgets 2/5/2, surveyor pinpoints & crew digs, fact_sheet v1",
+      "must_change": "remove auto dim/enlarge after isolation from state_table.legibility_rules and game_translations; child-driven segment focus only; add valves-ignored strategy to sim",
+      "design_iteration": 2,
+      "at": "2026-09-08T07:27:52.027Z"
     }
   ],
   "human_decisions": [],
@@ -1039,7 +1074,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T07:23:53.338Z",
+  "updated_at": "2026-09-08T07:29:38.638Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -1504,6 +1539,78 @@
       "sources": [
         "leak-detective:game_translations:v4"
       ]
+    },
+    {
+      "at": "2026-09-08T07:27:52.028Z",
+      "event": "state_change",
+      "from": "REDESIGNING",
+      "to": "REPAIRING",
+      "note": "ANSWER_LEAK -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-08T07:27:52.028Z",
+      "event": "failure_routed",
+      "failure_id": "f-3",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-08T07:29:38.460Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_translations:v5",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "leak-detective:play_seeds:v3",
+        "leak-detective:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:29:38.502Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:first_5_seconds:v4",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:29:38.548Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v4",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v5",
+        "leak-detective:first_5_seconds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:29:38.591Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:core_back_check:v4",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:29:38.637Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "r3 ANSWER_LEAK是正: 流量結果に連動した自動の減光・拡大を全廃。区間の強調は子どもが『この区間を調べる』と仮説を置いたときだけ（正誤は示さない）。design-sim v4にvalves_ignored_guess_segment_gradient（35.7%）を追加、no_ui_reveal_of_segment:true、他の5フラグもtrue。"
+    },
+    {
+      "at": "2026-09-08T07:29:38.638Z",
+      "event": "repair_done",
+      "note": "r3 ANSWER_LEAK是正: 流量結果に連動した自動の減光・拡大を全廃。区間の強調は子どもが『この区間を調べる』と仮説を置いたときだけ（正誤は示さない）。design-sim v4にvalves_ignored_guess_segment_gradient（35.7%）を追加、no_ui_reveal_of_segment:true、他の5フラグもtrue。"
     }
   ],
   "redesign": [
