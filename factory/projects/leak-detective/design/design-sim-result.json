@@ -1,45 +1,48 @@
 {
-  "generated_at": "2026-09-08T07:02:34.207Z",
+  "generated_at": "2026-09-08T07:12:06.716Z",
   "rules": {
-    "streets": [
-      "north",
-      "east",
-      "south",
-      "west"
+    "segments": [
+      "A",
+      "B",
+      "C"
     ],
-    "points_per_street": 6,
+    "points_per_segment": 6,
     "budgets": {
-      "valve_ops": 3,
-      "listens": 6,
-      "digs": 2,
-      "why": "夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（班の人数・延長はFACT_CHECK_REQUIRED 7、ゲーム上の単純化）。掘って外れると道路復旧費と時間を失う（decisions 6）。"
-    }
+      "valve_ops": 2,
+      "listens": 5,
+      "reports": 2,
+      "why": "3区間なら閉める操作2回で切り分けられる（2回とも落ちなければ残りの区間）。夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（ゲーム上の単純化、班構成はFACT_CHECK_REQUIRED 7）。位置の報告は一晩2回まで——修理班が掘って外れると道路復旧費と時間を失う（decisions 6）。"
+    },
+    "reading_fields": [
+      "level 1-5（波形バー）",
+      "continuity steady|intermittent（ずっと／とぎれる）"
+    ]
   },
   "cases_per_strategy": 600,
   "strategies": {
-    "random_dig": {
-      "perfect": 19,
-      "success": 27,
-      "partial": 554,
-      "win_rate": 0.077
+    "random_report": {
+      "perfect": 40,
+      "success": 36,
+      "partial": 524,
+      "win_rate": 0.127
     },
-    "listen_random_dig_loudest_any": {
-      "perfect": 135,
+    "listen_random_report_loudest_any": {
+      "perfect": 175,
       "success": 0,
-      "partial": 465,
-      "win_rate": 0.225
+      "partial": 425,
+      "win_rate": 0.292
     },
-    "listen_random_dig_loudest_steady": {
-      "perfect": 135,
+    "listen_random_report_loudest_steady": {
+      "perfect": 175,
       "success": 0,
-      "partial": 465,
-      "win_rate": 0.225
+      "partial": 425,
+      "win_rate": 0.292
     },
-    "flow_then_random_dig": {
-      "perfect": 89,
-      "success": 87,
-      "partial": 424,
-      "win_rate": 0.293
+    "flow_then_two_distinct_reports": {
+      "perfect": 100,
+      "success": 99,
+      "partial": 401,
+      "win_rate": 0.332
     },
     "flow_then_gradient": {
       "perfect": 600,
@@ -49,15 +52,21 @@
     }
   },
   "solvability": {
-    "solvable": 552,
-    "total": 552,
-    "worst_listens_used": 6,
-    "worst_valve_ops_used": 3
+    "solvable": 306,
+    "total": 306,
+    "first_try": 306,
+    "worst_listens_used": 4,
+    "worst_valve_ops_used": 2
+  },
+  "think_again_gate": {
+    "trials": 200,
+    "second_report_refused_without_new_evidence": 200
   },
   "verdict": {
     "legitimate_strategy_wins_every_case": true,
     "no_content_blind_strategy_wins_reliably": true,
-    "flow_without_listening_is_not_enough": true,
-    "every_case_solvable_within_budgets": true
+    "flow_without_listening_is_not_reliable": true,
+    "every_case_solvable_within_budgets": true,
+    "think_again_gate_enforced": true
   }
 }

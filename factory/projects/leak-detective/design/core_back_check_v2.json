@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v2（design review r1の4 HIGH＋MEDIUMをlocal repairで是正後の再照合）。CORE『見えない漏水を、流量と音聴で絞り込んで漏水点を特定し、水道局の修理につなぐ』は保持。SCOPE（路面音聴＋夜間最小流量）はfact_sheet.jsonのrepresentative_duties 2・3そのもの。Dは子どもが行う（弁の順番・聴取点の順番・報告地点の選択。システムは区間も漏水点も次の一手も示さない）。Cは判断に必須（design-sim v2: 流量を使わない29.2%、流量だけ33.2%、正当戦略100%・306組合せを予算内で1回目に解決）。Eは『調査員の位置特定→修理班が掘る→当たり/外れ→修理』で同一事業者の内側に閉じ、別主体の裁量判断を主張しない（r1: e_closes_inside_own_authority:true）。r1是正の確認: (1) 音の高さと『低い音なら遠い』は全artifactから除去（uncertainties 2）。(2) 『掘る場所を決める』→『漏水点を特定して報告』に全artifact統一。(3) 3区間×6点・2情報・弁2/聴取5/報告2に縮小、交通騒音を廃止。(4) 2回目報告のゲートをstate_tableとsimで機械化。(5) 弁＝区間の注記、夜間表現の限定、操作説明の一行削除。相関式など位置を計算する装置は引き続きc_compressionで除外。",
+  "pass": true
+}

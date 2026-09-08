@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "v2: CORE（見えない漏水を、音聴と流量測定で絞り込んで漏水点を特定し、水道局の修理につなぐ）とSCOPE（住宅街1区画の路面音聴＋夜間最小流量による切り分けと漏水点の特定・報告）は一致。SCOPEはfact_sheet.jsonのrepresentative_duties 2・3とdecisions 2・4・6に直接対応し、東京都の計画作業として実在する手順（『東京の漏水防止 令和7年度版』）。r1 HIGHへの対応: 調査員の役割を『位置特定→報告』に限定し、掘削・修理は水道局の判断と工事業者（修理班）の作業として描く（adjacent_profession_boundaries）。Eの因果は『調査員の位置特定→修理班が掘る→当たり/外れ→修理』で、同一の水道事業者の指示系統の内側にあり、別組織の裁量的判断は成功条件に入らない（r1レビューもe_closes_inside_own_authority:trueと確認）。音の高さと『低い音なら遠い』は原典未取得（uncertainties 2）のためCから除去し、公式確認済みの『真上付近で最大』と『疑似音との聴き分け』だけを規則にする。夜間実施は東京都・岡山市で確認、神奈川県営水道は昼夜問わず→SCOPEは『夜に行う調査もある』と表現。弁は道路名ではなく制水弁で区切られた区間に対応させ、1区間1弁は画面上で簡略化と明示する。"
+}
