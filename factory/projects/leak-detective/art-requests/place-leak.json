@@ -1,0 +1,47 @@
+{
+  "asset_id": "leak_detective_scene",
+  "filename": "place-leak.png",
+  "world": "leak-detective",
+  "use": "place",
+  "purpose": "leak-detective（水道の漏水調査員）のQ1イントロ画面の場所画像（place.image、375pxで幅いっぱい高さ210px、object-fit contain）と、猛暑イベントの6つ目のhotspot画像（丸くクロップ、imageFit: scene）。『深夜の住宅街で、地面の下の音を聴く』という場面を一目で伝える。ゲーム内の地図・弁・聴取点・計器はすべてClaudeがCSS/SVGで描くので、この画像は雰囲気と場所を伝える1枚だけ。",
+  "scene": "A quiet Japanese residential street at night, seen from a slight top-down diorama angle. Warm street lamps, a few small houses with dark windows (one window faintly lit), a clean asphalt road with a manhole/valve lid at a corner. On the road surface, a small electronic leak detector: a compact box with a cable to a round pickup placed on the asphalt, and a pair of headphones resting beside it. A hand-drawn-feeling clay/miniature look. Calm, curious mood — 'something invisible is happening under this road'.",
+  "composition": "4:3, 1200x900. Keep the detector and valve lid within the centre 70% so a 210px-tall contain fit on 375px and a round hotspot crop both keep the subject; nothing important in the outer 8%. Interactive object hierarchy: the detector pickup on the road (focal point, centre-lower third) > the valve lid at the corner (secondary) > houses and lamp (background context) Must be visually obvious: it is night; it is a normal residential road, nothing dramatic; a listening device is placed on the road surface Touch affordance: None inside the image (the image is not interactive). The interactive map is drawn by the game component.",
+  "required_objects": [
+    "night residential street with 2-4 small houses",
+    "warm street lamp light",
+    "asphalt road surface with a round valve/manhole lid at a corner",
+    "small electronic leak detector box with a cable and a round pickup placed on the road",
+    "headphones beside the detector"
+  ],
+  "forbidden_objects": [
+    "any wet patch, puddle, spraying water, crack, or leak location (answer leak)",
+    "any highlighted or marked segment of road",
+    "readable text, numbers, signs, logos",
+    "UI elements (buttons, gauges, badges, labels)",
+    "a specific worker's face as a mascot",
+    "readable text",
+    "UI buttons/badges/labels",
+    "mascot or brand character (prohibited_mascot_invention)"
+  ],
+  "state_variations": "none — a single static place image; success/failure states are rendered by the game UI (CSS/SVG), not by this asset",
+  "success_state": "not baked into this asset (game UI shows the dawn: dry road, repaired patch, meter back to normal)",
+  "failure_state": "not baked into this asset (game UI shows the refilled hole and still-damp road)",
+  "style": "JIBUN CHOICE series style (factory/harness/art/style-contract.md): rounded 3D clay / miniature diorama, same material feel for houses, road, lamp and device, soft warm lighting even at night (blue-violet sky, warm lamp pools), no photorealism, no readable text, not childish, contemporary.",
+  "reference_assets": [
+    "public/assets/town-hero.png",
+    "public/assets/heat/place-park.png",
+    "public/assets/heat/place-city.png",
+    "public/assets/zoo/scene-zoo.png"
+  ],
+  "aspect_ratio": "4:3",
+  "size": "1200x900",
+  "output_path": "public/assets/heat/place-leak.png",
+  "used_by": [
+    "game_spec v1"
+  ],
+  "provenance": {
+    "art_brief": "leak-detective:art_brief:v1",
+    "game_spec": "leak-detective:game_spec:v1",
+    "generated_at": "2026-09-08T07:35:07.161Z"
+  }
+}

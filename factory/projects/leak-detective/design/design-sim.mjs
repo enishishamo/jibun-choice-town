@@ -175,13 +175,13 @@ for (const ls of SEGS) for (let lp = 1; lp <= P; lp++) for (const hs of SEGS) fo
 let gateBlocked = 0, compareBlocked = 0, listenUnlocks = 0;
 for (let i = 0; i < 200; i++) {
   const c = newCase(rng(5000 + i)); let attempts = 0;
-  const r = simulate(c, (v) => { attempts++; if (attempts === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (attempts === 2) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  const r = simulate(c, () => { attempts++; if (attempts === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (attempts === 2) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
   if (r.grade === "partial" && r.reports === 1) gateBlocked++;
   let a2 = 0;
-  const r2 = simulate(c, (v) => { a2++; if (a2 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a2 === 2) return { type: "compare" }; if (a2 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  const r2 = simulate(c, () => { a2++; if (a2 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a2 === 2) return { type: "compare" }; if (a2 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
   if (r2.grade === "partial" && r2.reports === 1) compareBlocked++;
   let a3 = 0;
-  const r3 = simulate(c, (v) => { a3++; if (a3 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a3 === 2) return { type: "listen", seg: c.leak.seg, point: c.leak.point }; if (a3 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  const r3 = simulate(c, () => { a3++; if (a3 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a3 === 2) return { type: "listen", seg: c.leak.seg, point: c.leak.point }; if (a3 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
   if (r3.grade === "success") listenUnlocks++;
 }
 const verdict = {

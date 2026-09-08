@@ -67,6 +67,7 @@ import BabyCareGame from "./BabyCareGame";
 import ZooCheckupGame from "./ZooCheckupGame";
 import FeedPrepGame from "./FeedPrepGame";
 import DebutPlanGame from "./DebutPlanGame";
+import LeakTraceGame from "./LeakTraceGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -78,6 +79,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 猛暑編
   place_and_test: ParkHeatGame, // 配置→シミュレーション→再配置
   forecast_and_balance: PowerGame, // 予測を見て供給を合わせ、時間を進める
+  leak_trace: LeakTraceGame, // 流量で区間を絞り、音の勾配で漏水点を特定して報告する
   schedule_and_protect: SiteHeatGame, // 安全と進捗の両立を工程で調整
   allocate_and_forecast: WaterGame, // 限られた資源の配分＋先の予測
   layer_and_compare: UrbanHeatGame, // データを重ねて原因を探し、試す

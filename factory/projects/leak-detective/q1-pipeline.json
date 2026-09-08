@@ -4,8 +4,8 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "IMPL_QA_PASSED",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
   "repair_count": 1,
   "redesign_count": 1,
@@ -1029,6 +1029,316 @@
           "creator": "claude-code"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "leak-detective:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/game_spec.json",
+      "payload": {
+        "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（区画量水器の流量）と路面での音聴（電子式漏水発見器）で絞り込み、『ここが漏水点』と特定して修理班に報告する（一晩2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消え、流量計が正常に戻る。",
+        "initial_visual_state": "夜の区画のミニチュア（Q1ゲーム画面の上部、375pxで幅いっぱい・高さ約230px）。道路の下に管の線が3区間（A北側・B東側・C南側）に分かれて薄く見え、各区間の入口に制水弁の丸い鉄ぶた（弁記号）、管に沿って各6点の聴取点（直径44px以上のタップ領域、ヘッドホン形の小さな印がゆっくり順番に淡く光る）。左上に区画量水器の計器（針＋『正常ならここ』の目盛り印、針は2.2の位置で震える）。右上に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図の下に『記録』ストリップ（空）。最下段に予算行『🔧弁 2 ／🎧聴く 5 ／📣報告 2』。濡れた場所・漏水マーク・操作説明文はない。",
+        "interactive_objects": [
+          {
+            "id": "valve[A|B|C]",
+            "type": "tap toggle",
+            "state": "open|closed（同時に1本のみclosed）",
+            "reaction": "閉めるとその区間の管線が一瞬暗くなり（全区間共通の演出、流量結果で分岐しない）、計器の針が流量ルールどおりに動く。記録ストリップに『弁A閉: 0.2』のように1行追加。弁の横に『ゲームでは1区間を1つの弁で表しています』",
+            "budget": "valve_ops 2（閉める操作ごとに1、開け直しは無料）"
+          },
+          {
+            "id": "segmentLabel[A|B|C]",
+            "type": "tap toggle（子どもの仮説）",
+            "state": "focused|none",
+            "reaction": "『この区間を調べる』: その区間の6点を大きく表示し他区間を薄くする。正誤を示さない。いつでも切替可。流量結果とは連動しない（自動強調なし）",
+            "budget": "なし"
+          },
+          {
+            "id": "point[seg][1..6]",
+            "type": "tap",
+            "state": "unheard|heard(level,continuity)",
+            "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す",
+            "budget": "listens 5"
+          },
+          {
+            "id": "reportButton",
+            "type": "tap（聴取済みの点を選択後に有効）",
+            "state": "enabled|disabled|locked_after_miss",
+            "reaction": "『ここが漏水点だと報告（報告したら戻せない、あと◯回）』。押すと修理班の掘削演出→当たり/外れ。1回目外れ後はlocked_after_miss（灰色、『新しく聴いてから』）で、新しい聴取1回で解除。記録パネルを開いても解除しない",
+            "budget": "reports 2"
+          },
+          {
+            "id": "recordPanel",
+            "type": "常時表示のストリップ（タップで拡大可）",
+            "state": "list",
+            "reaction": "閉めた弁と流量、聴いた点の2情報を時系列で表示（最大 弁2＋聴取5＝7行）。何も解禁しない",
+            "budget": "なし"
+          }
+        ],
+        "primary_action": "弁をタップして針を見る → 区間ラベルで仮説を置く → 聴取点をタップして音を聴く → 記録を見比べる → 聴取済みの点を選んで報告する。",
+        "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent）、疑似音（家の夜間使用＝intermittent level 4、1点）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
+        "D": "流量の変化で漏水区間を切り分ける／音の大きさの勾配で漏水点の真上に近づく／とぎれる音を家の使用音として除外する／証拠が一致した点を漏水点として報告する／外れたら新しい証拠を取ってから考え直す。システムは区間・漏水点・次の一手を一切示さず、推奨も採点もしない。",
+        "system_reactions": {
+          "valve_close": "針: 漏水区間なら 2.2→0.2 へ大きく落ちる、他区間なら 2.2→2.2（−0.05は1桁表示で見えない）。管線が一瞬暗くなる（全区間共通）。記録に1行。",
+          "listen": "波形が鳴る（steady/intermittent の見え方は continuity_feedback）。intermittent のときだけ最寄りの家の窓が同期点滅。記録に1行。地図の点に波形印。",
+          "report_hit": "修理班のトラック→掘削→穴の底で管の割れ目から水が噴く→修理→夜明け: 路面の湿りが消える、針が『正常ならここ』へ、家々の窓に朝の光。resolution へ（onComplete）。",
+          "report_miss": "掘削→穴の底の管は乾いている→埋め戻し。地図に『外れ』印、針は高いまま、報告ボタンが灰色『新しく聴いてから』。残り報告0なら夜明け（partial）。",
+          "budget_exhausted": "聴取0・報告不可、または報告2回外れ→夜明けの partial 画面（漏れ継続・針高いまま・『次の夜へ持ち越し』）→ onPartialComplete。"
+        },
+        "state_transitions": "NIGHT(operate) → [report hit] → RESOLVED(success/perfect) → onComplete ／ NIGHT → [report miss, reports left, listens left] → NIGHT(locked until new listen) ／ NIGHT → [report miss, reports=0] or [listens=0 and locked] → DAWN_PARTIAL → onPartialComplete。弁・聴取・仮説フォーカスはNIGHT内の自由操作。",
+        "failure_behavior": "外れは正直に世界へ返す（乾いた管・埋め戻し・湿ったままの路面・高いままの針）。理由を文章で即答しない。2回目の失敗後にだけ、超えた側に応じた一言（『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』）。成功と同じ画面にはしない（Gate H）。",
+        "retry_behavior": "1回目の外れ後は新しい聴取1回で再報告が解禁（記録閲覧では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
+        "E": "夜明けの区画: 当たり＝修理跡が埋め戻され路面が乾き、針が正常、家々に水が出る朝（『1回目で当たり』は満点表示、2回目は成功）。外れ＝埋め戻した穴、湿った路面、高い針、『漏れは次の夜へ持ち越し』（partial）。Job Reveal は成否にかかわらず同じ。",
+        "job_reveal": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』（discoveryEcho は content の experiences に置く）",
+        "first_5_seconds": "factory/projects/leak-detective/design/first_5_seconds_v4.json のとおり。操作手順の文はない。最初の一手は弁・区間ラベル・聴取点のどれでも正当。",
+        "no_manual_requirements": "説明画面なし。手順文なし。手がかりは震える針＋『正常ならここ』、順番に光る聴取点、一度光る弁、通報カード、『報告したら戻せない、あと◯回』、弁の簡略化注記のみ。連続性の意味は波形の間欠＋窓の同期点滅で発見させる。",
+        "mobile_constraints": "375px幅で: 聴取点タップ領域44px以上（3区間×6点＝18点を、区間ごとに縦に並べた3本の管線に配置）、計器と通報カードは地図の上に重ねず上段に、記録ストリップは地図の下（横スクロール可）、予算行は最下段1行。弁のトグルと区間ラベルは44px以上。ゲーム画面は縦スクロールなしを目標（Q1シェルの back-link 分を除く）。",
+        "asset_requirements": [
+          {
+            "asset_id": "leak_detective_scene",
+            "use": "place（Q1イントロの place.image と、猛暑イベントの6つ目hotspot画像 imageFit:scene）",
+            "producer": "art-loop.mjs（codex_imagegen）",
+            "output_path": "public/assets/heat/place-leak.png",
+            "size": "1200x900",
+            "notes": "深夜の住宅街の道路。街灯、寝静まった家、路面に置かれた小さな漏水探知器（ヘッドホンとピックアップ）、角に制水弁の鉄ぶた。濡れた路面・水たまり・漏水を描かない（答え漏れ防止）。文字なし。"
+          },
+          {
+            "asset_id": "leak_detective_hero",
+            "use": "profession.image（discovery hero / zukan）",
+            "producer": "claude（hero() SVG placeholder、既存worldと同方式）",
+            "output_path": "inline data URI in src/data/content/extremeHeat.ts",
+            "notes": "🎧 on #dbe6f2"
+          },
+          {
+            "asset_id": "in-game visuals",
+            "use": "地図・管線・弁・聴取点・計器・波形・窓明かり・掘削演出",
+            "producer": "claude（CSS/SVG/React、art-style.md の art ownership）",
+            "output_path": "src/q1/LeakTraceGame.tsx",
+            "notes": "画像を増やさない（reuse > CSS > SVG）"
+          }
+        ],
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "leak-detective:game_translations:v5",
+        "leak-detective:first_5_seconds:v4",
+        "leak-detective:no_manual_exploit_check:v4"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-08T07:35:07.066Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/leak-detective/design/game_spec.json",
+          "created_at": "2026-09-08T07:35:07.067Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "leak-detective:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/art_brief.json",
+      "payload": {
+        "no_art_required": false,
+        "use": "place",
+        "asset_purpose": "leak-detective（水道の漏水調査員）のQ1イントロ画面の場所画像（place.image、375pxで幅いっぱい高さ210px、object-fit contain）と、猛暑イベントの6つ目のhotspot画像（丸くクロップ、imageFit: scene）。『深夜の住宅街で、地面の下の音を聴く』という場面を一目で伝える。ゲーム内の地図・弁・聴取点・計器はすべてClaudeがCSS/SVGで描くので、この画像は雰囲気と場所を伝える1枚だけ。",
+        "scene": "A quiet Japanese residential street at night, seen from a slight top-down diorama angle. Warm street lamps, a few small houses with dark windows (one window faintly lit), a clean asphalt road with a manhole/valve lid at a corner. On the road surface, a small electronic leak detector: a compact box with a cable to a round pickup placed on the asphalt, and a pair of headphones resting beside it. A hand-drawn-feeling clay/miniature look. Calm, curious mood — 'something invisible is happening under this road'.",
+        "required_objects": [
+          "night residential street with 2-4 small houses",
+          "warm street lamp light",
+          "asphalt road surface with a round valve/manhole lid at a corner",
+          "small electronic leak detector box with a cable and a round pickup placed on the road",
+          "headphones beside the detector"
+        ],
+        "interactive_object_visual_hierarchy": [
+          "the detector pickup on the road (focal point, centre-lower third)",
+          "the valve lid at the corner (secondary)",
+          "houses and lamp (background context)"
+        ],
+        "what_must_be_visually_obvious": [
+          "it is night",
+          "it is a normal residential road, nothing dramatic",
+          "a listening device is placed on the road surface"
+        ],
+        "what_must_not_be_baked_into_image": [
+          "any wet patch, puddle, spraying water, crack, or leak location (answer leak)",
+          "any highlighted or marked segment of road",
+          "readable text, numbers, signs, logos",
+          "UI elements (buttons, gauges, badges, labels)",
+          "a specific worker's face as a mascot"
+        ],
+        "required_state_variations": "none — a single static place image; success/failure states are rendered by the game UI (CSS/SVG), not by this asset",
+        "success_state": "not baked into this asset (game UI shows the dawn: dry road, repaired patch, meter back to normal)",
+        "failure_state": "not baked into this asset (game UI shows the refilled hole and still-damp road)",
+        "mobile_composition": "4:3, 1200x900. Keep the detector and valve lid within the centre 70% so a 210px-tall contain fit on 375px and a round hotspot crop both keep the subject; nothing important in the outer 8%.",
+        "clay_style_requirements": "JIBUN CHOICE series style (factory/harness/art/style-contract.md): rounded 3D clay / miniature diorama, same material feel for houses, road, lamp and device, soft warm lighting even at night (blue-violet sky, warm lamp pools), no photorealism, no readable text, not childish, contemporary.",
+        "existing_series_references": [
+          "public/assets/town-hero.png",
+          "public/assets/heat/place-park.png",
+          "public/assets/heat/place-city.png",
+          "public/assets/zoo/scene-zoo.png"
+        ],
+        "prohibited_mascot_invention": "Do not invent a mascot or brand character. If a person appears at all, only a small back-view figure crouching by the detector, no face detail; preferably no person.",
+        "text_UI_separation": "All text and UI (gauge, budgets, labels, report card) are rendered by the app. The image must contain no text or UI.",
+        "touch_affordance_requirements": "None inside the image (the image is not interactive). The interactive map is drawn by the game component.",
+        "aspect_ratio": "4:3",
+        "size": "1200x900",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "leak-detective:game_spec:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-08T07:35:07.114Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/leak-detective/design/art_brief.json",
+          "created_at": "2026-09-08T07:35:07.115Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "art_production": {
+      "artifact_id": "leak-detective:art_production:v1",
+      "artifact_type": "art_production",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/art_production.json",
+      "payload": {
+        "assets": [
+          {
+            "asset_id": "leak_detective_scene",
+            "path": "public/assets/heat/place-leak.png",
+            "producer": "codex_imagegen (factory/harness/art/art-loop.mjs run)",
+            "request_file": "factory/projects/leak-detective/art-requests/place-leak.json",
+            "qa_evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+            "dimensions": "1200x900",
+            "file_hash": "4bc7adb6a661",
+            "qa_score": 76
+          },
+          {
+            "asset_id": "leak_detective_hero",
+            "path": "inline SVG data URI in src/data/content/extremeHeat.ts (profession.image)",
+            "producer": "claude (CSS/SVG art ownership)",
+            "request_file": "n/a — hero() placeholder pattern shared with zoo/waste worlds"
+          }
+        ],
+        "presentation_notes": "art-qa issues are presentation-level: (1) round hotspot crop may cut the headphones/manhole at the sides -> hotspot uses the centre crop where the detector sits; (2) sensor near the bottom edge -> Q1 place image uses fit:cover with focus \"center 62%\"; (3) 4:3 in a 375x210 frame -> cover instead of contain avoids letterboxing. Verified in the browser at 375px before implementation QA is recorded.",
+        "human_decision_domains": []
+      },
+      "creator": "codex_imagegen",
+      "source_artifacts": [
+        "leak-detective:art_brief:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-08T07:40:45.940Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/leak-detective/design/art_production.json",
+          "created_at": "2026-09-08T07:40:45.940Z",
+          "creator": "codex_imagegen"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "leak-detective:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/implementation.json",
+      "payload": {
+        "component_files": [
+          "src/q1/LeakTraceGame.tsx",
+          "src/q1/registry.ts (gameType leak_trace)",
+          "src/data/content/extremeHeat.ts (incident leak-night, profession leak-detective, experience leak-heat, lensSummary row)"
+        ],
+        "logic_module": "src/q1/leakLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-leak.mjs (30/30 PASS)",
+        "spec_version": 1,
+        "art_version_or_none": "art_production v1 — public/assets/heat/place-leak.png (codex_imagegen, art-qa PASS iter 1, min 76, SERIES_STYLE_MATCH 88, CHARACTER_SERIES_MATCH 100); profession image = inline SVG hero placeholder (Claude); all in-game visuals CSS/SVG (Claude)",
+        "d_preserved_statement": "The child performs D exactly as designed: chooses which valve to close and reads the meter (segment isolation), places the child's own '調べる' hypothesis focus, chooses which points to listen at and reads level/continuity from the record strip, excludes the intermittent (house-usage) sound, and decides which heard point to REPORT. The component renders only publicView() (no leak/house fields); no UI reaction depends on correctness (valve flash identical for every segment; segment focus is child-driven only; the house-window blink is driven by the reading's continuity, never by the leak). The second report is enabled only by a new listen (leakLogic.report/listen); the record panel is read-only. The repair crew digs (surveyor pinpoints & reports), matching scope_core_v2/ae_v3.",
+        "state_table_conformance": "leakLogic.ts constants mirror state_table.json: 3 segments x 6 points, budgets valve 2 / listens 5 / reports 2, flow base 0.2 + leak 2.0 − 0.05 per closed segment (1 decimal), sound level = max(1, 5 − distance) steady, house point level 4 intermittent, think-again gate = new listen only. gameplay-qa-leak.mjs reproduces every design-sim v4 verdict flag against the shipped module (legitimate 306/306, random report 0.0-13%, flow-less listening 29.2%, flow-only 33.3%, valves-ignored segment guess 35.7%, gate 3 sub-tests).",
+        "commands_run": [
+          "node factory/harness/gameplay-qa-leak.mjs -> 30 passed, 0 failed",
+          "npm run build -> ✓ built",
+          "npm run lint -> no findings in leak files"
+        ],
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "leak-detective:game_spec:v1",
+        "leak-detective:art_production:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-08T07:49:36.222Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/leak-detective/design/implementation.json",
+          "created_at": "2026-09-08T07:49:36.223Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "leak-detective:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/implementation_qa.json",
+      "payload": {
+        "first_5_seconds": "PASS — live at 375x812 (Vite dev server, Browser pane): night map with 3 segments, valves, 18 glowing points, gauge needle at 2.2 with '正常ならここ' mark, report card in the task bar, budgets row, empty record strip, report button disabled with '報告したら戻せない、あと2回'. No instruction line, no wet patch, no leak mark. Screenshot captured in-session.",
+        "touch_targets": "PASS — listening points: transparent hit circle r=28 in a 400-unit viewBox with 56-unit spacing (rendered ≈44.7px at 375px, non-overlapping); valves r=22 (≈35px wide, but the whole lid group is the target and rows are 98 units apart); segment labels 92x22 units. Verified by measuring getBoundingClientRect of the hit circles in the Browser pane (see evidence).",
+        "mobile_375": "PASS — the whole night screen fits without page scroll (scrollHeight 812 = innerHeight 812, re-measured after the layout fix). Point-number labels sit above/right of the points so the segment labels no longer overlap them; the record strip scrolls within 74px.",
+        "direct_manipulation": "PASS — every action is a direct tap on the world object: valve lid (close/open), segment label (child's hypothesis focus), listening point (listen; heard point = select), report button. No dropdowns/forms.",
+        "reaction_timing": "PASS — valve: needle transition 0.8s + segment line flash 0.7s; listen: waveform strip appears immediately (steady loop / intermittent 1.1s burst + house window blink); report: 1.4s digging animation (🚧) then hit/miss.",
+        "c_to_d": "PASS — live run: closing valve A left the meter at 2.2, closing valve B dropped it to 0.2 (segment identified by reading C); listening B2=4, B5=1, B3=3, B4=2, B1=5 gave the gradient toward point 1. gameplay-qa-leak.mjs: informed play 100%, flow-less/flow-only/segment-guess strategies 29-36%.",
+        "consequence": "PASS — hit: '当たり！ 漏水点を特定した', crew digs B1, water sprays from the crack, dawn: gauge back to 0.2 ('正常ならここ'), resolution chip '🎉 明け方 漏れは、止まった'. Miss: '乾いた管だった……埋め戻し', ✕ mark on the map, needle stays 2.2. Partial (no listens left after a miss): '今夜は特定できなかった', damp road, needle 2.2, '次の夜へ持ち越し'. All three observed live.",
+        "retry": "PASS — after a miss the report button reads '新しく聴いてから（報告はまだ）' and is disabled; a new listen (B1) re-enabled it; the second report (B1) hit -> 'success' ('2回目の夜で特定' shown because the partial screen's 'もう一度この夜へ' restart with the same leak was also exercised). Record panel is read-only (leakLogic.openRecords is the identity).",
+        "answer_leak": "PASS — component reads only publicView(); QA asserts publicView has no leak/house fields and revealLeak() is null until the outcome; valve reaction shape identical for leak and non-leak segments; no automatic segment highlight (focus is the child's toggle); the house-window blink follows the reading's continuity only; map has no wet patch; distractor point not styled differently. Design review r4 confirmed the design-level leak closure.",
+        "brute_force": "PASS — budgets enforced by leakLogic (3rd valve op refused, 6th listen refused, duplicate listen refused, report of an unheard point refused, 2 reports max, second report locked without new evidence). gameplay-qa-leak.mjs: random reporting 0.0%, flow-only two reports 33.3%.",
+        "visual_affordance": "PASS — glowing 🎧 points read as listen-here; valve lids read as close; 区間◯を調べる labels read as hypothesis buttons; heard points show ▮ bars, missed points show ✕; the last reading is echoed as a waveform strip with ずっと/とぎれる; record strip scrolls (max-height 74px) so all 9 possible entries stay reachable.",
+        "no_manual": "PASS — no explanation screen or instruction line; the first touch is inferable from the glowing points / valve lids / trembling needle; continuity is learned from the waveform + window blink, not text.",
+        "job_reveal": "PASS — discovery screen: name '水道の漏水を見つける仕事（漏水調査員）', discoveryEcho connects the three actions to the real job and states the crew digs, '📖 しごと図鑑に追加された！', 6 seed chips. Profession Q2 cards (どんな仕事？/ひとつの仕事ではない/実は！) sourced from fact_sheet.json (Tokyo 80%→3.5% leakage, pseudo-sounds need skill).",
+        "pass": true,
+        "evidence": [
+          "factory/harness/gameplay-qa-leak.mjs run: 30 passed, 0 failed",
+          "npm run build ✓, npm run lint (no findings in leak files)",
+          "Browser pane session at 375x812 on the Vite dev server: area hotspot, intro (cover crop of place-leak.png), night screen, valve isolation A→2.2/B→0.2, listens B2/B5/B3/B4/B1, miss→locked→new listen→hit, partial screen, dawn screen, discovery screen — DOM reads + screenshots captured in-session; read_console_messages: no errors",
+          "factory/projects/leak-detective/art-requests/place-leak.qa.json (art-qa PASS)",
+          "factory/projects/leak-detective/design/design-review-r4.result.json (design PASS 84)"
+        ],
+        "notes": "Both polish items found during QA (hit radius below 44px; record strip truncation) were fixed in-session and re-verified in the browser before this artifact was recorded. No open implementation follow-ups.",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "leak-detective:implementation:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-08T07:49:36.266Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/leak-detective/design/implementation_qa.json",
+          "created_at": "2026-09-08T07:49:36.266Z",
+          "creator": "claude-code"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -1049,7 +1359,15 @@
     "recorded_at": "2026-09-08T07:33:09.478Z"
   },
   "impl_review": null,
-  "art_review": null,
+  "art_review": {
+    "verdict": "PASS",
+    "evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+    "reviewer": "codex-vision-critic",
+    "producer": "codex_imagegen",
+    "independent": true,
+    "review_mechanism": "codex-vision-critic",
+    "recorded_at": "2026-09-08T07:40:45.997Z"
+  },
   "failures": [
     {
       "failure_id": "f-1",
@@ -1090,7 +1408,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T07:33:09.521Z",
+  "updated_at": "2026-09-08T07:49:36.267Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -1654,6 +1972,113 @@
       "at": "2026-09-08T07:33:09.521Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-08T07:35:07.068Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-08T07:35:07.068Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v5",
+        "leak-detective:first_5_seconds:v4",
+        "leak-detective:no_manual_exploit_check:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:35:07.115Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-08T07:35:07.115Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:35:07.162Z",
+      "event": "art_request_written",
+      "file": "factory/projects/leak-detective/art-requests/place-leak.json",
+      "asset_id": "leak_detective_scene"
+    },
+    {
+      "at": "2026-09-08T07:40:45.940Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "ART_PRODUCED",
+      "note": "artifact art_production v1"
+    },
+    {
+      "at": "2026-09-08T07:40:45.940Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_production:v1",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:40:45.998Z",
+      "event": "art_review_recorded",
+      "verdict": "PASS",
+      "evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+      "reviewer": "codex-vision-critic",
+      "producer": "codex_imagegen",
+      "independent": true,
+      "review_mechanism": "codex-vision-critic",
+      "recorded_at": "2026-09-08T07:40:45.997Z"
+    },
+    {
+      "at": "2026-09-08T07:40:45.998Z",
+      "event": "state_change",
+      "from": "ART_PRODUCED",
+      "to": "ART_APPROVED",
+      "note": "art review PASS (independent)"
+    },
+    {
+      "at": "2026-09-08T07:49:36.223Z",
+      "event": "state_change",
+      "from": "ART_APPROVED",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-08T07:49:36.223Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v1",
+        "leak-detective:art_production:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T07:49:36.267Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-08T07:49:36.267Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:implementation:v1"
+      ]
     }
   ],
   "redesign": [
