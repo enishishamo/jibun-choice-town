@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for leak-detective / t1c-night-listening-isolation (v9, PREPARED).
-// v9 (design review r8, PREPARED — not submitted): a report needs a HEARD, not-yet-missed point
-// (implementation parity); only a NON-silent new listen unlocks the second report.
+// Design-stage exploit simulation for leak-detective / t1c-night-listening-isolation (v9).
+// v9 (design review r8 → Human Decision hd-2): a report needs a HEARD, currently valid, NON-silent,
+// not-yet-missed point (implementation parity); only a NON-silent new listen unlocks the second report.
 // v8 (design review r7): a silent reading exists only while its segment is closed — reopening
 // (explicit or implicit) drops it; the point can be listened to again (no refund).
 // v7 (design review r6): the closed segment is a DEDICATED silent state (level 0 / "silent"),
@@ -99,8 +99,9 @@ function simulate(c, plan) {
       // opening the record panel never unlocks a report (r2 HIGH)
     } else if (a.type === "report") {
       if (reports >= B.reports || !thinkAgainDone) continue;
-      // v9 (design review r8 MEDIUM, PREPARED): implementation parity — a report needs a HEARD point that was not already missed
-      if (!readings.some((r) => r.seg === a.seg && r.point === a.point) || misses.some((m) => m.seg === a.seg && m.point === a.point)) continue;
+      // v9 (design review r8 MEDIUM + hd-2 item 4): implementation parity — a report needs a HEARD, currently valid,
+      // NON-silent point (a silent reading is not evidence) that was not already missed
+      if (!readings.some((r) => r.seg === a.seg && r.point === a.point && r.continuity !== "silent") || misses.some((m) => m.seg === a.seg && m.point === a.point)) continue;
       reports++;
       if (a.seg === c.leak.seg && a.point === c.leak.point) return { grade: reports === 1 ? "perfect" : "success", reports, listens, valveOps };
       misses.push({ seg: a.seg, point: a.point });

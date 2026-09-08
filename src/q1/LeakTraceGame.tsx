@@ -41,7 +41,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     // reopening (explicit, or implicit by closing another valve) drops the silent records of that segment: a selected
     // point whose record is gone is no longer a heard point, so it is deselected (design review r7)
     const keepSelection = (ns: LeakState) => { if (selected && !readingAt(publicView(ns), selected.seg, selected.point)) setSelected(null); };
-    // the record strip mirrors the state: the silent lines of a reopened segment disappear with the records (design review r8; PREPARED)
+    // the record strip mirrors the state: the silent lines of a reopened segment disappear with the records (design review r8 → hd-2 item 3)
     const silentLine = (reopened: Seg) => new RegExp(`^🎧 ${reopened}\\d: 静か`);
     const dropSilentLines = (reopened: Seg | null) => { if (reopened) setTimeline((l) => l.filter((t) => !silentLine(reopened).test(t))); };
     if (v.closed === seg) { const o = openValve(s); if (o.ok) { setS(o.state); keepSelection(o.state); dropSilentLines(seg); setNote(null); setTimeline((l) => [...l, `🔧 弁${seg}を開けた（水が戻った）`]); } return; }
@@ -72,14 +72,17 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     if (!r.ok) return;
     setS(r.state);
     setPhase("digging");
-    setTimeline((l) => [...l, `📣 ${selected.seg}${selected.point} を報告 → 修理班が掘る`]);
+    // the crew restores supply before digging: if a valve was closed, say so (the state already reopened it — impl review r3)
+    const restored = v.closed ? `🔧 修理班が弁${v.closed}を開けて水を戻した → ` : "";
+    const reopened = v.closed; // the crew's reopen invalidates that segment's silent lines exactly like the child's reopen
+    setTimeline((l) => [...(reopened ? l.filter((t) => !new RegExp(`^🎧 ${reopened}\\d: 静か`).test(t)) : l), `📣 ${selected.seg}${selected.point} を報告 → ${restored}修理班が掘る`]);
     setTimeout(() => {
       if (r.hit) setPhase("hit");
       else {
         setSelected(null);
         if (r.state.outcome === "partial") setFailedNights((n) => n + 1);
         setPhase(r.state.outcome === "partial" ? "partial" : "night");
-        setNote(r.state.outcome === "partial" ? null : "乾いた管だった……埋め戻し。新しく聴いてから、もう一度考えよう。");
+        setNote(r.state.outcome === "partial" ? null : "乾いた管だった……埋め戻し。新しく聴いてから。");
       }
     }, 1400);
   };
@@ -113,9 +116,9 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     </div>
   );
   const records = (
-    <div style={{ margin: "4px 12px", padding: "6px 8px", background: "#fbf6ea", borderRadius: 10, fontSize: 11, color: "#3b3325", minHeight: 30 }}>
+    <div style={{ margin: "2px 12px", padding: "4px 8px", background: "#fbf6ea", borderRadius: 10, fontSize: 11, color: "#3b3325", minHeight: 30 }}>
       <div style={{ color: "#8a7f6a", fontSize: 10 }}>記録</div>
-      <div style={{ maxHeight: 45, overflowY: "auto" }}>{timeline.length === 0 ? <div style={{ color: "#a89f8c" }}>（まだ何もない）</div> : timeline.map((t, i) => <div key={i}>{t}</div>)}</div>
+      <div style={{ maxHeight: 34, overflowY: "auto" }}>{timeline.length === 0 ? <div style={{ color: "#a89f8c" }}>（まだ何もない）</div> : timeline.map((t, i) => <div key={i}>{t}</div>)}</div>
     </div>
   );
 
@@ -190,7 +193,8 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
               {/* houses (one per listening point; the nearest house blinks with an intermittent sound) */}
               {Array.from({ length: POINTS }, (_, i) => i + 1).map((p) => {
                 const x = pointX(p);
-                const blink = lastHeard && lastHeard.seg === seg && lastHeard.point === p && lastReading?.continuity === "intermittent";
+                // a live reaction only while that segment carries water: once it is closed the record stays valid evidence but nothing sounds now (design review r9)
+                const blink = lastHeard && lastHeard.seg === seg && lastHeard.point === p && lastReading?.continuity === "intermittent" && v.closed !== seg;
                 return (
                   <g key={p}>
                     <rect x={x - 10} y={y - 44} width={20} height={16} rx={2} fill="#3a4a6b" />
@@ -246,8 +250,9 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
         ))}
       </div>
 
-      {/* last listening reaction: the waveform shows continuity without words */}
-      {lastReading && lastHeard && (
+      {/* last listening reaction: the waveform shows continuity without words — live only while that segment is open;
+          a closed segment sounds nothing now, the record itself stays in the strip below (design review r9) */}
+      {lastReading && lastHeard && (lastReading.continuity === "silent" || v.closed !== lastHeard.seg) && (
         <div style={{ margin: "2px 12px 0", display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#3b3325" }}>
           <span>🎧 {lastHeard.seg}{lastHeard.point}</span>
           {lastReading.continuity === "silent" ? (
@@ -267,7 +272,8 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
 
       {budgetsRow}
       {records}
-      {note && <p className="game-note">{note}</p>}
+      {/* compact note so the night screen never scrolls at 375x812 (impl review r3 live check: the default .game-note wrapped to 66px) */}
+      {note && <p className="game-note" style={{ margin: "4px 12px 0", padding: "5px 10px", fontSize: 12, lineHeight: 1.3 }}>{note}</p>}
 
       <div style={{ margin: "6px 12px 0" }}>
         <button
@@ -277,9 +283,11 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
           onClick={doReport}
         >
           {phase === "digging"
-            ? "修理班が掘っている…"
+            ? "修理班が水を戻して掘っている…"
             : blocked === "locked_after_miss"
               ? "新しく聴いてから（報告はまだ）"
+              : blocked === "silent_not_evidence"
+                ? "静かな点は根拠にならない（水を戻して聴く）"
               : selected
                 ? `📣 ${selected.seg}${selected.point} が漏水点だと報告（報告したら戻せない、あと${v.budgets.reports}回）`
                 : `聴いた点をえらんで報告（報告したら戻せない、あと${v.budgets.reports}回）`}

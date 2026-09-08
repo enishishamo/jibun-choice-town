@@ -4,10 +4,10 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "ESCALATED",
-  "current_stage": "GAME_TRANSLATION",
+  "state": "UNDER_REVIEW",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 3,
-  "repair_count": 1,
+  "repair_count": 2,
   "redesign_count": 2,
   "artifacts": {
     "fact_sheet": {
@@ -718,12 +718,12 @@
       ]
     },
     "game_translations": {
-      "artifact_id": "leak-detective:game_translations:v10",
+      "artifact_id": "leak-detective:game_translations:v11",
       "artifact_type": "game_translations",
-      "version": 10,
+      "version": 11,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/game_translations_v10.json",
+      "file": "factory/projects/leak-detective/design/game_translations_v11.json",
       "payload": {
         "translations": [
           {
@@ -773,19 +773,19 @@
             "play_seed": "s1-night-listening",
             "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（流量）と路面での音聴で絞り込み、『ここが漏水点』と特定して修理班に報告する（2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消える。",
             "first_visible_state": "夜の区画のミニチュア（道路、街灯、家々）。道路の下に薄く管の線が3つの区間に分かれて見え、区間の入口に制水弁の鉄ぶた（弁の記号）、管に沿って6つずつの聴取点（小さな丸）。左上に区画量水器の計器：針が『夜なのに、まだ流れてる』位置で、目盛りに『正常ならここ』の印。右に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。下に予算表示『閉める あと2／聴く 5／報告 2』。濡れた場所や漏水マークは地図にない。操作手順の説明文はない。",
-            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（閉められるのは同時に1本。閉める操作は2回まで。閉めている弁のふたには本文相当の大きさで『▲開ける（0回）』と出て、もう一度タップすると開く——開け直しは無料。予算表示は『閉める あと◯』）。区間ボタン『この区間を調べる』→その区間の点を大きく表示（子どもの仮説、正誤は示さない）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、新しく1点聴くまで2回目の報告ボタンは押せない。",
+            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（閉められるのは同時に1本。閉める操作は2回まで。閉めている弁のふたには本文相当の大きさで『▲開ける（0回）』と出て、もう一度タップすると開く——開け直しは無料。予算表示は『閉める あと◯』）。区間ボタン『この区間を調べる』→その区間の点を大きく表示（子どもの仮説、正誤は示さない）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、前回の報告の後に新しく1点（水が流れている区間で）聴くまで2回目の報告ボタンは押せない——閉めている区間で聴いた『静か』は証拠に数えない。『静か』と記録した点は報告の根拠にもならない（ボタンに『静かな点は根拠にならない（水を戻して聴く）』）。",
             "C_interaction": "計器の針が『大きく落ちた』のはどの弁を閉めたときかを見る。置いた点の2情報を並べて、大きくなる方向を読む。『とぎれる』音（家の水使用）を漏水音から除外する。",
-            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。閉めている区間は水が流れていないので、その区間の聴取点は漏水点の真上でも、家の使用音の点でも、すべて『静か（水が止まっている）』という専用の無音状態（波形バーなし・動く波形なし・『ずっと』表示なし・窓明かりの点滅なし。読み値は level 0 / silent）——路面で拾う音はどれも管の中の水の流れで生じる。弁を開け直す（無料。別の弁を閉めたときも閉めていた弁は自動で開く）と、その区間で『静か』と記録した点の記録は消え（水が戻ったので、その読み値はもう管の状態を表さない）、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで音が勝手に『鳴り出す』ことはない——聴き直して初めて漏水音や家の使用音が返る。『静か』のときは波形ストリップ自体を出さず文字だけ。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が通水した状態で掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。流量の結果でUIが区間を強調することはない。",
-            "information_gained": "どの区間の管が漏れているか（流量）。水を止めた区間は静かになる——路面で聴こえる音は、どれも水が流れているときだけ。開け直しは無料。開け直すと『静か』の記録は消え、その点はもう一度聴ける（予算は戻らない）。漏水点に近いほど音が大きい。とぎれる音は家で水を使っている音で、漏水ではない（窓の明かりが同じリズムで点滅する）。一晩に聴ける点数・弁を閉める回数・報告できる回数に限りがある。報告すると戻せない。外れたら、新しく聴かないと次は報告できない。",
+            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。閉めている区間は水が流れていないので、その区間の聴取点は漏水点の真上でも、家の使用音の点でも、すべて『静か（水が止まっている）』という専用の無音状態（波形バーなし・動く波形なし・『ずっと』表示なし・窓明かりの点滅なし。読み値は level 0 / silent）——路面で拾う音はどれも管の中の水の流れで生じる。弁を開け直す（無料。別の弁を閉めたときも閉めていた弁は自動で開く）と、その区間で『静か』と記録した点の記録は消え（水が戻ったので、その読み値はもう管の状態を表さない）、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで音が勝手に『鳴り出す』ことはない——聴き直して初めて漏水音や家の使用音が返る。『静か』のときは波形ストリップ自体を出さず文字だけ。開け直すと記録ストリップの『静か』の行も消え、その点を選んでいた場合は選択も外れる。『静か』の点を選んで報告しようとしても、ボタンは『静かな点は根拠にならない（水を戻して聴く）』で押せない。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が通水した状態で掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。流量の結果でUIが区間を強調することはない。",
+            "information_gained": "どの区間の管が漏れているか（流量）。水を止めた区間は静かになる——路面で聴こえる音は、どれも水が流れているときだけ。開け直しは無料。開け直すと『静か』の記録は消え、その点はもう一度聴ける（予算は戻らない）。漏水点に近いほど音が大きい。とぎれる音は家で水を使っている音で、漏水ではない（窓の明かりが同じリズムで点滅する）。一晩に聴ける点数・弁を閉める回数・報告できる回数に限りがある。報告すると戻せない。外れたら、新しく聴かないと次は報告できない。 閉めている区間で聴いても『静か』としか分からず、それは証拠にならない——水を戻してから聴く。",
             "player_next_judgment": "『どの弁を閉めたら針が落ちる？』『落ちた区間の弁を開け直してから聴こう』『次はどの点で聴けば近づいたか分かる？（両端を聴いてから、大きい方へ）』『この大きな音は本当に漏水？とぎれてない？』『証拠は2種類そろった？まだ聴く？もう報告する？』を毎手考える。",
             "D_externalization": "閉める弁の順番、開け直す判断、『この区間を調べる』という仮説の選択、置く聴取点の順番、報告する地点の選択が、そのまま調査員としての子どもの推理を表現する。システムは『どの区間が漏れているか』『どこが漏水点か』『次にどこを聴くべきか』を一切示さず、推奨も採点もしない。掘るのは修理班であり、子どもの判断は『どこが漏水点か』の特定までで区切る。",
             "E_consequence": "明け方の区画: 当たった夜は、修理班が掘った跡が埋め戻され路面が乾き、計器の針が正常に戻り、家々にいつもどおり水が出る。外れた夜は、埋め戻した穴と、まだ湿った路面、高いままの針——『漏れは次の夜へ持ち越し』という正直なpartial outcome（進行は可能、Job Revealは同じ）。1回目で当たり＝満点、2回目＝成功。",
-            "retry_or_rethink": "外れた1回目の後は、必ず新しい聴取（新しい証拠）を1回行ってから2回目を報告する（機械的にゲート: design-sim think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけの再報告200/200拒否、新しい聴取後の再報告200/200許可）。聴く予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。朝の結果画面から『もう一度この夜へ』で同じ区画をやり直せる（漏水点は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、記録ストリップと閉めた弁の記録が残って見えるだけ。2回目の失敗からは『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』のどちらか一言。",
+            "retry_or_rethink": "外れた1回目の後は、必ず前回の報告の後に、水が流れている区間で新しい聴取（非silentの新しい証拠）を1回行ってから2回目を報告する（機械的にゲート: design-sim v9 think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけの再報告200/200拒否、非silentの新しい聴取後の再報告200/200許可、閉区間で『静か』を聴いただけの再報告200/200拒否）。聴く予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。朝の結果画面から『もう一度この夜へ』で同じ区画をやり直せる（漏水点は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、記録ストリップと閉めた弁の記録が残って見えるだけ。2回目の失敗からは『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』のどちらか一言。",
             "job_reveal_bridge": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』",
             "strengths": "C（施設図・流量計・音の2情報・予算）が全部『使う』情報で、Dが弁・聴取点・報告地点の選択として外在化される。2種類の証拠（流量と音）を突き合わせる本物の判断構造。疑似音（家の使用音）が『大きい音＝答え』を裏切る。結果が世界（路面の湿り・針・噴き出す水）で返り、外れも正直に返る。Eは調査員の位置特定→水道局の修理班の掘削・修理で閉じ、別主体の裁量判断が因果に入らない（r1レビュー確認）。考え直しの工程が『新しい証拠』でのみ成立するよう機械的に保証される（記録を開くだけの無料解除は存在しない）。 隔離すると静かになる、という水圧と音の関係が、弁操作と音聴という2つのCを因果でつなぐ（impl review r2是正）。",
             "weaknesses": "『とぎれる』を波形の間欠と窓明かりの同期で見せる演出の精度が要る（実装時のVISUAL_AFFORDANCE）。弁を閉めたまま聴くと静かで、初回は『なぜ静か？』と戸惑う可能性がある——針が落ちた直後に弁の絵が『閉』のまま残り、その下に『▲開ける（0回）』が出るので、開け直しが無料の操作だと画面から読める（r5 MEDIUM是正）。375pxで18点を44px以上のタップ領域で置くレイアウトの検証が要る（state_table legibility_rules）。 閉めたまま聴いて予算を使うと、開け直した後にもう一度聴く必要がある（予算は戻らない）——『針が落ちた区間の弁を開け直してから聴く』という正しい手順を、記録が消えることで学ぶ。",
-            "risk": "design-sim-result.json（v8）: 正当戦略（流量→開け直し→勾配→連続音のみ）は600/600、全306組合せを予算内で1回目に当てる。無作為報告9.8%、流量を使わない無作為聴取26.2%、流量だけで2点報告34.7%、針を読まず区間を当て推量25.0%、区間を特定したが開け直さずに聴く戦略（静かで勾配が読めない）45.3%（isolated_segment_is_silent:true — v7では閉区間の全読み値が level 0 / silent であることをsimが直接検査。v8では『静か』の記録が開け直し（明示・暗黙）で消え、その点を再聴取すると実際の読み値が返り、予算が戻らないことも直接検査（silent_reading_exists_only_while_closed:true）。design-sim v5でrngのseed相関バグも修正し、600ケースが実際に分散するようにした）。考え直しゲート3試験200/200。",
-            "adoption_or_rejection_reason": "採用（t1bのredesign #2）。impl review r2のHIGH（隔離中の区間で漏水音・噴水が出る矛盾）と弁モデルの不一致を、『閉めた区間は静か・開け直しは無料・修理班は通水して掘る』という状態ルールで統一して解消。 r5レビューHIGH（閉区間で疑似音だけ聴こえる自己矛盾）・MEDIUM（開け直しのアフォーダンス不足）は、閉区間の全聴取を静かにし、閉じたふたに『▲開ける（0回）』を表示することで是正（iteration 3 repair 1/1）。 r6レビューHIGH（level 1 steady を無音の代用にした知覚上の矛盾）は専用のsilent状態（level 0、バー・波形・『ずっと』を一切出さない）で是正、MEDIUM（ラベル約8px・予算文言）も是正——予算切れのためESCALATEし、Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出。 r7レビューHIGH（開け直し後も閉区間で記録した『静か』が残り通常音へ戻らない／silent時も空の波形容器を描画）は、『静か』の記録は閉区間にしか存在しない（開け直しで消え、再聴取できる）規則と、silent時は波形要素を描画しない実装で是正——Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理。r7 MEDIUM（予算文言・ラベルサイズの変更はhd-1の4項目の外）について: これらはr6のMEDIUM指摘であり、Humanが承認したescalation記録（『a larger label; one wording fix』を含む準備済み修正）の一部として提出したもの。構造変更ではない。"
+            "risk": "design-sim-result.json（v9: reportは聴取済み・有効・非silentの点のみ、非silentの新規聴取のみ解禁）: 正当戦略（流量→開け直し→勾配→連続音のみ）は600/600、全306組合せを予算内で1回目に当てる。無作為に聴いて報告 10.7%、流量を使わない無作為聴取 26.2%、流量だけで（音量を読まず）2点報告 32.5%、針を読まず区間を当て推量 23.0%、区間を特定したが開け直さずに聴く戦略 33.2%。isolated_segment_is_silent / silent_reading_exists_only_while_closed / think_again_gate_enforced（4試験）を含む8フラグ true。",
+            "adoption_or_rejection_reason": "採用（t1bのredesign #2）。impl review r2のHIGH（隔離中の区間で漏水音・噴水が出る矛盾）と弁モデルの不一致を、『閉めた区間は静か・開け直しは無料・修理班は通水して掘る』という状態ルールで統一して解消。 r5レビューHIGH（閉区間で疑似音だけ聴こえる自己矛盾）・MEDIUM（開け直しのアフォーダンス不足）は、閉区間の全聴取を静かにし、閉じたふたに『▲開ける（0回）』を表示することで是正（iteration 3 repair 1/1）。 r6レビューHIGH（level 1 steady を無音の代用にした知覚上の矛盾）は専用のsilent状態（level 0、バー・波形・『ずっと』を一切出さない）で是正、MEDIUM（ラベル約8px・予算文言）も是正——予算切れのためESCALATEし、Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出。 r7レビューHIGH（開け直し後も閉区間で記録した『静か』が残り通常音へ戻らない／silent時も空の波形容器を描画）は、『静か』の記録は閉区間にしか存在しない（開け直しで消え、再聴取できる）規則と、silent時は波形要素を描画しない実装で是正——Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理。r7 MEDIUM（予算文言・ラベルサイズの変更はhd-1の4項目の外）について: これらはr6のMEDIUM指摘であり、Humanが承認したescalation記録（『a larger label; one wording fix』を含む準備済み修正）の一部として提出したもの。構造変更ではない。 r8レビューHIGH-1（開け直し後もtimelineに『静か』行が残る）・HIGH-2（silent聴取がゲートを解禁）・MEDIUM（simのreportが未聴取点を許す）は、Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）により是正: 非silentの新規聴取のみが2回目を解禁、『静か』は報告の根拠にならない、開け直しで記録・timeline・選択が同時に消える、simは実装と同じreport条件。"
           },
           {
             "translation_id": "t2-valve-binary-search",
@@ -829,7 +829,7 @@
         "adopted_translation_id": "t1c-night-listening-isolation",
         "adoption_rationale": "t1cを採用（t1bのredesign #2、本パイプラインで許容される最後のredesign）。impl review r2のHIGH（弁で隔離した区間でも漏水音が聴こえ、掘ると水が噴くという物理的矛盾）とMEDIUM（弁モデルの文書間不一致）を、state_table.jsonのvalve_model（閉める＝2回まで、開け直し＝無料の明示操作）とsound_reading.isolation_rule（閉めた区間は静か）で統一し、design-sim v5で正当戦略が開け直してから聴くこと・開け直し忘れが安定して勝てないことを機械検証した。流量→勾配→連続音という本物の判断構造、Eが水道局の内側で閉じる点、証拠のみで解禁される考え直しゲート、自動強調なし、3区間×6点・2情報・予算2/5/2はt1bから維持。",
         "human_decision_domains": [],
-        "revision_note": "v10 (design review r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): 『静か』の記録は閉区間にしか存在しない（開け直しで消え、その点はもう一度聴ける。予算は戻らない）。silent時は波形ストリップ要素自体を描画しない。"
+        "revision_note": "v11 (design review r8 fix; Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）): 考え直しゲート＝前回の報告後の非silentの新規聴取のみ。『静か』は証拠でも報告の根拠でもない。開け直しで『静か』の記録・行・選択が整合的に消える。"
       },
       "creator": "claude-code",
       "source_artifacts": [
@@ -837,7 +837,7 @@
         "leak-detective:c_compression:v3"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T13:21:38.991Z",
+      "created_at": "2026-09-08T19:18:43.207Z",
       "versions": [
         {
           "version": 1,
@@ -898,32 +898,38 @@
           "file": "factory/projects/leak-detective/design/game_translations_v10.json",
           "created_at": "2026-09-08T13:21:38.992Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/leak-detective/design/game_translations_v11.json",
+          "created_at": "2026-09-08T19:18:43.208Z",
+          "creator": "claude-code"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "leak-detective:first_5_seconds:v8",
+      "artifact_id": "leak-detective:first_5_seconds:v9",
       "artifact_type": "first_5_seconds",
-      "version": 8,
+      "version": 9,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/first_5_seconds_v8.json",
+      "file": "factory/projects/leak-detective/design/first_5_seconds_v9.json",
       "payload": {
         "zero_to_two_seconds": "深夜の区画のミニチュアが静かに現れる（街灯の明かり、寝静まった家々、道路）。道路の下に管の線が3つの区間に分かれて薄く見える。左上の区画量水器の針が、目盛りの『正常ならここ』を大きく超えた位置でかすかに震えている（自動、操作不要）。管に沿った聴取点が、ゆっくり順番に淡く光る。",
         "two_to_five_seconds": "右から通報カードが1枚すべり込む『晴れてるのに、道がぬれてる…（このあたりのどこか）』。3つの制水弁の鉄ぶたが一度だけ小さく光る。予算表示『閉める あと2・聴く 5・報告 2』が静かに並ぶ。操作手順を書いた文はない（r1 MEDIUM是正: 『弁をしめて、針を見る／道路に置いて、聴く』の一行を削除）。地図に濡れた場所や漏水マークはない。",
         "first_expected_touch": "3つの制水弁のどれか、または光っている聴取点のどれかをタップする。理由: 反応しそうに光るものがこの2種類しかなく、どちらも正当な最初の一手。震える針が『夜なのに流れている』ことを状態で示し、弁の記号が『止められそう』に、聴取点のヘッドホン形の光が『聴けそう』に見える。",
-        "first_system_reaction": "弁をタップした場合: その区間の管の線が一瞬暗くなり（水が止まった）、計器の針が動く——漏水区間なら『正常ならここ』まで大きく落ち、それ以外ならほとんど動かない。表示は『閉めた: 区間A』と針の値、弁の絵が『閉』に変わり、その下に『▲開ける（0回）』と出る（もう一度タップで開く。予算行は『閉める あと1』）、弁の横に小さく『ゲームでは1区間を1つの弁で表しています』。閉めたままその区間の点をタップすると、どの点でも波形バーも動く波形も出ず『静か（水が止まっている）』とだけ出る——開け直すと、その区間の『静か』の記録は消えて点がまた聴ける状態に戻る（聴き直すと鳴る。勝手には鳴らない）。『静か』のときは波形ストリップ自体が出ず、文字だけ。『▲開ける（0回）』は本文相当の大きさ。聴取点をタップした場合: ヘッドホンの波形が鳴る——漏水音なら途切れずに流れ続け、家の使用音なら鳴って止まってを繰り返し、そのとき一番近い家の窓の明かりが同じリズムで点いたり消えたりする。地図の下の『記録』ストリップに、その点の波形バーと『ずっと/とぎれる』が1行増える（地図上の点には小さな波形の印だけ）。ここまで文章は計器の値・区間名・2情報の語・弁の注記だけ。",
+        "first_system_reaction": "弁をタップした場合: その区間の管の線が一瞬暗くなり（水が止まった）、計器の針が動く——漏水区間なら『正常ならここ』まで大きく落ち、それ以外ならほとんど動かない。表示は『閉めた: 区間A』と針の値、弁の絵が『閉』に変わり、その下に『▲開ける（0回）』と出る（もう一度タップで開く。予算行は『閉める あと1』）、弁の横に小さく『ゲームでは1区間を1つの弁で表しています』。閉めたままその区間の点をタップすると、どの点でも波形バーも動く波形も出ず『静か（水が止まっている）』とだけ出る——開け直すと、その区間の『静か』の記録は消えて点がまた聴ける状態に戻る（聴き直すと鳴る。勝手には鳴らない）。『静か』のときは波形ストリップ自体が出ず、文字だけ。『▲開ける（0回）』は本文相当の大きさ。聴取点をタップした場合: ヘッドホンの波形が鳴る——漏水音なら途切れずに流れ続け、家の使用音なら鳴って止まってを繰り返し、そのとき一番近い家の窓の明かりが同じリズムで点いたり消えたりする。地図の下の『記録』ストリップに、その点の波形バーと『ずっと/とぎれる』が1行増える（地図上の点には小さな波形の印だけ）。ここまで文章は計器の値・区間名・2情報の語・弁の注記だけ。 開け直すと記録ストリップの『静か』の行も消える。『静か』の点を選んでも報告ボタンは『静かな点は根拠にならない（水を戻して聴く）』で押せない。",
         "next_expected_inference": "『針が落ちた＝この区間の下が漏れている』『針が落ちない＝ここじゃない、別の弁を試そう』／『音が大きい方へ行けば近づく？』『鳴ったり止まったりする音のとき、家の明かりも点いたり消えたりした＝家で水を使ってる音？』『閉めた区間は静か＝水が止まると音も止まる』→『弁で区間を決めて、開け直してから、その区間で聴けばいい』。",
         "next_expected_action": "別の弁をタップして針を見比べる、区間ラベルをタップして『この区間を調べる』と仮説を置く、または聴取点を続けてタップする。どれでも世界が反応する（針が動く／その区間が大きくなる／記録が増える）。『ここが漏水点だと報告』はまだ押さなくてよい（報告ボタンに『報告したら戻せない、あと2回』が見えている）。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。 v4 (r3 ANSWER_LEAK repair): 自動強調なし。区間の拡大は子どもがラベルをタップして仮説を置いたときだけ。 v5 (redesign #2 to t1c): 隔離中は静か・開け直しは無料、を最初の反応に反映。 v6 (r5 repair): 閉じたふたの『▲開ける（0回）』表示、閉区間は疑似音も含めて静か。 v7 (r6 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出): 専用の無音表示、ラベルサイズ、予算文言。 v8 (r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): 開け直しで『静か』の記録が消えて再聴取できる、silent時は波形要素なし。"
+        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。 v4 (r3 ANSWER_LEAK repair): 自動強調なし。区間の拡大は子どもがラベルをタップして仮説を置いたときだけ。 v5 (redesign #2 to t1c): 隔離中は静か・開け直しは無料、を最初の反応に反映。 v6 (r5 repair): 閉じたふたの『▲開ける（0回）』表示、閉区間は疑似音も含めて静か。 v7 (r6 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出): 専用の無音表示、ラベルサイズ、予算文言。 v8 (r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): 開け直しで『静か』の記録が消えて再聴取できる、silent時は波形要素なし。 v9 (r8 fix; Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）): 『静か』は証拠にも根拠にもならない、記録・行・選択の整合的な消去。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v10"
+        "leak-detective:game_translations:v11"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T13:21:39.037Z",
+      "created_at": "2026-09-08T19:18:43.251Z",
       "versions": [
         {
           "version": 1,
@@ -972,29 +978,35 @@
           "file": "factory/projects/leak-detective/design/first_5_seconds_v8.json",
           "created_at": "2026-09-08T13:21:39.037Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/leak-detective/design/first_5_seconds_v9.json",
+          "created_at": "2026-09-08T19:18:43.252Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "leak-detective:core_back_check:v8",
+      "artifact_id": "leak-detective:core_back_check:v9",
       "artifact_type": "core_back_check",
-      "version": 8,
+      "version": 9,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/core_back_check_v8.json",
+      "file": "factory/projects/leak-detective/design/core_back_check_v9.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "v8（design review r7 FAIL 68後、Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理）。r7のHIGH 2件（閉区間で記録した『静か』が開け直し後もキャッシュされ通常音へ戻らない／silent時も空の波形容器を描画）への対応: 『静か』の記録は閉区間にしか存在しない——開け直し（明示・暗黙）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を勝手に再計算しない（調査員は水を戻してからもう一度聴く、という実務どおり）。silent時は波形ストリップ要素自体を描画しない。design-sim v8 と gameplay-qa-leak が直接検査。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なし、採用translation・操作構造・Art・Product Identityは変更なし。 v7（design review r6 HUMAN_REQUIRED後、予算切れのためESCALATE → Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出）。r6のHIGH（閉区間の読み値 level 1 steady が波形バー1本＋動く波形＋『ずっと』として表示され、知覚上は無音でない）への対応: 読み値に専用の無音状態 level 0 / continuity silent を設け、閉区間ではバー・波形・『ずっと』・窓の点滅を一切出さず『静か（水が止まっている）』とだけ示す。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査。MEDIUM（ラベル約8px、first_visible_stateの『弁 2回』）も是正。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なしは変更なし。",
+        "notes": "v9（design review r8 FAIL 68後、Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない））。r8のHIGH-2（silent聴取が考え直しゲートを解禁＝Gate G不成立）への対応: 2回目の報告を解禁するのは前回の報告後の非silentの新規聴取のみ。『静か』は報告の根拠にもならない（水を戻して聴く、という実務どおり）。HIGH-1（timelineの古い『静か』行）は開け直し時に記録・行・選択を同時に消す。MEDIUM（sim）は実装と同じreport条件にして再計測。CORE/SCOPE、A-E、採用translationの中心構造（流量で区間→開け直し→勾配→連続音→地点報告）、Eが水道局の内側で閉じる構造、Cの必要性、自動強調なし、Art、Product Identityは変更なし。 v8（design review r7 FAIL 68後、Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理）。r7のHIGH 2件（閉区間で記録した『静か』が開け直し後もキャッシュされ通常音へ戻らない／silent時も空の波形容器を描画）への対応: 『静か』の記録は閉区間にしか存在しない——開け直し（明示・暗黙）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を勝手に再計算しない（調査員は水を戻してからもう一度聴く、という実務どおり）。silent時は波形ストリップ要素自体を描画しない。design-sim v8 と gameplay-qa-leak が直接検査。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なし、採用translation・操作構造・Art・Product Identityは変更なし。 v7（design review r6 HUMAN_REQUIRED後、予算切れのためESCALATE → Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出）。r6のHIGH（閉区間の読み値 level 1 steady が波形バー1本＋動く波形＋『ずっと』として表示され、知覚上は無音でない）への対応: 読み値に専用の無音状態 level 0 / continuity silent を設け、閉区間ではバー・波形・『ずっと』・窓の点滅を一切出さず『静か（水が止まっている）』とだけ示す。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査。MEDIUM（ラベル約8px、first_visible_stateの『弁 2回』）も是正。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なしは変更なし。",
         "pass": true
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v10"
+        "leak-detective:game_translations:v11"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T13:21:39.122Z",
+      "created_at": "2026-09-08T19:18:43.339Z",
       "versions": [
         {
           "version": 1,
@@ -1043,16 +1055,22 @@
           "file": "factory/projects/leak-detective/design/core_back_check_v8.json",
           "created_at": "2026-09-08T13:21:39.123Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/leak-detective/design/core_back_check_v9.json",
+          "created_at": "2026-09-08T19:18:43.339Z",
+          "creator": "claude-code"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "leak-detective:no_manual_exploit_check:v8",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v9",
       "artifact_type": "no_manual_exploit_check",
-      "version": 8,
+      "version": 9,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v8.json",
+      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v9.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": true,
@@ -1093,18 +1111,19 @@
           "pass": true,
           "sim_evidence": "factory/projects/leak-detective/design/design-sim-result.json",
           "isolation_note": "r6 HIGH是正: 閉めている区間の聴取点は、漏水点も家の使用音の点もその他も、専用の無音状態 level 0 / silent（バー・波形・『ずっと』・窓の点滅を一切出さない）。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査（isolated_segment_is_silent:true）。開け直しは無料の明示操作（閉じたふたに本文相当サイズで『▲開ける（0回）』）で、閉める操作だけが予算（『閉める あと◯』）を消費する。 r7 HIGH是正: 『静か』の記録は閉区間にしか存在しない——開け直し（明示・暗黙）で消え、その点はもう一度聴ける（予算は戻らない）。design-sim v8 silent_reading_exists_only_while_closed:true、gameplay-qa-leak で全シミュレーションプレイにわたる不変条件『silent記録の区間 == 現在閉めている区間』を検査（違反0）。",
-          "silent_as_information": "閉区間の『静か』は、流量計が既に示した『この区間は閉まっている』以上の情報を持たない（閉区間では漏水点・家の点・その他が同じ level 0 / silent）。無料の開け閉めの循環は聴く・報告・閉める予算を回復しない。閉めたまま聴いて『静か』を記録し開け直す戦略は、その記録が消えるので予算を1失うだけ（r7レビュアーの独自攻略検討と一致）。閉区間での『静か』の聴取は考え直しゲートを解禁する『新しい聴取』として数えるが、聴く予算を1消費する点は通常の聴取と同じで、勝率には影響しない（two_distinct_reports 34.7% は変わらず）。"
+          "silent_as_information": "閉区間の『静か』は、流量計が既に示した『この区間は閉まっている』以上の情報を持たない（閉区間では漏水点・家の点・その他が同じ level 0 / silent）。hd-2: だから『静か』は2回目の報告を解禁する『新しい証拠』に数えず、報告の根拠にもならない——外れた後に漏水区間を閉めて任意の点を聴くだけでゲートを迂回する経路（r8レビュアーの独自攻略）は塞がれた（design-sim v9 second_report_refused_after_silent_listen_only 200/200、gameplay-qa-leak の直接検査）。無料の開け閉めの循環は聴く・報告・閉める予算を回復しない。",
+          "report_grounding": "reportは『実際に聴取済みで現在有効な非silentの点』のみ（実装 reportBlocked: not_heard / silent_not_evidence / already_missed）。design-sim v9 も同じ条件で戦略率を再計測: random_report 10.7%、listen_random_report_loudest_any 26.2%、listen_random_report_loudest_steady 26.2%、flow_then_two_distinct_reports 32.5%、valves_ignored_guess_segment_gradient 23.0%、flow_then_gradient 100.0%、flow_then_gradient_forgets_reopen 33.2%。"
         },
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。 v4 (r3 ANSWER_LEAK repair): 流量結果連動の自動強調を削除、valves_ignored戦略の数値を追加。 v5 (redesign #2 to t1c): 隔離ルールと開け直しモデルを反映、数値はdesign-sim v5。 v6 (r5 repair): 閉区間は疑似音も静か、開け直しのアフォーダンス。 v7 (r6 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出): 専用の無音状態、ラベルサイズ、予算文言。 v8 (r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): silent記録の寿命規則、silentを情報源とする攻略の検討。"
+        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。 v4 (r3 ANSWER_LEAK repair): 流量結果連動の自動強調を削除、valves_ignored戦略の数値を追加。 v5 (redesign #2 to t1c): 隔離ルールと開け直しモデルを反映、数値はdesign-sim v5。 v6 (r5 repair): 閉区間は疑似音も静か、開け直しのアフォーダンス。 v7 (r6 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出): 専用の無音状態、ラベルサイズ、予算文言。 v8 (r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): silent記録の寿命規則、silentを情報源とする攻略の検討。 v9 (r8 fix; Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）): ゲート＝非silentの新規聴取のみ、報告の根拠条件、simの実装同等化と再計測。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v10",
-        "leak-detective:first_5_seconds:v8"
+        "leak-detective:game_translations:v11",
+        "leak-detective:first_5_seconds:v9"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T13:21:39.080Z",
+      "created_at": "2026-09-08T19:18:43.295Z",
       "versions": [
         {
           "version": 1,
@@ -1153,16 +1172,22 @@
           "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v8.json",
           "created_at": "2026-09-08T13:21:39.081Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v9.json",
+          "created_at": "2026-09-08T19:18:43.296Z",
+          "creator": "claude-code"
         }
       ]
     },
     "game_spec": {
-      "artifact_id": "leak-detective:game_spec:v1",
+      "artifact_id": "leak-detective:game_spec:v3",
       "artifact_type": "game_spec",
-      "version": 1,
-      "status": "STALE",
-      "stale_because": "game_translations changed v5->v6",
-      "file": "factory/projects/leak-detective/design/game_spec.json",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/game_spec_v3.json",
       "payload": {
         "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（区画量水器の流量）と路面での音聴（電子式漏水発見器）で絞り込み、『ここが漏水点』と特定して修理班に報告する（一晩2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消え、流量計が正常に戻る。",
         "initial_visual_state": "夜の区画のミニチュア（Q1ゲーム画面の上部、375pxで幅いっぱい・高さ約230px）。道路の下に管の線が3区間（A北側・B東側・C南側）に分かれて薄く見え、各区間の入口に制水弁の丸い鉄ぶた（弁記号）、管に沿って各6点の聴取点（直径44px以上のタップ領域、ヘッドホン形の小さな印がゆっくり順番に淡く光る）。左上に区画量水器の計器（針＋『正常ならここ』の目盛り印、針は2.2の位置で震える）。右上に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図の下に『記録』ストリップ（空）。最下段に予算行『🔧弁 2 ／🎧聴く 5 ／📣報告 2』。濡れた場所・漏水マーク・操作説明文はない。",
@@ -1171,12 +1196,12 @@
             "id": "valve[A|B|C]",
             "type": "tap toggle",
             "state": "open|closed（同時に1本のみclosed）",
-            "reaction": "閉めるとその区間の管線が一瞬暗くなり（全区間共通の演出、流量結果で分岐しない）、計器の針が流量ルールどおりに動く。記録ストリップに『弁A閉: 0.2』のように1行追加。弁の横に『ゲームでは1区間を1つの弁で表しています』",
-            "budget": "valve_ops 2（閉める操作ごとに1、開け直しは無料）"
+            "reaction": "閉める: その区間の管線が一瞬暗くなり（全区間共通の演出、流量結果で分岐しない）、計器の針が流量ルールどおりに動き、記録に『弁A閉: 0.2』のように1行追加。閉めている弁をもう一度タップ: 開く（無料）、記録に『弁Aを開けた（水が戻った）』。弁の横に『ゲームでは1区間を1つの弁で表しています』",
+            "budget": "valve_ops 2（閉める操作ごとに1。開け直しは無料。別の弁を閉めると閉めていた弁は自動で開く）"
           },
           {
-            "id": "segmentLabel[A|B|C]",
-            "type": "tap toggle（子どもの仮説）",
+            "id": "segmentFocus[A|B|C]",
+            "type": "HTMLボタン（44px、地図の下）＝子どもの仮説",
             "state": "focused|none",
             "reaction": "『この区間を調べる』: その区間の6点を大きく表示し他区間を薄くする。正誤を示さない。いつでも切替可。流量結果とは連動しない（自動強調なし）",
             "budget": "なし"
@@ -1185,7 +1210,7 @@
             "id": "point[seg][1..6]",
             "type": "tap",
             "state": "unheard|heard(level,continuity)",
-            "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す",
+            "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。閉めている区間の点は専用の無音状態（level 0 / continuity silent。バー・波形・『ずっと』・窓の点滅なし）——水が流れていないので何も伝わらない（state_table.sound_reading.isolation_rule）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す",
             "budget": "listens 5"
           },
           {
@@ -1204,18 +1229,19 @@
           }
         ],
         "primary_action": "弁をタップして針を見る → 区間ラベルで仮説を置く → 聴取点をタップして音を聴く → 記録を見比べる → 聴取済みの点を選んで報告する。",
-        "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent）、疑似音（家の夜間使用＝intermittent level 4、1点）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
-        "D": "流量の変化で漏水区間を切り分ける／音の大きさの勾配で漏水点の真上に近づく／とぎれる音を家の使用音として除外する／証拠が一致した点を漏水点として報告する／外れたら新しい証拠を取ってから考え直す。システムは区間・漏水点・次の一手を一切示さず、推奨も採点もしない。",
+        "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent/silent）、疑似音（家の夜間使用＝intermittent level 4、1点）、隔離ルール（閉めている区間の点は level 0 / silent＝専用の無音状態。開け直しでその記録は消え、再聴取できる）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
+        "D": "流量の変化で漏水区間を切り分ける／隔離した区間は静かなので開け直してから聴く／音の大きさの勾配で漏水点の真上に近づく／とぎれる音を家の使用音として除外する／証拠が一致した点を漏水点として報告する／外れたら新しい証拠を取ってから考え直す。システムは区間・漏水点・次の一手を一切示さず、推奨も採点もしない。",
         "system_reactions": {
-          "valve_close": "針: 漏水区間なら 2.2→0.2 へ大きく落ちる、他区間なら 2.2→2.2（−0.05は1桁表示で見えない）。管線が一瞬暗くなる（全区間共通）。記録に1行。",
+          "valve_close": "針: 漏水区間なら 2.2→0.2 へ大きく落ちる、他区間なら 2.2→2.2（−0.05は1桁表示で見えない）。管線が一瞬暗くなる（全区間共通）。記録に1行。閉めている区間の聴取点は静かになる。",
           "listen": "波形が鳴る（steady/intermittent の見え方は continuity_feedback）。intermittent のときだけ最寄りの家の窓が同期点滅。記録に1行。地図の点に波形印。",
-          "report_hit": "修理班のトラック→掘削→穴の底で管の割れ目から水が噴く→修理→夜明け: 路面の湿りが消える、針が『正常ならここ』へ、家々の窓に朝の光。resolution へ（onComplete）。",
+          "report_hit": "修理班のトラック→（弁が閉まっていれば通水してから）掘削→穴の底で管の割れ目から水が噴く→修理→夜明け: 路面の湿りが消える、針が『正常ならここ』へ、家々の窓に朝の光。resolution へ（onComplete）。",
           "report_miss": "掘削→穴の底の管は乾いている→埋め戻し。地図に『外れ』印、針は高いまま、報告ボタンが灰色『新しく聴いてから』。残り報告0なら夜明け（partial）。",
-          "budget_exhausted": "聴取0・報告不可、または報告2回外れ→夜明けの partial 画面（漏れ継続・針高いまま・『次の夜へ持ち越し』）→ onPartialComplete。"
+          "budget_exhausted": "聴取0・報告不可、または報告2回外れ→夜明けの partial 画面（漏れ継続・針高いまま・『次の夜へ持ち越し』）→ onPartialComplete。",
+          "valve_reopen": "閉めている弁をもう一度タップ→開く（無料）。針は元に戻り、その区間の聴取点に音が戻る。記録に1行。"
         },
-        "state_transitions": "NIGHT(operate) → [report hit] → RESOLVED(success/perfect) → onComplete ／ NIGHT → [report miss, reports left, listens left] → NIGHT(locked until new listen) ／ NIGHT → [report miss, reports=0] or [listens=0 and locked] → DAWN_PARTIAL → onPartialComplete。弁・聴取・仮説フォーカスはNIGHT内の自由操作。",
+        "state_transitions": "NIGHT(operate) → [report hit] → RESOLVED(success/perfect) → onComplete ／ NIGHT → [report miss, reports left, listens left] → NIGHT(locked until new listen) ／ NIGHT → [report miss, reports=0] or [listens=0 and locked] → DAWN_PARTIAL → onPartialComplete。弁・聴取・仮説フォーカスはNIGHT内の自由操作。 弁は open/closed のトグルで、closed→open は無料。 ／ 開け直し（明示・暗黙）→ その区間の silent 記録を削除（readings から除去、listens は据え置き）。",
         "failure_behavior": "外れは正直に世界へ返す（乾いた管・埋め戻し・湿ったままの路面・高いままの針）。理由を文章で即答しない。2回目の失敗後にだけ、超えた側に応じた一言（『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』）。成功と同じ画面にはしない（Gate H）。",
-        "retry_behavior": "1回目の外れ後は新しい聴取1回で再報告が解禁（記録閲覧では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
+        "retry_behavior": "1回目の外れ後は、前回の報告の後に取得した非silentの新しい聴取1回で再報告が解禁（記録閲覧や、閉めている区間での『静か』の聴取では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
         "E": "夜明けの区画: 当たり＝修理跡が埋め戻され路面が乾き、針が正常、家々に水が出る朝（『1回目で当たり』は満点表示、2回目は成功）。外れ＝埋め戻した穴、湿った路面、高い針、『漏れは次の夜へ持ち越し』（partial）。Job Reveal は成否にかかわらず同じ。",
         "job_reveal": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』（discoveryEcho は content の experiences に置く）",
         "first_5_seconds": "factory/projects/leak-detective/design/first_5_seconds_v4.json のとおり。操作手順の文はない。最初の一手は弁・区間ラベル・聴取点のどれでも正当。",
@@ -1245,32 +1271,48 @@
             "notes": "画像を増やさない（reuse > CSS > SVG）"
           }
         ],
-        "human_decision_domains": []
+        "human_decision_domains": [],
+        "revision_note": "v3 (design review r7/r8 fix; hd-1 と Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）): silent_state_rule、think_again_gate_rule、report_grounding_rule を追加。ほかは v2 と同じ。 impl review r3: 『level 1 steady』の残りを level 0 / silent に統一、通水復旧の明記。",
+        "silent_state_rule": "閉めている区間の全聴取点は専用の無音状態 level 0 / continuity silent（バー・波形ストリップ要素・『ずっと/とぎれる』・窓の点滅を一切描画せず『静か（水が止まっている）』の文字だけ）。『静か』の記録はその区間が閉まっている間にしか存在しない: 開け直し（閉じたふたの『▲開ける（0回）』タップ、または別の弁を閉めることによる自動開放）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を再計算して音を『鳴らす』ことはしない。 開け直しでは state の記録・記録ストリップの『静か』の行・その点の選択が同時に消える。",
+        "think_again_gate_rule": "1回目の報告が外れた後、2回目の報告ボタンは『前回の報告の後に取得した、非silentの新しい聴取を1回行う』まで無効（r2 HIGH是正: 記録を開くだけの無料解除を廃止。r8 HIGH-2→hd-2: 閉めている区間での聴取＝『静か』は、漏水点について流量計以上の情報を持たないので『新しい証拠』として数えない——ゲートは解禁されず、聴く予算だけ減る）。聴取予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。『記録』パネル（閉めた弁と聴いた点の一覧）はいつでも見られるが、何も解禁しない。design-sim v9 think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけ200/200拒否、非silentの新しい聴取後200/200許可、silentの聴取だけ200/200拒否。",
+        "report_grounding_rule": "報告の根拠にできるのは、実際に聴取済みで現在有効な非silentの点のみ（reportBlocked: not_heard / silent_not_evidence / already_missed）。開いている区間で聴いた記録は、その後弁を閉めても有効。 報告を受けた修理班は、閉めている弁があれば開けて通水を戻してから掘る（state closed→null、その区間の『静か』の記録も消える。timelineに『修理班が弁◯を開けて水を戻した』）。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v5",
-        "leak-detective:first_5_seconds:v4",
-        "leak-detective:no_manual_exploit_check:v4"
+        "leak-detective:game_translations:v11",
+        "leak-detective:first_5_seconds:v9",
+        "leak-detective:core_back_check:v9"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T07:35:07.066Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T19:34:06.397Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/leak-detective/design/game_spec.json",
           "created_at": "2026-09-08T07:35:07.067Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/leak-detective/design/game_spec_v3.json",
+          "created_at": "2026-09-08T19:23:47.830Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/leak-detective/design/game_spec_v3.json",
+          "created_at": "2026-09-08T19:34:06.398Z",
+          "creator": "claude-code"
         }
       ]
     },
     "art_brief": {
-      "artifact_id": "leak-detective:art_brief:v1",
+      "artifact_id": "leak-detective:art_brief:v3",
       "artifact_type": "art_brief",
-      "version": 1,
-      "status": "STALE",
-      "stale_because": "game_translations changed v5->v6",
-      "file": "factory/projects/leak-detective/design/art_brief.json",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/art_brief_v3.json",
       "payload": {
         "no_art_required": false,
         "use": "place",
@@ -1316,30 +1358,43 @@
         "touch_affordance_requirements": "None inside the image (the image is not interactive). The interactive map is drawn by the game component.",
         "aspect_ratio": "4:3",
         "size": "1200x900",
-        "human_decision_domains": []
+        "human_decision_domains": [],
+        "revision_note": "v3: 内容変更なし（game_spec_v3のSTALE伝播解消のための再提出。場所画像の要件は変わらない）。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_spec:v1"
+        "leak-detective:game_spec:v3"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T07:35:07.114Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T19:34:06.449Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/leak-detective/design/art_brief.json",
           "created_at": "2026-09-08T07:35:07.115Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/leak-detective/design/art_brief_v3.json",
+          "created_at": "2026-09-08T19:24:01.296Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/leak-detective/design/art_brief_v3.json",
+          "created_at": "2026-09-08T19:34:06.450Z",
+          "creator": "claude-code"
         }
       ]
     },
     "art_production": {
-      "artifact_id": "leak-detective:art_production:v1",
+      "artifact_id": "leak-detective:art_production:v3",
       "artifact_type": "art_production",
-      "version": 1,
-      "status": "STALE",
-      "stale_because": "game_translations changed v5->v6",
-      "file": "factory/projects/leak-detective/design/art_production.json",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/art_production_v3.json",
       "payload": {
         "assets": [
           {
@@ -1360,30 +1415,43 @@
           }
         ],
         "presentation_notes": "art-qa issues are presentation-level: (1) round hotspot crop may cut the headphones/manhole at the sides -> hotspot uses the centre crop where the detector sits; (2) sensor near the bottom edge -> Q1 place image uses fit:cover with focus \"center 62%\"; (3) 4:3 in a 375x210 frame -> cover instead of contain avoids letterboxing. Verified in the browser at 375px before implementation QA is recorded.",
-        "human_decision_domains": []
+        "human_decision_domains": [],
+        "revision_note": "v3: 資産は同一（public/assets/heat/place-leak.png、同一file_hash、art-qa PASS iter 1）。art_brief_v3のSTALE伝播解消のための再提出。"
       },
-      "creator": "codex_imagegen",
+      "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:art_brief:v1"
+        "leak-detective:art_brief:v3"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T07:40:45.940Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T19:34:06.495Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/leak-detective/design/art_production.json",
           "created_at": "2026-09-08T07:40:45.940Z",
           "creator": "codex_imagegen"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/leak-detective/design/art_production_v3.json",
+          "created_at": "2026-09-08T19:24:01.341Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/leak-detective/design/art_production_v3.json",
+          "created_at": "2026-09-08T19:34:06.496Z",
+          "creator": "claude-code"
         }
       ]
     },
     "implementation": {
-      "artifact_id": "leak-detective:implementation:v2",
+      "artifact_id": "leak-detective:implementation:v4",
       "artifact_type": "implementation",
-      "version": 2,
-      "status": "STALE",
-      "stale_because": "game_translations changed v5->v6",
-      "file": "factory/projects/leak-detective/design/implementation.json",
+      "version": 4,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/implementation_v4.json",
       "payload": {
         "component_files": [
           "src/q1/LeakTraceGame.tsx",
@@ -1391,26 +1459,28 @@
           "src/data/content/extremeHeat.ts (incident leak-night, profession leak-detective, experience leak-heat, lensSummary row)"
         ],
         "logic_module": "src/q1/leakLogic.ts",
-        "qa_harness": "factory/harness/gameplay-qa-leak.mjs (38 checks: mirrors every design-sim v4 strategy incl. loudest-steady and a documented flow-only adaptation, gate sub-tests, deep-equality valve check, source-level publicView boundary check)",
-        "spec_version": 1,
-        "art_version_or_none": "art_production v1 — public/assets/heat/place-leak.png (codex_imagegen, art-qa PASS iter 1, min 76, SERIES_STYLE_MATCH 88, CHARACTER_SERIES_MATCH 100); profession image = inline SVG hero placeholder (Claude); all in-game visuals CSS/SVG (Claude)",
-        "d_preserved_statement": "The child performs D exactly as designed: chooses which valve to close and reads the meter (segment isolation), places the child's own '調べる' hypothesis focus, chooses which points to listen at and reads level/continuity from the record strip, excludes the intermittent (house-usage) sound, and decides which heard point to REPORT. The component reads state only through publicView()/readingAt()/restartSameCase() (verified at source level by the QA harness); no UI reaction depends on correctness (valve flash identical for every segment; segment focus is child-driven only; the house-window blink is driven by the reading's continuity, never by the leak). The second report is enabled only by a new listen (leakLogic.report/listen); the record panel is read-only. The repair crew digs (surveyor pinpoints & reports), matching scope_core_v2/ae_v3.",
-        "state_table_conformance": "leakLogic.ts constants mirror state_table.json: 3 segments x 6 points, budgets valve 2 / listens 5 / reports 2, flow base 0.2 + leak 2.0 − 0.05 per closed segment (1 decimal), sound level = max(1, 5 − distance) steady, house point level 4 intermittent, think-again gate = new listen only. gameplay-qa-leak.mjs reproduces every design-sim v4 verdict flag against the shipped module (legitimate 306/306, random report 0.0-13%, flow-less listening 29.2%, flow-only 33.3%, valves-ignored segment guess 35.7%, gate 3 sub-tests).",
+        "qa_harness": "factory/harness/gameplay-qa-leak.mjs (52 checks: mirrors every design-sim v9 strategy incl. loudest-steady and the flow-only reopen→listen→report adaptation (32.5%, parity with the sim), 4 gate sub-tests incl. 'a silent listen does not unlock', deep-equality valve check, source-level publicView boundary check, silent-state regressions (dedicated level 0 / silent; silent record dropped on explicit and implicit reopen with re-listen allowed and no refund; non-silent records survive; a silent reading cannot be reported), the crew-restores-supply check (report while closed → closed null, silent records gone, hit and miss), an all-plays invariant that a silent reading exists only on the currently closed segment, source checks that the only waveform strip lives in the non-silent branch, that the live blink / latest-reading row are gated on the segment being open, and that the component announces the crew restoring supply)",
+        "spec_version": 3,
+        "art_version_or_none": "art_production v3 (same asset as v1) — public/assets/heat/place-leak.png (codex_imagegen, art-qa PASS iter 1, min 76, SERIES_STYLE_MATCH 88, CHARACTER_SERIES_MATCH 100); profession image = inline SVG hero placeholder (Claude); all in-game visuals CSS/SVG (Claude)",
+        "d_preserved_statement": "The child performs D exactly as designed (t1c-night-listening-isolation, design review r9 PASS 84): chooses which valve to close and reads the meter (segment isolation; one valve at a time; 2 closes per night; explicit free reopen by tapping the closed lid 『▲開ける（0回）』), reopens before listening (a closed segment is the dedicated silent state level 0 / silent — text only, no bars, no waveform element, no continuity word, no window blink), places the child's own 『調べる』 hypothesis focus, chooses which points to listen at and reads level/continuity from the record strip, excludes the intermittent (house-usage) sound, and decides which heard point to REPORT. The component reads state only through publicView()/readingAt()/restartSameCase() (verified at source level by the QA harness); no UI reaction depends on correctness (valve flash identical for every segment; segment focus is child-driven only; the house-window blink is driven by the reading's continuity and only while that segment is open, never by the leak). Human Decision hd-2 (Gate G): the second report is enabled only by a NEW NON-silent listen taken after the miss (leakLogic.listen sets unlocked only for a non-silent reading); a report is grounded only in a heard, currently valid, non-silent point (reportBlocked: not_heard / silent_not_evidence / already_missed); silent records invalidated by a reopen — the child's explicit reopen, the implicit reopen when another valve is closed, or the CREW's reopen when a report is made while a valve is closed — leave the state, the timeline and the selection together. state_table.report_rule 'the crew restores supply, then digs' is implemented: report() sets closed → null and drops that segment's silent records; the UI logs 『修理班が弁◯を開けて水を戻した → 修理班が掘る』, shows every lid open during the dig and says 『修理班が水を戻して掘っている…』 (impl review r3 HIGH fix). The record panel is read-only. The repair crew restores supply and digs (surveyor pinpoints & reports), matching scope_core_v2/ae_v3.",
+        "state_table_conformance": "leakLogic.ts constants mirror state_table.json: 3 segments x 6 points, budgets valve 2 (closes) / listens 5 / reports 2, flow base 0.2 + leak 2.0 − 0.05 per closed segment (1 decimal), sound level = max(1, 5 − distance) steady on the leak segment, level 1 steady elsewhere, house point level 4 intermittent, closed segment = { level: 0, continuity: 'silent' } at every point (isolation_rule), silent_record_lifetime (dropped on explicit/implicit/crew reopen, re-listen costs a listen, no refund), valve_model (close = budgeted; reopen = free explicit tap; closing another valve implicitly reopens), think_again_gate = non-silent new listen after the previous report only, report_rule (heard / currently valid / non-silent / not already missed; crew restores supply before digging). gameplay-qa-leak.mjs reproduces every design-sim v9 verdict flag against the shipped module (legitimate 306/306; random listen-and-report 10.7%; flow-less listening 26.2%; flow-only reopen→listen→report 32.5%; valves-ignored segment guess 23.0%; forgets-reopen 33.2%; gate 4 sub-tests).",
         "commands_run": [
-          "node factory/harness/gameplay-qa-leak.mjs -> 38 passed, 0 failed",
+          "node factory/projects/leak-detective/design/design-sim.mjs -> 8/8 verdict flags true, 306/306 solvable, gate 200/200/200/200",
+          "node factory/harness/gameplay-qa-leak.mjs -> 52 passed, 0 failed (flow-only 0.325)",
           "npm run build -> ✓ built",
           "npm run lint -> no findings in leak files"
         ],
         "human_decision_domains": [],
-        "repair_note": "Implementation review r1 (FAIL 72) repair: no free reopen action (operations = closes, one valve at a time, exactly as design-sim); outcome-neutral discoveryEcho; valve hit circles r=28 and segment-focus controls moved to 44px HTML buttons; publicView-only boundary enforced with readingAt/restartSameCase; hint gated on failed nights; QA harness completed (loudest-steady mirror, flow-only adaptation documented, non-vacuous valve check, source boundary check)."
+        "repair_note": "Implementation review r3 (FAIL 68) repair (iteration 3, implementation repair 2/2): (HIGH) report() now restores supply — closed → null and that segment's silent records dropped — and the UI announces it in the timeline, during the dig (『修理班が水を戻して掘っている…』) and by showing every lid open; (MEDIUM) game_spec v3 unified to level 0 / silent (two leftover 'level 1 steady' fields) and states the crew's reopen; (MEDIUM) QA closed-segment-report check now verifies closed null + silent records gone for hit and miss, plus a source check for the announcement; (MEDIUM) the harness flow-only strategy reopens before listening (parity with design-sim: 32.5% both) and the evidence documents are regenerated from the harness; (LOW) the reaction row shows the silent text for a silent listen (condition: silent OR the heard segment is open) so the branch is reachable. Layout: compact miss note (one line) and records strip 34px so the night screen stays at 812/812 at 375x812 even with the note and the reaction row shown.",
+        "revision_note": "v4 (after implementation review r3): crew restores supply before digging; doc/QA/evidence parity; reachable silent reaction row; no-scroll layout with the miss note."
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_spec:v1",
-        "leak-detective:art_production:v1"
+        "leak-detective:game_spec:v3",
+        "leak-detective:art_production:v3"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T08:00:29.241Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T19:39:29.487Z",
       "versions": [
         {
           "version": 1,
@@ -1423,48 +1493,63 @@
           "file": "factory/projects/leak-detective/design/implementation.json",
           "created_at": "2026-09-08T08:00:29.241Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/leak-detective/design/implementation_v3.json",
+          "created_at": "2026-09-08T19:28:18.026Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/leak-detective/design/implementation_v4.json",
+          "created_at": "2026-09-08T19:39:29.488Z",
+          "creator": "claude-code"
         }
       ]
     },
     "implementation_qa": {
-      "artifact_id": "leak-detective:implementation_qa:v2",
+      "artifact_id": "leak-detective:implementation_qa:v4",
       "artifact_type": "implementation_qa",
-      "version": 2,
-      "status": "STALE",
-      "stale_because": "game_translations changed v5->v6",
-      "file": "factory/projects/leak-detective/design/implementation_qa.json",
+      "version": 4,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/leak-detective/design/implementation_qa_v4.json",
       "payload": {
-        "first_5_seconds": "PASS — live at 375x812 (Vite dev server, Browser pane): night map with 3 segments, valves, 18 glowing points, gauge needle at 2.2 with '正常ならここ' mark, report card in the task bar, budgets row, empty record strip, report button disabled with '報告したら戻せない、あと2回'. No instruction line, no wet patch, no leak mark. Screenshot captured in-session.",
-        "touch_targets": "PASS — re-measured in the Browser pane at 375x812 after the implementation repair: listening points and valve lids both use r=28 hit circles in the 400-unit viewBox = 44.7px (21 circles, DOM-measured); the segment-focus controls are now HTML buttons under the map with min-height 44px (measured 44/44/44px). Report button is a full-width .btn.big.",
-        "mobile_375": "PASS — the whole night screen fits without page scroll (scrollHeight 812 = innerHeight 812, re-measured after the layout fix). Point-number labels sit above/right of the points so the segment labels no longer overlap them; the record strip scrolls within 74px.",
-        "direct_manipulation": "PASS — every action is a direct tap on the world object: valve lid (close; closing another valve implicitly reopens the previous one — tapping the closed lid only shows a note, there is no free reopen action), segment-focus buttons (the hypothesis of the child), listening point (listen; heard point = select), report button.",
-        "reaction_timing": "PASS — valve: needle transition 0.8s + segment line flash 0.7s; listen: waveform strip appears immediately (steady loop / intermittent 1.1s burst + house window blink); report: 1.4s digging animation (🚧) then hit/miss.",
-        "c_to_d": "PASS — live run: closing valve A left the meter at 2.2, closing valve B dropped it to 0.2 (segment identified by reading C); listening B2=4, B5=1, B3=3, B4=2, B1=5 gave the gradient toward point 1. gameplay-qa-leak.mjs: informed play 100%, flow-less/flow-only/segment-guess strategies 29-36%.",
-        "consequence": "PASS — hit: '当たり！ 漏水点を特定した', crew digs B1, water sprays from the crack, dawn: gauge back to 0.2 ('正常ならここ'), resolution chip '🎉 明け方 漏れは、止まった'. Miss: '乾いた管だった……埋め戻し', ✕ mark on the map, needle stays 2.2. Partial (no listens left after a miss): '今夜は特定できなかった', damp road, needle 2.2, '次の夜へ持ち越し'. All three observed live.",
-        "retry": "PASS — after a miss the report button reads 新しく聴いてから（報告はまだ） and is disabled (live note: 乾いた管だった……埋め戻し); a new listen re-enabled it and the correct second report hit (live run after the repair: A→2.2, B→0.2, B2=4, B5=4, B3=5, wrong report B2 → locked → listen B1 → report B3 → 当たり). Record panel is read-only (openRecords is the identity). The specific one-line hint is gated on the second FAILED NIGHT (failedNights >= 2) or two misses in one night, never on a first miss.",
-        "answer_leak": "PASS — LeakTraceGame.tsx reads game state only through publicView()/readingAt()/restartSameCase(); the QA harness asserts at source level that the component never reads s.c, heard(s), .leak or .house properties (FLOW.leak constant excepted) and uses revealLeak exactly once (post-hit dawn screen), and at logic level that the public view after closing the leak segment vs another segment differs ONLY in the meter number (deep equality with flow/closed stripped). Valve flash is the same for every segment; segment dimming follows only the focus toggle; house-window blink follows the reading continuity.",
-        "brute_force": "PASS — budgets enforced by leakLogic (3rd valve op refused, 6th listen refused, duplicate listen refused, report of an unheard point refused, 2 reports max, second report locked without new evidence). gameplay-qa-leak.mjs: random reporting 0.0%, flow-only two reports 33.3%.",
-        "visual_affordance": "PASS — glowing 🎧 points read as listen-here; valve lids read as close; 区間◯を調べる labels read as hypothesis buttons; heard points show ▮ bars, missed points show ✕; the last reading is echoed as a waveform strip with ずっと/とぎれる; record strip scrolls (max-height 74px) so all 9 possible entries stay reachable.",
-        "no_manual": "PASS — no explanation screen or instruction line; the first touch is inferable from the glowing points / valve lids / trembling needle; continuity is learned from the waveform + window blink, not text.",
-        "job_reveal": "PASS — discovery screen: name 水道の漏水を見つける仕事（漏水調査員）, discoveryEcho is outcome-neutral (「漏水点はどこか」を考えたよね) so a partial run is never told it identified the leak; 📖 しごと図鑑に追加された！; 6 seed chips. Q2 cards sourced from fact_sheet.json.",
+        "first_5_seconds": "PASS — live at 375x812 (Vite dev server, Browser pane, 2026-09-09): night map with 3 segments, valve lids, 18 glowing points, gauge needle at 2.2 with '正常ならここ' mark, report card in the task bar, budgets row 『🔧 閉める あと2 / 🎧 聴く 5 / 📣 報告 2』, empty record strip, report button disabled with '聴いた点をえらんで報告（報告したら戻せない、あと2回）'. No instruction line, no wet patch, no leak mark.",
+        "touch_targets": "PASS — listening points and valve lids use r=28 hit circles in the 400-unit viewBox = 44.7px at 375px (21 circles, DOM-measured in earlier rounds; unchanged); the closed lid's 『▲開ける（0回）』 label is SVG fontSize 14; segment-focus controls are HTML buttons with min-height 44px (measured 44); report button is a full-width .btn.big (60px).",
+        "mobile_375": "PASS — the night screen fits without page scroll in every state re-measured live after the r3 repair: initial 812/812, after a silent listen 812/812, with the live reaction row 812/812, after reopen 812/812, after a MISS with the note AND the reaction row shown 812/812 (records strip 34px, compact one-line note 26px), hit/dawn screen 812/812. The discovery (job reveal) screen scrolls by design.",
+        "direct_manipulation": "PASS — every action is a direct tap on the world object: valve lid (close, budgeted; tapping the closed lid reopens for free — 『▲開ける（0回）』; closing another valve implicitly reopens the previous one), segment-focus buttons (the hypothesis of the child), listening point (listen; heard point = select; a point whose silent record was dropped by any reopen shows as unheard again), report button.",
+        "reaction_timing": "PASS — valve: needle transition 0.8s + segment line flash 0.7s; listen on an open segment: waveform strip appears immediately (steady loop / intermittent 1.1s burst + house window blink); listen on a closed segment: immediate reaction row with only the text 『静か（水が止まっている）』 (no strip element, no bars, no motion); report: the crew's reopen (if any) is logged immediately, 1.4s digging animation (🚧, 『修理班が水を戻して掘っている…』, every lid open) then hit/miss.",
+        "c_to_d": "PASS — live run 2026-09-09: closing valve A left the meter at 2.2, closing valve B dropped it to 0.2 (segment identified by reading C); reopen B (free); listening B1=3, B6=2, B2=4, B3=5, B4=4 gave the gradient toward point 3; report B3 → hit on the first report. gameplay-qa-leak.mjs 52/52: informed play 100%; random listen-and-report 10.7%; flow-less listening 26.2%; flow-only reopen→listen→report 32.5% (parity with design-sim v9); segment guess 23.0%; forgets-reopen 33.2%.",
+        "consequence": "PASS — hit (live): '1回目で当たり！ 漏水点を特定した', 修理班が 区間B（東側） の3番の下を掘ると、管の割れ目から水が噴き出していた → 修理 → dawn: gauge back to 0.2 ('正常ならここ'), '🎉 明け方 漏れは、止まった'. Miss (live, r3 fix): a valid record on a CLOSED segment reported → timeline 『📣 C1 を報告 → 🔧 修理班が弁Aを開けて水を戻した → 修理班が掘る』, closed lids 0 during the dig, then '乾いた管だった……埋め戻し。新しく聴いてから。', ✕ mark, needle stays high, button '新しく聴いてから（報告はまだ）'. Partial (logic unchanged: report → partial when no reports or no listens remain): '今夜は特定できなかった', damp road, '次の夜へ持ち越し'.",
+        "retry": "PASS — Gate G live: wrong report → button '新しく聴いてから（報告はまだ）' disabled; a silent listen on a closed segment → still locked (listens decrement); a non-silent listen → unlocked. A point recorded as silent cannot be reported: '静かな点は根拠にならない（水を戻して聴く）' disabled. A record heard on an open segment stays reportable after that segment is closed; the crew then restores supply before digging (live: lids 0, timeline line). Record panel is read-only (openRecords is the identity). Silent-record lifetime live: after the child's explicit reopen, the implicit reopen (closing another valve) and the crew's reopen at report time, the 『静か』 timeline lines disappear, the points show as unheard (🎧), a selected point whose record is gone is deselected, non-silent records survive; re-listening returns the real reading and costs a listen. 『もう一度この夜へ』 restarts the same case. The specific one-line hint is gated on the second FAILED NIGHT or two misses in one night.",
+        "answer_leak": "PASS — LeakTraceGame.tsx reads game state only through publicView()/readingAt()/restartSameCase(); the QA harness asserts at source level that the component never reads s.c, heard(s), .leak or .house properties (FLOW.leak constant excepted) and uses revealLeak exactly once (post-hit dawn screen), and at logic level that the public view after closing the leak segment vs another segment differs ONLY in the meter number (deep equality with flow/closed stripped). The silent state is identical at every point of a closed segment (level 0 / silent), so it carries no information beyond the meter; dropping a silent record on reopen reveals nothing (it happens for every point of the reopened segment alike, whoever reopens). Valve flash is the same for every segment; segment dimming follows only the focus toggle; house-window blink follows the reading continuity and only while that segment is open.",
+        "brute_force": "PASS — budgets enforced by leakLogic (3rd close refused, 6th listen refused, duplicate listen refused, report of an unheard / silent / already-missed point refused, 2 reports max, second report locked until a non-silent new listen after the miss). gameplay-qa-leak.mjs 52/52 incl. the all-plays invariant (a silent reading exists only on the currently closed segment; 0 violations).",
+        "visual_affordance": "PASS — glowing 🎧 points read as listen-here; valve lids read as close; the closed lid shows 『閉』 with 『▲開ける（0回）』 beneath (free reopen); 区間◯を調べる labels read as hypothesis buttons; heard points show ▮ bars (『－』 while their segment is closed), missed points show ✕; the last reading on an open segment is echoed as a waveform strip with ずっと/とぎれる; a silent listen shows the reaction row with only 『静か（水が止まっている）』 (live-verified); a non-silent record's live reaction (row, blink) stops while its segment is closed and returns on reopen (live-verified); record strip scrolls (max-height 34px).",
+        "no_manual": "PASS — no explanation screen or instruction line; the first touch is inferable from the glowing points / valve lids / trembling needle; continuity is learned from the waveform + window blink, not text; the reopen affordance is the lid label; the silent state is learned by tapping a point of a closed segment; the crew's restore is shown in the timeline and the dig label, not as an instruction.",
+        "job_reveal": "PASS — discovery screen (live 2026-09-09): '🎉 明け方 漏れは、止まった', outcome-neutral discoveryEcho (「漏水点はどこか」を考えたよね …), name 水道の漏水を見つける仕事（漏水調査員）, 📖 しごと図鑑に追加された！, 6 seed chips (針の動きを見る / 音を聴き比べる / にせものの音を見分ける / どこを掘るか決める / 記録を見返す / 特にない) → えらんだ. Q2 cards sourced from fact_sheet.json.",
         "pass": true,
         "evidence": [
-          "factory/harness/gameplay-qa-leak.mjs run: 30 passed, 0 failed",
+          "factory/harness/gameplay-qa-leak.mjs run: 52 passed, 0 failed (2026-09-09; flow-only 0.325)",
+          "node factory/projects/leak-detective/design/design-sim.mjs: 8/8 verdict flags true, 306/306, gate 200/200/200/200",
           "npm run build ✓, npm run lint (no findings in leak files)",
-          "Browser pane session at 375x812 on the Vite dev server: area hotspot, intro (cover crop of place-leak.png), night screen, valve isolation A→2.2/B→0.2, listens B2/B5/B3/B4/B1, miss→locked→new listen→hit, partial screen, dawn screen, discovery screen — DOM reads + screenshots captured in-session; read_console_messages: no errors",
+          "Browser pane session at 375x812 on the Vite dev server (2026-09-09): silent listen (reaction row text only, no .leak-wave element), silent point selected → '静かな点は根拠にならない（水を戻して聴く）' disabled, valid record heard while open stays reportable after closing that segment, explicit / implicit / crew reopen (silent lines and records gone, points unheard, selection cleared), re-listen returns the real reading, miss → locked → silent listen still locked → non-silent listen unlocked, report while closed → 『修理班が弁Aを開けて水を戻した → 修理班が掘る』 + lids 0 during the dig + 『修理班が水を戻して掘っている…』, miss note + reaction row at 812/812, full path A→2.2 / B→0.2 / reopen / gradient B1..B4 / report B3 → hit → dawn → discovery, r9 live-reaction gating — all DOM reads captured in-session",
           "factory/projects/leak-detective/art-requests/place-leak.qa.json (art-qa PASS)",
-          "factory/projects/leak-detective/design/design-review-r4.result.json (design PASS 84)",
-          "Implementation repair (impl review r1 FAIL 72): live re-verification at 375x812 after the repair — 21 x 44.7px hit circles, focus buttons 44px, no page scroll; full path A→2.2 / B→0.2 / gradient / wrong report locked / new listen / hit; gameplay-qa-leak.mjs 38 checks incl. source-level publicView boundary and deep-equality valve check"
+          "factory/projects/leak-detective/design/design-review-r9.result.json (design PASS 84 under hd-1/hd-2)",
+          "factory/projects/leak-detective/impl-review-r3.result.json (FAIL 68 → this repair)",
+          "factory/projects/leak-detective/q1-pipeline.json (hd-1, hd-2, one_time_exception, one_time_exception_hd2, f-1..f-11)"
         ],
-        "notes": "Console note: 23 useGame-must-be-used-inside-GameStateProvider errors were observed in the dev console during this session; they appeared while Vite HMR re-evaluated src/data/content/extremeHeat.ts and src/q1/registry.ts under a mounted Q1Screen, and did NOT recur on a fresh navigation + full play-through (count unchanged at 23). They are HMR artifacts of editing data modules live, not a runtime defect; the production build (npm run build ✓) is what deploys.",
-        "human_decision_domains": []
+        "notes": "The dev-console HMR errors noted in v2 (useGame outside GameStateProvider while editing data modules live) did not recur on fresh navigations in this session. Numbers in this document are taken from the harness run recorded above (impl review r3 MEDIUM: evidence parity).",
+        "human_decision_domains": [],
+        "revision_note": "v4 (2026-09-09, after implementation review r3): crew restores supply before digging (live-verified), reachable silent reaction row, no-scroll layout with the miss note, evidence numbers regenerated from the harness."
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:implementation:v2"
+        "leak-detective:implementation:v4"
       ],
-      "design_iteration": 2,
-      "created_at": "2026-09-08T08:00:29.287Z",
+      "design_iteration": 3,
+      "created_at": "2026-09-08T19:39:29.534Z",
       "versions": [
         {
           "version": 1,
@@ -1477,36 +1562,65 @@
           "file": "factory/projects/leak-detective/design/implementation_qa.json",
           "created_at": "2026-09-08T08:00:29.288Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/leak-detective/design/implementation_qa_v3.json",
+          "created_at": "2026-09-08T19:28:18.072Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/leak-detective/design/implementation_qa_v4.json",
+          "created_at": "2026-09-08T19:39:29.535Z",
+          "creator": "claude-code"
         }
       ]
     }
   },
   "independent_review": {
     "kind": "design",
-    "verdict": "FAIL",
-    "score": 68,
+    "verdict": "PASS",
+    "score": 84,
     "blockers": 0,
-    "high": 2,
-    "evidence": "factory/projects/leak-detective/design/design-review-r8.result.json",
-    "input": "factory/projects/leak-detective/design/design-review-r8-prompt.md",
+    "high": 0,
+    "evidence": "factory/projects/leak-detective/design/design-review-r9.result.json",
+    "input": "factory/projects/leak-detective/design/design-review-r9-prompt.md",
     "reviewer": "codex-review",
     "creator": "claude-code",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 3,
     "repair_count_at_review": 1,
-    "stale": false,
-    "recorded_at": "2026-09-08T13:26:23.591Z"
+    "stale": true,
+    "recorded_at": "2026-09-08T19:23:15.866Z",
+    "stale_because": "game_spec changed v1->v2"
   },
-  "impl_review": null,
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "FAIL",
+    "score": 68,
+    "blockers": 0,
+    "high": 1,
+    "evidence": "factory/projects/leak-detective/impl-review-r3.result.json",
+    "input": "factory/projects/leak-detective/impl-review-r3-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 3,
+    "repair_count_at_review": 1,
+    "stale": true,
+    "recorded_at": "2026-09-08T19:32:09.437Z"
+  },
   "art_review": {
     "verdict": "PASS",
     "evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
-    "reviewer": "codex-vision-critic",
+    "reviewer": "art-qa",
     "producer": "codex_imagegen",
     "independent": true,
-    "review_mechanism": "codex-vision-critic",
-    "recorded_at": "2026-09-08T07:40:45.997Z"
+    "review_mechanism": "art-qa",
+    "recorded_at": "2026-09-08T19:34:06.540Z"
   },
   "failures": [
     {
@@ -1607,6 +1721,28 @@
       "must_change": "think-again gate: only a NON-silent new listen unlocks the second report; reopen removes the segment's silent lines from the UI timeline; design-sim report requires a heard, not-yet-missed point (implementation parity)",
       "design_iteration": 3,
       "at": "2026-09-08T13:26:23.635Z"
+    },
+    {
+      "failure_id": "f-10",
+      "failure_code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+      "failure_reason": "Design review r8 FAIL 68 (HIGH-1 timeline keeps old silent lines after reopen; HIGH-2 a silent listen unlocks the think-again gate = Gate G unmet; MEDIUM sim report lacks heard checks). Human Decision hd-2 (2026-09-09, one-time, not a precedent) authorizes one scoped Game Translation fix: silent listens never count as new evidence; only a non-silent new listen after the previous report unlocks the second report; silent records invalidated by a reopen leave timeline/selection/listened state together; a report is grounded only in a heard, currently valid, non-silent point; nothing else changes. This failure consumes the single hd-2 repair.",
+      "evidence": "factory/projects/leak-detective/design/design-review-r8.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "CORE/SCOPE, A-E, adopted t1c core structure (flow→reopen→gradient→continuity→point report), silent state + lifetime (hd-1), Art, Product Identity",
+      "must_change": "think-again gate = non-silent new listen after the previous report only; silent reading is not report evidence (silent_not_evidence); reopen clears state record + timeline line + selection; design-sim report condition = implementation",
+      "design_iteration": 3,
+      "at": "2026-09-08T19:18:43.162Z"
+    },
+    {
+      "failure_id": "f-11",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "Implementation review r3 FAIL 68 (CA68/GQ84, 0 blockers, 1 HIGH, 3 MEDIUM, 1 LOW). HIGH: reporting a valid (non-silent) record while its segment is closed starts the dig with the valve still closed and then sprays water — state_table.report_rule ('the crew restores supply, then digs') is not realized in the implementation. MEDIUM: game_spec still says 'level 1 steady' in two fields; QA closed-segment-report test checks only the logical hit; QA flow-only rate (9.8%) differs from the documented 32.5% (harness strategy lacks the reopen step the sim has). LOW: the reaction-row silent branch is unreachable behind the open-segment condition.",
+      "evidence": "factory/projects/leak-detective/impl-review-r3.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design (r9 PASS 84), state_table, hd-1/hd-2 rules, Art",
+      "must_change": "report() restores supply (closed → null, crew opens the valve before digging) and the UI says so; game_spec fields unified to level 0 / silent; QA checks the restore + parity of the flow-only strategy; reaction row shows the silent text; evidence numbers regenerated from the harness",
+      "design_iteration": 3,
+      "at": "2026-09-08T19:32:09.481Z"
     }
   ],
   "human_decisions": [
@@ -1619,13 +1755,23 @@
       "opened_at": "2026-09-08T10:16:16.817Z",
       "resolution": "HUMAN DECISION 2026-09-08: 追加1イテレーションを認める。これはProduct Identityや新しいGame Design判断ではなく、既に特定・準備・検証済みの『閉区間のsilent state表示修正』を正式にレビュー工程へ通すための限定的なrepair budget extension。承認範囲: (1) closed/isolated segmentに専用のsilent stateを設ける (2) 閉区間では音を示すbar/waveform/『ずっと』表示/点滅を出さない (3) reopen後に通常の音表現へ戻す (4) 既存のC→D→E、Game Translation、操作構造、Art、Product Identityは変更しない。新しい一般ルールやrepair budget緩和の前例として扱わない — leak-detectiveに対するone-time exception。承認範囲を超える新しいHIGH/BLOCKER、Product Identity issue、構造的な再設計が必要になった場合のみ再Escalate。",
       "resolved_at": "2026-09-08T13:08:38.239Z"
+    },
+    {
+      "id": "hd-2",
+      "domains": [],
+      "opened_by_escalation": "f-9 (design review r8 HIGH-2: gate rule change = Game Translation mechanic, outside hd-1)",
+      "note": "non-Product-Identity human decision; q1-pipeline.mjs human-decision refuses non-PI domains, so recorded by script with the same shape as resolve-human-decision",
+      "status": "resolved",
+      "opened_at": "2026-09-08T19:16:12.605Z",
+      "resolution": "HUMAN DECISION hd-2 (2026-09-09): 追加1イテレーションを承認。Product Identity変更ではなく、Human-approved Q1 StandardのGate G（THINK AGAIN）を実装上正しく成立させるための限定的なGame Translation修正。範囲: (1) silent/isolated segmentの聴取は2回目の報告を解禁する『新しい証拠』として数えない (2) 2回目の報告を解禁できるのは前回の報告後に取得した『非silentの新規聴取』のみ (3) 開け直しで無効になったsilent記録はtimeline/selection/listened stateから整合的に除去 (4) reportは実際に聴取済みで現在有効な点のみを根拠として扱う (5) CORE/SCOPE/A-E/採用済みGame Translationの中心構造、Art、Product Identity、報酬・ポイント・Home等は変更しない。leak-detectiveに対するone-time hd-2 exceptionとして記録し、一般的なrepair/redesign budget緩和の前例にしない。再Escalateは hd-2範囲外の新しいHIGH/BLOCKER、CORE/SCOPEの再設計、Product Identity issue、さらに別のGame Translation構造変更が必要な場合のみ。",
+      "resolved_at": "2026-09-08T19:16:12.605Z"
     }
   ],
   "task_id": "q1-new-leak-detective",
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T13:26:23.636Z",
+  "updated_at": "2026-09-08T19:39:29.652Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -2740,6 +2886,372 @@
         "action": "ESCALATED",
         "reason": "same fundamental failure persists after finite repair+redesign budget"
       }
+    },
+    {
+      "at": "2026-09-08T19:15:41.702Z",
+      "event": "one_time_exception_recorded",
+      "human_decision_id": "hd-2",
+      "redesign_count": 2,
+      "repair_count": 0,
+      "scope": [
+        "silent/isolated-segment listens never count as new evidence for the second report",
+        "only a NON-silent new listen taken AFTER the previous report unlocks the second report",
+        "silent records invalidated by a reopen are removed consistently from timeline / selection / listened state",
+        "a report is grounded only in a point that was actually listened to and is currently valid",
+        "NO change to CORE/SCOPE/A-E, the adopted translation core structure, Art, Product Identity, rewards/points/Home"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:16:12.605Z",
+      "event": "human_decision_opened",
+      "id": "hd-2",
+      "source": "escalation",
+      "mechanism_gap": "q1-pipeline.mjs human-decision only accepts Product Identity domains; non-PI escalations have no CLI path — recorded by script"
+    },
+    {
+      "at": "2026-09-08T19:16:12.605Z",
+      "event": "human_decision_resolved",
+      "id": "hd-2",
+      "note": "HUMAN DECISION hd-2 (2026-09-09): 追加1イテレーションを承認。Product Identity変更ではなく、Human-approved Q1 StandardのGate G（THINK AGAIN）を実装上正しく成立させるための限定的なGame Translation修正。範囲: (1) silent/isolated segmentの聴取は2回目の報告を解禁する『新しい証拠』として数えない (2) 2回目の報告を解禁できるのは前回の報告後に取得した『非silentの新規聴取』のみ (3) 開け直しで無効になったsilent記録はtimeline/selection/listened stateから整合的に除去 (4) reportは実際に聴取済みで現在有効な点のみを根拠として扱う (5) CORE/SCOPE/A-E/採用済みGame Translationの中心構造、Art、Product Identity、報酬・ポイント・Home等は変更しない。leak-detectiveに対するone-time hd-2 exceptionとして記録し、一般的なrepair/redesign budget緩和の前例にしない。再Escalateは hd-2範囲外の新しいHIGH/BLOCKER、CORE/SCOPEの再設計、Product Identity issue、さらに別のGame Translation構造変更が必要な場合のみ。"
+    },
+    {
+      "at": "2026-09-08T19:16:12.605Z",
+      "event": "state_change",
+      "from": "ESCALATED",
+      "to": "RETURNED",
+      "note": "human decision hd-2 resolved — one scoped iteration (repair budget 1, redesign stays exhausted)"
+    },
+    {
+      "at": "2026-09-08T19:16:12.605Z",
+      "event": "iteration_reset",
+      "reason": "hd-2 (scoped, one-time)"
+    },
+    {
+      "at": "2026-09-08T19:18:43.163Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "REPAIRING",
+      "note": "REACTION_DOES_NOT_TEACH_NEXT_ACTION -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-08T19:18:43.163Z",
+      "event": "failure_routed",
+      "failure_id": "f-10",
+      "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-08T19:18:43.208Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_translations:v11",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "independent_review"
+      ],
+      "sources": [
+        "leak-detective:play_seeds:v3",
+        "leak-detective:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:18:43.252Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:first_5_seconds:v9",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v11"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:18:43.296Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v9",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v11",
+        "leak-detective:first_5_seconds:v9"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:18:43.339Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:core_back_check:v9",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v11"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:18:43.382Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "hd-2 scoped repair (iteration 3, hd-2 repair 1/1): leakLogic.listen unlocks only on a non-silent reading; reportBlocked returns silent_not_evidence for a silent reading; LeakTraceGame drops the reopened segment silent timeline lines + deselects a point whose record is gone + shows 『静かな点は根拠にならない（水を戻して聴く）』; design-sim v9 (report = heard/valid/non-silent/not-missed; content-blind baselines listen before reporting; gate 200/200/200/200; 8/8 flags; random 10.7%, flow-only 32.5%); gameplay-qa-leak 50/50; build/lint green; state_table think_again_gate/report_rule/silent_record_lifetime; artifacts game_translations v11, first_5_seconds v9, no_manual_exploit_check v9, core_back_check v9."
+    },
+    {
+      "at": "2026-09-08T19:18:43.383Z",
+      "event": "repair_done",
+      "note": "hd-2 scoped repair (iteration 3, hd-2 repair 1/1): leakLogic.listen unlocks only on a non-silent reading; reportBlocked returns silent_not_evidence for a silent reading; LeakTraceGame drops the reopened segment silent timeline lines + deselects a point whose record is gone + shows 『静かな点は根拠にならない（水を戻して聴く）』; design-sim v9 (report = heard/valid/non-silent/not-missed; content-blind baselines listen before reporting; gate 200/200/200/200; 8/8 flags; random 10.7%, flow-only 32.5%); gameplay-qa-leak 50/50; build/lint green; state_table think_again_gate/report_rule/silent_record_lifetime; artifacts game_translations v11, first_5_seconds v9, no_manual_exploit_check v9, core_back_check v9."
+    },
+    {
+      "at": "2026-09-08T19:23:15.867Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/leak-detective/design/design-review-r9.result.json"
+    },
+    {
+      "at": "2026-09-08T19:23:15.867Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-08T19:23:15.911Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-08T19:23:15.912Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-08T19:23:47.830Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v2"
+    },
+    {
+      "at": "2026-09-08T19:23:47.830Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_spec:v2",
+      "invalidated": [
+        "independent_review"
+      ],
+      "sources": [
+        "leak-detective:game_translations:v11",
+        "leak-detective:first_5_seconds:v9",
+        "leak-detective:core_back_check:v9"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:24:01.296Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v2"
+    },
+    {
+      "at": "2026-09-08T19:24:01.296Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_brief:v2",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:24:01.341Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "ART_PRODUCED",
+      "note": "artifact art_production v2"
+    },
+    {
+      "at": "2026-09-08T19:24:01.341Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_production:v2",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:art_brief:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:24:01.385Z",
+      "event": "art_review_recorded",
+      "verdict": "PASS",
+      "evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+      "reviewer": "art-qa",
+      "producer": "codex_imagegen",
+      "independent": true,
+      "review_mechanism": "art-qa",
+      "recorded_at": "2026-09-08T19:24:01.384Z"
+    },
+    {
+      "at": "2026-09-08T19:24:01.385Z",
+      "event": "state_change",
+      "from": "ART_PRODUCED",
+      "to": "ART_APPROVED",
+      "note": "art review PASS (independent)"
+    },
+    {
+      "at": "2026-09-08T19:28:18.026Z",
+      "event": "state_change",
+      "from": "ART_APPROVED",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v3"
+    },
+    {
+      "at": "2026-09-08T19:28:18.026Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation:v3",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v2",
+        "leak-detective:art_production:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:28:18.072Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v3"
+    },
+    {
+      "at": "2026-09-08T19:28:18.072Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation_qa:v3",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:implementation:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:32:09.438Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/leak-detective/impl-review-r3.result.json"
+    },
+    {
+      "at": "2026-09-08T19:32:09.482Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "REPAIRING",
+      "note": "IMPLEMENTATION_CHANGED_D -> IMPLEMENTATION (downstream repair)"
+    },
+    {
+      "at": "2026-09-08T19:32:09.482Z",
+      "event": "failure_routed",
+      "failure_id": "f-11",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 2
+      }
+    },
+    {
+      "at": "2026-09-08T19:34:06.398Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_spec:v3",
+      "invalidated": [
+        "implementation",
+        "implementation_qa",
+        "art_brief",
+        "art_production",
+        "impl_review"
+      ],
+      "sources": [
+        "leak-detective:game_translations:v11",
+        "leak-detective:first_5_seconds:v9",
+        "leak-detective:core_back_check:v9"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:34:06.450Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_brief:v3",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:34:06.496Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:art_production:v3",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:art_brief:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:34:06.541Z",
+      "event": "art_review_recorded",
+      "verdict": "PASS",
+      "evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+      "reviewer": "art-qa",
+      "producer": "codex_imagegen",
+      "independent": true,
+      "review_mechanism": "art-qa",
+      "recorded_at": "2026-09-08T19:34:06.540Z"
+    },
+    {
+      "at": "2026-09-08T19:34:06.541Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "ART_APPROVED",
+      "note": "art review PASS (independent)"
+    },
+    {
+      "at": "2026-09-08T19:39:29.488Z",
+      "event": "state_change",
+      "from": "ART_APPROVED",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v4"
+    },
+    {
+      "at": "2026-09-08T19:39:29.488Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation:v4",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_spec:v3",
+        "leak-detective:art_production:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:39:29.536Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v4"
+    },
+    {
+      "at": "2026-09-08T19:39:29.536Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:implementation_qa:v4",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:implementation:v4"
+      ]
+    },
+    {
+      "at": "2026-09-08T19:39:29.652Z",
+      "event": "repair_done",
+      "note": "impl review r3 repair (implementation repair 2/2) — recorded by script because art-review moved the state to ART_APPROVED while REPAIRING; implementation v4 / implementation_qa v4 submitted"
+    },
+    {
+      "at": "2026-09-08T19:39:29.652Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "UNDER_REVIEW",
+      "note": "implementation repair done — new independent implementation review required"
     }
   ],
   "redesign": [
@@ -2795,5 +3307,31 @@
       "cap": "this is the LAST repair under hd-1: if design review r8 still has HIGH/BLOCKER (inside or outside scope), ESCALATE",
       "review": "factory/projects/leak-detective/design/design-review-r7.result.json"
     }
+  },
+  "one_time_exception_hd2": {
+    "granted_by": "human",
+    "granted_at": "2026-09-08T19:15:41.702Z",
+    "human_decision_id": "hd-2",
+    "kind": "scoped_game_translation_fix_for_gate_g",
+    "precedent": false,
+    "scope": [
+      "silent/isolated-segment listens never count as new evidence for the second report",
+      "only a NON-silent new listen taken AFTER the previous report unlocks the second report",
+      "silent records invalidated by a reopen are removed consistently from timeline / selection / listened state",
+      "a report is grounded only in a point that was actually listened to and is currently valid",
+      "NO change to CORE/SCOPE/A-E, the adopted translation core structure, Art, Product Identity, rewards/points/Home"
+    ],
+    "budget": {
+      "repair_max_under_hd2_total": 2,
+      "repairs_used_under_hd2": 1,
+      "redesign_allowed": false
+    },
+    "re_escalate_if": [
+      "new HIGH/BLOCKER outside this scope",
+      "CORE/SCOPE redesign",
+      "Product Identity issue",
+      "another Game Translation structural change"
+    ],
+    "note": "One-time exception for leak-detective only; not a precedent for relaxing repair/redesign budgets."
   }
 }

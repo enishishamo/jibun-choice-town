@@ -20,7 +20,7 @@
       "id": "point[seg][1..6]",
       "type": "tap",
       "state": "unheard|heard(level,continuity)",
-      "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。閉めている区間の点は静か（level 1 steady）——水が流れていないので漏水音は出ない（state_table.sound_reading.isolation_rule）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す",
+      "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。閉めている区間の点は専用の無音状態（level 0 / continuity silent。バー・波形・『ずっと』・窓の点滅なし）——水が流れていないので何も伝わらない（state_table.sound_reading.isolation_rule）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す",
       "budget": "listens 5"
     },
     {
@@ -39,7 +39,7 @@
     }
   ],
   "primary_action": "弁をタップして針を見る → 区間ラベルで仮説を置く → 聴取点をタップして音を聴く → 記録を見比べる → 聴取済みの点を選んで報告する。",
-  "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent）、疑似音（家の夜間使用＝intermittent level 4、1点）、隔離ルール（閉めている区間の点は level 1 steady＝静か）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
+  "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent/silent）、疑似音（家の夜間使用＝intermittent level 4、1点）、隔離ルール（閉めている区間の点は level 0 / silent＝専用の無音状態。開け直しでその記録は消え、再聴取できる）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
   "D": "流量の変化で漏水区間を切り分ける／隔離した区間は静かなので開け直してから聴く／音の大きさの勾配で漏水点の真上に近づく／とぎれる音を家の使用音として除外する／証拠が一致した点を漏水点として報告する／外れたら新しい証拠を取ってから考え直す。システムは区間・漏水点・次の一手を一切示さず、推奨も採点もしない。",
   "system_reactions": {
     "valve_close": "針: 漏水区間なら 2.2→0.2 へ大きく落ちる、他区間なら 2.2→2.2（−0.05は1桁表示で見えない）。管線が一瞬暗くなる（全区間共通）。記録に1行。閉めている区間の聴取点は静かになる。",
@@ -51,7 +51,7 @@
   },
   "state_transitions": "NIGHT(operate) → [report hit] → RESOLVED(success/perfect) → onComplete ／ NIGHT → [report miss, reports left, listens left] → NIGHT(locked until new listen) ／ NIGHT → [report miss, reports=0] or [listens=0 and locked] → DAWN_PARTIAL → onPartialComplete。弁・聴取・仮説フォーカスはNIGHT内の自由操作。 弁は open/closed のトグルで、closed→open は無料。 ／ 開け直し（明示・暗黙）→ その区間の silent 記録を削除（readings から除去、listens は据え置き）。",
   "failure_behavior": "外れは正直に世界へ返す（乾いた管・埋め戻し・湿ったままの路面・高いままの針）。理由を文章で即答しない。2回目の失敗後にだけ、超えた側に応じた一言（『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』）。成功と同じ画面にはしない（Gate H）。",
-  "retry_behavior": "1回目の外れ後は新しい聴取1回で再報告が解禁（記録閲覧では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
+  "retry_behavior": "1回目の外れ後は、前回の報告の後に取得した非silentの新しい聴取1回で再報告が解禁（記録閲覧や、閉めている区間での『静か』の聴取では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
   "E": "夜明けの区画: 当たり＝修理跡が埋め戻され路面が乾き、針が正常、家々に水が出る朝（『1回目で当たり』は満点表示、2回目は成功）。外れ＝埋め戻した穴、湿った路面、高い針、『漏れは次の夜へ持ち越し』（partial）。Job Reveal は成否にかかわらず同じ。",
   "job_reveal": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』（discoveryEcho は content の experiences に置く）",
   "first_5_seconds": "factory/projects/leak-detective/design/first_5_seconds_v4.json のとおり。操作手順の文はない。最初の一手は弁・区間ラベル・聴取点のどれでも正当。",
@@ -82,6 +82,8 @@
     }
   ],
   "human_decision_domains": [],
-  "revision_note": "v3 (design review r7 fix; Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理): silent_state_rule を追加（silent記録の寿命、波形要素なし）。ほかは v2 と同じ。",
-  "silent_state_rule": "閉めている区間の全聴取点は専用の無音状態 level 0 / continuity silent（バー・波形ストリップ要素・『ずっと/とぎれる』・窓の点滅を一切描画せず『静か（水が止まっている）』の文字だけ）。『静か』の記録はその区間が閉まっている間にしか存在しない: 開け直し（閉じたふたの『▲開ける（0回）』タップ、または別の弁を閉めることによる自動開放）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を再計算して音を『鳴らす』ことはしない。"
+  "revision_note": "v3 (design review r7/r8 fix; hd-1 と Human Decision hd-2（2026-09-09、Gate Gを成立させるための限定的なGame Translation修正、one-time exception、前例としない）): silent_state_rule、think_again_gate_rule、report_grounding_rule を追加。ほかは v2 と同じ。 impl review r3: 『level 1 steady』の残りを level 0 / silent に統一、通水復旧の明記。",
+  "silent_state_rule": "閉めている区間の全聴取点は専用の無音状態 level 0 / continuity silent（バー・波形ストリップ要素・『ずっと/とぎれる』・窓の点滅を一切描画せず『静か（水が止まっている）』の文字だけ）。『静か』の記録はその区間が閉まっている間にしか存在しない: 開け直し（閉じたふたの『▲開ける（0回）』タップ、または別の弁を閉めることによる自動開放）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を再計算して音を『鳴らす』ことはしない。 開け直しでは state の記録・記録ストリップの『静か』の行・その点の選択が同時に消える。",
+  "think_again_gate_rule": "1回目の報告が外れた後、2回目の報告ボタンは『前回の報告の後に取得した、非silentの新しい聴取を1回行う』まで無効（r2 HIGH是正: 記録を開くだけの無料解除を廃止。r8 HIGH-2→hd-2: 閉めている区間での聴取＝『静か』は、漏水点について流量計以上の情報を持たないので『新しい証拠』として数えない——ゲートは解禁されず、聴く予算だけ減る）。聴取予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。『記録』パネル（閉めた弁と聴いた点の一覧）はいつでも見られるが、何も解禁しない。design-sim v9 think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけ200/200拒否、非silentの新しい聴取後200/200許可、silentの聴取だけ200/200拒否。",
+  "report_grounding_rule": "報告の根拠にできるのは、実際に聴取済みで現在有効な非silentの点のみ（reportBlocked: not_heard / silent_not_evidence / already_missed）。開いている区間で聴いた記録は、その後弁を閉めても有効。 報告を受けた修理班は、閉めている弁があれば開けて通水を戻してから掘る（state closed→null、その区間の『静か』の記録も消える。timelineに『修理班が弁◯を開けて水を戻した』）。"
 }

@@ -121,7 +121,7 @@ export function listen(s: LeakState, seg: Seg, point: number): ActionResult {
   const r = soundReading(s.c, seg, point, s.closed);
   // a new listen is new evidence and re-enables reporting after a miss — but only a listen that can discriminate:
   // a silent reading on a closed segment carries nothing the flow meter did not already show, so it does NOT
-  // unlock the second report (design review r8, think-again gate = evidence only). PREPARED, not yet submitted.
+  // unlock the second report (design review r8 → Human Decision hd-2: think-again gate = non-silent new evidence only).
   const unlocked = r.continuity === "silent" ? s.unlocked : true;
   return { state: { ...s, listens: s.listens + 1, readings: [...s.readings, { seg, point, ...r }], unlocked }, ok: true };
 }
@@ -131,7 +131,10 @@ export function reportBlocked(s: LeakState, seg?: Seg, point?: number): string |
   if (s.reports >= BUDGETS.reports) return "report_budget";
   if (!s.unlocked) return "locked_after_miss";
   if (seg !== undefined && point !== undefined) {
-    if (!heard(s, seg, point)) return "not_heard";
+    const r = heard(s, seg, point);
+    if (!r) return "not_heard";
+    // a silent reading (closed segment) is not evidence of a leak: the child must restore supply and listen (hd-2 item 4)
+    if (r.continuity === "silent") return "silent_not_evidence";
     if (s.misses.some((m) => m.seg === seg && m.point === point)) return "already_missed";
   }
   return null;
@@ -140,14 +143,17 @@ export function report(s: LeakState, seg: Seg, point: number): ActionResult & { 
   const blocked = reportBlocked(s, seg, point);
   if (blocked) return { state: s, ok: false, reason: blocked };
   const reports = s.reports + 1;
+  // the repair crew restores supply before digging (state_table.report_rule): a closed valve is opened by the crew,
+  // so after any report no segment is isolated and no silent record remains (impl review r3)
+  const restored = { closed: null as Seg | null, readings: dropSilent(s.readings, s.closed) };
   if (same({ seg, point }, s.c.leak)) {
-    return { state: { ...s, reports, outcome: reports === 1 ? "perfect" : "success" }, ok: true, hit: true };
+    return { state: { ...s, ...restored, reports, outcome: reports === 1 ? "perfect" : "success" }, ok: true, hit: true };
   }
   const misses = [...s.misses, { seg, point }];
   const noMoreReports = reports >= BUDGETS.reports;
   const noMoreListens = s.listens >= BUDGETS.listens; // cannot produce new evidence -> the night ends honestly
   const outcome: Outcome | null = noMoreReports || noMoreListens ? "partial" : null;
-  return { state: { ...s, reports, misses, unlocked: false, outcome }, ok: true, hit: false };
+  return { state: { ...s, ...restored, reports, misses, unlocked: false, outcome }, ok: true, hit: false };
 }
 /** Opening the record panel is read-only: it never changes state (no free unlock). */
 export function openRecords(s: LeakState): LeakState { return s; }

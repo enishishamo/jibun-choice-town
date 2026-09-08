@@ -1,0 +1,109 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "閉じた区間で以前取得した非silent記録は報告可能だが、報告後の掘削画面は弁を閉じたまま表示し、通水を復旧する描写・文言なしに、その直後の成功画面で管から水が噴き出す。設計上必要な「修理班が通水してから掘る」が実装されておらず、round 2と同種の物理的因果矛盾が残る。"
+    ],
+    "medium": [
+      "game_spec_v3.json内で閉区間の読値を2箇所「level 1 steady」と記述する一方、同ファイル後半とstate_table.jsonは「level 0 / silent」と規定しており、現行設計文書が自己矛盾している。",
+      "QAの「閉区間報告でも修理班が通水して掘る」検査はreport()がhitを返すことしか検証せず、通水状態・掘削画面・結果文言を一切検査していないため、実際の因果矛盾を見逃している。",
+      "QAハーネスのflow-only戦略は今回9.8%だったが、implementation_v3.jsonとimplementation_qa_v3.jsonは32.5%と記録しており、提出されたQA証跡が現在のハーネス結果と一致しない。"
+    ],
+    "low": [
+      "silent用の最新読値分岐は外側のv.closed !== lastHeard.seg条件により到達不能である。現在はtimelineに「静か（水が止まっている）」が即時追加されるため致命的ではないが、ハーネスのsource checkは分岐の配置だけを検査し、実際に描画可能かを検証していない。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "閉区間の有効な過去記録を報告すると、UIは閉弁・停止中の管のまま掘削を始め、通水復旧を示さず成功画面で水を噴出させる。修理班が通水してから掘るという必要な因果が画面に実装されていない。",
+        "file": "src/q1/LeakTraceGame.tsx"
+      },
+      {
+        "code": "DESIGN_DOCUMENT_CONTRADICTION",
+        "severity": "MEDIUM",
+        "finding": "現行game_specが閉区間の読値をlevel 1 steadyとlevel 0/silentの両方で規定している。",
+        "file": "factory/projects/leak-detective/design/game_spec_v3.json"
+      },
+      {
+        "code": "QA_COVERAGE_GAP",
+        "severity": "MEDIUM",
+        "finding": "閉区間報告テストは論理的hitだけを確認し、修理班の通水復旧や画面上の因果を確認していない。",
+        "file": "factory/harness/gameplay-qa-leak.mjs"
+      },
+      {
+        "code": "QA_EVIDENCE_STALE",
+        "severity": "MEDIUM",
+        "finding": "実行結果のflow-only成功率は0.098だが、提出QA文書は0.325と主張している。",
+        "file": "factory/projects/leak-detective/design/implementation_qa_v3.json"
+      }
+    ],
+    "round2_findings_confirmed_closed": {
+      "reopen_causality": false,
+      "design_docs_consistent": false
+    },
+    "silent_state": {
+      "logic_returns_level0_silent_on_closed_segment_only": true,
+      "render_has_no_bars_waveform_word_blink": true,
+      "reopen_restores_sound": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "51 passed, 0 failed。ただし閉区間報告の通水復旧テストは論理hitしか検査せず、flow-only実測値も提出証跡と不一致。",
+      "build_or_tsc": "npx tsc --noEmit -p tsconfig.app.json: exit 0",
+      "lint": "npm run lint: exit 0。既存の無関係なwarningあり、leak対象のwarning/errorなし。",
+      "public_view_only": true,
+      "gate_bypass_found": false,
+      "scroll_812_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/leakLogic.ts:96 — closeValveだけがvalveOpsを消費し、別区間を閉じると以前の閉区間を暗黙に開く。",
+      "src/q1/leakLogic.ts:106 — openValveは無料で、閉区間がない場合だけnothing_closedを返す。",
+      "src/q1/leakLogic.ts:76 — soundReadingはclosed===segの全点をlevel 0/silentにする。",
+      "src/q1/leakLogic.ts:125 — silent listenはunlockedをtrueにせず、非silent listenだけが解除する。",
+      "src/q1/leakLogic.ts:129 — reportBlockedはlocked、not_heard、silent_not_evidence、already_missedを強制する。",
+      "src/q1/leakLogic.ts:142 — reportは閉区間かどうかを判定せず、有効な過去の非silent記録なら成功可能。",
+      "src/q1/LeakTraceGame.tsx:47 — 閉じた弁の再タップはopenValveを呼び、silent timelineと無効選択を除去する。",
+      "src/q1/LeakTraceGame.tsx:75 — 報告timelineは直ちに「修理班が掘る」と記録し、通水復旧を示さない。",
+      "src/q1/LeakTraceGame.tsx:123 — hit画面でのみrevealLeakを1回使用する。",
+      "src/q1/LeakTraceGame.tsx:128 — 閉弁状態から遷移可能な成功画面が水の噴出を表示する。",
+      "src/q1/LeakTraceGame.tsx:129 — 成功文言は修理班が掘ると水が噴き出したと述べ、事前の通水復旧を述べない。",
+      "src/q1/LeakTraceGame.tsx:194 — house-window blinkは対象区間が開いている場合だけ動く。",
+      "src/q1/LeakTraceGame.tsx:213 — 閉弁ラベルはfontSize 14の「▲開ける（0回）」。",
+      "src/q1/LeakTraceGame.tsx:208 — 弁の透明hit circleはr=28。",
+      "src/q1/LeakTraceGame.tsx:222 — 聴取点の透明hit circleはr=28。",
+      "src/q1/LeakTraceGame.tsx:244 — 区間focusボタンはminHeight 44。",
+      "src/q1/LeakTraceGame.tsx:252 — 最新読値行は対象区間が開いている場合だけ描画されるため、silent専用分岐は到達不能。",
+      "src/q1/LeakTraceGame.tsx:285 — silent記録を選ぶと「静かな点は根拠にならない（水を戻して聴く）」を表示する。",
+      "src/q1/LeakTraceGame.tsx:138 — specific hintはfailedNights>=2または同夜2 missに限定される。",
+      "factory/projects/leak-detective/design/game_spec_v3.json:23 — 閉区間を「level 1 steady」と記述する。",
+      "factory/projects/leak-detective/design/game_spec_v3.json:42 — C欄も閉区間を「level 1 steady＝静か」と記述する。",
+      "factory/projects/leak-detective/design/game_spec_v3.json:86 — 同じ文書のsilent_state_ruleはlevel 0/continuity silentを要求する。",
+      "factory/harness/gameplay-qa-leak.mjs:174 — silent描画検査はソース文字列の順序だけで、外側条件による到達不能を検査しない。",
+      "factory/harness/gameplay-qa-leak.mjs:175 — crew restores supplyと称する検査はr.okとr.hitだけを確認する。",
+      "factory/harness/gameplay-qa-leak.mjs:205 — public boundary regexは実在するソースを走査し、s.c、heard()、.leak、.houseを検索しているため完全に空疎ではない。",
+      "factory/harness/gameplay-qa-leak.mjs:207 — revealLeak呼出回数を実際に数えて1回と検証する。",
+      "src/q1/registry.ts:82 — leak_traceがLeakTraceGameへ登録されている。",
+      "src/data/content/extremeHeat.ts:89 — incident id leak-nightとhotspot位置が存在する。",
+      "src/data/content/extremeHeat.ts:311 — profession id leak-detectiveが存在する。",
+      "src/data/content/extremeHeat.ts:468 — experience id leak-heatが存在する。",
+      "src/data/content/extremeHeat.ts:471 — experienceのgameTypeはleak_trace。",
+      "public/assets/heat/place-leak.png — 1200x900 PNGとして存在する。"
+    ],
+    "recommended_actions": [
+      "閉区間を報告した場合、diggingへ入る前に表示状態も開弁へ遷移させ、「修理班が水を戻して確認してから掘る」と明示する。閉弁→有効な過去記録を報告→通水表示→掘削→噴出、というUI統合テストを追加する。",
+      "game_spec_v3.jsonのinteractive_objects.point.reactionとC欄に残る「level 1 steady」を「level 0 / continuity silent」へ統一する。",
+      "QAの閉区間報告検査をReact表示または抽出可能な表示モデルまで拡張し、通水復旧がなければ失敗させる。",
+      "flow-only戦略の現在の意図と実装を再確認し、ハーネスまたはimplementation_v3/implementation_qa_v3の32.5%証跡を実測値に合わせる。",
+      "silent最新読値行を本当に表示する設計なら外側のopen条件を再構成し、表示しない設計なら到達不能なsilent分岐と誤解を招くsource checkを削除・置換する。"
+    ]
+  },
+  "elapsed_sec": 170.926
+}
