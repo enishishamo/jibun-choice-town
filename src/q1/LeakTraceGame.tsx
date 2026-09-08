@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import {
-  SEGMENTS, SEGMENT_NAMES, POINTS, FLOW, newState, publicView, closeValve, listen, report,
+  SEGMENTS, SEGMENT_NAMES, POINTS, FLOW, newState, publicView, closeValve, openValve, listen, report,
   reportBlocked, setFocus, readingAt, restartSameCase, revealLeak,
 } from "./leakLogic";
 import type { LeakState, Seg, Spot } from "./leakLogic";
@@ -38,7 +38,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
 
   const tapValve = (seg: Seg) => {
     if (phase !== "night") return;
-    if (v.closed === seg) { setNote("この弁は閉めている。別の弁を閉めると、こちらは自動で戻る。"); return; }
+    if (v.closed === seg) { const o = openValve(s); if (o.ok) { setS(o.state); setNote(null); setTimeline((l) => [...l, `🔧 弁${seg}を開けた（水が戻った）`]); } return; }
     const r = closeValve(s, seg);
     if (!r.ok) { setNote(r.reason === "valve_budget" ? "今夜の弁の操作は、もう使い切った。" : null); return; }
     setS(r.state);

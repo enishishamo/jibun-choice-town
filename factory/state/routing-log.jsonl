@@ -299,3 +299,4 @@
 {"ts":"2026-09-08T07:39:20.051Z","tool":"art-provider","mode":"imagegen","out":"public/assets/heat/place-leak.png","exit":0}
 {"ts":"2026-09-08T07:39:57.664Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/heat/place-leak.png"],"exit":0}
 {"ts":"2026-09-08T07:53:22.012Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/leak-detective/impl-review-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":225.315}
+{"ts":"2026-09-08T08:03:57.631Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/leak-detective/impl-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":198.639}

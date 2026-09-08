@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T07:41:07.731Z",
+  "generated_at": "2026-09-08T10:01:55.805Z",
   "rules": {
     "segments": [
       "A",
@@ -21,40 +21,46 @@
   "cases_per_strategy": 600,
   "strategies": {
     "random_report": {
-      "perfect": 40,
-      "success": 38,
-      "partial": 522,
-      "win_rate": 0.13
+      "perfect": 31,
+      "success": 28,
+      "partial": 541,
+      "win_rate": 0.098
     },
     "listen_random_report_loudest_any": {
-      "perfect": 175,
+      "perfect": 157,
       "success": 0,
-      "partial": 425,
-      "win_rate": 0.292
+      "partial": 443,
+      "win_rate": 0.262
     },
     "listen_random_report_loudest_steady": {
-      "perfect": 175,
+      "perfect": 157,
       "success": 0,
-      "partial": 425,
-      "win_rate": 0.292
+      "partial": 443,
+      "win_rate": 0.262
     },
     "flow_then_two_distinct_reports": {
-      "perfect": 100,
-      "success": 90,
-      "partial": 410,
-      "win_rate": 0.317
+      "perfect": 91,
+      "success": 117,
+      "partial": 392,
+      "win_rate": 0.347
     },
     "valves_ignored_guess_segment_gradient": {
-      "perfect": 214,
+      "perfect": 150,
       "success": 0,
-      "partial": 386,
-      "win_rate": 0.357
+      "partial": 450,
+      "win_rate": 0.25
     },
     "flow_then_gradient": {
       "perfect": 600,
       "success": 0,
       "partial": 0,
       "win_rate": 1
+    },
+    "flow_then_gradient_forgets_reopen": {
+      "perfect": 276,
+      "success": 0,
+      "partial": 324,
+      "win_rate": 0.46
     }
   },
   "solvability": {
@@ -76,6 +82,7 @@
     "flow_without_listening_is_not_reliable": true,
     "every_case_solvable_within_budgets": true,
     "think_again_gate_enforced": true,
-    "no_ui_reveal_of_segment": true
+    "no_ui_reveal_of_segment": true,
+    "isolated_segment_is_silent": true
   }
 }

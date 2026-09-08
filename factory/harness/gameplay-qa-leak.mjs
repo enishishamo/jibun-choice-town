@@ -10,7 +10,7 @@
 
 import {
   SEGMENTS, POINTS, BUDGETS, rng, newCase, newState, flowReading, soundReading,
-  closeValve, listen, report, reportBlocked, openRecords, publicView, revealLeak, setFocus, readingAt, restartSameCase,
+  closeValve, openValve, listen, report, reportBlocked, openRecords, publicView, revealLeak, setFocus, readingAt, restartSameCase,
 } from "../../src/q1/leakLogic.ts";
 import { readFileSync } from "node:fs";
 
@@ -30,6 +30,7 @@ function play(c, plan) {
     if (!a || a.type === "end") break;
     let r;
     if (a.type === "valve") r = closeValve(s, a.seg);
+    else if (a.type === "reopen") r = openValve(s);
     else if (a.type === "listen") r = listen(s, a.seg, a.point);
     else if (a.type === "records") { s = openRecords(s); continue; }
     else if (a.type === "report") r = report(s, a.seg, a.point);
@@ -98,7 +99,9 @@ const S = {
     if (last && v.unlocked && !v.misses.some((m) => m.seg === last.seg && m.point === last.point)) return { type: "report", seg, point: last.point };
     const p = pickNew(rand, unheard, used); if (!p) return { type: "end" }; used.add(key(p)); return { type: "listen", ...p }; }; },
   valves_ignored_guess_segment_gradient: (rand) => { const seg = SEGMENTS[Math.floor(rand() * SEGMENTS.length)]; let tapped = 0; return (v) => { if (tapped < BUDGETS.valve) { tapped++; return { type: "valve", seg: SEGMENTS[tapped - 1] }; } return gradientOn(seg, v); }; },
-  flow_then_gradient: () => (v) => { const seg = leakSegFromFlow(v); if (!seg) return nextValve(v); return gradientOn(seg, v); },
+  flow_then_gradient: () => (v) => { const seg = leakSegFromFlow(v); if (!seg) return nextValve(v); if (v.closed) return { type: "reopen" }; return gradientOn(seg, v); },
+  // regression (impl review r2): identifies the segment but forgets to reopen -> the isolated segment is silent
+  flow_then_gradient_forgets_reopen: () => (v) => { const seg = leakSegFromFlow(v); if (!seg) return nextValve(v); return gradientOn(seg, v); },
 };
 
 // ---- 1. strategies over random cases ----
@@ -114,6 +117,7 @@ check("flow-less random listening is not reliable", rates.listen_random_report_l
 check("flow-less random listening (steady-only) is not reliable", rates.listen_random_report_loudest_steady < 0.45, `${rates.listen_random_report_loudest_steady.toFixed(3)}`);
 check("flow-only (no gradient reading) is not reliable", rates.flow_then_guess_points < 0.5, `${rates.flow_then_guess_points.toFixed(3)}`);
 check("ignoring the meter and guessing the segment is not reliable (no UI reveal)", rates.valves_ignored_guess_segment_gradient < 0.45, `${rates.valves_ignored_guess_segment_gradient.toFixed(3)}`);
+check("forgetting to reopen the isolated segment is not reliable (silent when closed)", rates.flow_then_gradient_forgets_reopen < 0.5, `${rates.flow_then_gradient_forgets_reopen.toFixed(3)}`);
 
 // ---- 2. every leak x distractor combination solvable on the first report within budgets ----
 let total = 0, first = 0, worstL = 0, worstV = 0;
@@ -155,7 +159,9 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   check("only one valve closed at a time", s.closed === "C");
   check("third valve op refused", closeValve(s, "B").ok === false && closeValve(s, "B").reason === "valve_budget");
   check("closing another valve implicitly reopens the previous one (one at a time, one op)", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = closeValve(t, "B").state; return t.closed === "B" && t.valveOps === 2 && flowReading(t) === 2.2; })());
-  check("tapping the already-closed valve is refused and costs nothing", (() => { let t = stateFor(c); t = closeValve(t, "A").state; const r = closeValve(t, "A"); return r.ok === false && r.reason === "already_closed" && r.state.valveOps === 1; })());
+  check("reopening is explicit and free (valveOps unchanged)", (() => { let t = stateFor(c); t = closeValve(t, "A").state; const o = openValve(t); return o.ok && o.state.closed === null && o.state.valveOps === 1 && openValve(o.state).ok === false; })());
+  check("REGRESSION: the isolated leak segment is silent, reopening restores the sound", (() => { let t = stateFor(c); t = closeValve(t, "C").state; const silent = soundReading(t.c, "C", 5, t.closed); t = listen(t, "C", 5).state; const heardSilent = readingAt(publicView(t), "C", 5); t = openValve(t).state; const loud = soundReading(t.c, "C", 5, t.closed); return silent.level === 1 && heardSilent.level === 1 && loud.level === 5; })());
+  check("a report while the segment is closed still resolves by the point alone (crew restores supply)", (() => { let t = stateFor(c); t = listen(t, "C", 5).state; t = closeValve(t, "C").state; const r = report(t, "C", 5); return r.ok && r.hit === true; })());
   check("restartSameCase keeps the hidden case and resets everything else", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = listen(t, "C", 5).state; const u = restartSameCase(t); return u.c === t.c && u.valveOps === 0 && u.listens === 0 && u.readings.length === 0 && u.closed === null && u.outcome === null; })());
   check("readingAt reads from the public view", (() => { let t = stateFor(c); t = listen(t, "C", 5).state; const r = readingAt(publicView(t), "C", 5); return r && r.level === 5 && readingAt(publicView(t), "C", 4) === undefined; })());
   check("sound: loudest directly above, -1 per point", soundReading(c, "C", 5).level === 5 && soundReading(c, "C", 3).level === 3 && soundReading(c, "C", 1).level === 1);
@@ -188,7 +194,7 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   check("LeakTraceGame.tsx never reads s.c / heard(s) / .leak / .house", privateReads.length === 0, privateReads.join(","));
   const revealUses = (src.match(/revealLeak\(/g) || []).length;
   check("revealLeak is used exactly once (the post-hit dawn screen)", revealUses === 1, `${revealUses}`);
-  check("no openValve action exists (operations = closes only)", !src.includes("openValve"));
+  check("tapping the closed lid reopens it (explicit free reopen exists in the component)", src.includes("openValve(s)"));
   check("cases vary", new Set(Array.from({ length: 40 }, (_, i) => key(newCase(rng(i)).leak))).size >= 10);
   check("house distractor never coincides with the leak", Array.from({ length: 500 }, (_, i) => newCase(rng(i))).every((c) => key(c.leak) !== key(c.house)));
 }

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for leak-detective / t1b-night-listening-evidence-gate (v3).
+// Design-stage exploit simulation for leak-detective / t1c-night-listening-isolation (v5).
+// v5 (implementation review r2): a CLOSED segment carries no water, so its listening points
+// are silent (level 1 steady) even directly above the leak; reopening is an explicit free
+// action; the legitimate strategy reopens after isolating; a strategy that forgets to reopen
+// hears nothing and must not succeed reliably.
 // v3 (design review r2): the second report is unlocked ONLY by a new listen; the
 // record view never unlocks (the old "compare" free unlock is removed); the gate
 // test now also verifies that opening the records and reporting again is refused.
@@ -32,7 +36,9 @@ const P = T.block.points_per_segment;
 const B = T.budgets;
 const F = T.flow_meter;
 
-function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// scramble + warm-up so consecutive seeds (1000+i) give decorrelated cases — a plain LCG seeded with
+// consecutive integers made 600 "random" cases share almost the same leak segment (found in v5).
+function rng(seed) { let s = ((seed ^ 0x9e3779b9) * 2654435761) >>> 0; const next = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); next(); next(); next(); return next; }
 
 // ---- world ----
 function newCase(rand) {
@@ -47,9 +53,9 @@ function flowReading(c, closed) {
   const v = F.base_night_usage + (leakOpen ? F.leak_flow : 0) - F.per_segment_house_share * closed.size;
   return Number(v.toFixed(F.display_decimals));
 }
-function soundReading(c, seg, point) {
+function soundReading(c, seg, point, closed) {
   let level, continuity = "steady";
-  if (seg === c.leak.seg) level = Math.max(1, 5 - Math.abs(point - c.leak.point)); else level = 1;
+  if (seg === c.leak.seg && closed !== seg) level = Math.max(1, 5 - Math.abs(point - c.leak.point)); else level = 1; // isolated segment: no water, no leak sound
   if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
   return { level, continuity };
 }
@@ -59,7 +65,7 @@ function simulate(c, plan) {
   const closed = new Set();
   const readings = [], flowLog = [];
   let valveOps = 0, listens = 0, reports = 0, thinkAgainDone = true; // true until the first miss
-  const view = () => ({ readings: [...readings], flowLog: [...flowLog], flow: flowReading(c, closed), budgets: { valve: B.valve_ops - valveOps, listens: B.listens - listens, reports: B.reports - reports }, secondReportUnlocked: thinkAgainDone });
+  const view = () => ({ closed: closed.size ? [...closed][0] : null, readings: [...readings], flowLog: [...flowLog], flow: flowReading(c, closed), budgets: { valve: B.valve_ops - valveOps, listens: B.listens - listens, reports: B.reports - reports }, secondReportUnlocked: thinkAgainDone });
   for (let guard = 0; guard < 60; guard++) {
     const a = plan(view());
     if (!a || a.type === "end") break;
@@ -67,9 +73,11 @@ function simulate(c, plan) {
       if (valveOps >= B.valve_ops) continue;
       valveOps++; closed.clear(); closed.add(a.seg);
       flowLog.push({ closed: a.seg, reading: flowReading(c, closed) });
+    } else if (a.type === "reopen") {
+      closed.clear(); // free: reopening is not a scored operation
     } else if (a.type === "listen") {
       if (listens >= B.listens) continue;
-      listens++; readings.push({ seg: a.seg, point: a.point, ...soundReading(c, a.seg, a.point) }); thinkAgainDone = true;
+      listens++; readings.push({ seg: a.seg, point: a.point, ...soundReading(c, a.seg, a.point, closed.size ? [...closed][0] : null) }); thinkAgainDone = true;
     } else if (a.type === "compare") {
       // opening the record panel never unlocks a report (r2 HIGH)
     } else if (a.type === "report") {
@@ -126,6 +134,12 @@ const S = {
     return gradientOn(seg, v); }; },
   // legitimate D: flow isolation -> gradient listening on that segment, steady readings only -> report the max
   flow_then_gradient: () => (v) => {
+    const seg = leakSegFromFlow(v); if (!seg) return nextValve(v);
+    if (v.closed) return { type: "reopen" }; // restore supply before listening (a closed segment is silent)
+    return gradientOn(seg, v);
+  },
+  // r2 adversarial/regression: identifies the segment by flow but FORGETS to reopen -> hears silence
+  flow_then_gradient_forgets_reopen: () => (v) => {
     const seg = leakSegFromFlow(v); if (!seg) return nextValve(v);
     return gradientOn(seg, v);
   },
@@ -191,6 +205,7 @@ const verdict = {
   every_case_solvable_within_budgets: solvable === total && worstListens <= B.listens && worstValves <= B.valve_ops,
   think_again_gate_enforced: gateBlocked === 200 && compareBlocked === 200 && listenUnlocks === 200,
   no_ui_reveal_of_segment: results.valves_ignored_guess_segment_gradient.win_rate < 0.45,
+  isolated_segment_is_silent: results.flow_then_gradient_forgets_reopen.win_rate < 0.5,
 };
 const out = { generated_at: new Date().toISOString(), rules: { segments: SEGS, points_per_segment: P, budgets: B, reading_fields: T.sound_reading.fields }, cases_per_strategy: N, strategies: results, solvability: { solvable, total, first_try: firstTry, worst_listens_used: worstListens, worst_valve_ops_used: worstValves }, think_again_gate: { trials: 200, second_report_refused_without_new_evidence: gateBlocked, second_report_refused_after_compare_only: compareBlocked, second_report_allowed_after_new_listen: listenUnlocks }, verdict };
 writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

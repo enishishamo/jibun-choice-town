@@ -1,5 +1,5 @@
 {
-  "note": "Design-stage state table for translation t1b-night-listening-evidence-gate (redesign #1 after design review r2). Every number is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence. Facts: fact_sheet.json (representative_duties 2-3, decisions 2/4/6, expertise 0-1, tools 1/6/7/11, adjacent_profession_boundaries).",
+  "note": "Design-stage state table for translation t1c-night-listening-isolation (redesign #2 after implementation review r2). Every number is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence. Facts: fact_sheet.json (representative_duties 2-3, decisions 2/4/6, expertise 0-1, tools 1/6/7/11, adjacent_profession_boundaries).",
   "block": {
     "segments": [
       {
@@ -46,7 +46,8 @@
     "other_segment_rule": "level 1, continuity steady（遠くの漏水音がかすかに管を伝う）。",
     "house_usage_override": "その点の表示を level 4, continuity intermittent に置き換える（漏水点の表示は上書きしない）。",
     "removed_in_v2": "tone（高い/低い）フィールドと『低い音だけなら漏水点はもっと遠い』規則。fact_sheet uncertainties 2: この経験則はWaQuAC実務者資料経由で原典（漏水防止マニュアル2012）未取得、かつ音量・音質は管材・口径・水圧・土質で変わる（expertise 0）ため、確定ルールとして子どもに教えない。公式確認済みの『真上付近で最も大きく聴こえる』（東京都水道局）と『疑似音（断続する使用音）との聴き分け』だけを規則にする。",
-    "why": "漏水位置の真上付近で漏水音が一番大きく聴き取れる（東京都水道局）、疑似音との聴き分けに熟練が必要（東京都水道局）。"
+    "why": "漏水位置の真上付近で漏水音が一番大きく聴き取れる（東京都水道局）、疑似音との聴き分けに熟練が必要（東京都水道局）。 impl review r2 HIGH是正: 隔離した区間で漏水音が聴こえ続ける矛盾を除去（isolation_rule）。",
+    "isolation_rule": "閉めている区間（水が流れていない）の聴取点では、漏水点があっても level 1, continuity steady（漏水音は水圧で生じる——水が止まれば音は出ない）。家の使用音（intermittent）は水道局の弁とは無関係に鳴りうる（宅内の使用は貯湯等もあるため単純化として維持）。"
   },
   "budgets": {
     "valve_ops": 2,
@@ -54,7 +55,7 @@
     "reports": 2,
     "why": "3区間なら閉める操作2回で切り分けられる（2回とも落ちなければ残りの区間）。夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（ゲーム上の単純化、班構成はFACT_CHECK_REQUIRED 7）。位置の報告は一晩2回まで——修理班が掘って外れると道路復旧費と時間を失う（decisions 6）。"
   },
-  "report_rule": "報告 = (segment, point) を『ここが漏水点』として修理班に伝える（r1 HIGH是正: 調査員は位置を特定して修理判断につなぐ。掘削・復旧・断水は水道局の判断と工事業者の作業——fact_sheet adjacent_profession_boundaries）。漏水点と一致すれば当たり: 修理班が掘ると管の割れ目から水が噴き出す→修理→明け方に路面の湿りが消え、流量計が base に戻る。外れ: 修理班が掘った穴の管は乾いていて埋め戻す（reports −1）。報告は一晩2回まで（不可逆、報告ボタンに『あと◯回』を常時表示）。",
+  "report_rule": "報告 = (segment, point) を『ここが漏水点』として修理班に伝える（r1 HIGH是正: 調査員は位置を特定して修理判断につなぐ。掘削・復旧・断水は水道局の判断と工事業者の作業——fact_sheet adjacent_profession_boundaries）。漏水点と一致すれば当たり: 修理班が掘ると管の割れ目から水が噴き出す→修理→明け方に路面の湿りが消え、流量計が base に戻る。外れ: 修理班が掘った穴の管は乾いていて埋め戻す（reports −1）。報告は一晩2回まで（不可逆、報告ボタンに『あと◯回』を常時表示）。 報告した地点を修理班が掘るときは、修理班が弁を開けて通水した状態で確認する（当たりなら噴き出す）——報告時に弁が閉まっていても結果は地点だけで決まる。",
   "think_again_gate": "1回目の報告が外れた後、2回目の報告ボタンは『新しい聴取を1回行う』まで無効（r2 HIGH是正: 記録を開くだけの無料解除を廃止。考え直しは新しい証拠でのみ成立させる）。聴取予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。『記録』パネル（閉めた弁と聴いた点の一覧）はいつでも見られるが、何も解禁しない。",
   "outcome_rule": {
     "perfect": "1回目の報告で当たり",
@@ -74,5 +75,11 @@
     "steady": "波形が途切れず流れ続ける（1.5秒ループ）。",
     "intermittent": "波形が0.6秒鳴って0.5秒止まる、を繰り返す。同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする（家の中で水を使っている、と絵で分かる）。",
     "why": "r2 MEDIUM: 『とぎれる音＝家の使用の疑似音』を説明文で渡さず、反応から発見させる。"
-  }
+  },
+  "valve_model": {
+    "close": "弁をタップ→その区間の管の水が止まる（同時に閉められるのは1本。別の弁を閉めると、閉めていた弁は自動で開く）。閉める操作ごとに valve_ops を1消費。",
+    "reopen": "閉めている弁をもう一度タップ→開く。無料（valve_ops を消費しない）。夜間最小流量測定で断水を短時間にとどめるための当然の操作（fact_sheet decisions 1）。",
+    "why": "impl review r2 HIGH/MEDIUM是正: game_translations（もう一度タップで戻す）と game_spec（開け直しは無料）が既に述べていた弁モデルを state_table にも明記し、sim・実装と一致させる。"
+  },
+  "legitimate_play_note": "流量で区間を特定したら、弁を開けてから（無料）その区間で聴く。閉めたまま聴くと静かで、勾配が読めない（design-sim: forgets_to_reopen 戦略で検証）。"
 }

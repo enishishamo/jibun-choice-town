@@ -68,9 +68,10 @@ export function flowReading(s: LeakState): number {
   return Number(v.toFixed(1));
 }
 
-/** Detector reading at a point: loudest directly above the leak (level 5), −1 per point of distance; the house-usage point is level 4 intermittent. */
-export function soundReading(c: LeakCase, seg: Seg, point: number): { level: number; continuity: Continuity } {
-  let level = seg === c.leak.seg ? Math.max(1, 5 - Math.abs(point - c.leak.point)) : 1;
+/** Detector reading at a point: loudest directly above the leak (level 5), −1 per point of distance; the house-usage point is level 4 intermittent.
+ *  A CLOSED segment carries no water, so it is silent (level 1 steady) even directly above the leak (state_table.sound_reading.isolation_rule). */
+export function soundReading(c: LeakCase, seg: Seg, point: number, closed: Seg | null = null): { level: number; continuity: Continuity } {
+  let level = seg === c.leak.seg && closed !== seg ? Math.max(1, 5 - Math.abs(point - c.leak.point)) : 1;
   let continuity: Continuity = "steady";
   if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
   return { level, continuity };
@@ -88,8 +89,12 @@ export function closeValve(s: LeakState, seg: Seg): ActionResult {
   next.flowLog = [...s.flowLog, { closed: seg, reading: flowReading(next) }];
   return { state: next, ok: true };
 }
-// There is no separate "reopen" action: closing another valve implicitly reopens the
-// previous one, so the only scored operation is a close (design-sim: one op = close+reopen).
+/** Tapping the closed lid again reopens it. Free: only closes are scored operations (state_table.valve_model). */
+export function openValve(s: LeakState): ActionResult {
+  if (s.outcome) return { state: s, ok: false, reason: "night_over" };
+  if (!s.closed) return { state: s, ok: false, reason: "nothing_closed" };
+  return { state: { ...s, closed: null }, ok: true };
+}
 export function setFocus(s: LeakState, seg: Seg | null): LeakState {
   return { ...s, focus: s.focus === seg ? null : seg };
 }
@@ -100,7 +105,7 @@ export function listen(s: LeakState, seg: Seg, point: number): ActionResult {
   if (s.outcome) return { state: s, ok: false, reason: "night_over" };
   if (heard(s, seg, point)) return { state: s, ok: false, reason: "already_heard" };
   if (s.listens >= BUDGETS.listens) return { state: s, ok: false, reason: "listen_budget" };
-  const r = soundReading(s.c, seg, point);
+  const r = soundReading(s.c, seg, point, s.closed);
   // a new listen is new evidence: it re-enables reporting after a miss
   return { state: { ...s, listens: s.listens + 1, readings: [...s.readings, { seg, point, ...r }], unlocked: true }, ok: true };
 }
