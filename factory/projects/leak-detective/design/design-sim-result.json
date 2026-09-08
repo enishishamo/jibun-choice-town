@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T10:08:05.190Z",
+  "generated_at": "2026-09-08T10:18:18.839Z",
   "rules": {
     "segments": [
       "A",
@@ -14,8 +14,8 @@
       "why": "3区間なら閉める操作2回で切り分けられる（2回とも落ちなければ残りの区間）。夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（ゲーム上の単純化、班構成はFACT_CHECK_REQUIRED 7）。位置の報告は一晩2回まで——修理班が掘って外れると道路復旧費と時間を失う（decisions 6）。"
     },
     "reading_fields": [
-      "level 1-5（波形バー）",
-      "continuity steady|intermittent（ずっと／とぎれる）"
+      "level 0-5（波形バー。0＝無音）",
+      "continuity steady|intermittent|silent（ずっと／とぎれる／静か）"
     ]
   },
   "cases_per_strategy": 600,
@@ -45,10 +45,10 @@
       "win_rate": 0.347
     },
     "valves_ignored_guess_segment_gradient": {
-      "perfect": 150,
+      "perfect": 138,
       "success": 0,
-      "partial": 450,
-      "win_rate": 0.25
+      "partial": 462,
+      "win_rate": 0.23
     },
     "flow_then_gradient": {
       "perfect": 600,
@@ -57,10 +57,10 @@
       "win_rate": 1
     },
     "flow_then_gradient_forgets_reopen": {
-      "perfect": 272,
+      "perfect": 199,
       "success": 0,
-      "partial": 328,
-      "win_rate": 0.453
+      "partial": 401,
+      "win_rate": 0.332
     }
   },
   "solvability": {

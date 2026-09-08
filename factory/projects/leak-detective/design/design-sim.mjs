@@ -54,9 +54,10 @@ function flowReading(c, closed) {
   return Number(v.toFixed(F.display_decimals));
 }
 function soundReading(c, seg, point, closed) {
+  if (closed === seg) return { level: 0, continuity: "silent" }; // v7: a dedicated silent state — nothing reaches the pickup (design review r6)
   let level, continuity = "steady";
-  if (seg === c.leak.seg && closed !== seg) level = Math.max(1, 5 - Math.abs(point - c.leak.point)); else level = 1; // isolated segment: no water, no leak sound
-  if (seg === c.house.seg && point === c.house.point && closed !== seg) { level = 4; continuity = "intermittent"; } // v6: silent too while the segment is closed
+  if (seg === c.leak.seg) level = Math.max(1, 5 - Math.abs(point - c.leak.point)); else level = 1;
+  if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
   return { level, continuity };
 }
 
@@ -198,6 +199,14 @@ for (let i = 0; i < 200; i++) {
   const r3 = simulate(c, () => { a3++; if (a3 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a3 === 2) return { type: "listen", seg: c.leak.seg, point: c.leak.point }; if (a3 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
   if (r3.grade === "success") listenUnlocks++;
 }
+// v7 (design review r6): the silent state must be a distinct perceptual output, not "level 1 steady" —
+// every reading on a closed segment (leak point, house point, ordinary point) is level 0 / "silent".
+let closedReadingsAllSilent = true;
+for (const ls of SEGS) for (let lp = 1; lp <= P; lp++) for (const hs of SEGS) for (let hp = 1; hp <= P; hp++) {
+  if (hs === ls && hp === lp) continue;
+  const c = { leak: { seg: ls, point: lp }, house: { seg: hs, point: hp } };
+  for (const seg of SEGS) for (let p = 1; p <= P; p++) { const r = soundReading(c, seg, p, seg); if (r.level !== 0 || r.continuity !== "silent") closedReadingsAllSilent = false; }
+}
 const verdict = {
   legitimate_strategy_wins_every_case: solvable === total,
   no_content_blind_strategy_wins_reliably: results.random_report.win_rate < 0.15 && results.listen_random_report_loudest_any.win_rate < 0.4 && results.listen_random_report_loudest_steady.win_rate < 0.45,
@@ -205,7 +214,7 @@ const verdict = {
   every_case_solvable_within_budgets: solvable === total && worstListens <= B.listens && worstValves <= B.valve_ops,
   think_again_gate_enforced: gateBlocked === 200 && compareBlocked === 200 && listenUnlocks === 200,
   no_ui_reveal_of_segment: results.valves_ignored_guess_segment_gradient.win_rate < 0.45,
-  isolated_segment_is_silent: results.flow_then_gradient_forgets_reopen.win_rate < 0.5,
+  isolated_segment_is_silent: results.flow_then_gradient_forgets_reopen.win_rate < 0.5 && closedReadingsAllSilent,
 };
 const out = { generated_at: new Date().toISOString(), rules: { segments: SEGS, points_per_segment: P, budgets: B, reading_fields: T.sound_reading.fields }, cases_per_strategy: N, strategies: results, solvability: { solvable, total, first_try: firstTry, worst_listens_used: worstListens, worst_valve_ops_used: worstValves }, think_again_gate: { trials: 200, second_report_refused_without_new_evidence: gateBlocked, second_report_refused_after_compare_only: compareBlocked, second_report_allowed_after_new_listen: listenUnlocks }, verdict };
 writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

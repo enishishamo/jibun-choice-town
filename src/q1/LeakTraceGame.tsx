@@ -56,7 +56,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     setLastHeard({ seg, point });
     setSelected({ seg, point });
     setNote(null);
-    setTimeline((l) => [...l, `🎧 ${seg}${point}: ${"▮".repeat(rd.level)}${"▯".repeat(5 - rd.level)} ${rd.continuity === "steady" ? "ずっと" : "とぎれる"}`]);
+    setTimeline((l) => [...l, rd.continuity === "silent" ? `🎧 ${seg}${point}: 静か（水が止まっている）` : `🎧 ${seg}${point}: ${"▮".repeat(rd.level)}${"▯".repeat(5 - rd.level)} ${rd.continuity === "steady" ? "ずっと" : "とぎれる"}`]);
   };
   const doReport = () => {
     if (!selected) return;
@@ -201,7 +201,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
                 <text x={30} y={y + 4} fontSize="10" textAnchor="middle" fill="#fff">{closed ? "閉" : "弁"}</text>
               </g>
               {/* the closed lid is itself the reopen control (free): say so, non-verbally enough for a first play */}
-              <text x={30} y={y + 40} fontSize="9" textAnchor="middle" fill={closed ? "#ffd86b" : "#c9c2b3"}>{closed ? "▲開ける（0回）" : seg}</text>
+              <text x={closed ? 46 : 30} y={y + 40} fontSize={closed ? 14 : 9} textAnchor="middle" fill={closed ? "#ffd86b" : "#c9c2b3"}>{closed ? "▲開ける（0回）" : seg}</text>
               {/* listening points */}
               {Array.from({ length: POINTS }, (_, i) => i + 1).map((p) => {
                 const x = pointX(p);
@@ -214,9 +214,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
                     <circle cx={x} cy={y} r={rd ? 9 : 7} fill={missed ? "#7a5a5a" : rd ? "#f5e6d0" : "#dbe6f2"} stroke={isSel ? "#f5b642" : "#1f2a44"} strokeWidth={isSel ? 3 : 1.5} className={rd ? "" : "leak-pt"} />
                     {!rd && <text x={x} y={y + 3} fontSize="8" textAnchor="middle" fill="#1f2a44">🎧</text>}
                     {rd && !missed && (
-                      <g clipPath="url(#leakclip)">
-                        <text x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#3b3325">{"▮".repeat(rd.level)}</text>
-                      </g>
+                      <text x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#3b3325">{rd.continuity === "silent" ? "－" : "▮".repeat(rd.level)}</text>
                     )}
                     {missed && <text x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#fff">✕</text>}
                     <text x={x + 14} y={y - 10} fontSize="8" textAnchor="middle" fill="#c9c2b3">{p}</text>
@@ -245,10 +243,19 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
         <div style={{ margin: "2px 12px 0", display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#3b3325" }}>
           <span>🎧 {lastHeard.seg}{lastHeard.point}</span>
           <div style={{ flex: 1, height: 14, overflow: "hidden", background: "#fbf6ea", borderRadius: 7, position: "relative" }}>
-            <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: "200%", background: `repeating-linear-gradient(90deg, #2c5c8a 0 3px, transparent 3px 8px)`, opacity: 0.9, animation: `leak-steady 0.5s linear infinite${lastReading.continuity === "intermittent" ? ", leak-burst 1.1s infinite" : ""}` }} />
+            {/* silent (closed segment): a flat, empty strip — no bars, no motion */}
+            {lastReading.continuity !== "silent" && (
+              <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: "200%", background: `repeating-linear-gradient(90deg, #2c5c8a 0 3px, transparent 3px 8px)`, opacity: 0.9, animation: `leak-steady 0.5s linear infinite${lastReading.continuity === "intermittent" ? ", leak-burst 1.1s infinite" : ""}` }} />
+            )}
           </div>
-          <span>{"▮".repeat(lastReading.level)}{"▯".repeat(5 - lastReading.level)}</span>
-          <span style={{ color: "#8a7f6a" }}>{lastReading.continuity === "steady" ? "ずっと" : "とぎれる"}</span>
+          {lastReading.continuity === "silent" ? (
+            <span style={{ color: "#8a7f6a" }}>静か（水が止まっている）</span>
+          ) : (
+            <>
+              <span>{"▮".repeat(lastReading.level)}{"▯".repeat(5 - lastReading.level)}</span>
+              <span style={{ color: "#8a7f6a" }}>{lastReading.continuity === "steady" ? "ずっと" : "とぎれる"}</span>
+            </>
+          )}
         </div>
       )}
 

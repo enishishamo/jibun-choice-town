@@ -39,15 +39,15 @@
   },
   "sound_reading": {
     "fields": [
-      "level 1-5（波形バー）",
-      "continuity steady|intermittent（ずっと／とぎれる）"
+      "level 0-5（波形バー。0＝無音）",
+      "continuity steady|intermittent|silent（ずっと／とぎれる／静か）"
     ],
     "leak_segment_rule": "dist = |point − leak_point|。level = max(1, 5 − dist)。continuity = steady。",
     "other_segment_rule": "level 1, continuity steady（遠くの漏水音がかすかに管を伝う）。",
     "house_usage_override": "その点の表示を level 4, continuity intermittent に置き換える（漏水点の表示は上書きしない）。",
     "removed_in_v2": "tone（高い/低い）フィールドと『低い音だけなら漏水点はもっと遠い』規則。fact_sheet uncertainties 2: この経験則はWaQuAC実務者資料経由で原典（漏水防止マニュアル2012）未取得、かつ音量・音質は管材・口径・水圧・土質で変わる（expertise 0）ため、確定ルールとして子どもに教えない。公式確認済みの『真上付近で最も大きく聴こえる』（東京都水道局）と『疑似音（断続する使用音）との聴き分け』だけを規則にする。",
     "why": "漏水位置の真上付近で漏水音が一番大きく聴き取れる（東京都水道局）、疑似音との聴き分けに熟練が必要（東京都水道局）。 impl review r2 HIGH是正: 隔離した区間で漏水音が聴こえ続ける矛盾を除去（isolation_rule）。",
-    "isolation_rule": "閉めている区間（水が流れていない）の聴取点では、漏水点があっても、家の使用音の点であっても、すべて level 1, continuity steady（路面のピックアップが拾う音はどれも管の中の水の流れ・水圧で生じる——水が止まれば何も伝わらない。r5 HIGH是正: 疑似音だけ聴こえる例外を廃止）。閉めている区間では家の窓明かりの点滅も出さない（音と同期する演出なので）。弁を開け直すと漏水音も疑似音も戻る。"
+    "isolation_rule": "閉めている区間（水が流れていない）の聴取点では、漏水点・家の使用音の点・その他の点を問わず、読み値は専用の無音状態 level 0 / continuity silent（r6 HIGH是正: level 1 steady を無音の代用にしない）。画面では波形バーも動く波形も『ずっと』も窓の点滅も一切出さず、『静か（水が止まっている）』とだけ示す。弁を開け直すと漏水音も疑似音も戻る。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査する（isolated_segment_is_silent）。"
   },
   "budgets": {
     "valve_ops": 2,
@@ -62,7 +62,7 @@
     "success": "2回目の報告で当たり",
     "partial": "2回とも外れ、または報告せずに夜が明けた（漏れは次の夜へ持ち越し。正直なpartial outcome、進行は可能）"
   },
-  "first_step_visible": "深夜の区画。流量計の針が『夜なのに、まだ流れてる』位置。通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図には管の3区間・弁・聴取点のみ（濡れた場所・漏水マークは描かない）。操作手順を書いた一行は置かない（r1 MEDIUM）。",
+  "first_step_visible": "深夜の区画。流量計の針が『夜なのに、まだ流れてる』位置。通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。予算行は『閉める あと2／聴く 5／報告 2』。地図には管の3区間・弁・聴取点のみ（濡れた場所・漏水マークは描かない）。操作手順を書いた一行は置かない（r1 MEDIUM）。",
   "legibility_rules": {
     "tap_target_min_px": 44,
     "readings_display": "地図上の点には波形の小さな印だけを残し、数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並べる（最大5件）。",
@@ -79,7 +79,7 @@
   },
   "valve_model": {
     "close": "弁をタップ→その区間の管の水が止まる（同時に閉められるのは1本。別の弁を閉めると、閉めていた弁は自動で開く）。閉める操作ごとに valve_ops を1消費。",
-    "reopen": "閉めている弁をもう一度タップ→開く。無料（valve_ops を消費しない）。夜間最小流量測定で断水を短時間にとどめるための当然の操作（fact_sheet decisions 1）。r5 MEDIUM是正: 閉めている弁のふた（44pxのタップ領域）の下に『▲開ける（0回）』と明示し、予算表示は『閉める あと◯』と表記して、開け直しが無料の操作だと初見で分かるようにする。",
+    "reopen": "閉めている弁をもう一度タップ→開く。無料（valve_ops を消費しない）。夜間最小流量測定で断水を短時間にとどめるための当然の操作（fact_sheet decisions 1）。r5 MEDIUM是正: 閉めている弁のふた（44pxのタップ領域）の下に『▲開ける（0回）』を本文相当の可読サイズ（375pxで約11px）で明示し、予算表示は『閉める あと◯』と表記して、開け直しが無料の操作だと初見で分かるようにする。",
     "why": "impl review r2 HIGH/MEDIUM是正: game_translations（もう一度タップで戻す）と game_spec（開け直しは無料）が既に述べていた弁モデルを state_table にも明記し、sim・実装と一致させる。"
   },
   "legitimate_play_note": "流量で区間を特定したら、弁を開けてから（無料）その区間で聴く。閉めたまま聴くと静かで、勾配が読めない（design-sim: forgets_to_reopen 戦略で検証）。"

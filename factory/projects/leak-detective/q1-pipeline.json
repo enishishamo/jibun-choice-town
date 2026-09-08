@@ -4,7 +4,7 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "ESCALATED",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 3,
   "repair_count": 1,
@@ -1434,21 +1434,20 @@
   },
   "independent_review": {
     "kind": "design",
-    "verdict": "PASS",
-    "score": 84,
+    "verdict": "HUMAN_REQUIRED",
+    "score": 70,
     "blockers": 0,
-    "high": 0,
-    "evidence": "factory/projects/leak-detective/design/design-review-r4.result.json",
-    "input": "factory/projects/leak-detective/design/design-review-r4-prompt.md",
+    "high": 1,
+    "evidence": "factory/projects/leak-detective/design/design-review-r6.result.json",
+    "input": "factory/projects/leak-detective/design/design-review-r6-prompt.md",
     "reviewer": "codex-review",
     "creator": "claude-code",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
-    "iteration": 2,
+    "iteration": 3,
     "repair_count_at_review": 1,
-    "stale": true,
-    "recorded_at": "2026-09-08T07:33:09.478Z",
-    "stale_because": "redesign"
+    "stale": false,
+    "recorded_at": "2026-09-08T10:16:16.817Z"
   },
   "impl_review": null,
   "art_review": {
@@ -1528,12 +1527,21 @@
       "at": "2026-09-08T10:07:26.210Z"
     }
   ],
-  "human_decisions": [],
+  "human_decisions": [
+    {
+      "id": "hd-1",
+      "domains": [],
+      "opened_by_review": "factory/projects/leak-detective/design/design-review-r6.result.json",
+      "note": "reviewer returned HUMAN_REQUIRED",
+      "status": "open",
+      "opened_at": "2026-09-08T10:16:16.817Z"
+    }
+  ],
   "task_id": "q1-new-leak-detective",
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T10:11:57.040Z",
+  "updated_at": "2026-09-08T10:16:16.863Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -2418,6 +2426,27 @@
       "at": "2026-09-08T10:11:57.040Z",
       "event": "repair_done",
       "note": "design review r5 HIGH/MEDIUM是正（iteration 3 repair 1/1）: 閉区間では家の使用音も静か（窓の点滅なし）、閉じた弁のふたに『▲開ける（0回）』・予算行『閉める あと◯』。state_table/design-sim v6/leakLogic/component/QA harness(42/42)を同時更新、375px実機で静音→開け直し→音が戻る、を確認。"
+    },
+    {
+      "at": "2026-09-08T10:16:16.817Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "HUMAN_REQUIRED",
+      "independent": true,
+      "evidence": "factory/projects/leak-detective/design/design-review-r6.result.json"
+    },
+    {
+      "at": "2026-09-08T10:16:16.817Z",
+      "event": "human_decision_opened",
+      "id": "hd-1",
+      "source": "review"
+    },
+    {
+      "at": "2026-09-08T10:16:16.863Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "ESCALATED",
+      "note": "Design review r6 (factory/projects/leak-detective/design/design-review-r6.result.json): HUMAN_REQUIRED, score 70 (CA70/GQ78), 0 blockers, 1 HIGH, 1 MEDIUM. HIGH: the closed-segment reading is returned as level 1 steady and therefore DISPLAYED as one bar + a running waveform + 'ずっと' — perceptually not silent, contradicting the adopted 'no water, no sound' model (the reviewer classifies this as §3 RELEASE BLOCKER-class: a physical-model error). MEDIUM: the reopen label renders at ~8px and first_visible_state still says '弁 2回'. Both are marked fixable_by_local_repair:true and the fix is small (a dedicated silent reading state: level 0 / continuity 'silent', rendered with no bars, no waveform, no 'ずっと'; a larger label; one wording fix). But this pipeline's budgets are exhausted — iteration 3 repair 1/1 used, redesign 2/2 used — and q1-first-play-standard §6b forbids overriding a HIGH the reviewer classifies as §3-class. Per the Factory's finite-budget rule this is therefore ESCALATED, not silently patched. The Human Decision requested is narrow and NOT a product-identity question: grant ONE additional local-repair iteration (task-state.mjs reset-iteration / a recorded human note) for the display-only silent state, after which the pipeline can immediately run design review r7, the gate, and re-implementation review. The fix has been prepared on the branch (code + design docs, sim/QA green) but NOT submitted to the pipeline, so nothing was decided on the Factory's behalf. Full history: f-1..f-6, two redesigns (t1b, t1c), six design reviews (62/72/76/84 PASS/72/70), two implementation reviews (72/68); E confirmed inside the water bureau's own authority in every round."
     }
   ],
   "redesign": [
@@ -2437,5 +2466,9 @@
       "reason": "Implementation review r2 FAIL (f-5, FACTUAL_PROFESSION_ERROR): the design never defined detector readings or dig results while a segment is hydraulically isolated, so the game produced leak sound and a spraying dig on a closed segment; the valve model also disagreed across translation/spec/sim. Iteration-2 repairs exhausted -> redesign #2 (2/2, last): t1c-night-listening-isolation keeps everything approved in r4 (flow isolation, gradient listening, pseudo-sound, 3x6 layout, level+continuity readings, budgets 2/5/2 as CLOSES, evidence-only think-again gate, no automatic highlight, surveyor pinpoints & crew digs) and adds two explicit rules: a closed segment is silent (no water, no leak sound) and reopening is a free explicit tap; the crew digs with supply restored. design-sim v5 (rng seed-correlation bug fixed): legitimate strategy reopens before listening and wins 306/306; forgets-to-reopen 46%; all seven verdict flags true. leakLogic/component/QA harness already updated (41/41) pending the fresh design review + gate.",
       "at": "2026-09-08T10:03:24.582Z"
     }
-  ]
+  ],
+  "escalation": {
+    "reason": "Design review r6 (factory/projects/leak-detective/design/design-review-r6.result.json): HUMAN_REQUIRED, score 70 (CA70/GQ78), 0 blockers, 1 HIGH, 1 MEDIUM. HIGH: the closed-segment reading is returned as level 1 steady and therefore DISPLAYED as one bar + a running waveform + 'ずっと' — perceptually not silent, contradicting the adopted 'no water, no sound' model (the reviewer classifies this as §3 RELEASE BLOCKER-class: a physical-model error). MEDIUM: the reopen label renders at ~8px and first_visible_state still says '弁 2回'. Both are marked fixable_by_local_repair:true and the fix is small (a dedicated silent reading state: level 0 / continuity 'silent', rendered with no bars, no waveform, no 'ずっと'; a larger label; one wording fix). But this pipeline's budgets are exhausted — iteration 3 repair 1/1 used, redesign 2/2 used — and q1-first-play-standard §6b forbids overriding a HIGH the reviewer classifies as §3-class. Per the Factory's finite-budget rule this is therefore ESCALATED, not silently patched. The Human Decision requested is narrow and NOT a product-identity question: grant ONE additional local-repair iteration (task-state.mjs reset-iteration / a recorded human note) for the display-only silent state, after which the pipeline can immediately run design review r7, the gate, and re-implementation review. The fix has been prepared on the branch (code + design docs, sim/QA green) but NOT submitted to the pipeline, so nothing was decided on the Factory's behalf. Full history: f-1..f-6, two redesigns (t1b, t1c), six design reviews (62/72/76/84 PASS/72/70), two implementation reviews (72/68); E confirmed inside the water bureau's own authority in every round.",
+    "at": "2026-09-08T10:16:16.862Z"
+  }
 }

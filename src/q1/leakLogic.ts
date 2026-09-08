@@ -17,7 +17,8 @@ export const POINTS = 6;
 export const BUDGETS = { valve: 2, listens: 5, reports: 2 } as const;
 export const FLOW = { base: 0.2, leak: 2.0, share: 0.05 } as const;
 
-export type Continuity = "steady" | "intermittent";
+/** "silent" = a closed (unpressurised) segment: nothing reaches the road-surface pickup (level 0, no bars, no waveform). */
+export type Continuity = "steady" | "intermittent" | "silent";
 export interface Spot { seg: Seg; point: number }
 export interface LeakCase { leak: Spot; house: Spot }
 export interface Reading extends Spot { level: number; continuity: Continuity }
@@ -71,10 +72,11 @@ export function flowReading(s: LeakState): number {
 /** Detector reading at a point: loudest directly above the leak (level 5), −1 per point of distance; the house-usage point is level 4 intermittent.
  *  A CLOSED segment carries no water, so it is silent (level 1 steady) even directly above the leak (state_table.sound_reading.isolation_rule). */
 export function soundReading(c: LeakCase, seg: Seg, point: number, closed: Seg | null = null): { level: number; continuity: Continuity } {
-  let level = seg === c.leak.seg && closed !== seg ? Math.max(1, 5 - Math.abs(point - c.leak.point)) : 1;
+  // a closed segment carries no water: NOTHING reaches the pickup — a dedicated state, never "a faint steady sound" (design review r6)
+  if (closed === seg) return { level: 0, continuity: "silent" };
+  let level = seg === c.leak.seg ? Math.max(1, 5 - Math.abs(point - c.leak.point)) : 1;
   let continuity: Continuity = "steady";
-  // the house-usage pseudo-sound is also a road-surface pickup reading, so it too is silent on a closed (unpressurised) segment
-  if (seg === c.house.seg && point === c.house.point && closed !== seg) { level = 4; continuity = "intermittent"; }
+  if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
   return { level, continuity };
 }
 
