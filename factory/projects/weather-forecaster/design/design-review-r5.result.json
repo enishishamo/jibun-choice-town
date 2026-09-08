@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 52,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "Round-4の市町村決定論は実質的に残存している。中間カードを削除しただけで、警報時刻から自動的に住民の避難完了・家の灯りの避難所への移動・無人住宅を生成しており、警報という判断材料から他主体の行動を確定する因果は変わっていない。fact_check_r1.json #3と矛盾し、COREが主張する『下流行動を描かない』とも不整合。",
+      "この決定論的な住民移動を削れば、現行Eは崖・猶予ラベル・空振り集計だけになり、プレイヤーが社会にもたらした結果ではなく危険現象と内部採点の表示へ弱まる。強いGate Fと正確な職業因果を同時に回復するには、別主体の判断を不正確に自動化しない新しいE/state architectureが必要で、単一の文言・UI修正では閉じない。"
+    ],
+    "medium": [],
+    "low": [
+      "`design-sim.mjs`のround-4コメントは『自治体の行動をモデル化していない』と説明する一方、実ロジックは`infoIssued`、`evacuatedFrom`、`residents are safe`を明示的に生成している。コメントとコードの乖離がレビューを誤誘導する。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "`state_table.json`は警報から2コマ後を『避難が完了しているはずの状態』とし、outcome_ruleでも『避難済み』『避難情報が出た』『避難した』を使用する。`game_translations_v8.json`のt1cも、警報が2コマ前なら家の灯りが避難所へ移り『間に合った』と確定する。これは警報が市町村判断の目安であり、発令・対象・時刻は市町村側の判断だとするfact_check_r1.json #3に反する。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "HIGH",
+        "finding": "採用翻訳は『下流の判断を描かない』と宣言しながら、警報のタイミングだけで住民不在という下流成果を決定する。中間カードの削除は状態機械の因果を除去しておらず、気象台の成果を住民避難そのものへ過度に拡張している。灯り移動を単に削るとEが猶予ラベル・崖・集計中心となり、Gate Fの社会的な可視結果が弱くなるため、別のGame Translationが必要。",
+        "fixable_by_local_repair": false
+      }
+    ],
+    "sim_verification": {
+      "reran": true,
+      "notes": "`node factory/projects/weather-forecaster/design/design-sim.mjs`を実行。全計算後、read-only環境のためdesign-sim-result.json書込みでEPERMになったが、既存結果を照合し、`legitimate_meter_lead_rule_wins_all_paths`、`every_path_solvable`、`no_content_blind_strategy_wins_all_paths`はいずれもtrue。固定2401スケジュール中、全3進路成功は0。ただしシミュレーション実装自体は`infoIssued`、`evacuatedFrom`、`safe`を自動生成しており、自治体・住民行動をモデル化していないというコメントと矛盾する。"
+    },
+    "round4_findings_confirmed_closed": {
+      "municipal_determinism_claim_removed": false,
+      "irreversibility_disclosed_on_first_screen": true
+    },
+    "evidence": [
+      "fact_check_r1.json item 3 — 警報は自治体が避難指示を発令するための目安であり、発令と対象区域の判断は市町村側にある。",
+      "state_table.json warning_rule.issue — 警報から2コマ後に町が『避難が完了しているはずの状態』になると確定している。",
+      "state_table.json outcome_rule.town — 『避難済み』『避難情報が出ていなければ』『避難したのに』という削除されたはずの状態が残存している。",
+      "ae_v4.json D — 空振りを『避難情報が出たのに何も起きない』と定義し、市町村行動をなお断定している。",
+      "ae_v4.json E — 『猶予があったので家に人はいなかった』と住民行動の結果を確定しながら、その行動は描かないと述べる自己矛盾がある。",
+      "game_translations_v8.json t1c system_reaction — 2コマ前から警報が立っていれば家の灯りが避難所へ移り『間に合った』と自動決定する。",
+      "game_translations_v8.json t1c D_externalization/E_consequence — 他組織の判断を描かないと主張するが、実際の可視Eは住民移動を前提にしている。",
+      "design-sim.mjs — `infoIssued`を警報と同じステップに必ず設定し、`evacuatedFrom=step+LEAD`として住民安全を決定する。",
+      "first_5_seconds_v5.json first_system_reaction — 『いちど出したら、朝まで取り消せません』が『警報を出す』ボタンより前の最初の町カードに配置され、round-4 MEDIUMは閉じている。",
+      "play_seeds_v4.json s1 — 中間の市町村行動は記述せず、警報・基準・猶予のC→Dは維持されているが、採用翻訳とstate tableの住民状態とは不整合。",
+      "scope_core_v4.json — 気象台の仕事を猶予作成までに区切るCORE自体は代表性があり、職業名を隠しても職務像を識別可能。",
+      "game_translations_v8.json t1c job_reveal_bridge — 警報が町の判断材料であることを正しく説明しているが、ゲーム中の自動的な灯り移動とは一致しない。"
+    ],
+    "recommended_actions": [
+      "redesign_countが2/2であり、残存HIGHは別のE/state architectureを要するため、人間判断へESCALATEする。",
+      "現行翻訳を文言だけで修理してPASSにしない。まず警報から`infoIssued`、`evacuatedFrom`、灯り移動、無人住宅を自動生成する因果を撤去する。",
+      "人間判断では、別主体の行動を確定せず、それでもプレイヤーの警報判断が社会へ与える強い可視結果を成立させる新しいEを選定する。",
+      "シミュレーションの変数・コメント・outcome語彙も新しい状態設計に合わせ、実際にモデル化している因果を正直に表現する。"
+    ]
+  },
+  "elapsed_sec": 153.869
+}
