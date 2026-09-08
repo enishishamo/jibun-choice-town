@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T07:12:06.716Z",
+  "generated_at": "2026-09-08T07:22:01.461Z",
   "rules": {
     "segments": [
       "A",
@@ -22,9 +22,9 @@
   "strategies": {
     "random_report": {
       "perfect": 40,
-      "success": 36,
-      "partial": 524,
-      "win_rate": 0.127
+      "success": 38,
+      "partial": 522,
+      "win_rate": 0.13
     },
     "listen_random_report_loudest_any": {
       "perfect": 175,
@@ -40,9 +40,9 @@
     },
     "flow_then_two_distinct_reports": {
       "perfect": 100,
-      "success": 99,
-      "partial": 401,
-      "win_rate": 0.332
+      "success": 90,
+      "partial": 410,
+      "win_rate": 0.317
     },
     "flow_then_gradient": {
       "perfect": 600,
@@ -60,7 +60,9 @@
   },
   "think_again_gate": {
     "trials": 200,
-    "second_report_refused_without_new_evidence": 200
+    "second_report_refused_without_new_evidence": 200,
+    "second_report_refused_after_compare_only": 200,
+    "second_report_allowed_after_new_listen": 200
   },
   "verdict": {
     "legitimate_strategy_wins_every_case": true,

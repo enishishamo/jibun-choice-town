@@ -1,10 +1,22 @@
 {
-  "note": "Design-stage state table for translation t1-night-listening, v2 after design review r1 (4 HIGH, all local repairs). Every number is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence. Facts behind each rule: fact_sheet.json (representative_duties 2-3, decisions 2/4/6, expertise 0-1, tools 1/6/7/11, adjacent_profession_boundaries).",
+  "note": "Design-stage state table for translation t1b-night-listening-evidence-gate (redesign #1 after design review r2). Every number is the rule the implementation must reproduce; design-sim.mjs evaluates strategies against it and its output is the exploit evidence. Facts: fact_sheet.json (representative_duties 2-3, decisions 2/4/6, expertise 0-1, tools 1/6/7/11, adjacent_profession_boundaries).",
   "block": {
     "segments": [
-      { "id": "A", "name": "区間A（北側）", "valve": "v-A" },
-      { "id": "B", "name": "区間B（東側）", "valve": "v-B" },
-      { "id": "C", "name": "区間C（南側）", "valve": "v-C" }
+      {
+        "id": "A",
+        "name": "区間A（北側）",
+        "valve": "v-A"
+      },
+      {
+        "id": "B",
+        "name": "区間B（東側）",
+        "valve": "v-B"
+      },
+      {
+        "id": "C",
+        "name": "区間C（南側）",
+        "valve": "v-C"
+      }
     ],
     "points_per_segment": 6,
     "segment_note": "r1 MEDIUM是正: 弁は『道路』ではなく『管の区間』に対応させる。実際の配水小管は制水弁（150〜200m間隔）で区切られた路線単位で隔離する（fact_sheet expertise 2）。ゲームでは1区間＝1弁で表す、と画面上の弁の説明に短く示す（『ゲームでは1区間を1つの弁で表しています』）。",
@@ -19,14 +31,17 @@
   "flow_meter": {
     "unit": "m3/h（区画量水器の夜間最小流量）",
     "base_night_usage": 0.2,
-    "leak_flow": 2.0,
+    "leak_flow": 2,
     "per_segment_house_share": 0.05,
     "display_decimals": 1,
     "rule": "表示 = base + leak_flow(漏水区間が開いていれば) − 0.05×(閉めている区間数)。漏水区間を閉めたときだけ針が大きく落ちる。閉めていない区間は表示上ほぼ変わらない。",
     "why": "夜間最小流量測定法: 路線ごとに流れを止め、流量の変化を監視して漏水路線を切り分ける（fact_sheet representative_duties 3、decisions 4）。"
   },
   "sound_reading": {
-    "fields": ["level 1-5（波形バー）", "continuity steady|intermittent（ずっと／とぎれる）"],
+    "fields": [
+      "level 1-5（波形バー）",
+      "continuity steady|intermittent（ずっと／とぎれる）"
+    ],
     "leak_segment_rule": "dist = |point − leak_point|。level = max(1, 5 − dist)。continuity = steady。",
     "other_segment_rule": "level 1, continuity steady（遠くの漏水音がかすかに管を伝う）。",
     "house_usage_override": "その点の表示を level 4, continuity intermittent に置き換える（漏水点の表示は上書きしない）。",
@@ -40,11 +55,24 @@
     "why": "3区間なら閉める操作2回で切り分けられる（2回とも落ちなければ残りの区間）。夜間の断水を伴う弁操作は短時間・回数を抑える（decisions 1）。一晩で聴ける点数は限られる（ゲーム上の単純化、班構成はFACT_CHECK_REQUIRED 7）。位置の報告は一晩2回まで——修理班が掘って外れると道路復旧費と時間を失う（decisions 6）。"
   },
   "report_rule": "報告 = (segment, point) を『ここが漏水点』として修理班に伝える（r1 HIGH是正: 調査員は位置を特定して修理判断につなぐ。掘削・復旧・断水は水道局の判断と工事業者の作業——fact_sheet adjacent_profession_boundaries）。漏水点と一致すれば当たり: 修理班が掘ると管の割れ目から水が噴き出す→修理→明け方に路面の湿りが消え、流量計が base に戻る。外れ: 修理班が掘った穴の管は乾いていて埋め戻す（reports −1）。報告は一晩2回まで（不可逆、報告ボタンに『あと◯回』を常時表示）。",
-  "think_again_gate": "1回目の報告が外れた後、2回目の報告ボタンは『新しい聴取を1回行う』か『記録を見比べる（地図に残った聴取結果と弁の記録を並べて見る画面を開く）』のどちらかを行うまで無効（r1 HIGH是正 Gate G: 考え直しの工程を機械的に保証する）。",
+  "think_again_gate": "1回目の報告が外れた後、2回目の報告ボタンは『新しい聴取を1回行う』まで無効（r2 HIGH是正: 記録を開くだけの無料解除を廃止。考え直しは新しい証拠でのみ成立させる）。聴取予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。『記録』パネル（閉めた弁と聴いた点の一覧）はいつでも見られるが、何も解禁しない。",
   "outcome_rule": {
     "perfect": "1回目の報告で当たり",
     "success": "2回目の報告で当たり",
     "partial": "2回とも外れ、または報告せずに夜が明けた（漏れは次の夜へ持ち越し。正直なpartial outcome、進行は可能）"
   },
-  "first_step_visible": "深夜の区画。流量計の針が『夜なのに、まだ流れてる』位置。通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図には管の3区間・弁・聴取点のみ（濡れた場所・漏水マークは描かない）。操作手順を書いた一行は置かない（r1 MEDIUM）。"
+  "first_step_visible": "深夜の区画。流量計の針が『夜なのに、まだ流れてる』位置。通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図には管の3区間・弁・聴取点のみ（濡れた場所・漏水マークは描かない）。操作手順を書いた一行は置かない（r1 MEDIUM）。",
+  "legibility_rules": {
+    "tap_target_min_px": 44,
+    "readings_display": "地図上の点には波形の小さな印だけを残し、数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並べる（最大5件）。",
+    "after_isolation": "流量で区間が確定したら、他の2区間の点は薄く（タップ可のまま）、確定区間の点を大きく表示する。",
+    "gauge": "計器は常時表示、針の数値は1桁。",
+    "budgets": "3つの予算は1行にアイコン＋数字で表示。",
+    "why": "r2 MEDIUM: 375pxで18点・3弁・計器・2属性・3予算を同時に扱うため、固定チップを地図に散らさない。"
+  },
+  "continuity_feedback": {
+    "steady": "波形が途切れず流れ続ける（1.5秒ループ）。",
+    "intermittent": "波形が0.6秒鳴って0.5秒止まる、を繰り返す。同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする（家の中で水を使っている、と絵で分かる）。",
+    "why": "r2 MEDIUM: 『とぎれる音＝家の使用の疑似音』を説明文で渡さず、反応から発見させる。"
+  }
 }

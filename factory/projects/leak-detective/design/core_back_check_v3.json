@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v3（design_iteration 2、redesign #1: t1b-night-listening-evidence-gate）。r2レビューのHIGH（『記録を見比べる』が画面を開くだけの無料解除でGate Gが実質化していない）への対応: 2回目の報告を『新しい聴取＝新しい証拠』でのみ解禁する状態設計に変更し、記録パネルは閲覧専用にした。design-sim v3で、何も挟まない再報告と記録のみの再報告がいずれも200/200拒否、新しい聴取後は200/200許可されることを機械的に確認。r2 MEDIUM 2件（375px可読性、連続性の発見可能なフィードバック）はstate_table.json legibility_rules/continuity_feedbackとして実装拘束の仕様に。COREとSCOPE、Dの子ども側の実行（弁の順番・聴取点の順番・報告地点）、Eが水道局の内側で閉じる構造（r1/r2ともe_closes_inside_own_authority:true）、Cの必要性（正当戦略306/306、無作為13.0%、無流量聴取29.2%、流量のみ31.7%）は変更なし。",
+  "pass": true
+}
