@@ -23,6 +23,18 @@
       "redesign_count": 2,
       "updated_at": "2026-09-08T05:54:22.834Z",
       "depends_on": []
+    },
+    "leak-detective": {
+      "game_id": "leak-detective",
+      "profession": "水道の漏水調査員（給水・配水管の漏水調査／修繕）",
+      "state": "RESEARCHING",
+      "trigger": "NEW_Q1_REQUEST",
+      "legacy_game_type": null,
+      "task_id": "q1-new-leak-detective",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-08T06:37:06.576Z",
+      "depends_on": []
     }
   }
 }

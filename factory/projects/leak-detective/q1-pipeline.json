@@ -1,0 +1,37 @@
+{
+  "game_id": "leak-detective",
+  "profession": "水道の漏水調査員（給水・配水管の漏水調査／修繕）",
+  "trigger": "NEW_Q1_REQUEST",
+  "legacy_game_type": null,
+  "creator": "claude-code",
+  "state": "RESEARCHING",
+  "current_stage": "PROFESSION_RESEARCH",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {},
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "task_id": "q1-new-leak-detective",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-08T06:37:06.496Z",
+  "updated_at": "2026-09-08T06:37:06.576Z",
+  "history": [
+    {
+      "at": "2026-09-08T06:37:06.497Z",
+      "event": "init",
+      "trigger": "NEW_Q1_REQUEST",
+      "entry_stage": "PROFESSION_RESEARCH",
+      "legacy_game_type": null
+    },
+    {
+      "at": "2026-09-08T06:37:06.575Z",
+      "event": "task_linked",
+      "task_id": "q1-new-leak-detective"
+    }
+  ]
+}
