@@ -15,13 +15,13 @@
     "weather-forecaster": {
       "game_id": "weather-forecaster",
       "profession": "気象予報士・予報官",
-      "state": "REPAIRING",
+      "state": "UNDER_REVIEW",
       "trigger": "NEW_Q1_REQUEST",
       "legacy_game_type": null,
       "task_id": "q1-new-weather-forecaster",
       "repair_count": 1,
       "redesign_count": 0,
-      "updated_at": "2026-09-07T23:24:56.793Z",
+      "updated_at": "2026-09-08T04:53:10.556Z",
       "depends_on": []
     }
   }

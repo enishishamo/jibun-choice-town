@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v2再照合: (1) COREの『当番チームが間に合う時刻に警報を出す。避難情報は市町村長の別判断』は、game_translations_v2のsystem_reaction（警報→避難情報カード→避難完了、の3段階）とjob_reveal_bridgeで一貫して描かれている。(2) Cの『山の町ほど低い』という地形自動判定を削除し、fact_check_r1.jsonで確認された『市町村ごとの基準は過去の災害実績と都道府県協議で決まる』という事実のみを使用。(3) Dの『解除』は確認済み用語（基準を下回り再び上回らないと判断したとき）。(4) 架空の『空振りで次の警報が1コマ遅れて信じられる』という決定論的社会反応を削除し、design-sim.mjsによる機械検証（空振り数の集計）に置き換えた——これによりCORE_DISTORTED_BY_GAMEの指摘は解消。(5) 予報官個人が単独で警報を発表するという断定を避け、『予報課の当番チーム』としての操作である旨をA/scope/job_revealで明示——決裁権者の人数はfact_check_r1.jsonでもFACT_CHECK_REQUIREDのまま残るが、それをゲームの中核操作やJob Revealで断定していない。",
+  "pass": true
+}

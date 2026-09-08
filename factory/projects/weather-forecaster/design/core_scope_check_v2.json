@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "v2: CORE（当番チームが命を守るために間に合う時刻に警報を出す。避難情報は市町村長の別判断）とSCOPE（大雨の夜に町ごとの警報タイミングを決める）は一致。Cは地形による自動判定（『山の町ほど低い』）を削除し、市町村ごとの基準は過去の災害実績と都道府県協議で決まるという確認済みの事実のみを使用（fact_check_r1.json #4）。Dの『警報を出し直す・解除する』は確認された用語（FAQ10: 基準を下回って再び上回らないと判断したとき解除）。Eは警報→市町村の避難情報→住民避難という実在の連鎖（fact_check_r1.json #3: 避難指示・高齢者等避難は市町村長が発令）をgame_translation側でも明示的な世界状態として描くことをmust_changeとして引き継ぐ。"
+}
