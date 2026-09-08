@@ -4,7 +4,7 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 2,
   "repair_count": 1,
@@ -1031,7 +1031,23 @@
       ]
     }
   },
-  "independent_review": null,
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 84,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/leak-detective/design/design-review-r4.result.json",
+    "input": "factory/projects/leak-detective/design/design-review-r4-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 2,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-08T07:33:09.478Z"
+  },
   "impl_review": null,
   "art_review": null,
   "failures": [
@@ -1074,7 +1090,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T07:29:38.638Z",
+  "updated_at": "2026-09-08T07:33:09.521Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -1611,6 +1627,33 @@
       "at": "2026-09-08T07:29:38.638Z",
       "event": "repair_done",
       "note": "r3 ANSWER_LEAK是正: 流量結果に連動した自動の減光・拡大を全廃。区間の強調は子どもが『この区間を調べる』と仮説を置いたときだけ（正誤は示さない）。design-sim v4にvalves_ignored_guess_segment_gradient（35.7%）を追加、no_ui_reveal_of_segment:true、他の5フラグもtrue。"
+    },
+    {
+      "at": "2026-09-08T07:33:09.479Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/leak-detective/design/design-review-r4.result.json"
+    },
+    {
+      "at": "2026-09-08T07:33:09.479Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-08T07:33:09.521Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-08T07:33:09.521Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ],
   "redesign": [

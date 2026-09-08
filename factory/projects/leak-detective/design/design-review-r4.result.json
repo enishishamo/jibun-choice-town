@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 91,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "VISUAL_GAMEPLAY_LEGIBILITY: 375pxで18個の聴取点、3弁、計器、記録、予算を扱う構成は、44pxタップ領域と記録ストリップの規則により設計上は成立するが、重なり・スクロール・表示密度は実装時の実機検証が必要。設計段階のRelease阻害ではない。"
+    ],
+    "low": [
+      "design-simのno_ui_reveal_of_segmentフラグはUI状態そのものをモデル化せず、区間をランダム推測する戦略の勝率閾値から判定している。今回はstate_table、採用translation、first_5_secondsの直接確認で欠落を補完できるが、実装QAではDOM/描画状態を検査すべき。",
+      "初回の弁操作でタップした区間の管線が一瞬暗くなる演出は、閉止操作の反応として全区間共通なら答え漏れではない。実装時に暗さ・持続時間・追加アニメーションを流量結果で分岐させないこと。"
+    ],
+    "failure_codes": [
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY",
+        "severity": "MEDIUM",
+        "finding": "375pxレイアウトの数値規則は定義されたが、18個の44px領域と計器・記録・予算を同時に成立させる具体配置は未検証。実装時の表示・操作検証事項であり、設計の再構成を要求する欠陥ではない。",
+        "fixable_by_local_repair": false
+      }
+    ],
+    "round3_finding_confirmed_closed": {
+      "answer_leak_removed": true
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_verdict_flags_true": true,
+      "own_adversarial_strategy": "弁を2本タップするが針も記録値も読まず、管線の閉止反応や区間フォーカスに正解反応がないか観察し、任意の区間を「この区間を調べる」で選んで、その区間内だけは音量勾配と連続性を正直に使って報告する。区間選択は正解と無関係なので成功には約1/3の推測が必要となる。再実行結果は214/600、35.7%。",
+      "notes": "通常実行はdesign-sim-result.jsonへの書き込みでEPERMになったため、writeFileSyncだけを標準入力上で抑止し、同一ロジックを再実行した。全306ケースで正当戦略100%、最悪4聴取・2弁。全6 verdict flagsはtrue。無作為報告13.0%、流量なし無作為聴取29.2%、流量のみ2点報告31.7%、弁を読まず区間推測後に音勾配を使う戦略35.7%。35.7%戦略は電子式漏水発見器の音量勾配・連続性というCを実際に使い、成功も安定しないため、§3の「Cを使わなくても突破」には該当せず、許容可能な偶発的・内容軽量ショートカットと判断する。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md — §2のA-Iと§3を適用。35.7%戦略はCを使い、内容非依存で安定突破できないためRelease Blockerではない。",
+      "factory/rules/principles.md — C⇄Dを中心に、職業名先出しなし、固定クリアなし、失敗時の即答なしを確認。",
+      "factory/projects/leak-detective/design/scope_core_v2.json — 音聴と夜間最小流量で位置を絞り、漏水点を特定・報告する代表的業務に限定され、職業名を隠しても固有性が残る。",
+      "factory/projects/leak-detective/design/ae_v3.json — A→B→C⇄D→Eが連続し、調査員は位置特定と報告、修理班は掘削・修理を担当する。",
+      "factory/projects/leak-detective/design/game_translations_v5.json — 採用t1bは流量結果による区間強調を明示的に禁止し、区間フォーカスを子どもの切替可能な仮説操作だけに限定。正誤表示・推奨・採点はない。",
+      "factory/projects/leak-detective/design/state_table.json — legibility_rules.after_isolationは自動強調を全面禁止。流量値は記録ストリップのみ。仮説フォーカスは正解でも不正解でも同一反応。",
+      "factory/projects/leak-detective/design/first_5_seconds_v4.json — 地図に湿り位置・漏水マークはなく、通報は「このあたりのどこか」。弁操作後の管線暗転はタップした区間の閉止だけを示し、正解区間の自動拡大・他区間減光はない。",
+      "factory/projects/leak-detective/design/state_table.json — 家の窓の同期点滅は断続する家の使用音だけを説明し、漏水点や漏水区間の位置は示さない。",
+      "factory/projects/leak-detective/design/design-sim.mjs — 正当戦略、内容非依存戦略、流量のみ戦略、弁を読まない区間推測戦略、考え直しゲートを機械検査。",
+      "factory/projects/leak-detective/design/design-sim-result.json — 保存済み結果と再実行結果が一致し、全6 verdict flagsがtrue。",
+      "factory/projects/leak-detective/design/no_manual_exploit_check_v4.json — 全選択・全聴取・submit連打を2弁/5聴取/2報告と新規聴取ゲートで防止。",
+      "factory/projects/leak-detective/design/first_5_seconds_v4.json — 操作手順の説明行なしでも、針、弁、聴取点の反応から複数の正当な初手が成立する。",
+      "factory/projects/leak-detective/design/fact_sheet.json — 夜間最小流量、区間ごとの制水弁操作、夜間の路面音聴、真上付近で最大音、断続する水使用疑似音、位置特定と修理主体の境界を裏づける。",
+      "factory/projects/leak-detective/design/state_table.json — 外れ後は新しい聴取まで再報告不可。記録閲覧だけでは解除されず、予算切れは正直なpartial outcomeになる。",
+      "factory/projects/leak-detective/design/game_translations_v5.json — 当たりと外れで掘削、水、路面、計器が異なる世界状態になり、最後にプレイ行為と漏水調査員の仕事を接続する。",
+      "factory/projects/leak-detective/q1-pipeline.json — f-1〜f-3の修正履歴、redesign 1回、design iteration 2、repair_count 1を確認。"
+    ],
+    "recommended_actions": [
+      "設計レビューはPASSとして次工程へ進める。",
+      "実装QAで375px実機表示を確認し、18点すべての44pxタップ領域、記録ストリップ、計器、予算表示の重なりと可読性を検証する。",
+      "実装QAに、弁操作後の区間装飾が流量結果や正解状態で変化しないことをDOM・スクリーンショットで比較する検査を追加する。",
+      "窓の点滅は断続音の近隣家だけに同期させ、漏水音・漏水点・正解区間には連動させない。"
+    ]
+  },
+  "elapsed_sec": 179.912
+}
