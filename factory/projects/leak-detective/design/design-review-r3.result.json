@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 76,
+    "career_authenticity_score": 88,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [
+      "流量で区間が確定すると、システムが他区間を薄くし対象区間を大きく表示するため、子どもが針の変化を解釈する前に漏水区間をUIが回答してしまう。これはD_externalizationの『どの区間かをシステムは一切示さない』とも矛盾し、流量測定に関するC→Dを弁の順次タップだけへ弱める。"
+    ],
+    "medium": [],
+    "low": [
+      "375pxで18個の44pxタップ領域を成立させる具体的配置は未実証だが、記録の地図外配置、非対象区間の視覚整理、44px最小値が実装拘束として定義されているため、現段階では実装QA事項。",
+      "誤報後の新規聴取は任意地点でよく、捨て聴き後に同じ誤地点を再報告できる。ただし新しい観測は有限の聴取予算を消費し、誤仮説と比較可能な証拠を実際に追加する。Gate Gが要求するのは再考の余地であって仮説変更の強制ではなく、内容非依存の安定攻略にもならないためHIGHではない。"
+    ],
+    "failure_codes": [
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "HIGH",
+        "finding": "流量反応後の自動減光・拡大が漏水区間を直接可視化し、針を読んで区間を判断する職業固有の推論をUIが代行する。減光を子どもが明示した区間仮説へのフォーカス後だけにする、または自動減光を削除する必要がある。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "round2_finding_confirmed_closed": {
+      "think_again_gate_real": true
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_verdict_flags_true": true,
+      "own_adversarial_strategy": "弁を順にタップし、針の数値を解釈せず、自動的に大きく表示された区間だけで音聴する。この経路は流量Cの意味を読まずに区間回答を得られる。その後は対象区間の点2・5から大きい側へ進み、連続音の最大点を報告できる。別途、誤報後に無関係な未聴取点を1回聴いて同じ誤地点を再報告できることも状態上確認したが、安定成功せず、有限予算で新証拠を追加するためGate G違反とは判定しない。",
+      "notes": "元スクリプトは結果ファイル書込み時にEPERMとなったため、writeFileSync行だけを除いた同一ロジックを実行。正当戦略306/306、最悪聴取4・弁2、全verdict true。再報告なし200/200拒否、compareのみ200/200拒否、新規listen後200/200許可を再現した。5回聴取後の初回誤報は再報告不能だが、漏れ継続・高い針・翌夜持越しとして正直に終わり、朝から再挑戦可能。合理的な子どもが先に5点使う可能性はあるものの、正当戦略は最大4点で足り、これはNO_CONSEQUENCEや失敗偽装ではない。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md — Gate EはUI hierarchyによる答え漏れを禁止し、Gate C/Dは仕事固有情報を子ども自身が判断に使うことを要求する。",
+      "factory/projects/leak-detective/design/state_table.json — think_again_gateは新規listenだけで解除され、compareは何も解除しない。一方legibility_rules.after_isolationは他区間を薄くし確定区間を大きくすると規定する。",
+      "factory/projects/leak-detective/design/design-sim.mjs — thinkAgainDoneは誤報でfalse、新規listenだけでtrueになり、compare分岐は無処理。3つのゲート試験を各200回実施する。unlockOrも解除されていなければ新規listenを返す。",
+      "factory/projects/leak-detective/design/design-sim-result.json — ゲート3試験は各200/200、正当戦略306/306、最悪聴取4、全verdict flag true。独立再実行でも同値。",
+      "factory/projects/leak-detective/design/game_translations_v4.json — system_reactionが『確定区間の点を大きく表示』する一方、D_externalizationはシステムが『どの区間が漏れているか』を一切示さないと述べ、状態上矛盾する。",
+      "factory/projects/leak-detective/design/ae_v3.json — Dは流量変化から漏水路線を子どもが切り分けることを中核判断としている。",
+      "factory/projects/leak-detective/design/fact_sheet.json — 夜間最小流量、路面音聴、真上付近で最大、疑似音の識別、調査員から修理班への連携を裏付ける。夜間限定とはしておらず、弁は区間表現、掘削は修理班の作業として整合する。",
+      "factory/projects/leak-detective/design/first_5_seconds_v3.json — 操作手順文なしで弁と聴取点が反応対象として示され、職業名は先出しされない。",
+      "factory/projects/leak-detective/design/c_compression_v3.json — 施設図、流量、音量・連続性、有限予算へ圧縮され、相関器等によるD代行と未確認の音高規則は除外されている。",
+      "factory/projects/leak-detective/design/scope_core_v2.json — SCOPEは代表的な路面音聴と夜間最小流量による位置特定で、Profession Name Hidden Testが自然に成立する。"
+    ],
+    "recommended_actions": [
+      "この反復の1回のローカル修理を使い、流量反応による正解区間の自動減光・拡大を削除する。必要なら、子どもが『この区間を調べる』と仮説選択した後に限って、その選択区間へ視覚フォーカスする。",
+      "修正後のシミュレーションに『針値を参照せず弁を順次タップし、視覚強調された区間を採用する』戦略を追加し、システムから正解区間を取得できないことを検証する。"
+    ]
+  },
+  "elapsed_sec": 170.257
+}

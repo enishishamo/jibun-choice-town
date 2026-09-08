@@ -1,0 +1,22 @@
+{
+  "assets": [
+    {
+      "asset_id": "leak_detective_scene",
+      "path": "public/assets/heat/place-leak.png",
+      "producer": "codex_imagegen (factory/harness/art/art-loop.mjs run)",
+      "request_file": "factory/projects/leak-detective/art-requests/place-leak.json",
+      "qa_evidence": "factory/projects/leak-detective/art-requests/place-leak.qa.json",
+      "dimensions": "1200x900",
+      "file_hash": "4bc7adb6a661",
+      "qa_score": 76
+    },
+    {
+      "asset_id": "leak_detective_hero",
+      "path": "inline SVG data URI in src/data/content/extremeHeat.ts (profession.image)",
+      "producer": "claude (CSS/SVG art ownership)",
+      "request_file": "n/a — hero() placeholder pattern shared with zoo/waste worlds"
+    }
+  ],
+  "presentation_notes": "art-qa issues are presentation-level: (1) round hotspot crop may cut the headphones/manhole at the sides -> hotspot uses the centre crop where the detector sits; (2) sensor near the bottom edge -> Q1 place image uses fit:cover with focus \"center 62%\"; (3) 4:3 in a 375x210 frame -> cover instead of contain avoids letterboxing. Verified in the browser at 375px before implementation QA is recorded.",
+  "human_decision_domains": []
+}

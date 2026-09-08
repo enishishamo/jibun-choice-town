@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 90,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "VISUAL_GAMEPLAY_LEGIBILITY — The evidence record is rendered at 11px inside a 34px scroll viewport, exposing only roughly two rows despite up to seven core evidence rows plus reopen/report events. The specified tap-to-expand behavior is absent, making comparison of flow and sound evidence unnecessarily difficult for ages 10–12. This is usable but below the design's 56px/expandable presentation."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY",
+        "severity": "MEDIUM",
+        "finding": "The critical record history uses 11px text and a 34px viewport without the specified tap-to-expand interaction; children must scroll through a narrow two-row window to compare up to seven or more events.",
+        "file": "src/q1/LeakTraceGame.tsx:118"
+      }
+    ],
+    "round3_findings_confirmed_closed": {
+      "crew_restores_supply": true,
+      "design_docs_consistent": true,
+      "qa_coverage": true,
+      "evidence_parity": true,
+      "silent_row_reachable": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "52 passed, 0 failed; flow-only strategy 0.325",
+      "build_or_tsc": "npm run build could not write node_modules/.tmp/*.tsbuildinfo under the read-only sandbox (TS5033); fallback npx tsc --noEmit -p tsconfig.app.json passed with no errors.",
+      "lint": "npm run lint exited 0; repository-wide pre-existing warnings were reported, with no warning in leak-detective implementation files.",
+      "public_view_only": true,
+      "gate_bypass_found": false,
+      "scroll_812_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/leakLogic.ts:142 — report() applies report grounding before changing state.",
+      "src/q1/leakLogic.ts:146 — both hit and miss restore supply by setting closed to null and dropping the reopened segment's silent readings.",
+      "src/q1/leakLogic.ts:152 — a miss consumes a report, retains valveOps/listens, records the missed point, and sets unlocked false.",
+      "src/q1/leakLogic.ts:117 — only a new non-silent listen sets unlocked true; a silent listen preserves the locked state and still consumes its listen.",
+      "src/q1/leakLogic.ts:129 — unheard, silent, previously missed, locked, exhausted, and post-outcome reports are rejected.",
+      "src/q1/leakLogic.ts:96 — closing another valve drops silent records from the implicitly reopened segment without refunding valve operations or listens.",
+      "src/q1/leakLogic.ts:105 — explicit reopening is free and removes invalid silent readings without refunding listens.",
+      "src/q1/LeakTraceGame.tsx:39 — explicit and implicit reopen paths synchronize record removal and point deselection with logic state.",
+      "src/q1/LeakTraceGame.tsx:69 — reporting logs the crew reopening the valve, removes matching silent timeline rows, and renders the updated open-valve state during digging.",
+      "src/q1/LeakTraceGame.tsx:83 — after a miss, selection is cleared; the locked state from leakLogic remains authoritative.",
+      "src/q1/LeakTraceGame.tsx:193 — house-window animation stops when its segment is closed.",
+      "src/q1/LeakTraceGame.tsx:253 — a silent listen reaches a text-only reaction branch, while historical non-silent live reactions are suppressed when their segment is closed.",
+      "src/q1/LeakTraceGame.tsx:118 — the record strip uses 11px text and maxHeight 34 with scrolling but has no expansion control.",
+      "factory/projects/leak-detective/design/state_table.json:74 — the current design allows a record height up to 56px.",
+      "factory/projects/leak-detective/design/game_spec_v3.json:34 — the current specification describes the record panel as tap-to-expand.",
+      "src/q1/registry.ts:82 — leak_trace is registered to LeakTraceGame.",
+      "src/data/content/extremeHeat.ts:36 — lensSummary contains the waterworks row for flow meter and underground sound.",
+      "src/data/content/extremeHeat.ts:89 — the leak-night hotspot references leak-heat and uses the requested scene position and asset.",
+      "src/data/content/extremeHeat.ts:311 — the leak-detective profession ID is present once with fact-sheet-aligned role boundaries and content.",
+      "src/data/content/extremeHeat.ts:468 — leak-heat integrates profession, event, gameType, place asset, resolution, and discovery echo consistently.",
+      "public/assets/heat/place-leak.png — asset exists and is a 1200×900 RGB PNG.",
+      "factory/harness/gameplay-qa-leak.mjs:213 — QA explicitly checks that retained historical readings do not keep live blink/waveform reactions while isolated.",
+      "factory/harness/gameplay-qa-leak.mjs:220 — executed result was 52 passed and 0 failed.",
+      "factory/projects/leak-detective/design/fact_sheet.json:319 — the flow-isolation mechanic matches the documented night-minimum-flow workflow.",
+      "factory/projects/leak-detective/design/fact_sheet.json:322 — sound magnitude, continuity, movement between pickup positions, and distractor discrimination support the implemented listening mechanic.",
+      "factory/projects/leak-detective/design/fact_sheet.json:342 — the shipped division between investigator reporting and repair crew digging/repairing matches the documented profession boundary."
+    ],
+    "recommended_actions": [
+      "Restore the record viewport to the designed maximum of about 56px and implement the specified tap-to-expand view while keeping the 375×812 night screen within its no-scroll target.",
+      "Add a component-level mobile assertion for record text size, visible-row count, expansion, and keyboard/touch accessibility; the current source-oriented harness cannot validate those presentation properties."
+    ]
+  },
+  "elapsed_sec": 142.107
+}

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "t1-night-listeningへの翻訳後もCORE『見えない漏水を、流量と音聴で絞り込んで掘る地点を決め、水道局側で止める』は保持。SCOPE（夜間の路面音聴＋夜間最小流量）はfact_sheet.jsonのrepresentative_duties 2・3そのもの。Dは子どもが行う（弁の順番・聴取点の順番・掘削地点の選択。システムは路線も漏水点も次の一手も示さない）。Cは判断に必須（design-sim.mjs: 流量を使わない／音の連続性を見ない戦略は当たりにくく、正当な戦略は全ケースを予算内で当てる）。Eは『調査員の判断→当たり/外れ→水道局の修理班が直す』で閉じ、別主体の裁量判断（weather-forecasterのESCALATED原因）を因果に入れていない。事実との整合: 真上で最大音（東京都水道局）、低い音だけなら遠い（WaQuAC資料・原典未取得のためuncertaintiesに明記、ゲーム内では『経験則』として扱いJob Revealで断定しない）、疑似音の存在と熟練（東京都水道局）、夜間実施は東京・岡山で確認（神奈川は昼夜問わず→SCOPEで『夜に行う事業体が多い』と表現）。相関式など位置を計算する装置はDを奪うためc_compressionで除外し、Job Reveal側で存在だけ触れる。",
+  "pass": true
+}

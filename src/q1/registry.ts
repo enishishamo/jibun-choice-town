@@ -67,6 +67,7 @@ import BabyCareGame from "./BabyCareGame";
 import ZooCheckupGame from "./ZooCheckupGame";
 import FeedPrepGame from "./FeedPrepGame";
 import DebutPlanGame from "./DebutPlanGame";
+import LeakTraceGame from "./LeakTraceGame";
 
 export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 給食編
@@ -78,6 +79,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   // 猛暑編
   place_and_test: ParkHeatGame, // 配置→シミュレーション→再配置
   forecast_and_balance: PowerGame, // 予測を見て供給を合わせ、時間を進める
+  leak_trace: LeakTraceGame, // 流量で区間を絞り、音の勾配で漏水点を特定して報告する
   schedule_and_protect: SiteHeatGame, // 安全と進捗の両立を工程で調整
   allocate_and_forecast: WaterGame, // 限られた資源の配分＋先の予測
   layer_and_compare: UrbanHeatGame, // データを重ねて原因を探し、試す
@@ -95,7 +97,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   crowd_flow: CrowdFlowGame, // 詰まりを読んで道具で流れを分ける
   // 医療編（1人の患者を9章で追う）
   clue_board: ClueBoardGame, // 調べ方を選んで手がかりを集める
-  lab_check: LabCheckGame, // 検体を確かめ、疑わしい値を測り直す
+  lab_check: LabCheckGame, // 限られた検体から、何を調べるかを選ぶ
   xray_shoot: XrayGame, // 条件を決めて撮る→写りを見て撮り直す
   clue_join: DiagnoseGame, // 集まった手がかりをつないで見立てる
   rx_check: RxCheckGame, // 薬×患者情報を照らして安全を確かめる

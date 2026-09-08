@@ -1,0 +1,50 @@
+{
+  "references": [
+    {
+      "seed": "s1-night-listening",
+      "reference": "Minesweeper / Battleship（隣接情報から位置を推理する古典）",
+      "relevant_mechanic": "1点を調べると『近さ』の情報が返り、複数点の情報を重ねて隠れた位置を絞り込む。全マスを調べる予算はない。",
+      "borrowed_principle": "『聴いた点ごとに、近い/遠いの手がかりが返る。全部は聴けない』。次にどこを聴くかが判断になる（勾配を使って近づく）。",
+      "surface_elements_not_to_copy": "爆弾・戦争モチーフ、格子状の抽象マス。JIBUN CHOICEでは夜の道路と管の図面上に聴取点を置く。"
+    },
+    {
+      "seed": "s1-night-listening",
+      "reference": "Return of the Obra Dinn / The Case of the Golden Idol",
+      "relevant_mechanic": "証拠を突き合わせて『確信できたら』答えを確定する。誰も答えを言わない。",
+      "borrowed_principle": "『流量（どの道路）』と『音（どの地点）』という2種類の証拠が一致したときに掘る。証拠が足りないまま掘ると外れる。",
+      "surface_elements_not_to_copy": "死因帳簿・殺人ミステリー・モノクロ画面。"
+    },
+    {
+      "seed": "s1-night-listening",
+      "reference": "JIBUN CHOICE 既存Q1: gas_watch（waste）",
+      "relevant_mechanic": "点検1回＝1コマの時間予算の中で原因を切り分けてから、1回勝負の依頼をする（factory/taxonomy/gameplay-references.json）。",
+      "borrowed_principle": "『調べるのに時間がかかり、確かめずに動くと外れる』。聴取点数・制水弁操作数・掘削回数を予算化する。",
+      "surface_elements_not_to_copy": "清掃工場の計器パネル。"
+    },
+    {
+      "seed": "s1-night-listening",
+      "reference": "JIBUN CHOICE 既存Q1: water_trace（river-health）",
+      "relevant_mechanic": "限られた採水ボトルを、仮説を分けられる地点に使う。",
+      "borrowed_principle": "『一つの観測で結論を出さない』。1点の大きな音だけで掘ると疑似音（家の使用音）に引っかかる設計にする。",
+      "surface_elements_not_to_copy": "川・ボトルの見た目。"
+    },
+    {
+      "seed": "s2-valve-isolation-only",
+      "reference": "二分探索パズル（Mastermind系の絞り込み）",
+      "relevant_mechanic": "少ない試行で候補を半分ずつ減らす。",
+      "borrowed_principle": "制水弁を閉める順番で、少ない操作で漏水路線を絞る。ただし単独では抽象クイズになるのでs1の前半に統合する。",
+      "surface_elements_not_to_copy": "色ペグ・数字当て。"
+    }
+  ],
+  "mechanics_library_ids": [
+    "partial_information",
+    "deduction",
+    "resource_budget",
+    "gradient_search",
+    "distractor_evidence",
+    "delayed_feedback",
+    "justified_refusal"
+  ],
+  "human_decision_domains": [],
+  "revision_note": "v2: 内容変更なし（借用原則は音の高さに依存していない）。play_seeds_v2のSTALE伝播を解消するための再提出のみ。"
+}

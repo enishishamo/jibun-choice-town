@@ -1,0 +1,20 @@
+{
+  "component_files": [
+    "src/q1/LeakTraceGame.tsx",
+    "src/q1/registry.ts (gameType leak_trace)",
+    "src/data/content/extremeHeat.ts (incident leak-night, profession leak-detective, experience leak-heat, lensSummary row)"
+  ],
+  "logic_module": "src/q1/leakLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-leak.mjs (38 checks: mirrors every design-sim v4 strategy incl. loudest-steady and a documented flow-only adaptation, gate sub-tests, deep-equality valve check, source-level publicView boundary check)",
+  "spec_version": 1,
+  "art_version_or_none": "art_production v1 — public/assets/heat/place-leak.png (codex_imagegen, art-qa PASS iter 1, min 76, SERIES_STYLE_MATCH 88, CHARACTER_SERIES_MATCH 100); profession image = inline SVG hero placeholder (Claude); all in-game visuals CSS/SVG (Claude)",
+  "d_preserved_statement": "The child performs D exactly as designed: chooses which valve to close and reads the meter (segment isolation), places the child's own '調べる' hypothesis focus, chooses which points to listen at and reads level/continuity from the record strip, excludes the intermittent (house-usage) sound, and decides which heard point to REPORT. The component reads state only through publicView()/readingAt()/restartSameCase() (verified at source level by the QA harness); no UI reaction depends on correctness (valve flash identical for every segment; segment focus is child-driven only; the house-window blink is driven by the reading's continuity, never by the leak). The second report is enabled only by a new listen (leakLogic.report/listen); the record panel is read-only. The repair crew digs (surveyor pinpoints & reports), matching scope_core_v2/ae_v3.",
+  "state_table_conformance": "leakLogic.ts constants mirror state_table.json: 3 segments x 6 points, budgets valve 2 / listens 5 / reports 2, flow base 0.2 + leak 2.0 − 0.05 per closed segment (1 decimal), sound level = max(1, 5 − distance) steady, house point level 4 intermittent, think-again gate = new listen only. gameplay-qa-leak.mjs reproduces every design-sim v4 verdict flag against the shipped module (legitimate 306/306, random report 0.0-13%, flow-less listening 29.2%, flow-only 33.3%, valves-ignored segment guess 35.7%, gate 3 sub-tests).",
+  "commands_run": [
+    "node factory/harness/gameplay-qa-leak.mjs -> 38 passed, 0 failed",
+    "npm run build -> ✓ built",
+    "npm run lint -> no findings in leak files"
+  ],
+  "human_decision_domains": [],
+  "repair_note": "Implementation review r1 (FAIL 72) repair: no free reopen action (operations = closes, one valve at a time, exactly as design-sim); outcome-neutral discoveryEcho; valve hit circles r=28 and segment-focus controls moved to 44px HTML buttons; publicView-only boundary enforced with readingAt/restartSameCase; hint gated on failed nights; QA harness completed (loudest-steady mirror, flow-only adaptation documented, non-vacuous valve check, source boundary check)."
+}

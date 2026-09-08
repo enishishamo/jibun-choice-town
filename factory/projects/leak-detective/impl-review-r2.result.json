@@ -1,0 +1,84 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "After the final charged valve close, the player cannot reopen that valve, yet listening still produces an unchanged leak sound and a successful excavation still shows water spraying. This creates an impossible causal sequence when the leak segment remains isolated and contradicts the current adopted design, which explicitly permits tapping again to reopen."
+    ],
+    "medium": [
+      "The authoritative design documents remain internally inconsistent: game_translations_v5.json specifies tap-again reopening, while game_spec.json calls the valve a toggle and says reopening is free, but the implementation and design simulation provide only close/switch behavior. The specification must be reconciled before implementation can be judged conformant."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "HIGH",
+        "finding": "Closing the leak segment can leave it isolated at 0.2 m³/h for the rest of the night, but soundReading is independent of valve state and the success screen says water sprays from the crack. With no explicit reopen action, the shipped world feedback is causally false and the current adopted design's tap-again reopen cannot be performed.",
+        "file": "src/q1/leakLogic.ts:72"
+      },
+      {
+        "code": "DESIGN_IMPLEMENTATION_MISMATCH",
+        "severity": "MEDIUM",
+        "finding": "The adopted translation says tapping the valve again restores it, and game_spec describes a tap toggle with free reopening; closeValve instead refuses the second tap. design-sim matches the implementation's switch-only behavior, so the authoritative design artifacts disagree with one another.",
+        "file": "factory/projects/leak-detective/design/game_translations_v5.json:29"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "valve_ops": false,
+      "discovery_echo": true,
+      "touch_targets": true,
+      "public_view_boundary": true,
+      "qa_valve_check": true,
+      "qa_mirror": true,
+      "hint_gating": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "38 passed, 0 failed",
+      "build_or_tsc": "npm run build could not write node_modules/.tmp tsbuildinfo because the sandbox is read-only; npx tsc --noEmit -p tsconfig.app.json --incremental false passed",
+      "lint": "npm run lint exited 0; warnings exist only in unrelated files",
+      "public_view_only": true,
+      "gate_bypass_found": false
+    },
+    "evidence": [
+      "src/q1/leakLogic.ts:82 — closeValve refuses the already-closed segment and provides no way to restore the final closed valve.",
+      "src/q1/leakLogic.ts:86 — switching valves implicitly reopens only the previously closed valve.",
+      "src/q1/leakLogic.ts:91 — the module explicitly states that no separate reopen action exists.",
+      "src/q1/leakLogic.ts:72 — soundReading depends only on the hidden case and position, not whether the leaking segment is closed.",
+      "src/q1/LeakTraceGame.tsx:41 — tapping the closed lid only displays a note saying another valve must be closed.",
+      "src/q1/LeakTraceGame.tsx:121 — the hit outcome depicts water spraying even if the leak segment remains closed.",
+      "factory/projects/leak-detective/design/game_translations_v5.json:29 — the adopted translation says tapping the same valve again restores it.",
+      "factory/projects/leak-detective/design/game_spec.json:5 — the valve is specified as a tap toggle and reopening is described as free.",
+      "factory/projects/leak-detective/design/design-sim.mjs:66 — the simulation charges every valve action, clears the prior closure, and closes the selected segment; it matches closeValve's switch-only semantics but not the adopted translation.",
+      "src/data/content/extremeHeat.ts:483 — discoveryEcho neutrally says the child considered where the leak was, without claiming a partial run identified it.",
+      "src/q1/LeakTraceGame.tsx:198 — valve hit areas use r=28 circles.",
+      "src/q1/LeakTraceGame.tsx:211 — listening-point hit areas use r=28 circles at 56-unit spacing.",
+      "src/q1/LeakTraceGame.tsx:234 — segment-focus controls are HTML buttons with minHeight 44.",
+      "src/q1/LeakTraceGame.tsx:30 — normal rendering derives its view through publicView.",
+      "src/q1/LeakTraceGame.tsx:116 — revealLeak is used once and only on the post-hit terminal screen.",
+      "src/q1/leakLogic.ts:154 — restartSameCase preserves the hidden case while resetting play state.",
+      "factory/harness/gameplay-qa-leak.mjs:183 — the non-vacuous comparison strips flow, its log value, and the child-selected closed valve before deep comparison.",
+      "factory/harness/gameplay-qa-leak.mjs:114 — the loudest-steady random-listening mirror is exercised.",
+      "src/q1/LeakTraceGame.tsx:131 — the specific hint is gated by two misses in one night or at least two terminal failed nights.",
+      "src/q1/leakLogic.ts:111 — a miss locks reporting until new evidence.",
+      "src/q1/leakLogic.ts:105 — only a new listen re-enables reporting.",
+      "src/screens/Q1Screen.tsx:102 — partial completion receives distinct, non-success framing.",
+      "src/q1/registry.ts:82 — leak_trace is registered to LeakTraceGame.",
+      "src/data/content/extremeHeat.ts:89 — the leak-night hotspot links to leak-heat at the configured scene position.",
+      "src/data/content/extremeHeat.ts:44 — lensSummary includes the water-service view using flow and underground sound."
+    ],
+    "recommended_actions": [
+      "Route back to design or escalate because the implementation-stage repair allowance is exhausted.",
+      "Choose and document one coherent valve model: either restore a free explicit reopen matching the adopted translation, or automatically reopen the final valve before sound localization.",
+      "Make detector readings and excavation feedback respect hydraulic isolation; a closed leak segment must not continue producing the same pressurized leak sound or spray.",
+      "Update state_table, game_translations_v5, game_spec, design-sim, leakLogic, and the QA harness together, including a regression test for close-leak-segment → listen → report."
+    ]
+  },
+  "elapsed_sec": 198.639
+}

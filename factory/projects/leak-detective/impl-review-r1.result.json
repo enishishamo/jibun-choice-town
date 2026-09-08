@@ -1,0 +1,114 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 88,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "Valve operations do not reproduce the approved two-operation budget: reopening a valve is free, although the adopted design defines closing and reopening as valve operations within the two-operation allowance.",
+      "The partial path later tells an unsuccessful child that they identified the leak, contradicting the honest partial outcome and the child's actual result.",
+      "Two essential controls fail the approved 44px minimum touch target on a 375px phone: valve targets render at about 39px and segment-focus labels at about 19px high."
+    ],
+    "medium": [
+      "LeakTraceGame does not render exclusively through publicView as claimed: it repeatedly passes the private LeakState to heard(), and restart directly reads s.c outside the post-outcome dawn screen. No current answer-dependent rendering was found, but the intended concealment boundary is not enforced.",
+      "The gameplay QA harness is not a faithful mirror of design-sim v4. It omits the separate continuity-aware random-listening strategy, replaces the flow-only/two-report strategy because shipped reports require prior listening, and its valve-reaction assertion compares only PublicView object keys, making that visual-leak check vacuous.",
+      "The partial-screen second-failure hint can directly disclose the relevant rule ('針が落ちた区間') after a restarted night's first miss because attempt > 1 alone enables it."
+    ],
+    "low": [
+      "The record strip mixes valve events, reopening events, reports, and listening readings in one timeline rather than presenting only the compact evidence records described by the design; it remains read-only and does not unlock reporting.",
+      "The art is attractive, stylistically consistent, and contains no visible wet patch or marked answer, but its detector, headphones, and lid are horizontally dispersed, weakening recognition in the round hotspot crop as already noted by independent art QA."
+    ],
+    "failure_codes": [
+      {
+        "code": "IMPLEMENTATION_CHANGED_D",
+        "severity": "HIGH",
+        "finding": "openValve changes the valve state without incrementing valveOps or checking the two-operation budget, diverging from the approved close/reopen operation budget.",
+        "file": "src/q1/leakLogic.ts:90"
+      },
+      {
+        "code": "HONEST_OUTCOME_MISMATCH",
+        "severity": "HIGH",
+        "finding": "After onPartialComplete, the shell correctly preserves partial framing, but discoveryEcho still says the child identified the leak ('特定したよね'), falsely describing an unsuccessful run.",
+        "file": "src/data/content/extremeHeat.ts:483"
+      },
+      {
+        "code": "TOUCH_TARGET_TOO_SMALL",
+        "severity": "HIGH",
+        "finding": "At the component's roughly 351px-wide SVG, valve diameter 44 viewBox units is about 38.6px and the focus-label height 22 units is about 19.3px, below the approved 44px target.",
+        "file": "src/q1/LeakTraceGame.tsx:195"
+      },
+      {
+        "code": "PUBLIC_VIEW_BOUNDARY_BROKEN",
+        "severity": "MEDIUM",
+        "finding": "The component reads private state through heard(s, ...) and directly accesses s.c during restart outside the dawn outcome screen, contradicting its publicView-only contract.",
+        "file": "src/q1/LeakTraceGame.tsx:77"
+      },
+      {
+        "code": "QA_CHECK_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The alleged identical valve-reaction check compares Object.keys(publicView(a)) with Object.keys(publicView(b)); this cannot detect differing component decoration, animation, color, or hierarchy.",
+        "file": "factory/harness/gameplay-qa-leak.mjs:165"
+      },
+      {
+        "code": "QA_MIRROR_DIVERGENCE",
+        "severity": "MEDIUM",
+        "finding": "The harness does not reproduce all design-sim v4 strategies: the separate loudest-steady baseline is absent and flow_then_two_distinct_reports is replaced with a listening-dependent strategy.",
+        "file": "factory/harness/gameplay-qa-leak.mjs:73"
+      },
+      {
+        "code": "FAILURE_HINT_LEAKAGE",
+        "severity": "MEDIUM",
+        "finding": "On any restarted night, the first terminal miss displays a specific meter-rule hint because secondFail is true solely from attempt > 1.",
+        "file": "src/q1/LeakTraceGame.tsx:128"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "30 passed, 0 failed; strategy coverage and valve visual assertion are materially incomplete",
+      "build": "NOT VERIFIED: npm run build exited 1 because the read-only environment prevented writing node_modules/.tmp/tsconfig.*.tsbuildinfo (TS5033); no source compilation error was reported before that failure",
+      "lint": "PASS (exit 0); repository-wide pre-existing warnings, no leak-related warning",
+      "public_view_only": false,
+      "gate_bypass_found": false
+    },
+    "evidence": [
+      "src/q1/leakLogic.ts:13-18 — three segments, six points, budgets 2/5/2, and flow constants 0.2/2.0/0.05 match the state table.",
+      "src/q1/leakLogic.ts:64-76 — one-decimal flow and sound-distance/continuity rules match the approved design; newCase excludes house/leak coincidence at lines 52-57.",
+      "src/q1/leakLogic.ts:90-92 — opening the currently closed valve is free and bypasses the valve-operation counter.",
+      "src/q1/leakLogic.ts:100-130 — duplicate listens are rejected, only a new listen restores unlocked=true, and a miss with exhausted listens produces partial.",
+      "src/q1/LeakTraceGame.tsx:47-62 — selecting a previously heard point does not unlock the gate, and doReport delegates enforcement to report().",
+      "src/q1/LeakTraceGame.tsx:75-78 — restart preserves the same hidden case by directly reading s.c.",
+      "src/q1/LeakTraceGame.tsx:113-123 — revealLeak is used only on the post-hit dawn screen; the replay-attempt note accurately refers to a later night, not a second report.",
+      "src/q1/LeakTraceGame.tsx:175-203 — segment dimming depends only on v.focus; valve flash selection depends only on the tapped segment.",
+      "src/q1/LeakTraceGame.tsx:182-187 — house-window blinking depends on the latest public reading's intermittent continuity.",
+      "src/q1/LeakTraceGame.tsx:211-220 — all point hit circles use identical r=28 targets and misses receive an honest ✕.",
+      "src/q1/LeakTraceGame.tsx:250-263 — report button is disabled while locked_after_miss and clearly discloses irreversibility and remaining reports.",
+      "src/q1/LeakTraceGame.tsx:195-203 — valve and segment-focus targets are smaller than 44px when scaled from the 400-unit viewBox.",
+      "src/screens/Q1Screen.tsx:75-89 — success calls onComplete while partial calls onPartialComplete.",
+      "src/screens/Q1Screen.tsx:101-119 — partial framing remains visible, but the same unconditional discoveryEcho is subsequently rendered.",
+      "src/data/content/extremeHeat.ts:311-354 — profession description accurately distinguishes investigators and repair crews and includes the supported Tokyo 80% to 3.5%, pseudo-sound, and some-night-survey facts.",
+      "src/data/content/extremeHeat.ts:468-485 — incident and experience integration is unique in the inspected content, uses leak_trace, cover with center 62% focus, and does not reveal the profession name before discovery.",
+      "src/q1/registry.ts:70-82 — leak_trace is registered once to LeakTraceGame.",
+      "factory/harness/gameplay-qa-leak.mjs:102-167 — executable logic checks passed, including all 306 cases, budgets, gate behavior, public-view fields, and case generation.",
+      "factory/harness/gameplay-qa-leak.mjs:165 — valve visual equivalence test checks schema keys rather than rendered reactions.",
+      "factory/projects/leak-detective/design/design-sim.mjs:107-122 — approved simulation contains two distinct random-listening strategies and a flow-only two-report strategy absent from the shipped harness.",
+      "public/assets/heat/place-leak.png — visually inspected: night residential road, detector, headphones and lid are present; no water, wet patch, crack, text, or marked answer is visible.",
+      "factory/projects/leak-detective/art-requests/place-leak.qa.json:5-25 — independent art QA PASS 76, series-style match 88, with crop-safety concerns documented.",
+      "factory/projects/leak-detective/design/implementation_qa.json:3 — producer evidence itself admits valves and segment labels do not meet the 44px target despite marking the check PASS."
+    ],
+    "recommended_actions": [
+      "Count reopening as a valve operation and enforce the two-operation budget consistently, then add explicit close-open and close-open-close harness cases.",
+      "Provide outcome-aware discovery text so partial completion never claims that the child identified the leak.",
+      "Expand valve and focus-label interactive regions to at least 44×44 CSS pixels at 375px without changing their visible size if necessary.",
+      "Move public reading lookup into PublicView helpers and add a logic-level restartSameCase action so the component never accesses s.c.",
+      "Port every design-sim v4 strategy into the implementation harness or document and test an equivalent adaptation necessitated by the heard-point report rule.",
+      "Replace the vacuous valve schema assertion with DOM/render-state comparisons covering flash, opacity, stroke, animation, and focus for leak versus non-leak segments.",
+      "Gate specific failure hints by actual terminal-failure count rather than replay attempt number.",
+      "Re-run build in a writable environment and retain the complete successful output."
+    ]
+  },
+  "elapsed_sec": 225.315
+}

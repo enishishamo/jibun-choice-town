@@ -1,0 +1,111 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 62,
+    "career_authenticity_score": 70,
+    "game_quality_score": 62,
+    "blockers": [],
+    "high": [
+      "未検証の「低い音なら漏水点はもっと遠い」を、注意付きの補助情報ではなく、子どもが攻略に使う決定論的事実として提示している。さらにゲームは距離1以内を必ず高音、距離2以上を必ず低音とし、資料が示す管材・口径・水圧・土質等の影響を無視して一般化している。",
+      "調査員が「どこを掘るかを決める」とする職務主体の表現が強すぎる。fact_sheetでは調査員が位置特定し、掘削・復旧・断水は水道局の判断と工事業者の作業とされるため、Job Revealは「掘る地点を特定して修理判断につなぐ」とすべきである。",
+      "375px画面で4道路×6点、各聴取点に3情報、4弁、流量計、3予算を同時保持する設計は初回プレイの比較負荷と表示密度が高すぎる。特に最大6地点へ3項目を固定表示する仕様は、可読サイズを保つと地図を覆い、小さくすると判断不能になる。",
+      "1回目の誤掘削後に考え直す機会はあるが、考え直す工程が成立する保証がない。追加観測なしで直ちに2回目を掘れるため、Gate Gの実質が任意になっている。2回目の掘削は少なくとも新しい聴取または記録比較を一度行うまでロックすべきである。"
+    ],
+    "medium": [
+      "「1本の弁を閉めると、その道路の管だけ止まる」は、実際の150〜200m間隔の弁で区切られた路線操作を一弁一道路へ縮約したものだが、その単純化がプレイヤー向けには明示されない。分岐区間を隔離する弁として地図を構成するか、「ゲームでは1区間を1つの弁で表す」と短く示す必要がある。",
+      "夜間の路面音聴と夜間最小流量測定を扱うSCOPE自体は代表的だが、Job Revealの「漏水調査員が夜の街でやっている仕事」は全調査が夜間であるようにも読める。「交通の少ない夜に行う調査もある」と限定すべきである。",
+      "最初のタップ対象は発光と針の反応から推測可能だが、「弁をしめて、針を見る／道路に置いて、聴く」は contextual cue というより二操作の直接説明である。なくても成立するか実装時に確認し、可能なら世界内の短い呼びかけへ置き換えるべきである。",
+      "交通道路の全点を level=max(level,3) かつ intermittent にする規則は、現実の交通雑音を極端に固定化した人工パターンであり、音の読み比べより例外規則の解読に寄る。流量で道路を確定した後も音聴が職業的判断として意味を持つよう、交通ノイズは一部地点または時間変動として扱う方がよい。",
+      "流量で道路を特定して異なる2地点を掘る内容軽量戦略は理論上33.3%で成功する。29.3%というシミュレーション値は同一点を重複して掘る実装を含むため過小評価だが、なお安定攻略ではなく、Cの流量情報も使用するため§3の「Cを使わなくても突破できる」には該当しない。"
+    ],
+    "low": [
+      "地図、弁、聴取点、道路名、通報カード、正常目盛り、掘削ボタンには地点正解の直接リークは見当たらない。「正常ならここ」は異常状態を示すだけで、漏水地点を示さない。",
+      "当たり時の噴水、修理、乾いた路面、正常流量と、外れ時の乾いた管、埋戻し、高流量、翌夜への持越しは、Gate F/Hを満たす正直な世界状態差になっている。",
+      "勾配と疑似音を突き合わせる核には遊びとしての可能性があるが、現状は3音属性と例外規則の読解量が多く、爽快な探索より説明問題に寄る危険がある。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "未取得原典に依存する低音ヒューリスティックを、距離だけで決まる確定的な攻略法として子どもに教えている。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "HIGH",
+        "finding": "調査員による位置特定と、水道局による掘削判断・請負業者の施工の境界を縮め、「調査員が掘る場所を決める」と断定している。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION",
+        "severity": "HIGH",
+        "finding": "375pxで24地点×3属性と複数計器・予算を比較保持させる初回認知負荷が過大。3道路×5点、弁2回、聴取5回程度へ縮小し、音情報は音量と連続性の2項目に削減すべきである。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "HIGH",
+        "finding": "誤掘削後に追加調査をせず即座に最後の掘削を使えるため、実質的なthink-again stepが保証されない。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "MEDIUM",
+        "finding": "一弁で一道路全体だけを止める規則が、路線単位の隔離を示す明示的な簡略化になっていない。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "MEDIUM",
+        "finding": "夜間に行う事業体・手法を扱う設計なのに、Job Revealが漏水調査全般を夜の仕事として一般化して読める。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION",
+        "severity": "MEDIUM",
+        "finding": "最初の一行が状態からの推論ではなく操作手順を直接説明している。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "sim_verification": {
+      "reran": true,
+      "all_verdict_flags_true": true,
+      "own_adversarial_strategy": "流量で漏水道路を特定後、音を一切聴かず、重複しない2地点を掘る。漏水点が6地点で一様なので勝率は厳密に2/6=33.3%。既存flow_then_random_digの29.3%は同一点を重複して掘り得るため低めに出ている。別案として特定道路の点2・5だけを聴き、決定論的な音量対から候補を推定して2回掘る方法は、疑似音が点2・5を上書きしないケースでは全位置を特定できるが、これは流量と音というCを使う効率的戦略であり、初回のcontent-blind突破ではない。",
+      "notes": "元コマンドはdesign-sim-result.jsonへの書込みがEPERMで失敗したため、同じスクリプトからwriteFileSync行だけを除き、同じstate_table.jsonを読ませて再実行した。結果はcommitted resultと一致し、legitimate_strategy_wins_every_case、no_content_blind_strategy_wins_reliably、flow_without_listening_is_not_enough、every_case_solvable_within_budgetsはすべてtrue。乱択戦略が同じ地点を繰り返し聴く・掘る点には評価上の弱さがある。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §2-3 — Cなし突破、答え漏れ、結果非依存、重大な職業誤り、偽装成功をRelease Blocker候補とし、Gate Gで少なくとも一度の考え直しを要求する。",
+      "factory/rules/principles.md — 実務主体の推測断定を禁止し、不明ならFACT_CHECK_REQUIREDを残すよう要求する。",
+      "factory/projects/leak-detective/design/fact_sheet.json uncertainties[2] — 真上付近で最大音は東京都水道局資料で確認済みだが、「低い音だけなら遠い」はWaQuAC実務者資料経由で、引用元マニュアル原典は未取得。",
+      "factory/projects/leak-detective/design/state_table.json sound_reading — 距離だけで音量と高低を決め、dist≤1を必ずhigh、その他をlowとするため、未確認の経験則を確定ルール化している。",
+      "factory/projects/leak-detective/design/game_translations.json information_gained/C_interaction — 「漏水点に近いほど音が大きく高くなる」「低い音なら遠い」を子どもが学ぶ事実として提示している。",
+      "factory/projects/leak-detective/design/fact_sheet.json expertise[0] — 実際の音量・音質は管材、口径、水圧、損傷孔、漏水量、土、地下水など多数の条件で変わる。",
+      "factory/projects/leak-detective/design/fact_sheet.json adjacent_profession_boundaries — 調査員は位置特定を担う一方、掘削・復旧・断水は水道局の判断と工事業者の作業になる。",
+      "factory/projects/leak-detective/design/game_translations.json job_reveal_bridge — 「掘る場所を決めるのは、この人たち」と調査員本人の権限として断定する。",
+      "factory/projects/leak-detective/design/fact_sheet.json representative_duties[2-3], decisions[2,4,6] — 路面音聴、夜間最小流量による路線切分け、確認結果に基づく掘削判断はCOREに直接対応し、周辺業務ではない。",
+      "factory/projects/leak-detective/design/fact_sheet.json adjacent_profession_boundaries/who_or_what_they_serve — 道路側漏水は水道局の負担・指示系統で、契約受注者が施工する。請負業者の独立した裁量判断を成功条件にしていないため、Eは水道事業者の権限内で閉じる。",
+      "factory/projects/leak-detective/design/state_table.json valve_note — 実際は150〜200m間隔の弁で区切られた路線単位だが、ゲームは一弁一道路へ簡略化している。",
+      "factory/projects/leak-detective/design/fact_sheet.json uncertainties[9] — 東京・岡山では夜間理由を確認できるが、神奈川県営水道は昼夜を問わず実施する。",
+      "factory/projects/leak-detective/design/state_table.json block/budgets/sound_reading — 24聴取点、4弁、3音属性、3予算を同時に扱い、最大6地点の結果を地図へ残す。",
+      "factory/projects/leak-detective/design/game_translations.json retry_or_rethink — 誤掘削後は聴き直せるが必須ではなく、そのまま2回目を掘ることも禁止していない。",
+      "factory/projects/leak-detective/design/first_5_seconds.json — 弁と聴取点の発光でタップ対象は推測できる一方、「弁をしめて、針を見る／道路に置いて、聴く」が操作法を直接提示する。",
+      "factory/projects/leak-detective/design/game_translations.json system_reaction/E_consequence — 成功時と失敗時で噴水、管、路面、流量、翌夜持越しが明確に分岐する。",
+      "factory/projects/leak-detective/design/no_manual_exploit_check.json — 地図には湿り・漏水印を置かず、24点と4弁を同格表示し、通報も区画全体に留める。",
+      "factory/projects/leak-detective/design/design-sim.mjs and design-sim-result.json — 再実行相当結果は正当戦略552/552解決、最悪6聴取・3弁操作、4 verdict flagsすべてtrue。"
+    ],
+    "recommended_actions": [
+      "音の高さフィールドと「低音なら遠い」という全ての説明・規則を削除し、公式確認済みの音量最大付近と連続性を中心にstate tableとsimを再調整する。",
+      "Job RevealとCORE/Eを「調査員が漏水位置を絞り込み、掘削候補を水道局の修理判断・修理班につなぐ」に修正する。",
+      "同じGame Translationを維持したまま、3道路×5点程度へ縮小し、地点表示を音量バー＋連続／断続の2属性にする。",
+      "1回目の誤掘削後は結果を地図へ戻し、新しい聴取を1回行うか既存記録を比較する操作を経るまで2回目の掘削を無効化する。",
+      "弁が道路名ではなく水道管の一隔離区間に対応する図へ直し、実物の弁網を一弁一街路と誤解させない。",
+      "Job Revealの夜間表現を「交通や使用水量の少ない夜に行う調査もある」に限定する。",
+      "シミュレーターのcontent-light戦略は聴取・掘削済み地点を除外し、重複なしの最適化された基準戦略も追加する。"
+    ]
+  },
+  "elapsed_sec": 314.505
+}

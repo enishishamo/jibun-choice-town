@@ -1,0 +1,40 @@
+{
+  "note": "Independent art QA evidence: factory/harness/art/art-qa.mjs (Codex vision critic with the series reference set) run inside art-loop.mjs; producer was the codex_imagegen adapter. Copied verbatim from factory/state/art/manifest-v2.json.",
+  "reviewer": "codex-vision-critic (art-qa.mjs)",
+  "producer": "codex_imagegen",
+  "verdict": "PASS",
+  "iteration": 1,
+  "qa_score": 76,
+  "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 88,
+    "CROP_SAFETY": 76,
+    "READABILITY": 86,
+    "OBJECT_COMPLETENESS": 94,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 93,
+    "MOBILE_USABILITY": 78,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+  },
+  "qa_issues": [
+    "ヘッドホン、制御器、聴音センサー、マンホールが横方向に分散しており、丸型クロップでは左右のヘッドホンまたはマンホールが欠けやすい — hotspot表示で漏水調査の意味が弱まる可能性がある",
+    "主要な聴音センサーが画面下端に近い — 容器側のクロップや余白処理によっては一部が切れ、重要要素を中央70%以内に置くというmobile safety基準から外れる",
+    "4:3画像を375×210の横長枠へobject-fit:containで表示すると左右に余白が生じる — 幅いっぱいの視覚的充足感は実装背景色に左右される"
+  ],
+  "dimensions": "1200x900",
+  "file_hash": "4bc7adb6a661",
+  "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: A quiet Japanese residential street at night, seen from a slight top-down diorama angle. Warm street lamps, a few small houses with dark windows (one window faintly lit), a clean asphalt road with a manhole/valve lid at a corner. On the road surface, a small electronic leak detector: a compact box with a cable to a round pickup placed on the asphalt, and a pair of headphones resting beside it. A hand-drawn-feeling clay/miniature look. Calm, curious mood — 'something invisible is happening under this road'.\nRole in game: leak-detective（水道の漏水調査員）のQ1イントロ画面の場所画像（place.image、375pxで幅いっぱい高さ210px、object-fit contain）と、猛暑イベントの6つ目のhotspot画像（丸くクロップ、imageFit: scene）。『深夜の住宅街で、地面の下の音を聴く』という場面を一目で伝える。ゲーム内の地図・弁・聴取点・計器はすべてClaudeがCSS/SVGで描くので、この画像は雰囲気と場所を伝える1枚だけ。\nCamera / composition: 4:3, 1200x900. Keep the detector and valve lid within the centre 70% so a 210px-tall contain fit on 375px and a round hotspot crop both keep the subject; nothing important in the outer 8%. Interactive object hierarchy: the detector pickup on the road (focal point, centre-lower third) > the valve lid at the corner (secondary) > houses and lamp (background context) Must be visually obvious: it is night; it is a normal residential road, nothing dramatic; a listening device is placed on the road surface Touch affordance: None inside the image (the image is not interactive). The interactive map is drawn by the game component.\nMust include: night residential street with 2-4 small houses; warm street lamp light; asphalt road surface with a round valve/manhole lid at a corner; small electronic leak detector box with a cable and a round pickup placed on the road; headphones beside the detector\nMust NOT include: any wet patch, puddle, spraying water, crack, or leak location (answer leak); any highlighted or marked segment of road; readable text, numbers, signs, logos; UI elements (buttons, gauges, badges, labels); a specific worker's face as a mascot; readable text; UI buttons/badges/labels; mascot or brand character (prohibited_mascot_invention)\nAspect ratio: 4:3 (compose for this frame).",
+  "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/heat/place-park.png",
+    "public/assets/heat/place-city.png",
+    "public/assets/zoo/scene-zoo.png"
+  ],
+  "created_at": "2026-09-08T07:39:57.690Z"
+}

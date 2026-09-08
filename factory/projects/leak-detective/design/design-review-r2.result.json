@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 86,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION: 「記録を見比べる」は画面を開くだけで2回目の報告を解禁する。比較・再判断を要求せず、シミュレーターもcompareを内容非依存の無料解除として使用しているため、Gate Gの考え直しを実質的に保証していない。修理予算消化済みなのでREDESIGNまたはESCALATEが必要。"
+    ],
+    "medium": [
+      "FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION: 375px上で18聴取点、3弁、流量計、各点の2属性、3予算を同時に扱い、最大5点の結果を地図上へ固定表示する構成は依然として密度が高い。段階表示・拡大・比較ビューの可読性を実装仕様で保証する必要がある。",
+      "VISUAL_GAMEPLAY_LEGIBILITY: 最初のタップ対象は発光で推測できるが、「とぎれる音＝家庭使用の疑似音」という攻略上必須の意味は初期状態や最初の反応だけからは十分に学べない。答えを直接教えず、反応や視覚表現で意味を発見できる仕様が必要。"
+    ],
+    "low": [
+      "FUN: 夜の住宅街、針の反応、音の勾配、掘削結果という題材には好奇心と手触りがあるが、数値・記録中心の操作が続くため、音や針の反応演出が弱い実装では作業感が出る。"
+    ],
+    "failure_codes": [
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "HIGH",
+        "finding": "失敗後にcompareを1回タップするだけで、新しい証拠の取得・比較結果の選択・仮説変更なしに再報告できる。design-sim.mjsのunlockOrもこの抜け道を意図的に利用しており、確認しているのはボタンの一時無効化だけでGate Gの実質ではない。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION",
+        "severity": "MEDIUM",
+        "finding": "縮小後も375pxで18点、3弁、計器、点ごとの2属性、3予算を扱うため、固定表示される記録の可読性とタップ領域が危険。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY",
+        "severity": "MEDIUM",
+        "finding": "発光により最初の操作対象は分かるが、連続性が疑似音判定にどう結び付くかを体験から理解させる反応仕様が不足している。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "tone_rule_removed": true,
+      "surveyor_role_corrected": true,
+      "complexity_reduced": true,
+      "think_again_gate_real": false
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_verdict_flags_true": true,
+      "own_adversarial_strategy": "流量で区間を特定し、その区間の点2・5だけを聴く。level=5なら即報告でき、漏水点2または5の2/6＝33.3%を2聴取で確定する。通常は点2・5のレベル対が点1〜6で一意なので位置を推定でき、どちらかがintermittentで上書きされた場合も残り3回の聴取で解消できる。これは流量と音のCを実際に読む最適化であり、内容非依存の攻略ではない。1-decimal表示も漏水区間閉鎖時0.2、非漏水区間閉鎖時2.2と十分離れ、丸めによる追加リークはない。",
+      "notes": "結果ファイルへの書込みはEPERMだったため、writeFileSync行だけを除いた同一ロジックを実行。正当戦略306/306、最悪4聴取・2弁、無作為報告12.7%、流量なし聴取29.2%、流量のみ異なる2点報告33.2%、ゲート試験200/200で、5フラグは全てtrue。ただしゲート試験はcompareによる無料解除を検査していない。流量のみ33.2%はCを使い、安定突破でもないため§3 BLOCKERではない。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/projects/leak-detective/design/state_table.json — compareは記録画面を開くだけで解禁し、比較結果や新しい判断を要求しない。",
+      "factory/projects/leak-detective/design/design-sim.mjs:95 — content-light戦略がcompareを無料解除として使用する。",
+      "factory/projects/leak-detective/design/design-sim.mjs:159 — ゲート検証は何も挟まない連続報告だけを試し、compare直後の再報告を検査しない。",
+      "factory/projects/leak-detective/design/design-sim-result.json — 5 verdict flagsはtrue、流量のみ戦略は33.2%、正当戦略は306/306。",
+      "factory/projects/leak-detective/design/game_translations_v2.json — 調査員は漏水点を特定・報告し、修理班が掘削・修理する。外れ時も漏れ継続と持越しを表示する。",
+      "factory/projects/leak-detective/design/fact_sheet.json — 電子式探知器は真上付近で最大、疑似音の識別、調査員と修理者の境界を支持する。",
+      "factory/projects/leak-detective/design/first_5_seconds_v2.json — 発光する弁・聴取点から最初のタップは推測可能だが、18点と複数表示を同時提示する。",
+      "factory/projects/leak-detective/design/ae_v2.json — Eは位置特定・報告から水道局体制内の掘削、当否、修理または持越しまで閉じる。",
+      "factory/projects/leak-detective/design/c_compression_v2.json — tone規則は除去され、levelとcontinuityだけに圧縮されている。"
+    ],
+    "recommended_actions": [
+      "修理予算が残っていないため、HIGHを伴う本案をREDESIGNまたはESCALATEする。",
+      "Gate Gを成立させるには、compareを開くだけでなく、外れ地点と既存記録を用いた仮説更新をプレイヤーに要求し、その結果に応じて再報告を解禁する。新しい聴取による解除は維持できる。",
+      "再設計時は375px実寸で、点のタップ領域、最大5件の記録、計器、予算の段階表示と可読性を検証する。",
+      "疑似音の連続性は説明文で答えを渡さず、音・波形・家庭側の短い反応などから意味を発見できるフィードバックにする。"
+    ]
+  },
+  "elapsed_sec": 199.845
+}

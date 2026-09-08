@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v5（design_iteration 3、redesign #2: t1c-night-listening-isolation）。impl review r2のHIGH（弁で隔離した区間でも漏水音・噴水が出る物理的矛盾）とMEDIUM（弁モデルの文書間不一致）への対応: state_table.jsonにvalve_model（閉める2回・開け直し無料・同時1本）とsound_reading.isolation_rule（閉めた区間は静か、修理班は通水して掘る）を追加し、game_translations_v7/game_spec_v2/design-sim v5/leakLogic/QA harnessを同時に更新。design-sim v5: 正当戦略（流量→開け直し→勾配）が全306組合せを1回目に当て、開け直し忘れ戦略は安定して勝てない。COREとSCOPE、Dの子ども側の実行（弁の順番・開け直し・仮説・聴取点・報告地点）、Eが水道局の内側で閉じる構造、Cの必要性、証拠のみで解禁される考え直しゲート、自動強調なしは変更なし。redesign_count 2/2（本パイプラインで許容される最後のredesign、repair_countは新イテレーションで0/1にリセット）。",
+  "pass": true
+}

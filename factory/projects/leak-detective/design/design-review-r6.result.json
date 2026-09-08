@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "HUMAN_REQUIRED",
+    "score": 70,
+    "career_authenticity_score": 70,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "FACTUAL_PROFESSION_ERROR — 閉区間を「無音」と定義しながら、実際には波形バー1本、連続アニメーション、ラベル「ずっと」を表示する。同じ level 1 steady は開区間で「遠くの漏水音がかすかに管を伝う」状態にも使われており、無音と可聴音を区別できない。10〜12歳には『水が止まっても小さい音がずっと鳴る』と見えるため、round-5の音響矛盾は完全には解消していない。§3 RELEASE BLOCKER-class（実務・物理モデルの重大な誤り）。"
+    ],
+    "medium": [
+      "VISUAL_GAMEPLAY_LEGIBILITY — 再開操作自体は明示されたが、375px表示ではSVG内 fontSize 9 の「▲開ける（0回）」が実寸約8pxとなる。さらに first_visible_state は旧表記「弁 2回」のままで、初期状態仕様が「閉める あと◯」へ統一されていない。無料再開の意味は実装されているものの、初見で確実に発見できるというround-5 MEDIUMの完了条件は満たし切っていない。polish itemであり§3 RELEASE BLOCKER-classではない。"
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "閉区間の検出結果を level 1 steady として返し、UIがバー1本・動き続ける波形・「ずっと」を表示するため、「水が止まれば何も伝わらない」という採用モデルと知覚上矛盾する。シミュレーションの isolated_segment_is_silent は無音表示を検証せず、忘れ戦略の勝率が0.5未満かだけを検証している。§3 RELEASE BLOCKER-class。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY",
+        "severity": "MEDIUM",
+        "finding": "閉じた弁の44px操作領域は確保されたが、再開ラベルは375px時に約8pxで、first_visible_stateの予算文言も旧「弁 2回」のまま。初見発見性が十分に保証されない。polish item。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "round5_findings_confirmed_closed": {
+      "acoustic_model_consistent": false,
+      "reopen_affordance": false
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_seven_flags_true": true,
+      "own_adversarial_strategy": "閉区間の silence-vs-sound を情報源として利用し、無料の再開を反復する戦略を検討した。閉区間では真相にかかわらず全地点が同じ level 1 steady なので、閉区間内の地点・家疑似音に関する情報利得は0。無料再開は現在の1弁を開くだけで、聴取・報告・閉操作予算を回復せず、別区間を閉めるたびに閉操作を消費するため、循環による新しい攻略経路はない。意図どおり流量を読んで各閉操作後に無料再開する場合は正当戦略と同じ306/306（100%）；閉じたままの表示だけで勾配探索する既存戦略は272/600（45.3%）。",
+      "notes": "通常実行は読み取り専用環境でdesign-sim-result.jsonへの書込みがEPERMになったため、同一スクリプトからwriteFileSync行だけを除いて実行した。結果は保存済み結果と一致し、正当戦略600/600、全組合せ306/306、七つのverdict flagは全てtrue。ただし isolated_segment_is_silent は表示上の無音を検査しておらず、level 1 steadyを無条件に無音扱いしているため、今回の知覚上の矛盾を検出できない。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §3 — 実際の仕事として重大な誤りはRELEASE BLOCKER候補。",
+      "factory/projects/leak-detective/design/state_table.json sound_reading — other_segment_ruleはlevel 1 steadyを「遠くの漏水音がかすかに管を伝う」と定義する一方、isolation_ruleも無音を同じlevel 1 steadyで表す。",
+      "factory/projects/leak-detective/design/game_translations_v8.json t1c system_reaction — 閉区間を「すべて静か」としながら「波形バー1・ずっと」と明記している。",
+      "src/q1/leakLogic.ts:73 — 閉区間も{level:1, continuity:\"steady\"}を返す。",
+      "src/q1/LeakTraceGame.tsx:243 — level 1 steadyでも連続アニメーション波形、バー1本、「ずっと」を表示する。",
+      "factory/projects/leak-detective/design/design-sim.mjs — isolated_segment_is_silentは忘れ戦略の勝率<0.5のみで判定し、無音専用状態や無表示を検証しない。",
+      "factory/projects/leak-detective/design/design-sim-result.json — 七つのフラグtrue、正当戦略600/600、全306組合せ解決、忘れ戦略45.3%。",
+      "factory/projects/leak-detective/design/state_table.json valve_model.reopen — 閉じたふたの44px領域と「▲開ける（0回）」、予算「閉める あと◯」を規定。",
+      "src/q1/LeakTraceGame.tsx:204 — 再開ラベルはSVG fontSize 9で、375px幅では約8px。",
+      "factory/projects/leak-detective/design/game_translations_v8.json first_visible_state — 初期予算表示が旧表記「弁 2回／聴く 5点／報告 2回」のまま。",
+      "factory/projects/leak-detective/design/ae_v3.json — C→Dは流量による区間切分け、再開後の音量勾配と連続性判定、地点報告として維持されている。",
+      "factory/projects/leak-detective/design/scope_core_v2.json — 職業名を隠しても夜間流量測定と路面音聴から漏水調査へ自然につながり、CORE/SCOPEは代表的。",
+      "factory/projects/leak-detective/design/state_table.json report_rule/outcome_rule/think_again_gate — 修理班が通水して掘る、外れは乾いた管とpartial、新しい聴取だけが再報告を解禁するため、E・honest outcome・evidence-only gateは成立。"
+    ],
+    "recommended_actions": [
+      "修理・再設計予算が尽きた状態で§3 RELEASE BLOCKER-classのHIGHが残るため、Human DecisionへESCALATEする。",
+      "無音をlevel 1 steadyで代用せず、専用のsilent状態（level 0／continuity none等）を設け、閉区間では波形・バー・「ずっと」・窓点滅を表示しない。シミュレーションとQAも知覚出力が完全に無いことを直接検証する。",
+      "再開ラベルを375pxで本文相当の可読サイズにし、first_visible_stateを「閉める あと◯」へ統一する。"
+    ]
+  },
+  "elapsed_sec": 202.127
+}

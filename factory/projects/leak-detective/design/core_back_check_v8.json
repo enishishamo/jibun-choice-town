@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v8（design review r7 FAIL 68後、Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）の範囲内の最後の修理）。r7のHIGH 2件（閉区間で記録した『静か』が開け直し後もキャッシュされ通常音へ戻らない／silent時も空の波形容器を描画）への対応: 『静か』の記録は閉区間にしか存在しない——開け直し（明示・暗黙）で消え、その点はもう一度聴ける（聴く予算は戻らない）。開け直しで読み値を勝手に再計算しない（調査員は水を戻してからもう一度聴く、という実務どおり）。silent時は波形ストリップ要素自体を描画しない。design-sim v8 と gameplay-qa-leak が直接検査。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なし、採用translation・操作構造・Art・Product Identityは変更なし。 v7（design review r6 HUMAN_REQUIRED後、予算切れのためESCALATE → Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出）。r6のHIGH（閉区間の読み値 level 1 steady が波形バー1本＋動く波形＋『ずっと』として表示され、知覚上は無音でない）への対応: 読み値に専用の無音状態 level 0 / continuity silent を設け、閉区間ではバー・波形・『ずっと』・窓の点滅を一切出さず『静か（水が止まっている）』とだけ示す。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査。MEDIUM（ラベル約8px、first_visible_stateの『弁 2回』）も是正。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なしは変更なし。",
+  "pass": true
+}

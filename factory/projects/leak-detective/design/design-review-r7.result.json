@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [
+      "FACTUAL_PROFESSION_ERROR — 閉区間で取得した level 0 / silent のReadingが履歴に固定される。openValveはclosedをnullにするだけで既存readingsを再計算せず、tapPointもheardAtが存在すれば再聴取しないため、再開放後も当該地点は『静か（水が止まっている）』のままで通常音へ戻らない。hd-1条件(3)を満たさず、閉区間／開区間の物理状態と表示が再び矛盾する。§3 RELEASE BLOCKER-class、inside hd-1 scope。",
+      "FACTUAL_PROFESSION_ERROR — silent表示でもLeakTraceGameは背景付きの高さ14pxの波形コンテナを常に描画し、中身のアニメーションだけを省いている。これは明示条件『NO waveform strip』および提出物の『波形なし』主張に反する。§3 RELEASE BLOCKER-class、inside hd-1 scope。"
+    ],
+    "medium": [
+      "PROCESS_SCOPE_VIOLATION — 厳密なhd-1許可範囲は専用silent state、閉区間の音表現除去、再開放後の復帰、および構造不変に限定されているが、v9/v7修正には予算文言変更と再開放ラベルの文字サイズ変更も含まれる。改善自体は妥当で構造変更ではないものの、提示されたstrict scopeの外側。polish/process item、outside hd-1 scope。"
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "閉区間で一度聴いた地点のsilent Readingが再開放後もキャッシュされたままで、通常のopen-segment音表示へ戻らず再聴取もできない。さらにsilent時も空の波形ストリップ自体は描画される。",
+        "fixable_by_local_repair": true,
+        "inside_hd1_scope": true
+      },
+      {
+        "code": "PROCESS_SCOPE_VIOLATION",
+        "severity": "MEDIUM",
+        "finding": "予算文言と再開放ラベル文字サイズの変更は有益だが、提示されたhd-1のstrictな4項目には含まれていない。",
+        "fixable_by_local_repair": true,
+        "inside_hd1_scope": false
+      }
+    ],
+    "round6_findings_confirmed_closed": {
+      "silent_state_distinct_and_consistent": false,
+      "reopen_affordance_and_wording": true
+    },
+    "repair_stayed_inside_hd1_scope": false,
+    "sim_verification": {
+      "reran": true,
+      "all_seven_flags_true": true,
+      "silent_flag_tests_output": true,
+      "own_adversarial_strategy": "流量で漏水区間を特定し、閉じたまま任意点を聴いてsilentを保存し、無料で再開放して同じ点を再タップする。silentは漏水位置について流量以上の情報を与えず、無料開閉の循環もclose予算を回復しないため攻略上の追加リークはない。しかし実装では保存済みsilentが通常音へ復帰せず、その点を再聴取できない。別の内容非依存攻略として流量後に異なる2点を推測する勝率は設計simで34.7%で、安定突破ではない。",
+      "notes": "design-simは全計算後のresult書込みでEPERMになった。ソース上の7フラグ条件と既存resultを照合し、同一実装規則を検査するgameplay-qa-leak.mjsは44/44。isolated_segment_is_silentはclosedReadingsAllSilentをANDし、全閉区間出力がlevel 0/silentか直接検査している。ただし再開放後の保存済みReading更新はsimもQAも検査していない。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/projects/leak-detective/design/state_table.json — isolation_ruleは閉区間をlevel 0/silent、再開放後に漏水音・疑似音が戻ると要求し、無音時は波形を出さない。",
+      "src/q1/leakLogic.ts — openValveはclosed:nullだけを設定しreadingsを更新しない。listenはheard済み地点をalready_heardとして拒否する。",
+      "src/q1/LeakTraceGame.tsx — tapPointはheardAtがあれば選択だけ行うため再開放後も再聴取不能。silent分岐でも外側の波形用divは常時描画される。",
+      "src/q1/LeakTraceGame.tsx — 閉じたふたのラベルはSVG fontSize 14で、375px表示ではviewBox縮尺後およそ12px強。44px相当の弁タップ領域と『閉める あと◯』表示は存在する。",
+      "factory/projects/leak-detective/design/design-sim.mjs — closedReadingsAllSilentが全case・全pointのlevel 0/silentを直接検査し、isolated_segment_is_silentにANDされる一方、保存済みReadingの再開放後更新はモデル化されていない。",
+      "factory/projects/leak-detective/design/design-sim-result.json — 7 flags true、306/306 solvable、worst 4 listens/2 valve ops、flow_then_gradient 600/600、forgets-reopen 33.2%。",
+      "factory/harness/gameplay-qa-leak.mjs — 44/44。ただしreopen regressionはsoundReadingを新規に直接呼ぶだけで、閉区間でlistenして保存したReadingが再開放後に復帰するかを検査していない。",
+      "factory/projects/leak-detective/design/game_translations_v9.json — first_visible_stateは『閉める あと2／聴く 5／報告 2』、再開放は無料と明示。",
+      "factory/projects/leak-detective/design/first_5_seconds_v7.json — 同じ予算文言、閉じたふたの再開放表示、専用無音状態を記載。",
+      "factory/projects/leak-detective/q1-pipeline.json — hd-1は専用silent state、音表現除去、再開放後の通常音復帰、既存構造不変に限定。"
+    ],
+    "recommended_actions": [
+      "openValve時に保存済みsilent Readingを通常状態へ再計算するのではなく、閉区間で取得した無音記録と現在の再聴取可能性を分離し、再開放後に同地点を再聴取できるようにする。再聴取がlisten予算を消費するかは既存操作構造を変えない形で明文化する。",
+      "silent分岐では波形コンテナ自体を描画せず、『静か（水が止まっている）』だけを表示する。",
+      "QAへ『close→listenしてsilentを保存→reopen→同地点で通常音が表示される』および『silent DOMに波形strip要素が存在しない』回帰試験を追加する。",
+      "hd-1外のラベル・文言変更について人の追認を得るか、既に承認済みと判断できる記録をpipelineへ明示する。"
+    ]
+  },
+  "elapsed_sec": 168.03
+}

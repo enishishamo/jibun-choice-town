@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "FACTUAL_PROFESSION_ERROR: 開け直し後、状態モデルからsilent readingは削除されるが、画面の「記録」timelineには「🎧 C5: 静か（水が止まっている）」が残る。子どもには開区間の現在も有効な記録として見え、state_tableの「記録から消える」と矛盾する。§3 RELEASE BLOCKER-classの重大な実務・物理表現エラーで、hd-1範囲内。",
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION: 外れ後、閉区間の任意点を聴くという判別情報ゼロのsilent listenでもunlocked=trueになり、別の既存readingを再報告できる。「新しい証拠でのみ成立」というevidence-only gateを満たさず、Gate Gを形式的な有料タップへ弱める。§3列挙のRELEASE BLOCKER-classではないが、Primary Gate違反でありpolishではない。hd-1範囲内。"
+    ],
+    "medium": [
+      "DESIGN_SIM_DIVERGES_FROM_IMPLEMENTATION: design-simのreport処理は対象点を聴取済みか検査しないため、random_reportおよびflow_then_two_distinct_reportsは実装では不可能な未聴取点報告を行う。§3 RELEASE BLOCKER-classではなく検証品質の欠陥で、hd-1範囲外。"
+    ],
+    "low": [
+      "leakLogic.tsとdesign-sim.mjsの先頭コメントが旧translation/versionや旧level 1 silent説明を残している。実行規則には影響しないpolish itemで、hd-1範囲外。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "silent stateは明示・暗黙のreopenでreadingsから消えるが、独立したReact timelineからは削除されず、記録ストリップに古い「静か」が残る。",
+        "fixable_by_local_repair": true,
+        "inside_hd1_scope": true
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "HIGH",
+        "finding": "silent listenは閉区間で全点同一かつ流量計以上の情報を持たないのに、外れ後の再報告ゲートを解除するため、evidence-only rethinkが成立しない。",
+        "fixable_by_local_repair": true,
+        "inside_hd1_scope": true
+      },
+      {
+        "code": "DESIGN_SIM_DIVERGES_FROM_IMPLEMENTATION",
+        "severity": "MEDIUM",
+        "finding": "simulatorはreport前のheard/readings検査を欠き、実装が拒否する未聴取点報告を成功率集計へ含めている。",
+        "fixable_by_local_repair": true,
+        "inside_hd1_scope": false
+      }
+    ],
+    "round7_findings_confirmed_closed": {
+      "silent_reading_only_while_closed": false,
+      "no_waveform_element_when_silent": true
+    },
+    "repair_stayed_inside_hd1_scope": true,
+    "silent_listen_unlocks_gate_verdict": "defect",
+    "sim_verification": {
+      "reran": true,
+      "all_eight_flags_true": true,
+      "own_adversarial_strategy": "流量で漏水区間を特定し、候補点を1点聴いて報告。外れたら漏水区間を閉め、答えを判別しない任意のsilent listenでゲートだけ解除し、以前聴いた別候補を再報告する。silent操作自体は正解情報を増やさないため、6点中2点を選ぶ場合の上限は約33.3%で、勝率上昇型のanswer leakではないが、考え直しゲートを内容非依存に迂回できる。",
+      "notes": "書込みのみEPERMになったため、そのwriteFileSync行を除いた同一ロジックを実行。600/600、306/306、最悪4 listens/2 valves、think-again 200/200/200、全8 flags=trueを再現。gameplay QAは48/48。ただしsimは実装のnot_heard制約をモデル化していない。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §2-3 — Gate Gと重大な実務誤りのrelease基準。",
+      "factory/projects/leak-detective/design/state_table.json sound_reading.isolation_rule/silent_record_lifetime — reopen時にsilent記録そのものが消える要求。",
+      "src/q1/leakLogic.ts dropSilent/closeValve/openValve/listen — 明示・暗黙reopenでstate readingを削除し、再聴取は追加listenを消費する。",
+      "src/q1/LeakTraceGame.tsx:24,41,47,59,108-110 — 記録表示は独立timelineで、reopenは開放行を追加するだけでsilent行を削除しない。",
+      "src/q1/LeakTraceGame.tsx:242-255 — silent branchは文字のみで、leak-waveはnon-silent branchだけに存在する。",
+      "src/q1/leakLogic.ts listen — reading内容を問わず新しいlistenでunlocked=true。",
+      "factory/projects/leak-detective/design/no_manual_exploit_check_v8.json silent_as_information — silentは流量計以上の情報を持たないと自認している。",
+      "factory/projects/leak-detective/design/design-sim.mjs simulate/report — report対象の聴取済み検査がなく、実装のreportBlocked(not_heard)と不一致。",
+      "factory/harness/gameplay-qa-leak.mjs — 48 passedだが、silent lifetime invariantはLeakState.readingsのみを対象としReact timelineを検査しない。",
+      "factory/projects/leak-detective/q1-pipeline.json one_time_exception.final_repair — r8でHIGHが残ればESCALATEするhard cap。"
+    ],
+    "recommended_actions": [
+      "パイプラインをESCALATEする。",
+      "timelineを派生表示に置き換えるか、明示・暗黙reopen時に該当区間のsilent行を削除し、DOM上の記録ストリップまで回帰検査する。",
+      "ゲート解除条件を判別情報を持つnon-silentの新規聴取に限定するか、silent listen後も再報告をロックする。",
+      "design-simのreportに実装同等のheard/not-heardおよびalready-missed検査を追加して戦略率を再計測する。"
+    ]
+  },
+  "elapsed_sec": 167.025
+}

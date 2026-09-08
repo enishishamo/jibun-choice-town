@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "v6（design_iteration 3、repair 1/1 after design review r5）。r5のHIGH（閉区間で家の使用音だけが聴こえる音響モデルの自己矛盾）とMEDIUM（無料の開け直しのアフォーダンス不足）への対応: state_table.sound_reading.isolation_rule を『閉区間の路面聴取はすべて level 1 steady（窓の点滅もなし）』に統一し、valve_model.reopen に『▲開ける（0回）』ラベルと『閉める あと◯』表記を明記。design-sim v6・leakLogic・QA harness（42/42、閉区間の疑似音も静かという回帰を追加）を同時に更新。七つのverdict flagはすべてtrue（正当戦略306/306、開け直し忘れ45.3%）。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、証拠のみで解禁される考え直しゲート、自動強調なしは変更なし。repair_count 1/1、redesign_count 2/2。",
+  "pass": true
+}

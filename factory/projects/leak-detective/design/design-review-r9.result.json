@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 88,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "FACTUAL_PROFESSION_ERROR — LeakTraceGame.tsx retains a previously heard non-silent record after its segment is closed, as designed, but the associated house-window blink and latest-reading waveform also continue animating. Those animations look like live sound despite the segment being isolated, contradicting the closed-segment silent rule. This is an implementation-only visual-state defect, not a §3 RELEASE BLOCKER-class defect, and is outside hd-2 scope."
+    ],
+    "low": [
+      "DOCUMENTATION_STALE — no_manual_exploit_check_v9.json still quotes obsolete v5 rates in several fields: random report 9.8% instead of 10.7%, flow-only 34.7% instead of 32.5%, valves-ignored 25.0% instead of 23.0%, and forgets-reopen 46.0% instead of 33.2%. Its later report_grounding field has the correct v9 figures. This is a polish item outside hd-2 scope."
+    ],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "MEDIUM",
+        "finding": "After an intermittent non-silent reading is heard, closing that segment preserves lastReading; the window blink condition does not check v.closed, and the latest-reading waveform remains rendered. The UI can therefore continue visibly presenting active sound on a closed, silent segment. Implementation-only; not §3 RELEASE BLOCKER-class.",
+        "fixable_by_local_repair": true,
+        "inside_hd2_scope": false
+      }
+    ],
+    "round8_findings_confirmed_closed": {
+      "gate_g_evidence_only": true,
+      "timeline_selection_consistent": true,
+      "sim_report_parity": true
+    },
+    "repair_stayed_inside_hd2_scope": true,
+    "sim_verification": {
+      "reran": true,
+      "all_eight_flags_true": true,
+      "gate_tests_200_each": true,
+      "own_adversarial_strategy": "State-transition attack covering pre-miss listens, records-only, silent listen, explicit/implicit reopen cycling, and silent-point drop/re-listen: every prohibited second-report path has 0% success because a miss sets unlocked=false and the only subsequent transition assigning true is a non-silent listen. Reopening and record removal never alter unlocked; re-listening a dropped silent point unlocks only when it produces a new non-silent reading, which satisfies Gate G.",
+      "notes": "The direct run reached result generation but could not overwrite design-sim-result.json because the review sandbox is read-only. The same source was then evaluated with only its final write redirected to stdout. It reproduced the committed results exactly: legitimate 600/600; solvability 306/306; worst 4 listens and 2 valve operations; rates 10.7%, 26.2%, 26.2%, 32.5%, 23.0%, and 33.2%; all eight flags true; all four gate counters 200/200. gameplay-qa-leak.mjs independently passed 50/50."
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md — A-I gates and §3 release-blocker criteria applied; replay mastery treated only as plus quality.",
+      "factory/rules/principles.md — CORE requires authentic C⇄D causality, honest E, hidden profession name, and no answer disclosure.",
+      "factory/projects/leak-detective/design/state_table.json — miss locks the gate; only a post-report non-silent listen unlocks; silent readings cannot ground reports; explicit and implicit reopen remove silent state/timeline/selection.",
+      "src/q1/leakLogic.ts — report() sets unlocked=false after a miss; listen() preserves false for silent readings and sets true only for non-silent readings; openValve()/closeValve() do not unlock; reportBlocked() enforces heard, non-silent, not-missed grounding.",
+      "src/q1/LeakTraceGame.tsx — explicit and implicit reopen remove matching silent timeline lines and deselect points whose records disappeared; however blink and latest waveform rendering do not suppress retained historical readings when their segment becomes closed.",
+      "factory/projects/leak-detective/design/design-sim.mjs — report parity requires a current non-silent reading and rejects missed points; four Gate G tests cover no evidence, records only, non-silent evidence, and silent-only evidence.",
+      "factory/projects/leak-detective/design/design-sim-result.json — all eight verdict flags true, four gate results 200/200, legitimate strategy 600/600 and all 306 combinations solvable.",
+      "factory/harness/gameplay-qa-leak.mjs — independently rerun: 50 passed, 0 failed.",
+      "factory/projects/leak-detective/design/game_translations_v11.json — adopted t1c retains flow→reopen→gradient→continuity→point-report structure and incorporates only the hd-2 evidence/grounding consistency changes.",
+      "factory/projects/leak-detective/q1-pipeline.json — hd-2 authorizes the four Gate G/record-grounding changes and prohibits CORE/SCOPE/A-E, Art, Product Identity, reward, points, and Home changes; no contrary structural change found.",
+      "factory/projects/leak-detective/design/no_manual_exploit_check_v9.json — final report_grounding rates match v9, but earlier exploit notes retain obsolete v5 percentages."
+    ],
+    "recommended_actions": [
+      "When v.closed equals lastHeard.seg, suppress the live house-window blink and latest waveform reaction, while retaining the historical record itself as valid evidence. Add a QA regression for hear intermittent while open → close same segment → no blink or live waveform.",
+      "Refresh every obsolete strategy percentage and v5 reference in no_manual_exploit_check_v9.json from the verified v9 result."
+    ]
+  },
+  "elapsed_sec": 183.366
+}

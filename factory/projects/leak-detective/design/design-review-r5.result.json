@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 72,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "閉区間を「水が流れていないので静か」と定義しながら、同じ区間の道路上の探知器では宅内使用の疑似音だけを検出できる例外は物理的に整合しない。貯湯・タンクで宅内使用が一時継続しても、その音が無圧・遮断された配水管を通じて路面ピックアップへ伝わる根拠にはならない。子どもにも『水を止めたのに家の水音だけ聞こえる』という矛盾として見える。"
+    ],
+    "medium": [
+      "無料の開け直しは閉じたふたの「閉」表示と同じふたへの再タップだけに依存し、「弁 2回」という予算表示は再タップも消費すると読める。375pxの初回プレイで、静音の原因から『同じ弁を無料で開ける』までを発見できる視覚的アフォーダンスが不足している。"
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "isolation_ruleが漏水音を消す一方で、同じ遮断管路上のhouse_usage_overrideだけを維持しており、路面音聴の音響モデルが自己矛盾している。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FIRST_PLAY_FAIL_DESPITE_CORRECT_IMPLEMENTATION",
+        "severity": "MEDIUM",
+        "finding": "閉状態からの無料再開操作が、初見で操作可能だと分かる状態表示になっていない。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "isolation_rule": {
+      "factually_sound": false,
+      "introduces_leak_or_exploit": false,
+      "first_play_discoverable": false
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_seven_flags_true": true,
+      "own_adversarial_strategy": "無料開閉差分戦略: 各候補区間で同一点を閉状態と再開後に聴き比べる。閉状態は漏水位置にかかわらずlevel 1 steadyで、再開自体も新しい流量・位置情報を生成せず、聴取予算だけを余分に消費するため、2回の弁閉鎖で得る流量情報を超える回答リークにはならない。なお既存simの46.0%は、漏水が未閉鎖の第3区間と推定されたケースでは音勾配が通常どおり読めることを含むため、純粋な『閉区間の静音から得た勝率』ではない。",
+      "notes": "元スクリプトは結果ファイル書込みでEPERMになったため、writeFileSync行だけを除いて同一ロジックを実行した。保存済み結果と一致し、正当戦略600/600、全306組合せ解決、最悪聴取4・弁操作2、考え直しゲート各200/200、七つのverdict flagはすべてtrueだった。"
+    },
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "fact_sheet.json expertise[0] — 漏水音は水圧・漏水量等に依存し、水圧が低いほど小さい。閉鎖・無圧区間の漏水音消失は妥当。",
+      "fact_sheet.json representative_duties[3] — 制水弁で流れを止め、流量変化から漏水路線を切り分ける実務を裏付ける。",
+      "fact_sheet.json adjacent_profession_boundaries — 調査員が位置特定し、水道局の判断と工事受注者が掘削・修理する境界を明記。通水して掘る結果モデルはこの境界と矛盾しない。",
+      "state_table.json sound_reading.isolation_rule — 閉区間を無流量・静音としつつhouse_usage_overrideだけを例外維持しており、音響経路の矛盾が残る。",
+      "state_table.json report_rule — 報告時の弁状態にかかわらず修理班が通水して確認するため、閉区間から噴水する旧矛盾は解消されている。",
+      "first_5_seconds_v5.json — 閉区間の静音と再開後の音の復帰は反応として定義されるが、閉ふたが再開操作であることや無料であることを示す独立した画面上の手掛かりがない。",
+      "design-sim.mjs/design-sim-result.json — 再実行で全七フラグtrue。ただしsoundReadingは閉区間でもhouse_usage_overrideを後適用するため、設計上の物理矛盾も忠実に実装している。",
+      "game_translations_v7.json t1c — 正解区間・点をシステムが強調せず、失敗は乾いた管・高い流量・持越しとして正直に分岐する。"
+    ],
+    "recommended_actions": [
+      "残る1回のlocal repairで、閉区間ではhouse_usage_overrideも含む全路面聴取をlevel 1 steadyにする。宅内の貯湯・タンク使用を残すなら窓の動きだけに限定し、遮断管路の探知器音とは同期させない。",
+      "同じ修理で、閉じた弁に44px以上の明示的な「開ける・0回」状態ラベルまたは同等の非文章的な開状態アフォーダンスを表示し、「弁2回」は「閉める あと2回」と表記する。",
+      "修正後、house distractorが閉区間にある全組合せを含めてsimを再実行し、七フラグ、306/306の解決可能性、静音回帰を再確認する。"
+    ]
+  },
+  "elapsed_sec": 199.144
+}

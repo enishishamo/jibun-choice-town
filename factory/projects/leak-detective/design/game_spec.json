@@ -1,0 +1,35 @@
+{
+  "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（区画量水器の流量）と路面での音聴（電子式漏水発見器）で絞り込み、『ここが漏水点』と特定して修理班に報告する（一晩2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消え、流量計が正常に戻る。",
+  "initial_visual_state": "夜の区画のミニチュア（Q1ゲーム画面の上部、375pxで幅いっぱい・高さ約230px）。道路の下に管の線が3区間（A北側・B東側・C南側）に分かれて薄く見え、各区間の入口に制水弁の丸い鉄ぶた（弁記号）、管に沿って各6点の聴取点（直径44px以上のタップ領域、ヘッドホン形の小さな印がゆっくり順番に淡く光る）。左上に区画量水器の計器（針＋『正常ならここ』の目盛り印、針は2.2の位置で震える）。右上に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。地図の下に『記録』ストリップ（空）。最下段に予算行『🔧弁 2 ／🎧聴く 5 ／📣報告 2』。濡れた場所・漏水マーク・操作説明文はない。",
+  "interactive_objects": [
+    { "id": "valve[A|B|C]", "type": "tap toggle", "state": "open|closed（同時に1本のみclosed）", "reaction": "閉めるとその区間の管線が一瞬暗くなり（全区間共通の演出、流量結果で分岐しない）、計器の針が流量ルールどおりに動く。記録ストリップに『弁A閉: 0.2』のように1行追加。弁の横に『ゲームでは1区間を1つの弁で表しています』", "budget": "valve_ops 2（閉める操作ごとに1、開け直しは無料）" },
+    { "id": "segmentLabel[A|B|C]", "type": "tap toggle（子どもの仮説）", "state": "focused|none", "reaction": "『この区間を調べる』: その区間の6点を大きく表示し他区間を薄くする。正誤を示さない。いつでも切替可。流量結果とは連動しない（自動強調なし）", "budget": "なし" },
+    { "id": "point[seg][1..6]", "type": "tap", "state": "unheard|heard(level,continuity)", "reaction": "ヘッドホン波形が鳴る（steady: 1.5秒ループで途切れない／intermittent: 0.6秒鳴って0.5秒止まる＋その点に一番近い家の窓明かりが同じリズムで点滅）。記録ストリップに『点B3: ▮▮▮▮ ずっと』のように1行追加。地図上の点には小さな波形印だけ残す", "budget": "listens 5" },
+    { "id": "reportButton", "type": "tap（聴取済みの点を選択後に有効）", "state": "enabled|disabled|locked_after_miss", "reaction": "『ここが漏水点だと報告（報告したら戻せない、あと◯回）』。押すと修理班の掘削演出→当たり/外れ。1回目外れ後はlocked_after_miss（灰色、『新しく聴いてから』）で、新しい聴取1回で解除。記録パネルを開いても解除しない", "budget": "reports 2" },
+    { "id": "recordPanel", "type": "常時表示のストリップ（タップで拡大可）", "state": "list", "reaction": "閉めた弁と流量、聴いた点の2情報を時系列で表示（最大 弁2＋聴取5＝7行）。何も解禁しない", "budget": "なし" }
+  ],
+  "primary_action": "弁をタップして針を見る → 区間ラベルで仮説を置く → 聴取点をタップして音を聴く → 記録を見比べる → 聴取済みの点を選んで報告する。",
+  "C": "水道施設図（管の3区間・制水弁・聴取点）、区画量水器の夜間最小流量（base 0.2 / 漏水+2.0、表示1桁）、制水弁操作による区間ごとの流量変化、電子式漏水発見器の音の大きさ（level 1-5 = max(1, 5−距離)）と連続性（steady/intermittent）、疑似音（家の夜間使用＝intermittent level 4、1点）、予算（弁2・聴取5・報告2）。数値はすべて factory/projects/leak-detective/design/state_table.json。",
+  "D": "流量の変化で漏水区間を切り分ける／音の大きさの勾配で漏水点の真上に近づく／とぎれる音を家の使用音として除外する／証拠が一致した点を漏水点として報告する／外れたら新しい証拠を取ってから考え直す。システムは区間・漏水点・次の一手を一切示さず、推奨も採点もしない。",
+  "system_reactions": {
+    "valve_close": "針: 漏水区間なら 2.2→0.2 へ大きく落ちる、他区間なら 2.2→2.2（−0.05は1桁表示で見えない）。管線が一瞬暗くなる（全区間共通）。記録に1行。",
+    "listen": "波形が鳴る（steady/intermittent の見え方は continuity_feedback）。intermittent のときだけ最寄りの家の窓が同期点滅。記録に1行。地図の点に波形印。",
+    "report_hit": "修理班のトラック→掘削→穴の底で管の割れ目から水が噴く→修理→夜明け: 路面の湿りが消える、針が『正常ならここ』へ、家々の窓に朝の光。resolution へ（onComplete）。",
+    "report_miss": "掘削→穴の底の管は乾いている→埋め戻し。地図に『外れ』印、針は高いまま、報告ボタンが灰色『新しく聴いてから』。残り報告0なら夜明け（partial）。",
+    "budget_exhausted": "聴取0・報告不可、または報告2回外れ→夜明けの partial 画面（漏れ継続・針高いまま・『次の夜へ持ち越し』）→ onPartialComplete。"
+  },
+  "state_transitions": "NIGHT(operate) → [report hit] → RESOLVED(success/perfect) → onComplete ／ NIGHT → [report miss, reports left, listens left] → NIGHT(locked until new listen) ／ NIGHT → [report miss, reports=0] or [listens=0 and locked] → DAWN_PARTIAL → onPartialComplete。弁・聴取・仮説フォーカスはNIGHT内の自由操作。",
+  "failure_behavior": "外れは正直に世界へ返す（乾いた管・埋め戻し・湿ったままの路面・高いままの針）。理由を文章で即答しない。2回目の失敗後にだけ、超えた側に応じた一言（『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』）。成功と同じ画面にはしない（Gate H）。",
+  "retry_behavior": "1回目の外れ後は新しい聴取1回で再報告が解禁（記録閲覧では解禁しない）。partial 後は朝の画面から『もう一度この夜へ』で同じ漏水点・同じ疑似音の夜をやり直せる（判断だけ変えられる）。",
+  "E": "夜明けの区画: 当たり＝修理跡が埋め戻され路面が乾き、針が正常、家々に水が出る朝（『1回目で当たり』は満点表示、2回目は成功）。外れ＝埋め戻した穴、湿った路面、高い針、『漏れは次の夜へ持ち越し』（partial）。Job Reveal は成否にかかわらず同じ。",
+  "job_reveal": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』（discoveryEcho は content の experiences に置く）",
+  "first_5_seconds": "factory/projects/leak-detective/design/first_5_seconds_v4.json のとおり。操作手順の文はない。最初の一手は弁・区間ラベル・聴取点のどれでも正当。",
+  "no_manual_requirements": "説明画面なし。手順文なし。手がかりは震える針＋『正常ならここ』、順番に光る聴取点、一度光る弁、通報カード、『報告したら戻せない、あと◯回』、弁の簡略化注記のみ。連続性の意味は波形の間欠＋窓の同期点滅で発見させる。",
+  "mobile_constraints": "375px幅で: 聴取点タップ領域44px以上（3区間×6点＝18点を、区間ごとに縦に並べた3本の管線に配置）、計器と通報カードは地図の上に重ねず上段に、記録ストリップは地図の下（横スクロール可）、予算行は最下段1行。弁のトグルと区間ラベルは44px以上。ゲーム画面は縦スクロールなしを目標（Q1シェルの back-link 分を除く）。",
+  "asset_requirements": [
+    { "asset_id": "leak_detective_scene", "use": "place（Q1イントロの place.image と、猛暑イベントの6つ目hotspot画像 imageFit:scene）", "producer": "art-loop.mjs（codex_imagegen）", "output_path": "public/assets/heat/place-leak.png", "size": "1200x900", "notes": "深夜の住宅街の道路。街灯、寝静まった家、路面に置かれた小さな漏水探知器（ヘッドホンとピックアップ）、角に制水弁の鉄ぶた。濡れた路面・水たまり・漏水を描かない（答え漏れ防止）。文字なし。" },
+    { "asset_id": "leak_detective_hero", "use": "profession.image（discovery hero / zukan）", "producer": "claude（hero() SVG placeholder、既存worldと同方式）", "output_path": "inline data URI in src/data/content/extremeHeat.ts", "notes": "🎧 on #dbe6f2" },
+    { "asset_id": "in-game visuals", "use": "地図・管線・弁・聴取点・計器・波形・窓明かり・掘削演出", "producer": "claude（CSS/SVG/React、art-style.md の art ownership）", "output_path": "src/q1/LeakTraceGame.tsx", "notes": "画像を増やさない（reuse > CSS > SVG）" }
+  ],
+  "human_decision_domains": []
+}

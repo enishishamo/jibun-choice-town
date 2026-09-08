@@ -41,6 +41,7 @@ export const extremeHeat: ContentModule = {
           { icon: "🏗", label: "工事", view: "WBGT（暑さ指数）" },
           { icon: "💧", label: "水", view: "ダムの貯水率" },
           { icon: "🏙", label: "街", view: "日射・風・建物" },
+          { icon: "🎧", label: "水道", view: "流量計・地中の音" },
         ],
       },
       incidents: [
@@ -83,6 +84,14 @@ export const extremeHeat: ContentModule = {
           title: "同じ街なのに、ここだけ暑い？",
           experienceId: "urban-heat",
           scenePos: { left: "48%", top: "82%" },
+        },
+        {
+          id: "leak-night",
+          image: H("place-leak"),
+          imageFit: "scene",
+          title: "晴れてるのに、道がぬれてる？",
+          experienceId: "leak-heat",
+          scenePos: { left: "48%", top: "44%" },
         },
       ],
     },
@@ -298,6 +307,52 @@ export const extremeHeat: ContentModule = {
       ],
       related: ["都市計画", "気象データ分析", "建築", "環境", "GIS・地図データ"],
     },
+    {
+      id: "leak-detective",
+      name: "水道の漏水を見つける仕事（漏水調査員）",
+      catch: "地面の下の、見えない漏れを聴いて探す",
+      image:
+        "data:image/svg+xml;utf8," +
+        encodeURIComponent(
+          "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'><circle cx='80' cy='80' r='74' fill='#dbe6f2'/><text x='80' y='106' font-size='72' text-anchor='middle'>🎧</text></svg>",
+        ),
+      discoveryLine: "流量計と地中の音で漏れの場所を絞り、\n修理班に「ここ」と伝える仕事！",
+      q2: [
+        {
+          id: "what",
+          title: "どんな仕事？",
+          icon: "🎧",
+          body: [
+            "水道管は道路の下にあって見えません。そこから漏れている水を、住民が困る前（水の出が悪くなる・道路が陥没する前）に見つけて止める仕事です。",
+            "区画の水の流れを弁で止めたり戻したりして流量計を見る、道路に機械を置いて地中の音を聴く——こうして漏れの場所を絞り込み、「ここが漏水点」と特定して修理につなぎます。",
+            "交通や使う水の少ない夜に行う調査もあります。",
+          ],
+        },
+        {
+          id: "kinds",
+          title: "ひとつの仕事ではない",
+          icon: "🧩",
+          body: ["漏水を見つけて止めるまでには、いろんな立場の人が関わります。"],
+          list: [
+            "水道局の職員（調査や、どこを掘るかの判断）",
+            "水道局から調査をまかされた会社の調査員",
+            "特定した場所を掘って管を直す修理班（工事の会社）",
+            "家の中側の管を直す、指定された工事店",
+            "…など",
+          ],
+        },
+        {
+          id: "himitsu",
+          title: "実は！",
+          icon: "💡",
+          body: [
+            "東京では、戦争のあと水道の水の8割近くが漏れていた時代がありました。地面の下の漏れを毎年探して直し続けて、いまは3.5%ほどまで減っています。",
+            "機械で聴こえる音には、漏水の音によく似た「にせもの」（家の中で水を使う音など）もあって、聴き分けには熟練が必要です。",
+          ],
+        },
+      ],
+      related: ["水道局", "給水装置工事主任技術者", "管工事施工管理技士", "配管技能士", "水道技術管理者"],
+    },
   ],
 
   experiences: [
@@ -407,6 +462,27 @@ export const extremeHeat: ContentModule = {
       discoveryEcho:
         "さっき、日射と風と建物のデータを重ねて、暑い理由を探したよね。実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。",
       seeds: ["データを重ねる", "違いを見つける", "原因を探す", "街を変えて試す", "結果を比べる", "特にない"],
+    },
+    // ============ ⑥ 晴れてるのに、道がぬれてる？ ============
+    {
+      id: "leak-heat",
+      professionId: "leak-detective",
+      eventId: "heat-wave",
+      gameType: "leak_trace",
+      place: { name: "深夜の住宅街", image: H("place-leak"), fit: "cover", focus: "center 62%" },
+      mission: {
+        title: "晴れてるのに、\n道がぬれてる？",
+        lines: ["みんなが水をたくさん使う夏。夜になっても、この区画の流量計の針が下がらない。", "地面の下のどこかで、水が漏れている。"],
+      },
+      tools: [],
+      resolution: {
+        clock: "明け方",
+        title: "漏れは、止まった",
+        lines: ["修理班が管を直して埋め戻し。道路の湿りが消え、いつもどおり水が出る朝がきた。"],
+      },
+      discoveryEcho:
+        "さっき、弁を閉めて針を見て、道路に機械を置いて音を聴き、「漏水点はどこか」を考えたよね。地面の下の見えない漏れを、こうやって探して修理につなぐ人たちがいます。掘って直すのは修理班——どこを掘るかは、この人たちが見つけた場所の正しさにかかっています。",
+      seeds: ["針の動きを見る", "音を聴き比べる", "にせものの音を見分ける", "どこを掘るか決める", "記録を見返す", "特にない"],
     },
   ],
 };
