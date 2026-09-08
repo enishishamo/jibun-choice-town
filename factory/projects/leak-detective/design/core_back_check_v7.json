@@ -2,6 +2,6 @@
   "core_still_intact": true,
   "scope_still_representative": true,
   "d_still_performed_by_child": true,
-  "notes": "v7（PREPARED — design review r6 HUMAN_REQUIRED後、予算切れのためpipelineはESCALATED。Human Decisionで追加1イテレーションが認められた場合にのみ提出）。r6のHIGH（閉区間の読み値 level 1 steady が波形バー1本＋動く波形＋『ずっと』として表示され、知覚上は無音でない）への対応: 読み値に専用の無音状態 level 0 / continuity silent を設け、閉区間ではバー・波形・『ずっと』・窓の点滅を一切出さず『静か（水が止まっている）』とだけ示す。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査。MEDIUM（ラベル約8px、first_visible_stateの『弁 2回』）も是正。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なしは変更なし。",
+  "notes": "v7（design review r6 HUMAN_REQUIRED後、予算切れのためESCALATE → Human Decision hd-1（2026-09-08、one-time repair budget extension、前例としない）により正式提出）。r6のHIGH（閉区間の読み値 level 1 steady が波形バー1本＋動く波形＋『ずっと』として表示され、知覚上は無音でない）への対応: 読み値に専用の無音状態 level 0 / continuity silent を設け、閉区間ではバー・波形・『ずっと』・窓の点滅を一切出さず『静か（水が止まっている）』とだけ示す。design-sim v7 は閉区間の全読み値が level 0 / silent であることを直接検査。MEDIUM（ラベル約8px、first_visible_stateの『弁 2回』）も是正。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、考え直しゲート、自動強調なしは変更なし。",
   "pass": true
 }

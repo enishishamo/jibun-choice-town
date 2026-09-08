@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T10:18:18.839Z",
+  "generated_at": "2026-09-08T13:29:45.100Z",
   "rules": {
     "segments": [
       "A",
@@ -22,9 +22,9 @@
   "strategies": {
     "random_report": {
       "perfect": 31,
-      "success": 28,
-      "partial": 541,
-      "win_rate": 0.098
+      "success": 33,
+      "partial": 536,
+      "win_rate": 0.107
     },
     "listen_random_report_loudest_any": {
       "perfect": 157,
@@ -40,9 +40,9 @@
     },
     "flow_then_two_distinct_reports": {
       "perfect": 91,
-      "success": 117,
-      "partial": 392,
-      "win_rate": 0.347
+      "success": 104,
+      "partial": 405,
+      "win_rate": 0.325
     },
     "valves_ignored_guess_segment_gradient": {
       "perfect": 138,
@@ -74,9 +74,11 @@
     "trials": 200,
     "second_report_refused_without_new_evidence": 200,
     "second_report_refused_after_compare_only": 200,
-    "second_report_allowed_after_new_listen": 200
+    "second_report_allowed_after_new_listen": 200,
+    "second_report_refused_after_silent_listen_only": 200
   },
   "verdict": {
+    "silent_reading_exists_only_while_closed": true,
     "legitimate_strategy_wins_every_case": true,
     "no_content_blind_strategy_wins_reliably": true,
     "flow_without_listening_is_not_reliable": true,

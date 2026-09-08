@@ -1,9 +1,15 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for leak-detective / t1c-night-listening-isolation (v5).
+// Design-stage exploit simulation for leak-detective / t1c-night-listening-isolation (v9, PREPARED).
+// v9 (design review r8, PREPARED — not submitted): a report needs a HEARD, not-yet-missed point
+// (implementation parity); only a NON-silent new listen unlocks the second report.
+// v8 (design review r7): a silent reading exists only while its segment is closed — reopening
+// (explicit or implicit) drops it; the point can be listened to again (no refund).
+// v7 (design review r6): the closed segment is a DEDICATED silent state (level 0 / "silent"),
+// never "a faint level 1 steady sound"; checked directly for every closed-segment reading.
 // v5 (implementation review r2): a CLOSED segment carries no water, so its listening points
-// are silent (level 1 steady) even directly above the leak; reopening is an explicit free
-// action; the legitimate strategy reopens after isolating; a strategy that forgets to reopen
-// hears nothing and must not succeed reliably.
+// are silent even directly above the leak; reopening is an explicit free action; the
+// legitimate strategy reopens after isolating; a strategy that forgets to reopen hears
+// nothing and must not succeed reliably.
 // v3 (design review r2): the second report is unlocked ONLY by a new listen; the
 // record view never unlocks (the old "compare" free unlock is removed); the gate
 // test now also verifies that opening the records and reporting again is refused.
@@ -64,27 +70,40 @@ function soundReading(c, seg, point, closed) {
 // ---- one night. actions: valve / listen / compare / report / end. Budgets + think-again gate enforced here ----
 function simulate(c, plan) {
   const closed = new Set();
-  const readings = [], flowLog = [];
+  const readings = [], flowLog = [], misses = [];
   let valveOps = 0, listens = 0, reports = 0, thinkAgainDone = true; // true until the first miss
   const view = () => ({ closed: closed.size ? [...closed][0] : null, readings: [...readings], flowLog: [...flowLog], flow: flowReading(c, closed), budgets: { valve: B.valve_ops - valveOps, listens: B.listens - listens, reports: B.reports - reports }, secondReportUnlocked: thinkAgainDone });
   for (let guard = 0; guard < 60; guard++) {
     const a = plan(view());
     if (!a || a.type === "end") break;
+    // v8 (design review r7): reopening (explicit, or implicit by closing another valve) puts the water back —
+    // the silent readings taken on that segment no longer describe the pipe, so they are dropped and the point
+    // can be listened to again (a new listen costs a listen; nothing is refunded).
+    const dropSilent = (seg) => { for (let i = readings.length - 1; i >= 0; i--) if (readings[i].seg === seg && readings[i].continuity === "silent") readings.splice(i, 1); };
     if (a.type === "valve") {
       if (valveOps >= B.valve_ops) continue;
+      if (closed.size) dropSilent([...closed][0]);
       valveOps++; closed.clear(); closed.add(a.seg);
       flowLog.push({ closed: a.seg, reading: flowReading(c, closed) });
     } else if (a.type === "reopen") {
+      if (closed.size) dropSilent([...closed][0]);
       closed.clear(); // free: reopening is not a scored operation
     } else if (a.type === "listen") {
       if (listens >= B.listens) continue;
-      listens++; readings.push({ seg: a.seg, point: a.point, ...soundReading(c, a.seg, a.point, closed.size ? [...closed][0] : null) }); thinkAgainDone = true;
+      const rd = soundReading(c, a.seg, a.point, closed.size ? [...closed][0] : null);
+      listens++; readings.push({ seg: a.seg, point: a.point, ...rd });
+      // v9 (design review r8, PREPARED): only a NON-silent new listen is new evidence — a silent reading on a closed
+      // segment discriminates nothing, so it does not unlock the second report
+      if (rd.continuity !== "silent") thinkAgainDone = true;
     } else if (a.type === "compare") {
       // opening the record panel never unlocks a report (r2 HIGH)
     } else if (a.type === "report") {
       if (reports >= B.reports || !thinkAgainDone) continue;
+      // v9 (design review r8 MEDIUM, PREPARED): implementation parity — a report needs a HEARD point that was not already missed
+      if (!readings.some((r) => r.seg === a.seg && r.point === a.point) || misses.some((m) => m.seg === a.seg && m.point === a.point)) continue;
       reports++;
       if (a.seg === c.leak.seg && a.point === c.leak.point) return { grade: reports === 1 ? "perfect" : "success", reports, listens, valveOps };
+      misses.push({ seg: a.seg, point: a.point });
       thinkAgainDone = false; // gate the next report behind a NEW listen (new evidence); the record view never unlocks
       if (reports >= B.reports) break;
     }
@@ -112,7 +131,9 @@ const unlockOr = (v, action, rand, used) => { if (v.secondReportUnlocked) return
 
 const S = {
   // content-blind: 2 distinct random reports
-  random_report: (rand) => { const used = new Set(); return (v) => { if (v.budgets.reports <= 0) return { type: "end" }; const p = pickNew(rand, allPoints, used); if (!p) return { type: "end" }; used.add(key(p)); return unlockOr(v, { type: "report", ...p }, rand, used); }; },
+  // v9: implementation parity — a point must be HEARD before it can be reported, so the content-blind baseline
+  // listens at a random point (without reading the level) and reports it, twice
+  random_report: (rand) => { const used = new Set(); let pending = null; return (v) => { if (v.budgets.reports <= 0) return { type: "end" }; if (pending) { const p = pending; pending = null; return { type: "report", ...p }; } if (v.budgets.listens <= 0) return { type: "end" }; const p = pickNew(rand, allPoints, used); if (!p) return { type: "end" }; used.add(key(p)); pending = p; return { type: "listen", ...p }; }; },
   // ignores flow AND continuity: 5 distinct random listens, report the loudest, then the next loudest
   listen_random_report_loudest_any: (rand) => { const used = new Set(); return (v) => {
     if (v.budgets.listens > 0) { const p = pickNew(rand, allPoints, used); if (p) { used.add(key(p)); return { type: "listen", ...p }; } }
@@ -124,11 +145,16 @@ const S = {
     const sorted = v.readings.filter((r) => r.continuity === "steady").sort((a, b) => b.level - a.level); const i = B.reports - v.budgets.reports;
     return sorted[i] && v.budgets.reports > 0 ? unlockOr(v, { type: "report", seg: sorted[i].seg, point: sorted[i].point }, rand, used) : { type: "end" }; }; },
   // uses flow only, then 2 DISTINCT random reports on that segment (optimized content-light baseline, no listening)
-  flow_then_two_distinct_reports: (rand) => { const used = new Set(); return (v) => {
+  // v9 parity: the "flow-only" baseline still has to place the pickup before reporting (it does not READ the level):
+  // reopen, listen at a random point of the isolated segment, report it — twice
+  flow_then_two_distinct_reports: (rand) => { const used = new Set(); let pending = null; return (v) => {
     const seg = leakSegFromFlow(v); if (!seg) return nextValve(v);
     if (v.budgets.reports <= 0) return { type: "end" };
+    if (pending) { const p = pending; pending = null; return { type: "report", ...p }; }
+    if (v.closed) return { type: "reopen" };
+    if (v.budgets.listens <= 0) return { type: "end" };
     const p = pickNew(rand, allPoints.filter((x) => x.seg === seg), used); if (!p) return { type: "end" }; used.add(key(p));
-    return unlockOr(v, { type: "report", ...p }, rand, used); }; },
+    pending = p; return { type: "listen", ...p }; }; },
   // r3 adversarial: taps valves but never reads the meter; with no automatic highlight it must GUESS a segment, then does honest gradient listening there
   valves_ignored_guess_segment_gradient: (rand) => { const seg = SEGS[Math.floor(rand() * SEGS.length)]; let tapped = 0; return (v) => {
     if (tapped < B.valve_ops) { tapped++; return { type: "valve", seg: SEGS[tapped - 1] }; }
@@ -187,17 +213,25 @@ for (const ls of SEGS) for (let lp = 1; lp <= P; lp++) for (const hs of SEGS) fo
   worstListens = Math.max(worstListens, r.listens); worstValves = Math.max(worstValves, r.valveOps);
 }
 // think-again gate: a strategy that tries to report twice with nothing in between must have its 2nd report refused
-let gateBlocked = 0, compareBlocked = 0, listenUnlocks = 0;
+// v9: every reported point is listened to first (implementation parity: not_heard is refused)
+let gateBlocked = 0, compareBlocked = 0, listenUnlocks = 0, silentNoUnlock = 0;
 for (let i = 0; i < 200; i++) {
-  const c = newCase(rng(5000 + i)); let attempts = 0;
-  const r = simulate(c, () => { attempts++; if (attempts === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (attempts === 2) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  const c = newCase(rng(5000 + i));
+  const W = { seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }, L = { seg: c.leak.seg, point: c.leak.point };
+  const run = (seq) => { let k = 0; return simulate(c, () => seq[k++] ?? { type: "end" }); };
+  // no new evidence between the miss and the second report -> refused
+  const r = run([{ type: "listen", ...W }, { type: "listen", ...L }, { type: "report", ...W }, { type: "report", ...L }]);
   if (r.grade === "partial" && r.reports === 1) gateBlocked++;
-  let a2 = 0;
-  const r2 = simulate(c, () => { a2++; if (a2 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a2 === 2) return { type: "compare" }; if (a2 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  // opening the records only -> still refused
+  const r2 = run([{ type: "listen", ...W }, { type: "listen", ...L }, { type: "report", ...W }, { type: "compare" }, { type: "report", ...L }]);
   if (r2.grade === "partial" && r2.reports === 1) compareBlocked++;
-  let a3 = 0;
-  const r3 = simulate(c, () => { a3++; if (a3 === 1) return { type: "report", seg: c.leak.seg, point: ((c.leak.point) % P) + 1 }; if (a3 === 2) return { type: "listen", seg: c.leak.seg, point: c.leak.point }; if (a3 === 3) return { type: "report", seg: c.leak.seg, point: c.leak.point }; return { type: "end" }; });
+  // a NEW (non-silent) listen -> allowed
+  const r3 = run([{ type: "listen", ...W }, { type: "report", ...W }, { type: "listen", ...L }, { type: "report", ...L }]);
   if (r3.grade === "success") listenUnlocks++;
+  // v9 (design review r8): a SILENT listen (closed segment, zero discriminating information) does NOT unlock
+  const other = { seg: c.leak.seg, point: ((c.leak.point + 1) % P) + 1 };
+  const r4 = run([{ type: "listen", ...W }, { type: "listen", ...L }, { type: "report", ...W }, { type: "valve", seg: c.leak.seg }, { type: "listen", ...other }, { type: "report", ...L }]);
+  if (r4.grade === "partial" && r4.reports === 1 && r4.listens === 3) silentNoUnlock++;
 }
 // v7 (design review r6): the silent state must be a distinct perceptual output, not "level 1 steady" —
 // every reading on a closed segment (leak point, house point, ordinary point) is level 0 / "silent".
@@ -207,15 +241,33 @@ for (const ls of SEGS) for (let lp = 1; lp <= P; lp++) for (const hs of SEGS) fo
   const c = { leak: { seg: ls, point: lp }, house: { seg: hs, point: hp } };
   for (const seg of SEGS) for (let p = 1; p <= P; p++) { const r = soundReading(c, seg, p, seg); if (r.level !== 0 || r.continuity !== "silent") closedReadingsAllSilent = false; }
 }
+// v8 (design review r7): a silent reading exists only while its segment is closed. Direct check:
+// close C → listen C5 (silent recorded) → reopen → the silent record is gone and C5 can be listened to again,
+// now returning the real level (5 directly above the leak); the two listens both count (nothing refunded).
+let silentClearedOnReopen = false;
+{
+  const c = { leak: { seg: "C", point: 5 }, house: { seg: "A", point: 2 } };
+  const seq = [{ type: "valve", seg: "C" }, { type: "listen", seg: "C", point: 5 }, { type: "reopen" }, { type: "listen", seg: "C", point: 5 }, { type: "end" }];
+  let i = 0; const views = [];
+  simulate(c, (v) => { views.push(v); return seq[i++]; });
+  const at = (v) => v.readings.find((r) => r.seg === "C" && r.point === 5);
+  silentClearedOnReopen = at(views[2])?.continuity === "silent" && at(views[2])?.level === 0 && at(views[3]) === undefined && at(views[4])?.level === 5 && at(views[4])?.continuity === "steady" && views[4].budgets.listens === B.listens - 2;
+  // implicit reopen (closing another valve) clears it too
+  const seq2 = [{ type: "valve", seg: "C" }, { type: "listen", seg: "C", point: 5 }, { type: "valve", seg: "A" }, { type: "end" }];
+  let j = 0; const views2 = [];
+  simulate(c, (v) => { views2.push(v); return seq2[j++]; });
+  silentClearedOnReopen = silentClearedOnReopen && at(views2[2])?.continuity === "silent" && at(views2[3]) === undefined && views2[3].closed === "A";
+}
 const verdict = {
+  silent_reading_exists_only_while_closed: silentClearedOnReopen,
   legitimate_strategy_wins_every_case: solvable === total,
   no_content_blind_strategy_wins_reliably: results.random_report.win_rate < 0.15 && results.listen_random_report_loudest_any.win_rate < 0.4 && results.listen_random_report_loudest_steady.win_rate < 0.45,
   flow_without_listening_is_not_reliable: results.flow_then_two_distinct_reports.win_rate < 0.5,
   every_case_solvable_within_budgets: solvable === total && worstListens <= B.listens && worstValves <= B.valve_ops,
-  think_again_gate_enforced: gateBlocked === 200 && compareBlocked === 200 && listenUnlocks === 200,
+  think_again_gate_enforced: gateBlocked === 200 && compareBlocked === 200 && listenUnlocks === 200 && silentNoUnlock === 200,
   no_ui_reveal_of_segment: results.valves_ignored_guess_segment_gradient.win_rate < 0.45,
   isolated_segment_is_silent: results.flow_then_gradient_forgets_reopen.win_rate < 0.5 && closedReadingsAllSilent,
 };
-const out = { generated_at: new Date().toISOString(), rules: { segments: SEGS, points_per_segment: P, budgets: B, reading_fields: T.sound_reading.fields }, cases_per_strategy: N, strategies: results, solvability: { solvable, total, first_try: firstTry, worst_listens_used: worstListens, worst_valve_ops_used: worstValves }, think_again_gate: { trials: 200, second_report_refused_without_new_evidence: gateBlocked, second_report_refused_after_compare_only: compareBlocked, second_report_allowed_after_new_listen: listenUnlocks }, verdict };
+const out = { generated_at: new Date().toISOString(), rules: { segments: SEGS, points_per_segment: P, budgets: B, reading_fields: T.sound_reading.fields }, cases_per_strategy: N, strategies: results, solvability: { solvable, total, first_try: firstTry, worst_listens_used: worstListens, worst_valve_ops_used: worstValves }, think_again_gate: { trials: 200, second_report_refused_without_new_evidence: gateBlocked, second_report_refused_after_compare_only: compareBlocked, second_report_allowed_after_new_listen: listenUnlocks, second_report_refused_after_silent_listen_only: silentNoUnlock }, verdict };
 writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");
 console.log(JSON.stringify(out, null, 2));

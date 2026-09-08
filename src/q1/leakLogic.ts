@@ -1,6 +1,7 @@
 // Pure game logic for Q1 "leak_trace" (水道の漏水調査員 / leak-detective).
 // Every rule here reproduces factory/projects/leak-detective/design/state_table.json
-// (translation t1b-night-listening-evidence-gate, design review r4 PASS 84).
+// (translation t1c-night-listening-isolation: closed segment = dedicated silent state that
+// exists only while closed; explicit free reopen; evidence-only think-again gate).
 // No React, no DOM: factory/harness/gameplay-qa-leak.mjs simulates strategies
 // against this module directly, and LeakTraceGame.tsx renders ONLY publicView().
 //
@@ -70,7 +71,8 @@ export function flowReading(s: LeakState): number {
 }
 
 /** Detector reading at a point: loudest directly above the leak (level 5), −1 per point of distance; the house-usage point is level 4 intermittent.
- *  A CLOSED segment carries no water, so it is silent (level 1 steady) even directly above the leak (state_table.sound_reading.isolation_rule). */
+ *  A CLOSED segment carries no water, so every point of it is the dedicated silent state (level 0 / "silent"), even directly above the leak
+ *  (state_table.sound_reading.isolation_rule). */
 export function soundReading(c: LeakCase, seg: Seg, point: number, closed: Seg | null = null): { level: number; continuity: Continuity } {
   // a closed segment carries no water: NOTHING reaches the pickup — a dedicated state, never "a faint steady sound" (design review r6)
   if (closed === seg) return { level: 0, continuity: "silent" };
@@ -83,12 +85,20 @@ export function soundReading(c: LeakCase, seg: Seg, point: number, closed: Seg |
 // ---- actions (all pure: return a new state; refusals return the same state + reason) ----
 export type ActionResult = { state: LeakState; ok: boolean; reason?: string };
 
+/** Reopening a segment (explicitly, or implicitly by closing another valve) puts the water back, so the silent
+ *  readings taken while it was closed no longer describe the pipe: they are dropped and those points can be
+ *  listened to again (a new listen costs a listen — the budget is NOT refunded). A silent reading therefore
+ *  exists only while its segment is closed (design review r7; state_table.sound_reading.isolation_rule). */
+function dropSilent(readings: Reading[], reopened: Seg | null): Reading[] {
+  return reopened ? readings.filter((r) => !(r.seg === reopened && r.continuity === "silent")) : readings;
+}
+
 export function closeValve(s: LeakState, seg: Seg): ActionResult {
   if (s.outcome) return { state: s, ok: false, reason: "night_over" };
   if (s.closed === seg) return { state: s, ok: false, reason: "already_closed" };
   if (s.valveOps >= BUDGETS.valve) return { state: s, ok: false, reason: "valve_budget" };
   // closing this segment implicitly reopens the previously closed one (one valve at a time)
-  const next: LeakState = { ...s, closed: seg, valveOps: s.valveOps + 1 };
+  const next: LeakState = { ...s, closed: seg, valveOps: s.valveOps + 1, readings: dropSilent(s.readings, s.closed) };
   next.flowLog = [...s.flowLog, { closed: seg, reading: flowReading(next) }];
   return { state: next, ok: true };
 }
@@ -96,7 +106,7 @@ export function closeValve(s: LeakState, seg: Seg): ActionResult {
 export function openValve(s: LeakState): ActionResult {
   if (s.outcome) return { state: s, ok: false, reason: "night_over" };
   if (!s.closed) return { state: s, ok: false, reason: "nothing_closed" };
-  return { state: { ...s, closed: null }, ok: true };
+  return { state: { ...s, closed: null, readings: dropSilent(s.readings, s.closed) }, ok: true };
 }
 export function setFocus(s: LeakState, seg: Seg | null): LeakState {
   return { ...s, focus: s.focus === seg ? null : seg };
@@ -109,8 +119,11 @@ export function listen(s: LeakState, seg: Seg, point: number): ActionResult {
   if (heard(s, seg, point)) return { state: s, ok: false, reason: "already_heard" };
   if (s.listens >= BUDGETS.listens) return { state: s, ok: false, reason: "listen_budget" };
   const r = soundReading(s.c, seg, point, s.closed);
-  // a new listen is new evidence: it re-enables reporting after a miss
-  return { state: { ...s, listens: s.listens + 1, readings: [...s.readings, { seg, point, ...r }], unlocked: true }, ok: true };
+  // a new listen is new evidence and re-enables reporting after a miss — but only a listen that can discriminate:
+  // a silent reading on a closed segment carries nothing the flow meter did not already show, so it does NOT
+  // unlock the second report (design review r8, think-again gate = evidence only). PREPARED, not yet submitted.
+  const unlocked = r.continuity === "silent" ? s.unlocked : true;
+  return { state: { ...s, listens: s.listens + 1, readings: [...s.readings, { seg, point, ...r }], unlocked }, ok: true };
 }
 /** Why a report is currently impossible (null = allowed). The UI uses this for the button state. */
 export function reportBlocked(s: LeakState, seg?: Seg, point?: number): string | null {

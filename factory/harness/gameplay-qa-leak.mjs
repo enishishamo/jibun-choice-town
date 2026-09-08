@@ -23,6 +23,7 @@ const pickNew = (rand, arr, used) => { const c = arr.filter((p) => !used.has(key
 const stateFor = (c) => ({ ...newState(rng(1)), c });
 
 // ---- strategy runner: plan(view, state) -> action ----
+let silentInvariantViolations = 0;
 function play(c, plan) {
   let s = stateFor(c);
   for (let guard = 0; guard < 80 && !s.outcome; guard++) {
@@ -38,6 +39,8 @@ function play(c, plan) {
     if (!r.ok && a.type === "report" && r.reason === "locked_after_miss") { /* strategy must find new evidence */ }
     if (!r.ok && a.type !== "report") { /* budget/duplicate: let the strategy pick again */ }
     s = r.state;
+    // invariant (design review r7): a silent reading exists only while its segment is closed
+    if (s.readings.some((rd) => rd.continuity === "silent" && rd.seg !== s.closed)) silentInvariantViolations++;
     if (!r.ok && a.type === "report" && (r.reason === "report_budget" || r.reason === "night_over")) break;
     if (!r.ok && a.type === "listen" && r.reason === "listen_budget" && !s.unlocked) break;
   }
@@ -141,6 +144,8 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   s = listen(s, "B", 4).state;
   const hit = report(s, "B", 3);
   check("a new listen unlocks; correct second report = success", hit.ok && hit.hit === true && hit.state.outcome === "success");
+  // PREPARED (design review r8 HIGH-2): a silent listen carries no discriminating evidence and must NOT unlock the second report
+  check("PREPARED (design r8): a silent listen on a closed segment does not unlock the second report; a non-silent one does", (() => { let t = stateFor(c); t = listen(t, "A", 1).state; t = listen(t, "C", 5).state; const m = report(t, "A", 1).state; if (m.unlocked) return false; const closedC = closeValve(m, "C").state; const silent = listen(closedC, "C", 3); if (!silent.ok || silent.state.unlocked || readingAt(publicView(silent.state), "C", 3)?.continuity !== "silent") return false; if (reportBlocked(silent.state, "C", 5) !== "locked_after_miss") return false; const reopened = openValve(silent.state).state; const real = listen(reopened, "C", 4); return real.ok && real.state.unlocked === true && reportBlocked(real.state, "C", 5) === null; })());
   // budgets exhausted before the first report: a miss ends the night honestly
   let t = stateFor(c); for (const p of [1, 2, 4, 5, 6]) t = listen(t, "B", p).state;
   const m2 = report(t, "B", 5); check("miss with no listens left -> honest partial", m2.ok && m2.hit === false && m2.state.outcome === "partial");
@@ -161,9 +166,12 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   check("closing another valve implicitly reopens the previous one (one at a time, one op)", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = closeValve(t, "B").state; return t.closed === "B" && t.valveOps === 2 && flowReading(t) === 2.2; })());
   check("reopening is explicit and free (valveOps unchanged)", (() => { let t = stateFor(c); t = closeValve(t, "A").state; const o = openValve(t); return o.ok && o.state.closed === null && o.state.valveOps === 1 && openValve(o.state).ok === false; })());
   check("REGRESSION: the isolated leak segment is silent, reopening restores the sound", (() => { let t = stateFor(c); t = closeValve(t, "C").state; const silent = soundReading(t.c, "C", 5, t.closed); t = listen(t, "C", 5).state; const heardSilent = readingAt(publicView(t), "C", 5); t = openValve(t).state; const loud = soundReading(t.c, "C", 5, t.closed); return silent.level === 0 && silent.continuity === "silent" && heardSilent.level === 0 && heardSilent.continuity === "silent" && loud.level === 5; })());
+  check("REGRESSION (design r7): a silent record taken while closed is dropped on explicit reopen; the point can be listened to again (real level, listen budget not refunded)", (() => { let t = stateFor(c); t = closeValve(t, "C").state; t = listen(t, "C", 5).state; const s1 = readingAt(publicView(t), "C", 5); t = openValve(t).state; const gone = readingAt(publicView(t), "C", 5) === undefined; const again = listen(t, "C", 5); const s2 = readingAt(publicView(again.state), "C", 5); return s1?.continuity === "silent" && gone && again.ok && s2?.level === 5 && s2?.continuity === "steady" && again.state.listens === 2; })());
+  check("REGRESSION (design r7): implicit reopen (closing another valve) drops the silent records of the previous segment too", (() => { let t = stateFor(c); t = closeValve(t, "C").state; t = listen(t, "C", 5).state; t = listen(t, "C", 2).state; t = closeValve(t, "A").state; return t.closed === "A" && readingAt(publicView(t), "C", 5) === undefined && readingAt(publicView(t), "C", 2) === undefined && t.listens === 2; })());
+  check("REGRESSION (design r7): non-silent records survive a reopen (only silent ones are dropped)", (() => { let t = stateFor(c); t = listen(t, "C", 4).state; t = closeValve(t, "C").state; t = listen(t, "C", 5).state; t = openValve(t).state; const kept = readingAt(publicView(t), "C", 4); return kept?.level === 4 && readingAt(publicView(t), "C", 5) === undefined; })());
   check("REGRESSION (design r5): the house distractor is silent too while its segment is closed", (() => { const cc = { leak: { seg: "A", point: 1 }, house: { seg: "C", point: 2 } }; const open = soundReading(cc, "C", 2, null); const shut = soundReading(cc, "C", 2, "C"); return open.level === 4 && open.continuity === "intermittent" && shut.level === 0 && shut.continuity === "silent"; })());
   check("REGRESSION (design r6): every reading on a closed segment is the dedicated silent state (level 0), never a faint steady sound", (() => { for (const ls of SEGMENTS) for (let lp = 1; lp <= POINTS; lp++) { const cc = { leak: { seg: ls, point: lp }, house: { seg: ls === "A" ? "B" : "A", point: 3 } }; for (const seg of SEGMENTS) for (let p = 1; p <= POINTS; p++) { const r = soundReading(cc, seg, p, seg); if (r.level !== 0 || r.continuity !== "silent") return false; } } return true; })());
-  check("the component renders the silent state without bars/waveform (source check)", (() => { const src = readFileSync(new URL("../../src/q1/LeakTraceGame.tsx", import.meta.url), "utf8"); return src.includes("continuity !== \"silent\" && (") && src.includes("静か（水が止まっている）"); })());
+  check("the component renders the silent state without any waveform strip element (source check: the single leak-wave strip lives in the non-silent branch, after the silent text)", (() => { const src = readFileSync(new URL("../../src/q1/LeakTraceGame.tsx", import.meta.url), "utf8"); const strips = (src.match(/className="leak-wave"/g) || []).length; const silentIdx = src.indexOf("静か（水が止まっている）</span>"); const branchIdx = src.indexOf('lastReading.continuity === "silent" ? ('); const stripIdx = src.indexOf('className="leak-wave"'); return strips === 1 && branchIdx > 0 && silentIdx > branchIdx && stripIdx > silentIdx && src.slice(branchIdx, silentIdx).includes("leak-wave") === false; })());
   check("a report while the segment is closed still resolves by the point alone (crew restores supply)", (() => { let t = stateFor(c); t = listen(t, "C", 5).state; t = closeValve(t, "C").state; const r = report(t, "C", 5); return r.ok && r.hit === true; })());
   check("restartSameCase keeps the hidden case and resets everything else", (() => { let t = stateFor(c); t = closeValve(t, "A").state; t = listen(t, "C", 5).state; const u = restartSameCase(t); return u.c === t.c && u.valveOps === 0 && u.listens === 0 && u.readings.length === 0 && u.closed === null && u.outcome === null; })());
   check("readingAt reads from the public view", (() => { let t = stateFor(c); t = listen(t, "C", 5).state; const r = readingAt(publicView(t), "C", 5); return r && r.level === 5 && readingAt(publicView(t), "C", 4) === undefined; })());
@@ -198,6 +206,7 @@ check("within budgets (worst listens/valves)", worstL <= BUDGETS.listens && wors
   const revealUses = (src.match(/revealLeak\(/g) || []).length;
   check("revealLeak is used exactly once (the post-hit dawn screen)", revealUses === 1, `${revealUses}`);
   check("tapping the closed lid reopens it (explicit free reopen exists in the component)", src.includes("openValve(s)"));
+  check("INVARIANT (design r7): across every simulated play, a silent reading exists only while its segment is closed", silentInvariantViolations === 0, `${silentInvariantViolations} violations`);
   check("cases vary", new Set(Array.from({ length: 40 }, (_, i) => key(newCase(rng(i)).leak))).size >= 10);
   check("house distractor never coincides with the leak", Array.from({ length: 500 }, (_, i) => newCase(rng(i))).every((c) => key(c.leak) !== key(c.house)));
 }
