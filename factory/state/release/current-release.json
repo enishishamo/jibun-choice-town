@@ -129,6 +129,20 @@
       "github_actions_run": "34095091821",
       "production_verified": "live bundle assets/index-NFSaAj9q.js contains the released strings (見通し / 貯水池が空になった)",
       "note": "First release produced by the Q1 Autonomous Game Factory (trigger LEGACY_AUDIT_REQUIRED → q1-legacy-audit start → q1-pipeline release-ready → task-state can-deploy)."
+    },
+    {
+      "date": "2026-09-09",
+      "policy": "factory/rules/deploy-release-policy.md (routine content addition, product_identity_impact NONE) via factory/rules/q1-autonomous-factory.md NEW_Q1_REQUEST path",
+      "content": "leak-detective (水道の漏水調査員, gameType leak_trace): sixth incident of the 猛暑 event — flow-meter isolation, restore supply, detector gradient + continuity, exclude the house-usage pseudo-sound, report the point; crew restores supply and digs; honest outcomes; evidence-only think-again gate; dedicated silent state",
+      "commit": "ba77115906d271781a8117937c7426b320842f27",
+      "bookkeeping_commit": "813019899b1fa098ae0eba66151f1943bea26a96",
+      "task": "q1-new-leak-detective",
+      "pipeline": "factory/projects/leak-detective/q1-pipeline.json",
+      "human_decisions": "hd-1 (2026-09-08) one-time repair budget extension for the silent state; hd-2 (2026-09-09) scoped Game Translation fix so that Gate G holds — both recorded as one-time exceptions, not precedents",
+      "qa": "design reviews r1-r9 (r9 PASS 84 CA88/GQ84); art request + independent art-qa PASS (place-leak.png, Codex imagegen, min 76 / SERIES_STYLE_MATCH 88); implementation reviews r1-r4 (r4 PASS 84 CA90/GQ84); gameplay-qa-leak.mjs 52/52; design-sim v9 8/8 flags, 306/306, gate 200/200/200/200; build/lint clean; 375x812 live verification of every path (silent state, reopen lifetime, Gate G, crew restore, hit/miss/dawn/discovery); release-ready PASS; release-gate-check PASS locally and in CI",
+      "github_actions_run": "34270843759",
+      "production_verified": "live bundle assets/index-UTM7EiT0.js contains the released strings (leak_trace / 静かな点は根拠にならない / 修理班が水を戻して掘っている / 水道の漏水を見つける仕事); assets/heat/place-leak.png 200 (1,673,864 bytes); the night screen renders on GitHub Pages (21 hit circles, budgets row)",
+      "note": "First NEW Q1 (research → design → art → implementation → release) produced end-to-end by the Q1 Autonomous Game Factory. Open polish: records strip legibility (factory/state/backlog/leak-detective-records-strip-legibility.md). Factory fix shipped on the dev branch: design-review staleness is now triggered only by design-stage artifacts (q1-pipeline.mjs); mechanism gap logged: human-decision CLI accepts Product Identity domains only."
     }
   ]
 }
