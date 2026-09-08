@@ -14,7 +14,7 @@ import type { LeakState, Seg, Spot } from "./leakLogic";
 
 type Phase = "night" | "digging" | "hit" | "partial";
 
-const ROW_Y: Record<Seg, number> = { A: 62, B: 150, C: 238 };
+const ROW_Y: Record<Seg, number> = { A: 58, B: 142, C: 226 };
 const pointX = (p: number) => 64 + (p - 1) * 56; // 56 viewBox units ≈ 44px at 375px: each hit circle (r=28) is a full 44px target
 
 export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameProps) {
@@ -88,7 +88,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
   // ---------- shared pieces ----------
   const gaugeAngle = (flow: number) => -90 + Math.min(1, flow / 3) * 180; // 0..3 m3/h over a half circle
   const Gauge = ({ flow, calm }: { flow: number; calm?: boolean }) => (
-    <svg viewBox="0 0 120 74" width={120} height={74} aria-label={`区画量水器 ${flow.toFixed(1)}`}>
+    <svg viewBox="0 0 120 74" width={104} height={64} aria-label={`区画量水器 ${flow.toFixed(1)}`}>
       <path d="M10 64 A50 50 0 0 1 110 64" fill="none" stroke="#e6dccb" strokeWidth={10} />
       <path d="M10 64 A50 50 0 0 1 22 36" fill="none" stroke="#8fce8f" strokeWidth={10} />
       <text x="26" y="30" fontSize="8" fill="#6d6350">正常ならここ</text>
@@ -100,14 +100,14 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
     </svg>
   );
   const budgetsRow = (
-    <div style={{ display: "flex", gap: 14, justifyContent: "center", fontSize: 12, color: "#6d6350", margin: "4px 0" }}>
-      <span>🔧 弁 {v.budgets.valve}</span><span>🎧 聴く {v.budgets.listens}</span><span>📣 報告 {v.budgets.reports}</span>
+    <div style={{ display: "flex", gap: 14, justifyContent: "center", fontSize: 12, color: "#6d6350", margin: "2px 0" }}>
+      <span>🔧 閉める あと{v.budgets.valve}</span><span>🎧 聴く {v.budgets.listens}</span><span>📣 報告 {v.budgets.reports}</span>
     </div>
   );
   const records = (
     <div style={{ margin: "4px 12px", padding: "6px 8px", background: "#fbf6ea", borderRadius: 10, fontSize: 11, color: "#3b3325", minHeight: 30 }}>
       <div style={{ color: "#8a7f6a", fontSize: 10 }}>記録</div>
-      <div style={{ maxHeight: 74, overflowY: "auto" }}>{timeline.length === 0 ? <div style={{ color: "#a89f8c" }}>（まだ何もない）</div> : timeline.map((t, i) => <div key={i}>{t}</div>)}</div>
+      <div style={{ maxHeight: 48, overflowY: "auto" }}>{timeline.length === 0 ? <div style={{ color: "#a89f8c" }}>（まだ何もない）</div> : timeline.map((t, i) => <div key={i}>{t}</div>)}</div>
     </div>
   );
 
@@ -172,7 +172,7 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
         </div>
       </div>
 
-      <svg viewBox="0 0 400 284" width="100%" style={{ display: "block", background: "linear-gradient(#1f2a44, #2f3d5c)", borderRadius: 12, margin: "0 12px", width: "calc(100% - 24px)" }}>
+      <svg viewBox="0 0 400 268" width="100%" style={{ display: "block", background: "linear-gradient(#1f2a44, #2f3d5c)", borderRadius: 12, margin: "0 12px", width: "calc(100% - 24px)" }}>
         {SEGMENTS.map((seg) => {
           const y = ROW_Y[seg];
           const dim = v.focus !== null && v.focus !== seg;
@@ -200,7 +200,8 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
                 <circle cx={30} cy={y} r={12} fill={closed ? "#c0392b" : "#8a7f6a"} stroke="#e6dccb" strokeWidth={2} />
                 <text x={30} y={y + 4} fontSize="10" textAnchor="middle" fill="#fff">{closed ? "閉" : "弁"}</text>
               </g>
-              <text x={30} y={y + 40} fontSize="9" textAnchor="middle" fill="#c9c2b3">{seg}</text>
+              {/* the closed lid is itself the reopen control (free): say so, non-verbally enough for a first play */}
+              <text x={30} y={y + 40} fontSize="9" textAnchor="middle" fill={closed ? "#ffd86b" : "#c9c2b3"}>{closed ? "▲開ける（0回）" : seg}</text>
               {/* listening points */}
               {Array.from({ length: POINTS }, (_, i) => i + 1).map((p) => {
                 const x = pointX(p);
@@ -241,9 +242,9 @@ export default function LeakTraceGame({ onComplete, onPartialComplete }: Q1GameP
 
       {/* last listening reaction: the waveform shows continuity without words */}
       {lastReading && lastHeard && (
-        <div style={{ margin: "6px 12px 0", display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#3b3325" }}>
+        <div style={{ margin: "2px 12px 0", display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#3b3325" }}>
           <span>🎧 {lastHeard.seg}{lastHeard.point}</span>
-          <div style={{ flex: 1, height: 18, overflow: "hidden", background: "#fbf6ea", borderRadius: 9, position: "relative" }}>
+          <div style={{ flex: 1, height: 14, overflow: "hidden", background: "#fbf6ea", borderRadius: 7, position: "relative" }}>
             <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: "200%", background: `repeating-linear-gradient(90deg, #2c5c8a 0 3px, transparent 3px 8px)`, opacity: 0.9, animation: `leak-steady 0.5s linear infinite${lastReading.continuity === "intermittent" ? ", leak-burst 1.1s infinite" : ""}` }} />
           </div>
           <span>{"▮".repeat(lastReading.level)}{"▯".repeat(5 - lastReading.level)}</span>

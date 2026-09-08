@@ -56,7 +56,7 @@ function flowReading(c, closed) {
 function soundReading(c, seg, point, closed) {
   let level, continuity = "steady";
   if (seg === c.leak.seg && closed !== seg) level = Math.max(1, 5 - Math.abs(point - c.leak.point)); else level = 1; // isolated segment: no water, no leak sound
-  if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
+  if (seg === c.house.seg && point === c.house.point && closed !== seg) { level = 4; continuity = "intermittent"; } // v6: silent too while the segment is closed
   return { level, continuity };
 }
 

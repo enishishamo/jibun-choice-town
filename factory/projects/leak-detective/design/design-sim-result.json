@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T10:01:55.805Z",
+  "generated_at": "2026-09-08T10:08:05.190Z",
   "rules": {
     "segments": [
       "A",
@@ -57,10 +57,10 @@
       "win_rate": 1
     },
     "flow_then_gradient_forgets_reopen": {
-      "perfect": 276,
+      "perfect": 272,
       "success": 0,
-      "partial": 324,
-      "win_rate": 0.46
+      "partial": 328,
+      "win_rate": 0.453
     }
   },
   "solvability": {

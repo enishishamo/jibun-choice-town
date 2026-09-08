@@ -4,10 +4,10 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code",
-  "state": "REDESIGNING",
+  "state": "UNDER_REVIEW",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 3,
-  "repair_count": 0,
+  "repair_count": 1,
   "redesign_count": 2,
   "artifacts": {
     "fact_sheet": {
@@ -718,12 +718,12 @@
       ]
     },
     "game_translations": {
-      "artifact_id": "leak-detective:game_translations:v7",
+      "artifact_id": "leak-detective:game_translations:v8",
       "artifact_type": "game_translations",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/game_translations_v7.json",
+      "file": "factory/projects/leak-detective/design/game_translations_v8.json",
       "payload": {
         "translations": [
           {
@@ -773,19 +773,19 @@
             "play_seed": "s1-night-listening",
             "goal": "深夜の住宅街1区画で、地面の下のどこかで漏れている水道管の場所を、弁の開け閉め（流量）と路面での音聴で絞り込み、『ここが漏水点』と特定して修理班に報告する（2回まで）。当たれば修理班が掘って直し、明け方には道路の湿りが消える。",
             "first_visible_state": "夜の区画のミニチュア（道路、街灯、家々）。道路の下に薄く管の線が3つの区間に分かれて見え、区間の入口に制水弁の鉄ぶた（弁の記号）、管に沿って6つずつの聴取点（小さな丸）。左上に区画量水器の計器：針が『夜なのに、まだ流れてる』位置で、目盛りに『正常ならここ』の印。右に通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』。下に予算表示『弁 2回／聴く 5点／報告 2回』。濡れた場所や漏水マークは地図にない。操作手順の説明文はない。",
-            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（閉められるのは同時に1本。閉める操作は2回まで。閉めている弁をもう一度タップすると開く——開け直しは無料）。区間ボタン『この区間を調べる』→その区間の点を大きく表示（子どもの仮説、正誤は示さない）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、新しく1点聴くまで2回目の報告ボタンは押せない。",
+            "primary_action": "制水弁をタップ→その区間の管の水が止まり、計器の針が動く（閉められるのは同時に1本。閉める操作は2回まで。閉めている弁のふたには『▲開ける（0回）』と出て、もう一度タップすると開く——開け直しは無料。予算表示は『閉める あと◯』）。区間ボタン『この区間を調べる』→その区間の点を大きく表示（子どもの仮説、正誤は示さない）。聴取点をタップ→ピックアップを置き、波形が鳴る。数値と『ずっと/とぎれる』は地図の下の『記録』ストリップに時系列で並ぶ（5点まで）。聴取点を選んで『ここが漏水点だと報告』（2回まで、『報告したら戻せない、あと◯回』を常時表示）。1回目が外れたら、新しく1点聴くまで2回目の報告ボタンは押せない。",
             "C_interaction": "計器の針が『大きく落ちた』のはどの弁を閉めたときかを見る。置いた点の2情報を並べて、大きくなる方向を読む。『とぎれる』音（家の水使用）を漏水音から除外する。",
-            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。閉めている区間は水が流れていないので、その区間の聴取点は漏水点の真上でも静か（波形バー1・ずっと）——漏水音は水圧で生じる。弁を開け直す（無料）と音が戻る。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が通水した状態で掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。流量の結果でUIが区間を強調することはない。",
-            "information_gained": "どの区間の管が漏れているか（流量）。水を止めた区間は静かになる——漏水音は水が流れているときだけ。漏水点に近いほど音が大きい。とぎれる音は家で水を使っている音で、漏水ではない（窓の明かりが同じリズムで点滅する）。一晩に聴ける点数・弁を閉める回数・報告できる回数に限りがある。報告すると戻せない。外れたら、新しく聴かないと次は報告できない。",
+            "system_reaction": "弁を閉める→針が下がる（漏水区間なら『正常ならここ』まで大きく落ちる。それ以外はほぼ動かない）。閉めている区間は水が流れていないので、その区間の聴取点は漏水点の真上でも、家の使用音の点でも、すべて静か（波形バー1・ずっと。窓明かりの点滅も出ない）——路面で拾う音はどれも管の中の水の流れで生じる。弁を開け直す（無料）と漏水音も家の使用音も戻る。聴取点に置く→ヘッドホン越しの波形が鳴る: 漏水音なら途切れず流れ続け、家の使用音なら0.6秒鳴って0.5秒止まるを繰り返し、同時にその点に一番近い家の窓の明かりが同じリズムで点いたり消えたりする。記録ストリップにその点の波形バーと『ずっと/とぎれる』が1行増える。報告→修理班が通水した状態で掘る: 当たり: 穴の底で管の割れ目から水が噴き出す→修理→明け方、路面の湿りが消え、計器の針が『正常ならここ』に戻る。外れ: 穴の底の管は乾いていて何も噴かない→埋め戻し（残り報告回数−1）、針は高いまま、地図に『外れ』の印が残り、報告ボタンが灰色になって『新しく聴いてから』と一言。流量の結果でUIが区間を強調することはない。",
+            "information_gained": "どの区間の管が漏れているか（流量）。水を止めた区間は静かになる——路面で聴こえる音は、どれも水が流れているときだけ。開け直しは無料。漏水点に近いほど音が大きい。とぎれる音は家で水を使っている音で、漏水ではない（窓の明かりが同じリズムで点滅する）。一晩に聴ける点数・弁を閉める回数・報告できる回数に限りがある。報告すると戻せない。外れたら、新しく聴かないと次は報告できない。",
             "player_next_judgment": "『どの弁を閉めたら針が落ちる？』『落ちた区間の弁を開け直してから聴こう』『次はどの点で聴けば近づいたか分かる？（両端を聴いてから、大きい方へ）』『この大きな音は本当に漏水？とぎれてない？』『証拠は2種類そろった？まだ聴く？もう報告する？』を毎手考える。",
             "D_externalization": "閉める弁の順番、開け直す判断、『この区間を調べる』という仮説の選択、置く聴取点の順番、報告する地点の選択が、そのまま調査員としての子どもの推理を表現する。システムは『どの区間が漏れているか』『どこが漏水点か』『次にどこを聴くべきか』を一切示さず、推奨も採点もしない。掘るのは修理班であり、子どもの判断は『どこが漏水点か』の特定までで区切る。",
             "E_consequence": "明け方の区画: 当たった夜は、修理班が掘った跡が埋め戻され路面が乾き、計器の針が正常に戻り、家々にいつもどおり水が出る。外れた夜は、埋め戻した穴と、まだ湿った路面、高いままの針——『漏れは次の夜へ持ち越し』という正直なpartial outcome（進行は可能、Job Revealは同じ）。1回目で当たり＝満点、2回目＝成功。",
             "retry_or_rethink": "外れた1回目の後は、必ず新しい聴取（新しい証拠）を1回行ってから2回目を報告する（機械的にゲート: design-sim think_again_gate: 何も挟まない再報告200/200拒否、記録を開くだけの再報告200/200拒否、新しい聴取後の再報告200/200許可）。聴く予算が残っていなければ、その夜は報告できずに明ける（正直なpartial）。朝の結果画面から『もう一度この夜へ』で同じ区画をやり直せる（漏水点は同じ、判断だけ変えられる）。失敗の理由は文章で即答せず、記録ストリップと閉めた弁の記録が残って見えるだけ。2回目の失敗からは『針が落ちた区間はどこだった？』または『とぎれる音を報告していないか？』のどちらか一言。",
             "job_reveal_bridge": "『きみがさっきやった「弁を閉めて針を見る」「道路に機械を置いて聴く」「ここが漏水点だと特定する」は、水道局の漏水調査員の仕事だよ。特定した場所を修理班が掘って直す。交通や使う水の少ない夜に行う調査もある。東京では地面の下の漏れをこうやって探し続けて、戦後に80%あった漏水率を3.5%まで減らしてきたんだ。』",
             "strengths": "C（施設図・流量計・音の2情報・予算）が全部『使う』情報で、Dが弁・聴取点・報告地点の選択として外在化される。2種類の証拠（流量と音）を突き合わせる本物の判断構造。疑似音（家の使用音）が『大きい音＝答え』を裏切る。結果が世界（路面の湿り・針・噴き出す水）で返り、外れも正直に返る。Eは調査員の位置特定→水道局の修理班の掘削・修理で閉じ、別主体の裁量判断が因果に入らない（r1レビュー確認）。考え直しの工程が『新しい証拠』でのみ成立するよう機械的に保証される（記録を開くだけの無料解除は存在しない）。 隔離すると静かになる、という水圧と音の関係が、弁操作と音聴という2つのCを因果でつなぐ（impl review r2是正）。",
-            "weaknesses": "『とぎれる』を波形の間欠と窓明かりの同期で見せる演出の精度が要る（実装時のVISUAL_AFFORDANCE）。弁を閉めたまま聴くと静かで、初回は『なぜ静か？』と戸惑う可能性がある——針が落ちた直後に弁の絵が『閉』のまま残ること、開け直しが無料であることを画面から読めるようにする。375pxで18点を44px以上のタップ領域で置くレイアウトの検証が要る（state_table legibility_rules）。",
-            "risk": "design-sim-result.json（v5）: 正当戦略（流量→開け直し→勾配→連続音のみ）は600/600、全306組合せを予算内で1回目に当てる。無作為報告9.8%、流量を使わない無作為聴取26.2%、流量だけで2点報告34.7%、針を読まず区間を当て推量25.0%、区間を特定したが開け直さずに聴く戦略（静かで勾配が読めない）46.0%（isolated_segment_is_silent:true。design-sim v5でrngのseed相関バグも修正し、600ケースが実際に分散するようにした）。考え直しゲート3試験200/200。",
-            "adoption_or_rejection_reason": "採用（t1bのredesign #2）。impl review r2のHIGH（隔離中の区間で漏水音・噴水が出る矛盾）と弁モデルの不一致を、『閉めた区間は静か・開け直しは無料・修理班は通水して掘る』という状態ルールで統一して解消。"
+            "weaknesses": "『とぎれる』を波形の間欠と窓明かりの同期で見せる演出の精度が要る（実装時のVISUAL_AFFORDANCE）。弁を閉めたまま聴くと静かで、初回は『なぜ静か？』と戸惑う可能性がある——針が落ちた直後に弁の絵が『閉』のまま残り、その下に『▲開ける（0回）』が出るので、開け直しが無料の操作だと画面から読める（r5 MEDIUM是正）。375pxで18点を44px以上のタップ領域で置くレイアウトの検証が要る（state_table legibility_rules）。",
+            "risk": "design-sim-result.json（v5）: 正当戦略（流量→開け直し→勾配→連続音のみ）は600/600、全306組合せを予算内で1回目に当てる。無作為報告9.8%、流量を使わない無作為聴取26.2%、流量だけで2点報告34.7%、針を読まず区間を当て推量25.0%、区間を特定したが開け直さずに聴く戦略（静かで勾配が読めない）45.3%（isolated_segment_is_silent:true、v6: 家の使用音も閉区間では静か。design-sim v5でrngのseed相関バグも修正し、600ケースが実際に分散するようにした）。考え直しゲート3試験200/200。",
+            "adoption_or_rejection_reason": "採用（t1bのredesign #2）。impl review r2のHIGH（隔離中の区間で漏水音・噴水が出る矛盾）と弁モデルの不一致を、『閉めた区間は静か・開け直しは無料・修理班は通水して掘る』という状態ルールで統一して解消。 r5レビューHIGH（閉区間で疑似音だけ聴こえる自己矛盾）・MEDIUM（開け直しのアフォーダンス不足）は、閉区間の全聴取を静かにし、閉じたふたに『▲開ける（0回）』を表示することで是正（iteration 3 repair 1/1）。"
           },
           {
             "translation_id": "t2-valve-binary-search",
@@ -829,7 +829,7 @@
         "adopted_translation_id": "t1c-night-listening-isolation",
         "adoption_rationale": "t1cを採用（t1bのredesign #2、本パイプラインで許容される最後のredesign）。impl review r2のHIGH（弁で隔離した区間でも漏水音が聴こえ、掘ると水が噴くという物理的矛盾）とMEDIUM（弁モデルの文書間不一致）を、state_table.jsonのvalve_model（閉める＝2回まで、開け直し＝無料の明示操作）とsound_reading.isolation_rule（閉めた区間は静か）で統一し、design-sim v5で正当戦略が開け直してから聴くこと・開け直し忘れが安定して勝てないことを機械検証した。流量→勾配→連続音という本物の判断構造、Eが水道局の内側で閉じる点、証拠のみで解禁される考え直しゲート、自動強調なし、3区間×6点・2情報・予算2/5/2はt1bから維持。",
         "human_decision_domains": [],
-        "revision_note": "v7 (design_iteration 3, post-redesign #2): adopted_translation_idをt1c-night-listening-isolationへ切り替え。"
+        "revision_note": "v8 (design_iteration 3, repair 1/1 after design review r5): 閉区間では家の使用音も静か（窓の点滅も出さない）、閉じた弁のふたに『▲開ける（0回）』、予算表示『閉める あと◯』。"
       },
       "creator": "claude-code",
       "source_artifacts": [
@@ -837,7 +837,7 @@
         "leak-detective:c_compression:v3"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T10:03:24.627Z",
+      "created_at": "2026-09-08T10:11:56.852Z",
       "versions": [
         {
           "version": 1,
@@ -880,32 +880,38 @@
           "file": "factory/projects/leak-detective/design/game_translations_v7.json",
           "created_at": "2026-09-08T10:03:24.628Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/leak-detective/design/game_translations_v8.json",
+          "created_at": "2026-09-08T10:11:56.853Z",
+          "creator": "claude-code"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "leak-detective:first_5_seconds:v5",
+      "artifact_id": "leak-detective:first_5_seconds:v6",
       "artifact_type": "first_5_seconds",
-      "version": 5,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/first_5_seconds_v5.json",
+      "file": "factory/projects/leak-detective/design/first_5_seconds_v6.json",
       "payload": {
         "zero_to_two_seconds": "深夜の区画のミニチュアが静かに現れる（街灯の明かり、寝静まった家々、道路）。道路の下に管の線が3つの区間に分かれて薄く見える。左上の区画量水器の針が、目盛りの『正常ならここ』を大きく超えた位置でかすかに震えている（自動、操作不要）。管に沿った聴取点が、ゆっくり順番に淡く光る。",
         "two_to_five_seconds": "右から通報カードが1枚すべり込む『晴れてるのに、道がぬれてる…（このあたりのどこか）』。3つの制水弁の鉄ぶたが一度だけ小さく光る。予算表示『弁 2回・聴く 5点・報告 2回』が静かに並ぶ。操作手順を書いた文はない（r1 MEDIUM是正: 『弁をしめて、針を見る／道路に置いて、聴く』の一行を削除）。地図に濡れた場所や漏水マークはない。",
         "first_expected_touch": "3つの制水弁のどれか、または光っている聴取点のどれかをタップする。理由: 反応しそうに光るものがこの2種類しかなく、どちらも正当な最初の一手。震える針が『夜なのに流れている』ことを状態で示し、弁の記号が『止められそう』に、聴取点のヘッドホン形の光が『聴けそう』に見える。",
-        "first_system_reaction": "弁をタップした場合: その区間の管の線が一瞬暗くなり（水が止まった）、計器の針が動く——漏水区間なら『正常ならここ』まで大きく落ち、それ以外ならほとんど動かない。表示は『閉めた: 区間A』と針の値、弁の絵が『閉』に変わる（もう一度タップで開く）、弁の横に小さく『ゲームでは1区間を1つの弁で表しています』。閉めたままその区間の点をタップすると波形はほとんど鳴らない（水が止まっているから）——開け直すと鳴る。聴取点をタップした場合: ヘッドホンの波形が鳴る——漏水音なら途切れずに流れ続け、家の使用音なら鳴って止まってを繰り返し、そのとき一番近い家の窓の明かりが同じリズムで点いたり消えたりする。地図の下の『記録』ストリップに、その点の波形バーと『ずっと/とぎれる』が1行増える（地図上の点には小さな波形の印だけ）。ここまで文章は計器の値・区間名・2情報の語・弁の注記だけ。",
+        "first_system_reaction": "弁をタップした場合: その区間の管の線が一瞬暗くなり（水が止まった）、計器の針が動く——漏水区間なら『正常ならここ』まで大きく落ち、それ以外ならほとんど動かない。表示は『閉めた: 区間A』と針の値、弁の絵が『閉』に変わり、その下に『▲開ける（0回）』と出る（もう一度タップで開く。予算行は『閉める あと1』）、弁の横に小さく『ゲームでは1区間を1つの弁で表しています』。閉めたままその区間の点をタップすると、どの点でも波形はほとんど鳴らず窓も点滅しない（水が止まっているから）——開け直すと鳴る。聴取点をタップした場合: ヘッドホンの波形が鳴る——漏水音なら途切れずに流れ続け、家の使用音なら鳴って止まってを繰り返し、そのとき一番近い家の窓の明かりが同じリズムで点いたり消えたりする。地図の下の『記録』ストリップに、その点の波形バーと『ずっと/とぎれる』が1行増える（地図上の点には小さな波形の印だけ）。ここまで文章は計器の値・区間名・2情報の語・弁の注記だけ。",
         "next_expected_inference": "『針が落ちた＝この区間の下が漏れている』『針が落ちない＝ここじゃない、別の弁を試そう』／『音が大きい方へ行けば近づく？』『鳴ったり止まったりする音のとき、家の明かりも点いたり消えたりした＝家で水を使ってる音？』『閉めた区間は静か＝水が止まると音も止まる』→『弁で区間を決めて、開け直してから、その区間で聴けばいい』。",
         "next_expected_action": "別の弁をタップして針を見比べる、区間ラベルをタップして『この区間を調べる』と仮説を置く、または聴取点を続けてタップする。どれでも世界が反応する（針が動く／その区間が大きくなる／記録が増える）。『ここが漏水点だと報告』はまだ押さなくてよい（報告ボタンに『報告したら戻せない、あと2回』が見えている）。",
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。 v4 (r3 ANSWER_LEAK repair): 自動強調なし。区間の拡大は子どもがラベルをタップして仮説を置いたときだけ。 v5 (redesign #2 to t1c): 隔離中は静か・開け直しは無料、を最初の反応に反映。"
+        "revision_note": "v2 (design review r1): 操作手順の一行を削除し、状態と光り方だけで最初の一手を導く。3区間・2情報・予算（弁2/聴く5/報告2）に合わせて更新。『掘る』→『報告』。 v3 (r2 MEDIUM, redesign #1 to t1b): 連続性を説明文ではなく波形の間欠＋窓明かりの同期点滅で発見させる反応を仕様化。記録は地図上の固定チップではなく地図下のストリップに。 v4 (r3 ANSWER_LEAK repair): 自動強調なし。区間の拡大は子どもがラベルをタップして仮説を置いたときだけ。 v5 (redesign #2 to t1c): 隔離中は静か・開け直しは無料、を最初の反応に反映。 v6 (r5 repair): 閉じたふたの『▲開ける（0回）』表示、閉区間は疑似音も含めて静か。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v7"
+        "leak-detective:game_translations:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T10:03:24.672Z",
+      "created_at": "2026-09-08T10:11:56.901Z",
       "versions": [
         {
           "version": 1,
@@ -936,29 +942,35 @@
           "file": "factory/projects/leak-detective/design/first_5_seconds_v5.json",
           "created_at": "2026-09-08T10:03:24.673Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/leak-detective/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-08T10:11:56.902Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "leak-detective:core_back_check:v5",
+      "artifact_id": "leak-detective:core_back_check:v6",
       "artifact_type": "core_back_check",
-      "version": 5,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/core_back_check_v5.json",
+      "file": "factory/projects/leak-detective/design/core_back_check_v6.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "v5（design_iteration 3、redesign #2: t1c-night-listening-isolation）。impl review r2のHIGH（弁で隔離した区間でも漏水音・噴水が出る物理的矛盾）とMEDIUM（弁モデルの文書間不一致）への対応: state_table.jsonにvalve_model（閉める2回・開け直し無料・同時1本）とsound_reading.isolation_rule（閉めた区間は静か、修理班は通水して掘る）を追加し、game_translations_v7/game_spec_v2/design-sim v5/leakLogic/QA harnessを同時に更新。design-sim v5: 正当戦略（流量→開け直し→勾配）が全306組合せを1回目に当て、開け直し忘れ戦略は安定して勝てない。COREとSCOPE、Dの子ども側の実行（弁の順番・開け直し・仮説・聴取点・報告地点）、Eが水道局の内側で閉じる構造、Cの必要性、証拠のみで解禁される考え直しゲート、自動強調なしは変更なし。redesign_count 2/2（本パイプラインで許容される最後のredesign、repair_countは新イテレーションで0/1にリセット）。",
+        "notes": "v6（design_iteration 3、repair 1/1 after design review r5）。r5のHIGH（閉区間で家の使用音だけが聴こえる音響モデルの自己矛盾）とMEDIUM（無料の開け直しのアフォーダンス不足）への対応: state_table.sound_reading.isolation_rule を『閉区間の路面聴取はすべて level 1 steady（窓の点滅もなし）』に統一し、valve_model.reopen に『▲開ける（0回）』ラベルと『閉める あと◯』表記を明記。design-sim v6・leakLogic・QA harness（42/42、閉区間の疑似音も静かという回帰を追加）を同時に更新。七つのverdict flagはすべてtrue（正当戦略306/306、開け直し忘れ45.3%）。COREとSCOPE、Dの子ども側の実行、Eが水道局の内側で閉じる構造、Cの必要性、証拠のみで解禁される考え直しゲート、自動強調なしは変更なし。repair_count 1/1、redesign_count 2/2。",
         "pass": true
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v7"
+        "leak-detective:game_translations:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T10:03:24.760Z",
+      "created_at": "2026-09-08T10:11:56.995Z",
       "versions": [
         {
           "version": 1,
@@ -989,16 +1001,22 @@
           "file": "factory/projects/leak-detective/design/core_back_check_v5.json",
           "created_at": "2026-09-08T10:03:24.761Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/leak-detective/design/core_back_check_v6.json",
+          "created_at": "2026-09-08T10:11:56.996Z",
+          "creator": "claude-code"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "leak-detective:no_manual_exploit_check:v5",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v6",
       "artifact_type": "no_manual_exploit_check",
-      "version": 5,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v5.json",
+      "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v6.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": true,
@@ -1009,7 +1027,8 @@
             "通報カード『晴れてるのに、道がぬれてる…（このあたりのどこか）』（状況）",
             "『報告したら戻せない、あと2回』（報告ボタンに常設）",
             "弁の横の注記『ゲームでは1区間を1つの弁で表しています』（簡略化の明示、操作説明ではない）",
-            "とぎれる音のときに近くの家の窓明かりが同じリズムで点滅する（『家で水を使っている音』を絵で発見させる）"
+            "とぎれる音のときに近くの家の窓明かりが同じリズムで点滅する（『家で水を使っている音』を絵で発見させる）",
+            "閉じた弁のふたの下の『▲開ける（0回）』（開け直しが無料の操作だと状態表示で伝える）"
           ],
           "explanation_screen": "なし。操作手順を書いた一行もなし（r1 MEDIUM是正）。ルールは『弁を閉める→針が動く（または動かない）』『点に置く→2情報が残る』『報告→修理班が掘る→噴く/乾いている』の順に体験から理解する。",
           "pass": true
@@ -1037,18 +1056,18 @@
           "brute_force_note": "18点×2回の総当たりは予算上不可能。やり直しごとに夜1回分を見直す必要があり、初回プレイでの総当たりは現実的でない。",
           "pass": true,
           "sim_evidence": "factory/projects/leak-detective/design/design-sim-result.json",
-          "isolation_note": "impl review r2是正: 閉めている区間の聴取点は静か（level 1 steady）。design-sim v5: 区間を特定したが開け直さずに聴く戦略は安定して勝てない（isolated_segment_is_silent:true）。開け直しは無料の明示操作で、閉める操作だけが予算（2回）を消費する。"
+          "isolation_note": "r5 HIGH是正: 閉めている区間の聴取点は、漏水点も家の使用音の点も含めてすべて静か（level 1 steady、窓の点滅なし）。design-sim v6: 区間を特定したが開け直さずに聴く戦略は45.3%で安定して勝てない（isolated_segment_is_silent:true）。開け直しは無料の明示操作（閉じたふたに『▲開ける（0回）』）で、閉める操作だけが予算（『閉める あと◯』）を消費する。"
         },
         "human_decision_domains": [],
-        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。 v4 (r3 ANSWER_LEAK repair): 流量結果連動の自動強調を削除、valves_ignored戦略の数値を追加。 v5 (redesign #2 to t1c): 隔離ルールと開け直しモデルを反映、数値はdesign-sim v5。"
+        "revision_note": "v2 (design review r1): 3区間×6点・2情報・弁2/聴取5/報告2、考え直しゲート、操作説明の削除を反映。数値はdesign-sim v2。 v3 (r2, redesign #1 to t1b): 記録を開くだけの解除を廃止（新しい聴取のみ）、数値をdesign-sim v3に更新、連続性の視覚手がかりを追加。 v4 (r3 ANSWER_LEAK repair): 流量結果連動の自動強調を削除、valves_ignored戦略の数値を追加。 v5 (redesign #2 to t1c): 隔離ルールと開け直しモデルを反映、数値はdesign-sim v5。 v6 (r5 repair): 閉区間は疑似音も静か、開け直しのアフォーダンス。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "leak-detective:game_translations:v7",
-        "leak-detective:first_5_seconds:v5"
+        "leak-detective:game_translations:v8",
+        "leak-detective:first_5_seconds:v6"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-08T10:03:24.716Z",
+      "created_at": "2026-09-08T10:11:56.950Z",
       "versions": [
         {
           "version": 1,
@@ -1078,6 +1097,12 @@
           "version": 5,
           "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v5.json",
           "created_at": "2026-09-08T10:03:24.717Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/leak-detective/design/no_manual_exploit_check_v6.json",
+          "created_at": "2026-09-08T10:11:56.951Z",
           "creator": "claude-code"
         }
       ]
@@ -1490,6 +1515,17 @@
       "must_change": "state_table sound_reading under isolation + explicit reopen rule; design-sim reopen action + silent-when-closed; game_translations t1c; game_spec v2 valve model; leakLogic openValve restored + isolation-aware soundReading; component tap-to-reopen; QA regression",
       "design_iteration": 2,
       "at": "2026-09-08T08:05:41.137Z"
+    },
+    {
+      "failure_id": "f-6",
+      "failure_code": "FACTUAL_PROFESSION_ERROR",
+      "failure_reason": "Design review r5 FAIL (score 72, CA72/GQ78, 0 blockers, 1 HIGH, 1 MEDIUM, both fixable_by_local_repair:true; all seven sim flags reproduced; e_closes_inside_own_authority true; no new leak/exploit). HIGH: the isolation rule silenced the leak but kept the house-usage pseudo-sound audible on the same closed, unpressurised pipe — an acoustic self-contradiction a child could notice. MEDIUM: the free reopen has no visible affordance (the closed lid only shows 閉, and 弁 2 reads as if reopening costs an operation). Iteration-3 local repair (0/1 -> 1/1): on a CLOSED segment every road-surface reading is level 1 steady, house distractor included, and the house-window blink is not shown while its segment is closed; the closed lid shows an explicit 開ける（0回） label (44px target) and the budget row reads 閉める あと2. state_table, design-sim, leakLogic, component, QA harness (new regression: house distractor on a closed segment is silent) and the cascade artifacts are updated together.",
+      "evidence": "factory/projects/leak-detective/design/design-review-r5.result.json",
+      "return_to": "PROFESSION_RESEARCH",
+      "preserve": "t1c isolation model, free explicit reopen, everything approved in r4",
+      "must_change": "closed segment fully silent incl. house distractor; reopen affordance label + budget wording",
+      "design_iteration": 3,
+      "at": "2026-09-08T10:07:26.210Z"
     }
   ],
   "human_decisions": [],
@@ -1497,7 +1533,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T06:37:06.496Z",
-  "updated_at": "2026-09-08T10:03:24.761Z",
+  "updated_at": "2026-09-08T10:11:57.040Z",
   "history": [
     {
       "at": "2026-09-08T06:37:06.497Z",
@@ -2310,6 +2346,78 @@
       "sources": [
         "leak-detective:game_translations:v7"
       ]
+    },
+    {
+      "at": "2026-09-08T10:07:26.211Z",
+      "event": "state_change",
+      "from": "REDESIGNING",
+      "to": "REPAIRING",
+      "note": "FACTUAL_PROFESSION_ERROR -> PROFESSION_RESEARCH (repair 1/1)"
+    },
+    {
+      "at": "2026-09-08T10:07:26.211Z",
+      "event": "failure_routed",
+      "failure_id": "f-6",
+      "code": "FACTUAL_PROFESSION_ERROR",
+      "return_to": "PROFESSION_RESEARCH",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-08T10:11:56.853Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:game_translations:v8",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "leak-detective:play_seeds:v3",
+        "leak-detective:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T10:11:56.902Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:first_5_seconds:v6",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v8"
+      ]
+    },
+    {
+      "at": "2026-09-08T10:11:56.951Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:no_manual_exploit_check:v6",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v8",
+        "leak-detective:first_5_seconds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-08T10:11:56.996Z",
+      "event": "artifact_submitted",
+      "artifact_id": "leak-detective:core_back_check:v6",
+      "invalidated": [],
+      "sources": [
+        "leak-detective:game_translations:v8"
+      ]
+    },
+    {
+      "at": "2026-09-08T10:11:57.039Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "design review r5 HIGH/MEDIUM是正（iteration 3 repair 1/1）: 閉区間では家の使用音も静か（窓の点滅なし）、閉じた弁のふたに『▲開ける（0回）』・予算行『閉める あと◯』。state_table/design-sim v6/leakLogic/component/QA harness(42/42)を同時更新、375px実機で静音→開け直し→音が戻る、を確認。"
+    },
+    {
+      "at": "2026-09-08T10:11:57.040Z",
+      "event": "repair_done",
+      "note": "design review r5 HIGH/MEDIUM是正（iteration 3 repair 1/1）: 閉区間では家の使用音も静か（窓の点滅なし）、閉じた弁のふたに『▲開ける（0回）』・予算行『閉める あと◯』。state_table/design-sim v6/leakLogic/component/QA harness(42/42)を同時更新、375px実機で静音→開け直し→音が戻る、を確認。"
     }
   ],
   "redesign": [

@@ -73,7 +73,8 @@ export function flowReading(s: LeakState): number {
 export function soundReading(c: LeakCase, seg: Seg, point: number, closed: Seg | null = null): { level: number; continuity: Continuity } {
   let level = seg === c.leak.seg && closed !== seg ? Math.max(1, 5 - Math.abs(point - c.leak.point)) : 1;
   let continuity: Continuity = "steady";
-  if (seg === c.house.seg && point === c.house.point) { level = 4; continuity = "intermittent"; }
+  // the house-usage pseudo-sound is also a road-surface pickup reading, so it too is silent on a closed (unpressurised) segment
+  if (seg === c.house.seg && point === c.house.point && closed !== seg) { level = 4; continuity = "intermittent"; }
   return { level, continuity };
 }
 
