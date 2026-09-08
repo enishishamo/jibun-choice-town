@@ -28,6 +28,26 @@ const ROOT = join(HARNESS, "..", "..");
 const AUDIT = join(ROOT, "factory", "state", "audits", "q1-audit.json");
 const DIR = join(ROOT, "factory", "state", "legacy", "reverse-audits");
 const QUEUE = join(ROOT, "factory", "state", "legacy", "rebuild-queue.json");
+const BLOCKED_QUEUE = join(ROOT, "factory", "state", "blocked-queue.md");
+const TASKS = join(ROOT, "factory", "state", "tasks.json");
+/** gameType -> reason for every legacy game parked behind a Human Decision: a row in blocked-queue.md whose id is the
+ *  legacy task (q1-improve-<game-type> / q1-rebuild-<game-type>) or a task-state task in BLOCKED / HUMAN_DECISION_REQUIRED.
+ *  2026-09-09: `next` used to propose such items (lab_check) — the CLAUDE.md §8 rule is now mechanical. */
+export function parkedByHumanDecision() {
+  const out = new Map();
+  const rows = existsSync(BLOCKED_QUEUE) ? readFileSync(BLOCKED_QUEUE, "utf8").split("\n").filter((l) => /^\| [a-z0-9_-]+ \|/.test(l)).map((l) => l.split("|")[1].trim()) : [];
+  const tasks = existsSync(TASKS) ? JSON.parse(readFileSync(TASKS, "utf8")).tasks ?? {} : {};
+  const audits = loadAudits();
+  for (const a of audits) {
+    const dashed = a.game_type.replace(/_/g, "-");
+    const ids = [`q1-improve-${dashed}`, `q1-rebuild-${dashed}`];
+    const row = rows.find((id) => ids.includes(id));
+    if (row) { out.set(a.game_type, `blocked-queue.md row ${row}`); continue; }
+    const t = ids.map((id) => [id, tasks[id]]).find(([, x]) => x && (["BLOCKED", "HUMAN_DECISION_REQUIRED"].includes(x.status) || x.human_decision_required === true));
+    if (t) out.set(a.game_type, `task ${t[0]} is ${t[1].status}`);
+  }
+  return out;
+}
 const INDEX = join(ROOT, "factory", "state", "q1-pipeline-index.json");
 const PIPELINE = join(HARNESS, "q1-pipeline.mjs");
 const TASK_STATE = join(HARNESS, "task-state.mjs");
@@ -182,6 +202,7 @@ switch (cmd) {
     const inPipeline = new Set(Object.values(idx.pipelines).filter((p) => p.state !== "RELEASED").map((p) => p.legacy_game_type).filter(Boolean));
     const prev = existsSync(QUEUE) ? JSON.parse(readFileSync(QUEUE, "utf8")) : { items: [] };
     const prevStatus = Object.fromEntries(prev.items.map((i) => [i.game_type, i.status]));
+    const parked = parkedByHumanDecision();
     const items = audits
       .filter((a) => a.classification !== "PASS")
       .map((a) => {
@@ -194,14 +215,15 @@ switch (cmd) {
           priority_reasons: a.priority_reasons,
           priority_score: Number((best + gq / 100).toFixed(2)), // lower = more urgent; ties broken by lower GQ
           evidence: a.classification_evidence,
-          status: released.has(a.game_type) || prevStatus[a.game_type] === "done" ? "done" : inPipeline.has(a.game_type) ? "in_progress" : "queued",
+          status: released.has(a.game_type) || prevStatus[a.game_type] === "done" ? "done" : parked.get(a.game_type) ? "parked_human_decision" : inPipeline.has(a.game_type) ? "in_progress" : "queued",
+          ...(parked.get(a.game_type) ? { parked_reason: parked.get(a.game_type) } : {}),
         };
       })
       .sort((x, y) => x.priority_score - y.priority_score);
     const q = { note: "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.", generated_at: now(), wip_limit: WIP_MAX_ACTIVE_PIPELINES, items };
     mkdirSync(dirname(QUEUE), { recursive: true });
     writeFileSync(QUEUE, JSON.stringify(q, null, 2) + "\n");
-    console.log(JSON.stringify({ queued: items.filter((i) => i.status === "queued").length, in_progress: items.filter((i) => i.status === "in_progress").length, total: items.length, top5: items.slice(0, 5) }, null, 2));
+    console.log(JSON.stringify({ queued: items.filter((i) => i.status === "queued").length, in_progress: items.filter((i) => i.status === "in_progress").length, parked_human_decision: items.filter((i) => i.status === "parked_human_decision").map((i) => i.game_type), total: items.length, top5: items.slice(0, 5) }, null, 2));
     break;
   }
 
@@ -212,6 +234,10 @@ switch (cmd) {
     if (!existsSync(file)) fail(`no reverse audit for ${gameType} (run seed/record first)`);
     const a = JSON.parse(readFileSync(file, "utf8"));
     if (a.classification === "PASS") { console.log(JSON.stringify({ accepted: false, reason: "classification is PASS — nothing to rebuild" })); process.exit(1); }
+    // Parked items (blocked-queue.md / BLOCKED task with a Human Decision pending) are never auto-started — not even with --force:
+    // a Human Decision cannot be overridden by the Factory (CLAUDE.md §8, autonomous-execution.md).
+    const parkedReason = parkedByHumanDecision().get(gameType);
+    if (parkedReason) { console.log(JSON.stringify({ accepted: false, reason: `parked pending a Human Decision — ${parkedReason}. Resolve it in factory/state/blocked-queue.md / task-state first.` }, null, 2)); process.exit(1); }
     const idx = existsSync(INDEX) ? JSON.parse(readFileSync(INDEX, "utf8")) : { pipelines: {} };
     const active = Object.values(idx.pipelines).filter((p) => ACTIVE_STATES.has(p.state)).length;
     if (active >= WIP_MAX_ACTIVE_PIPELINES && !hasFlag("force")) { console.log(JSON.stringify({ accepted: false, reason: `WIP full (${active}/${WIP_MAX_ACTIVE_PIPELINES})` }, null, 2)); process.exit(1); }

@@ -1,0 +1,32 @@
+{
+  "profession": "医師",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "6枚の情報カードから肺を指す手がかりを3枚以上選び、無関係な正常血圧を除外して固定の見立てへ進む分類パズル"
+  ],
+  "expertise": [
+    "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+  ],
+  "tools": [
+    "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+  ],
+  "information_used": [
+    "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+  ],
+  "decisions": [
+    "同じ部位を示すと思うカードを複数選び、解説を参照しながら肺に関連する情報をまとめる"
+  ],
+  "outputs_or_value": "同じ固定カード上で選択を解除・追加し、何度でも無コストで再判定する",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json"
+}

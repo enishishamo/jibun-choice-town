@@ -1,0 +1,17 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: A quiet Japanese residential street at night, seen from a slight top-down diorama angle. Warm street lamps, a few small houses with dark windows (one window faintly lit), a clean asphalt road with a manhole/valve lid at a corner. On the road surface, a small electronic leak detector: a compact box with a cable to a round pickup placed on the asphalt, and a pair of headphones resting beside it. A hand-drawn-feeling clay/miniature look. Calm, curious mood — 'something invisible is happening under this road'.
+Role in game: leak-detective（水道の漏水調査員）のQ1イントロ画面の場所画像（place.image、375pxで幅いっぱい高さ210px、object-fit contain）と、猛暑イベントの6つ目のhotspot画像（丸くクロップ、imageFit: scene）。『深夜の住宅街で、地面の下の音を聴く』という場面を一目で伝える。ゲーム内の地図・弁・聴取点・計器はすべてClaudeがCSS/SVGで描くので、この画像は雰囲気と場所を伝える1枚だけ。
+Camera / composition: 4:3, 1200x900. Keep the detector and valve lid within the centre 70% so a 210px-tall contain fit on 375px and a round hotspot crop both keep the subject; nothing important in the outer 8%. Interactive object hierarchy: the detector pickup on the road (focal point, centre-lower third) > the valve lid at the corner (secondary) > houses and lamp (background context) Must be visually obvious: it is night; it is a normal residential road, nothing dramatic; a listening device is placed on the road surface Touch affordance: None inside the image (the image is not interactive). The interactive map is drawn by the game component.
+Must include: night residential street with 2-4 small houses; warm street lamp light; asphalt road surface with a round valve/manhole lid at a corner; small electronic leak detector box with a cable and a round pickup placed on the road; headphones beside the detector
+Must NOT include: any wet patch, puddle, spraying water, crack, or leak location (answer leak); any highlighted or marked segment of road; readable text, numbers, signs, logos; UI elements (buttons, gauges, badges, labels); a specific worker's face as a mascot; readable text; UI buttons/badges/labels; mascot or brand character (prohibited_mascot_invention)
+Aspect ratio: 4:3 (compose for this frame).

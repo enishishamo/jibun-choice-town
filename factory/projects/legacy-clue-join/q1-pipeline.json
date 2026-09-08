@@ -1,0 +1,195 @@
+{
+  "game_id": "legacy-clue-join",
+  "profession": "医師",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "clue_join",
+  "creator": "claude-code",
+  "state": "AE_READY",
+  "current_stage": "GAME_TRANSLATION",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-clue-join:fact_sheet:v1",
+      "artifact_type": "fact_sheet",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/fact_sheet.json",
+      "payload": {
+        "profession": "医師",
+        "sources": [
+          {
+            "url": "factory/state/audits/q1-audit.json",
+            "type": "internal_audit"
+          }
+        ],
+        "who_or_what_they_serve": "(from current implementation — verify)",
+        "representative_duties": [
+          "6枚の情報カードから肺を指す手がかりを3枚以上選び、無関係な正常血圧を除外して固定の見立てへ進む分類パズル"
+        ],
+        "expertise": [
+          "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+        ],
+        "tools": [
+          "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+        ],
+        "information_used": [
+          "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説"
+        ],
+        "decisions": [
+          "同じ部位を示すと思うカードを複数選び、解説を参照しながら肺に関連する情報をまとめる"
+        ],
+        "outputs_or_value": "同じ固定カード上で選択を解除・追加し、何度でも無コストで再判定する",
+        "adjacent_profession_boundaries": "(verify)",
+        "uncertainties": [
+          "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+        ],
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-08T21:16:08.968Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/fact_sheet.json",
+          "created_at": "2026-09-08T21:16:08.969Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-clue-join:scope_core:v1",
+      "artifact_type": "scope_core",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/scope_core.json",
+      "payload": {
+        "core": "手がかりを選んで判定し、ヒントを受けて肺カードを増減する反復だが、症例仮説の比較ではなく固定カテゴリへの仕分けが中心になる",
+        "scope": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+        "scope_is_representative_because": "(current implementation; verify)",
+        "profession_name_hidden_test": "(re-run)",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-08T21:16:09.007Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/scope_core.json",
+          "created_at": "2026-09-08T21:16:09.008Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-clue-join:ae:v1",
+      "artifact_type": "ae",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/ae.json",
+      "payload": {
+        "A": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+        "B": "6枚の情報カードから肺を指す手がかりを3枚以上選び、無関係な正常血圧を除外して固定の見立てへ進む分類パズル",
+        "C": "問診、胸部診察、SpO₂・呼吸数、白血球・CRP、X線、正常血圧のカードと、各カードが示す意味の解説",
+        "D": "同じ部位を示すと思うカードを複数選び、解説を参照しながら肺に関連する情報をまとめる",
+        "E": "同じ固定カード上で選択を解除・追加し、何度でも無コストで再判定する",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-08T21:16:09.047Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/ae.json",
+          "created_at": "2026-09-08T21:16:09.048Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-clue-join",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-08T21:16:08.849Z",
+  "updated_at": "2026-09-08T21:16:09.087Z",
+  "history": [
+    {
+      "at": "2026-09-08T21:16:08.850Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "clue_join"
+    },
+    {
+      "at": "2026-09-08T21:16:08.927Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-clue-join"
+    },
+    {
+      "at": "2026-09-08T21:16:08.969Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-08T21:16:08.969Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.008Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-08T21:16:09.008Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.048Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-08T21:16:09.048Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.086Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    }
+  ]
+}

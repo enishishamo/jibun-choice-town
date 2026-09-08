@@ -1,6 +1,6 @@
 {
   "note": "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.",
-  "generated_at": "2026-09-07T23:33:44.529Z",
+  "generated_at": "2026-09-08T21:15:53.561Z",
   "wip_limit": 2,
   "items": [
     {
@@ -24,7 +24,8 @@
       ],
       "priority_score": 3.18,
       "evidence": "factory/projects/q1-improve-lab-check/round4-review.result.json",
-      "status": "queued"
+      "status": "parked_human_decision",
+      "parked_reason": "blocked-queue.md row q1-improve-lab-check"
     },
     {
       "game_type": "safety_plan",
@@ -36,7 +37,8 @@
       ],
       "priority_score": 3.48,
       "evidence": "factory/projects/q1-improve-safety-plan/round2-review.result.json",
-      "status": "queued"
+      "status": "parked_human_decision",
+      "parked_reason": "blocked-queue.md row q1-improve-safety-plan"
     },
     {
       "game_type": "clue_join",
@@ -49,7 +51,9 @@
       ],
       "priority_score": 3.49,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "queued"
+      "status": "in_progress",
+      "game_id": "legacy-clue-join",
+      "started_at": "2026-09-08T21:16:09.091Z"
     },
     {
       "game_type": "sow_and_grow",
@@ -85,7 +89,8 @@
       ],
       "priority_score": 4.39,
       "evidence": "factory/projects/q1-improve-line-debug/round2-review.result.json",
-      "status": "queued"
+      "status": "parked_human_decision",
+      "parked_reason": "blocked-queue.md row q1-improve-line-debug"
     },
     {
       "game_type": "bus_ops",
@@ -97,7 +102,8 @@
       ],
       "priority_score": 4.43,
       "evidence": "factory/projects/q1-improve-bus-ops/round2-review.result.json",
-      "status": "queued"
+      "status": "parked_human_decision",
+      "parked_reason": "blocked-queue.md row q1-improve-bus-ops"
     },
     {
       "game_type": "timetable",
@@ -109,7 +115,8 @@
       ],
       "priority_score": 4.43,
       "evidence": "factory/projects/q1-improve-timetable/round2-review.result.json",
-      "status": "queued"
+      "status": "parked_human_decision",
+      "parked_reason": "blocked-queue.md row q1-improve-timetable"
     },
     {
       "game_type": "layer_and_compare",

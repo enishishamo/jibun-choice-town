@@ -17,6 +17,10 @@ current.
   trusting any claim of automation elsewhere): [`factory/state/factory-architecture-audit-2026-09-06.md`](factory/state/factory-architecture-audit-2026-09-06.md)
 - Open/blocked work: [`factory/state/blocked-queue.md`](factory/state/blocked-queue.md), [`factory/state/tasks.json`](factory/state/tasks.json) (machine-readable task ledger — see §5), `factory/state/backlog/*.md`
 - What's already shipped: [`factory/state/release/current-release.json`](factory/state/release/current-release.json)
+- Factory construction phase: COMPLETE (2026-09-09). NEW Q1 E2E proven by
+  leak-detective, Legacy E2E by forecast_and_balance; weather-forecaster is
+  ESCALATED awaiting a Human Decision. Operate the Factory, don't rebuild it —
+  see the「実証記録」section of `factory/rules/q1-autonomous-factory.md`.
 
 ## 1. Product Identity Gate (highest priority — read this first)
 

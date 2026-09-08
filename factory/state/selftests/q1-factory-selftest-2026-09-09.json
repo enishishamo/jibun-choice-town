@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-08T19:44:07.509Z",
-  "passed": 23,
+  "ran_at": "2026-09-08T21:15:31.302Z",
+  "passed": 27,
   "failed": 0,
-  "total": 23,
+  "total": 27,
   "results": [
     {
       "id": "A",
@@ -236,7 +236,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (8/2)",
+        "wip_refusal": "WIP full (7/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -334,19 +334,15 @@
       "detail": {
         "next": {
           "kind": "resume_pipeline",
-          "game_id": "leak-detective",
-          "state": "UNDER_REVIEW",
+          "game_id": "selftest-e",
+          "state": "REPAIRING",
           "priority": 1
         },
         "wip": {
-          "active": 10,
+          "active": 9,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
-            {
-              "game_id": "leak-detective",
-              "state": "UNDER_REVIEW"
-            },
             {
               "game_id": "selftest-a",
               "state": "RESEARCHING"
@@ -385,6 +381,65 @@
             }
           ]
         }
+      }
+    },
+    {
+      "id": "X",
+      "name": "game_spec v1→v2 (downstream) keeps the design review non-stale; core_back_check v1→v2 (design stage) stales it",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "spec2_invalidated": [],
+        "cbc2_invalidated": [
+          "independent_review"
+        ]
+      }
+    },
+    {
+      "id": "Y",
+      "name": "art-review PASS moves ART_PRODUCED→ART_APPROVED, but during REPAIRING it keeps the state (state_kept) so repair-done still works",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "first": "ART_APPROVED",
+        "during_repair": "REPAIRING",
+        "repair_done": "UNDER_REVIEW"
+      }
+    },
+    {
+      "id": "Z",
+      "name": "limited_exception: needs --scope; blocks submit while open; resolve resets repair_count only (redesign_count unchanged); 1 scoped REPAIR then ESCALATED again (no redesign under the exception); recorded with precedent:false",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "f1": {
+          "action": "REPAIR",
+          "repair_count": 1,
+          "limited_exception": {
+            "id": "hd-1",
+            "repairs_used": 1,
+            "repairs_max": 1
+          }
+        },
+        "f2": {
+          "action": "ESCALATED",
+          "reason": "limited exception hd-1 exhausted (1 repair(s)); a further Human Decision or stop is required"
+        },
+        "redesign": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "AA",
+      "name": "legacy item with a BLOCKED (Human Decision) task is parked_human_decision in the queue, not proposed by next, and start refuses it even with --force",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "item_status": "parked_human_decision",
+        "parked_reason": "task q1-improve-selftest-legacy-game is BLOCKED",
+        "start": "parked pending a Human Decision — task q1-improve-selftest-legacy-game is BLOCKED. Resolve it in factory/state/blocked-queue.md / task-state first."
       }
     }
   ],

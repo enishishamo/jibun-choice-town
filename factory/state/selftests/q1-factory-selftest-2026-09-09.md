@@ -1,8 +1,8 @@
 # Q1 Factory self-test — 2026-09-09
 
-Scenarios A-W from the 2026-09-08 master request (§29, §40), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
+Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
 
-Result: **23/23 PASS**
+Result: **27/27 PASS**
 
 | id | scenario | result | mode |
 |---|---|---|---|
@@ -29,5 +29,9 @@ Result: **23/23 PASS**
 | U | scope_core v1→v2 marks ae/play_seeds/…/game_translations STALE + review stale; gate refused; building on a STALE source is refused | PASS | mechanical |
 | V | evidence with observation==interpretation refused; LOW is logged only; HIGH on a RELEASED game returns it to FIRST_PLAY_UX (state REPAIRING) | PASS | mechanical |
 | W | `next` never reports idle while a queued legacy item or a returned pipeline exists; WIP limit is reported and enforced at start | PASS | mechanical |
+| X | game_spec v1→v2 (downstream) keeps the design review non-stale; core_back_check v1→v2 (design stage) stales it | PASS | mechanical |
+| Y | art-review PASS moves ART_PRODUCED→ART_APPROVED, but during REPAIRING it keeps the state (state_kept) so repair-done still works | PASS | mechanical |
+| Z | limited_exception: needs --scope; blocks submit while open; resolve resets repair_count only (redesign_count unchanged); 1 scoped REPAIR then ESCALATED again (no redesign under the exception); recorded with precedent:false | PASS | mechanical |
+| AA | legacy item with a BLOCKED (Human Decision) task is parked_human_decision in the queue, not proposed by next, and start refuses it even with --force | PASS | mechanical |
 
 Mechanically executed: every scenario above invoked `q1-pipeline.mjs` / `q1-trigger.mjs` / `q1-legacy-audit.mjs` / `task-state.mjs` for real and asserted on their exit codes and JSON output. Not exercised here (dry-run by design): a real Codex review, real image generation, a real browser QA run, and a real `git push` — those are exercised by the NEW Q1 demonstration and the release path respectively.

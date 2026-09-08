@@ -35,6 +35,18 @@
       "redesign_count": 2,
       "updated_at": "2026-09-08T19:47:14.738Z",
       "depends_on": []
+    },
+    "legacy-clue-join": {
+      "game_id": "legacy-clue-join",
+      "profession": "医師",
+      "state": "AE_READY",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "clue_join",
+      "task_id": "q1-rebuild-clue-join",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-08T21:16:09.087Z",
+      "depends_on": []
     }
   }
 }

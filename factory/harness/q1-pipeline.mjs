@@ -17,6 +17,7 @@
 //   redesign <game_id> --seed <seed_id> | --translation <translation_id> --reason "..."
 //   gate <game_id>                               # GAME_DESIGN_READY mechanical gate (exit 0/1)
 //   human-decision <game_id> --domain <domain> --note "..."   # opens a Human Decision (blocks autonomy)
+//   human-decision <game_id> --kind limited_exception --scope "..." [--repairs 1..3] --note "..."   # Limited Human Exception (non-PI, capped)
 //   resolve-human-decision <game_id> --id <hd_id> --note "<human text>"
 //   escalate <game_id> --reason "..."
 //   art-review <game_id> --evidence <codex-review-result.json|art-qa.json> --reviewer <id> --producer <id> [--pass|--fail --code <FAILURE_CODE>]
@@ -146,6 +147,7 @@ switch (cmd) {
       art_review: null,
       failures: [],           // structured failures
       human_decisions: [],
+      limited_exceptions: [], // scoped, capped, non-Product-Identity human grants (never a precedent)
       task_id: null,
       version: null,
       depends_on: [],         // shared dependencies (UI components, shared art) for reaudit routing
@@ -169,6 +171,7 @@ switch (cmd) {
       art_review: p.art_review ? { verdict: p.art_review.verdict, independent: p.art_review.independent } : null,
       impl_review: p.impl_review ? { verdict: p.impl_review.verdict, independent: p.impl_review.independent, stale: p.impl_review.stale } : null,
       open_human_decisions: (p.human_decisions ?? []).filter((h) => h.status === "open").map((h) => h.id),
+      limited_exceptions: (p.limited_exceptions ?? []).map((x) => ({ id: x.id, status: x.status, repairs: `${x.repairs_used}/${x.repairs_max}` })),
       failures: p.failures.length,
       task_id: p.task_id, version: p.version,
       game_design_ready_missing: gameDesignReadyReasons(p).map((r) => r.id),
@@ -305,6 +308,7 @@ switch (cmd) {
       log(p, "review_not_independent", { reviewer, creator });
     }
     if (rec.verdict === "PASS" && independent) {
+      for (const x of p.limited_exceptions ?? []) if (x.status === "active") { x.status = "closed"; x.closed_by_review = evidence; log(p, "limited_exception_closed", { id: x.id, review: evidence }); }
       if (kind === "design") setState(p, "UNDER_REVIEW", "design review PASS — run gate");
     } else if (rec.verdict === "HUMAN_REQUIRED") {
       const hd = { id: `hd-${p.human_decisions.length + 1}`, domains: [], opened_by_review: evidence, note: "reviewer returned HUMAN_REQUIRED", status: "open", opened_at: now() };
@@ -343,7 +347,20 @@ switch (cmd) {
     // translation) rather than keep patching the same idea.
     const isDesignStage = DESIGN_STAGES.some((s) => s.id === returnTo);
     let decision;
-    if (p.repair_count < REPAIR_MAX_PER_ITERATION) {
+    const activeEx = (p.limited_exceptions ?? []).find((x) => x.status === "active");
+    if (activeEx) {
+      if (activeEx.repairs_used < activeEx.repairs_max) {
+        activeEx.repairs_used += 1;
+        p.repair_count += 1;
+        setState(p, "REPAIRING", `${code} -> ${returnTo} (limited exception ${activeEx.id} repair ${activeEx.repairs_used}/${activeEx.repairs_max})`);
+        decision = { action: "REPAIR", repair_count: p.repair_count, limited_exception: { id: activeEx.id, repairs_used: activeEx.repairs_used, repairs_max: activeEx.repairs_max } };
+      } else {
+        activeEx.status = "exhausted";
+        setState(p, "ESCALATED", `${code} persists after the limited exception ${activeEx.id} cap (${activeEx.repairs_max}) — no redesign is allowed under a limited exception`);
+        p.escalation = { reason: `limited exception ${activeEx.id} exhausted (${activeEx.repairs_max} repair(s)); a further Human Decision or stop is required`, failure_code: code, at: now() };
+        decision = { action: "ESCALATED", reason: p.escalation.reason };
+      }
+    } else if (p.repair_count < REPAIR_MAX_PER_ITERATION) {
       p.repair_count += 1;
       setState(p, "REPAIRING", `${code} -> ${returnTo} (repair ${p.repair_count}/${REPAIR_MAX_PER_ITERATION})`);
       decision = { action: "REPAIR", repair_count: p.repair_count };
@@ -437,11 +454,23 @@ switch (cmd) {
     const p = loadPipeline(rest[0] ?? fail('usage: human-decision <game_id> --domain <domain> --note "..."'));
     const domain = flag("domain");
     const note = flag("note");
-    if (!domain || !note) fail('usage: human-decision <game_id> --domain <domain> --note "..."');
-    if (!HUMAN_DECISION_DOMAINS.includes(domain)) fail(`unknown domain ${domain}; one of ${HUMAN_DECISION_DOMAINS.join(", ")}`);
-    const hd = { id: `hd-${p.human_decisions.length + 1}`, domains: [domain], note, status: "open", opened_at: now() };
+    const kind = flag("kind", "product_identity");
+    let hd;
+    if (kind === "limited_exception") {
+      // Limited Human Exception (2026-09-09, from leak-detective hd-1/hd-2): NOT a Product Identity decision —
+      // a human grants a finite, scoped repair budget extension on an ESCALATED (or otherwise stuck) pipeline.
+      // It never relaxes the general REPAIR/REDESIGN budgets and is recorded as a one-time exception (precedent:false).
+      const scope = flag("scope");
+      const repairs = Number(flag("repairs", "1"));
+      if (!scope || !note || !Number.isInteger(repairs) || repairs < 1 || repairs > 3) fail('usage: human-decision <game_id> --kind limited_exception --scope "<what may change>" [--repairs 1..3] --note "<human text>"');
+      hd = { id: `hd-${p.human_decisions.length + 1}`, kind, domains: [], scope, repairs_max: repairs, precedent: false, note, status: "open", opened_at: now() };
+    } else {
+      if (!domain || !note) fail('usage: human-decision <game_id> --domain <domain> --note "..."  |  --kind limited_exception --scope "..." [--repairs N] --note "..."');
+      if (!HUMAN_DECISION_DOMAINS.includes(domain)) fail(`unknown domain ${domain}; one of ${HUMAN_DECISION_DOMAINS.join(", ")}`);
+      hd = { id: `hd-${p.human_decisions.length + 1}`, kind, domains: [domain], note, status: "open", opened_at: now() };
+    }
     p.human_decisions.push(hd);
-    log(p, "human_decision_opened", { id: hd.id, domains: [domain] });
+    log(p, "human_decision_opened", { id: hd.id, kind: hd.kind, domains: hd.domains });
     savePipeline(p);
     console.log(JSON.stringify({ accepted: true, human_decision: hd, autonomous_progress_blocked: true }, null, 2));
     break;
@@ -457,7 +486,14 @@ switch (cmd) {
     hd.resolution = note;
     hd.resolved_at = now();
     log(p, "human_decision_resolved", { id, note });
-    if (p.state === "ESCALATED") {
+    if (hd.kind === "limited_exception") {
+      p.limited_exceptions = p.limited_exceptions ?? [];
+      const ex = { id: hd.id, scope: hd.scope, repairs_max: hd.repairs_max, repairs_used: 0, resolution: note, precedent: false, status: "active", granted_at: now() };
+      p.limited_exceptions.push(ex);
+      p.repair_count = 0; // repair budget only — redesign_count is NOT touched
+      if (["ESCALATED", "RETURNED", "REPAIRING"].includes(p.state)) setState(p, "RETURNED", `limited human exception ${hd.id} — ${hd.repairs_max} scoped repair(s) granted, redesign budget unchanged`);
+      log(p, "limited_exception_activated", { id: hd.id, scope: hd.scope, repairs_max: hd.repairs_max, redesign_count: p.redesign_count });
+    } else if (p.state === "ESCALATED") {
       p.repair_count = 0;
       p.redesign_count = 0;
       setState(p, "RETURNED", "human decision resolved — budgets reset for a new iteration");
@@ -492,8 +528,11 @@ switch (cmd) {
     const rec = { verdict: pass ? "PASS" : "FAIL", evidence, reviewer, producer, independent, review_mechanism: reviewer, recorded_at: now() };
     p.art_review = rec;
     log(p, "art_review_recorded", rec);
+    const ART_STATES = ["ART_PRODUCED", "ART_APPROVED", "ART_BRIEF_READY", "SPEC_READY", "GAME_DESIGN_READY"];
+    let stateKept = false;
     if (pass && independent) {
-      setState(p, "ART_APPROVED", "art review PASS (independent)");
+      if (ART_STATES.includes(p.state)) setState(p, "ART_APPROVED", "art review PASS (independent)");
+      else { stateKept = true; log(p, "art_review_state_kept", { state: p.state, note: "art review PASS recorded; state not overwritten (2026-09-09 protection: the pipeline is in a non-art state)" }); }
     } else if (!pass) {
       const code = flag("code", "VISUAL_AFFORDANCE_FAILURE");
       if (!FAILURE_CODES.includes(code)) fail(`unknown failure code ${code}`);
@@ -505,7 +544,7 @@ switch (cmd) {
       log(p, "failure_routed", { failure_id: failure.failure_id, code, return_to: route.return_to[0] });
     }
     savePipeline(p);
-    console.log(JSON.stringify({ accepted: true, art_review: rec, state: p.state, note: !independent ? "reviewer == producer: independent=false, cannot approve" : null }, null, 2));
+    console.log(JSON.stringify({ accepted: true, art_review: rec, state: p.state, state_kept: stateKept, note: !independent ? "reviewer == producer: independent=false, cannot approve" : null }, null, 2));
     if (!pass || !independent) process.exit(1);
     break;
   }

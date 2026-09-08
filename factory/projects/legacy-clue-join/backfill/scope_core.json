@@ -1,0 +1,8 @@
+{
+  "core": "手がかりを選んで判定し、ヒントを受けて肺カードを増減する反復だが、症例仮説の比較ではなく固定カテゴリへの仕分けが中心になる",
+  "scope": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json"
+}

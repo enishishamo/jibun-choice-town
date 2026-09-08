@@ -349,6 +349,70 @@ let qTask = "selftest-q1-release";
   record("W", "`next` never reports idle while a queued legacy item or a returned pipeline exists; WIP limit is reported and enforced at start", hasLegacy && nx.json?.idle === false && typeof beforeWip.limit === "number" && beforeWip.limit === WIP_MAX_ACTIVE_PIPELINES, { next: nx.json?.next, wip: beforeWip });
 }
 
+// ================================================================ 2026-09-09 regressions (leak-detective E2E gaps)
+// X: downstream artifact versions never stale the DESIGN review; a design-stage artifact does
+{
+  init("selftest-x");
+  submitAll("selftest-x");
+  run(PIPE, ["review", "selftest-x", "--evidence", fx("x-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  const g = run(PIPE, ["gate", "selftest-x"]);
+  run(PIPE, ["submit", "selftest-x", "game_spec", "--file", fx("x-spec1.json", ART.game_spec), "--source", "game_translations@1"]);
+  const spec2 = run(PIPE, ["submit", "selftest-x", "game_spec", "--file", fx("x-spec2.json", { ...ART.game_spec, goal: "g2" }), "--source", "game_translations@1"]);
+  const afterSpec = pipeline("selftest-x");
+  const cbc2 = run(PIPE, ["submit", "selftest-x", "core_back_check", "--file", fx("x-cbc2.json", { ...ART.core_back_check, notes: "v2" }), "--source", "game_translations@1"]);
+  const afterDesign = pipeline("selftest-x");
+  record("X", "game_spec v1→v2 (downstream) keeps the design review non-stale; core_back_check v1→v2 (design stage) stales it", g.status === 0 && spec2.status === 0 && !spec2.json.invalidated.includes("independent_review") && afterSpec.independent_review.stale === false && cbc2.json?.invalidated?.includes("independent_review") && afterDesign.independent_review.stale === true, { spec2_invalidated: spec2.json?.invalidated, cbc2_invalidated: cbc2.json?.invalidated });
+}
+// Y: art-review --pass during an implementation repair records the verdict but does NOT overwrite the state
+{
+  init("selftest-y");
+  submitAll("selftest-y");
+  run(PIPE, ["review", "selftest-y", "--evidence", fx("y-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  run(PIPE, ["gate", "selftest-y"]);
+  run(PIPE, ["submit", "selftest-y", "game_spec", "--file", fx("y-spec.json", ART.game_spec), "--source", "game_translations@1"]);
+  run(PIPE, ["submit", "selftest-y", "art_brief", "--file", fx("y-brief.json", ART.art_brief), "--source", "game_spec@1"]);
+  run(PIPE, ["submit", "selftest-y", "art_production", "--file", fx("y-prod.json", ART.art_production), "--source", "art_brief@1"]);
+  const ok = run(PIPE, ["art-review", "selftest-y", "--evidence", fx("y-ev.json", { fixture: true }), "--reviewer", "art-qa", "--producer", "codex_imagegen", "--pass"]);
+  run(PIPE, ["submit", "selftest-y", "implementation", "--file", fx("y-impl.json", ART.implementation(1)), "--source", "game_spec@1"]);
+  const f = run(PIPE, ["fail", "selftest-y", "--code", "IMPLEMENTATION_CHANGED_D", "--reason", "fixture", "--evidence", fx("y-fail.json", { fixture: true })]);
+  const again = run(PIPE, ["art-review", "selftest-y", "--evidence", fx("y-ev2.json", { fixture: true }), "--reviewer", "art-qa", "--producer", "codex_imagegen", "--pass"]);
+  const p1 = pipeline("selftest-y");
+  const rd = run(PIPE, ["repair-done", "selftest-y", "--note", "fixture repair"]);
+  record("Y", "art-review PASS moves ART_PRODUCED→ART_APPROVED, but during REPAIRING it keeps the state (state_kept) so repair-done still works", ok.json?.state === "ART_APPROVED" && f.json?.state === "REPAIRING" && again.status === 0 && again.json?.state_kept === true && p1.state === "REPAIRING" && p1.art_review?.verdict === "PASS" && rd.status === 0 && rd.json?.state === "UNDER_REVIEW", { first: ok.json?.state, during_repair: again.json?.state, repair_done: rd.json?.state });
+}
+// Z: Limited Human Exception — non-PI, scoped, capped: resets repair budget only, cap enforced → ESCALATED, redesign untouched, no precedent
+{
+  init("selftest-z");
+  submitAll("selftest-z");
+  const noDomain = run(PIPE, ["human-decision", "selftest-z", "--note", "missing domain and kind"]);
+  run(PIPE, ["escalate", "selftest-z", "--reason", "fixture: budgets exhausted"]);
+  const before = pipeline("selftest-z");
+  const open = run(PIPE, ["human-decision", "selftest-z", "--kind", "limited_exception", "--scope", "display-only silent state", "--repairs", "1", "--note", "human grants one scoped repair"]);
+  const frozen = run(PIPE, ["submit", "selftest-z", "core_back_check", "--file", fx("z-cbc.json", { ...ART.core_back_check, notes: "v2" }), "--source", "game_translations@1"]);
+  const res = run(PIPE, ["resolve-human-decision", "selftest-z", "--id", open.json?.human_decision?.id, "--note", "Human: granted, not a precedent"]);
+  const p1 = pipeline("selftest-z");
+  const f1 = run(PIPE, ["fail", "selftest-z", "--code", "FACTUAL_PROFESSION_ERROR", "--reason", "fixture", "--evidence", fx("z-f1.json", { fixture: true })]);
+  run(PIPE, ["repair-done", "selftest-z", "--note", "fixture repair"]);
+  const f2 = run(PIPE, ["fail", "selftest-z", "--code", "FACTUAL_PROFESSION_ERROR", "--reason", "fixture again", "--evidence", fx("z-f2.json", { fixture: true })]);
+  const p2 = pipeline("selftest-z");
+  record("Z", "limited_exception: needs --scope; blocks submit while open; resolve resets repair_count only (redesign_count unchanged); 1 scoped REPAIR then ESCALATED again (no redesign under the exception); recorded with precedent:false", noDomain.status === 2 && open.status === 0 && open.json?.human_decision?.kind === "limited_exception" && frozen.status === 1 && res.status === 0 && p1.state === "RETURNED" && p1.repair_count === 0 && p1.redesign_count === before.redesign_count && p1.limited_exceptions?.[0]?.precedent === false && f1.json?.decision?.action === "REPAIR" && f1.json?.decision?.limited_exception?.repairs_used === 1 && f2.status === 1 && f2.json?.decision?.action === "ESCALATED" && p2.state === "ESCALATED" && p2.limited_exceptions?.[0]?.status === "exhausted", { f1: f1.json?.decision, f2: f2.json?.decision, redesign: [before.redesign_count, p1.redesign_count] });
+}
+
+// AA (2026-09-09): a legacy game parked behind a Human Decision (BLOCKED task) is never proposed by `next` nor started
+{
+  run(TASK, ["create", "q1-improve-selftest-legacy-game", "--type", "game-content", "--identity-impact", "NONE"]);
+  run(TASK, ["set-status", "q1-improve-selftest-legacy-game", "BLOCKED", "--note", "fixture: Human Decision pending"]);
+  run(LEGACY, ["queue"]);
+  const q = JSON.parse(readFileSync(join(ROOT, "factory", "state", "legacy", "rebuild-queue.json"), "utf8"));
+  const item = q.items.find((i) => i.game_type === "selftest_legacy_game");
+  const nx = run(TRIG, ["next"]);
+  const proposed = nx.json?.candidates?.some((c) => c.game_type === "selftest_legacy_game");
+  const st = run(LEGACY, ["start", "selftest_legacy_game", "--game-id", "selftest-parked", "--force"]);
+  run(TASK, ["set-status", "q1-improve-selftest-legacy-game", "SUPERSEDED", "--note", "q1-factory self-test fixture, not real work"]);
+  run(LEGACY, ["queue"]);
+  record("AA", "legacy item with a BLOCKED (Human Decision) task is parked_human_decision in the queue, not proposed by next, and start refuses it even with --force", item?.status === "parked_human_decision" && proposed === false && st.status === 1 && /parked pending a Human Decision/.test(st.json?.reason ?? ""), { item_status: item?.status, parked_reason: item?.parked_reason, start: st.json?.reason });
+}
+
 // ================================================================ cleanup
 if (!KEEP) {
   for (const id of new Set(created)) rmSync(join(ROOT, "factory", "projects", id), { recursive: true, force: true });
@@ -364,7 +428,7 @@ if (!KEEP) {
   // tasks: mark fixtures SUPERSEDED (same convention as enforcement-foundation self-test)
   const tasks = JSON.parse(readFileSync(join(ROOT, "factory", "state", "tasks.json"), "utf8")).tasks;
   for (const id of Object.keys(tasks)) {
-    if (id.startsWith("selftest-q1-") || id === "q1-rebuild-selftest-legacy-game" || id.startsWith("q1-new-selftest-")) {
+    if (id.startsWith("selftest-q1-") || id === "q1-rebuild-selftest-legacy-game" || id === "q1-improve-selftest-legacy-game" || id.startsWith("q1-new-selftest-")) {
       if (tasks[id].status !== "SUPERSEDED") run(TASK, ["set-status", id, "SUPERSEDED", "--note", `q1-factory self-test fixture ${DATE}, not real work`]);
     }
   }
@@ -382,7 +446,7 @@ const summary = { ran_at: new Date().toISOString(), passed: results.filter((r) =
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.json`), JSON.stringify(summary, null, 2) + "\n");
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.md`), [
   `# Q1 Factory self-test — ${DATE}`, "",
-  `Scenarios A-W from the 2026-09-08 master request (§29, §40), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
+  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
   `Result: **${summary.passed}/${summary.total} PASS**${failed ? ` (${failed} FAIL)` : ""}`, "",
   "| id | scenario | result | mode |", "|---|---|---|---|",
   ...results.map((r) => `| ${r.id} | ${r.name} | ${r.ok ? "PASS" : "FAIL"} | ${r.mode} |`), "",
