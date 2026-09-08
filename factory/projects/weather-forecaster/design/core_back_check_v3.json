@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "design_iteration 2 (redesign to t1b-storm-night-team) 再照合、round2レビューの2件のHIGHへの対応: (1) CORE_DISTORTED_BY_GAME -- 避難情報カードの文言を『市町村が独自に判断する』という示唆から『気象台とは別の組織である市町村が、危険が続く間は続けて動く』という事実の提示に変更し、ゲームの状態遷移（常に発生する）と文章の主張を一致させた。もはや存在しない判断力を主張していない。市町村の避難情報が気象台の警報と別主体・別情報であること自体は確認済みの事実（fact_check_r1.json #3、災害対策基本法）として保持。(2) FACTUAL_PROFESSION_ERROR -- 解除を『今コマ雨が降っていない』という検証可能な条件でゲートし（雨が降っている間はボタンがグレーアウト）、確認済みの解除基準（気象庁FAQ10: 基準を下回り再び上回らないと判断したとき）に対応させた。design-sim.mjsのcancel_gate検証で、このゲートが実際に不正な解除を拒否することを機械的に確認（illegalCancelsAttempted 8-11件／進路、それでも成功しない）。(3) COREの『当番チームが間に合う時刻に警報を出す』は変更なし。地形による基準の自動判定は引き続き排除（v2の修正を保持）。架空の信頼遅延ペナルティも引き続き排除。",
+  "pass": true
+}

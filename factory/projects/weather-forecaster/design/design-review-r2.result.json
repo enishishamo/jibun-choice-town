@@ -1,0 +1,101 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "weather-forecaster-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 58,
+    "game_quality_score": 67,
+    "blockers": [],
+    "high": [
+      "警報後の市町村判断は独立状態として表示されるが、state_tableでは警報を出すと同じコマ末に必ず避難情報が出る決定論のままである。市町村側が別に判断するという文言と実際の因果規則が一致せず、依然として実質的に「警報⇒自動避難情報⇒避難」を教える。",
+      "解除の正当条件が勝敗ロジックに実装されていない。fact_check_r1は「基準を下回り、再び上回らないと判断したとき」と確認しているが、プレイヤーは雨・メーター・将来再上昇に関係なく任意の警報を解除できる。実務の中核操作を事実と異なる形で許している。",
+      "修正済みとしてv2登録された依存成果物が実際には修正前の内容を保持している。c_compression.jsonは「山の町ほど赤線が低い」と架空の「次の警報を1コマ遅れて信じる」を明記し、play_seeds.jsonも同じ社会ルール、地形対応、「取り消す」を保持する。core_back_check_v2の『削除した』という結論およびパイプラインのv2登録とコード上の成果物が矛盾しており、現行設計のSource of Truthが一貫していない。"
+    ],
+    "medium": [
+      "design-sim.mjsは主要なメーター、発表、リードタイム、朝の採点を概ね実装するが、解除後は『住民が家へ戻るのに1コマ』というstate_table規則に反して即座にevacuatedFromを削除する。解除した同コマ末の基準超過でも住民を不在として扱わず、解除状態遷移には忠実でない。",
+      "初回の町タップは推測可能だが、最初の正当判断は両町ともstep 2まで待つことである。最初の5秒では上昇速度を定量的に読める履歴がなく、『警報を出す』と『様子を見る』のどちらがメーター、基準線、2時間から導かれるかはまだ十分に推論できない。",
+      "失敗後の再考は成立するが、2回目のヒントが『2時間前』だけを直接示し、進路を読み違えた場合や不適切な解除をした場合を診断しない。"
+    ],
+    "low": [
+      "赤い基準線は予報官が参照する判断基準そのものであり、現在値のみを示して将来到達や警報対象を着色しない限り、答え漏れではなく正当なCである。",
+      "動く雨雲、町の灯り、避難所、崖の変化には好奇心と視覚的結果があり、読むだけの進行ではない。一方、操作の中心はカードとメーターの監視で、実装時の反応表現が弱いと事務的になりやすい。",
+      "全町step 1、全町step 2、現在降雨町、前コマ降雨町、初期降雨2町だけ、半基準到達町などの内容非依存・内容軽量戦略はいずれも全3進路では成功しない。固定スケジュール2401通りにも全進路成功例はなく、C必要性と固定攻略耐性は大幅に改善している。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "HIGH",
+        "finding": "市町村の避難情報を別カードとして挟んだだけで、状態規則は警報後に無条件で発令させる。別主体による判断がゲーム因果に存在しない。"
+      },
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "確認済みの解除条件を検証せず、任意時点での解除を中核操作として許可している。"
+      },
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "HIGH",
+        "finding": "c_compression.jsonとplay_seeds.jsonに、削除されたはずの地形固定則、架空の信頼遅延、誤った『取り消す』操作が残り、下流v2と矛盾する。"
+      },
+      {
+        "code": "GAME_SPEC_MISSING_STATE",
+        "severity": "MEDIUM",
+        "finding": "解除後1コマかけて帰宅する状態をシミュレーターが忠実に実装しておらず、解除直後の危険発生結果がstate_tableと一致しない。"
+      },
+      {
+        "code": "FIRST_ACTION_NOT_INFERABLE",
+        "severity": "MEDIUM",
+        "finding": "情報閲覧の最初のタップは明瞭だが、履歴のない初期状態から『今は警報せずstep 2まで観察』という最初の専門判断を十分に導けない。"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "再試行ヒントがリードタイムだけを扱い、進路判断や解除条件に起因する失敗時の次の判断を支えない。"
+      }
+    ],
+    "sim_verification": {
+      "reran": true,
+      "faithful_to_state_table": false,
+      "extra_strategies_tested": [
+        {
+          "name": "全町をstep 2で警報",
+          "wins_all_paths": false
+        },
+        {
+          "name": "現在メーターが基準の半分以上の町を警報",
+          "wins_all_paths": false
+        },
+        {
+          "name": "step 1で雨が降った2町だけをstep 2で警報",
+          "wins_all_paths": false
+        },
+        {
+          "name": "前コマに雨が降った全町を警報",
+          "wins_all_paths": false
+        }
+      ]
+    },
+    "evidence": [
+      "factory/projects/weather-forecaster/design/state_table.json — 警報を出すと市町村は同じコマ末に必ず避難情報を出すため、市町村判断が決定論的に自動化されている。",
+      "factory/projects/weather-forecaster/design/game_translations_v2.json — 『町の判断』と説明する一方、system_reactionは警報後に必ず避難情報カードを表示し、判断が分岐する条件を持たない。",
+      "factory/projects/weather-forecaster/design/fact_check_r1.json — 解除は基準を下回り再上昇しないと判断した場合であり、空振りを理由とする取消ではないと明記する。",
+      "factory/projects/weather-forecaster/design/design-sim.mjs — cancel要求を気象条件に関係なく受理し、infoIssued後の解除時にevacuatedFromを即時削除するため、1コマ後帰宅の規則と不一致。",
+      "factory/projects/weather-forecaster/design/c_compression.json — 『山の町ほど低い位置』『次の警報が1コマ遅れて信じられる』を現行圧縮Cと失敗対策として保持する。",
+      "factory/projects/weather-forecaster/design/play_seeds.json — 修正前の地形規則、信頼遅延、警報の『取り消し』を採用seedに保持する。",
+      "factory/projects/weather-forecaster/design/core_back_check_v2.json — 上記要素を削除済みと断言しており、実ファイルと矛盾する。",
+      "factory/projects/weather-forecaster/q1-pipeline.json — play_seeds、c_compressionをv2として提出済みにしているが、対応ファイルの内容は修正前のまま。",
+      "factory/projects/weather-forecaster/design/design-sim-result.json — 各進路に満点解が存在し、meter_lead_ruleは全進路で満点。全2401固定スケジュールの全進路成功は0件。",
+      "factory/projects/weather-forecaster/design/first_5_seconds_v2.json — 初期カードは警報と観察を同格表示するが、上昇履歴がないため正当な待機判断を裏づける情報が不足する。"
+    ],
+    "recommended_actions": [
+      "修理上限を使い切ってHIGHが残ったため、現translationの追加パッチではなく、規則に従いREDESIGNまたはESCALATEする。",
+      "市町村判断を単なる待機アニメーションではなく、警報を判断材料に自治体が別途避難情報を決定する条件付き世界状態として設計し、警報との一対一対応を避ける。",
+      "解除ボタンを、基準を下回り再上昇しないと判断できる観測状態でのみ有効にするか、その判断自体をDとして明示し、シミュレーターでも検証する。",
+      "解除後の帰宅時刻をstate_tableとシミュレーターで一致させ、その同コマおよび次コマで基準超過した場合の安全判定を追加テストする。",
+      "play_seedsとc_compressionを含む依存成果物を実内容として刷新し、地形固定則、信頼遅延、『空振りだから取り消す』を完全に除去してからCORE back-checkをやり直す。"
+    ]
+  },
+  "elapsed_sec": 228.308
+}
