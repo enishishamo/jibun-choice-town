@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r1-retry",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 38,
+    "career_authenticity_score": 58,
+    "game_quality_score": 38,
+    "blockers": [
+      "ANSWER_LEAK: 品種名「あかね夏」「ふゆみね」「はるひな」がそれぞれ夏・冬・春を直接示唆する。播種適期が非重複で、月だけで唯一候補が決まるため、名称が実質的な正解表示になる。カード順のシャッフルでは解消しない。",
+      "C_NOT_NEEDED_FOR_D / CORE_DISTORTED_BY_GAME: 締切と予報は勝敗を後から無効化するだけで、どの品種を選ぶべきかを変えない。プレイヤーの実際の判断は「今日の月に対応する1品種を選ぶ」だけであり、設計が主張する3条件統合判断になっていない。"
+    ],
+    "high": [
+      "zero-winner session rate 39.32%は高すぎる。正しく情報を読んでも約2回に1回弱は必ず失敗し、しかも失敗理由を示さず同条件で考え直せないため、技能ではなく乱数による失敗になる。",
+      "FACTUAL_GROUNDING_INCOMPLETE: 福井県データの約111〜112日はもっともらしいが、それだけでは架空3品種に割り当てた100/110/130日、播種窓、耐暑性の組み合わせを裏付けない。「実データと矛盾しない」ことは各カード属性の根拠にはならない。また指定されたreference_research_v2.jsonが存在せず、現存するのはv1だけである。"
+    ],
+    "medium": [
+      "単一コミット自体はlab_checkの既存前例と整合し、直ちに不適切ではない。しかし本設計では失敗箇所を示さず、章の再入場では条件も変わるため、FIRST-PLAY STANDARDの「一度考え直す」学習機会が弱い。",
+      "design-sim-result.jsonのnotesは実測39.32%を「~34%」「roughly a third」と記述しており、同ファイルの数値および他資料の39.3%と矛盾する。"
+    ],
+    "low": [
+      "カードの表示順シャッフルと同一視覚階層をdesign_specおよび実装QAの明示的な受入条件にすること自体は妥当だが、名称リークは別途解消が必要である。"
+    ],
+    "failure_codes": [
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "BLOCKER",
+        "finding": "季節を含む品種名が、非重複の播種窓と組み合わさって正解を直接示す。label_leak=falseという自己判定は成立しない。",
+        "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v3.json:13"
+      },
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "BLOCKER",
+        "finding": "締切と気象は品種選択を分岐させない。季節適合品が期限・暑さ条件で失格でも代替候補は常に季節外なので、Dには今日の月だけあれば足りる。",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:68"
+      },
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "BLOCKER",
+        "finding": "「時期・日数・耐暑性を統合して品種を選ぶ」というCOREが、実装モデル上は月から一意候補を引く単一属性照合へ縮退している。",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:86"
+      },
+      {
+        "code": "FAILURE_DISGUISED_AS_SUCCESS",
+        "severity": "HIGH",
+        "finding": "失敗を成功表示するわけではないが、39.32%のセッションで完全に正しい判断にも成功経路がなく、そのまま進行するため、技能に基づく成功課題として不公正である。",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:43"
+      },
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "架空3品種の播種窓・100/110/130日・耐暑性は、提示された一次資料の一般値や単一実証値からは個別に導けない。根拠資料チェーンもreference_research_v2.json欠落により不完全である。",
+        "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v2.json:44"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "失敗時にどの条件が不適合だったかを示さず、同条件での再考もないため、反応が次の判断につながらない。",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v2.json:10"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "memorization_exploit_genuinely_closed": false,
+      "zero_winner_rate_acceptable": false,
+      "zero_winner_rate_recommended_fix": "単なるdeadlineOffsetMonths拡大だけでは暑さ由来の詰みが残る。各セッションを生成後に3条件を満たす候補が少なくとも1つある場合だけ採用する rejection sampling に変更し、zero-winner rateを0%にする。そのうえで播種窓を事実に反しない範囲で重ねるか候補セット自体をセッションごとに変え、締切または予報によって正解品種が実際に分岐するケースを100%生成する。",
+      "factual_grounding_plausible": false,
+      "core_preserved_not_trivialized": false,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:30 — 3品種の播種窓は7〜8月、9〜10月、3〜4月で完全に非重複。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:68 — theOneSeasonalVariety()は月だけから唯一の候補を返す。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:86 — 「legitimate」戦略も締切・予報を比較せず、唯一の季節候補を選ぶだけ。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:40 — evaluate()の3条件ANDとmonthsNeeded()のceil計算自体はコードどおり正しい。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:47 — newSession()の月・期限・予報抽選に明白なPRNG偏りはないが、候補生成構造が判断を縮退させる。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:37 — 固定品種の最大勝率は33.37%で旧来のalways-pick-Xは弱まったが、月→品種の固定対応は残る。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:40 — legitimate_pick_seasonal_variety=60.68%は3条件推論の成績ではなく、月だけを読む戦略の成績。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:44 — 20,000件中7,865件がzero-winner。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:52 — zero_winner_session_rate=0.3932。再実行したロジックの戦略値・件数・判定値はコミット済み結果と一致した。",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:55 — notesの「~34%」は同ファイルの0.3932と不一致。",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v3.json:13 — 品種名に手がかりがないとの主張は「あかね夏／ふゆみね／はるひな」という実際の名称に反する。",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v2.json:10 — 不適合条件を知らせないフラットな失敗結果を規定。",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v2.json:15 — 再挑戦では同じ事実を再検討できず、条件が新規ランダム化される。",
+      "src/q1/labCheckLogic.ts:26 — lab_checkが同一体験内の総当たりを防ぐ単一ショット方式を採用した前例は実在する。",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v2.json:15 — 発芽適温15〜25℃、8〜10日という一般値は農業知見として plausible。",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v2.json:17 — 福井県実証値111〜112日という具体値は内部的には110日前後の設定と整合する。",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v2.json:44 — 100/110/130日、品種名、播種期等を架空設定と明記しており、一次資料による個別属性の裏付けにはなっていない。",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v2.json — 指定された現行ファイルが存在せず、reference_research_v1.jsonしかない。"
+    ],
+    "recommended_actions": [
+      "品種名から季節語を除くか、実在または中立的なコード名へ変更し、ラベル単独で播種適期を推測できないようにする。",
+      "セッションごとに最低1つの完全適合候補を保証し、zero-winner rateを0%にする。現実の「今はどれも播けない」は別の明示的ミッションとして扱い、「播かない／計画を相談する」を正解行動に含める場合に限り出題する。",
+      "播種窓が重なる候補セットを設計し、同じ月でも期限の長短または暑さ予報によって選択が変わるようにする。シミュレーションの正当戦略は全3条件を評価して勝者を選ぶ実装へ改める。",
+      "架空カードの各属性を一次資料で個別に裏付けるか、教育用の合成データであることを画面・仕様に明示し、実在品種の性質と誤認させない。欠落しているreference_research_v2.jsonを追加する。",
+      "失敗結果で少なくとも不適合軸を可視化し、同じ条件を保持したまま一度だけ計画を見直せる非総当たり型の再考手段を設ける。"
+    ]
+  },
+  "elapsed_sec": 220.146
+}

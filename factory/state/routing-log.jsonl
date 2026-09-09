@@ -319,3 +319,5 @@
 {"ts":"2026-09-09T05:52:35.150Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r10-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":189.068}
 {"ts":"2026-09-09T06:29:08.533Z","tool":"codex-review","label":"legacy-clue-join-impl-r1","prompt_file":"factory/projects/legacy-clue-join/impl-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":172.367}
 {"ts":"2026-09-09T06:45:16.682Z","tool":"codex-review","label":"legacy-clue-join-impl-r2","prompt_file":"factory/projects/legacy-clue-join/impl-review-r2-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":128.187}
+{"ts":"2026-09-09T08:19:39.705Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r1","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r1-prompt.md","status":"CODEX_TIMEOUT","verdict":null,"elapsed_sec":925.599}
+{"ts":"2026-09-09T08:25:41.734Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r1-retry","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":220.146}

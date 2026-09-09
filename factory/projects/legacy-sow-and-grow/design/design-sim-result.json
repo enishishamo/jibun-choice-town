@@ -1,56 +1,67 @@
 {
-  "generated_at": "2026-09-09T07:59:06.413Z",
+  "generated_at": "2026-09-09T08:30:00.118Z",
   "varieties": [
     {
-      "id": "natsu",
-      "name": "あかね夏",
+      "id": "tsubutane",
+      "name": "つぶたね",
       "window": [
-        7,
-        8
+        6,
+        7
       ],
-      "harvest_days": 110,
+      "harvest_days": 90,
       "heat_ok": true
     },
     {
-      "id": "fuyu",
-      "name": "ふゆみね",
+      "id": "manmaru",
+      "name": "まんまる",
       "window": [
-        9,
-        10
+        6,
+        7,
+        8
       ],
-      "harvest_days": 130,
-      "heat_ok": false
+      "harvest_days": 125,
+      "heat_ok": true
     },
     {
-      "id": "haru",
-      "name": "はるひな",
+      "id": "kotone",
+      "name": "ことね",
       "window": [
-        3,
-        4
+        8,
+        9
       ],
-      "harvest_days": 100,
+      "harvest_days": 135,
       "heat_ok": false
     }
   ],
   "n": 20000,
+  "months": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "deadline_offsets": [
+    3,
+    4,
+    5
+  ],
   "strategies": {
-    "always_plant_natsu": 0.3337,
-    "always_plant_fuyu": 0.1052,
-    "always_plant_haru": 0.1678,
-    "legitimate_pick_seasonal_variety": 0.6068,
-    "random_pick_content_blind": 0.2019
-  },
-  "session_shape": {
-    "zero_winner": 7865,
-    "one_winner": 12135
+    "always_plant_tsubutane": 0.5048,
+    "always_plant_manmaru": 0.4148,
+    "always_plant_kotone": 0.3735,
+    "legitimate_full_reasoning": 1,
+    "season_only_heuristic": 0.7641,
+    "random_pick_content_blind": 0.428
   },
   "verdict": {
+    "zero_winner_session_rate": 0,
+    "rejection_sampling_never_exhausted": true,
+    "at_least_two_varieties_seasonally_eligible_rate": 0.7511,
     "memorization_exploit_closed": true,
-    "legitimate_reasoning_beats_blind_guessing": true,
-    "legitimate_reasoning_margin_over_blind": 0.4049,
-    "random_guessing_disclosed_residual": 0.2019,
-    "zero_winner_session_rate": 0.3932,
-    "one_winner_session_rate": 0.6068
+    "season_alone_is_not_sufficient": true,
+    "legitimate_reasoning_beats_season_only_by": 0.2359,
+    "legitimate_reasoning_beats_blind_guessing_by": 0.572,
+    "random_guessing_disclosed_residual": 0.428
   },
-  "notes": "v2: season windows scored EXACTLY as the real fact_sheet_v2.json values shown on each card (no internal widening) -- season match is a single deterministic elimination to the one in-window variety, and the mechanic is single-shot commit only (no same-session switching), per src/q1/labCheckLogic.ts's established precedent in this codebase (a real do-over is a fresh replay with a newly-shuffled session, not a second try against the same facts). deadlineOffsetMonths is drawn from [4,5,6] rather than [3,4,5] because monthsNeeded(harvest_days) is 4 for natsu/haru and 5 for fuyu -- an offset of 3 would make EVERY variety fail the time check regardless of season, which is a guaranteed-unwinnable session by construction rather than an honest difficulty outcome, so 3 was excluded. zero_winner_session_rate (~34%) is disclosed as an open concern for the independent reviewer: roughly a third of sessions are unwinnable even with perfect reasoning (deadline too tight or forecast too hot for the only in-season variety) -- defensible as honest difficulty (real farming plans sometimes fail) but possibly too high for a children's game; flagged rather than silently accepted."
+  "notes": "v3 (design review r1 FAIL 38 repair): renamed varieties to season-neutral names (ANSWER_LEAK fix); redesigned all 3 as overlapping summer-sowing candidates so deadline/heat genuinely decide between multiple seasonally-eligible options in most sessions (at_least_two_varieties_seasonally_eligible_rate reported above), not just confirm a single season-determined pick (C_NOT_NEEDED_FOR_D / CORE_DISTORTED_BY_GAME fix); rejection-sampled (deadlineOffsetMonths, forecastHot) per session, keeping sowMonth fixed, to guarantee zero_winner_session_rate=0 (FAILURE_DISGUISED_AS_SUCCESS / unfair-session fix) -- rejection_sampling_never_exhausted confirms every one of the N sessions found a winnable combination within 200 resamples."
 }
