@@ -413,6 +413,69 @@ let qTask = "selftest-q1-release";
   record("AA", "legacy item with a BLOCKED (Human Decision) task is parked_human_decision in the queue, not proposed by next, and start refuses it even with --force", item?.status === "parked_human_decision" && proposed === false && st.status === 1 && /parked pending a Human Decision/.test(st.json?.reason ?? ""), { item_status: item?.status, parked_reason: item?.parked_reason, start: st.json?.reason });
 }
 
+// ================================================================ 2026-09-09 regressions (MECHANICAL_CONSISTENCY_REPAIR, Human Decision after legacy-clue-join r6)
+// BB: a stale upstream-version reference ALONE is consistency-repair-eligible and does not touch budgets
+{
+  init("selftest-bb");
+  submitAll("selftest-bb");
+  run(PIPE, ["review", "selftest-bb", "--evidence", fx("bb-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  run(PIPE, ["gate", "selftest-bb"]);
+  const before = pipeline("selftest-bb");
+  const scWithStaleRef = { ...ART.scope_core, derived_from: "fact_sheet_v1 (stale)" };
+  const cr = run(PIPE, ["consistency-repair", "selftest-bb", "scope_core", "--file", fx("bb-sc.json", scWithStaleRef), "--reason", "stale fact_sheet version reference only"]);
+  const after = pipeline("selftest-bb");
+  record("BB", "a stale-reference-only scope_core resubmission is accepted via consistency-repair without touching repair_count/redesign_count", cr.status === 0 && cr.json?.accepted === true && cr.json?.budgets_unaffected === true && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count && after.artifacts.scope_core.version === before.artifacts.scope_core.version + 1 && after.artifacts.scope_core.payload.core === before.artifacts.scope_core.payload.core, { repair_before: before.repair_count, repair_after: after.repair_count, cr_reason: cr.json?.reason });
+}
+// CC: an upstream-removed claim surviving downstream (no_manual_exploit_check citing a dropped fact) routes to consistency-repair, and ESCALATED -> RETURNED with budgets untouched
+{
+  init("selftest-cc");
+  submitAll("selftest-cc");
+  run(PIPE, ["review", "selftest-cc", "--evidence", fx("cc-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  run(PIPE, ["gate", "selftest-cc"]);
+  // exhaust budgets exactly like a real pipeline would, then escalate
+  run(PIPE, ["submit", "selftest-cc", "game_spec", "--file", fx("cc-spec.json", ART.game_spec), "--source", "game_translations@1"]);
+  run(PIPE, ["escalate", "selftest-cc", "--reason", "fixture: budgets exhausted, HIGH persists"]);
+  const before = pipeline("selftest-cc");
+  const nmFixed = { ...ART.no_manual_exploit_check, exploit_check: { ...ART.no_manual_exploit_check.exploit_check, label_leak: false }, stale_claim_removed: "no longer cites the dropped upstream fact" };
+  const cr = run(PIPE, ["consistency-repair", "selftest-cc", "no_manual_exploit_check", "--file", fx("cc-nm.json", nmFixed), "--reason", "downstream artifact repeated a claim already removed upstream"]);
+  const after = pipeline("selftest-cc");
+  record("CC", "a downstream stale-claim fix is accepted via consistency-repair and moves ESCALATED -> RETURNED without resetting either budget", cr.status === 0 && cr.json?.accepted === true && before.state === "ESCALATED" && after.state === "RETURNED" && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count, { before_state: before.state, after_state: after.state, repair: [before.repair_count, after.repair_count], redesign: [before.redesign_count, after.redesign_count] });
+}
+// DD: a submission that changes gameplay/content MEANING cannot be pushed through as a consistency repair
+{
+  init("selftest-dd");
+  submitAll("selftest-dd");
+  const aeMeaningChanged = { ...ART.ae, D: "a completely different judgment than before" };
+  const r1 = run(PIPE, ["consistency-repair", "selftest-dd", "ae", "--file", fx("dd-ae.json", aeMeaningChanged), "--reason", "trying to sneak a real design change through"]);
+  const gtWithChangedAdoptedMechanic = { ...ART.game_translations, translations: ART.game_translations.translations.map((t) => t.translation_id === "t1" ? { ...t, system_reaction: "a completely different system reaction" } : t) };
+  run(PIPE, ["submit", "selftest-dd", "game_translations", "--file", fx("dd-gt0.json", ART.game_translations), "--source", "play_seeds@1", "--source", "c_compression@1"]);
+  const r2 = run(PIPE, ["consistency-repair", "selftest-dd", "game_translations", "--file", fx("dd-gt.json", gtWithChangedAdoptedMechanic), "--reason", "trying to sneak an adopted-mechanic change through"]);
+  const r3 = run(PIPE, ["consistency-repair", "selftest-dd", "fact_sheet", "--file", fx("dd-fs.json", { ...ART.fact_sheet, decisions: ["a new decision never stated before"] }), "--reason", "fact_sheet is categorically excluded"]);
+  record("DD", "changing ae.D, the ADOPTED translation's system_reaction, or anything in fact_sheet is refused by consistency-repair (must use normal repair/redesign)", r1.status === 1 && r1.json?.accepted === false && r2.status === 1 && r2.json?.accepted === false && r3.status === 1 && r3.json?.accepted === false, { r1: r1.json?.reason, r2: r2.json?.reason, r3: r3.json?.reason });
+}
+// EE: consistency-repair never recovers OR consumes repair/redesign budget, in either direction
+{
+  init("selftest-ee");
+  submitAll("selftest-ee");
+  run(PIPE, ["review", "selftest-ee", "--evidence", fx("ee-fail1.json", reviewFixture("FAIL")), "--input", PROMPT]);
+  run(PIPE, ["fail", "selftest-ee", "--code", "D_REPLACED_BY_TRIVIA", "--reason", "fixture", "--evidence", fx("ee-fail1ev.json", { fixture: true })]); // repair_count -> 1
+  run(PIPE, ["repair-done", "selftest-ee", "--note", "fixture repair"]);
+  const beforeAny = pipeline("selftest-ee");
+  const cr1 = run(PIPE, ["consistency-repair", "selftest-ee", "reference_research", "--file", fx("ee-rr.json", ART.reference_research), "--reason", "no actual change, just re-timestamping provenance"]);
+  const afterOne = pipeline("selftest-ee");
+  const cr2 = run(PIPE, ["consistency-repair", "selftest-ee", "reference_research", "--file", fx("ee-rr2.json", ART.reference_research), "--reason", "another no-op consistency pass"]);
+  const afterTwo = pipeline("selftest-ee");
+  record("EE", "repeated consistency-repair calls never change repair_count or redesign_count in either direction, even after a real repair already happened", cr1.status === 0 && cr2.status === 0 && beforeAny.repair_count === 1 && afterOne.repair_count === 1 && afterTwo.repair_count === 1 && afterOne.redesign_count === beforeAny.redesign_count && afterTwo.redesign_count === beforeAny.redesign_count, { repair_counts: [beforeAny.repair_count, afterOne.repair_count, afterTwo.repair_count] });
+}
+// FF: an open Product Identity Human Decision blocks the consistency-repair path outright
+{
+  init("selftest-ff");
+  submitAll("selftest-ff");
+  const hd = run(PIPE, ["human-decision", "selftest-ff", "--domain", "mascot", "--note", "fixture: needs a mascot decision"]);
+  const cr = run(PIPE, ["consistency-repair", "selftest-ff", "reference_research", "--file", fx("ff-rr.json", ART.reference_research), "--reason", "trying to route around an open Product Identity decision"]);
+  record("FF", "an open Human Decision with Product Identity domains blocks consistency-repair entirely, regardless of what artifact type is targeted", hd.status === 0 && cr.status === 1 && cr.json?.accepted === false && /Product Identity/.test(cr.json?.reason ?? ""), { hd_id: hd.json?.human_decision?.id, cr_reason: cr.json?.reason });
+}
+
 // ================================================================ cleanup
 if (!KEEP) {
   for (const id of new Set(created)) rmSync(join(ROOT, "factory", "projects", id), { recursive: true, force: true });
@@ -446,7 +509,7 @@ const summary = { ran_at: new Date().toISOString(), passed: results.filter((r) =
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.json`), JSON.stringify(summary, null, 2) + "\n");
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.md`), [
   `# Q1 Factory self-test — ${DATE}`, "",
-  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
+  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) and BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
   `Result: **${summary.passed}/${summary.total} PASS**${failed ? ` (${failed} FAIL)` : ""}`, "",
   "| id | scenario | result | mode |", "|---|---|---|---|",
   ...results.map((r) => `| ${r.id} | ${r.name} | ${r.ok ? "PASS" : "FAIL"} | ${r.mode} |`), "",

@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-08T21:15:31.302Z",
-  "passed": 27,
+  "ran_at": "2026-09-09T04:26:05.638Z",
+  "passed": 32,
   "failed": 0,
-  "total": 27,
+  "total": 32,
   "results": [
     {
       "id": "A",
@@ -440,6 +440,68 @@
         "item_status": "parked_human_decision",
         "parked_reason": "task q1-improve-selftest-legacy-game is BLOCKED",
         "start": "parked pending a Human Decision — task q1-improve-selftest-legacy-game is BLOCKED. Resolve it in factory/state/blocked-queue.md / task-state first."
+      }
+    },
+    {
+      "id": "BB",
+      "name": "a stale-reference-only scope_core resubmission is accepted via consistency-repair without touching repair_count/redesign_count",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "repair_before": 0,
+        "repair_after": 0
+      }
+    },
+    {
+      "id": "CC",
+      "name": "a downstream stale-claim fix is accepted via consistency-repair and moves ESCALATED -> RETURNED without resetting either budget",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "before_state": "ESCALATED",
+        "after_state": "RETURNED",
+        "repair": [
+          0,
+          0
+        ],
+        "redesign": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "DD",
+      "name": "changing ae.D, the ADOPTED translation's system_reaction, or anything in fact_sheet is refused by consistency-repair (must use normal repair/redesign)",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "r1": "not eligible for consistency-repair: field 'D' changed — this defines CORE/SCOPE/A-E/the mechanic or a pass-fail verdict for ae; that is a design change, not a consistency repair",
+        "r2": "not eligible for consistency-repair: the ADOPTED translation's 'system_reaction' changed — that changes the mechanic itself (\"adopted Game Translationを変更しない\"), not just wording or provenance. Non-adopted (rejected) entries may be edited freely.",
+        "r3": "not eligible for consistency-repair: fact_sheet is excluded from mechanical consistency repair (every field in it is mechanic/code-defining or is the root fact_sheet) — use repair/redesign"
+      }
+    },
+    {
+      "id": "EE",
+      "name": "repeated consistency-repair calls never change repair_count or redesign_count in either direction, even after a real repair already happened",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "repair_counts": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "FF",
+      "name": "an open Human Decision with Product Identity domains blocks consistency-repair entirely, regardless of what artifact type is targeted",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "hd_id": "hd-1",
+        "cr_reason": "open Human Decision hd-1 (domains: mascot) — Product Identity issues cannot use consistency-repair"
       }
     }
   ],

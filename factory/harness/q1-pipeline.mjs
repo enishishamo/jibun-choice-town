@@ -10,6 +10,12 @@
 // Usage:
 //   init <game_id> --profession "<name>" [--trigger <TRIGGER>] [--legacy-game-type <gameType>] [--entry-stage <STAGE>] [--creator <id>]
 //   submit <game_id> <artifact_type> --file <path.json> [--creator <id>] [--source <artifact_type>@<version> ...]
+//   consistency-repair <game_id> <artifact_type> --file <path.json> --reason "..." [--source ...]
+//     mechanical reference/wording/provenance sync only (q1-factory-schema.mjs CONSISTENCY_REPAIR_*).
+//     Does NOT touch repair_count/redesign_count/design_iteration; refused if the change touches any
+//     field defining CORE/SCOPE/A-E/the adopted mechanic/a pass-fail verdict, or a type where that is
+//     everything (fact_sheet/game_spec/art_brief/art_production/implementation*) — use submit+fail
+//     for those. Usable even while ESCALATED (moves ESCALATED -> RETURNED on success).
 //   status <game_id> | list [--state <STATE>] | stale <game_id>
 //   review <game_id> --evidence <codex-review-result.json> --input <prompt-file> [--reviewer codex-review] [--creator <id>] [--kind design|implementation]
 //   fail <game_id> --code <FAILURE_CODE> --reason "..." --evidence <path> [--return-to <STAGE>] [--must-change "..."] [--preserve "..."]
@@ -35,7 +41,7 @@ import {
   DESIGN_STAGES, DOWNSTREAM_STAGES, ALL_STAGE_IDS, DESIGN_STATES, STATE_AFTER_ARTIFACT,
   REPAIR_MAX_PER_ITERATION, REDESIGN_MAX, FAILURE_ROUTES, FAILURE_CODES, HUMAN_DECISION_DOMAINS,
   TRIGGERS, ARTIFACT_SCHEMAS, ARTIFACT_TYPES, transitiveDownstream, validateArtifact,
-  gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE,
+  gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE, checkConsistencyRepairEligible,
 } from "./q1-factory-schema.mjs";
 
 const HARNESS = dirname(fileURLToPath(import.meta.url));
@@ -280,6 +286,74 @@ switch (cmd) {
     log(p, "artifact_submitted", { artifact_id: rec.artifact_id, invalidated, sources: rec.source_artifacts });
     savePipeline(p);
     console.log(JSON.stringify({ accepted: true, artifact_id: rec.artifact_id, version, invalidated, state: p.state, open_human_decisions: p.human_decisions.filter((h) => h.status === "open").map((h) => h.id) }, null, 2));
+    break;
+  }
+
+  // --------------------------------------------- mechanical consistency repair
+  // Distinct from `submit`: does NOT touch repair_count/redesign_count/design_iteration, and is
+  // usable even while the pipeline is ESCALATED (that is exactly when it is needed — see
+  // q1-factory-schema.mjs's CONSISTENCY_REPAIR_* rules for what qualifies and why). Everything a
+  // normal `submit` does for versioning/staleness/provenance still applies; only the budget and
+  // frozen-state handling differ.
+  case "consistency-repair": {
+    const [gameId, type] = rest;
+    const file = flag("file");
+    if (!gameId || !type || !file) fail('usage: consistency-repair <game_id> <artifact_type> --file <path.json> --reason "..." [--creator <id>] [--source <type>@<version>]...');
+    if (!ARTIFACT_TYPES.includes(type)) fail(`bad artifact_type ${type}; one of ${ARTIFACT_TYPES.join(", ")}`);
+    const reason = flag("reason");
+    if (!reason) fail('usage: consistency-repair <game_id> <artifact_type> --file <path.json> --reason "..." [--creator <id>] [--source <type>@<version>]...');
+    const p = loadPipeline(gameId);
+    // Product Identity is categorically excluded from this path, regardless of pipeline state.
+    const openPIDecision = (p.human_decisions ?? []).find((h) => h.status === "open" && (h.domains ?? []).length > 0);
+    if (openPIDecision) refuse({ accepted: false, reason: `open Human Decision ${openPIDecision.id} (domains: ${(openPIDecision.domains ?? []).join(",")}) — Product Identity issues cannot use consistency-repair` });
+    let payload;
+    try { payload = JSON.parse(readFileSync(file, "utf8")); } catch (e) { fail(`could not read/parse ${file}: ${e.message}`); }
+    const v = validateArtifact(type, payload);
+    if (!v.ok) refuse({ accepted: false, artifact_type: type, problems: v.problems });
+    const declared = payload.human_decision_domains ?? [];
+    if (declared.length) refuse({ accepted: false, reason: "this submission declares human_decision_domains — that is a Product Identity change, not a consistency repair; use submit" });
+    const prev = p.artifacts[type];
+    const elig = checkConsistencyRepairEligible(type, prev?.payload, payload);
+    if (!elig.eligible) refuse({ accepted: false, reason: `not eligible for consistency-repair: ${elig.reason}`, hint: "this looks like a real design change — route it through fail/repair-done or redesign instead" });
+    const sources = flags("source").map((s) => { const [t, ver] = s.split("@"); return { artifact_type: t, version: Number(ver) }; });
+    for (const s of sources) {
+      const src = p.artifacts[s.artifact_type];
+      if (!src) refuse({ accepted: false, reason: `--source ${s.artifact_type}@${s.version} does not exist on this pipeline` });
+      if (src.version !== s.version) refuse({ accepted: false, reason: `--source ${s.artifact_type}@${s.version} is not the current version (current is v${src.version}) — refusing to build on a stale upstream` });
+      if (src.status === "STALE") refuse({ accepted: false, reason: `--source ${s.artifact_type} is STALE (${src.stale_because}) — re-submit it first` });
+    }
+    const version = prev ? prev.version + 1 : 1;
+    const rec = {
+      artifact_id: `${gameId}:${type}:v${version}`, artifact_type: type, version, status: "CURRENT", stale_because: null, file, payload,
+      creator: flag("creator", p.creator), source_artifacts: sources.map((s) => `${gameId}:${s.artifact_type}:v${s.version}`),
+      design_iteration: p.design_iteration, created_at: now(), consistency_repair: true,
+      versions: [...(prev?.versions ?? []), { version, file, created_at: now(), creator: flag("creator", p.creator), consistency_repair: true }],
+    };
+    p.artifacts[type] = rec;
+    const invalidated = [];
+    if (prev) {
+      for (const d of transitiveDownstream(type)) {
+        if (p.artifacts[d] && p.artifacts[d].status !== "STALE") { p.artifacts[d].status = "STALE"; p.artifacts[d].stale_because = `${type} changed v${prev.version}->v${version} (consistency repair)`; invalidated.push(d); }
+      }
+      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
+        p.independent_review.stale = true; p.independent_review.stale_because = `${type} changed v${prev.version}->v${version} (consistency repair)`; invalidated.push("independent_review");
+      }
+      if (p.impl_review && !p.impl_review.stale && ["game_spec", "implementation", "game_translations", "art_production"].includes(type)) { p.impl_review.stale = true; invalidated.push("impl_review"); }
+    }
+    p.current_stage = stageOfArtifact(type);
+    const wasEscalated = p.state === "ESCALATED";
+    if (["RETURNED", "REPAIRING", "REDESIGNING"].includes(p.state)) {
+      // stay — a repair/redesign already in flight keeps its own review cycle
+    } else if (wasEscalated) {
+      setState(p, "RETURNED", `consistency repair on ${type} v${version} — budgets unaffected (repair_count=${p.repair_count}, redesign_count=${p.redesign_count})`);
+      if (p.escalation && !p.escalation.resolved_via) { p.escalation.resolved_via = "consistency_repair"; p.escalation.resolved_at = now(); }
+    } else {
+      const next = STATE_AFTER_ARTIFACT[type];
+      if (next && p.state !== "GAME_DESIGN_READY") setState(p, next, `consistency repair: artifact ${type} v${version}`);
+    }
+    log(p, "consistency_repair_applied", { artifact_id: rec.artifact_id, invalidated, sources: rec.source_artifacts, reason, was_escalated: wasEscalated, repair_count: p.repair_count, redesign_count: p.redesign_count });
+    savePipeline(p);
+    console.log(JSON.stringify({ accepted: true, kind: "consistency_repair", artifact_id: rec.artifact_id, version, invalidated, state: p.state, repair_count: p.repair_count, redesign_count: p.redesign_count, budgets_unaffected: true }, null, 2));
     break;
   }
 
@@ -701,7 +775,7 @@ switch (cmd) {
   }
 
   default:
-    console.error("commands: init | submit | status | list | stale | review | fail | repair-done | redesign | gate | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
+    console.error("commands: init | submit | consistency-repair | status | list | stale | review | fail | repair-done | redesign | gate | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
     process.exit(2);
 }
 

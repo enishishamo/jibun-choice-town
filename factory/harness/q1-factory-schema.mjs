@@ -311,6 +311,122 @@ export function validateArtifact(type, payload) {
   return { ok: problems.length === 0, problems };
 }
 
+// ------------------------------------------------- mechanical consistency repair
+// 2026-09-09 (Human Decision, legacy-clue-join r6): a distinct, narrower category
+// from REPAIR/REDESIGN. A "design repair" changes what was decided (CORE, SCOPE,
+// A-E, the adopted Game Translation, C->D->E, a success/failure condition) and
+// rightly costs repair_count/redesign_count. A MECHANICAL_CONSISTENCY_REPAIR
+// changes nothing that was decided — it only brings an artifact's version
+// references, stale wording, or provenance into sync with content ALREADY
+// decided upstream (typically: an upstream artifact changed and a downstream
+// one still cites the old version or repeats a claim the upstream artifact no
+// longer makes). It must NEVER consume or reset REPAIR_MAX_PER_ITERATION /
+// REDESIGN_MAX, and it must NEVER be usable to route around a genuine design
+// defect — the mechanical check below is what keeps that true, not the
+// operator's say-so: every field that actually DEFINES CORE/SCOPE/A-E/the
+// adopted mechanic/a pass-fail verdict must stay byte-identical, or the
+// submission is refused outright and must go through normal repair/redesign
+// (or escalation) instead.
+//
+// Entire types are excluded because there is no "safe" field left in them:
+// game_spec/implementation/implementation_qa/art_brief/art_production are
+// downstream, mechanic- or code-defining artifacts (state_transitions,
+// failure_behavior, d_preserved_statement, pass, etc. cover nearly every
+// field), so a consistency-only change there is not meaningfully distinguishable
+// from a real repair. fact_sheet is the root of the whole evidence chain, so
+// even a "just fixing a citation" edit there is required to go through the
+// normal path (its sourced claims are exactly what everything else must stay
+// consistent WITH).
+export const CONSISTENCY_REPAIR_EXCLUDED_TYPES = [
+  "fact_sheet", "game_spec", "art_brief", "art_production", "implementation", "implementation_qa",
+];
+
+// Per remaining type, the fields that MUST NOT change (byte-identical, via
+// JSON.stringify) for a submission to qualify. Every field NOT listed here is
+// free to edit under this path (references, stale wording, notes, provenance).
+// `scope_core` and `ae` are the CORE/SCOPE and A-E artifacts themselves: every
+// one of their required fields is protected, i.e. this path can only ever
+// touch their non-required metadata (derived_from, reverse_audit, ...).
+export const CONSISTENCY_REPAIR_PROTECTED_FIELDS = {
+  scope_core: ["core", "scope", "scope_is_representative_because", "profession_name_hidden_test"],
+  ae: ["A", "B", "C", "D", "E"],
+  core_scope_check: ["core_consistent", "scope_representative", "profession_name_hidden_test_pass"],
+  // play_seeds / game_translations are checked per-item below (protectedListCheck), not here.
+  play_seeds: [],
+  reference_research: [],
+  c_compression: ["original_C", "compressed_C", "preserved_D", "how_player_still_performs_D"],
+  game_translations: ["adopted_translation_id"],
+  first_5_seconds: [],
+  no_manual_exploit_check: [],
+  core_back_check: ["core_still_intact", "scope_still_representative", "d_still_performed_by_child", "pass"],
+};
+// Per-seed / per-translation-entry protected fields (only enforced for the
+// entry that matters: every play_seed the way the mechanic is described, and
+// for game_translations ONLY the currently-adopted entry — "adopted Game
+// Translationを変更しない"; historical rejected entries may be edited freely).
+const PLAY_SEED_PROTECTED_ITEM_FIELDS = ["authentic_causal_loop", "player_action", "system_reaction", "D_expressed", "E_reached"];
+const TRANSLATION_PROTECTED_ITEM_FIELDS = ["goal", "first_visible_state", "primary_action", "C_interaction", "system_reaction", "information_gained", "player_next_judgment", "D_externalization", "E_consequence", "retry_or_rethink", "job_reveal_bridge"];
+// no_manual_exploit_check's protected fields are nested (booleans = a verdict).
+const NO_MANUAL_PROTECTED_NESTED = {
+  no_manual_check: ["operation_before_rules", "contextual_cue_only", "pass"],
+  exploit_check: ["select_all", "tap_all", "spam_submit", "fixed_failure_pattern", "color_leak", "label_leak", "position_leak", "visual_hierarchy_leak", "pass"],
+};
+
+const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+/** Returns {eligible:true} or {eligible:false, reason} — never throws. Pure/mechanical: no
+ *  filesystem, no trust in the caller's own description of what changed. */
+export function checkConsistencyRepairEligible(type, oldPayload, newPayload) {
+  if (CONSISTENCY_REPAIR_EXCLUDED_TYPES.includes(type)) {
+    return { eligible: false, reason: `${type} is excluded from mechanical consistency repair (every field in it is mechanic/code-defining or is the root fact_sheet) — use repair/redesign` };
+  }
+  if (!(type in CONSISTENCY_REPAIR_PROTECTED_FIELDS)) {
+    return { eligible: false, reason: `${type} has no consistency-repair rule defined — use repair/redesign` };
+  }
+  if (!oldPayload) return { eligible: false, reason: "no existing (CURRENT) artifact to compare against — a first submission cannot be a consistency repair" };
+  for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS[type]) {
+    if (!deepEqual(oldPayload[f], newPayload[f])) {
+      return { eligible: false, reason: `field '${f}' changed — this defines CORE/SCOPE/A-E/the mechanic or a pass-fail verdict for ${type}; that is a design change, not a consistency repair` };
+    }
+  }
+  if (type === "play_seeds") {
+    const oldSeeds = Array.isArray(oldPayload.seeds) ? oldPayload.seeds : [];
+    const newSeeds = Array.isArray(newPayload.seeds) ? newPayload.seeds : [];
+    if (oldSeeds.length !== newSeeds.length || !deepEqual(oldSeeds.map((s) => s.seed_id).sort(), newSeeds.map((s) => s.seed_id).sort())) {
+      return { eligible: false, reason: "play_seeds: seeds were added or removed — that changes the design's option space, not just its wording" };
+    }
+    for (const os of oldSeeds) {
+      const ns = newSeeds.find((s) => s.seed_id === os.seed_id);
+      for (const f of PLAY_SEED_PROTECTED_ITEM_FIELDS) {
+        if (!deepEqual(os[f], ns?.[f])) return { eligible: false, reason: `play_seeds[${os.seed_id}].${f} changed — this describes the actual causal loop/behavior, not just wording or provenance` };
+      }
+    }
+  }
+  if (type === "game_translations") {
+    const oldTr = Array.isArray(oldPayload.translations) ? oldPayload.translations : [];
+    const newTr = Array.isArray(newPayload.translations) ? newPayload.translations : [];
+    const adoptedId = oldPayload.adopted_translation_id; // already confirmed unchanged above
+    if (oldTr.length !== newTr.length || !deepEqual(oldTr.map((t) => t.translation_id).sort(), newTr.map((t) => t.translation_id).sort())) {
+      return { eligible: false, reason: "game_translations: translations were added or removed — that changes the design's option space, not just its wording" };
+    }
+    const oldAdopted = oldTr.find((t) => t.translation_id === adoptedId);
+    const newAdopted = newTr.find((t) => t.translation_id === adoptedId);
+    if (oldAdopted && newAdopted) {
+      for (const f of TRANSLATION_PROTECTED_ITEM_FIELDS) {
+        if (!deepEqual(oldAdopted[f], newAdopted[f])) return { eligible: false, reason: `the ADOPTED translation's '${f}' changed — that changes the mechanic itself ("adopted Game Translationを変更しない"), not just wording or provenance. Non-adopted (rejected) entries may be edited freely.` };
+      }
+    }
+  }
+  if (type === "no_manual_exploit_check") {
+    for (const [group, fields] of Object.entries(NO_MANUAL_PROTECTED_NESTED)) {
+      for (const f of fields) {
+        if (!deepEqual(oldPayload[group]?.[f], newPayload[group]?.[f])) return { eligible: false, reason: `${group}.${f} changed — this is a mechanical pass/fail verdict, not wording or provenance` };
+      }
+    }
+  }
+  return { eligible: true };
+}
+
 // ----------------------------------------------- GAME_DESIGN_READY checklist
 // Each entry: {id, check(pipeline) -> string|null (null = satisfied)}.
 // `pipeline` is the per-game record maintained by q1-pipeline.mjs.

@@ -1,8 +1,8 @@
 # Q1 Factory self-test — 2026-09-09
 
-Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
+Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) and BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
 
-Result: **27/27 PASS**
+Result: **32/32 PASS**
 
 | id | scenario | result | mode |
 |---|---|---|---|
@@ -33,5 +33,10 @@ Result: **27/27 PASS**
 | Y | art-review PASS moves ART_PRODUCED→ART_APPROVED, but during REPAIRING it keeps the state (state_kept) so repair-done still works | PASS | mechanical |
 | Z | limited_exception: needs --scope; blocks submit while open; resolve resets repair_count only (redesign_count unchanged); 1 scoped REPAIR then ESCALATED again (no redesign under the exception); recorded with precedent:false | PASS | mechanical |
 | AA | legacy item with a BLOCKED (Human Decision) task is parked_human_decision in the queue, not proposed by next, and start refuses it even with --force | PASS | mechanical |
+| BB | a stale-reference-only scope_core resubmission is accepted via consistency-repair without touching repair_count/redesign_count | PASS | mechanical |
+| CC | a downstream stale-claim fix is accepted via consistency-repair and moves ESCALATED -> RETURNED without resetting either budget | PASS | mechanical |
+| DD | changing ae.D, the ADOPTED translation's system_reaction, or anything in fact_sheet is refused by consistency-repair (must use normal repair/redesign) | PASS | mechanical |
+| EE | repeated consistency-repair calls never change repair_count or redesign_count in either direction, even after a real repair already happened | PASS | mechanical |
+| FF | an open Human Decision with Product Identity domains blocks consistency-repair entirely, regardless of what artifact type is targeted | PASS | mechanical |
 
 Mechanically executed: every scenario above invoked `q1-pipeline.mjs` / `q1-trigger.mjs` / `q1-legacy-audit.mjs` / `task-state.mjs` for real and asserted on their exit codes and JSON output. Not exercised here (dry-run by design): a real Codex review, real image generation, a real browser QA run, and a real `git push` — those are exercised by the NEW Q1 demonstration and the release path respectively.

@@ -69,6 +69,44 @@ FIRST_PLAY_UX`, `IMPLEMENTATION_CHANGED_D → IMPLEMENTATION`）。
 - ESCALATED からの復帰は Human だけ（下記「Human Decision と Limited Human
   Exception」）。Factory が自分で予算を戻すことはない。
 
+## Mechanical Consistency Repair（design repairとの区別）
+
+**Human Decision（2026-09-09、legacy-clue-join r6）。** 「設計を変える修理」と
+「すでに決定済みの内容を artifact 間で機械的に同期する修理」は別物であり、
+budget を消費してはいけない。後者を `q1-pipeline.mjs consistency-repair
+<game_id> <artifact_type> --file <path> --reason "..."` として rules-as-code
+化した（`q1-factory-schema.mjs` の `CONSISTENCY_REPAIR_EXCLUDED_TYPES` /
+`CONSISTENCY_REPAIR_PROTECTED_FIELDS` / `checkConsistencyRepairEligible`）。
+
+- 対象: upstream artifact のバージョン参照更新漏れ、stale wording の除去、
+  provenance（`derived_from` 等）の同期、upstream で既に確定した内容の
+  downstream への反映。
+- 対象外（機械的に拒否）: CORE/SCOPE（`scope_core` の必須フィールド）、A-E
+  （`ae` の必須フィールド）、**採用中**の Game Translation の機構フィールド
+  （`game_translations` の adopted entry の goal/primary_action/
+  system_reaction 等、および `adopted_translation_id` 自体）、
+  pass/fail 系の verdict フィールド（`core_scope_check`/`core_back_check`/
+  `no_manual_exploit_check` の boolean）、`play_seeds` の各シードの因果ループ
+  本体（authentic_causal_loop/player_action/system_reaction/D_expressed/
+  E_reached）。`fact_sheet`/`game_spec`/`art_brief`/`art_production`/
+  `implementation`/`implementation_qa` は型ごと対象外（ほぼ全フィールドが
+  mechanic/code そのものであり「安全なフィールド」が実質存在しない）。
+- 判定は申告ではなく機械的diff（提出前後で保護フィールドが byte-identical か）
+  で行う。1つでも保護フィールドが変われば `accepted:false` で拒否され、通常の
+  `fail`/`repair-done`/`redesign` 経路へ戻る。
+- **repair_count / redesign_count / design_iteration を一切変更しない**
+  （回復も消費もしない）。ESCALATED 中でも呼べ、成功すると state は
+  `RETURNED` へ戻る（`escalation.resolved_via: "consistency_repair"` を記録）。
+  Open な Human Decision が Product Identity domain を持つ場合はこの経路自体
+  を使えない。
+- self-test BB-FF（2026-09-09）: stale reference 単独では escalate しない／
+  upstream で削除済みの claim の downstream 残存は consistency repair へ通る
+  ／CORE・A-E・採用 translation の機構・fact_sheet の変更は拒否される／
+  budget を一切動かさない／Product Identity 系の open Human Decision は
+  ブロックする、をそれぞれ機械テスト。
+- **budget を緩める仕組みではない。** 意味・ルール・ゲーム挙動を変える必要が
+  生じたら、その時点で通常の repair/redesign/escalation に戻す。
+
 ## Independence / Evidence
 
 - Independent review evidence は `factory/harness/codex-review.mjs` の出力のみ
