@@ -501,8 +501,22 @@ function isNarrowingOf(newVal, oldVal) {
   if (deepEqual(newVal, oldVal)) return true;
   if (typeof newVal === "string" && typeof oldVal === "string") return isSubsequence(newVal, oldVal);
   if (Array.isArray(newVal) && Array.isArray(oldVal)) {
+    // r10 fix (FACT_CORRECTION_GUARD_OVERSTRICT_ARRAY_DELETION): index-paired comparison wrongly
+    // refused a legitimate correction that drops a MIDDLE array item (every later item shifts
+    // position and no longer lines up index-for-index). Match as an order-preserving SUBSEQUENCE
+    // of items instead: every element of newVal must correspond, in order, to some not-yet-used
+    // element of oldVal that it narrows (recursively) -- i.e. newVal is obtainable from oldVal by
+    // deleting whole items and/or narrowing surviving ones, never by reordering, replacing, or
+    // adding. Greedy earliest-match is correct here because isNarrowingOf on non-array/object
+    // leaves is monotonic (nothing is gained by skipping an earlier compatible old item).
     if (newVal.length > oldVal.length) return false;
-    return newVal.every((v, i) => isNarrowingOf(v, oldVal[i]));
+    let oi = 0;
+    for (const nv of newVal) {
+      while (oi < oldVal.length && !isNarrowingOf(nv, oldVal[oi])) oi++;
+      if (oi >= oldVal.length) return false; // no remaining old item this new item could have narrowed from
+      oi++; // that old item is now consumed; later new items must match LATER old items (order-preserving)
+    }
+    return true;
   }
   if (newVal && oldVal && typeof newVal === "object" && typeof oldVal === "object" && !Array.isArray(newVal) && !Array.isArray(oldVal)) {
     const newKeys = Object.keys(newVal);

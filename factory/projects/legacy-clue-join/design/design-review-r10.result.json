@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 82,
+    "career_authenticity_score": 88,
+    "game_quality_score": 82,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "FACT_CORRECTION_GUARD_OVERSTRICT_ARRAY_DELETION: isNarrowingOfは配列を同じindex同士で比較するため、fact_sheet.expertise等の途中にある unsupported 項目を項目単位で純削除すると後続要素がずれて拒否される。将来の正当なfact correctionを誤って阻止しうる機構上の欠陥であり、本ゲームの保護された意味には触れない。",
+      "SHUFFLE_LIFECYCLE_UNVERIFIED: 診断候補・所見のシャッフルをセッション内で一度だけ生成し、採点を表示indexではなくIDで行うことを実装QAの必須受入条件として維持する。設計段階の阻害要因ではない。",
+      "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED: 375px幅で候補4枚、所見6枚、フィードバック、残回数、送信操作が理解可能に収まり、典型像を開いた後も選択状態へ迷わず戻れることを実装時に確認する。設計段階の阻害要因ではない。"
+    ],
+    "low": [
+      "ae.C、play_seeds.C_used、採用translation.first_visible_stateにfact_sheet_v6という旧ファイル表記が残る。保護フィールド内の引用表記だけを置換できない制約による既知の非阻害stalenessで、参照対象のcandidate_reference_cardsの意味は現行内容と整合する。",
+      "遊びの中心は10枚の文章カード比較で、失敗反応も意図的にフラットなため、触覚的・視覚的な爽快感は限定的。ただし推理、コミット、再考、結果分岐は成立しており§5を不合格にするほどではない。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACT_CORRECTION_GUARD_OVERSTRICT_ARRAY_DELETION",
+        "severity": "MEDIUM",
+        "finding": "isNarrowingOf(newArray, oldArray)がindex対応だけを許すため、途中の配列要素を純削除する正当な将来のfact correctionを拒否する。配列にも順序保持部分列としての要素照合が必要。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "設計は正しいが、実装で一度だけのセッションシャッフルとIDベース採点を検証する必要がある。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "375px実装で全カードと操作導線の可読性を検証する必要がある。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      }
+    ],
+    "sim_verification": {
+      "reran": true,
+      "all_flags_true": true,
+      "notes": "読取専用環境のため結果ファイル書込み行だけを除外して同一コードを再実行。11個のverdict flagは全てtrue、勝利組合せは252中4、乱択2回は3.06%、固定位置戦略は1.60%、2診断巡回は3.26%、select-all系は0%で既存design-sim-result.jsonと一致した。"
+    },
+    "ready_for_game_spec": true,
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md — A-Iと§3を満たし、replayabilityはPLUS QUALITYとしてのみ評価した。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v12.json — 4候補カードと全substantive fieldsを再確認。喘息の突然発症主張は削除済みで、残る喘鳴・発作性・反復性はJRS記述に裏付けられる。心不全は心拡大・肺うっ血、気胸は胸腔内空気・肺虚脱・突然の胸痛/呼吸困難に限定され、引用元と整合する。",
+      "https://www.jrs.or.jp/citizen/disease/c/c-01.html — 喘息について発作的な気道狭窄、喘鳴を伴う息苦しさ、症状の反復を確認した。",
+      "https://www.jrs.or.jp/citizen/disease/g/g-04.html — 気胸について胸膜腔内の空気、肺の拡張障害、突然の胸痛・呼吸困難、X線/CT診断を確認した。",
+      "https://www.jhf.or.jp/check/heart_failure/10/ — 心不全について複数検査の総合判断、ラ音、心拡大、肺水分・肺うっ血、BNPを確認し、両側性/butterfly discriminatorが現行成果物から除去されていることを確認した。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json — t1dは診断コミットと根拠選択を同時評価し、検査・画像必須、話・診察任意、SpO₂・血圧不可の4通りを受容する。誤答1回目は答えを漏らさず再考可能、2回目は応援医師とのpartialとなる。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — シャッフルされた4診断×63所見集合を検証し、内容非依存攻略、select-all、固定位置、spam成功を閉じている。",
+      "src/q1/clueBoardLogic.ts — ch1の話、右胸所見、SpO₂、呼吸数、血圧と設計上のch4所見の出所を照合した。",
+      "src/data/content/medical.ts — ch1収集、ch2検査、ch3画像、ch4統合・診断という役割連鎖、職業名を先出ししないmission、診断につなぐdiscoveryEchoを確認した。",
+      "factory/harness/q1-factory-schema.mjs — fact_sheetのmetadata allowlistはderived_from/reverse_audit/revision_noteに限定され、新規substantive fieldはfail-closed。ただし配列中間要素の純削除を扱えない過剰制限を確認した。"
+    ],
+    "recommended_actions": [
+      "GAME_SPECへ進め、シャッフルライフサイクルと375pxレイアウトを実装受入条件として明記する。",
+      "isNarrowingOfの配列比較を、要素単位の順序保持部分列として純削除を認める方式へ改修し、途中要素削除・置換拒否・並べ替え拒否の回帰テストを追加する。",
+      "既知の3件の旧fact_sheet表記は保護フィールドを正当に変更できる次の設計機会まで追跡する。"
+    ]
+  },
+  "elapsed_sec": 189.068
+}

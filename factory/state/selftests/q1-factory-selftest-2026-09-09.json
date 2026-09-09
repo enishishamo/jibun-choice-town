@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-09T05:45:09.300Z",
-  "passed": 40,
+  "ran_at": "2026-09-09T05:54:59.866Z",
+  "passed": 41,
   "failed": 0,
-  "total": 40,
+  "total": 41,
   "results": [
     {
       "id": "A",
@@ -236,7 +236,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (9/2)",
+        "wip_refusal": "WIP full (8/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -334,19 +334,15 @@
       "detail": {
         "next": {
           "kind": "resume_pipeline",
-          "game_id": "legacy-clue-join",
-          "state": "RETURNED",
+          "game_id": "selftest-e",
+          "state": "REPAIRING",
           "priority": 1
         },
         "wip": {
-          "active": 11,
+          "active": 10,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
-            {
-              "game_id": "legacy-clue-join",
-              "state": "RETURNED"
-            },
             {
               "game_id": "legacy-sow-and-grow",
               "state": "AE_READY"
@@ -596,6 +592,16 @@
         "replace_reason": "not eligible for fact-correct: fact_sheet.candidate_reference_cards is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim",
         "genuine_accepted": true,
         "new_field_reason": "not eligible for fact-correct: fact_sheet.candidate_reference_cards is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim"
+      }
+    },
+    {
+      "id": "OO",
+      "name": "dropping a MIDDLE array item is accepted as a narrowing (subsequence match, not index-paired), while reordering the same items is refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "drop_accepted": true,
+        "reorder_reason": "not eligible for fact-correct: fact_sheet.expertise is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim"
       }
     }
   ],

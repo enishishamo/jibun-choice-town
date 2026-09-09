@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "clue_join",
   "creator": "claude-code",
-  "state": "RETURNED",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 3,
   "repair_count": 1,
@@ -1350,7 +1350,23 @@
       ]
     }
   },
-  "independent_review": null,
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 82,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-clue-join/design/design-review-r10.result.json",
+    "input": "factory/projects/legacy-clue-join/design/design-review-r10-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 3,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-09T05:53:14.642Z"
+  },
   "impl_review": null,
   "art_review": null,
   "failures": [
@@ -1438,7 +1454,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T21:16:08.849Z",
-  "updated_at": "2026-09-09T05:48:32.238Z",
+  "updated_at": "2026-09-09T05:53:23.696Z",
   "history": [
     {
       "at": "2026-09-08T21:16:08.850Z",
@@ -3305,6 +3321,33 @@
       "was_escalated": false,
       "repair_count": 1,
       "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:53:14.643Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r10.result.json"
+    },
+    {
+      "at": "2026-09-09T05:53:14.643Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-09T05:53:23.695Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-09T05:53:23.696Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ],
   "redesign": [
