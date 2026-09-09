@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 36,
+    "career_authenticity_score": 48,
+    "game_quality_score": 36,
+    "blockers": [
+      "C_NOT_NEEDED_FOR_D / CORE_DISTORTED_BY_GAME remains: the redesigned data still admits a 100%-winning month-only policy. Choose つぶたね in June/July, まんまる in August, and ことね in September. Deadline and heat never force a different choice; they only create additional co-winners or are forced by rejection sampling.",
+      "BRUTE_FORCE/MEMORIZATION exploit remains: after learning the four-month mapping, displayed deadline, forecast, harvest-day, and heat-tolerance data can be ignored completely."
+    ],
+    "high": [
+      "FACTUAL_PROFESSION_ERROR remains: exact fictional harvest-day and heat-tolerance values are presented as decision-critical facts. Internal uncertainties disclose that they are unsourced, but the player-facing translation does not identify them as fictionalized teaching data; Factory precedent requires unsupported claims to be removed or narrowed, not merely disclosed internally.",
+      "ARTIFACT_CHAIN_INCOMPLETE: five files explicitly designated as CURRENT are absent: scope_core_v4.json, ae_v4.json, core_scope_check_v3.json, play_seeds_v3.json, and first_5_seconds_v2.json. CORE/SCOPE, A–E, seed causality, hidden-profession, and first-five-seconds assertions therefore cannot be verified against the claimed current versions.",
+      "SIMULATION_REPRODUCIBILITY_FAILURE: running design-sim.mjs exits with EPERM when it attempts to overwrite design-sim-result.json in the read-only review environment. Independently, byte-exact reproducibility is impossible because generated_at is assigned from the current clock on every run."
+    ],
+    "medium": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION remains: failure provides neither diagnostic information nor an in-session retry, so the child cannot apply the outcome to a subsequent judgment during the first-play experience.",
+      "REJECTION_SAMPLING_NOT_STRICTLY_TOTAL: MAX_RESAMPLES=200 does not mathematically guarantee success. September accepts only offset=5 with a non-hot forecast, leaving a nonzero exhaustion probability of (5/6)^200; exhaustion throws instead of using a deterministic valid fallback.",
+      "REJECTION_SAMPLING_METRIC_MISNAMED: rejection_sampling_never_exhausted is derived from zeroWinnerCheckFailures, not an exhaustion counter. An actual exhaustion throws before the field is produced, so the field cannot independently establish its own claim."
+    ],
+    "low": [
+      "reference_research_v3.json:7 still points to fact_sheet_v2.json rather than the current fact_sheet_v3.json.",
+      "The displayed-card order is only a future implementation requirement, not part of the current design mechanism; omission during implementation would reintroduce a position leak."
+    ],
+    "failure_codes": [
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "BLOCKER",
+        "finding": "A month-only mapping wins every generated session: June/July→つぶたね, August→まんまる, September→ことね. Deadline and heat never change the required selection.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs"
+      },
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "BLOCKER",
+        "finding": "The claimed three-condition comparison collapses to one month lookup because a canonical winner exists for every month across all accepted deadline/forecast combinations.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs"
+      },
+      {
+        "code": "BRUTE_FORCE_SUCCESS",
+        "severity": "BLOCKER",
+        "finding": "The four-entry month mapping is a content-independent memorization strategy with 100% success, which the supplied season_only_heuristic fails to test because it randomly chooses among seasonally eligible varieties.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs"
+      },
+      {
+        "code": "FACTUAL_PROFESSION_ERROR",
+        "severity": "HIGH",
+        "finding": "The exact 90/125/135-day and heat-tolerance attributes drive scoring despite being explicitly unverified; internal disclosure does not prevent children from receiving them as factual varietal data.",
+        "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json"
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "Five required current-version artifacts do not exist, preventing independent verification of the current upstream design chain.",
+        "file": "factory/projects/legacy-sow-and-grow/design/"
+      },
+      {
+        "code": "SIMULATION_REPRODUCIBILITY_FAILURE",
+        "severity": "HIGH",
+        "finding": "The requested run did not complete successfully, and generated_at makes exact byte-for-byte reproduction impossible even in a writable environment.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "A flat failure followed by immediate session termination provides no actionable learning loop or in-session reconsideration.",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v3.json"
+      },
+      {
+        "code": "REJECTION_SAMPLING_NOT_TOTAL",
+        "severity": "MEDIUM",
+        "finding": "September has a 1/6 acceptance probability per draw, so 200 consecutive rejection failures remain theoretically possible and cause a thrown error.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "answer_leak": true,
+      "c_not_needed_for_d": false,
+      "failure_disguised_as_success": false,
+      "factual_grounding": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": false,
+      "rejection_sampling_sound": false,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:38 — Variety data define つぶたね=[6,7], 90 days, heat-safe; まんまる=[6,7,8], 125 days, heat-safe; ことね=[8,9], 135 days, not heat-safe.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:46 — Day counts become 3, 5, and 5 months respectively.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:48 — Winning is the conjunction of season, deadline, and heat checks.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:68 — Sessions cover months 6–9 and deadline offsets 3–5.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:72 — Rejection sampling conditions the deadline and forecast on the existence of a winner.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:77 — June/July always admit つぶたね; August's accepted sessions always admit まんまる; September's accepted sessions necessarily admit ことね. Thus the month-only mapping is perfect.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:82 — Exhaustion throws a production error rather than selecting a guaranteed-valid fallback.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:108 — season_only_heuristic randomly chooses among eligible varieties; it does not test the optimal deterministic month-only exploit.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:121 — rejection_sampling_never_exhausted is computed from zeroWinnerCheckFailures, which only inspects successfully returned sessions.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:131 — generated_at uses new Date().toISOString(), precluding exact output matching across runs.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:2 — The stored timestamp is a fixed past value and therefore cannot match a fresh exact run.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json:40 — The source sheet admits that exact fictional-variety day counts and heat tolerances are not individually sourced.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v3.json:6 — Those attributes are nevertheless player-facing, decision-critical scoring facts without a fictionalization disclosure.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v3.json:10 — Failure is flat and gives no reason.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v3.json:12 — There is no retry or next judgment in the session.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v4.json:14 — Card-order shuffling is deferred to implementation rather than secured in the current design.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json:7 — The current reference artifact contains a stale fact_sheet_v2 reference.",
+      "factory/rules/q1-first-play-standard.md:31 — THINK AGAIN requires room to reconsider at least once after failure.",
+      "factory/rules/q1-first-play-standard.md:42 — C-independent completion and answer-leaking shortcuts remain release blockers.",
+      "factory/rules/q1-autonomous-factory.md:39 — SCOPE_CORE and its Profession Name Hidden Test are mandatory pipeline artifacts.",
+      "factory/rules/q1-autonomous-factory.md:44 — FIRST_PLAY_UX is a required stage before exploit and back checks."
+    ],
+    "recommended_actions": [
+      "Redesign the payoff matrix and test every deterministic month-only policy. At least one month must have two accepted session states requiring different varieties because of deadline or heat—not merely allowing an extra co-winner.",
+      "Add an exhaustive enumerator over all month×offset×forecast states and report the complete winner set for each accepted state. Include optimal policies using month only, month+deadline, and month+forecast.",
+      "Generate sessions directly from precomputed valid tuples or provide a deterministic fallback so exhaustion is impossible; separately count resampling attempts and maximum attempts observed.",
+      "Remove or source the exact varietal values, or clearly label the cards themselves as fictional practice data without implying a direct numeric correspondence to the Fukui trial.",
+      "Restore and submit the five missing current-version artifacts, with source-artifact references aligned to v3/v4.",
+      "Make simulation output reproducible by separating volatile metadata from the deterministic result or accepting a fixed timestamp/seed, then compare deterministic content byte-for-byte.",
+      "Provide one in-session retry with non-answer-revealing feedback that directs the child to reconsider deadline, sowing window, or heat compatibility.",
+      "Make per-session card shuffling a mandatory translation/spec invariant with a regression test rather than a deferred note."
+    ]
+  },
+  "elapsed_sec": 167.809
+}

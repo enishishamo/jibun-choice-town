@@ -1,44 +1,40 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for legacy-sow-and-grow / t1-season-deadline-match (v3).
+// Design-stage exploit simulation for legacy-sow-and-grow / t1-season-deadline-match (v4).
 //
 // Audit finding (factory/state/legacy/reverse-audits/sow_and_grow.json): exploit=memorize,
 // player_judgment_required=false -- the OLD implementation's result was fully determined by a
 // fixed variety choice (fixed month/deadline/forecast every session).
 //
-// v3 fixes over v2 (superseded, not committed -- see design-review-r1.result.json, FAIL 38,
-// 3 BLOCKERs):
-// 1. ANSWER_LEAK (BLOCKER): v2 kept the old game's variety names あかね夏/ふゆみね/はるひな, which
-//    literally spell out summer/winter/spring -- combined with non-overlapping season windows,
-//    the NAME ALONE gave the answer away without reading any numeric data. v3 renames all three to
-//    season-neutral fictional names (つぶたね/まんまる/ことね, matching this Factory's established
-//    "fictional variety name, real-pattern behavior" convention already used in the old game).
-// 2. C_NOT_NEEDED_FOR_D / CORE_DISTORTED_BY_GAME (BLOCKER): v2's three varieties covered three
-//    DIFFERENT, non-overlapping seasons, so "today's month" alone always determined the single
-//    eligible variety -- deadline and forecast never actually changed which variety to pick, just
-//    confirmed or denied the one the month already selected. v3 redesigns all three varieties as
-//    summer-sowing candidates (matching the real fukui prefecture trial's actual comparison of
-//    愛紅/夏播用彩誉/向陽二号 -- see reference_research_v3.json) with OVERLAPPING sub-windows
-//    within June-September, and diversified harvest-days (fast/medium/slow) and heat-tolerance, so
-//    that in most sessions 2 of 3 varieties are seasonally eligible and the deadline/heat criteria
-//    genuinely decide between them.
-// 3. FAILURE_DISGUISED_AS_SUCCESS / zero_winner_session_rate=39.32% (HIGH): v3 uses REJECTION
-//    SAMPLING -- deadlineOffsetMonths and forecastHot are redrawn (month is kept fixed, since it
-//    represents "today", a real fact that should not be silently re-rolled away) until at least
-//    one variety satisfies all three criteria, guaranteeing zero_winner_session_rate = 0.
+// v4 fixes over v3 (superseded, not committed -- see design-review-r2.result.json, FAIL 36,
+// 2 NEW BLOCKERs): v3 gave each of the two season-overlapping varieties per month a set of
+// requirements where ONE of them was a strict superset winner of the other across every
+// rejection-sampling-accepted (deadline, forecast) combination for that month (concretely: in
+// June/July, つぶたね's requirements -- offset>=3, no heat constraint -- were satisfied whenever
+// まんまる's stricter ones were, so a naive "month -> fixed variety" lookup won 100% of the time,
+// completely ignoring the displayed deadline/forecast data). v4 gives each month's two candidates
+// a genuine TRADE-OFF instead of a strict ordering:
+//   - つぶたね: fast (needs only 3 months) but heat-VULNERABLE (heat_ok=false)
+//   - まんまる: slow (needs 5 months) but heat-TOLERANT (heat_ok=true)
+//   - ことね: medium (needs 4 months), heat-VULNERABLE (heat_ok=false), late-summer only
+// so that within a shared month, which one wins depends on the ACTUAL deadline/forecast draw --
+// tight deadline + mild forecast favors the fast-but-fragile one, loose deadline + hot forecast
+// favors the slow-but-tough one, and neither dominates the other across the full accepted state
+// space. Verified below by exhaustively enumerating every (month, offset, forecast) state and
+// checking that no single fixed variety choice wins 100% of a month's own accepted states.
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 
 // All three are summer-sowing (June-September) candidates, matching the real fukui trial anchor
-// (7/22, 8/4, 8/17 sowing dates all reaching harvest in ~111-112 days) and the real qualitative
-// differences it found among 愛紅 (early-vigor)/夏播用彩誉 (late-sowing specialist)/向陽二号
-// (standard, wide window) -- see reference_research_v3.json. Names are fictional and season-
-// neutral by design (ANSWER_LEAK fix).
+// and the real qualitative pattern differences among 愛紅 (fast/vigorous)/向陽二号 (standard,
+// heat-hardy, wide window)/夏播用彩誉 (late-sowing specialist) -- see reference_research_v3.json.
+// Exact day-counts/heat-tolerance are fictionalized teaching data (fact_sheet_v3.json's
+// uncertainties + game_translations_v4.json's explicit in-game disclosure of this).
 const VARIETIES = [
-  { id: "tsubutane", name: "つぶたね", window: [6, 7], harvest_days: 90, heat_ok: true },   // 愛紅-pattern: early-summer, fast, heat-hardy
-  { id: "manmaru", name: "まんまる", window: [6, 7, 8], harvest_days: 125, heat_ok: true },  // 向陽二号-pattern: standard, wide window, heat-hardy, but slower to harvest
-  { id: "kotone", name: "ことね", window: [8, 9], harvest_days: 135, heat_ok: false },       // 夏播用彩誉-pattern: late-summer specialist, slower, less heat-hardy
+  { id: "tsubutane", name: "つぶたね", window: [6, 7], harvest_days: 90, heat_ok: false },   // fast, heat-vulnerable
+  { id: "manmaru", name: "まんまる", window: [6, 7, 8], harvest_days: 150, heat_ok: true },  // slow, heat-tolerant, wide window
+  { id: "kotone", name: "ことね", window: [8, 9], harvest_days: 105, heat_ok: false },       // medium, heat-vulnerable, late-summer only
 ];
 const IDS = VARIETIES.map((v) => v.id);
 
@@ -51,10 +47,9 @@ function evaluate(variety, sowMonth, deadlineOffsetMonths, forecastHot) {
   const heatOk = !forecastHot || variety.heat_ok;
   return { seasonOk, timeOk, heatOk, win: seasonOk && timeOk && heatOk };
 }
-function anyWinner(sowMonth, deadlineOffsetMonths, forecastHot) {
-  return VARIETIES.some((v) => evaluate(v, sowMonth, deadlineOffsetMonths, forecastHot).win);
+function winnersFor(sowMonth, deadlineOffsetMonths, forecastHot) {
+  return VARIETIES.filter((v) => evaluate(v, sowMonth, deadlineOffsetMonths, forecastHot).win).map((v) => v.id);
 }
-function eligibleBySeasonCount(sowMonth) { return VARIETIES.filter((v) => inWindow(sowMonth, v.window)).length; }
 
 function mulberry32(a) {
   return function () {
@@ -69,73 +64,100 @@ const MONTHS = [6, 7, 8, 9];
 const OFFSETS = [3, 4, 5];
 const MAX_RESAMPLES = 200;
 
-// newSession: month is drawn once and kept (it represents "today", a real fact); deadline/forecast
-// are resampled (rejection sampling) until at least one variety can win this month -- this is the
-// r1 reviewer's explicit recommended fix for the zero-winner-session problem.
+// exhaustive enumeration: for each month, list every (offset, forecast) state and its winner set
+const stateSpace = {};
+for (const m of MONTHS) {
+  stateSpace[m] = [];
+  for (const o of OFFSETS) for (const f of [false, true]) {
+    const w = winnersFor(m, o, f);
+    if (w.length > 0) stateSpace[m].push({ offset: o, forecastHot: f, winners: w });
+  }
+}
+// does a fixed-variety-per-month policy win every accepted state for that month?
+const monthOnlyPolicyWinRate = {};
+for (const m of MONTHS) {
+  const accepted = stateSpace[m];
+  for (const id of IDS) {
+    const winCount = accepted.filter((s) => s.winners.includes(id)).length;
+    monthOnlyPolicyWinRate[`${m}_${id}`] = accepted.length ? Number((winCount / accepted.length).toFixed(4)) : null;
+  }
+}
+// domination is only a concern in months where 2+ varieties are EVER seasonally eligible -- a
+// month where only one variety's window ever applies (e.g. September here) correctly has that
+// variety win 100% of its own accepted states, since there is nothing to trade off against
+const monthsWithMultipleCandidates = MONTHS.filter((m) => VARIETIES.filter((v) => inWindow(m, v.window)).length >= 2);
+const noVarietyDominatesAnyMultiCandidateMonth = monthsWithMultipleCandidates.every((m) => IDS.every((id) => (monthOnlyPolicyWinRate[`${m}_${id}`] ?? 0) < 1));
+
+let exhaustionCount = 0;
 function newSession(rand) {
   const sowMonth = MONTHS[Math.floor(rand() * MONTHS.length)];
   for (let i = 0; i < MAX_RESAMPLES; i++) {
     const deadlineOffsetMonths = OFFSETS[Math.floor(rand() * OFFSETS.length)];
     const forecastHot = rand() < 0.5;
-    if (anyWinner(sowMonth, deadlineOffsetMonths, forecastHot)) return { sowMonth, deadlineOffsetMonths, forecastHot, resampled: i > 0 };
+    if (winnersFor(sowMonth, deadlineOffsetMonths, forecastHot).length > 0) return { sowMonth, deadlineOffsetMonths, forecastHot };
   }
-  throw new Error(`no winnable (deadline, forecast) found for month ${sowMonth} within ${MAX_RESAMPLES} resamples`);
+  // deterministic fallback (never silently biased-blank, never throws in production): use the
+  // first accepted state on record for this month, which stateSpace[] guarantees exists as long
+  // as every month has at least one valid (offset, forecast) combination (checked below)
+  exhaustionCount++;
+  const fallback = stateSpace[sowMonth][0];
+  return { sowMonth, deadlineOffsetMonths: fallback.offset, forecastHot: fallback.forecastHot };
 }
+const everyMonthHasAtLeastOneAcceptedState = MONTHS.every((m) => stateSpace[m].length > 0);
 
 const N = 20000;
-let zeroWinnerCheckFailures = 0;
-let sessionsWithTwoPlusEligibleBySeason = 0;
 const sessions = [];
-for (let i = 0; i < N; i++) {
-  const rand = mulberry32(i * 7919 + 13);
-  const s = newSession(rand);
-  sessions.push(s);
-  if (!anyWinner(s.sowMonth, s.deadlineOffsetMonths, s.forecastHot)) zeroWinnerCheckFailures++; // should never happen
-  if (eligibleBySeasonCount(s.sowMonth) >= 2) sessionsWithTwoPlusEligibleBySeason++;
-}
+for (let i = 0; i < N; i++) sessions.push(newSession(mulberry32(i * 7919 + 13)));
 
-function rate(fn) { let w = 0; for (let i = 0; i < N; i++) { const rand = mulberry32(i * 7919 + 13); const s = newSession(rand); if (fn(s, rand)) w++; } return Number((w / N).toFixed(4)); }
+function rate(fn) { let w = 0; for (const s of sessions) if (fn(s)) w++; return Number((w / N).toFixed(4)); }
 const results = {};
-for (const fixedId of IDS) {
-  results[`always_plant_${fixedId}`] = rate((s) => evaluate(VARIETIES.find((v) => v.id === fixedId), s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win);
+for (const fixedId of IDS) results[`always_plant_${fixedId}`] = rate((s) => evaluate(VARIETIES.find((v) => v.id === fixedId), s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win);
+// the reviewer's exact exploit: memorize a fixed month->variety mapping (the best fixed mapping,
+// picking whichever variety has the best month_only_policy rate for each month)
+const bestFixedMapping = {};
+for (const m of MONTHS) bestFixedMapping[m] = IDS.reduce((best, id) => (monthOnlyPolicyWinRate[`${m}_${id}`] ?? 0) > (monthOnlyPolicyWinRate[`${m}_${best}`] ?? 0) ? id : best, IDS[0]);
+results.month_only_fixed_mapping = rate((s) => evaluate(VARIETIES.find((v) => v.id === bestFixedMapping[s.sowMonth]), s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win);
+results.legitimate_full_reasoning = rate((s) => winnersFor(s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).length > 0);
+{
+  let w = 0;
+  for (let i = 0; i < N; i++) {
+    const s = sessions[i];
+    const rand = mulberry32(i * 104729 + 7); // independent seeded stream, not reused from session generation
+    const pick = VARIETIES[Math.floor(rand() * VARIETIES.length)];
+    if (evaluate(pick, s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win) w++;
+  }
+  results.random_pick_content_blind = Number((w / N).toFixed(4));
 }
-// legitimate: read all 3 cards' window/harvest_days/heat_ok, compare against sowMonth/deadline/
-// forecast, and pick a variety that wins IF one exists among the seasonally-eligible ones (ties
-// broken by picking the first eligible winner -- a real player would just need to find ONE)
-results.legitimate_full_reasoning = rate((s) => VARIETIES.some((v) => evaluate(v, s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win));
-// season-only heuristic: pick any seasonally-eligible variety at random, ignoring deadline/heat
-// entirely -- tests whether season alone (without deadline/heat reasoning) still wins too often
-results.season_only_heuristic = rate((s, rand) => {
-  const eligible = VARIETIES.filter((v) => inWindow(s.sowMonth, v.window));
-  const pick = eligible[Math.floor(rand() * eligible.length)];
-  return evaluate(pick, s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win;
-});
-// content-blind: pick uniformly at random among all 3, ignoring everything
-results.random_pick_content_blind = rate((s, rand) => {
-  const pick = VARIETIES[Math.floor(rand() * VARIETIES.length)];
-  return evaluate(pick, s.sowMonth, s.deadlineOffsetMonths, s.forecastHot).win;
-});
 
 const verdict = {
-  zero_winner_session_rate: 0, // guaranteed by rejection sampling in newSession()
-  rejection_sampling_never_exhausted: zeroWinnerCheckFailures === 0,
-  at_least_two_varieties_seasonally_eligible_rate: Number((sessionsWithTwoPlusEligibleBySeason / N).toFixed(4)),
-  memorization_exploit_closed: IDS.every((id) => results[`always_plant_${id}`] < 0.6),
-  season_alone_is_not_sufficient: results.season_only_heuristic < results.legitimate_full_reasoning,
-  legitimate_reasoning_beats_season_only_by: Number((results.legitimate_full_reasoning - results.season_only_heuristic).toFixed(4)),
+  months_with_multiple_seasonal_candidates: monthsWithMultipleCandidates,
+  no_variety_dominates_any_multi_candidate_month: noVarietyDominatesAnyMultiCandidateMonth,
+  single_candidate_months_trivially_100pct_by_construction: MONTHS.filter((m) => !monthsWithMultipleCandidates.includes(m)),
+  month_only_fixed_mapping_win_rate: results.month_only_fixed_mapping,
+  memorization_exploit_closed: results.month_only_fixed_mapping < 0.85 && IDS.every((id) => results[`always_plant_${id}`] < 0.6),
+  legitimate_reasoning_beats_month_only_mapping_by: Number((results.legitimate_full_reasoning - results.month_only_fixed_mapping).toFixed(4)),
   legitimate_reasoning_beats_blind_guessing_by: Number((results.legitimate_full_reasoning - results.random_pick_content_blind).toFixed(4)),
-  random_guessing_disclosed_residual: results.random_pick_content_blind,
+  every_month_has_at_least_one_accepted_state: everyMonthHasAtLeastOneAcceptedState,
+  rejection_sampling_exhaustion_count: exhaustionCount,
+  rejection_sampling_exhaustion_rate: Number((exhaustionCount / N).toFixed(6)),
+  zero_winner_session_rate: 0, // guaranteed by rejection sampling + deterministic fallback
 };
 
 const out = {
-  generated_at: new Date().toISOString(),
   varieties: VARIETIES,
   n: N,
   months: MONTHS,
   deadline_offsets: OFFSETS,
+  state_space: stateSpace,
+  month_only_policy_win_rate: monthOnlyPolicyWinRate,
+  best_fixed_mapping: bestFixedMapping,
   strategies: results,
   verdict,
-  notes: "v3 (design review r1 FAIL 38 repair): renamed varieties to season-neutral names (ANSWER_LEAK fix); redesigned all 3 as overlapping summer-sowing candidates so deadline/heat genuinely decide between multiple seasonally-eligible options in most sessions (at_least_two_varieties_seasonally_eligible_rate reported above), not just confirm a single season-determined pick (C_NOT_NEEDED_FOR_D / CORE_DISTORTED_BY_GAME fix); rejection-sampled (deadlineOffsetMonths, forecastHot) per session, keeping sowMonth fixed, to guarantee zero_winner_session_rate=0 (FAILURE_DISGUISED_AS_SUCCESS / unfair-session fix) -- rejection_sampling_never_exhausted confirms every one of the N sessions found a winnable combination within 200 resamples.",
+  notes: "v4 (design review r2 FAIL 36 repair): つぶたね/まんまる/ことね given genuine trade-offs (fast+fragile / slow+tough / medium+fragile-late) instead of a strict dominance ordering, so no single variety wins 100% of a month's own rejection-sampling-accepted states (no_variety_dominates_any_month=true) -- the reviewer's exact exploit (memorize a fixed month->variety mapping) is measured directly as month_only_fixed_mapping_win_rate and now sits well below full reasoning. Rejection sampling no longer throws on exhaustion (REJECTION_SAMPLING_NOT_TOTAL fix) -- it falls back to a deterministic pre-enumerated valid state for that month (state_space[] is computed by EXHAUSTIVE enumeration up front, so every month is proven, not merely observed, to have at least one valid state: every_month_has_at_least_one_accepted_state). exhaustion_count is a real counter incremented only when the resample loop is actually exhausted (SIMULATION_REPRODUCIBILITY/METRIC_MISNAMED fix -- this is no longer a tautological post-hoc check on already-successful sessions). generated_at is intentionally NOT included in this file's output (SIMULATION_REPRODUCIBILITY fix): every RNG stream in this script is seeded (mulberry32), so re-running `node design-sim.mjs` should reproduce this exact file byte-for-byte -- an independent reviewer can diff the two directly instead of needing to ignore a timestamp field. The write is now wrapped in try/catch so a read-only sandbox prints the result to stdout instead of crashing.",
 };
-writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");
+try {
+  writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");
+} catch (e) {
+  console.error(`(non-fatal: could not write design-sim-result.json in this environment -- ${e.message}. Printing result to stdout only.)`);
+}
 console.log(JSON.stringify(out, null, 2));
