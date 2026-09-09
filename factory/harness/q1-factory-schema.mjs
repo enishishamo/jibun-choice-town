@@ -464,7 +464,13 @@ export const FACT_CORRECTION_IMPACT_LEVELS = ["none", "narrowing_only", "require
 // (CORE/SCOPE, A-E, the adopted Game Translation). Anything else that merely CITES a corrected
 // claim (no_manual_exploit_check, play_seeds.risks, ...) is wording/provenance sync and belongs to
 // the EXISTING consistency-repair path, not this one.
-export const FACT_CORRECTION_NARROWING_TYPES = ["scope_core", "ae", "game_translations"];
+// r8 extension: play_seeds/c_compression sit structurally inside the design chain (between AE and
+// Game Translation) and can equally echo a since-corrected claim in a field already protected by
+// consistency-repair (e.g. play_seeds.information_gained, c_compression.compressed_C) — a field
+// consistency-repair's exact-match rule cannot touch. The SAME strict containment check applies;
+// this is not a wider loophole, just recognizing these two artifacts are design-content, not
+// citation-only downstream artifacts.
+export const FACT_CORRECTION_NARROWING_TYPES = ["scope_core", "ae", "play_seeds", "c_compression", "game_translations"];
 
 /** Returns {ok, problems[]} — same shape/convention as validateArtifact / validateReviewEvidenceFile. */
 export function validateFactCorrectionEvidence(payload) {
@@ -477,33 +483,93 @@ export function validateFactCorrectionEvidence(payload) {
   return { ok: problems.length === 0, problems };
 }
 
+// r8 fix (FACT_CORRECTION_GUARD_INCOMPLETE, Human Decision 2026-09-09): a pure serialized-length
+// comparison does not stop a same-or-shorter REPLACEMENT claim from passing as "narrowing" — it
+// only checked size, never containment. A genuine narrowing can only ever REMOVE characters that
+// were already there, never introduce different ones. isNarrowingOf() enforces that mechanically:
+// a string only narrows another if it is a (order-preserving) SUBSEQUENCE of it -- i.e. obtainable
+// by deleting characters, never by substituting or adding any. Arrays/objects narrow structurally
+// (no new keys, no more items, each corresponding item must itself narrow). This also closes the
+// second half of the same finding: fact_sheet itself now gets the identical containment check
+// (previously it was unconditionally eligible with no comparison at all).
+function isSubsequence(needle, haystack) {
+  let i = 0;
+  for (let j = 0; j < haystack.length && i < needle.length; j++) if (haystack[j] === needle[i]) i++;
+  return i === needle.length;
+}
+function isNarrowingOf(newVal, oldVal) {
+  if (deepEqual(newVal, oldVal)) return true;
+  if (typeof newVal === "string" && typeof oldVal === "string") return isSubsequence(newVal, oldVal);
+  if (Array.isArray(newVal) && Array.isArray(oldVal)) {
+    if (newVal.length > oldVal.length) return false;
+    return newVal.every((v, i) => isNarrowingOf(v, oldVal[i]));
+  }
+  if (newVal && oldVal && typeof newVal === "object" && typeof oldVal === "object" && !Array.isArray(newVal) && !Array.isArray(oldVal)) {
+    const newKeys = Object.keys(newVal);
+    if (newKeys.some((k) => !(k in oldVal))) return false; // no new keys introduced
+    return newKeys.every((k) => isNarrowingOf(newVal[k], oldVal[k]));
+  }
+  return false; // type mismatch, or a non-string/array/object primitive that changed
+}
+
 /** Returns {eligible:true} or {eligible:false, reason}. `impact` is the evidence's declared
  *  core_ae_translation_impact (already schema-validated by validateFactCorrectionEvidence). */
 export function checkFactCorrectionEligible(type, oldPayload, newPayload, impact) {
   if (impact === "requires_new_design_choice") {
     return { eligible: false, reason: "declared core_ae_translation_impact=requires_new_design_choice — this needs someone to pick among multiple valid design options, which is a value judgment, not a factual correction. Use human-decision (if Product Identity) or normal repair/redesign (if a design-stage choice)." };
   }
-  if (type === "fact_sheet") return { eligible: true }; // this path exists specifically to correct fact_sheet
+  if (!oldPayload) return { eligible: false, reason: "no existing (CURRENT) artifact to compare against — fact-correct needs a baseline to narrow from" };
+  if (type === "fact_sheet") {
+    // fact_sheet is what this path exists to correct — but every SCHEMA-REQUIRED (substantive)
+    // field must still be a genuine narrowing of what was there, never a replacement (r8 fix: this
+    // used to be unconditional). Extra bookkeeping fields beyond the canonical schema
+    // (candidate_reference_cards, revision_note, derived_from, reverse_audit, ...) are treated the
+    // same way consistency-repair treats non-protected fields: free to edit, since they are
+    // provenance/documentation about the correction itself, not a substantive claim about the
+    // profession.
+    for (const f of ARTIFACT_SCHEMAS.fact_sheet.required) {
+      if (!(f in newPayload)) continue; // dropping a whole optional... required fields must stay present (validateArtifact enforces this separately)
+      if (!isNarrowingOf(newPayload[f], oldPayload[f])) return { eligible: false, reason: `fact_sheet.${f} is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim` };
+    }
+    return { eligible: true };
+  }
   if (!FACT_CORRECTION_NARROWING_TYPES.includes(type)) {
     return { eligible: false, reason: `${type} is not eligible for fact-correct narrowing (only fact_sheet and ${FACT_CORRECTION_NARROWING_TYPES.join("/")} are) — an artifact that only CITES the corrected claim belongs on the consistency-repair path instead` };
   }
-  if (!oldPayload) return { eligible: false, reason: "no existing (CURRENT) artifact to compare against" };
   if (impact === "none") {
     // exactly as strict as consistency-repair: this type must not need to change AT ALL
     if (!deepEqual(oldPayload, newPayload)) return { eligible: false, reason: `declared core_ae_translation_impact=none but ${type}'s content changed — either the impact declaration is wrong (use narrowing_only) or this isn't actually needed` };
     return { eligible: true };
   }
-  // narrowing_only: protected fields may shrink (or stay the same) but never grow, and the option
-  // space (which seeds/translations exist, which one is adopted) may never change.
-  const lenOf = (v) => JSON.stringify(v ?? "").length;
+  // narrowing_only: protected fields may only narrow (never grow, never get replaced by different-
+  // but-same-length content), and the option space (which seeds/translations exist, which one is
+  // adopted) may never change.
   if (type === "scope_core") {
     for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS.scope_core) {
-      if (lenOf(newPayload[f]) > lenOf(oldPayload[f])) return { eligible: false, reason: `scope_core.${f} got LONGER — narrowing_only may only remove/shrink content, not add it` };
+      if (!isNarrowingOf(newPayload[f], oldPayload[f])) return { eligible: false, reason: `scope_core.${f} is not a narrowing of its previous content — narrowing_only may only remove content, never replace or add it` };
     }
   }
   if (type === "ae") {
     for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS.ae) {
-      if (lenOf(newPayload[f]) > lenOf(oldPayload[f])) return { eligible: false, reason: `ae.${f} got LONGER — narrowing_only may only remove/shrink content, not add it` };
+      if (!isNarrowingOf(newPayload[f], oldPayload[f])) return { eligible: false, reason: `ae.${f} is not a narrowing of its previous content — narrowing_only may only remove content, never replace or add it` };
+    }
+  }
+  if (type === "c_compression") {
+    for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS.c_compression) {
+      if (!isNarrowingOf(newPayload[f], oldPayload[f])) return { eligible: false, reason: `c_compression.${f} is not a narrowing of its previous content — narrowing_only may only remove content, never replace or add it` };
+    }
+  }
+  if (type === "play_seeds") {
+    const oldSeeds = Array.isArray(oldPayload.seeds) ? oldPayload.seeds : [];
+    const newSeeds = Array.isArray(newPayload.seeds) ? newPayload.seeds : [];
+    if (oldSeeds.length !== newSeeds.length || !deepEqual(oldSeeds.map((s) => s.seed_id).sort(), newSeeds.map((s) => s.seed_id).sort())) {
+      return { eligible: false, reason: "play_seeds: seeds were added or removed — that changes the option space, not just a fact" };
+    }
+    for (const os of oldSeeds) {
+      const ns = newSeeds.find((s) => s.seed_id === os.seed_id);
+      for (const f of PLAY_SEED_PROTECTED_ITEM_FIELDS) {
+        if (!isNarrowingOf(ns?.[f], os[f])) return { eligible: false, reason: `play_seeds[${os.seed_id}].${f} is not a narrowing of its previous content — narrowing_only may only remove content, never replace or add it` };
+      }
     }
   }
   if (type === "game_translations") {
@@ -517,7 +583,7 @@ export function checkFactCorrectionEligible(type, oldPayload, newPayload, impact
     const newAdopted = newTr.find((t) => t.translation_id === newPayload.adopted_translation_id);
     if (oldAdopted && newAdopted) {
       for (const f of TRANSLATION_PROTECTED_ITEM_FIELDS) {
-        if (lenOf(newAdopted[f]) > lenOf(oldAdopted[f])) return { eligible: false, reason: `the adopted translation's '${f}' got LONGER — narrowing_only may only remove/shrink content (e.g. drop a discriminating axis that turned out unsupported), not add a new one` };
+        if (!isNarrowingOf(newAdopted[f], oldAdopted[f])) return { eligible: false, reason: `the adopted translation's '${f}' is not a narrowing of its previous content — narrowing_only may only remove content (e.g. drop a discriminating axis that turned out unsupported), never replace or add it` };
       }
     }
   }

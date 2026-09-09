@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-09T04:51:58.482Z",
-  "passed": 38,
+  "ran_at": "2026-09-09T05:35:00.090Z",
+  "passed": 39,
   "failed": 0,
-  "total": 38,
+  "total": 39,
   "results": [
     {
       "id": "A",
@@ -334,8 +334,8 @@
       "detail": {
         "next": {
           "kind": "resume_pipeline",
-          "game_id": "selftest-e",
-          "state": "REPAIRING",
+          "game_id": "legacy-clue-join",
+          "state": "RETURNED",
           "priority": 1
         },
         "wip": {
@@ -344,12 +344,12 @@
           "available": 0,
           "active_pipelines": [
             {
-              "game_id": "legacy-sow-and-grow",
-              "state": "AE_READY"
+              "game_id": "legacy-clue-join",
+              "state": "RETURNED"
             },
             {
-              "game_id": "selftest-ll-debug",
-              "state": "RESEARCHING"
+              "game_id": "legacy-sow-and-grow",
+              "state": "AE_READY"
             },
             {
               "game_id": "selftest-a",
@@ -532,7 +532,7 @@
       "detail": {
         "fc1": true,
         "fc2": true,
-        "fc3_reason": "not eligible for fact-correct: ae.C got LONGER — narrowing_only may only remove/shrink content, not add it"
+        "fc3_reason": "not eligible for fact-correct: ae.C is not a narrowing of its previous content — narrowing_only may only remove content, never replace or add it"
       }
     },
     {
@@ -550,7 +550,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "fc_reason": "not eligible for fact-correct: no_manual_exploit_check is not fact_sheet or scope_core/ae/game_translations; for anything else that merely cites the corrected claim, use consistency-repair"
+        "fc_reason": "not eligible for fact-correct: no_manual_exploit_check is not fact_sheet or scope_core/ae/play_seeds/c_compression/game_translations; for anything else that merely cites the corrected claim, use consistency-repair"
       }
     },
     {
@@ -575,6 +575,16 @@
       "detail": {
         "hd_id": "hd-1",
         "fc_reason": "open Human Decision hd-1 (domains: core_philosophy) — Product Identity issues cannot use fact-correct"
+      }
+    },
+    {
+      "id": "MM",
+      "name": "a same-length REPLACEMENT claim is refused (containment check, not just a length check), while a genuine narrowing (dropping the item) is still accepted",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "replace_reason": "not eligible for fact-correct: fact_sheet.expertise is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim",
+        "genuine_accepted": true
       }
     }
   ],

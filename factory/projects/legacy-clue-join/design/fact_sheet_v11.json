@@ -1,0 +1,88 @@
+{
+  "profession": "医師（救急外来、鑑別診断）",
+  "sources": [
+    {
+      "url": "https://www.jrs.or.jp/publication/jrs_guidelines/20240319125656.html",
+      "type": "official_institution"
+    },
+    {
+      "url": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "type": "official_institution"
+    },
+    {
+      "url": "https://www.jrs.or.jp/citizen/disease/c/c-01.html",
+      "type": "official_institution"
+    },
+    {
+      "url": "https://www.jrs.or.jp/citizen/disease/g/g-04.html",
+      "type": "official_institution"
+    },
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "救急外来を受診した患者。ここでは「3日前からの発熱・咳・労作時呼吸困難」で来院した患者（ch1-3で話・診察・検査・画像を収集済み）。",
+  "representative_duties": [
+    "問診・身体診察・検査（血液）・画像など複数のソースから得た所見を統合し、複数の鑑別診断（今回は肺炎・心不全・喘息発作・気胸）の中から最も所見と整合する一つを選ぶ（鑑別診断）",
+    "選んだ診断と矛盾する所見がないかを確認し、矛盾があれば診断を保留して再検討する"
+  ],
+  "expertise": [
+    "日本呼吸器学会『成人肺炎診療ガイドライン2024』(jrs.or.jp/publication/jrs_guidelines/20240319125656.html): 市中肺炎の診断は臨床像・身体所見・検査・画像を組み合わせて行う",
+    "日本心臓財団『心不全の診断と検査』(jhf.or.jp/check/heart_failure/10): 心不全は聴診・胸部X線・心電図・心エコー・血液検査（BNP）などを総合して判断する。",
+    "日本呼吸器学会『気管支喘息』citizen page (jrs.or.jp/citizen/disease/c/c-01.html): 発作的に咳・喘鳴（ゼーゼー、ヒューヒュー）を伴う呼吸困難が起こる",
+    "日本呼吸器学会『気胸』citizen page (jrs.or.jp/citizen/disease/g/g-04.html): 気胸は胸腔内に空気が貯留し肺が虚脱する病態で、胸痛・呼吸困難が突然起こり、胸部レントゲンで診断できる"
+  ],
+  "candidate_reference_cards": {
+    "note": "4つの診断候補カード（読み物、正解は示さない）の確定文言。各出典のcitizen向け一般的記述に基づく一般像。design review r3 HIGH是正: いずれの記述も『〜ことが多い』という傾向表現に統一し、片側/両側や炎症値の有無を絶対的な排他規則として提示しない（肺炎が多発性・両側性のこともある、心不全が非典型像のこともある、という現実の幅を尊重する）。決め手は単一の所見ではなく、発症の経過・聴診・炎症所見・画像という複数の所見が全体としてどの典型像に一番よく合うかという組み合わせで判断する。 design review r4 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードから、引用元（日本心臓財団）が直接裏付けていない『血液の炎症の数値は上がらない』という比較主張を削除した。日本心臓財団のページが実際に述べるBNP・胸部X線所見（心陰影拡大・両側性変化）のみを根拠とする。 design review r5 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードの『両方の肺に変化が出やすい』という表現は引用元（日本心臓財団）が明示的に述べていなかったため、同ページが実際に支持する心陰影拡大・肺うっ血（肺に水がたまる）という表現に絞った。 design review r7 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE、fact-correct narrowing_only）: expertise/decisionsに残っていた両側性（butterfly/bat-wing陰影）主張を削除し、candidate_reference_cards.heart_failureと一致させた。片側性/両側性という軸自体を鑑別の決め手からは外す。",
+    "pneumonia": {
+      "text": "肺炎（はいえん）: からだの一部で炎症が起き、数日かけて熱・せきが出ることが多い。聴診でパチパチ・プツプツという音、画像でその部分に変化が出やすく、血液の炎症の数値も上がりやすい。",
+      "source": "日本呼吸器学会 成人肺炎診療ガイドライン2024"
+    },
+    "heart_failure": {
+      "text": "心不全（しんふぜん）: 心臓のポンプの力が落ち、胸部X線で心臓の影が大きく見えたり、肺に水がたまる（肺うっ血）ことがある。",
+      "source": "日本心臓財団 心不全の診断と検査"
+    },
+    "asthma": {
+      "text": "喘息発作（ぜんそくほっさ）: 気道が狭くなり、発作的にゼーゼー・ヒューヒューという音とともに息苦しくなることが多い。前にも同じような発作をくり返していることが多く、突然始まりやすい。",
+      "source": "日本呼吸器学会 気管支喘息 citizen page"
+    },
+    "pneumothorax": {
+      "text": "気胸（ききょう）: 肺から空気が漏れて胸の中にたまり、肺がしぼむ。突然、胸の痛みや息苦しさが起こる。",
+      "source": "日本呼吸器学会 気胸 citizen page"
+    }
+  },
+  "tools": [
+    "問診（発症からの経過）",
+    "聴診",
+    "SpO₂・呼吸数",
+    "血液検査（白血球・CRP）",
+    "胸部X線画像",
+    "血圧"
+  ],
+  "information_used": [
+    "3日前からの発熱・咳・労作時呼吸困難（話）",
+    "右胸を聴くとパチパチ（プツプツ）という音がする（診察）",
+    "SpO₂ 88%・頻呼吸（バイタル）",
+    "白血球・CRP上昇（検査）",
+    "右肺の浸潤影（画像）",
+    "血圧128/78（バイタル、基準内）"
+  ],
+  "decisions": [
+    "4つの鑑別候補（肺炎／心不全／喘息発作／気胸）のうち、所見全体と最も整合する1つを選ぶ",
+    "選んだ診断と矛盾する所見がないかを確認する",
+    "血圧のように診断の決め手にならない所見を、決め手と混同しない"
+  ],
+  "outputs_or_value": "所見と整合する診断（肺炎の疑い）に基づき、治療方針（本編では『治療を始めよう』）へ進める",
+  "adjacent_profession_boundaries": "検査技師（labtech）・放射線技師（radtech）は所見を『生成』する側（ch2/ch3で別途Q1化済み）。医師（doctor）はch1で情報収集、ch4で統合・鑑別診断を行う。",
+  "uncertainties": [
+    "本症例の詳細な検査値・画像所見はプロトタイプ用に簡略化されている（fact_sheet v1からの継続）。4つの候補の一般像は各学会・財団のcitizen向け一般記述に基づくが、本症例が実際にどの所見の組み合わせなら『心不全ではない』と確実に言い切れるかの臨床的閾値（例: BNP具体値）までは踏み込まない——ゲームは一般像との整合/矛盾の比較に留める。",
+    "design review r3 HIGH是正: 右胸の聴診所見をパチパチ（プツプツ、断続性ラ音）と明記し、喘息候補が特徴とするゼーゼー（連続性ラ音・喘鳴）と紛れないようにした。ch1のClueBoardGame.tsxの元の聴診結果テキスト（『ゼーゼー、プツプツという音』）は断続性・連続性の両方の音を含む簡略化された表現だったが、ch4ではこの症例の診断を左右する断続性（プツプツ）の質に着目することを明記する。",
+    "design review r4 HIGH是正: 心不全カードの炎症数値に関する比較主張（削除済み）は引用元で直接裏付けられていなかった。肺炎の炎症数値上昇（lab所見）は本症例の検査結果そのものとして扱い、他候補との比較主張には用いない。",
+    "design review r5 HIGH是正: 心不全カードから両側性を明示するのではなく、引用元が直接述べる心陰影拡大・肺うっ血のみを記載する。",
+    "design review r7 HIGH是正（fact-correct narrowing_only）: expertise[1]/decisions[1]に残っていた両側性(butterfly/bat-wing)主張を削除。片側性/両側性を鑑別軸として使わない（候補カード・ゲーム内Cはこの軸を含まない）。"
+  ],
+  "derived_from": "reverse_audit + light research (research-rules.md準拠、官公庁・学会の一次情報を優先)",
+  "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
+  "revision_note": "v3 (design review r2 HIGH是正): 気管支喘息・気胸の出典URLを実際にsourcesへ追加（v2はレビュープロンプトに記載しただけでファイル未反映というARTIFACT_CHAIN/FACTUAL_GROUNDING是正）。4候補カードの確定文言をcandidate_reference_cardsとして明記し、game_translations/game_spec/実装がすべてこの文言を参照する単一の正本とする。 v4 (design review r3 HIGH是正): 候補カード文言を非排他的な傾向表現に統一。exam所見の表現をパチパチ（プツプツ）に限定し、喘息候補のゼーゼーとの混同を避けた。 v5 (design review r4 HIGH是正): 心不全カードの未裏付け主張を削除。 v6 (design review r5 HIGH是正): 心不全カードの表現を引用元が直接支持する範囲（心陰影拡大・肺うっ血）に絞った。 v7 (design review r7 HIGH是正, fact-correct narrowing_only): expertise/decisionsの両側性主張を削除し、片側性/両側性を鑑別軸から外した。"
+}

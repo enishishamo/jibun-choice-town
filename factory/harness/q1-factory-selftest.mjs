@@ -483,10 +483,13 @@ let qTask = "selftest-q1-release";
   submitAll("selftest-gg");
   run(PIPE, ["review", "selftest-gg", "--evidence", fx("gg-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
   run(PIPE, ["gate", "selftest-gg"]);
+  const fsNarrowed = { ...ART.fact_sheet, expertise: ["e", "a claim the cited source does not actually support, now removed"] };
+  // submitted once via plain submit first so there is a real 2-item baseline to narrow FROM
+  run(PIPE, ["submit", "selftest-gg", "fact_sheet", "--file", fx("gg-fs0.json", fsNarrowed)]);
   const before = pipeline("selftest-gg");
-  const fsNarrowed = { ...ART.fact_sheet, expertise: ["a claim the cited source does not actually support, now removed"] };
+  const fsTrulyNarrowed = { ...ART.fact_sheet, expertise: ["e"] }; // dropped the unsupported second item entirely -- a genuine narrowing (array shrinks, remaining item unchanged)
   const ev = fx("gg-ev.json", { claim_removed: "an unsupported claim", cited_source: "https://example.gov/x", source_does_not_support_because: "the page never states this", core_ae_translation_impact: "none" });
-  const fc = run(PIPE, ["fact-correct", "selftest-gg", "fact_sheet", "--file", fx("gg-fs.json", fsNarrowed), "--evidence", ev, "--reason", "citation does not support the claim"]);
+  const fc = run(PIPE, ["fact-correct", "selftest-gg", "fact_sheet", "--file", fx("gg-fs.json", fsTrulyNarrowed), "--evidence", ev, "--reason", "citation does not support the claim"]);
   const after = pipeline("selftest-gg");
   record("GG", "a citation-does-not-support-claim correction (impact=none) is accepted via fact-correct without touching repair_count/redesign_count", fc.status === 0 && fc.json?.accepted === true && fc.json?.budgets_unaffected === true && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count && after.artifacts.fact_sheet.version === before.artifacts.fact_sheet.version + 1, { repair: [before.repair_count, after.repair_count], fc_reason: fc.json?.reason });
 }
@@ -500,7 +503,7 @@ let qTask = "selftest-q1-release";
   const evNarrow = fx("hh-ev.json", { claim_removed: "an axis the source never supported", cited_source: "https://example.gov/x", source_does_not_support_because: "not stated by the source", core_ae_translation_impact: "narrowing_only" });
   const fsShrunk = { ...ART.fact_sheet, decisions: ["d"] }; // shorter than original ART.fact_sheet.decisions
   const fc1 = run(PIPE, ["fact-correct", "selftest-hh", "fact_sheet", "--file", fx("hh-fs.json", fsShrunk), "--evidence", evNarrow, "--reason", "removing the unsupported axis from the fact sheet"]);
-  const aeShrunk = { ...ART.ae, C: "c" }; // shorter than "専門性"
+  const aeShrunk = { ...ART.ae, C: "専" }; // a genuine subsequence of "専門性" -- a real narrowing, not just shorter
   const fc2 = run(PIPE, ["fact-correct", "selftest-hh", "ae", "--file", fx("hh-ae.json", aeShrunk), "--evidence", evNarrow, "--reason", "the same axis no longer belongs in C", "--source", `fact_sheet@${pipeline("selftest-hh").artifacts.fact_sheet.version}`]);
   const aeGrown = { ...ART.ae, C: "a much longer replacement description that introduces a brand new idea" };
   const fc3 = run(PIPE, ["fact-correct", "selftest-hh", "ae", "--file", fx("hh-ae2.json", aeGrown), "--evidence", evNarrow, "--reason", "trying to sneak in a longer replacement"]);
@@ -548,6 +551,22 @@ let qTask = "selftest-q1-release";
   record("LL", "an open Human Decision with Product Identity domains blocks fact-correct entirely", hd.status === 0 && fc.status === 1 && fc.json?.accepted === false && /Product Identity/.test(fc.json?.reason ?? ""), { hd_id: hd.json?.human_decision?.id, fc_reason: fc.json?.reason });
 }
 
+// MM: a same-length-or-SHORTER REPLACEMENT claim is refused, not just anything that grows (design review r8 Human Decision: length alone is not containment)
+{
+  init("selftest-mm");
+  submitAll("selftest-mm");
+  const fsBaseline = { ...ART.fact_sheet, expertise: ["e", "the original unsupported claim, now to be corrected"] };
+  run(PIPE, ["submit", "selftest-mm", "fact_sheet", "--file", fx("mm-fs0.json", fsBaseline)]);
+  const ev = fx("mm-ev.json", { claim_removed: "x", cited_source: "https://example.gov/x", source_does_not_support_because: "y", core_ae_translation_impact: "none" });
+  // same length as the original second item, but a DIFFERENT claim substituted in -- not a subsequence of the original
+  const fsReplaced = { ...ART.fact_sheet, expertise: ["e", "a totally different assertion nobody ever fact-checked, same len"] };
+  const fcReplace = run(PIPE, ["fact-correct", "selftest-mm", "fact_sheet", "--file", fx("mm-fs1.json", fsReplaced), "--evidence", ev, "--reason", "trying to swap in a different same-length claim"]);
+  // a genuine narrowing (drop the second item entirely) must still be accepted
+  const fsGenuine = { ...ART.fact_sheet, expertise: ["e"] };
+  const fcGenuine = run(PIPE, ["fact-correct", "selftest-mm", "fact_sheet", "--file", fx("mm-fs2.json", fsGenuine), "--evidence", ev, "--reason", "genuinely dropping the unsupported claim"]);
+  record("MM", "a same-length REPLACEMENT claim is refused (containment check, not just a length check), while a genuine narrowing (dropping the item) is still accepted", fcReplace.status === 1 && fcReplace.json?.accepted === false && /not a narrowing/.test(fcReplace.json?.reason ?? "") && fcGenuine.status === 0 && fcGenuine.json?.accepted === true, { replace_reason: fcReplace.json?.reason, genuine_accepted: fcGenuine.json?.accepted });
+}
+
 // ================================================================ cleanup
 if (!KEEP) {
   for (const id of new Set(created)) rmSync(join(ROOT, "factory", "projects", id), { recursive: true, force: true });
@@ -581,7 +600,7 @@ const summary = { ran_at: new Date().toISOString(), passed: results.filter((r) =
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.json`), JSON.stringify(summary, null, 2) + "\n");
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.md`), [
   `# Q1 Factory self-test — ${DATE}`, "",
-  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), and GG-LL (2026-09-09 legacy-clue-join r7 Human Decision: FACTUAL_EVIDENCE_CORRECTION — citation-does-not-support-claim corrections are budget-free at impact=none, narrowing_only allows a shrink into CORE/A-E/the adopted translation but refuses anything that grows, requires_new_design_choice is refused outright, citation-only downstream artifacts must use consistency-repair instead, budgets are never recovered or consumed even after a real repair, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
+  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), GG-LL (2026-09-09 legacy-clue-join r7 Human Decision: FACTUAL_EVIDENCE_CORRECTION — citation-does-not-support-claim corrections are budget-free at impact=none, narrowing_only allows a shrink into CORE/A-E/the adopted translation but refuses anything that grows, requires_new_design_choice is refused outright, citation-only downstream artifacts must use consistency-repair instead, budgets are never recovered or consumed even after a real repair, Product Identity blocks it outright), and MM (2026-09-09 legacy-clue-join r8 Human Decision: the fact-correct guard is a containment/subsequence check, not a length check -- a same-or-shorter-length REPLACEMENT claim is refused, only a genuine removal is accepted), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
   `Result: **${summary.passed}/${summary.total} PASS**${failed ? ` (${failed} FAIL)` : ""}`, "",
   "| id | scenario | result | mode |", "|---|---|---|---|",
   ...results.map((r) => `| ${r.id} | ${r.name} | ${r.ok ? "PASS" : "FAIL"} | ${r.mode} |`), "",
