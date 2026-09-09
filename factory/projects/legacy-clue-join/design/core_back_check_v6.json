@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "design review r2（FAIL 54、BLOCKER×2: ANSWER_LEAK_POSITION、BRUTE_FORCE_SUCCESS）の是正として、t1c-shuffled-commit-and-defendを採用。r1で外在化したD（診断コミット＋根拠選択）の構造自体は維持しつつ、診断候補・所見カードの表示順をセッションごとにシャッフルすることで、r2が発見した『固定提示順=答え』という新しい答え漏れを構造的に排除した。design-sim（8000試行/戦略）で、r2の指摘した具体的攻略（先頭診断+固定位置1,2,4,5）を多数のシャッフル済みセッションで再検証し、理論的な偶然一致確率（1/60、1/30）まで下がることを機械的に確認。fact_sheet_v3・ae_v3・c_compression_v3・play_seeds_v4・no_manual_exploit_check_v4を4候補・フラットフィードバック・出典明記で内部整合させた。CORE（複数所見を診断候補の典型像と照合し、決め手になる所見を見極める）・SCOPE（救急外来診療の統合段階）は変更なし。既存のdiscoveryEcho/resolution（medical.ts）は変更不要。 design review r3（FAIL 58、BLOCKER 0件、HIGH×2: ARTIFACT_CHAIN_INCONSISTENT、CLINICAL_MODEL_OVERSTATED）の是正として、scope_core_v3/c_compression_v4/play_seeds_v5を4候補・フラットフィードバックへ完全統一し、fact_sheet_v4で候補カード文言を傾向表現に、診察所見をパチパチ（プツプツ）限定に修正した（喘息候補のゼーゼーとの混同回避）。position_leak_closed（r2是正）は引き続き維持されている（design-sim-result.json）。MEDIUM 2件（シャッフルのライフサイクル、375pxレイアウト）は実装段階の検証項目として記録した。 design review r4（FAIL 55、0 blockers、HIGH×3）の是正として、t1d-flexible-commit-and-defendを採用: 決め手所見の判定を『検査・画像必須、話・診察任意、呼吸状態・循環不可』という柔軟な基準へ変更し、査読者自身が示した臨床的に妥当な代替を含む4通りの組み合わせを正解として受け入れるようにした（CLINICAL_MODEL_UNDERDETERMINED是正）。ae.Eのフラットフィードバック統一（ARTIFACT_CHAIN_INCONSISTENT是正）、心不全カードの未裏付け主張削除（FACTUAL_GROUNDING_INCOMPLETE是正）も反映。position_leak_closed（r2/r3是正）は引き続き維持。",
+  "pass": true
+}

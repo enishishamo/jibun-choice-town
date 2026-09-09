@@ -1,0 +1,10 @@
+{
+  "A": "医療編／前半：診断まで／救急外来（もどってきた）。3日前からの発熱・咳・労作時呼吸困難で来院した患者について、ch1-3で集めた話・診察・検査・画像がそろった。",
+  "B": "6つの所見（話・診察・SpO₂・検査・画像・血圧）を、4つの鑑別診断候補（肺炎／心不全／喘息発作／気胸）と照らし合わせ、1つにコミットし、決め手になる所見で裏付ける診断パズル",
+  "C": "問診（発症からの経過）・聴診・SpO₂/呼吸数・血液検査（白血球・CRP）・胸部X線画像・血圧。それぞれの所見が持つ意味（炎症の有無、発症様式）と、4つの鑑別診断候補それぞれの典型像（fact_sheet_v6.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像）",
+  "D": "所見全体を4つの鑑別診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ。整合しなければ、コミットと根拠のどちらか（または両方）を自分で選び直す",
+  "E": "正しい診断（肺炎）と、それを裏付ける所見の組み合わせ（複数の妥当な組み合わせがありうる）が選べたら、治療方針へ進める。整合しなければ、フラットな『もう一度見比べてみよう』とだけ示され、システムは診断・所見のどちらが違うかを一切指摘しない。2回考えても整合しない場合は、応援の医師と見直すという正直な保留（partial）になる",
+  "derived_from": "reverse_audit + fact_sheet_v6 + scope_core_v5",
+  "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
+  "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6/scope_core_v5へ更新。 v8 (design review r7 HIGH是正, fact-correct narrowing_only): Cの記述から片側性/両側性という、引用元が支持しない軸への言及を削除。"
+}

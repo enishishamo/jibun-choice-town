@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "Redesign is a pure text/card UI (diagnosis candidate cards + evidence cards), matching the existing ClueBoardGame.tsx/DiagnoseGame.tsx CSS-card precedent. Reuses the existing place image public/assets/medical/er_exam.jpg (already shipped, unchanged, owned by med-doctor/med-diagnose experience wiring in src/data/content/medical.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+}

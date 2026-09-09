@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 77,
+    "blockers": [],
+    "high": [
+      "ARTIFACT_CHAIN_INCONSISTENT — §3 RELEASE BLOCKER-classではないが、現行成果物チェーンが完全には同期していない。scope_core_v4.derived_from、ae_v6.derived_from、core_scope_check_v2.notesがsuperseded fact_sheet_v2を参照し、no_manual_exploit_check_v7.clinical_model_correctionはfact_sheet_v5と削除済みの『両側性変化』を依然として現行根拠のように記述している。さらに採用seedのplay_seeds_v7.risksに『根拠の完全一致も同時に要求』という旧方式を想起させる表現が残り、直前のsystem_reactionにある4通り受容規則と不整合。GAME_SPEC前に解消必須のHIGH。",
+      "FACTUAL_GROUNDING_INCOMPLETE — §3 RELEASE BLOCKER-classではないが、no_manual_exploit_check_v7が日本心臓財団のページは『両側性変化』を支持すると断定しており、今回の修正理由およびfact_sheet_v6の確定カードと矛盾する。実装者がこの現行成果物を参照すると、削除済みの未裏付け主張を復活させ得るためHIGH。"
+    ],
+    "medium": [
+      "SHUFFLE_LIFECYCLE_UNVERIFIED — 実装段階限定、§3 RELEASE BLOCKER-classではない。診断・所見の独立シャッフルをセッション中一度だけ生成し、採点を表示indexではなくIDで行い、partial後の再挑戦時だけ再生成する要件は明記されているが未実装・未検証。",
+      "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 実装段階限定、§3 RELEASE BLOCKER-classではない。375px幅で診断4枚、所見6枚、残回数、フィードバック、送信操作を扱い、『？』閲覧後も選択状態へ戻れることを実機確認する受入条件は記載されている。"
+    ],
+    "low": [
+      "FUN_POLISH — §3 RELEASE BLOCKER-classではない。比較・コミット・根拠選択は遊びとして成立するが、反応はハイライトとフラットな一言が中心で、操作の気持ちよさや結果演出はGAME_SPECで強化余地がある。"
+    ],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "現行成果物にfact_sheet_v2/v5参照、削除済み両側性主張、採用seed内の旧完全一致を示唆する文言が残る。§3 RELEASE BLOCKER-classではない純粋な伝播不整合だが、仕様入力として曖昧なためGAME_SPEC前に解消必須。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FACTUAL_GROUNDING_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "no_manual_exploit_check_v7が日本心臓財団の出典について、今回未裏付けとして除去した『両側性変化』をなお支持済みと記録している。§3 RELEASE BLOCKER-classではないが、現行チェーンに事実上の矛盾を残す。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "一度だけのシャッフル、ID採点、再挑戦時の再生成について受入条件は十分だが、実装段階での回帰試験が必要。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "375pxレイアウトの受入条件は記載済みだが、実機での可読性・操作復帰確認が必要。",
+        "fixable_by_local_repair": false
+      }
+    ],
+    "round5_findings_confirmed_closed": {
+      "artifact_chain_fully_consistent": false,
+      "heart_failure_card_source_supported": true
+    },
+    "sim_verification": {
+      "reran": true,
+      "all_flags_true": true,
+      "notes": "書込み禁止環境のため元スクリプトはdesign-sim-result.json更新時にEPERMとなったが、結果ファイル書込み行だけを除いた同一計算ロジックを再実行した。11 verdict flagsはすべてtrue、winning_joint_combos=4/252、4正規組合せ=100%、乱択2回=3.06%、固定位置戦略=1.60%/3.26%、select-allおよびカテゴリ・数値・深刻さヒューリスティック=0%。採点ロジックの回帰はない。"
+    },
+    "ready_for_game_spec": false,
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/projects/legacy-clue-join/design/play_seeds_v7.json — 採用seedのsystem_reactionは検査・画像必須、話・診察任意の4通りへ修正済みだが、risksには『根拠の完全一致も同時に要求』が残る。",
+      "factory/projects/legacy-clue-join/design/scope_core_v4.json — derived_fromがsuperseded fact_sheet_v2のまま。",
+      "factory/projects/legacy-clue-join/design/ae_v6.json — Cはfact_sheet_v6を参照する一方、derived_fromはfact_sheet_v2 + scope_core_v2のまま。",
+      "factory/projects/legacy-clue-join/design/core_scope_check_v2.json — 現行チェックのnotesがfact_sheet_v2との整合を根拠にしている。",
+      "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v7.json — clinical_model_correctionがfact_sheet_v5を参照し、日本心臓財団がBNP・心陰影拡大・両側性変化を支持するとする削除前の説明を保持。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v6.json — heart_failureカード本文は心陰影拡大と肺うっ血だけに限定され、問題の『両方の肺に変化が出やすい』は削除済み。",
+      "factory/projects/legacy-clue-join/design/game_translations_v10.json — adopted_translation_idはt1d-flexible-commit-and-defendで、採用案のsystem_reactionは4通り受容、2回失敗後partial、フラットフィードバック、独立シャッフルを一貫して指定。旧完全一致規則は非採用translationの履歴説明にも現れるが、採用案とは明確に区別されている。",
+      "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json — 説明文なしで候補の？・コミット・所見トグル・送信を直接提示し、職業名を先出ししない。",
+      "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v7.json — シャッフルの一度生成、IDベース採点、375px実機確認を実装段階の必須受入条件として明記。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — 再実行で全フラグtrue、内容非依存の突破経路なし。",
+      "factory/state/legacy/reverse-audits/clue_join.json — 旧実装の分類中心・診断コミット不在・総当たり可能というGAME_TRANSLATION_REBUILD理由に対し、新設計は診断コミットと根拠選択を子ども自身のDとして回復。",
+      "src/data/content/medical.ts — ch1収集、ch2検査生成、ch3画像生成、ch4統合診断という役割分担、および既存resolution/discoveryEchoと新設計が整合。"
+    ],
+    "recommended_actions": [
+      "修理・再設計予算がともに尽きた状態でHIGHが残ったため、Human DecisionへESCALATEする。",
+      "Human判断用に、scope_core_v4・ae_v6・core_scope_check_v2のsuperseded fact_sheet参照、no_manual_exploit_check_v7のfact_sheet_v5/両側性記述、play_seeds_v7.risksの『完全一致』表現を列挙する。",
+      "設計を進める例外承認が得られない限りGAME_SPECへ進めない。例外承認する場合も、採用仕様の正本をfact_sheet_v6とt1dの4通り規則に固定し、矛盾する記述を実装入力から除外する。"
+    ]
+  },
+  "elapsed_sec": 195.63
+}

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "design review r1（FAIL 52、BLOCKER×2: ANSWER_LEAK_LABEL_POSITION/C_NOT_NEEDED_FOR_D、D_NOT_EXTERNALIZED）の是正として、t1b-commit-and-defendを採用。CORE（複数所見を診断候補の典型像と照合し、決め手になる所見を見極める）は維持されるが、Dの外在化が『所見の部分集合選択のみ』から『診断候補への明示的コミット＋決め手所見の選択』という2つの子ども自身の操作へ強化され、d_still_performed_by_childがより厳密に成立するようになった。所見カテゴリラベルの再整理・診断候補4択化・フィードバックのフラット化により、design-sim（8000試行/戦略）で内容非依存の攻略経路がいずれも0〜1%未満であることを機械的に検証。既存のdiscoveryEcho/resolution（medical.tsのmed-diagnose experience）は『情報を組み合わせて1つの見立てにまとめる』という記述で、診断コミットを含む新しいDともそのまま整合し変更不要。SCOPEは救急外来診療の統合段階のまま変更なし。",
+  "pass": true
+}

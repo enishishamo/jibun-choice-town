@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "CORE（複数所見を鑑別診断候補と照合し矛盾を確認する）はfact_sheet_v10の学会ガイドライン記述と整合。SCOPEはch1-3で収集した所見を統合する診療の最終段階であり、救急外来診療の代表的な一部（プロセスの一断面であって全体を歪めない）。Profession Name Hidden Test: 記述だけでは職種名を明示しないが、E（治療方針決定）を含む文脈全体は医師固有。他チャプター（検査技師=ch2、放射線技師=ch3）と役割が重複しない。",
+  "revision_note": "v3 (PREPARED, r6 fix, not submitted): notes内のfact_sheet参照をv6へ更新。"
+}

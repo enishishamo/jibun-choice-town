@@ -1,0 +1,34 @@
+{
+  "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見を選んで『まとめる』。正解は肺炎、決め手は検査・画像を必ず含み、話・診察は任意（呼吸状態・循環は含めない）という4通りの組み合わせのいずれか。",
+  "initial_visual_state": "4つの診断候補カード（タイトル、『？』読み物ボタンで一般的な典型像を表示、『これだと思う』コミットボタン）。6つの所見カード（話・診察・呼吸状態・検査・画像・循環、タップで選択トグル）。下部に『▶ これでまとめてみる（あと2回）』。カードの表示順は今夜のセッション開始時に1回だけ独立にシャッフルされ（診断カード・所見カードそれぞれ）、同じ夜の間は固定。説明文・操作手順の文章はない。",
+  "interactive_objects": [
+    "diagnosis candidate card x4 (『？』read-only pattern text toggle, 『これだと思う』commit button, mutually exclusive — only one committed at a time)",
+    "evidence card x6 (tap to toggle selection, multi-select, free to change before submit)",
+    "submit button (budgeted, 2 attempts)"
+  ],
+  "primary_action": "診断候補カードの1つに『これだと思う』でコミットする（自由に変更可、コストなし）。所見カードを複数タップして根拠として選ぶ（自由に変更可、コストなし）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。",
+  "C": "6つの所見カードの内容（話=発症の経過、診察=聴診の音の質、呼吸状態=SpO₂・呼吸数、検査=白血球・CRP実数値、画像=肺の変化、循環=血圧）と、4つの診断候補カードの傾向的な典型像（fact_sheet.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像、『〜ことが多い』という表現で断定を避ける）。",
+  "D": "所見全体を4つの診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ（決め手＝検査・画像は必須、話・診察は任意、呼吸状態・循環は不可）。整合しなければ、フラットな『もう一度見比べてみよう』を手がかりに自分で選び直す。",
+  "system_reactions": [
+    "所見カードタップ → 選択状態のトグル（視覚変化のみ、コストなし）",
+    "診断候補カードの『？』タップ → 典型像テキストの開閉（コストなし）",
+    "診断候補カードの『これだと思う』タップ → その候補にコミット（他候補は自動解除、コストなし、変更自由）",
+    "提出（診断=肺炎 かつ 所見選択が『検査・画像を含み、呼吸状態・循環を含まない』4通りのいずれか） → 成功。結論・選んだ根拠・心不全/喘息発作/気胸それぞれの傾向的な典型像との対比を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならなかった』と明記して治療方針（既存resolution/discoveryEcho、変更なし）へ",
+    "提出（診断・所見のいずれかまたは両方が条件を満たさない） → フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』の一言のみ。診断/所見どちらが違うか、多い/少ないかは一切示さない",
+    "budget消費後、不一致が続けばpartialへ"
+  ],
+  "state_transitions": [
+    "night(選択中) -> success(診断=肺炎かつ所見が有効な4通りの組み合わせのいずれかに一致)",
+    "night -> retry(不一致、budget消費、budget>0ならnightへ戻る)",
+    "night -> partial(budget=0で未成功、正直な保留)",
+    "success/partial -> restart可能(同じ患者/所見のまま選び直し、表示順は再シャッフル)"
+  ],
+  "failure_behavior": "予算内の不一致はフラットな一言のみでnightへ戻る。2回とも不一致なら『今回ははっきりした決め手にたどりつけなかった。応援の医師と、もう一度手がかりを見直すことになった』という正直なpartial（進行は可能、Job Revealは成功時と同じdiscoveryEchoに接続——実際の救急外来でも保留・コンサルトは正直な結果であり成功の偽装ではない）",
+  "retry_behavior": "partial後は『もう一度考える』で同じ6所見・4候補のまま再挑戦できる（restartSameCase相当、内容は変えない、表示順は再シャッフル）",
+  "E": "正しい診断＋根拠の組み合わせに成功すると、結論と根拠、代替診断3つそれぞれとの対比、呼吸状態/循環の位置づけの明記が示され、既存のresolution（『肺で炎症が起きている可能性が高い』）→discoveryEchoへ進む。E自体（治療方針を医師が決める）は医師自身の権限内で閉じており、他者の裁量判断は介在しない。",
+  "job_reveal": "既存 factory側 src/data/content/medical.ts の med-diagnose experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし。",
+  "first_5_seconds": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json 準拠",
+  "no_manual_requirements": "操作手順の説明文なし。所見カード・候補カードの意味は、タップと『？』読み物のみで発見できる。budgeted submitボタンの『あと2回』表示は既存Q1games（clue_board/xray_shoot等）と同じ予算表示の慣習に従う。",
+  "mobile_constraints": "375px幅、10カード（候補4+所見6）+ボタン+フィードバック+残回数がスクロールなしで収まるレイアウト。診断候補カードは2x2グリッド、所見カードは2列x3行または横スクロールなしの縦積み。タップ領域44px以上。診断候補・所見カードの表示順は、独立したFisher-Yatesシャッフルをセッション開始時（コンポーネントmount時）に1回だけ生成し、useState等で保持して同じ夜の間は再生成しない（partial後の再挑戦・restartSameCase時のみ再生成）。採点は常にID（seg/pointに相当するカードID）で行い、表示上のindex/positionを一切参照しない。『？』典型像を開いてもコミット状態・所見選択・残回数・送信ボタンへ迷わず戻れるレイアウトにする（典型像はモーダルではなくインラインの折りたたみとし、他の操作を隠さない）。",
+  "asset_requirements": ["no new art asset — reuses public/assets/medical/er_exam.jpg (place image, already used by med-doctor/med-diagnose, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, same as ClueBoardGame.tsx/DiagnoseGame.tsx precedent)"]
+}

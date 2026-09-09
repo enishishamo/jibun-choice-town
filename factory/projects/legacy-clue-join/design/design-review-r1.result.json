@@ -1,0 +1,120 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 52,
+    "game_quality_score": 58,
+    "blockers": [
+      "[C_NOT_NEEDED_FOR_D / ANSWER_LEAK_LABEL_POSITION] §3 RELEASE BLOCKER-class: the fixed six-card structure makes the winning set identifiable without differential-diagnosis reasoning. Selecting every non-vital source—話・診察・検査・画像—and excluding the two cards labeled as vitals—SpO₂ and 血圧—wins 100%. The four required cards also occupy fixed positions 1,2,4,5. This contradicts no_manual_exploit_check_v2's unsupported claims that label and position leaks are absent.",
+      "[D_NOT_EXTERNALIZED] §3 RELEASE BLOCKER-class: scope_core_v2 and ae_v2 define D as choosing the most consistent diagnosis and checking contradictory findings, but the adopted mechanic never asks the child to choose, rank, eliminate, or otherwise commit to a diagnostic hypothesis. Exact-set selection is not equivalent to the stated differential-diagnosis D, and the system supplies the diagnosis afterward."
+    ],
+    "high": [
+      "[ARTIFACT_CHAIN_INCONSISTENT] Must fix before spec; not independently a §3 blocker beyond the D defect above. ae_v2 and play_seeds_v2 still require a selected diagnosis and diagnosis-specific contradiction feedback, while game_translations_v2 removes diagnosis selection and promises generic feedback. core_back_check_v2 nevertheless asserts full preservation.",
+      "[FACTUAL_GROUNDING_INCOMPLETE] Must fix before spec and potentially §3 blocker-class if implemented as written. The two candidate reference-card sources/texts are not specified anywhere, so answer leakage and factual accuracy cannot be verified. The asthma claims are explicitly labeled only as a general clinical picture and have no cited source. The fact sheet attributes a detailed pneumonia-versus-heart-failure comparison—including normally unraised WBC/CRP—to the Japan Heart Foundation without quotation, section mapping, or captured evidence.",
+      "[CLINICAL_MODEL_OVERSTATED] Must fix before spec; potentially §3's major-real-world-error class. Declaring exactly four findings to be the uniquely valid evidence and treating SpO₂ and blood pressure as evidence that should not be selected teaches an artificial exclusion rule. SpO₂ 88% and respiratory rate 24 are clinically consequential assessment evidence, while blood pressure is relevant to hemodynamic severity even if normal here. The task must distinguish 'etiologic discriminator' from 'clinically important evidence' explicitly.",
+      "[RETRY_FEEDBACK_LEAK] Must fix before spec; §3 answer-leak class when combined with fixed card grouping. extra_evidence, missing_evidence, and extra_and_missing disclose set-relation information. Although they do not name a card, they are more revealing than the claimed generic 'too many/not enough' feedback and were not included in the simulation's adaptive strategies."
+    ],
+    "medium": [
+      "[JOB_REVEAL_PARTIAL_MISMATCH] Implementation-stage concern, not a §3 blocker by itself: unchanged discoveryEcho says the child connected information into one diagnosis, but the actual scored action is excluding two predetermined cards; without hypothesis manipulation, it overstates what the player did.",
+      "[FIRST_TOUCH_AMBIGUITY] Polish/implementation concern: with no instruction line, candidate cards and selectable evidence cards differ only through interaction behavior. The abstract phrase '決め手になる' may not establish why clinically important SpO₂ must be omitted.",
+      "[SIM_COVERAGE_INSUFFICIENT] no_manual_exploit_check_v2 and core_back_check_v2 overclaim what the simulator proves. It verifies only an exact-set validator and several random/static strategies; it cannot prove label, position, hierarchy, clinical authenticity, candidate-copy leakage, or D preservation."
+    ],
+    "low": [
+      "[REPLAYABILITY_STATIC] Polish item only under §4: the single fixed set is memorized after one play, but this alone is not release-blocking."
+    ],
+    "failure_codes": [
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "BLOCKER",
+        "finding": "Excluding the two cards labeled as vitals yields the required four-card set without reading clinical content or candidate patterns.",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "ANSWER_LEAK_LABEL_POSITION",
+        "severity": "BLOCKER",
+        "finding": "Correct cards are the four distinct non-vital source categories at fixed positions 1,2,4,5; the two rejected cards share the vital category.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "D_NOT_EXTERNALIZED",
+        "severity": "BLOCKER",
+        "finding": "The child does not perform the CORE's diagnosis selection or contradiction check; the validator only compares a card-ID subset and reveals the diagnosis.",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "A-E and play seed specify diagnosis selection/specific contradiction feedback, while the adopted translation removes both; downstream checks incorrectly assert consistency.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FACTUAL_GROUNDING_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "Exact candidate-card copy is absent, asthma is uncited, and detailed source-to-claim mappings are not supplied for the heart-failure comparison.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "CLINICAL_MODEL_OVERSTATED",
+        "severity": "HIGH",
+        "finding": "The exact-four rule conflates 'not etiologically discriminating among these three labels' with 'not evidence worth selecting,' especially for SpO₂ 88%, respiratory rate, and blood pressure.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "RETRY_FEEDBACK_LEAK",
+        "severity": "HIGH",
+        "finding": "Three feedback classes reveal whether the submitted set is a subset, superset, or mixed mismatch; adaptive exploitation was not simulated.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "JOB_REVEAL_PARTIAL_MISMATCH",
+        "severity": "MEDIUM",
+        "finding": "The unchanged discoveryEcho describes diagnostic synthesis more strongly than the final interaction supports.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "SIM_COVERAGE_INSUFFICIENT",
+        "severity": "MEDIUM",
+        "finding": "The simulator proves validator combinatorics, not absence of UI/label leaks or preservation of authentic D.",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "sim_verification": {
+      "reran": true,
+      "exactly_one_winning_subset": true,
+      "own_adversarial_strategy": "Select the four cards whose source labels are not vitals: fixed positions 1,2,4,5 (話・診察・検査・画像), excluding positions 3 and 6 (SpO₂ and 血圧). This content-blind source-category/position strategy wins 100%. The script itself attempted to overwrite design-sim-result.json and failed with EPERM in the read-only environment; the identical computation was then rerun with only the final write removed. Results were legitimate 1.0, select_all 0, select_all_minus_bp 0, select_all_minus_spo2 0, random 0.0306, distinct-random 0.0307, and one winning subset.",
+      "notes": "The final design structurally removes the separate diagnosis-label cycling attack. The earlier 55–67% claim is sound only conditional on already holding the correct evidence set: two distinct labels cover 2/3; independent label guesses with replacement cover 5/9. It is misleading if presented as the unconditional success probability of guessing both evidence and diagnosis. The sim also records select_all_minus_bp_and_spo2 at 100%, which is exactly the label/category shortcut the exploit check overlooks."
+    },
+    "factual_accuracy_vs_sources": "Not adequately demonstrated. The JRS citation plausibly supports multi-source pneumonia assessment, but the artifacts do not provide claim-level excerpts or mappings. The JHF attribution for bilateral findings, edema/weight gain, BNP, and usually normal inflammatory markers is not evidenced within the review artifacts. Asthma's acute/recurrent/normal-imaging pattern lacks one of the claimed official sources. Independently, 'WBC/CRP usually do not rise in heart failure' is too categorical for a simplified differential, and the exact-four evidence rule wrongly implies severe hypoxemia and respiratory rate are disposable rather than important but nonspecific. Network access to the two pages was unavailable during this review, so unsupported source claims cannot receive credit merely from the producer's assertion.",
+    "consistency_with_ch1_3": "The patient values are mostly consistent: three-day fever/cough/exertional dyspnea, right-sided abnormal breath sounds, SpO₂ 88%, respiratory rate 24, blood pressure 128/78, elevated WBC/CRP, and a right-lung white finding align with the sibling files. However, the redesign invents diagnostic-reference facts not established in ch1-3—no edema/weight change, BNP result, asthma history, or explicit bilateral comparison is present. Those are acceptable only as clearly general candidate-reference material, not as patient findings. Calling the X-ray finding an 'infiltrate' is more specific than medical.ts/DiagnoseGame's 'white area' and needs support from the ch3 result or source specification.",
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §2–3 — C must be necessary, D authentic, UI/labels must not leak, and content-blind success is release-blocking.",
+      "factory/projects/legacy-clue-join/design/scope_core_v2.json — CORE requires selecting the most consistent diagnosis and checking contradictions.",
+      "factory/projects/legacy-clue-join/design/ae_v2.json — D/E still describe selecting a candidate diagnosis and diagnosis-specific reconsideration.",
+      "factory/projects/legacy-clue-join/design/game_translations_v2.json — adopted t1 removes diagnosis selection; exact success set is 話・診察・検査・画像.",
+      "factory/projects/legacy-clue-join/design/first_5_seconds_v2.json — cards have fixed order 話・診察・SpO₂・検査・画像・血圧, exposing winning positions 1,2,4,5.",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — REQUIRED_EVIDENCE is hard-coded to talk/exam/lab/xray; attempt() evaluates IDs, not diagnostic reasoning.",
+      "factory/projects/legacy-clue-join/design/design-sim-result.json — select_all_minus_bp_and_spo2 wins 100%, while random two-attempt guessing is about 3%.",
+      "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v2.json — asserts no label/position leak without simulating the non-vital-label or fixed-position strategy.",
+      "factory/projects/legacy-clue-join/design/play_seeds_v2.json — adopted seed still specifies diagnosis selection and specific contradiction feedback, contradicting final t1.",
+      "factory/projects/legacy-clue-join/design/core_back_check_v2.json — claims D is fully preserved despite the removal of the diagnosis/contradiction decision.",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v2.json — asthma pattern lacks an official citation; heart-failure claims are asserted without claim-level source evidence.",
+      "src/q1/clueBoardLogic.ts — establishes ch1 values including SpO₂ 88%, respiratory rate 24, and blood pressure 128/78.",
+      "src/data/content/medical.ts — med-diagnose resolution remains '肺で炎症が起きている可能性が高い' and discoveryEcho claims the player formed one diagnostic view."
+    ],
+    "recommended_actions": [
+      "Return to translation design and make the child genuinely compare or eliminate diagnostic hypotheses while preventing label cycling—for example, require a single committed evidence-to-hypothesis consistency construction rather than a separate guessable diagnosis button.",
+      "Remove the deterministic non-vital grouping and fixed-position shortcut. Include multiple clinically important but differently discriminating findings, neutralize source-label symmetry, and shuffle presentation where position has no authored meaning.",
+      "Specify the exact text, order, formatting, and interaction state of every candidate and evidence card before another design review.",
+      "Replace set-type feedback with one non-directional rethink message, or formally simulate every adaptive feedback strategy within the two-attempt budget.",
+      "Rewrite the clinical goal as selecting findings that discriminate among the displayed candidates, while explicitly stating that SpO₂ and blood pressure remain important for severity and safety even when they do not distinguish these three causes.",
+      "Add claim-level citations for every candidate pattern, including asthma, and soften or qualify the inflammatory-marker statement for heart failure.",
+      "Regenerate ae, play_seeds, c_compression, no_manual_exploit_check, and core_back_check so they describe the same final mechanic instead of preserving the rejected diagnosis-selection draft.",
+      "Update discoveryEcho/resolution if the repaired interaction still does not have the child actually form and test a diagnostic hypothesis."
+    ]
+  },
+  "elapsed_sec": 230.87
+}

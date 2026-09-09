@@ -1,0 +1,3804 @@
+{
+  "game_id": "legacy-clue-join",
+  "profession": "医師",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "clue_join",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 3,
+  "repair_count": 2,
+  "redesign_count": 2,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-clue-join:fact_sheet:v10",
+      "artifact_type": "fact_sheet",
+      "version": 10,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/fact_sheet_v12.json",
+      "payload": {
+        "profession": "医師（救急外来、鑑別診断）",
+        "sources": [
+          {
+            "url": "https://www.jrs.or.jp/publication/jrs_guidelines/20240319125656.html",
+            "type": "official_institution"
+          },
+          {
+            "url": "https://www.jhf.or.jp/check/heart_failure/10/",
+            "type": "official_institution"
+          },
+          {
+            "url": "https://www.jrs.or.jp/citizen/disease/c/c-01.html",
+            "type": "official_institution"
+          },
+          {
+            "url": "https://www.jrs.or.jp/citizen/disease/g/g-04.html",
+            "type": "official_institution"
+          },
+          {
+            "url": "factory/state/audits/q1-audit.json",
+            "type": "internal_audit"
+          }
+        ],
+        "who_or_what_they_serve": "救急外来を受診した患者。ここでは「3日前からの発熱・咳・労作時呼吸困難」で来院した患者（ch1-3で話・診察・検査・画像を収集済み）。",
+        "representative_duties": [
+          "問診・身体診察・検査（血液）・画像など複数のソースから得た所見を統合し、複数の鑑別診断（今回は肺炎・心不全・喘息発作・気胸）の中から最も所見と整合する一つを選ぶ（鑑別診断）",
+          "選んだ診断と矛盾する所見がないかを確認し、矛盾があれば診断を保留して再検討する"
+        ],
+        "expertise": [
+          "日本呼吸器学会『成人肺炎診療ガイドライン2024』(jrs.or.jp/publication/jrs_guidelines/20240319125656.html): 市中肺炎の診断は臨床像・身体所見・検査・画像を組み合わせて行う",
+          "日本心臓財団『心不全の診断と検査』(jhf.or.jp/check/heart_failure/10): 心不全は聴診・胸部X線・心電図・心エコー・血液検査（BNP）などを総合して判断する。",
+          "日本呼吸器学会『気管支喘息』citizen page (jrs.or.jp/citizen/disease/c/c-01.html): 発作的に咳・喘鳴（ゼーゼー、ヒューヒュー）を伴う呼吸困難が起こる",
+          "日本呼吸器学会『気胸』citizen page (jrs.or.jp/citizen/disease/g/g-04.html): 気胸は胸腔内に空気が貯留し肺が虚脱する病態で、胸痛・呼吸困難が突然起こり、胸部レントゲンで診断できる"
+        ],
+        "candidate_reference_cards": {
+          "note": "4つの診断候補カード（読み物、正解は示さない）の確定文言。各出典のcitizen向け一般的記述に基づく一般像。design review r3 HIGH是正: いずれの記述も『〜ことが多い』という傾向表現に統一し、片側/両側や炎症値の有無を絶対的な排他規則として提示しない（肺炎が多発性・両側性のこともある、心不全が非典型像のこともある、という現実の幅を尊重する）。決め手は単一の所見ではなく、発症の経過・聴診・炎症所見・画像という複数の所見が全体としてどの典型像に一番よく合うかという組み合わせで判断する。 design review r4 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードから、引用元（日本心臓財団）が直接裏付けていない『血液の炎症の数値は上がらない』という比較主張を削除した。日本心臓財団のページが実際に述べるBNP・胸部X線所見（心陰影拡大・両側性変化）のみを根拠とする。 design review r5 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードの『両方の肺に変化が出やすい』という表現は引用元（日本心臓財団）が明示的に述べていなかったため、同ページが実際に支持する心陰影拡大・肺うっ血（肺に水がたまる）という表現に絞った。 design review r7 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE、fact-correct narrowing_only）: expertise/decisionsに残っていた両側性（butterfly/bat-wing陰影）主張を削除し、candidate_reference_cards.heart_failureと一致させた。片側性/両側性という軸自体を鑑別の決め手からは外す。",
+          "pneumonia": {
+            "text": "肺炎（はいえん）: からだの一部で炎症が起き、数日かけて熱・せきが出ることが多い。聴診でパチパチ・プツプツという音、画像でその部分に変化が出やすく、血液の炎症の数値も上がりやすい。",
+            "source": "日本呼吸器学会 成人肺炎診療ガイドライン2024"
+          },
+          "heart_failure": {
+            "text": "心不全（しんふぜん）: 心臓のポンプの力が落ち、胸部X線で心臓の影が大きく見えたり、肺に水がたまる（肺うっ血）ことがある。",
+            "source": "日本心臓財団 心不全の診断と検査"
+          },
+          "asthma": {
+            "text": "喘息発作（ぜんそくほっさ）: 気道が狭くなり、発作的にゼーゼー・ヒューヒューという音とともに息苦しくなることが多い。前にも同じような発作をくり返していることが多い。",
+            "source": "日本呼吸器学会 気管支喘息 citizen page"
+          },
+          "pneumothorax": {
+            "text": "気胸（ききょう）: 肺から空気が漏れて胸の中にたまり、肺がしぼむ。突然、胸の痛みや息苦しさが起こる。",
+            "source": "日本呼吸器学会 気胸 citizen page"
+          }
+        },
+        "tools": [
+          "問診（発症からの経過）",
+          "聴診",
+          "SpO₂・呼吸数",
+          "血液検査（白血球・CRP）",
+          "胸部X線画像",
+          "血圧"
+        ],
+        "information_used": [
+          "3日前からの発熱・咳・労作時呼吸困難（話）",
+          "右胸を聴くとパチパチ（プツプツ）という音がする（診察）",
+          "SpO₂ 88%・頻呼吸（バイタル）",
+          "白血球・CRP上昇（検査）",
+          "右肺の浸潤影（画像）",
+          "血圧128/78（バイタル、基準内）"
+        ],
+        "decisions": [
+          "4つの鑑別候補（肺炎／心不全／喘息発作／気胸）のうち、所見全体と最も整合する1つを選ぶ",
+          "選んだ診断と矛盾する所見がないかを確認する",
+          "血圧のように診断の決め手にならない所見を、決め手と混同しない"
+        ],
+        "outputs_or_value": "所見と整合する診断（肺炎の疑い）に基づき、治療方針（本編では『治療を始めよう』）へ進める",
+        "adjacent_profession_boundaries": "検査技師（labtech）・放射線技師（radtech）は所見を『生成』する側（ch2/ch3で別途Q1化済み）。医師（doctor）はch1で情報収集、ch4で統合・鑑別診断を行う。",
+        "uncertainties": [
+          "本症例の詳細な検査値・画像所見はプロトタイプ用に簡略化されている（fact_sheet v1からの継続）。4つの候補の一般像は各学会・財団のcitizen向け一般記述に基づくが、本症例が実際にどの所見の組み合わせなら『心不全ではない』と確実に言い切れるかの臨床的閾値（例: BNP具体値）までは踏み込まない——ゲームは一般像との整合/矛盾の比較に留める。",
+          "design review r3 HIGH是正: 右胸の聴診所見をパチパチ（プツプツ、断続性ラ音）と明記し、喘息候補が特徴とするゼーゼー（連続性ラ音・喘鳴）と紛れないようにした。ch1のClueBoardGame.tsxの元の聴診結果テキスト（『ゼーゼー、プツプツという音』）は断続性・連続性の両方の音を含む簡略化された表現だったが、ch4ではこの症例の診断を左右する断続性（プツプツ）の質に着目することを明記する。",
+          "design review r4 HIGH是正: 心不全カードの炎症数値に関する比較主張（削除済み）は引用元で直接裏付けられていなかった。肺炎の炎症数値上昇（lab所見）は本症例の検査結果そのものとして扱い、他候補との比較主張には用いない。",
+          "design review r5 HIGH是正: 心不全カードから両側性を明示するのではなく、引用元が直接述べる心陰影拡大・肺うっ血のみを記載する。",
+          "design review r7 HIGH是正（fact-correct narrowing_only）: expertise[1]/decisions[1]に残っていた両側性(butterfly/bat-wing)主張を削除。片側性/両側性を鑑別軸として使わない（候補カード・ゲーム内Cはこの軸を含まない）。"
+        ],
+        "derived_from": "reverse_audit + light research (research-rules.md準拠、官公庁・学会の一次情報を優先)",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
+        "revision_note": "v3 (design review r2 HIGH是正): 気管支喘息・気胸の出典URLを実際にsourcesへ追加（v2はレビュープロンプトに記載しただけでファイル未反映というARTIFACT_CHAIN/FACTUAL_GROUNDING是正）。4候補カードの確定文言をcandidate_reference_cardsとして明記し、game_translations/game_spec/実装がすべてこの文言を参照する単一の正本とする。 v4 (design review r3 HIGH是正): 候補カード文言を非排他的な傾向表現に統一。exam所見の表現をパチパチ（プツプツ）に限定し、喘息候補のゼーゼーとの混同を避けた。 v5 (design review r4 HIGH是正): 心不全カードの未裏付け主張を削除。 v6 (design review r5 HIGH是正): 心不全カードの表現を引用元が直接支持する範囲（心陰影拡大・肺うっ血）に絞った。 v7 (design review r7 HIGH是正, fact-correct narrowing_only): expertise/decisionsの両側性主張を削除し、片側性/両側性を鑑別軸から外した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:46:39.744Z",
+      "fact_correction": {
+        "evidence": "/tmp/clue-join-fact-check-3.json",
+        "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+        "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+        "impact": "narrowing_only"
+      },
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/fact_sheet.json",
+          "created_at": "2026-09-08T21:16:08.969Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v2.json",
+          "created_at": "2026-09-08T23:18:48.551Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v3.json",
+          "created_at": "2026-09-08T23:49:37.221Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v4.json",
+          "created_at": "2026-09-09T00:00:48.990Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v5.json",
+          "created_at": "2026-09-09T00:12:01.229Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v6.json",
+          "created_at": "2026-09-09T00:19:07.637Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v7.json",
+          "created_at": "2026-09-09T05:02:42.351Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v10.json",
+          "created_at": "2026-09-09T05:33:07.549Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v11.json",
+          "created_at": "2026-09-09T05:37:43.575Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v12.json",
+          "created_at": "2026-09-09T05:46:39.745Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-clue-join:scope_core:v11",
+      "artifact_type": "scope_core",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/scope_core_v6.json",
+      "payload": {
+        "core": "複数の情報源（話・診察・検査・画像）から集まった所見を、複数の鑑別診断候補（今回は肺炎・心不全・喘息発作・気胸）と照らし合わせ、所見全体と最も整合する診断を選び、選んだ診断と矛盾する所見がないかを自分で確認する（鑑別診断）",
+        "scope": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た（ch1-3で集めた話・診察・検査・画像の統合）",
+        "scope_is_representative_because": "実際の救急外来診療でも、単一の所見だけで診断が決まることは少なく、複数所見を鑑別診断候補と照合するプロセスが診断の核（日本呼吸器学会『成人肺炎診療ガイドライン2024』が示す、臨床像・身体所見・検査・画像を組み合わせた診断方針と整合）。ch1(clue_board)は収集、ch2(lab_check)/ch3(xray_shoot)は個別データ生成、ch4(このゲーム)は統合・鑑別という一連の診療プロセスの最終段階を代表する。",
+        "profession_name_hidden_test": "「集まった所見を、いくつかの考えられる原因と照らし合わせて、一番当てはまるものを選び、矛盾がないか確かめる」という記述だけでは医師と断定できないが、E（治療方針の決定）と組み合わせた文脈全体は診断・治療という医師固有の職務を指す。他の医療職（検査技師=ch2、放射線技師=ch3）は既に別チャプターで扱われており重複しない。",
+        "derived_from": "reverse_audit + fact_sheet_v10",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
+        "revision_note": "v3 (design review r3 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v10/ae_v3/game_translations_v6と整合させた。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v10へ更新。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:fact_sheet:v10"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:47:09.748Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/scope_core.json",
+          "created_at": "2026-09-08T21:16:09.008Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v2.json",
+          "created_at": "2026-09-08T23:18:48.592Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v2.json",
+          "created_at": "2026-09-08T23:49:54.697Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v3.json",
+          "created_at": "2026-09-09T00:01:04.460Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v3.json",
+          "created_at": "2026-09-09T00:12:01.299Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v4.json",
+          "created_at": "2026-09-09T00:19:07.708Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T04:26:56.079Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T05:18:16.369Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T05:35:29.080Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T05:37:56.591Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v6.json",
+          "created_at": "2026-09-09T05:47:09.749Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-clue-join:ae:v12",
+      "artifact_type": "ae",
+      "version": 12,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/ae_v9.json",
+      "payload": {
+        "A": "医療編／前半：診断まで／救急外来（もどってきた）。3日前からの発熱・咳・労作時呼吸困難で来院した患者について、ch1-3で集めた話・診察・検査・画像がそろった。",
+        "B": "6つの所見（話・診察・SpO₂・検査・画像・血圧）を、4つの鑑別診断候補（肺炎／心不全／喘息発作／気胸）と照らし合わせ、1つにコミットし、決め手になる所見で裏付ける診断パズル",
+        "C": "問診（発症からの経過）・聴診・SpO₂/呼吸数・血液検査（白血球・CRP）・胸部X線画像・血圧。それぞれの所見が持つ意味（炎症の有無、発症様式）と、4つの鑑別診断候補それぞれの典型像（fact_sheet_v6.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像）",
+        "D": "所見全体を4つの鑑別診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ。整合しなければ、コミットと根拠のどちらか（または両方）を自分で選び直す",
+        "E": "正しい診断（肺炎）と、それを裏付ける所見の組み合わせ（複数の妥当な組み合わせがありうる）が選べたら、治療方針へ進める。整合しなければ、フラットな『もう一度見比べてみよう』とだけ示され、システムは診断・所見のどちらが違うかを一切指摘しない。2回考えても整合しない場合は、応援の医師と見直すという正直な保留（partial）になる",
+        "derived_from": "reverse_audit + fact_sheet_v10 + scope_core_v5",
+        "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
+        "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v10で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v10/scope_core_v5へ更新。 v8 (design review r7 HIGH是正, fact-correct narrowing_only): Cの記述から片側性/両側性という、引用元が支持しない軸への言及を削除。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:scope_core:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:18.347Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-clue-join/backfill/ae.json",
+          "created_at": "2026-09-08T21:16:09.048Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/ae_v2.json",
+          "created_at": "2026-09-08T23:18:48.633Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/ae_v3.json",
+          "created_at": "2026-09-08T23:49:54.736Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/ae_v4.json",
+          "created_at": "2026-09-09T00:01:04.537Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/ae_v5.json",
+          "created_at": "2026-09-09T00:12:01.370Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/ae_v6.json",
+          "created_at": "2026-09-09T00:19:07.778Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/ae_v7.json",
+          "created_at": "2026-09-09T04:27:08.619Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:17:47.646Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:18:31.191Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:35:29.165Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:37:56.675Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 12,
+          "file": "factory/projects/legacy-clue-join/design/ae_v9.json",
+          "created_at": "2026-09-09T05:48:18.348Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-clue-join:core_scope_check:v10",
+      "artifact_type": "core_scope_check",
+      "version": 10,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/core_scope_check_v4.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "CORE（複数所見を鑑別診断候補と照合し矛盾を確認する）はfact_sheet_v10の学会ガイドライン記述と整合。SCOPEはch1-3で収集した所見を統合する診療の最終段階であり、救急外来診療の代表的な一部（プロセスの一断面であって全体を歪めない）。Profession Name Hidden Test: 記述だけでは職種名を明示しないが、E（治療方針決定）を含む文脈全体は医師固有。他チャプター（検査技師=ch2、放射線技師=ch3）と役割が重複しない。",
+        "revision_note": "v3 (PREPARED, r6 fix, not submitted): notes内のfact_sheet参照をv6へ更新。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:scope_core:v11",
+        "legacy-clue-join:ae:v12"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:18.459Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+          "created_at": "2026-09-08T23:18:48.673Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+          "created_at": "2026-09-08T23:49:54.775Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T00:01:04.645Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T00:12:01.472Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T00:19:07.882Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T04:27:08.722Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T05:18:31.306Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T05:35:29.285Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T05:37:56.791Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v4.json",
+          "created_at": "2026-09-09T05:48:18.460Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-clue-join:play_seeds:v11",
+      "artifact_type": "play_seeds",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/play_seeds_v10.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-differential-exclusion",
+            "authentic_causal_loop": "所見を1つの鑑別診断候補の典型像と比較する→矛盾する所見がないか確かめる→矛盾があれば別の候補と比較し直す→矛盾のない候補にたどり着く→治療方針が決まる",
+            "player_action": "4つの診断候補カードから1つに『これだと思う』でコミットし、6つの所見カードのうち根拠として使うものを選んで『まとめる』",
+            "system_reaction": "正しい候補（肺炎）を選び、根拠の所見が検査・画像を含み、呼吸状態・循環を含まない組み合わせ（話・診察の有無は自由、4通りのいずれか）であれば成功へ。診断・所見のどちらか（または両方）が条件を満たさなければ、フラットな『まだ、はっきりまとめきれていないみたい』という一言だけを返し、どこがどう違うかは示さない（正解探索のヒントにならないようにする）",
+            "information_gained": "どの所見がどの診断と矛盾するか（炎症の有無、発症様式）",
+            "next_judgment_or_action": "フラットな『もう一度見比べてみよう』を手がかりに、診断または根拠の選び直しを自分でする",
+            "C_used": "6つの所見（話・診察・SpO₂・検査・画像・血圧）と4つの鑑別診断候補の典型像（fact_sheet_v6.candidate_reference_cards）",
+            "D_expressed": "所見全体を診断候補の典型像と照合し、矛盾のない診断を選ぶ（本物の鑑別診断）",
+            "E_reached": "正しい診断が選べれば治療方針（既存のresolution/discoveryEcho）へ進む。2回失敗すれば応援医師との見直しという正直なpartial",
+            "risks": "4択の当てずっぽうで診断だけ当たる可能性はあるが、根拠が4通りの受容基準（検査・画像必須、話・診察は任意）を満たすことも同時に要求し、診断・所見カードの提示順を毎セッションシャッフルすることで、位置に基づく当てずっぽうを防ぐ設計にする必要がある（game_translations/design-simで担保） design review r4是正: 決め手所見の判定を『検査・画像必須、話・診察任意』という柔軟な基準にし、単一の正解のみを受け入れる設計がもたらす過度な厳格さ（臨床的に妥当な代替の拒否）を解消した。",
+            "player_next_judgment": "候補カードの典型像と所見を、もう一度見比べて選び直す。2回目の失敗で正直な保留（partial）",
+            "revision_note": "v4 (design review r2是正): 候補数を3→4に更新し、fact_sheetの確定文言を参照するよう整合。"
+          },
+          {
+            "seed_id": "s2-elimination-ladder",
+            "authentic_causal_loop": "1つの所見を見て、その所見と矛盾する診断候補を1つずつ除外していく→最後に残った候補が答え",
+            "player_action": "所見カードを1枚ずつ開き、『この所見と合わない候補』を都度タップして除外していく",
+            "system_reaction": "正しく除外すればその候補が薄く表示される。誤って正しい候補を除外しようとすると拒否される",
+            "information_gained": "個々の所見が、どの候補と矛盾するか（一問一答的）",
+            "next_judgment_or_action": "残りの所見でさらに除外を進める",
+            "C_used": "6つの所見と3つの候補",
+            "D_expressed": "個々の所見と候補の対応（一対一の除外判断の連続）",
+            "E_reached": "最後の1候補が正しい診断として残る",
+            "risks": "所見1枚ごとに正誤フィードバックが即時に出るため、総当たり的に全候補を試せば正解が推測できてしまう（一問一答の反復＝D_REPLACED_BY_TRIVIAに近づくリスク）。所見同士を『組み合わせて』見る本来のCOREの一体感が弱い。"
+          },
+          {
+            "seed_id": "s3-confidence-sort",
+            "authentic_causal_loop": "所見カードを3つの候補『置き場』のどれかにドラッグして仕分ける→各候補にどれだけ所見が集まったかで確信度が見える→最も確信度の高い候補を選ぶ",
+            "player_action": "6つの所見カードを3つの候補の置き場へドラッグで仕分ける",
+            "system_reaction": "仕分け終了後、各置き場の確信度（集まった所見の数）を表示。最終決定ボタンで診断確定",
+            "information_gained": "どの所見をどこに置いたかの累積結果",
+            "next_judgment_or_action": "確信度が割れていれば置き場を見直す",
+            "C_used": "6つの所見と3つの候補置き場",
+            "D_expressed": "所見の仕分け（分類）",
+            "E_reached": "最も確信度の高い候補で治療方針へ",
+            "risks": "個々の仕分けに即時の正誤フィードバックを出すと総当たりで正解パターンを発見できてしまう（3^6=729通りだが試行コストが低いと数分で発見可能）。フィードバックを最終決定まで隠すと、確信度メーターの意味が薄れる。ドラッグ&ドロップの実装コストも高い。"
+          }
+        ],
+        "revision_note": "v8 (PREPARED, r6 fix, not submitted): risksの『根拠の完全一致』という表現を、隣接するsystem_reactionの4通り受容基準と一致させた。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:ae:v12"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:18.544Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v2.json",
+          "created_at": "2026-09-08T23:18:48.716Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v3.json",
+          "created_at": "2026-09-08T23:35:13.180Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v4.json",
+          "created_at": "2026-09-08T23:49:54.815Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v5.json",
+          "created_at": "2026-09-09T00:01:04.719Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v6.json",
+          "created_at": "2026-09-09T00:12:01.542Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v7.json",
+          "created_at": "2026-09-09T00:19:07.951Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
+          "created_at": "2026-09-09T04:27:08.794Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
+          "created_at": "2026-09-09T05:18:31.382Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v9.json",
+          "created_at": "2026-09-09T05:35:54.815Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v9.json",
+          "created_at": "2026-09-09T05:37:56.875Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v10.json",
+          "created_at": "2026-09-09T05:48:18.545Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-clue-join:reference_research:v11",
+      "artifact_type": "reference_research",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "Wordle / 推理系パズル（複数の手がかりを1つの仮説にまとめて絞り込む）",
+            "relevant_mechanic": "複数の断片的な手がかりを、確定するまで組み合わせて検証する体験",
+            "borrowed_principle": "手がかり同士を照合し、矛盾がないかを自分で確認するプロセスそのものを遊びにする",
+            "surface_elements_not_to_copy": "色分けによる即時正誤フィードバック（本ゲームでは個々の所見ごとの正誤を即時表示しない＝総当たり防止）"
+          },
+          {
+            "reference": "『レイトン教授』シリーズの謎解き（複数の情報を統合して1つの結論を導く）",
+            "relevant_mechanic": "点在する情報を集めて1つの答えへ収束させる構造",
+            "borrowed_principle": "情報を『集める』段階と『統合する』段階を分け、統合段階では新しい情報を出さずに手持ちの情報だけで判断させる",
+            "surface_elements_not_to_copy": "謎解き特有の装飾的な演出やキャラクター演出（クレイスタイルの世界観を壊さない）"
+          },
+          {
+            "reference": "既存Q1 clue_board（同じ医師チャプター前半、2026-09-06 Factory repair済み）",
+            "relevant_mechanic": "ラベルだけでは正誤が分からない中立的なクルー文＋『自分の基準と数値を見比べる』判断ゲート",
+            "borrowed_principle": "選択肢のラベルや位置に正誤の手がかりを埋め込まない設計規律をそのまま踏襲する",
+            "surface_elements_not_to_copy": "clue_boardの『基準範囲との数値比較』はch1で既出のため、ch4では同じ判断を繰り返さず『複数所見の統合』という別の認知プロセスにする"
+          }
+        ]
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:play_seeds:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:18.622Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-08T23:18:48.758Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-08T23:35:42.567Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-08T23:49:54.855Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T00:01:04.793Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T00:12:01.614Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T00:19:08.021Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T04:27:24.701Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T05:18:31.458Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T05:36:06.544Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T05:37:56.957Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T05:48:18.623Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-clue-join:c_compression:v11",
+      "artifact_type": "c_compression",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/c_compression_v6.json",
+      "payload": {
+        "original_C": "実際の鑑別診断では、問診・身体診察・血液検査（多数の項目）・画像診断（複数モダリティ）・既往歴・家族歴・服薬歴など非常に多くの情報源があり、統計的な事前確率や重症度スコア（A-DROP等）も考慮される（日本呼吸器学会ガイドライン）",
+        "compressed_C": "ch1-3で既に集めた6つの所見（話・診察・SpO₂・検査(白血球/CRP)・画像・血圧）と、4つの鑑別診断候補（肺炎・心不全・喘息発作・気胸）それぞれの一般的な典型像（炎症所見の有無、発症様式、突然か数日かけてか）に圧縮",
+        "removed_complexity": "重症度スコア（A-DROP等）の計算、既往歴・家族歴・服薬歴、多数の血液検査項目、複数の画像モダリティ、統計的事前確率の考慮",
+        "reason_for_removal": "10-12歳が1画面・数十秒で扱える情報量を超える。スコア計算や多数の検査項目は本物の医師でも参照資料を見ながら行う専門技能であり、Q1のCORE（所見を候補と照合し矛盾を確認する）にとって本質的ではない（C_NOT_NEEDED_FOR_Dを避けつつ圧縮）",
+        "preserved_D": "所見全体を診断候補の典型像と照合し、矛盾のない診断を選ぶという鑑別診断の本質的判断構造",
+        "how_player_still_performs_D": "6つの所見と4つの候補という圧縮された情報でも、炎症の有無・発症様式という本物の鑑別軸で、複数の所見の組み合わせ全体として判断できるため、実務の縮小版としてDが成立する。決め手の判定も『検査・画像必須、話・診察は任意』という柔軟な基準にし、単一の正解に固執しない現実の鑑別診断の幅を反映する。",
+        "failure_risk": "圧縮しすぎると4択の当てずっぽうで診断だけ当たってしまうリスクがある。根拠となる所見の組み合わせも同時に要求し、誤答時のフィードバックは完全にフラット（診断/根拠のどちらが違うか、多い/少ないかを一切示さない）にすることで、当てずっぽうを弾く（design-sim.mjs / no_manual_exploit_checkで検証）",
+        "revision_note": "v5 (design review r4 HIGH是正: CLINICAL_MODEL_UNDERDETERMINED): 決め手所見の判定基準が柔軟化されたことを反映。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:ae:v12"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:18.701Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v2.json",
+          "created_at": "2026-09-08T23:18:48.805Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v2.json",
+          "created_at": "2026-09-08T23:35:42.527Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v3.json",
+          "created_at": "2026-09-08T23:49:54.893Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v4.json",
+          "created_at": "2026-09-09T00:01:04.868Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T00:12:01.686Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T00:19:08.090Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T04:27:24.774Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T05:18:31.533Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v6.json",
+          "created_at": "2026-09-09T05:36:06.623Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v6.json",
+          "created_at": "2026-09-09T05:37:57.042Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v6.json",
+          "created_at": "2026-09-09T05:48:18.702Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-clue-join:game_translations:v18",
+      "artifact_type": "game_translations",
+      "version": 18,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/game_translations_v12.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1d-flexible-commit-and-defend",
+            "play_seed": "s1-differential-exclusion",
+            "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見を選んで『まとめる』（検査・画像は必ず含み、話・診察は選んでも選ばなくてもよい。呼吸状態・循環は含めない、という複数の妥当な組み合わせを受け付ける）",
+            "first_visible_state": "4つの診断候補カード（表示順は毎回シャッフル。それぞれ『？』で一般的な典型像=fact_sheet_v6.candidate_reference_cardsの確定文言（傾向表現に統一済み）を読める、『これだと思う』ボタン）と、6つの所見カード（話（3日前からの発熱・咳・労作時呼吸困難の経過）・診察（右胸のパチパチ/プツプツという音）・呼吸状態（SpO₂88%・頻呼吸）・検査（白血球・CRP高値の実数値）・画像（右肺の変化）・循環（血圧128/78）、表示順は毎回シャッフル、タップで選択/解除）。下に『▶ これでまとめてみる』（あと2回）。説明文はない。",
+            "primary_action": "診断候補カードのどれか1つの『これだと思う』ボタンをタップして選ぶ（自由に変更可）。所見カードを複数タップして根拠として選ぶ（自由に変更可）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。カードの表示順は1回の夜の間は固定、新しい症例/やり直しで再シャッフルされる。",
+            "C_interaction": "所見カードの内容（炎症の有無、発症様式）と4つの診断候補カードの傾向的な典型像を見比べ、どの所見が実際に決め手になるかを判断する。血液検査（炎症の数値）と画像（肺の変化）の2つは特に決め手になりやすい核となる根拠で、必ず含める必要がある。話（発症の経過）と診察（聴診の音）はこの2つを補強する根拠として選んでもよいし、選ばなくてもよい（心不全でも聴診異常が起こりうることを踏まえ、決め手として必須とはしない）。呼吸状態（SpO₂）・循環（血圧）は重要な情報だが決め手にはならない。",
+            "system_reaction": "選んだ診断が正しく（肺炎）、かつ根拠の所見が検査・画像を含み、呼吸状態・循環を含まない組み合わせ（話・診察の有無は自由）であれば成功。結果画面では、選んだ根拠に加え、心不全・喘息発作・気胸それぞれの傾向的な典型像との対比を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だけど、どの病気かを決める手がかりにはならなかった』と明記する。診断・根拠のどちらか（または両方）が条件を満たさなければ、フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』という一言だけを返す。",
+            "information_gained": "どの所見が実際に診断を絞り込む決め手になり、どの所見は（重要ではあっても）decisive ではないか。決め手になる所見は診断候補の典型像との一致・矛盾によってのみ判断できる",
+            "player_next_judgment": "指摘のない、フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を見直す。2回目の失敗で正直な保留（partial）",
+            "D_externalization": "診断候補への明示的なコミット（『これだと思う』ボタン）と、決め手になる所見の選択という2つの子ども自身の操作が、そのまま鑑別診断の推理を表現する。システムは診断の結論を子どもの選択より先に示すことは一切ない（コミットは常に子ども自身が先に行う）",
+            "E_consequence": "正しい診断+根拠が選べたら結論と代替診断との対比が示され、既存resolution/discoveryEchoへ。2回とも一致しなければ『応援の医師と、もう一度手がかりを見直す』という正直なpartial（進行は可能）",
+            "retry_or_rethink": "フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を（同じ夜の中で）見直す。2回目の失敗で正直な保留（partial）。partial後に再挑戦する際は表示順が再シャッフルされる。",
+            "job_reveal_bridge": "既存のdiscoveryEcho（『さっき、話・からだ・検査・画像をつなげて、ばらばらの手がかりを1つの見立てにまとめたよね』）がそのまま使える",
+            "strengths": "design review r4（HIGH×3、うち1件は局所修理不可: CLINICAL_MODEL_UNDERDETERMINED）是正として、決め手所見の受容範囲を『検査・画像は必須、話・診察は任意、呼吸状態・循環は不可』という柔軟な基準へ変更した。これにより査読者自身が提示した妥当な代替（話・検査・画像、聴診なし）を含む4通りの組み合わせすべてが正解として受け入れられる（design-sim.mjs: all_four_legitimate_variants_win=true）。同時に、内容を見ない攻略（select_all/カテゴリ/数値/深刻さ/位置ヒューリスティック）はいずれも0%〜乱択水準のままであることを検証済み（呼吸状態・循環という2枚を除外し、検査・画像という2枚を含めるという条件は、依然としてカテゴリラベル・数値パターン・深刻さの単一の表面特徴からは導けない）。ae.Eのフラットフィードバックへの統一（HIGH: ARTIFACT_CHAIN_INCONSISTENT是正）、心不全カードの未裏付け主張の削除（HIGH: FACTUAL_GROUNDING_INCOMPLETE是正）も反映。",
+            "weaknesses": "受容される組み合わせが4通りに増えたことで、design-sim上の乱択勝率がわずかに上昇した（2回の予算で約3.1%、旧版の約0.8%から上昇。ただしいずれも§3の閾値を大きく下回る）。375px×10カードのレイアウトとシャッフルのライフサイクル正確性は引き続き実装段階の検証項目。",
+            "risk": "design-sim-result.json (v4): legitimate（4通りすべて）100%、select_all系・カテゴリ/数値/深刻さヒューリスティック0%、乱択（2回の予算）約3.1%、位置ヒューリスティックは理論値（1/60, 1/30）と一致。理論的残存リスク（根拠は特定できたが診断名だけ当てずっぽう、候補数4なので約51%）は変わらず記録するが、根拠特定自体が診断名を強く含意するため内容非依存の攻略とはみなさない。 design review r7 HIGH是正（fact-correct narrowing_only）: C_interactionから片側性/両側性という、引用元が支持しない軸への言及を削除。実際の採点（決め手所見の必須/任意/不可の判定）はこの軸に依存しておらず変更なし。",
+            "adoption_or_rejection_reason": "採用（design review r4のHIGH×3是正）。CLINICAL_MODEL_UNDERDETERMINED（局所修理不可、redesign対象）に対応するため、決め手所見の判定を『検査・画像必須、話・診察は任意、呼吸状態・循環は不可』という柔軟な基準へ変更し、査読者自身が示した妥当な代替を含む4通りの組み合わせを正解として受け入れるt1d-flexible-commit-and-defendを新たに採用した。ae.Eのフィードバック記述統一、心不全カードの未裏付け主張削除も同時に反映。design-simで全4通りの正解が成功し、内容非依存の攻略は引き続き乱択水準にとどまることを検証済み。"
+          },
+          {
+            "translation_id": "t1c-shuffled-commit-and-defend",
+            "play_seed": "s1-differential-exclusion",
+            "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見だけをちょうど選んで『まとめる』（正しい組み合わせは1通りだけ）",
+            "first_visible_state": "4つの診断候補カード（表示順は毎回シャッフル。それぞれ『？』で一般的な典型像=fact_sheet_v10.candidate_reference_cardsの確定文言（傾向表現に統一済み）を読める、『これだと思う』ボタン）と、6つの所見カード（話（3日前からの発熱・咳・労作時呼吸困難の経過）・診察（右胸のパチパチ/プツプツという音）・呼吸状態（SpO₂88%・頻呼吸）・検査（白血球・CRP高値の実数値）・画像（右肺の変化）・循環（血圧128/78）、表示順は毎回シャッフル、タップで選択/解除）。下に『▶ これでまとめてみる』（あと2回）。説明文はない。",
+            "primary_action": "診断候補カードのどれか1つの『これだと思う』ボタンをタップして選ぶ（自由に変更可）。所見カードを複数タップして根拠として選ぶ（自由に変更可）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。カードの表示順は1回の夜（セッション）の間は固定（子どもの操作を混乱させない）だが、患者ケースを新たに開始する（もう一度考える／別の症例に進む）たびに再シャッフルされ、提示順そのものが答えの手がかりにならない（clueBoardLogic.tsのshuffledVitals precedentと同じ規律）。",
+            "C_interaction": "所見カードの内容（発症の経過、聴診の音の質、炎症の有無、画像所見）と4つの診断候補カードの傾向的な典型像（fact_sheet_v10.candidate_reference_cards、『〜ことが多い』という表現）を見比べ、複数の所見が全体としてどの候補に一番よく合うかを判断する。診察のパチパチ（プツプツ）という音の質は、喘息候補の特徴であるゼーゼー（連続性の音）とは異なる断続性の音であることに注意が必要（fact_sheet_v10のuncertainties参照）。呼吸状態（SpO₂）はどの候補でも起こりうる重症度の指標であり、決め手にはならない。",
+            "system_reaction": "選んだ診断が正しく（肺炎）、かつ根拠の所見もちょうど決め手の4枚（話・診察・検査・画像）であれば成功。結果画面では、選んだ根拠に加え、心不全・喘息発作・気胸それぞれの傾向的な典型像との対比（fact_sheet_v10.candidate_reference_cards参照、断定ではなく『〜ことが多い』という比較）を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だけど、どの病気かを決める手がかりにはならなかった』と明記する。診断・根拠のどちらか（または両方）が違っていれば、フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』という一言だけを返す（正解探索の手がかりになる情報は一切含めない）",
+            "information_gained": "どの所見が実際に診断を絞り込む決め手になり、どの所見は（重要ではあっても）decisive ではないか。決め手になる所見は診断候補の典型像との一致・矛盾によってのみ判断できる",
+            "player_next_judgment": "指摘のない、フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を見直す。2回目の失敗で正直な保留（partial）",
+            "D_externalization": "診断候補への明示的なコミット（『これだと思う』ボタン）と、決め手になる所見の選択という2つの子ども自身の操作が、そのまま鑑別診断の推理を表現する。システムは診断の結論を子どもの選択より先に示すことは一切ない（コミットは常に子ども自身が先に行う）",
+            "E_consequence": "正しい診断+根拠が選べたら結論と代替診断との対比が示され、既存resolution/discoveryEchoへ。2回とも一致しなければ『応援の医師と、もう一度手がかりを見直す』という正直なpartial（進行は可能）",
+            "retry_or_rethink": "フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を（表示順は変わらないまま、同じ夜の中で）見直す。2回目の失敗で正直な保留（partial）。partial後に再挑戦する際は表示順が再シャッフルされる。",
+            "job_reveal_bridge": "既存のdiscoveryEcho（『さっき、話・からだ・検査・画像をつなげて、ばらばらの手がかりを1つの見立てにまとめたよね』）がそのまま使える",
+            "strengths": "design review r2（BLOCKER×2: ANSWER_LEAK_POSITION、BRUTE_FORCE_SUCCESS）是正として、診断候補・所見カードの表示順を毎セッションランダムにシャッフルする（clueBoardLogic.ts shuffledVitals precedent）。これにより、design review r2が発見した『先頭の診断＋固定位置1,2,4,5』という内容非依存の完全攻略が、セッションごとに異なる位置へのシャッフルによって成立しなくなる（design-simで、シャッフルされたセッション群に対する固定位置戦略の勝率が乱択と同水準まで下がることを検証）。加えてr1是正済みのカテゴリラベル再整理・数値/深刻さの意図的混在も維持される。fact_sheet_v10に4候補すべての出典URLと確定カード文言を明記し、FACTUAL_GROUNDING_INCOMPLETEを解消した。ae/c_compression/play_seedsも4候補・フラットフィードバックへ統一しARTIFACT_CHAIN_INCONSISTENTを解消した。 design review r3 HIGH（CLINICAL_MODEL_OVERSTATED）是正: 候補カードの文言をfact_sheet_v10で傾向表現（〜ことが多い）に統一し、片側性/両側性を絶対的な排他規則として提示しないようにした。診察所見の音の質をパチパチ（プツプツ）に限定し、喘息候補自身の特徴であるゼーゼーとの混同を避けた。",
+            "weaknesses": "375px×10カード+送信ボタンのレイアウトはまだ実測（ワイヤーフレーム/実装）で検証されていない（design review r2 MEDIUM: VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED、実装段階で検証）。シャッフルの実装（乱数シード・再シャッフルのタイミング）を正しく行わないとr1/r2と同じ位置リーク再発リスクがある点は、gameplay-qa harnessでの機械的回帰テストが必須。",
+            "risk": "design-sim-result.json (v3): legitimate 100%、カテゴリ/数値/深刻さヒューリスティックはいずれも0%、内容を見ない乱択は2回の予算で1%未満。新規: シャッフルされた表示順のもとでの『先頭の診断+固定位置1,2,4,5』戦略（design review r2の指摘した実際の攻略）は、多数のシャッフルされたセッションに対して乱択と同水準（1%未満）まで低下することを直接検証。理論的残存リスク（根拠完全一致は既知だが診断名だけ当てずっぽう、候補数4なので約51%）はdesign-sim-result.jsonのnotesに明記し続ける（内容非依存の攻略ではないという評価は変わらないが、判断は独立レビューに委ねる）。 design review r3 HIGH（ARTIFACT_CHAIN_INCONSISTENT）是正: scope_core/c_compression/play_seedsを4候補・フラットフィードバックへ完全に統一した（scope_core_v3, c_compression_v4, play_seeds_v5）。",
+            "adoption_or_rejection_reason": "採用（design review r2のFAIL是正）。r2は前ラウンドの是正（t1b-commit-and-defend）がカテゴリ/フォーマットの答え漏れを閉じた一方で、診断候補の提示順（先頭=肺炎）と所見の配列位置（1,2,4,5）という新しい、より単純な答え漏れを見落としていたことを指摘した（BLOCKER×2）。是正: 診断候補・所見カードの表示順を毎セッションランダムにシャッフルする（clue_board precedent）ことで、位置ベースの答え漏れを構造的に排除。同時にfact_sheet_v10への出典URL実反映、ae/c_compression/play_seedsの4候補・フラットフィードバックへの統一により、r2のHIGH（ARTIFACT_CHAIN_INCONSISTENT、FACTUAL_GROUNDING_INCOMPLETE）も解消した。design-simでシャッフル下の位置戦略が乱択水準まで下がることを機械的に検証済み。 design review r4はHIGH×3（うち1件は局所修理不可: CLINICAL_MODEL_UNDERDETERMINED）を発見: 決め手所見の完全一致採点（話・診察・検査・画像のちょうど4枚）が、査読者自身が示した臨床的に妥当な代替（話・検査・画像の3枚、聴診なし）を不正解として拒否していた。この版はもはや採用しない。後継のt1d-flexible-commit-and-defendが決め手所見の受容範囲を柔軟化する。"
+          },
+          {
+            "translation_id": "t1b-commit-and-defend",
+            "play_seed": "s1-differential-exclusion",
+            "goal": "3つの診断候補（肺炎／心不全／喘息発作／気胸の4候補中）から1つに『これだと思う』と決め、6つの所見の中から決め手になる所見だけをちょうど選んで『まとめる』（両方が正しい組み合わせは1通りだけ）",
+            "first_visible_state": "4つの診断候補カード（肺炎／心不全／喘息発作／気胸。それぞれ『？』で一般的な典型像を読める読み物と、別に『これだと思う』という選択ボタンがある。正解は示さない）と、6つの所見カード（話・診察・呼吸状態・検査・画像・循環という6つの異なるラベル、タップで根拠として選択/解除）。下に『▶ これでまとめてみる』（あと2回）。説明文はない。",
+            "primary_action": "診断候補カードのどれか1つの『これだと思う』ボタンをタップして選ぶ（自由に変更可）。所見カードを複数タップして根拠として選ぶ（自由に変更可）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断の選択と根拠の選択は同じ提出で同時に評価される。",
+            "C_interaction": "所見カードの内容（片側性/両側性、炎症の有無、発症様式）と4つの診断候補カードの典型像を見比べ、どの所見が実際にその診断を裏付ける決め手になるかを判断する。呼吸状態（SpO₂）は数値としては最も心配に見えるが、4候補のどれにも起こりうる（決め手にならない）ことに気づく必要がある。循環（血圧）は正常範囲で、これも決め手にならない。",
+            "system_reaction": "選んだ診断が正しく（肺炎）、かつ根拠の所見もちょうど決め手の4枚（話・診察・検査・画像）であれば成功。結果画面では、選んだ根拠に加え、心不全なら両側性・炎症正常のはずが今回は片側性・炎症高値であること、喘息なら急性発症・画像正常のはずが今回は数日の経過・画像に変化があること、気胸なら突然の発症のはずが今回は数日かけての経過であることを対比して示す。呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だけど、どの病気かを決める手がかりにはならなかった』と明記し、不要/軽視すべき情報ではないと明確にする。診断・根拠のどちらか（または両方）が違っていれば、フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』という一言だけを返す（正解探索の手がかりになる情報は一切含めない）",
+            "information_gained": "どの所見が実際に診断を絞り込む決め手になり、どの所見は（重要ではあっても）decisive ではないか。決め手になる所見は診断候補の典型像との一致・矛盾によってのみ判断できる",
+            "player_next_judgment": "指摘のない、フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を見直す。2回目の失敗で正直な保留（partial）",
+            "D_externalization": "診断候補への明示的なコミット（『これだと思う』ボタン）と、決め手になる所見の選択という2つの子ども自身の操作が、そのまま鑑別診断の推理を表現する。システムは診断の結論を子どもの選択より先に示すことは一切ない（コミットは常に子ども自身が先に行う）",
+            "E_consequence": "正しい診断+根拠が選べたら結論と代替診断との対比が示され、既存resolution/discoveryEchoへ。2回とも一致しなければ『応援の医師と、もう一度手がかりを見直す』という正直なpartial（進行は可能）",
+            "retry_or_rethink": "フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠どちらかまたは両方を選び直す。2回の予算を使い切ったら正直なpartialで終わり、『もう一度考える』で同じ所見のまま再挑戦できる",
+            "job_reveal_bridge": "既存のdiscoveryEcho（『さっき、話・からだ・検査・画像をつなげて、ばらばらの手がかりを1つの見立てにまとめたよね』）がそのまま使える",
+            "strengths": "本物の鑑別診断（複数所見から診断候補を明示的に選び、決め手になる所見で裏付ける）が2つの子ども自身の操作（診断コミット+根拠選択）に外在化される（design review r1のD_NOT_EXTERNALIZED是正）。所見の分類ラベルは話/診察/呼吸状態/検査/画像/循環の6種すべて異なり、ラベルによるグルーピングでは正解が導けない（r1のANSWER_LEAK_LABEL_POSITION是正）。所見には数値ありなし・深刻そうな響きの有無も決め手/非決め手をまたいで混在しており、表面的なパターンでは解けない（design-simで検証）。診断候補を4つに増やし、フィードバックを完全にフラット（診断/根拠のどちらが違うか、多い/少ないかを一切示さない）にすることで、根拠の完全一致を当てずっぽうで見つけたうえで診断名だけ運まかせにする戦略の期待勝率を約51%（4択中2つを2回試す場合の理論値）まで下げた。この残存リスクは、根拠の完全一致を当てずっぽうで発見すること自体が63通り中1通り（約1.6%、2回の予算で約3%）と非常に低いため、実運用上のコンテンツ非依存な攻略経路にはならない（design-sim-result.json参照）",
+            "weaknesses": "診断候補4枚+所見6枚の情報量が375pxでどう収まるかレイアウト検証が要る。『これだと思う』ボタンと『？』読み物ボタンの2つを診断カードに持たせるUIの分かりやすさをfirst_5_secondsで検証する必要がある。フラットなフィードバックは方向性のあるヒントより学習支援が弱い（Gate Gの『考え直す余地』は満たすが、具体的な気づきは子ども自身に委ねられる）",
+            "risk": "design-sim-result.json: legitimate 100%、乱択（毎回ランダムな所見部分集合+ランダムな診断）は2回の予算で約1%未満、select_all系はいずれも0%、数値の有無・深刻そうな響きだけで選ぶ戦略もいずれも0%（63通りの所見部分集合×4診断=252通りの組み合わせのうち正解はちょうど1通り）。唯一の残存リスクは『根拠は完全に正しく特定できたが診断名だけ当てずっぽう』という戦略で約51%だが、これは根拠の完全一致（1.6%）という難しい前提が既に満たされている場合の理論上限であり、根拠を正しく導いた推論過程はその診断名も同時に含意するため、現実的な攻略経路としては採用しない（内容非依存の攻略ではない）。",
+            "adoption_or_rejection_reason": "採用（design review r1のFAIL是正）。r1は旧t1-differential-exclusion（診断選択ステップを撤廃し所見の部分集合選択のみを採点していた版）に対し、2つのBLOCKER（決め手所見の集合が『バイタルカテゴリを除く』という内容非依存の規則と一致してしまう答え漏れ、および子どもが診断仮説にコミットしないままシステムが結論を出すD不成立）を指摘した。是正: (1)診断候補への明示的コミットを復活させ子ども自身の判断として外在化、(2)所見のカテゴリラベルを6種すべて異なる名称に整理し直し、数値の有無・深刻さの響きも決め手/非決め手をまたいで混在させることでラベル/位置/フォーマットによる攻略経路を構造的に排除、(3)診断候補を3→4に増やし当てずっぽうの期待値を下げ、(4)フィードバックを完全にフラットな一言に統一し診断/根拠どちらが違うかの情報漏れを排除した。design-simで検証済み（8000試行/戦略、乱択2回で1%未満、全ヒューリスティック戦略0%）。s2/s3は総当たり耐性・実装コストの点で当初から劣るため引き続き却下。 design review r2はBLOCKER×2（ANSWER_LEAK_POSITION: 診断候補の提示順先頭・所見配列位置1,2,4,5が固定で内容非依存に100%成功、BRUTE_FORCE_SUCCESS）を発見しFAILとした。この版はもはや採用しない。後継のt1c-shuffled-commit-and-defendが表示順のセッションごとのシャッフルでこれを是正する。"
+          },
+          {
+            "translation_id": "t2-elimination-ladder",
+            "play_seed": "s2-elimination-ladder",
+            "goal": "所見を1枚ずつ見て、矛盾する診断候補を順に除外し、最後に残った診断を選ぶ",
+            "first_visible_state": "3つの診断候補カードが並び、6つの所見カードが下に並ぶ。所見をタップすると『この所見と合わない候補はどれ？』の問いが出る。",
+            "primary_action": "所見カードをタップして開く→矛盾すると思う候補カードをタップして除外する",
+            "C_interaction": "個々の所見の内容を読み、候補の典型像と比べて矛盾するかどうかを判断する",
+            "system_reaction": "正しく除外できればその候補が薄く表示される。誤って正しい候補を除外しようとすると『この所見だけでは、まだ言い切れないかも』と拒否される",
+            "information_gained": "所見と候補の一対一の矛盾関係",
+            "player_next_judgment": "残りの所見でさらに除外を進め、最後の1候補を選ぶ",
+            "D_externalization": "所見ごとの除外判断",
+            "E_consequence": "最後の1候補が残れば治療方針へ",
+            "retry_or_rethink": "誤った除外は拒否されるだけで、実質ノーコストの試行錯誤になりやすい",
+            "job_reveal_bridge": "既存のdiscoveryEchoは使えるが、統合ではなく一対一の除外の連続になり『つなげてまとめる』というE_consequenceの語りと弱く整合",
+            "strengths": "各ステップが小さく、10-12歳には理解しやすい",
+            "weaknesses": "所見1枚ごとに正誤フィードバックが即時に出るため、全候補を順に試せば総当たりで正解が見つかる（6所見×3候補=18回の試行で確実に正解へたどり着ける）。所見同士を『組み合わせて』見る一体感が弱く、一問一答の反復はD_REPLACED_BY_TRIVIAに近い",
+            "risk": "総当たり耐性が低い（BRUTE_FORCE_SUCCESS）",
+            "adoption_or_rejection_reason": "却下。即時の一対一フィードバックが総当たりに弱く、COREの『所見を統合して照合する』という一体的な判断ではなく個別クイズの連続になってしまう。"
+          },
+          {
+            "translation_id": "t3-confidence-sort",
+            "play_seed": "s3-confidence-sort",
+            "goal": "6つの所見カードを3つの診断候補の置き場へ仕分け、最も確信度の高い候補を選ぶ",
+            "first_visible_state": "3つの診断候補の置き場（列）と、6つの未仕分けの所見カード。",
+            "primary_action": "所見カードを候補の置き場へドラッグして仕分ける→最終決定ボタンで確定",
+            "C_interaction": "所見の内容を読み、どの候補の典型像に近いか判断して置き場を選ぶ",
+            "system_reaction": "仕分け完了後、各置き場の確信度（集まった枚数）を表示",
+            "information_gained": "累積の仕分け結果",
+            "player_next_judgment": "確信度が割れていれば置き場を見直す",
+            "D_externalization": "所見の仕分け（分類）操作",
+            "E_consequence": "最も確信度の高い候補で治療方針へ",
+            "retry_or_rethink": "個々の仕分けに即時フィードバックを出せば総当たりに弱く、出さなければ確信度メーターだけで学習効果が薄い",
+            "job_reveal_bridge": "既存のdiscoveryEchoは使えるが『仕分け』は統合の一体感を『置き場』という空間操作に分解してしまう",
+            "strengths": "ドラッグ操作は直感的で子どもに親しみやすい",
+            "weaknesses": "375pxでの3列ドラッグ&ドロップUIの実装コストが高い。個々のドロップに即時フィードバックを出すと3^6=729通りだが試行コストが低く数分で総当たり発見される。フィードバックを最終決定まで隠すと確信度メーターの意味が薄れ、結局『まとめて確定』するt1と実質同じ判断構造になる（UI複雑化のコストに見合わない）",
+            "risk": "実装コストが高い割に、隠しフィードバック版はt1と同じ判断構造に収束する",
+            "adoption_or_rejection_reason": "却下。ドラッグ&ドロップの実装コストと総当たり耐性のトレードオフがt1より劣る。即時フィードバックなしにするとt1と同じ判断構造になり、わざわざ複雑なUIにする理由がない。"
+          }
+        ],
+        "adopted_translation_id": "t1d-flexible-commit-and-defend",
+        "adoption_rationale": "design review r4（FAIL 55、0 blockers、HIGH×3: ARTIFACT_CHAIN_INCONSISTENT、CLINICAL_MODEL_UNDERDETERMINED[局所修理不可]、FACTUAL_GROUNDING_INCOMPLETE）の是正として、t1d-flexible-commit-and-defendを採用した。核心の是正はCLINICAL_MODEL_UNDERDETERMINED: 決め手所見の完全一致採点が、査読者自身が示した臨床的に妥当な代替（話・検査・画像、聴診なし）を不正解としていた問題を、『検査・画像必須、話・診察は任意、呼吸状態・循環は不可』という柔軟な受容基準へ変更することで解消した（design-sim.mjs: 4通りの正解すべてが成功、内容非依存の攻略は乱択水準）。ae.Eのフラットフィードバック統一、心不全カードの未裏付け主張削除も反映。s2/s3、旧t1/t1bは引き続き却下・非採用。 design review r5 HIGH是正（ARTIFACT_CHAIN_INCONSISTENT、FACTUAL_GROUNDING_INCOMPLETE）: play_seedsのsystem_reactionが旧版の完全一致（4枚ちょうど）のまま残っていたのを4通りの受容基準へ統一し、全artifactのfact_sheet参照をv6へ更新、心不全カードの表現を引用元が直接支持する範囲（心陰影拡大・肺うっ血）に絞った。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:31.968Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v2.json",
+          "created_at": "2026-09-08T23:18:48.848Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v3.json",
+          "created_at": "2026-09-08T23:35:42.606Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v4.json",
+          "created_at": "2026-09-08T23:46:42.188Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v3.json",
+          "created_at": "2026-09-08T23:47:44.263Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v4.json",
+          "created_at": "2026-09-08T23:47:44.340Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v3.json",
+          "created_at": "2026-09-08T23:48:33.118Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v5.json",
+          "created_at": "2026-09-08T23:49:26.422Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v6.json",
+          "created_at": "2026-09-08T23:49:37.180Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v6.json",
+          "created_at": "2026-09-08T23:50:06.492Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v7.json",
+          "created_at": "2026-09-09T00:01:04.976Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v9.json",
+          "created_at": "2026-09-09T00:11:44.080Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 12,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v8.json",
+          "created_at": "2026-09-09T00:12:01.792Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 13,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
+          "created_at": "2026-09-09T00:19:08.190Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 14,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
+          "created_at": "2026-09-09T04:27:24.879Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 15,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v11.json",
+          "created_at": "2026-09-09T05:18:42.692Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 16,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v11.json",
+          "created_at": "2026-09-09T05:36:20.109Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 17,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v11.json",
+          "created_at": "2026-09-09T05:38:09.256Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 18,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v12.json",
+          "created_at": "2026-09-09T05:48:31.969Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-clue-join:first_5_seconds:v11",
+      "artifact_type": "first_5_seconds",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+      "payload": {
+        "zero_to_two_seconds": "画面上部に4つの診断候補カード（肺炎／心不全／喘息発作／気胸、表示順は毎回ランダム。それぞれタイトル、『？』読み物マーク、『これだと思う』ボタン）。下に6つの所見カード（話・診察・呼吸状態・検査・画像・循環、表示順も毎回ランダム、それぞれ短い一文）。下部に『▶ これでまとめてみる（あと2回）』。説明文・操作手順の文章はない。",
+        "two_to_five_seconds": "候補カードの『？』をタップすると典型像が読める（読むだけ、コミットにはならない）。『これだと思う』をタップするとその候補がハイライトされ、他の候補は選べなくなる（変更は自由）。所見カードをタップすると選択状態になり、もう一度タップで解除できる。表示順は今夜のうちは変わらない（覚えても混乱しない）。 診察の音（パチパチ/プツプツ）と喘息候補の音（ゼーゼー）が違う質であることに気づく子どももいる。",
+        "first_expected_touch": "診断候補カードの『？』、または『これだと思う』、または所見カードのどれか",
+        "first_system_reaction": "『？』タップ→典型像が開く（コストなし）。『これだと思う』タップ→その候補がハイライトされる（コストなし、他候補への変更も自由）。所見カードタップ→選択状態のトグル（コストなし）。『▶ これでまとめてみる』を押すまでは何度でもやり直せる。",
+        "next_expected_inference": "4つの候補の典型像と、6つの所見を見比べて、どの所見がどの候補に一番合うかを考える。呼吸状態（SpO₂）は心配な数値に見えるが4候補どれにも起こりうる（決め手にならない）ことや、循環（血圧）が正常範囲であることに気づく。表示順を覚えるのではなく内容を読む必要があると気づく。 検査（白血球・CRP）と画像（肺の変化）の2つが特に決め手になりやすい核心の根拠で、話・診察はそれを補強するかどうかは任意だと気づく。",
+        "next_expected_action": "候補を1つ選び、決め手になると思う所見だけを選び終えたら『▶ これでまとめてみる』を押す"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:game_translations:v18"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:32.047Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-08T23:18:48.890Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v3.json",
+          "created_at": "2026-09-08T23:35:42.647Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v4.json",
+          "created_at": "2026-09-08T23:50:22.479Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v5.json",
+          "created_at": "2026-09-09T00:01:05.052Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T00:12:01.862Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T00:19:08.261Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T04:27:24.949Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T05:18:54.732Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T05:36:20.188Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T05:38:09.341Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T05:48:32.048Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v11",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v9.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": true,
+          "contextual_cue_only": true,
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": false,
+          "tap_all": false,
+          "spam_submit": false,
+          "fixed_failure_pattern": false,
+          "color_leak": false,
+          "label_leak": false,
+          "position_leak": false,
+          "visual_hierarchy_leak": false,
+          "pass": true,
+          "evidence": "design review r2（design-review-r2.result.json、FAIL 54）は、r1是正後もBLOCKER 2件を発見: (1) ANSWER_LEAK_POSITION — 診断候補の提示順の先頭が常に正解（肺炎）、決め手所見が常に配列位置1,2,4,5であり、内容を一切読まずこの位置だけ選べば初回で100%成功する。(2) BRUTE_FORCE_SUCCESS — 上記の位置漏れにより、申告していた約51%の残余リスクの前提（所見の完全一致は難しい）が崩れ、位置だけで所見が確定し診断も1回で成功する。是正版（t1c-shuffled-commit-and-defend, design-sim.mjs v3）: 診断候補・所見カードの表示順を、clueBoardLogic.ts shuffledVitalsと同じ規律でセッションごとに独立にシャッフル（今夜の間は固定、新しい症例/やり直しで再シャッフル）。design-sim.mjsにfirst_displayed_diagnosis_plus_positions_1245（r2の指摘そのものを再現した戦略）とその2回巡回版を追加し、多数のシャッフル済みセッションに対する勝率が理論値（それぞれ1/60、1/30——内容を見ない乱択と同水準）に一致することを直接検証（position_leak_closed_single_try/position_leak_closed_cycledがtrue）。r1是正済みのカテゴリラベル再整理・数値/深刻さの意図的混在も引き続き維持。 design review r3（FAIL 58、BLOCKER 0件、HIGH×2）でも位置漏れの是正（position_leak_closed_single_try/cycled）は確認されhigh評価の対象外だった。r3のHIGH（ARTIFACT_CHAIN_INCONSISTENT、CLINICAL_MODEL_OVERSTATED）はscope_core_v3/c_compression_v4/play_seeds_v5/fact_sheet_v10で是正した。 design review r4（FAIL 55、0 blockers、HIGH×3）: CLINICAL_MODEL_UNDERDETERMINED（局所修理不可、redesign対象）— 決め手所見の完全一致採点が、査読者自身の示した臨床的に妥当な代替（話・検査・画像、聴診なし）を拒否していた。t1d-flexible-commit-and-defendで、検査・画像必須／話・診察任意／呼吸状態・循環不可、という柔軟な受容基準（4通りの正解）へ変更し是正した。design-sim.mjs: all_four_legitimate_variants_win=true、乱択（2回の予算）は約3.1%（旧版の0.8%からやや上昇したが引き続き低水準）、select_all/カテゴリ/数値/深刻さ/位置ヒューリスティックはいずれも0%または理論的乱択水準。"
+        },
+        "clinical_model_correction": "design review r1のHIGH（CLINICAL_MODEL_OVERSTATED）是正は維持: 呼吸状態（SpO₂・呼吸数）と循環（血圧）は『決め手にならない＝重要でない』と誤解されないよう、結果画面と候補カードの典型像の両方で『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならない』と明記する。 design review r3 HIGH（CLINICAL_MODEL_OVERSTATED）是正: 候補カードの片側性/両側性・炎症所見を絶対的な排他規則ではなく傾向表現（〜ことが多い）に統一し、診察所見の音の質をパチパチ（プツプツ）に限定して喘息候補のゼーゼーとの混同を避けた（fact_sheet_v10）。 design review r4 HIGH是正: 心不全カードの未裏付け主張（血液の炎症数値は上がらない）を削除。design review r5 HIGH是正: さらに『両側性変化』も引用元（日本心臓財団）が明示的に支持していなかったため削除し、同ページが実際に支持する心陰影拡大・肺うっ血のみを記載した（fact_sheet_v10）。",
+        "factual_grounding": "design review r2のHIGH（FACTUAL_GROUNDING_INCOMPLETE）是正: fact_sheet_v10.sourcesに4候補すべての出典URL（肺炎=JRS成人肺炎診療ガイドライン2024、心不全=日本心臓財団、喘息発作=JRS気管支喘息citizen page、気胸=JRS気胸citizen page）を実際に追加し、fact_sheet_v10.candidate_reference_cardsに各候補カードの確定文言と出典を明記した。game_translations/game_spec/実装はこの確定文言を単一の正本として参照する。",
+        "artifact_chain_consistency": "design review r2のHIGH（ARTIFACT_CHAIN_INCONSISTENT）是正: ae_v3・c_compression_v3・play_seeds_v4を4候補・フラットフィードバックに統一し、採用translation（t1c）と矛盾する記述（3候補、システムによる具体的矛盾指摘）を除去した。",
+        "implementation_stage_checks_required": "design review r3 MEDIUM（非BLOCKER、実装段階で検証必須）: (1) SHUFFLE_LIFECYCLE_UNVERIFIED — 診断候補・所見カードの表示順シャッフルは、初回mount・partial後・章の再開・React remountのいずれでもセッション内で一度だけ生成され、採点は常にIDベースで行われる（表示indexを採点に使わない）ことをgameplay-qa-clue-join.mjsで回帰テストする。(2) VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 375px幅で診断4枚+所見6枚+フィードバック+残回数+送信ボタンがスクロールなしで収まり、候補の『？』を開いてもコミット状態・所見選択・送信ボタンへ迷わず戻れることを実機で確認する。",
+        "revision_note": "v8 (PREPARED, r6 fix, not submitted): clinical_model_correctionが削除済みの『両側性変化』をなお現行根拠として記述していたのを、fact_sheet_v10の実際の記載（心陰影拡大・肺うっ血のみ）に一致させた。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:first_5_seconds:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:32.159Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-08T23:18:48.931Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v3.json",
+          "created_at": "2026-09-08T23:35:42.686Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v4.json",
+          "created_at": "2026-09-08T23:50:31.035Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-09T00:01:05.159Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v6.json",
+          "created_at": "2026-09-09T00:12:01.962Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v7.json",
+          "created_at": "2026-09-09T00:19:08.361Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T04:27:25.051Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T05:18:54.840Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T05:36:20.302Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T05:38:09.459Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v9.json",
+          "created_at": "2026-09-09T05:48:32.160Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-clue-join:core_back_check:v11",
+      "artifact_type": "core_back_check",
+      "version": 11,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/core_back_check_v8.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "design review r2（FAIL 54、BLOCKER×2: ANSWER_LEAK_POSITION、BRUTE_FORCE_SUCCESS）の是正として、t1c-shuffled-commit-and-defendを採用。r1で外在化したD（診断コミット＋根拠選択）の構造自体は維持しつつ、診断候補・所見カードの表示順をセッションごとにシャッフルすることで、r2が発見した『固定提示順=答え』という新しい答え漏れを構造的に排除した。design-sim（8000試行/戦略）で、r2の指摘した具体的攻略（先頭診断+固定位置1,2,4,5）を多数のシャッフル済みセッションで再検証し、理論的な偶然一致確率（1/60、1/30）まで下がることを機械的に確認。fact_sheet_v10・ae_v3・c_compression_v3・play_seeds_v4・no_manual_exploit_check_v4を4候補・フラットフィードバック・出典明記で内部整合させた。CORE（複数所見を診断候補の典型像と照合し、決め手になる所見を見極める）・SCOPE（救急外来診療の統合段階）は変更なし。既存のdiscoveryEcho/resolution（medical.ts）は変更不要。 design review r3（FAIL 58、BLOCKER 0件、HIGH×2: ARTIFACT_CHAIN_INCONSISTENT、CLINICAL_MODEL_OVERSTATED）の是正として、scope_core_v3/c_compression_v4/play_seeds_v5を4候補・フラットフィードバックへ完全統一し、fact_sheet_v10で候補カード文言を傾向表現に、診察所見をパチパチ（プツプツ）限定に修正した（喘息候補のゼーゼーとの混同回避）。position_leak_closed（r2是正）は引き続き維持されている（design-sim-result.json）。MEDIUM 2件（シャッフルのライフサイクル、375pxレイアウト）は実装段階の検証項目として記録した。 design review r4（FAIL 55、0 blockers、HIGH×3）の是正として、t1d-flexible-commit-and-defendを採用: 決め手所見の判定を『検査・画像必須、話・診察任意、呼吸状態・循環不可』という柔軟な基準へ変更し、査読者自身が示した臨床的に妥当な代替を含む4通りの組み合わせを正解として受け入れるようにした（CLINICAL_MODEL_UNDERDETERMINED是正）。ae.Eのフラットフィードバック統一（ARTIFACT_CHAIN_INCONSISTENT是正）、心不全カードの未裏付け主張削除（FACTUAL_GROUNDING_INCOMPLETE是正）も反映。position_leak_closed（r2/r3是正）は引き続き維持。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-clue-join:game_translations:v18"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:48:32.237Z",
+      "consistency_repair": true,
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v2.json",
+          "created_at": "2026-09-08T23:18:48.972Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v3.json",
+          "created_at": "2026-09-08T23:35:42.724Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v4.json",
+          "created_at": "2026-09-08T23:50:22.557Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v5.json",
+          "created_at": "2026-09-09T00:01:05.236Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v6.json",
+          "created_at": "2026-09-09T00:12:02.031Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T00:19:08.433Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T04:27:25.122Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T05:18:54.916Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T05:36:20.383Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 10,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T05:38:09.540Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 11,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v8.json",
+          "created_at": "2026-09-09T05:48:32.238Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        }
+      ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-clue-join:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/game_spec_v1.json",
+      "payload": {
+        "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見を選んで『まとめる』。正解は肺炎、決め手は検査・画像を必ず含み、話・診察は任意（呼吸状態・循環は含めない）という4通りの組み合わせのいずれか。",
+        "initial_visual_state": "4つの診断候補カード（タイトル、『？』読み物ボタンで一般的な典型像を表示、『これだと思う』コミットボタン）。6つの所見カード（話・診察・呼吸状態・検査・画像・循環、タップで選択トグル）。下部に『▶ これでまとめてみる（あと2回）』。カードの表示順は今夜のセッション開始時に1回だけ独立にシャッフルされ（診断カード・所見カードそれぞれ）、同じ夜の間は固定。説明文・操作手順の文章はない。",
+        "interactive_objects": [
+          "diagnosis candidate card x4 (『？』read-only pattern text toggle, 『これだと思う』commit button, mutually exclusive — only one committed at a time)",
+          "evidence card x6 (tap to toggle selection, multi-select, free to change before submit)",
+          "submit button (budgeted, 2 attempts)"
+        ],
+        "primary_action": "診断候補カードの1つに『これだと思う』でコミットする（自由に変更可、コストなし）。所見カードを複数タップして根拠として選ぶ（自由に変更可、コストなし）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。",
+        "C": "6つの所見カードの内容（話=発症の経過、診察=聴診の音の質、呼吸状態=SpO₂・呼吸数、検査=白血球・CRP実数値、画像=肺の変化、循環=血圧）と、4つの診断候補カードの傾向的な典型像（fact_sheet.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像、『〜ことが多い』という表現で断定を避ける）。",
+        "D": "所見全体を4つの診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ（決め手＝検査・画像は必須、話・診察は任意、呼吸状態・循環は不可）。整合しなければ、フラットな『もう一度見比べてみよう』を手がかりに自分で選び直す。",
+        "system_reactions": [
+          "所見カードタップ → 選択状態のトグル（視覚変化のみ、コストなし）",
+          "診断候補カードの『？』タップ → 典型像テキストの開閉（コストなし）",
+          "診断候補カードの『これだと思う』タップ → その候補にコミット（他候補は自動解除、コストなし、変更自由）",
+          "提出（診断=肺炎 かつ 所見選択が『検査・画像を含み、呼吸状態・循環を含まない』4通りのいずれか） → 成功。結論・選んだ根拠・心不全/喘息発作/気胸それぞれの傾向的な典型像との対比を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならなかった』と明記して治療方針（既存resolution/discoveryEcho、変更なし）へ",
+          "提出（診断・所見のいずれかまたは両方が条件を満たさない） → フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』の一言のみ。診断/所見どちらが違うか、多い/少ないかは一切示さない",
+          "budget消費後、不一致が続けばpartialへ"
+        ],
+        "state_transitions": [
+          "night(選択中) -> success(診断=肺炎かつ所見が有効な4通りの組み合わせのいずれかに一致)",
+          "night -> retry(不一致、budget消費、budget>0ならnightへ戻る)",
+          "night -> partial(budget=0で未成功、正直な保留)",
+          "success/partial -> restart可能(同じ患者/所見のまま選び直し、表示順は再シャッフル)"
+        ],
+        "failure_behavior": "予算内の不一致はフラットな一言のみでnightへ戻る。2回とも不一致なら『今回ははっきりした決め手にたどりつけなかった。応援の医師と、もう一度手がかりを見直すことになった』という正直なpartial（進行は可能、Job Revealは成功時と同じdiscoveryEchoに接続——実際の救急外来でも保留・コンサルトは正直な結果であり成功の偽装ではない）",
+        "retry_behavior": "partial後は『もう一度考える』で同じ6所見・4候補のまま再挑戦できる（restartSameCase相当、内容は変えない、表示順は再シャッフル）",
+        "E": "正しい診断＋根拠の組み合わせに成功すると、結論と根拠、代替診断3つそれぞれとの対比、呼吸状態/循環の位置づけの明記が示され、既存のresolution（『肺で炎症が起きている可能性が高い』）→discoveryEchoへ進む。E自体（治療方針を医師が決める）は医師自身の権限内で閉じており、他者の裁量判断は介在しない。",
+        "job_reveal": "既存 factory側 src/data/content/medical.ts の med-diagnose experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし。",
+        "first_5_seconds": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json 準拠",
+        "no_manual_requirements": "操作手順の説明文なし。所見カード・候補カードの意味は、タップと『？』読み物のみで発見できる。budgeted submitボタンの『あと2回』表示は既存Q1games（clue_board/xray_shoot等）と同じ予算表示の慣習に従う。",
+        "mobile_constraints": "375px幅、10カード（候補4+所見6）+ボタン+フィードバック+残回数がスクロールなしで収まるレイアウト。診断候補カードは2x2グリッド、所見カードは2列x3行または横スクロールなしの縦積み。タップ領域44px以上。診断候補・所見カードの表示順は、独立したFisher-Yatesシャッフルをセッション開始時（コンポーネントmount時）に1回だけ生成し、useState等で保持して同じ夜の間は再生成しない（partial後の再挑戦・restartSameCase時のみ再生成）。採点は常にID（seg/pointに相当するカードID）で行い、表示上のindex/positionを一切参照しない。『？』典型像を開いてもコミット状態・所見選択・残回数・送信ボタンへ迷わず戻れるレイアウトにする（典型像はモーダルではなくインラインの折りたたみとし、他の操作を隠さない）。",
+        "asset_requirements": [
+          "no new art asset — reuses public/assets/medical/er_exam.jpg (place image, already used by med-doctor/med-diagnose, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, same as ClueBoardGame.tsx/DiagnoseGame.tsx precedent)"
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:ae:v12",
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:59:57.315Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/game_spec_v1.json",
+          "created_at": "2026-09-09T05:59:57.321Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-clue-join:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "Redesign is a pure text/card UI (diagnosis candidate cards + evidence cards), matching the existing ClueBoardGame.tsx/DiagnoseGame.tsx CSS-card precedent. Reuses the existing place image public/assets/medical/er_exam.jpg (already shipped, unchanged, owned by med-doctor/med-diagnose experience wiring in src/data/content/medical.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_spec:v1"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:00:20.213Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/art_brief_v1.json",
+          "created_at": "2026-09-09T06:00:20.214Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-clue-join:implementation:v2",
+      "artifact_type": "implementation",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/implementation_v2.json",
+      "payload": {
+        "component_files": [
+          "src/q1/DiagnoseGame.tsx"
+        ],
+        "logic_module": "src/q1/clueJoinLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-clue-join.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/medical/er_exam.jpg, no new asset)",
+        "d_preserved_statement": "The child still performs the real judgment: committing to one of 4 diagnosis candidates via an explicit 'これだと思う' action (never pre-filled or suggested by the system) and independently selecting which of the 6 gathered findings are the actual decisive evidence for it. Both are scored together only after the child's own submission; the system never reveals the correct diagnosis or evidence set before that point (verified by gameplay-qa-clue-join.mjs's CORRECT_DIAGNOSIS pre-commit-hint and answer-leak checks). This mirrors the real differential-diagnosis structure preserved through c_compression/game_translations: match findings against candidate patterns, commit to the best-fitting one, and be able to say why.",
+        "revision_note": "v2 (implementation review r1 FAIL 74, 2 HIGH, 0 blockers, repair — repair_count 2/2, downstream repair per q1-pipeline.mjs 'fail' rules, no design-stage budget touched, IMPLEMENTATION_CHANGED_D routed to IMPLEMENTATION only): (1) CLINICAL_MODEL_OVERSTATED — src/q1/DiagnoseGame.tsx's success screen no longer labels the 3 alternative diagnoses with absolute exclusion ('○○ではない'); it now shows a '○○との比較' heading with each candidate's own tendency-worded pattern text followed by a single comparative sentence ('今回そろった所見は、これよりも肺炎の典型像によく合う。'), preserving fact_sheet_v12's non-absolute framing while still satisfying game_spec's requirement to contrast the 3 alternatives. (2) DISCLOSURE_TOUCH_TARGET_TOO_SMALL — the diagnosis-candidate '?' disclosure (src/index.css .dx-more) is now a real 38x38px circular button (was 0 padding/no min-height, ~18px effective), restructured into a single dx-head row (dx-name + the '?' circle) so overall card height did not grow; re-measured live at 375x812: document.scrollHeight now exactly 812px (was 819px pre-fix), i.e. fits with zero overflow."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_spec:v1"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:41:55.309Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/implementation_v1.json",
+          "created_at": "2026-09-09T06:23:50.626Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/implementation_v2.json",
+          "created_at": "2026-09-09T06:41:55.310Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-clue-join:implementation_qa:v2",
+      "artifact_type": "implementation_qa",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
+      "payload": {
+        "first_5_seconds": "Verified live in the Browser pane at 375x812: entering the chapter shows the task-bar goal line, 4 diagnosis candidate cards and 6 evidence cards immediately, all interactive with no explanatory paragraph — matches first_5_seconds_v6.json/no_manual_requirements.",
+        "touch_targets": "join-main (evidence cards) min-height 44px, dx-commit (diagnosis commit button) min-height 44px. v2 fix: dx-more ('?' typical-pattern disclosure) is now a real 38x38px circular button (border+background, no longer padding:0 relying on the global button reset) — re-measured live via getBoundingClientRect(): {height:38, width:38}.",
+        "mobile_375": "v2 re-measured live at 375x812 after the touch-target fix: document.scrollHeight is exactly 812px == innerHeight (0px overflow, was 819px/7px in v1) — restructuring the '?' button into the diagnosis-name row (dx-head) instead of a separate full-width row kept card height the same or smaller while fixing the tap target.",
+        "direct_manipulation": "Diagnosis commit and evidence selection are both direct taps on the card itself (or its commit button) with immediate visual feedback (border/background color change, checkmark) — verified live via click-and-screenshot in the Browser pane.",
+        "reaction_timing": "State updates (commit highlight, evidence toggle, submit feedback) render synchronously on tap with no artificial delay, consistent with every other Q1 game in this app.",
+        "c_to_d": "Verified: the 6 evidence cards (話/診察/呼吸状態/検査/画像/循環) and 4 diagnosis candidates' typical-pattern text (fact_sheet.candidate_reference_cards, opened via the '?' circle) are the only information available; the child must compare them and commit — the component never auto-suggests or highlights a correct pairing (gameplay-qa-clue-join.mjs: 'CORRECT_DIAGNOSIS is never used before the success screen').",
+        "consequence": "A winning submission (pneumonia + an evidence set that is a superset of {lab,xray} and subset of {lab,xray,talk,exam}) shows a distinct success screen contrasting the 3 other candidates and explicitly notes why spo2/bp were not decisive; a losing submission returns one flat, uninformative sentence with no diagnosis/evidence-specific hint (verified live and by gameplay-qa-clue-join.mjs's answer-leak/random-guess-rate checks). v2 fix (CLINICAL_MODEL_OVERSTATED): the 3-alternative contrast on the success screen no longer states absolute exclusion ('○○ではない'); it now shows '○○との比較' followed by that candidate's own fact_sheet-sourced tendency text and a single comparative sentence ('今回そろった所見は、これよりも肺炎の典型像によく合う。'), preserving fact_sheet_v12's non-absolute/tendency-only framing — re-verified live end to end after the fix.",
+        "retry": "Within budget (2 attempts), a wrong submission decrements the counter shown on the submit button ('あと1回') and lets the child freely re-commit/re-select with the SAME shuffled order (no reshuffle mid-session) — verified live. After budget exhaustion, the honest partial screen offers both 'もう一度考える' (resets budget to 2, reshuffles orders, verified live) and '先へ進む' (calls onPartialComplete, verified live — Job Reveal still fires).",
+        "answer_leak": "gameplay-qa-clue-join.mjs verifies: no diagnosis candidate's read-only pattern text contains a verdict phrase or names another candidate; CORRECT_DIAGNOSIS is never referenced before the outcome is decided; the per-session shuffle is id-based (scoring never touches display position). Live testing confirmed the '?' pattern disclosure never reveals or implies which candidate is correct.",
+        "brute_force": "gameplay-qa-clue-join.mjs: select_all / has-number-only / no-number-only heuristics all win 0% of simulated cases (N=8000); blind random evidence+diagnosis stays at 3.06% (matches design-sim.mjs's disclosed theoretical baseline); the r2-class fixed-position exploit (first-displayed candidate + evidence positions 1,2,4,5) matches the chance baselines 1/60 (single try) and 1/30 (2-try cycled), i.e. no better than blind guessing once shuffled.",
+        "visual_affordance": "Committed diagnosis card and selected evidence cards both get a clear orange border/background change plus a checkmark; the disabled submit button (before any diagnosis is committed) is visually dimmed via the existing btn:disabled opacity rule; the '?' disclosure is now a visibly bordered circular button rather than bare text — verified live via screenshot.",
+        "no_manual": "No instructional/how-to-play text anywhere in the screen; card meaning is discoverable via tap and the '?' disclosure only, matching no_manual_exploit_check_v9.json and every sibling Q1 game's convention.",
+        "job_reveal": "onComplete/onPartialComplete both route to the existing shared Q1 shell, which renders medical.ts's unchanged med-diagnose discoveryEcho/resolution/seed-picker — verified live end to end (success path reached the '🎉 肺で炎症が起きている可能性が高い' discoveryEcho screen; ch4 flipped from active to done and ch5 med-pharm unlocked).",
+        "pass": true,
+        "evidence": {
+          "gameplay_qa": "node factory/harness/gameplay-qa-clue-join.mjs -> 31 passed, 0 failed (re-run after v2 fix)",
+          "self_test": "node factory/harness/q1-factory-selftest.mjs -> 41/41 passed",
+          "typecheck": "npx tsc --noEmit -p . -> no output (clean, re-run after v2 fix)",
+          "build": "npm run build -> succeeded (re-run after v2 fix)",
+          "lint": "npm run lint -> no new errors/warnings introduced by DiagnoseGame.tsx, clueJoinLogic.ts, or gameplay-qa-clue-join.mjs",
+          "implementation_review_r1": "factory/projects/legacy-clue-join/impl-review-r1.result.json — FAIL 74, 2 HIGH (CLINICAL_MODEL_OVERSTATED, DISCLOSURE_TOUCH_TARGET_TOO_SMALL), 0 blockers. Both fixed in this v2 revision (see revision_note in implementation_v2.json).",
+          "live_browser_verification": "Browser pane at 375x812 after the v2 fix: re-measured dx-more at {height:38,width:38}; document.scrollHeight === innerHeight === 812 (0px overflow); replayed a full success run (committed pneumonia + lab/xray, confirmed the reworded '○○との比較' contrast text, confirmed Job Reveal/discoveryEcho fires)."
+        }
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:implementation:v2"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:42:05.730Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/implementation_qa_v1.json",
+          "created_at": "2026-09-09T06:24:26.622Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
+          "created_at": "2026-09-09T06:42:05.731Z",
+          "creator": "claude"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 82,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-clue-join/design/design-review-r10.result.json",
+    "input": "factory/projects/legacy-clue-join/design/design-review-r10-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 3,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-09T05:53:14.642Z"
+  },
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 86,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-clue-join/impl-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 3,
+    "repair_count_at_review": 2,
+    "stale": false,
+    "recorded_at": "2026-09-09T06:45:37.635Z"
+  },
+  "art_review": null,
+  "failures": [
+    {
+      "failure_id": "f-1",
+      "failure_code": "D_PERFORMED_BY_SYSTEM",
+      "failure_reason": "Design review r1 FAIL 52 (CA52/GQ58, 2 BLOCKERs, 4 HIGH, 2 MEDIUM, 1 LOW). BLOCKER-1 (C_NOT_NEEDED_FOR_D / ANSWER_LEAK_LABEL_POSITION): the required 4-card evidence set exactly equaled 'every card whose category is not バイタル' (SpO2+BP both shared that one label) and additionally sat at fixed array positions 1,2,4,5 — a content-blind category/position shortcut wins 100%. BLOCKER-2 (D_PERFORMED_BY_SYSTEM / D_NOT_EXTERNALIZED): the mechanic never asked the child to commit to a diagnostic hypothesis at all; the system revealed the diagnosis after filtering a card set. HIGH: ae/play_seeds still described diagnosis-selection + specific-conflict feedback that the translation had removed (ARTIFACT_CHAIN_INCONSISTENT); candidate-pattern sourcing lacked claim-level citations, especially asthma (FACTUAL_GROUNDING_INCOMPLETE); SpO2/BP were framed as 'should not be selected' which mischaracterizes their real clinical importance for severity/safety (CLINICAL_MODEL_OVERSTATED); the 3-way extra/missing/both feedback leaked set-relation information (RETRY_FEEDBACK_LEAK). Fix (t1b-commit-and-defend): restored an explicit diagnosis-commit step (child taps 'これだと思う' before/with submitting evidence — D now genuinely externalized); relabeled the 6 evidence categories to 6 distinct names (話/診察/呼吸状態/検査/画像/循環, no shared substring) and deliberately mixed numeric-value-presence and alarming-sounding-ness across both the required and excluded cards so no surface heuristic predicts membership; expanded diagnosis candidates 3->4 (added 気胸/pneumothorax, a real respiratory-differential alternative) to lower blind-cycling odds; unified all wrong-attempt feedback into one flat, diagnosis-blind, evidence-blind message; added a real cited source for the asthma pattern (日本呼吸器学会 気管支喘息 citizen page); reframed SpO2/BP as 'important for severity, not decisive for which illness' in both the candidate reference text and the success screen; brought ae/play_seeds/c_compression/no_manual_exploit_check/core_back_check/game_spec into consistency with the final mechanic. design-sim.mjs rewritten and re-verified (8000 trials/strategy): exactly 1 winning combo of 252; every category/number/alarm-heuristic strategy 0%; content-blind random guessing <1% over 2 tries; the one documented theoretical residual (evidence already guessed exactly right, diagnosis label then blind-cycled) is ~51%, bounded by candidate count and NOT amplified by leaked feedback, and requires already solving the hard sub-problem correctly — recorded as a non-content-blind theoretical bound in design-sim-result.json.notes, not an operational exploit.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r1.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "fact_sheet_v2, scope_core_v2, ae_v2 (CORE/SCOPE/A-E already validated as sound, only the translation-stage mechanic was flawed), reused patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "diagnosis-commit step restored (D externalized); evidence categories relabeled to 6 distinct names; numeric/alarm-sounding patterns mixed across required and excluded cards; diagnosis candidates 3->4; feedback fully flattened (no set-relation leak); asthma pattern cited to an official source; SpO2/BP reframed as important-but-not-discriminating; ae/play_seeds/c_compression/no_manual_exploit_check/core_back_check/game_spec made internally consistent",
+      "design_iteration": 1,
+      "at": "2026-09-08T23:34:58.737Z"
+    },
+    {
+      "failure_id": "f-2",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r2 FAIL 54 (CA62/GQ54, 2 BLOCKERs, 2 HIGH, 2 MEDIUM, 1 LOW), after repair budget (1/1) already used in r1. BLOCKER-1 ANSWER_LEAK_POSITION: despite r1's category/format fix, the correct diagnosis was always the first-displayed candidate and the correct evidence always sat at fixed array positions 1,2,4,5 -- a zero-reading 'pick candidate 1, pick positions 1,2,4,5' strategy won on try 1 (the reviewer's own constructed adversarial strategy). BLOCKER-2 BRUTE_FORCE_SUCCESS: the position leak invalidated the ~51% theoretical-residual argument (it assumed the hard evidence-discrimination sub-problem had to be solved first; the position leak makes the correct evidence set free to discover). HIGH: ae/play_seeds/c_compression still described 3 candidates and system-pointed contradictions inconsistent with the adopted 4-candidate/flat-feedback translation (ARTIFACT_CHAIN_INCONSISTENT); the asthma/pneumothorax sources were only described in the review prompt, never actually added to fact_sheet.json, and no candidate card had exact citable wording (FACTUAL_GROUNDING_INCOMPLETE). Both repair (1/1) and design-stage failure routing now require REDESIGN, not another repair. Fix (translation t1c-shuffled-commit-and-defend, a NEW translation entry, redesign #1): diagnosis-card order and evidence-card order are now independently Fisher-Yates shuffled ONCE per session (fixed within one night, re-shuffled only on a new case/restart) -- mirrors the existing src/q1/clueBoardLogic.ts shuffledVitals precedent for the same class of problem in the sibling ch1 chapter. design-sim.mjs re-run against many independently shuffled sessions: the reviewer's exact strategy (first-displayed diagnosis + positions 1,2,4,5) and its 2-try cycled variant now match the correct chance baseline (1/60 and 1/30 -- no better than blind guessing), verified directly (position_leak_closed_single_try/cycled = true). fact_sheet_v3 now actually contains all 4 candidate sources (JRS pneumonia guideline 2024, 日本心臓財団, JRS asthma citizen page, JRS pneumothorax citizen page) plus exact, citable candidate-card wording (candidate_reference_cards) that game_translations/game_spec must reference as the single source of truth. ae/c_compression/play_seeds updated to 4 candidates + flat feedback, removing the inconsistency.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r2.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "fact_sheet's already-cited pneumonia/heart-failure sources, the commit-and-defend D structure (diagnosis commit + evidence selection scored jointly), existing patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "diagnosis-card and evidence-card presentation order must be independently shuffled per session (not fixed); all 4 candidate sources must actually be added to fact_sheet with exact citable card text; ae/c_compression/play_seeds must describe 4 candidates and flat feedback consistently",
+      "design_iteration": 1,
+      "at": "2026-09-08T23:46:28.104Z"
+    },
+    {
+      "failure_id": "f-3",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r3 FAIL 58 (CA58/GQ68, 0 blockers, 2 HIGH, 2 MEDIUM, 2 LOW) after REDESIGN #1 (t1c-shuffled-commit-and-defend). Position leak confirmed CLOSED (position_leak_closed=true, gate_bypass_found=false, sim rates match the 1/60 and 1/30 chance baselines). Remaining HIGH-1 [ARTIFACT_CHAIN_INCONSISTENT, non-canonical label used by the reviewer]: scope_core.core, c_compression (how_player_still_performs_D/failure_risk), and the adopted seed's risks/next_judgment_or_action still said '3 candidates' and 'the system shows a specific contradiction', contradicting the adopted t1c's 4 candidates and fully flat feedback -- filed under ANSWER_LEAK because the stale specific-contradiction language, if implemented, would leak answer information the adopted translation deliberately withholds. HIGH-2 CLINICAL_MODEL_OVERSTATED: the candidate cards framed unilateral-vs-bilateral and inflammatory-markers-present-vs-absent as near-exclusive rules (real pneumonia can be multifocal/bilateral, real heart failure can be atypical); separately, the exam finding text and the asthma candidate's own description both used the wheeze word (ゼーゼー), so a child reading carefully could reasonably find exam ambiguous between pneumonia and asthma rather than a clean discriminator -- also an answer-clarity/leak-adjacent defect since it undermines the exact-match evidence rule having one clean, unambiguous justification. Fix (repair, iteration 2's fresh budget): scope_core_v3/c_compression_v4/play_seeds_v5 unified to 4 candidates and fully flat feedback. fact_sheet_v4 candidate_reference_cards reworded to tendency language ('...ことが多い') instead of absolute exclusion; the exam evidence card text is now limited to パチパチ/プツプツ (crackle quality), removing the ゼーゼー overlap with the asthma candidate. Also fixed (LOW, non-blocking): the talk card no longer misattributes the ch1 VITALS temperature reading onto a history-sourced card; design-sim.mjs's stale '3 diagnosis'/'189 combos' comments corrected to match the already-correct 4/252 code. MEDIUM items (shuffle-lifecycle correctness, 375px layout) recorded as required implementation-stage checks, not design-stage blockers.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r3.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "t1c-shuffled-commit-and-defend mechanic (diagnosis commit + evidence selection scored jointly, per-session shuffle, flat feedback -- position leak fix from redesign #1 stays intact), fact_sheet's 4 cited sources, patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "scope_core/c_compression/play_seeds unified to 4 candidates and fully flat feedback; candidate cards reworded to tendency language; exam evidence text limited to crackle-quality wording distinct from the asthma candidate's wheeze wording",
+      "design_iteration": 2,
+      "at": "2026-09-09T00:00:39.543Z"
+    },
+    {
+      "failure_id": "f-4",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r4 FAIL 55 (CA55/GQ66, 0 blockers, 3 HIGH, 2 MEDIUM, 2 LOW) after iteration-2's repair (1/1). Position leak remained CLOSED (all_flags_true=true, gate_bypass_found=false). Remaining: HIGH-1 [ARTIFACT_CHAIN_INCONSISTENT] ae_v4.E still described the system pointing out a specific contradiction, which r3's fix had only propagated to play_seeds/c_compression/scope_core, not ae -- a genuine miss. HIGH-2 [CLINICAL_MODEL_UNDERDETERMINED, marked NOT fixable_by_local_repair by the reviewer -- the reason this routes to REDESIGN]: exact-set evidence matching against {talk,exam,lab,xray} rejected a clinically defensible alternative the reviewer constructed themselves ({talk,lab,xray} -- course + inflammatory markers + focal imaging already cohere as pneumonia without crackles, and the cited heart-failure source itself says crackles also occur in heart failure, so exam is not independently pneumonia-specific). HIGH-3 [FACTUAL_GROUNDING_INCOMPLETE] the heart-failure candidate card's claim that inflammatory markers usually do not rise in heart failure was not supported by the cited 日本心臓財団 page (which discusses BNP, not WBC/CRP). Fix (translation t1d-flexible-commit-and-defend, REDESIGN #2 of 2 -- the last one this pipeline allows): evidence acceptance loosened from ONE exact set to a SUPERSET of the core minimum {lab,xray} (elevated inflammatory markers + focal infiltrate -- the two least disputed, most specific findings) that is also a SUBSET of {lab,xray,talk,exam} -- 4 valid combinations, all still requiring diagnosis=pneumonia and still excluding spo2/bp. design-sim.mjs verifies all 4 legitimate variants (including the reviewer's own {talk,lab,xray}) now win, while every content-blind heuristic (category/number/alarm/position/select-all) remains at 0% or the correct chance baseline, and random guessing stays at ~3.1% over 2 tries (up slightly from ~0.8% but far under any release threshold). ae.E rewritten to the same flat feedback as the rest of the chain. The heart-failure card's unsupported claim removed; it now states only what the cited source (BNP, cardiomegaly, bilateral pattern) actually supports.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r4.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "the commit-and-defend D structure, per-session shuffle (position-leak fix, unaffected by this change), fact_sheet's 4 cited sources (heart-failure claim narrowed to what the source supports), patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "evidence acceptance loosened to 4 clinically-defensible combinations (superset of {lab,xray}, subset of {lab,xray,talk,exam}); ae.E feedback flattened to match the rest of the chain; heart-failure card claim narrowed to what its source actually supports",
+      "design_iteration": 2,
+      "at": "2026-09-09T00:11:17.846Z"
+    },
+    {
+      "failure_id": "f-5",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r5 FAIL 66 (CA66/GQ76, 0 blockers, 2 HIGH, 2 MEDIUM, 2 LOW) after REDESIGN #2 (t1d-flexible-commit-and-defend, the last redesign this pipeline allows). CLINICAL_MODEL_UNDERDETERMINED confirmed CLOSED this round (clinical_model_defensible=true, wider_acceptance_window_exploit_found=false, all_four_variants_win=true) -- the core design fix from redesign #2 is sound. Remaining HIGH-1 [ARTIFACT_CHAIN_INCONSISTENT]: play_seeds_v6's adopted seed (s1) system_reaction was missed in the earlier propagation and still described the OLD exact-4-card rule instead of the current 4-combination t1d rule; several artifacts still pointed to superseded fact_sheet_v3/v4 instead of the current version. HIGH-2 [FACTUAL_GROUNDING_INCOMPLETE]: the heart-failure candidate card's remaining claim ('両方の肺に変化が出やすい', bilateral pattern) was not explicitly stated by the cited 日本心臓財団 page (which supports cardiomegaly and pulmonary congestion/fluid, not a bilateral-pattern rule specifically). Fix (iteration-3 repair, 1/1): play_seeds system_reaction and C_used updated to the current 4-combination rule and fact_sheet_v6 reference; every fact_sheet_v3/v4 cross-reference across ae/scope_core/core_back_check/no_manual_exploit_check/game_translations bumped to fact_sheet_v6; heart-failure card narrowed to only what the cited source explicitly supports (cardiomegaly, pulmonary congestion/肺うっ血, dropping the bilateral-pattern phrase). Re-ran design-sim.mjs: unchanged scoring logic, all verdict flags remain true.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r5.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "t1d-flexible-commit-and-defend's 4-combination evidence acceptance (confirmed sound this round), per-session shuffle, diagnosis-commit structure, patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "play_seeds system_reaction brought in line with the current 4-combination rule; every cross-reference updated to the current fact_sheet version; heart-failure card narrowed to source-supported claims only",
+      "design_iteration": 3,
+      "at": "2026-09-09T00:19:29.417Z"
+    },
+    {
+      "failure_id": "f-6",
+      "failure_code": "ANSWER_LEAK",
+      "failure_reason": "Design review r6 FAIL 68 (CA68/GQ77, 0 blockers, 2 HIGH, 2 MEDIUM, 1 LOW) after iteration-3's repair (1/1) and redesign (2/2) budgets are BOTH exhausted. Both HIGH are pure propagation misses across many rounds of edits, not structural design flaws: (1) [ARTIFACT_CHAIN_INCONSISTENT] scope_core_v4.derived_from, ae_v6.derived_from, and core_scope_check_v2.notes still name superseded fact_sheet_v2; play_seeds_v7.risks still says 'requires exact evidence match' which reads as inconsistent with the adjacent system_reaction's correct 4-combination rule. (2) [FACTUAL_GROUNDING_INCOMPLETE] no_manual_exploit_check_v7.clinical_model_correction still asserts the 日本心臓財団 source supports a bilateral-pattern claim that was deliberately removed from fact_sheet_v6 in the last repair as unsupported -- a direct factual contradiction between two current artifacts. Both are marked fixable_by_local_repair:true by the reviewer and are narrow text/cross-reference corrections, not mechanic changes: the core design (t1d-flexible-commit-and-defend: per-session shuffle + diagnosis commit + 4-combination flexible evidence acceptance) is independently confirmed sound (design-sim.mjs: 11/11 verdict flags true, no exploit regression; round 5 already confirmed clinical_model_defensible=true). Per the Factory's finite-budget rule (REPAIR_MAX_PER_ITERATION=1, REDESIGN_MAX=2, both now used for this pipeline), this pipeline cannot self-grant another repair -- ESCALATE is correct and mechanical, not a judgment call. The Human Decision requested is narrow, NOT a product-identity question: grant ONE additional local-repair iteration (a Limited Human Exception, matching the leak-detective hd-1/hd-2 precedent in factory/rules/q1-autonomous-factory.md) scoped ONLY to (a) updating derived_from/reference pointers to the current fact_sheet_v6 across scope_core/ae/core_scope_check, (b) rewording play_seeds_v7.risks to match the adjacent 4-combination system_reaction, and (c) correcting no_manual_exploit_check_v7's clinical_model_correction to match fact_sheet_v6's actual (narrower) heart-failure claim -- OR stop here. The fix is prepared conceptually (exact diffs identified above) but NOT applied to the pipeline, so nothing has been decided on the Factory's behalf.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r6.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "t1d-flexible-commit-and-defend mechanic in full (confirmed sound twice now), per-session shuffle, fact_sheet_v6's sourced claims, all patient values, existing medical.ts discoveryEcho/resolution",
+      "must_change": "cross-references in scope_core/ae/core_scope_check updated to fact_sheet_v6; play_seeds_v7.risks reworded to match the current 4-combination rule; no_manual_exploit_check_v7's clinical_model_correction corrected to match fact_sheet_v6's narrower heart-failure claim",
+      "design_iteration": 3,
+      "at": "2026-09-09T00:24:38.760Z"
+    },
+    {
+      "failure_id": "f-7",
+      "failure_code": "FACTUAL_PROFESSION_ERROR",
+      "failure_reason": "Design review r7 FAIL 55 (CA55/GQ82, 0 blockers, 2 HIGH). HIGH-1 [FACTUAL_GROUNDING_INCOMPLETE, touches_protected_meaning:true]: fact_sheet_v6.expertise[1] and decisions[1] still assert a bilateral/butterfly-pattern discriminator for heart failure ('胸部X線所見には...両側性の変化（butterfly/bat-wing陰影）などがある', '心不全候補なら片側性所見...は典型像と合わない') that the cited 日本心臓財団 source does not state -- earlier rounds (r4/r5) only fixed the downstream candidate_reference_cards.heart_failure.text, never this root fact_sheet content, so it slipped through 6 reviews focused on the card text. This is a genuine, newly-confirmed factual overclaim in the ROOT source-of-truth artifact (not a propagation miss of an already-made decision -- nobody had previously decided to remove it from expertise/decisions), so per the Human Decision defining MECHANICAL_CONSISTENCY_REPAIR, fact_sheet is categorically excluded from that path (q1-factory-schema.mjs CONSISTENCY_REPAIR_EXCLUDED_TYPES) and this must go through normal repair. Both design-stage budgets are exhausted (repair 1/1, redesign 2/2) -> ESCALATE, exactly as instructed for a HIGH/BLOCKER touching CORE/A-E/Game Translation/gameplay mechanic content. HIGH-2 [CONSISTENCY_REPAIR_GUARD_INCOMPLETE, a Factory mechanism gap, already fixed independently of this pipeline]: q1-factory-schema.mjs's CONSISTENCY_REPAIR_PROTECTED_FIELDS left first_5_seconds completely unprotected and omitted play_seeds.information_gained/next_judgment_or_action/C_used -- hardened in this same session (first_5_seconds now fully protected like scope_core/ae; the 3 missing play_seeds fields added), self-test re-run 32/32, no fixture regressed. MEDIUM (shuffle lifecycle, 375px layout) carried forward as mandatory game_spec/implementation-QA acceptance criteria, unchanged from r3-r6. The remaining fix (removing the bilateral-pattern claim from fact_sheet's expertise/decisions, and reassessing whether unilateral-vs-bilateral remains valid as a discriminating axis in the mechanic at all) is a real content correction to the root fact_sheet, not eligible for consistency-repair, and requires a Human Decision (a further Limited Human Exception) or stopping here.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r7.result.json",
+      "return_to": "PROFESSION_RESEARCH",
+      "preserve": "t1d-flexible-commit-and-defend mechanic (unaffected by this finding), per-session shuffle, the 3 non-heart-failure candidate cards, patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "fact_sheet.expertise and decisions must not assert a bilateral-pattern claim beyond what the cited 日本心臓財団 source states; must reassess whether unilateral-vs-bilateral should remain part of the game's discriminating axis at all, or be dropped in favor of the already-source-supported axes (subacute onset, inflammatory markers, focal imaging)",
+      "design_iteration": 3,
+      "at": "2026-09-09T04:34:06.340Z"
+    },
+    {
+      "failure_id": "f-8",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "implementation review r1 FAIL 74 (CA74/GQ78), 2 HIGH, 0 blockers: (1) CLINICAL_MODEL_OVERSTATED — success screen labeled alternative diagnoses with absolute exclusion (\"○○ではない\"), contradicting fact_sheet's tendency-only/non-absolute-exclusion policy; (2) DISCLOSURE_TOUCH_TARGET_TOO_SMALL — dx-more ('? どんな病気') had no padding/min-height, ~18px effective tap height, far below the app's ~38px secondary-disclosure precedent. Both are implementation-only defects (not required or implied by game_spec/game_translations); D itself (explicit commit + explicit evidence selection) was never touched.",
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r1.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design, spec, art",
+      "must_change": "implementation must restore the specified D",
+      "design_iteration": 3,
+      "at": "2026-09-09T06:36:29.000Z"
+    }
+  ],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-clue-join",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-08T21:16:08.849Z",
+  "updated_at": "2026-09-09T06:45:55.096Z",
+  "history": [
+    {
+      "at": "2026-09-08T21:16:08.850Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "clue_join"
+    },
+    {
+      "at": "2026-09-08T21:16:08.927Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-clue-join"
+    },
+    {
+      "at": "2026-09-08T21:16:08.969Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-08T21:16:08.969Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.008Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-08T21:16:09.008Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.048Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-08T21:16:09.048Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T21:16:09.086Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-08T23:18:48.551Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-08T23:18:48.551Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T23:18:48.592Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-08T23:18:48.592Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.633Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-08T23:18:48.633Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.673Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.673Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v2",
+        "legacy-clue-join:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.716Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.716Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.758Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.758Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.805Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.805Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.848Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.848Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v1",
+        "legacy-clue-join:c_compression:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.890Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.890Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.931Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.931Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v1",
+        "legacy-clue-join:first_5_seconds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:18:48.972Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-08T23:18:48.972Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:34:58.738Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "REPAIRING",
+      "note": "D_PERFORMED_BY_SYSTEM -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-08T23:34:58.738Z",
+      "event": "failure_routed",
+      "failure_id": "f-1",
+      "code": "D_PERFORMED_BY_SYSTEM",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-08T23:35:13.180Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v2",
+      "invalidated": [
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research"
+      ],
+      "sources": [
+        "legacy-clue-join:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:13.365Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "design review r1 repair: restored diagnosis-commit step (D externalized via t1b-commit-and-defend), relabeled the 6 evidence categories to 6 distinct names with mixed numeric/alarm-sounding patterns across required/excluded cards, expanded diagnosis candidates 3->4, flattened all wrong-attempt feedback to one non-directional message, added a cited official source for the asthma pattern, reframed SpO2/BP as important-but-not-discriminating, brought ae/play_seeds/c_compression/no_manual_exploit_check/core_back_check/game_spec into consistency. design-sim.mjs rewritten and re-verified: 8000 trials/strategy, exactly 1 winning combo of 252, all heuristic strategies 0%, content-blind random <1%, documented theoretical residual ~51% (bounded by candidate count, requires solving the hard sub-problem first, not content-blind)."
+    },
+    {
+      "at": "2026-09-08T23:35:13.366Z",
+      "event": "repair_done",
+      "note": "design review r1 repair: restored diagnosis-commit step (D externalized via t1b-commit-and-defend), relabeled the 6 evidence categories to 6 distinct names with mixed numeric/alarm-sounding patterns across required/excluded cards, expanded diagnosis candidates 3->4, flattened all wrong-attempt feedback to one non-directional message, added a cited official source for the asthma pattern, reframed SpO2/BP as important-but-not-discriminating, brought ae/play_seeds/c_compression/no_manual_exploit_check/core_back_check/game_spec into consistency. design-sim.mjs rewritten and re-verified: 8000 trials/strategy, exactly 1 winning combo of 252, all heuristic strategies 0%, content-blind random <1%, documented theoretical residual ~51% (bounded by candidate count, requires solving the hard sub-problem first, not content-blind)."
+    },
+    {
+      "at": "2026-09-08T23:35:42.527Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.527Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:42.567Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.567Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:42.607Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.607Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:42.647Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.647Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:42.686Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.686Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v2",
+        "legacy-clue-join:first_5_seconds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:35:42.724Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v2"
+    },
+    {
+      "at": "2026-09-08T23:35:42.724Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:46:28.104Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RETURNED",
+      "note": "ANSWER_LEAK -> GAME_TRANSLATION; repair budget exhausted, REDESIGN required (redesign 0/2 used)"
+    },
+    {
+      "at": "2026-09-08T23:46:28.104Z",
+      "event": "failure_routed",
+      "failure_id": "f-2",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REDESIGN_REQUIRED",
+        "reason": "repair_count=1 >= 1; run 'redesign' with a different seed/translation"
+      }
+    },
+    {
+      "at": "2026-09-08T23:46:42.188Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v3",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:47:44.263Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:47:44.340Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:48:33.118Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:26.422Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:26.496Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "REDESIGNING",
+      "note": "iteration 2: translation t1c-shuffled-commit-and-defend"
+    },
+    {
+      "at": "2026-09-08T23:49:26.496Z",
+      "event": "redesign_started",
+      "seed": null,
+      "translation": "t1c-shuffled-commit-and-defend",
+      "reason": "design review r2 BLOCKER x2 (ANSWER_LEAK_POSITION, BRUTE_FORCE_SUCCESS): fixed presentation order let the answer be found with zero content reading. t1c fixes this with per-session Fisher-Yates shuffling of diagnosis and evidence card order (design-sim.mjs: reviewer's exact strategy now matches chance baseline 1/60 and 1/30), plus completes the r2 HIGH fixes (real source citations added to fact_sheet, artifact-chain consistency restored across ae/c_compression/play_seeds).",
+      "redesign_count": 1
+    },
+    {
+      "at": "2026-09-08T23:49:37.181Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v2",
+        "legacy-clue-join:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:37.221Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v3",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-08T23:49:54.697Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:54.736Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:54.775Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_scope_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v3",
+        "legacy-clue-join:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:54.815Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:54.855Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:49:54.894Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:50:06.492Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v3",
+        "legacy-clue-join:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:50:22.479Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v9"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:50:22.557Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v9"
+      ]
+    },
+    {
+      "at": "2026-09-08T23:50:31.035Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v9",
+        "legacy-clue-join:first_5_seconds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:00:39.545Z",
+      "event": "state_change",
+      "from": "REDESIGNING",
+      "to": "REPAIRING",
+      "note": "ANSWER_LEAK -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-09T00:00:39.545Z",
+      "event": "failure_routed",
+      "failure_id": "f-3",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-09T00:00:48.990Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v4",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T00:01:04.460Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.537Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.645Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_scope_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v4",
+        "legacy-clue-join:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.719Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.793Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.868Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:04.976Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v4",
+        "legacy-clue-join:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:05.052Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v10"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:05.159Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v10",
+        "legacy-clue-join:first_5_seconds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:05.236Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v10"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:01:05.277Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "design review r3 repair: unified scope_core/c_compression/play_seeds to 4 candidates + fully flat feedback; fact_sheet_v4 reworded candidate cards to tendency language and limited the exam finding to crackle-quality (パチパチ/プツプツ), removing the wheeze-word overlap with the asthma candidate; fixed the talk-card number-provenance and design-sim's stale comments. Position-leak fix from redesign #1 (per-session Fisher-Yates shuffle) untouched and re-verified."
+    },
+    {
+      "at": "2026-09-09T00:01:05.278Z",
+      "event": "repair_done",
+      "note": "design review r3 repair: unified scope_core/c_compression/play_seeds to 4 candidates + fully flat feedback; fact_sheet_v4 reworded candidate cards to tendency language and limited the exam finding to crackle-quality (パチパチ/プツプツ), removing the wheeze-word overlap with the asthma candidate; fixed the talk-card number-provenance and design-sim's stale comments. Position-leak fix from redesign #1 (per-session Fisher-Yates shuffle) untouched and re-verified."
+    },
+    {
+      "at": "2026-09-09T00:11:17.847Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RETURNED",
+      "note": "ANSWER_LEAK -> GAME_TRANSLATION; repair budget exhausted, REDESIGN required (redesign 1/2 used)"
+    },
+    {
+      "at": "2026-09-09T00:11:17.847Z",
+      "event": "failure_routed",
+      "failure_id": "f-4",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REDESIGN_REQUIRED",
+        "reason": "repair_count=1 >= 1; run 'redesign' with a different seed/translation"
+      }
+    },
+    {
+      "at": "2026-09-09T00:11:44.080Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v11",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "legacy-clue-join:play_seeds:v4",
+        "legacy-clue-join:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:11:44.119Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "REDESIGNING",
+      "note": "iteration 3: translation t1d-flexible-commit-and-defend"
+    },
+    {
+      "at": "2026-09-09T00:11:44.119Z",
+      "event": "redesign_started",
+      "seed": null,
+      "translation": "t1d-flexible-commit-and-defend",
+      "reason": "design review r4 HIGH (CLINICAL_MODEL_UNDERDETERMINED, not fixable by local repair): exact-set evidence matching rejected a clinically defensible alternative the reviewer constructed themselves. t1d loosens acceptance to 4 combinations (superset of core minimum {lab,xray}, subset of {lab,xray,talk,exam}), verified in design-sim.mjs (all 4 legitimate variants win, content-blind heuristics remain at 0% or chance baseline). This is redesign #2 of 2 -- the last one this pipeline allows; a further design-stage FAIL escalates.",
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T00:12:01.229Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v5",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T00:12:01.299Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.370Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.472Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_scope_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v5",
+        "legacy-clue-join:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.542Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.614Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.686Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.792Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v12",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v5",
+        "legacy-clue-join:c_compression:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.862Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v12"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:01.962Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v12",
+        "legacy-clue-join:first_5_seconds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:12:02.031Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v12"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:07.637Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:fact_sheet:v6",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T00:19:07.708Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:scope_core:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:07.779Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:ae:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:07.882Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_scope_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v6",
+        "legacy-clue-join:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:07.952Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:play_seeds:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.021Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:reference_research:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.090Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:c_compression:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.190Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_translations:v13",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v6",
+        "legacy-clue-join:c_compression:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.261Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v13"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.361Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v13",
+        "legacy-clue-join:first_5_seconds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:08.434Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:core_back_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v13"
+      ]
+    },
+    {
+      "at": "2026-09-09T00:19:29.418Z",
+      "event": "state_change",
+      "from": "REDESIGNING",
+      "to": "REPAIRING",
+      "note": "ANSWER_LEAK -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-09T00:19:29.418Z",
+      "event": "failure_routed",
+      "failure_id": "f-5",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-09T00:19:40.492Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "design review r5 repair (iteration 3, final repair 1/1): fixed play_seeds_v6 s1.system_reaction (was still the old exact-4-card rule) and C_used (stale fact_sheet_v3 ref); bumped every fact_sheet_v3/v4 cross-reference to fact_sheet_v6 across ae/scope_core/core_back_check/no_manual_exploit_check/game_translations; narrowed the heart-failure candidate card to only what 日本心臓財団 explicitly supports (cardiomegaly, pulmonary congestion), dropping the unsupported bilateral-pattern phrase. All 10 design artifacts resubmitted with no stale references (verified by grep). design-sim.mjs scoring logic unchanged (r5 confirmed the 4-combination fix is sound); all verdict flags remain true."
+    },
+    {
+      "at": "2026-09-09T00:19:40.492Z",
+      "event": "repair_done",
+      "note": "design review r5 repair (iteration 3, final repair 1/1): fixed play_seeds_v6 s1.system_reaction (was still the old exact-4-card rule) and C_used (stale fact_sheet_v3 ref); bumped every fact_sheet_v3/v4 cross-reference to fact_sheet_v6 across ae/scope_core/core_back_check/no_manual_exploit_check/game_translations; narrowed the heart-failure candidate card to only what 日本心臓財団 explicitly supports (cardiomegaly, pulmonary congestion), dropping the unsupported bilateral-pattern phrase. All 10 design artifacts resubmitted with no stale references (verified by grep). design-sim.mjs scoring logic unchanged (r5 confirmed the 4-combination fix is sound); all verdict flags remain true."
+    },
+    {
+      "at": "2026-09-09T00:24:38.760Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "ESCALATED",
+      "note": "ANSWER_LEAK persists after repair_count=1, redesign_count=2"
+    },
+    {
+      "at": "2026-09-09T00:24:38.760Z",
+      "event": "failure_routed",
+      "failure_id": "f-6",
+      "code": "ANSWER_LEAK",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "ESCALATED",
+        "reason": "same fundamental failure persists after finite repair+redesign budget"
+      }
+    },
+    {
+      "at": "2026-09-09T04:26:56.079Z",
+      "event": "state_change",
+      "from": "ESCALATED",
+      "to": "RETURNED",
+      "note": "consistency repair on scope_core v7 — budgets unaffected (repair_count=1, redesign_count=2)"
+    },
+    {
+      "at": "2026-09-09T04:26:56.079Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v7",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r6 propagation miss: derived_from still named superseded fact_sheet_v2",
+      "was_escalated": true,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.619Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v7"
+      ],
+      "reason": "r6 propagation miss: derived_from still named superseded fact_sheet_v2/scope_core_v2",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.722Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v7",
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "r6 propagation miss: notes prose named superseded fact_sheet_v2",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.794Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "r6 propagation miss: risks wording said 'exact evidence match' inconsistent with the adjacent 4-combination system_reaction",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.702Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v7"
+      ],
+      "reason": "clearing staleness cascaded from the play_seeds reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.774Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "clearing staleness cascaded from the ae reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.879Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v14",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v7",
+        "legacy-clue-join:c_compression:v7"
+      ],
+      "reason": "clearing staleness cascaded from the c_compression/play_seeds reference fixes; adopted mechanic unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.949Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14"
+      ],
+      "reason": "clearing staleness cascaded from game_translations reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:25.051Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14",
+        "legacy-clue-join:first_5_seconds:v7"
+      ],
+      "reason": "r6 propagation miss: clinical_model_correction still asserted the removed 'bilateral pattern' claim as source-supported",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:25.122Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14"
+      ],
+      "reason": "clearing staleness cascaded from game_translations reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:34:06.341Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "ESCALATED",
+      "note": "FACTUAL_PROFESSION_ERROR persists after repair_count=1, redesign_count=2"
+    },
+    {
+      "at": "2026-09-09T04:34:06.341Z",
+      "event": "failure_routed",
+      "failure_id": "f-7",
+      "code": "FACTUAL_PROFESSION_ERROR",
+      "return_to": "PROFESSION_RESEARCH",
+      "decision": {
+        "action": "ESCALATED",
+        "reason": "same fundamental failure persists after finite repair+redesign budget"
+      }
+    },
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "event": "state_change",
+      "from": "ESCALATED",
+      "to": "RETURNED",
+      "note": "factual evidence correction on fact_sheet v7 — budgets unaffected (repair_count=1, redesign_count=2)"
+    },
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:fact_sheet:v7",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r7 HIGH: expertise/decisions asserted a bilateral-pattern claim the cited JHF source never states",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": true,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:17:47.646Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:ae:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v7"
+      ],
+      "reason": "same claim removed from ae.C (fact_sheet's root correction propagated to the design-content field that mentioned it)",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:16.369Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v8",
+      "invalidated": [
+        "ae"
+      ],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v7"
+      ],
+      "reason": "clearing staleness cascaded from the fact_sheet fact-correct; scope_core content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.191Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v8"
+      ],
+      "reason": "clearing staleness cascaded from scope_core consistency repair; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.306Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v8",
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.382Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.458Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v8"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.533Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:42.692Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v15",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v8",
+        "legacy-clue-join:c_compression:v8"
+      ],
+      "reason": "same claim removed from the ADOPTED translation's C_interaction",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.732Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.840Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15",
+        "legacy-clue-join:first_5_seconds:v8"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.916Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:33:07.550Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:fact_sheet:v8",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r8 HIGH: the r7 correction was itself a same-length replacement, not a genuine narrowing -- redone as a pure deletion under the hardened containment check",
+      "claim_removed": "chest X-ray in heart failure shows cardiomegaly, pleural effusion, and a bilateral/butterfly (bat-wing) pattern",
+      "impact": "none",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:35:29.081Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v8"
+      ],
+      "reason": "clearing cascade from fact_sheet correction; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:35:29.166Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:35:29.285Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v9",
+        "legacy-clue-join:ae:v10"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:35:54.815Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v10"
+      ],
+      "reason": "same axis removed from play_seeds.information_gained (pure deletion of the parenthetical)",
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:06.544Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:06.623Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v10"
+      ],
+      "reason": "same axis removed from c_compression (pure deletions)",
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:20.109Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v16",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v9",
+        "legacy-clue-join:c_compression:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:20.188Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v16"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:20.302Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v16",
+        "legacy-clue-join:first_5_seconds:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:36:20.383Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v16"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:43.576Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:fact_sheet:v9",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "same axis also remained in fact_sheet.tools (missed in the earlier expertise/decisions fix)",
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:56.591Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:56.675Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v10"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:56.791Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v10",
+        "legacy-clue-join:ae:v11"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:56.875Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v11"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:56.957Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v10"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:37:57.042Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v11"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:38:09.256Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v17",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v10",
+        "legacy-clue-join:c_compression:v10"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:38:09.341Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v17"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:38:09.459Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v17",
+        "legacy-clue-join:first_5_seconds:v10"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:38:09.540Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v17"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:46:39.745Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:fact_sheet:v10",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r9 MEDIUM: asthma card's 'tends to start suddenly' is not directly supported by the cited JRS asthma page (which supports paroxysmal onset, wheeze, recurrence -- not explicitly 'sudden')",
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:47:09.749Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v10"
+      ],
+      "reason": "clearing cascade + updating stale fact_sheet_v6 reference to current",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:18.348Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v12",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v11"
+      ],
+      "reason": "clearing cascade; C unchanged, only derived_from/revision_note bumped",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:18.460Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v10",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v11",
+        "legacy-clue-join:ae:v12"
+      ],
+      "reason": "clearing cascade + updating stale reference",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:18.545Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v12"
+      ],
+      "reason": "clearing cascade; C_used unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:18.623Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v11"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:18.702Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v12"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:31.969Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v18",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ],
+      "reason": "clearing cascade; adopted entry's first_visible_state unchanged, rejected entries bumped",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:32.048Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v18"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:32.160Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:first_5_seconds:v11"
+      ],
+      "reason": "clearing cascade + updating stale reference",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:48:32.238Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v11",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v18"
+      ],
+      "reason": "clearing cascade + updating stale reference",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:53:14.643Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r10.result.json"
+    },
+    {
+      "at": "2026-09-09T05:53:14.643Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-09T05:53:23.695Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-09T05:53:23.696Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-09T05:59:57.321Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-09T05:59:57.321Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:ae:v12",
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:00:20.214Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-09T06:00:20.214Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:23:50.626Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-09T06:23:50.626Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:24:26.622Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-09T06:24:26.622Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:36:29.001Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "REPAIRING",
+      "note": "IMPLEMENTATION_CHANGED_D -> IMPLEMENTATION (downstream repair)"
+    },
+    {
+      "at": "2026-09-09T06:36:29.001Z",
+      "event": "failure_routed",
+      "failure_id": "f-8",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 2
+      }
+    },
+    {
+      "at": "2026-09-09T06:36:38.378Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-09T06:41:55.310Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation:v2",
+      "invalidated": [
+        "implementation_qa",
+        "impl_review"
+      ],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:42:05.731Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation_qa:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:implementation:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:42:05.772Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "IMPLEMENTATION_CHANGED_D repair 2/2: fixed CLINICAL_MODEL_OVERSTATED (absolute exclusion wording -> tendency-based comparison) and DISCLOSURE_TOUCH_TARGET_TOO_SMALL (dx-more now a real 38x38px circle); re-verified 31/31 gameplay-qa, 41/41 selftest, clean tsc/build/lint, live 375x812 (0px overflow)."
+    },
+    {
+      "at": "2026-09-09T06:42:05.773Z",
+      "event": "repair_done",
+      "note": "IMPLEMENTATION_CHANGED_D repair 2/2: fixed CLINICAL_MODEL_OVERSTATED (absolute exclusion wording -> tendency-based comparison) and DISCLOSURE_TOUCH_TARGET_TOO_SMALL (dx-more now a real 38x38px circle); re-verified 31/31 gameplay-qa, 41/41 selftest, clean tsc/build/lint, live 375x812 (0px overflow)."
+    },
+    {
+      "at": "2026-09-09T06:45:37.636Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-09T06:45:55.095Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-09T06:45:55.096Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ],
+  "redesign": [
+    {
+      "from_iteration": 1,
+      "to_iteration": 2,
+      "seed": null,
+      "translation": "t1c-shuffled-commit-and-defend",
+      "reason": "design review r2 BLOCKER x2 (ANSWER_LEAK_POSITION, BRUTE_FORCE_SUCCESS): fixed presentation order let the answer be found with zero content reading. t1c fixes this with per-session Fisher-Yates shuffling of diagnosis and evidence card order (design-sim.mjs: reviewer's exact strategy now matches chance baseline 1/60 and 1/30), plus completes the r2 HIGH fixes (real source citations added to fact_sheet, artifact-chain consistency restored across ae/c_compression/play_seeds).",
+      "at": "2026-09-08T23:49:26.495Z"
+    },
+    {
+      "from_iteration": 2,
+      "to_iteration": 3,
+      "seed": null,
+      "translation": "t1d-flexible-commit-and-defend",
+      "reason": "design review r4 HIGH (CLINICAL_MODEL_UNDERDETERMINED, not fixable by local repair): exact-set evidence matching rejected a clinically defensible alternative the reviewer constructed themselves. t1d loosens acceptance to 4 combinations (superset of core minimum {lab,xray}, subset of {lab,xray,talk,exam}), verified in design-sim.mjs (all 4 legitimate variants win, content-blind heuristics remain at 0% or chance baseline). This is redesign #2 of 2 -- the last one this pipeline allows; a further design-stage FAIL escalates.",
+      "at": "2026-09-09T00:11:44.118Z"
+    }
+  ],
+  "escalation": {
+    "reason": "same fundamental failure persists after finite repair+redesign budget",
+    "failure_code": "FACTUAL_PROFESSION_ERROR",
+    "at": "2026-09-09T04:34:06.341Z",
+    "resolved_via": "fact_correction",
+    "resolved_at": "2026-09-09T05:02:42.351Z"
+  },
+  "fact_corrections": [
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "artifact_type": "fact_sheet",
+      "version": 7,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "r7 HIGH: expertise/decisions asserted a bilateral-pattern claim the cited JHF source never states"
+    },
+    {
+      "at": "2026-09-09T05:17:47.646Z",
+      "artifact_type": "ae",
+      "version": 8,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same claim removed from ae.C (fact_sheet's root correction propagated to the design-content field that mentioned it)"
+    },
+    {
+      "at": "2026-09-09T05:18:42.692Z",
+      "artifact_type": "game_translations",
+      "version": 15,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same claim removed from the ADOPTED translation's C_interaction"
+    },
+    {
+      "at": "2026-09-09T05:33:07.550Z",
+      "artifact_type": "fact_sheet",
+      "version": 8,
+      "claim_removed": "chest X-ray in heart failure shows cardiomegaly, pleural effusion, and a bilateral/butterfly (bat-wing) pattern",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "none",
+      "reason": "r8 HIGH: the r7 correction was itself a same-length replacement, not a genuine narrowing -- redone as a pure deletion under the hardened containment check"
+    },
+    {
+      "at": "2026-09-09T05:35:54.815Z",
+      "artifact_type": "play_seeds",
+      "version": 9,
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same axis removed from play_seeds.information_gained (pure deletion of the parenthetical)"
+    },
+    {
+      "at": "2026-09-09T05:36:06.623Z",
+      "artifact_type": "c_compression",
+      "version": 9,
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same axis removed from c_compression (pure deletions)"
+    },
+    {
+      "at": "2026-09-09T05:37:43.576Z",
+      "artifact_type": "fact_sheet",
+      "version": 9,
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same axis also remained in fact_sheet.tools (missed in the earlier expertise/decisions fix)"
+    },
+    {
+      "at": "2026-09-09T05:46:39.745Z",
+      "artifact_type": "fact_sheet",
+      "version": 10,
+      "claim_removed": "chest X-ray in heart failure shows a bilateral/butterfly pattern, used as a discriminating axis alongside pneumonia's unilateral findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "r9 MEDIUM: asthma card's 'tends to start suddenly' is not directly supported by the cited JRS asthma page (which supports paroxysmal onset, wheeze, recurrence -- not explicitly 'sudden')"
+    }
+  ]
+}

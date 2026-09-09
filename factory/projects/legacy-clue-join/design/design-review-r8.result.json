@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 82,
+    "blockers": [],
+    "high": [
+      "FACT_CORRECTION_GUARD_INCOMPLETE — checkFactCorrectionEligibleはJSON文字列長だけを比較するため、同じ長さ以下の無関係な主張への置換をnarrowing_onlyとして受理できる。replacement ideaを防止するというHuman Decisionの保証を実装しておらず、事実訂正経路そのものが健全ではない。"
+    ],
+    "medium": [
+      "ARTIFACT_CHAIN_INCONSISTENT — 現行play_seedsの採用seed information_gainedとc_compressionのcompressed_C/how_player_still_performs_Dが、削除したはずの片側性/両側性を現行の鑑別軸としてなお明記している。採用translationと採点規則はこの軸に依存しないため設計変更ではなく、既存consistency-repairで削除・再同期可能。",
+      "SHUFFLE_LIFECYCLE_UNVERIFIED — GAME_SPEC/実装で、診断候補と所見カードをセッション内一度だけ独立シャッフルし、採点を表示indexではなくIDで行う回帰テストが必要。",
+      "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 375px幅で診断4枚、所見6枚、残回数、フィードバック、送信操作が迷いなく扱えることを実機検証する必要がある。"
+    ],
+    "low": [
+      "fact_sheet_v7、ae_v8、game_translations_v11などが本文中でfact_sheet_v6を参照しており、pipeline上のCURRENT fact_sheet v7と表示上不一致。内容参照として曖昧なので再同期が望ましい。",
+      "fact_sheetの履歴noteとtoolsには片側性/両側性という語が残るため、『fact_sheetから完全に語句が消えた』とはいえない。ただしexpertise/decisionsおよび現行候補カードから問題の心不全両側性 discriminator は削除されている。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACT_CORRECTION_GUARD_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "narrowing_onlyの判定が各保護フィールドのJSON文字列長が増えていないことしか確認しない。例えば旧主張を、それより短い別の新規主張へ全面置換しても通過するため、replacement contentや意味変更を防止できない。fact_sheetは内容比較なしで常にeligibleとなる点も同じ問題を拡大する。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "MEDIUM",
+        "finding": "play_seeds_v8_prepared.jsonの採用seed information_gainedとc_compression_v5.jsonのcompressed_C/how_player_still_performs_Dが片側性/両側性を現行鑑別軸として保持し、aeおよび採用translationの縮小後Cと矛盾する。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": true
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "設計シミュレーションは正しいシャッフルを仮定しており、実装でのmount・retry・partial・restart時のライフサイクルとID採点は未検証。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "375px画面に10カードと主要操作を収める実装時の視認性・復帰導線が未検証。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      }
+    ],
+    "bilateral_claim_fully_removed": false,
+    "narrowing_introduced_no_replacement_content": true,
+    "all_four_candidate_cards_source_supported": true,
+    "sim_verification": {
+      "reran": true,
+      "all_flags_true": true,
+      "notes": "design-sim.mjsを再実行。252通り中の成功は4通りのみで、required={lab,xray}、optional={talk,exam}、forbidden={spo2,bp}。全verdict flagはtrue、select-all等は0%、固定位置戦略は約1/60・1/30、2回乱択は約3.06%。採点コードは片側性/両側性を参照しない。"
+    },
+    "ready_for_game_spec": false,
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/harness/q1-factory-schema.mjs — checkFactCorrectionEligibleはlenOf(JSON.stringify(...))の大小だけを検査し、短い別主張への置換を検出しない。fact_sheetは無条件eligible。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v7.json — expertise[1]は心陰影拡大・肺うっ血へ縮小、decisions[1]は一般的な矛盾確認へ縮小しており、問題の心不全両側性主張に代わる新規内容はない。",
+      "factory/projects/legacy-clue-join/design/ae_v8.json — Cから片側性/両側性だけが除去され、炎症の有無・発症様式は従前どおり。replacement axisは追加されていない。",
+      "factory/projects/legacy-clue-join/design/game_translations_v11.json — 採用t1dのC_interactionから片側性/両側性だけが除去され、required/optional/forbidden条件と成功・失敗処理は不変。",
+      "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json — 採用seed information_gainedが『片側性vs両側性』を現行の診断矛盾軸として保持。",
+      "factory/projects/legacy-clue-join/design/c_compression_v5.json — compressed_Cとhow_player_still_performs_Dが片側性/両側性を現行の典型像・本物の鑑別軸として保持。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — evidenceAcceptableはlab/xray必須、talk/exam任意、spo2/bp禁止だけで判定し、laterality情報を参照しない。",
+      "factory/projects/legacy-clue-join/design/design-sim-result.json — 再実行後も全verdict flagがtrue、winning_joint_combos=4。",
+      "factory/projects/legacy-clue-join/q1-pipeline.json — repair_count=1、redesign_count=2のままで、fact_correction履歴でも予算増減はない。",
+      "src/data/content/medical.ts — med-diagnoseは職業名を初期missionで出さず、既存resolution/discoveryEchoはプレイ行為を診断へ接続する。"
+    ],
+    "recommended_actions": [
+      "Factoryの事実訂正ガードを人間判断へエスカレーションする。保護フィールドについて、単なる長さ比較ではなく旧内容からの削除のみであることを検証する構造化claim ID、許可された削除パッチ、または旧文字列の部分列・トークン差分に基づくfail-closed判定が必要。",
+      "consistency-repairでplay_seedsのinformation_gainedとc_compressionの2フィールドから片側性/両側性を削除し、CURRENT fact_sheet v7への参照を全現行成果物で再同期する。",
+      "GAME_SPECへ進む前に上記HIGHを解消して再レビューする。実装受入条件としてshuffle lifecycle/ID-based scoringと375pxレイアウト検証を明記する。"
+    ]
+  },
+  "elapsed_sec": 183.693
+}

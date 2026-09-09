@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 76,
+    "career_authenticity_score": 76,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "FACT_CORRECTION_GUARD_INCOMPLETE — fact_sheetのcontainment検査はARTIFACT_SCHEMAS.fact_sheet.requiredだけを対象とするため、実際の候補カード正本candidate_reference_cardsを自由に置換・追加できる。したがって、必須フィールドに対する同長・短縮置換攻撃は防げても、同じ攻撃を候補カードへ移せば通過でき、hardened mechanism全体はsoundではない。ゲームのCORE/SCOPE/A-E・採用メカニクス・成功失敗条件・Product Identityには触れないFactoryガード欠陥。"
+    ],
+    "medium": [
+      "FACTUAL_GROUNDING_INCOMPLETE — 喘息候補カードの『突然始まりやすい』は、指定された日本呼吸器学会ページの発作性・反復性の説明からは直接確認できない。発症様式はCで比較する軸だが採点の必須根拠ではなく、当該句の純削除で修正可能。"
+    ],
+    "low": [
+      "ARTIFACT_PROVENANCE_STALE — 現行成果物のderived_fromや本文参照がfact_sheet_v6を指したままで、CURRENTはfact_sheet_v11。内容上の矛盾は確認できないが、GAME_SPEC前に現行artifact参照へ揃えるべき。"
+    ],
+    "failure_codes": [
+      {
+        "code": "FACT_CORRECTION_GUARD_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "checkFactCorrectionEligible('fact_sheet', ...)はschema-required fieldsだけをisNarrowingOfで比較し、候補カード正本candidate_reference_cardsをbookkeeping扱いで除外する。旧candidate_reference_cards内の主張を同長・短縮の別主張へ置換してもeligibleになり得るため、round 8型攻撃の移植版が残る。",
+        "touches_protected_meaning": false,
+        "still_fixable_via_consistency_or_fact_correct": false
+      },
+      {
+        "code": "FACTUAL_GROUNDING_INCOMPLETE",
+        "severity": "MEDIUM",
+        "finding": "喘息カードの『突然始まりやすい』を指定出典は直接支持していない。出典は発作性、喘鳴を伴う息苦しさ、症状の反復を支持する。",
+        "touches_protected_meaning": true,
+        "still_fixable_via_consistency_or_fact_correct": true
+      }
+    ],
+    "bilateral_claim_fully_removed_everywhere": true,
+    "corrections_verified_as_pure_deletions": true,
+    "sim_verification": {
+      "reran": true,
+      "all_flags_true": true,
+      "notes": "書込み禁止環境のため結果ファイル生成行だけを実行時ストリームから除外し、design-sim.mjsの同一採点ロジックを再実行。11/11 flags=true、winning_joint_combos=4/252、4 legitimate variants=100%、select-all/category/number/alarm shortcuts=0%、position strategies=0.016/0.0326、random two-try=0.0306。"
+    },
+    "ready_for_game_spec": false,
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/projects/legacy-clue-join/design/fact_sheet_v10.json → fact_sheet_v11.json — tools[1]は『聴診（片側性か両側性か）』から『聴診』への純削除。",
+      "factory/projects/legacy-clue-join/design/ae_v7.json → ae_v8.json — Cから聴診および所見意味に含まれた片側性/両側性句だけを純削除。",
+      "factory/projects/legacy-clue-join/design/game_translations_v10.json → game_translations_v11.json — 採用t1dのC_interactionから『片側性/両側性、』だけを純削除。",
+      "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json → play_seeds_v9.json — adopted seedのinformation_gainedから対象句だけを純削除。",
+      "factory/projects/legacy-clue-join/design/c_compression_v5.json → c_compression_v6.json — compressed_Cとhow_player_still_performs_Dから対象句だけを純削除。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v11.json — expertise、tools、decisions、4候補カード本文に心不全の両側性判別主張なし。残る語句は削除履歴・否定説明であり現行鑑別軸の主張ではない。",
+      "factory/projects/legacy-clue-join/design/game_translations_v11.json — adopted t1dのC_interaction、system_reaction、成功条件は対象軸に依存しない。",
+      "factory/harness/q1-factory-schema.mjs:500 — 文字列subsequence検査は同長置換・短縮置換を拒否し純削除を許可することを攻撃例で確認。",
+      "factory/harness/q1-factory-schema.mjs:526-537 — fact_sheet比較対象がrequired fields限定で、candidate_reference_cardsを明示的に自由編集扱いしているため別経路の置換攻撃が成立。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — 再実行で全verdict flags true。",
+      "https://www.jhf.or.jp/check/heart_failure/10/ — 心不全について総合判断、ラ音、心拡大、肺うっ血、BNPを支持し、両側性判別規則は記載しない。",
+      "https://www.jrs.or.jp/citizen/disease/c/c-01.html — 喘息の発作性、喘鳴、反復は支持するが『突然始まりやすい』は直接記載しない。",
+      "factory/projects/legacy-clue-join/q1-pipeline.json — fact-correct/consistency-repair後もrepair_count=1、redesign_count=2で不変。"
+    ],
+    "recommended_actions": [
+      "ESCALATE: HIGHのFactoryガード欠陥は予算外で、既存consistency-repair/fact-correct経路では自己修正できない。",
+      "candidate_reference_cardsなど事実主張を含むfact_sheet拡張フィールドをschema-requiredまたは明示的なprotected substantive fieldsへ昇格し、isNarrowingOfを適用する。",
+      "候補カード正本の同長置換・短縮置換・新規キー追加を拒否し、純削除だけを許可する回帰テストを追加する。",
+      "喘息カードから出典未確認の『突然始まりやすい』を純削除するか、その主張を直接支持する一次資料を追加する。",
+      "全CURRENT成果物のfact_sheet_v6参照をfact_sheet_v11のCURRENT artifact参照へ機械的に更新する。"
+    ]
+  },
+  "elapsed_sec": 217.217
+}

@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-clue-join-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 74,
+    "career_authenticity_score": 74,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "成功画面が代替診断を「〜ではない」と断定しており、fact_sheet_v12の傾向表現・絶対的排除を避ける方針と矛盾する。簡略化された所見から肺炎の可能性が高いことは示せても、心不全・喘息発作・気胸を絶対に否定したとは言えない。",
+      "診断候補の「？ どんな病気」ボタンは11px文字だけでpadding/min-heightがなく、実質的なタップ高さが約18pxしかない。比較判断に必要な候補情報への入口として、10〜12歳向けモバイルUIでは合理的にタップ可能とは言えない。"
+    ],
+    "medium": [],
+    "low": [
+      "成功画面の代替診断欄は一般的典型像を並べるだけで、今回の所見との具体的な対比を示していない。設計で求めた鑑別理由の振り返りとして弱い。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CLINICAL_MODEL_OVERSTATED",
+        "severity": "HIGH",
+        "finding": "成功時、3つの代替診断名へ一律に「ではない」を付け、傾向的な鑑別を絶対的除外として表示している。fact_sheetの非断定方針および同画面の「肺炎の可能性が高い」という結論と整合しない。",
+        "file": "src/q1/DiagnoseGame.tsx:75"
+      },
+      {
+        "code": "DISCLOSURE_TOUCH_TARGET_TOO_SMALL",
+        "severity": "HIGH",
+        "finding": "候補典型像を開くdx-moreはfont-size 11pxのみでpadding/min-heightがなく、グローバルbuttonもpadding:0。約38pxの既存二次操作水準を大幅に下回り、モバイルで候補比較に必要な情報へアクセスしにくい。",
+        "file": "src/index.css:4243"
+      },
+      {
+        "code": "SUCCESS_CONTRAST_INCOMPLETE",
+        "severity": "MEDIUM",
+        "finding": "代替診断について今回の症例との対比を説明せず、一般的典型像の前に「ではない」と置くだけになっている。",
+        "file": "src/q1/DiagnoseGame.tsx:73"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "31 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit -p . passed cleanly; npm run build could not run to completion because the read-only sandbox denied writing node_modules/.tmp/*.tsbuildinfo (TS5033)",
+      "lint": "npm run lint exited 0; repository-wide pre-existing warnings were reported, with none in the reviewed clue_join files",
+      "shuffle_id_based_not_position_based": true,
+      "feedback_fully_flat": true,
+      "honest_partial_present": true,
+      "answer_leak_found": false,
+      "scroll_812_claim_plausible": true,
+      "canon_numbers_reused": true
+    },
+    "evidence": [
+      "src/q1/clueJoinLogic.ts:54 — correct diagnosis is pneumonia and is confined to the scoring module.",
+      "src/q1/clueJoinLogic.ts:58 — required evidence is exactly lab and xray.",
+      "src/q1/clueJoinLogic.ts:60 — allowed evidence is exactly lab, xray, talk, and exam.",
+      "src/q1/clueJoinLogic.ts:62 — acceptance implements required-superset and allowed-subset checks.",
+      "src/q1/clueJoinLogic.ts:66 — diagnosis and selected evidence are jointly scored.",
+      "src/q1/clueJoinLogic.ts:76 — shared shuffledIds implements Fisher–Yates over copied ID arrays.",
+      "src/q1/DiagnoseGame.tsx:36 — both independent orders are generated once through a useState initializer.",
+      "src/q1/DiagnoseGame.tsx:37 — diagnosis starts uncommitted rather than pre-filled.",
+      "src/q1/DiagnoseGame.tsx:44 — shuffled arrays are used only to construct display lists.",
+      "src/q1/DiagnoseGame.tsx:48 — explicit restart regenerates both shuffled orders.",
+      "src/q1/DiagnoseGame.tsx:58 — success evidence is reconstructed from selected IDs, not positions.",
+      "src/q1/DiagnoseGame.tsx:75 — success output labels every alternative diagnosis as definitively excluded.",
+      "src/q1/DiagnoseGame.tsx:89 — exhausted attempts render a distinct partial outcome.",
+      "src/q1/DiagnoseGame.tsx:98 — partial provides the required retry action.",
+      "src/q1/DiagnoseGame.tsx:101 — proceeding uses onPartialComplete with onComplete fallback.",
+      "src/q1/DiagnoseGame.tsx:121 — dx-more opens pattern text without changing commitment, evidence, or budget.",
+      "src/q1/DiagnoseGame.tsx:127 — diagnosis commitment is an explicit child action.",
+      "src/q1/DiagnoseGame.tsx:140 — each evidence-card body is the selection control.",
+      "src/q1/DiagnoseGame.tsx:160 — submit is disabled before diagnosis commitment, so an empty uncommitted attempt cannot consume budget.",
+      "src/q1/DiagnoseGame.tsx:162 — component passes committed and selected ID state directly to isWinningAttempt.",
+      "src/q1/DiagnoseGame.tsx:172 — the only ordinary failed-attempt feedback is one generic sentence.",
+      "src/index.css:4201 — evidence-card controls have min-height 44px and full width.",
+      "src/index.css:4235 — diagnosis candidates use a two-column grid with no horizontal-scroll layout.",
+      "src/index.css:4243 — dx-more has 11px text but no padding or minimum height.",
+      "src/index.css:4250 — diagnosis commitment controls have min-height 44px.",
+      "src/index.css:40 — global button styling resets padding to zero, confirming dx-more receives no larger implicit target.",
+      "factory/harness/gameplay-qa-clue-join.mjs:13 — harness imports shuffledIds and scoring rules directly from the production logic module.",
+      "factory/harness/gameplay-qa-clue-join.mjs:51 — harness enumerates all 252 non-empty diagnosis/evidence combinations and confirms exactly four winners.",
+      "factory/harness/gameplay-qa-clue-join.mjs:79 — position-leak simulations exercise the same production shuffledIds implementation.",
+      "src/q1/clueJoinLogic.ts:14 — history evidence reuses the established three-day fever/cough/breathlessness course.",
+      "src/q1/clueJoinLogic.ts:16 — SpO₂ 88% and respiratory rate 24/min are reused.",
+      "src/q1/clueJoinLogic.ts:17 — WBC 13,200 and CRP 12.4 are reused exactly.",
+      "src/q1/clueJoinLogic.ts:18 — right-lung opacity is reused.",
+      "src/q1/clueJoinLogic.ts:19 — BP 128/78 is reused exactly.",
+      "src/q1/registry.ts:102 — clue_join remains mapped to DiagnoseGame.",
+      "src/data/content/medical.ts:89 — med-diagnose remains ch4 and requires med-lab plus med-radio.",
+      "src/data/content/medical.ts:91 — med-pharm remains gated by med-diagnose.",
+      "src/data/content/medical.ts:317 — med-diagnose retains clue_join, existing place image, resolution, and discoveryEcho wiring."
+    ],
+    "recommended_actions": [
+      "Replace the absolute「心不全ではない／喘息発作ではない／気胸ではない」labels with non-absolute comparison headings and explain how the current findings fit pneumonia better while preserving diagnostic uncertainty.",
+      "Give .dx-more a reasonably tappable secondary-control box, such as min-height:38px with suitable horizontal padding.",
+      "Add harness or component-level assertions for the exact failure string, partial callbacks, disabled-submit behavior, and disclosure-control sizing; the current source-text checks do not cover all of those rendered behaviors.",
+      "Re-run the 31-case harness, lint, typecheck, build, and 375×812 browser check after repair."
+    ]
+  },
+  "elapsed_sec": 172.367
+}

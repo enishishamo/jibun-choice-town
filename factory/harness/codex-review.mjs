@@ -21,7 +21,14 @@
 import { spawn, spawnSync } from "node:child_process";
 import { appendFileSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// 2026-09-08 (Q1 Factory Phase 0 audit G10): the routing log was appended at a
+// cwd-RELATIVE path, so a review launched from any other directory silently
+// lost its entry (the try/catch hides the error by design). Resolve it from
+// this file's location, like codex-task.mjs already does.
+const ROUTING_LOG = join(dirname(fileURLToPath(import.meta.url)), "..", "state", "routing-log.jsonl");
 
 const args = process.argv.slice(2);
 function argOf(name, dflt) {
@@ -43,7 +50,7 @@ if (!promptFile) {
 
 function emit(result) {
   try {
-    appendFileSync("factory/state/routing-log.jsonl", JSON.stringify({ ts: new Date().toISOString(), tool: "codex-review", label, prompt_file: promptFile, status: arguments[0]?.status ?? (arguments[0]?.ok ? "OK" : "?"), verdict: arguments[0]?.verdict?.verdict ?? null, elapsed_sec: arguments[0]?.elapsed_sec ?? null }) + "\n");
+    appendFileSync(ROUTING_LOG, JSON.stringify({ ts: new Date().toISOString(), tool: "codex-review", label, prompt_file: promptFile, status: arguments[0]?.status ?? (arguments[0]?.ok ? "OK" : "?"), verdict: arguments[0]?.verdict?.verdict ?? null, elapsed_sec: arguments[0]?.elapsed_sec ?? null }) + "\n");
   } catch { /* logging must never break the review */ }
   if (outFile) writeFileSync(outFile, JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));

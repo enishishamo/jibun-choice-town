@@ -1217,6 +1217,56 @@
           "given": "ba77115906d271781a8117937c7426b320842f27"
         }
       ]
+    },
+    "q1-rebuild-clue-join": {
+      "task_id": "q1-rebuild-clue-join",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-08T21:16:08.810Z",
+      "updated_at": "2026-09-09T06:45:45.131Z",
+      "history": [
+        {
+          "at": "2026-09-08T21:16:08.811Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-09T06:25:10.566Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v1.json"
+        },
+        {
+          "at": "2026-09-09T06:42:17.175Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json"
+        },
+        {
+          "at": "2026-09-09T06:45:45.132Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
+          "score": 86,
+          "high_count": 0,
+          "override_note": null
+        }
+      ]
     }
   }
 }
