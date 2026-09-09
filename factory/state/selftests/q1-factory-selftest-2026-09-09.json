@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-09-09T04:26:05.638Z",
+  "ran_at": "2026-09-09T04:33:24.661Z",
   "passed": 32,
   "failed": 0,
   "total": 32,
@@ -236,7 +236,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (7/2)",
+        "wip_refusal": "WIP full (8/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -334,15 +334,19 @@
       "detail": {
         "next": {
           "kind": "resume_pipeline",
-          "game_id": "selftest-e",
-          "state": "REPAIRING",
+          "game_id": "legacy-clue-join",
+          "state": "RETURNED",
           "priority": 1
         },
         "wip": {
-          "active": 9,
+          "active": 10,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
+            {
+              "game_id": "legacy-clue-join",
+              "state": "RETURNED"
+            },
             {
               "game_id": "selftest-a",
               "state": "RESEARCHING"

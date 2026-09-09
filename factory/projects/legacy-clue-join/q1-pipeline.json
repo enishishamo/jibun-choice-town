@@ -5,7 +5,7 @@
   "legacy_game_type": "clue_join",
   "creator": "claude-code",
   "state": "ESCALATED",
-  "current_stage": "GAME_TRANSLATION",
+  "current_stage": "PROFESSION_RESEARCH",
   "design_iteration": 3,
   "repair_count": 1,
   "redesign_count": 2,
@@ -148,27 +148,26 @@
       ]
     },
     "scope_core": {
-      "artifact_id": "legacy-clue-join:scope_core:v6",
+      "artifact_id": "legacy-clue-join:scope_core:v7",
       "artifact_type": "scope_core",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/scope_core_v4.json",
+      "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
       "payload": {
         "core": "複数の情報源（話・診察・検査・画像）から集まった所見を、複数の鑑別診断候補（今回は肺炎・心不全・喘息発作・気胸）と照らし合わせ、所見全体と最も整合する診断を選び、選んだ診断と矛盾する所見がないかを自分で確認する（鑑別診断）",
         "scope": "医療編／前半：診断まで／救急外来に、息苦しそうな人が来た（ch1-3で集めた話・診察・検査・画像の統合）",
         "scope_is_representative_because": "実際の救急外来診療でも、単一の所見だけで診断が決まることは少なく、複数所見を鑑別診断候補と照合するプロセスが診断の核（日本呼吸器学会『成人肺炎診療ガイドライン2024』が示す、臨床像・身体所見・検査・画像を組み合わせた診断方針と整合）。ch1(clue_board)は収集、ch2(lab_check)/ch3(xray_shoot)は個別データ生成、ch4(このゲーム)は統合・鑑別という一連の診療プロセスの最終段階を代表する。",
         "profession_name_hidden_test": "「集まった所見を、いくつかの考えられる原因と照らし合わせて、一番当てはまるものを選び、矛盾がないか確かめる」という記述だけでは医師と断定できないが、E（治療方針の決定）と組み合わせた文脈全体は診断・治療という医師固有の職務を指す。他の医療職（検査技師=ch2、放射線技師=ch3）は既に別チャプターで扱われており重複しない。",
-        "derived_from": "reverse_audit + fact_sheet_v2",
+        "derived_from": "reverse_audit + fact_sheet_v6",
         "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
-        "revision_note": "v3 (design review r3 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6/ae_v3/game_translations_v6と整合させた。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。"
+        "revision_note": "v3 (design review r3 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6/ae_v3/game_translations_v6と整合させた。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6へ更新。"
       },
       "creator": "claude-code",
-      "source_artifacts": [
-        "legacy-clue-join:fact_sheet:v6"
-      ],
+      "source_artifacts": [],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:07.707Z",
+      "created_at": "2026-09-09T04:26:56.078Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -205,32 +204,40 @@
           "file": "factory/projects/legacy-clue-join/design/scope_core_v4.json",
           "created_at": "2026-09-09T00:19:07.708Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T04:26:56.079Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "ae": {
-      "artifact_id": "legacy-clue-join:ae:v6",
+      "artifact_id": "legacy-clue-join:ae:v7",
       "artifact_type": "ae",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/ae_v6.json",
+      "file": "factory/projects/legacy-clue-join/design/ae_v7.json",
       "payload": {
         "A": "医療編／前半：診断まで／救急外来（もどってきた）。3日前からの発熱・咳・労作時呼吸困難で来院した患者について、ch1-3で集めた話・診察・検査・画像がそろった。",
         "B": "6つの所見（話・診察・SpO₂・検査・画像・血圧）を、4つの鑑別診断候補（肺炎／心不全／喘息発作／気胸）と照らし合わせ、1つにコミットし、決め手になる所見で裏付ける診断パズル",
         "C": "問診（発症からの経過）・聴診（片側性か両側性か）・SpO₂/呼吸数・血液検査（白血球・CRP）・胸部X線画像・血圧。それぞれの所見が持つ意味（片側性/両側性、炎症の有無、発症様式）と、4つの鑑別診断候補それぞれの典型像（fact_sheet_v6.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像）",
         "D": "所見全体を4つの鑑別診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ。整合しなければ、コミットと根拠のどちらか（または両方）を自分で選び直す",
         "E": "正しい診断（肺炎）と、それを裏付ける所見の組み合わせ（複数の妥当な組み合わせがありうる）が選べたら、治療方針へ進める。整合しなければ、フラットな『もう一度見比べてみよう』とだけ示され、システムは診断・所見のどちらが違うかを一切指摘しない。2回考えても整合しない場合は、応援の医師と見直すという正直な保留（partial）になる",
-        "derived_from": "reverse_audit + fact_sheet_v2 + scope_core_v2",
+        "derived_from": "reverse_audit + fact_sheet_v6 + scope_core_v5",
         "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
-        "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。"
+        "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6/scope_core_v5へ更新。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:scope_core:v6"
+        "legacy-clue-join:scope_core:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:07.778Z",
+      "created_at": "2026-09-09T04:27:08.618Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -267,29 +274,38 @@
           "file": "factory/projects/legacy-clue-join/design/ae_v6.json",
           "created_at": "2026-09-09T00:19:07.778Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/ae_v7.json",
+          "created_at": "2026-09-09T04:27:08.619Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "core_scope_check": {
-      "artifact_id": "legacy-clue-join:core_scope_check:v5",
+      "artifact_id": "legacy-clue-join:core_scope_check:v6",
       "artifact_type": "core_scope_check",
-      "version": 5,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
+      "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
       "payload": {
         "core_consistent": true,
         "scope_representative": true,
         "profession_name_hidden_test_pass": true,
-        "notes": "CORE（複数所見を鑑別診断候補と照合し矛盾を確認する）はfact_sheet_v2の学会ガイドライン記述と整合。SCOPEはch1-3で収集した所見を統合する診療の最終段階であり、救急外来診療の代表的な一部（プロセスの一断面であって全体を歪めない）。Profession Name Hidden Test: 記述だけでは職種名を明示しないが、E（治療方針決定）を含む文脈全体は医師固有。他チャプター（検査技師=ch2、放射線技師=ch3）と役割が重複しない。"
+        "notes": "CORE（複数所見を鑑別診断候補と照合し矛盾を確認する）はfact_sheet_v6の学会ガイドライン記述と整合。SCOPEはch1-3で収集した所見を統合する診療の最終段階であり、救急外来診療の代表的な一部（プロセスの一断面であって全体を歪めない）。Profession Name Hidden Test: 記述だけでは職種名を明示しないが、E（治療方針決定）を含む文脈全体は医師固有。他チャプター（検査技師=ch2、放射線技師=ch3）と役割が重複しない。",
+        "revision_note": "v3 (PREPARED, r6 fix, not submitted): notes内のfact_sheet参照をv6へ更新。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:scope_core:v6",
-        "legacy-clue-join:ae:v6"
+        "legacy-clue-join:scope_core:v7",
+        "legacy-clue-join:ae:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:07.881Z",
+      "created_at": "2026-09-09T04:27:08.721Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -320,16 +336,23 @@
           "file": "factory/projects/legacy-clue-join/design/core_scope_check_v2.json",
           "created_at": "2026-09-09T00:19:07.882Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T04:27:08.722Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "play_seeds": {
-      "artifact_id": "legacy-clue-join:play_seeds:v6",
+      "artifact_id": "legacy-clue-join:play_seeds:v7",
       "artifact_type": "play_seeds",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/play_seeds_v7.json",
+      "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
       "payload": {
         "seeds": [
           {
@@ -342,7 +365,7 @@
             "C_used": "6つの所見（話・診察・SpO₂・検査・画像・血圧）と4つの鑑別診断候補の典型像（fact_sheet_v6.candidate_reference_cards）",
             "D_expressed": "所見全体を診断候補の典型像と照合し、矛盾のない診断を選ぶ（本物の鑑別診断）",
             "E_reached": "正しい診断が選べれば治療方針（既存のresolution/discoveryEcho）へ進む。2回失敗すれば応援医師との見直しという正直なpartial",
-            "risks": "4択の当てずっぽうで診断だけ当たる可能性はあるが、根拠の完全一致も同時に要求し、診断・所見カードの提示順を毎セッションシャッフルすることで、位置に基づく当てずっぽうを防ぐ設計にする必要がある（game_translations/design-simで担保） design review r4是正: 決め手所見の判定を『検査・画像必須、話・診察任意』という柔軟な基準にし、単一の正解のみを受け入れる設計がもたらす過度な厳格さ（臨床的に妥当な代替の拒否）を解消した。",
+            "risks": "4択の当てずっぽうで診断だけ当たる可能性はあるが、根拠が4通りの受容基準（検査・画像必須、話・診察は任意）を満たすことも同時に要求し、診断・所見カードの提示順を毎セッションシャッフルすることで、位置に基づく当てずっぽうを防ぐ設計にする必要がある（game_translations/design-simで担保） design review r4是正: 決め手所見の判定を『検査・画像必須、話・診察任意』という柔軟な基準にし、単一の正解のみを受け入れる設計がもたらす過度な厳格さ（臨床的に妥当な代替の拒否）を解消した。",
             "player_next_judgment": "候補カードの典型像と所見を、もう一度見比べて選び直す。2回目の失敗で正直な保留（partial）",
             "revision_note": "v4 (design review r2是正): 候補数を3→4に更新し、fact_sheetの確定文言を参照するよう整合。"
           },
@@ -371,14 +394,15 @@
             "risks": "個々の仕分けに即時の正誤フィードバックを出すと総当たりで正解パターンを発見できてしまう（3^6=729通りだが試行コストが低いと数分で発見可能）。フィードバックを最終決定まで隠すと、確信度メーターの意味が薄れる。ドラッグ&ドロップの実装コストも高い。"
           }
         ],
-        "revision_note": "v7 (design review r5 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): system_reactionが旧版の完全一致（4枚ちょうど）のまま残っていたのを、採用t1dの4通りの受容基準へ更新。fact_sheet参照をv6へ更新。"
+        "revision_note": "v8 (PREPARED, r6 fix, not submitted): risksの『根拠の完全一致』という表現を、隣接するsystem_reactionの4通り受容基準と一致させた。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:ae:v6"
+        "legacy-clue-join:ae:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:07.951Z",
+      "created_at": "2026-09-09T04:27:08.794Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -415,13 +439,20 @@
           "file": "factory/projects/legacy-clue-join/design/play_seeds_v7.json",
           "created_at": "2026-09-09T00:19:07.951Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
+          "created_at": "2026-09-09T04:27:08.794Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "reference_research": {
-      "artifact_id": "legacy-clue-join:reference_research:v6",
+      "artifact_id": "legacy-clue-join:reference_research:v7",
       "artifact_type": "reference_research",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
@@ -449,10 +480,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:play_seeds:v6"
+        "legacy-clue-join:play_seeds:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.020Z",
+      "created_at": "2026-09-09T04:27:24.701Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -489,13 +521,20 @@
           "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
           "created_at": "2026-09-09T00:19:08.021Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T04:27:24.701Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "c_compression": {
-      "artifact_id": "legacy-clue-join:c_compression:v6",
+      "artifact_id": "legacy-clue-join:c_compression:v7",
       "artifact_type": "c_compression",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
@@ -511,10 +550,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:ae:v6"
+        "legacy-clue-join:ae:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.090Z",
+      "created_at": "2026-09-09T04:27:24.773Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -551,13 +591,20 @@
           "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
           "created_at": "2026-09-09T00:19:08.090Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T04:27:24.774Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "game_translations": {
-      "artifact_id": "legacy-clue-join:game_translations:v13",
+      "artifact_id": "legacy-clue-join:game_translations:v14",
       "artifact_type": "game_translations",
-      "version": 13,
+      "version": 14,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
@@ -664,11 +711,12 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:play_seeds:v6",
-        "legacy-clue-join:c_compression:v6"
+        "legacy-clue-join:play_seeds:v7",
+        "legacy-clue-join:c_compression:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.190Z",
+      "created_at": "2026-09-09T04:27:24.878Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -747,13 +795,20 @@
           "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
           "created_at": "2026-09-09T00:19:08.190Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 14,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
+          "created_at": "2026-09-09T04:27:24.879Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "legacy-clue-join:first_5_seconds:v6",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v7",
       "artifact_type": "first_5_seconds",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
@@ -767,10 +822,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v13"
+        "legacy-clue-join:game_translations:v14"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.261Z",
+      "created_at": "2026-09-09T04:27:24.948Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -807,16 +863,23 @@
           "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
           "created_at": "2026-09-09T00:19:08.261Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T04:27:24.949Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v6",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v7",
       "artifact_type": "no_manual_exploit_check",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v7.json",
+      "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": true,
@@ -835,18 +898,20 @@
           "pass": true,
           "evidence": "design review r2（design-review-r2.result.json、FAIL 54）は、r1是正後もBLOCKER 2件を発見: (1) ANSWER_LEAK_POSITION — 診断候補の提示順の先頭が常に正解（肺炎）、決め手所見が常に配列位置1,2,4,5であり、内容を一切読まずこの位置だけ選べば初回で100%成功する。(2) BRUTE_FORCE_SUCCESS — 上記の位置漏れにより、申告していた約51%の残余リスクの前提（所見の完全一致は難しい）が崩れ、位置だけで所見が確定し診断も1回で成功する。是正版（t1c-shuffled-commit-and-defend, design-sim.mjs v3）: 診断候補・所見カードの表示順を、clueBoardLogic.ts shuffledVitalsと同じ規律でセッションごとに独立にシャッフル（今夜の間は固定、新しい症例/やり直しで再シャッフル）。design-sim.mjsにfirst_displayed_diagnosis_plus_positions_1245（r2の指摘そのものを再現した戦略）とその2回巡回版を追加し、多数のシャッフル済みセッションに対する勝率が理論値（それぞれ1/60、1/30——内容を見ない乱択と同水準）に一致することを直接検証（position_leak_closed_single_try/position_leak_closed_cycledがtrue）。r1是正済みのカテゴリラベル再整理・数値/深刻さの意図的混在も引き続き維持。 design review r3（FAIL 58、BLOCKER 0件、HIGH×2）でも位置漏れの是正（position_leak_closed_single_try/cycled）は確認されhigh評価の対象外だった。r3のHIGH（ARTIFACT_CHAIN_INCONSISTENT、CLINICAL_MODEL_OVERSTATED）はscope_core_v3/c_compression_v4/play_seeds_v5/fact_sheet_v6で是正した。 design review r4（FAIL 55、0 blockers、HIGH×3）: CLINICAL_MODEL_UNDERDETERMINED（局所修理不可、redesign対象）— 決め手所見の完全一致採点が、査読者自身の示した臨床的に妥当な代替（話・検査・画像、聴診なし）を拒否していた。t1d-flexible-commit-and-defendで、検査・画像必須／話・診察任意／呼吸状態・循環不可、という柔軟な受容基準（4通りの正解）へ変更し是正した。design-sim.mjs: all_four_legitimate_variants_win=true、乱択（2回の予算）は約3.1%（旧版の0.8%からやや上昇したが引き続き低水準）、select_all/カテゴリ/数値/深刻さ/位置ヒューリスティックはいずれも0%または理論的乱択水準。"
         },
-        "clinical_model_correction": "design review r1のHIGH（CLINICAL_MODEL_OVERSTATED）是正は維持: 呼吸状態（SpO₂・呼吸数）と循環（血圧）は『決め手にならない＝重要でない』と誤解されないよう、結果画面と候補カードの典型像の両方で『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならない』と明記する。 design review r3 HIGH（CLINICAL_MODEL_OVERSTATED）是正: 候補カードの片側性/両側性・炎症所見を絶対的な排他規則ではなく傾向表現（〜ことが多い）に統一し、診察所見の音の質をパチパチ（プツプツ）に限定して喘息候補のゼーゼーとの混同を避けた（fact_sheet_v6）。 design review r4 HIGH是正: 心不全カードの未裏付け主張（血液の炎症数値は上がらない、日本心臓財団の引用元が直接支持しない）を削除し、同ページが実際に支持するBNP・心陰影拡大・両側性変化のみを記載した（fact_sheet_v5）。",
+        "clinical_model_correction": "design review r1のHIGH（CLINICAL_MODEL_OVERSTATED）是正は維持: 呼吸状態（SpO₂・呼吸数）と循環（血圧）は『決め手にならない＝重要でない』と誤解されないよう、結果画面と候補カードの典型像の両方で『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならない』と明記する。 design review r3 HIGH（CLINICAL_MODEL_OVERSTATED）是正: 候補カードの片側性/両側性・炎症所見を絶対的な排他規則ではなく傾向表現（〜ことが多い）に統一し、診察所見の音の質をパチパチ（プツプツ）に限定して喘息候補のゼーゼーとの混同を避けた（fact_sheet_v6）。 design review r4 HIGH是正: 心不全カードの未裏付け主張（血液の炎症数値は上がらない）を削除。design review r5 HIGH是正: さらに『両側性変化』も引用元（日本心臓財団）が明示的に支持していなかったため削除し、同ページが実際に支持する心陰影拡大・肺うっ血のみを記載した（fact_sheet_v6）。",
         "factual_grounding": "design review r2のHIGH（FACTUAL_GROUNDING_INCOMPLETE）是正: fact_sheet_v6.sourcesに4候補すべての出典URL（肺炎=JRS成人肺炎診療ガイドライン2024、心不全=日本心臓財団、喘息発作=JRS気管支喘息citizen page、気胸=JRS気胸citizen page）を実際に追加し、fact_sheet_v6.candidate_reference_cardsに各候補カードの確定文言と出典を明記した。game_translations/game_spec/実装はこの確定文言を単一の正本として参照する。",
         "artifact_chain_consistency": "design review r2のHIGH（ARTIFACT_CHAIN_INCONSISTENT）是正: ae_v3・c_compression_v3・play_seeds_v4を4候補・フラットフィードバックに統一し、採用translation（t1c）と矛盾する記述（3候補、システムによる具体的矛盾指摘）を除去した。",
-        "implementation_stage_checks_required": "design review r3 MEDIUM（非BLOCKER、実装段階で検証必須）: (1) SHUFFLE_LIFECYCLE_UNVERIFIED — 診断候補・所見カードの表示順シャッフルは、初回mount・partial後・章の再開・React remountのいずれでもセッション内で一度だけ生成され、採点は常にIDベースで行われる（表示indexを採点に使わない）ことをgameplay-qa-clue-join.mjsで回帰テストする。(2) VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 375px幅で診断4枚+所見6枚+フィードバック+残回数+送信ボタンがスクロールなしで収まり、候補の『？』を開いてもコミット状態・所見選択・送信ボタンへ迷わず戻れることを実機で確認する。"
+        "implementation_stage_checks_required": "design review r3 MEDIUM（非BLOCKER、実装段階で検証必須）: (1) SHUFFLE_LIFECYCLE_UNVERIFIED — 診断候補・所見カードの表示順シャッフルは、初回mount・partial後・章の再開・React remountのいずれでもセッション内で一度だけ生成され、採点は常にIDベースで行われる（表示indexを採点に使わない）ことをgameplay-qa-clue-join.mjsで回帰テストする。(2) VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 375px幅で診断4枚+所見6枚+フィードバック+残回数+送信ボタンがスクロールなしで収まり、候補の『？』を開いてもコミット状態・所見選択・送信ボタンへ迷わず戻れることを実機で確認する。",
+        "revision_note": "v8 (PREPARED, r6 fix, not submitted): clinical_model_correctionが削除済みの『両側性変化』をなお現行根拠として記述していたのを、fact_sheet_v6の実際の記載（心陰影拡大・肺うっ血のみ）に一致させた。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v13",
-        "legacy-clue-join:first_5_seconds:v6"
+        "legacy-clue-join:game_translations:v14",
+        "legacy-clue-join:first_5_seconds:v7"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.360Z",
+      "created_at": "2026-09-09T04:27:25.050Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -883,13 +948,20 @@
           "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v7.json",
           "created_at": "2026-09-09T00:19:08.361Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T04:27:25.051Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "legacy-clue-join:core_back_check:v6",
+      "artifact_id": "legacy-clue-join:core_back_check:v7",
       "artifact_type": "core_back_check",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
@@ -902,10 +974,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v13"
+        "legacy-clue-join:game_translations:v14"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:08.432Z",
+      "created_at": "2026-09-09T04:27:25.121Z",
+      "consistency_repair": true,
       "versions": [
         {
           "version": 1,
@@ -942,6 +1015,13 @@
           "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
           "created_at": "2026-09-09T00:19:08.433Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T04:27:25.122Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     }
@@ -1015,6 +1095,17 @@
       "must_change": "cross-references in scope_core/ae/core_scope_check updated to fact_sheet_v6; play_seeds_v7.risks reworded to match the current 4-combination rule; no_manual_exploit_check_v7's clinical_model_correction corrected to match fact_sheet_v6's narrower heart-failure claim",
       "design_iteration": 3,
       "at": "2026-09-09T00:24:38.760Z"
+    },
+    {
+      "failure_id": "f-7",
+      "failure_code": "FACTUAL_PROFESSION_ERROR",
+      "failure_reason": "Design review r7 FAIL 55 (CA55/GQ82, 0 blockers, 2 HIGH). HIGH-1 [FACTUAL_GROUNDING_INCOMPLETE, touches_protected_meaning:true]: fact_sheet_v6.expertise[1] and decisions[1] still assert a bilateral/butterfly-pattern discriminator for heart failure ('胸部X線所見には...両側性の変化（butterfly/bat-wing陰影）などがある', '心不全候補なら片側性所見...は典型像と合わない') that the cited 日本心臓財団 source does not state -- earlier rounds (r4/r5) only fixed the downstream candidate_reference_cards.heart_failure.text, never this root fact_sheet content, so it slipped through 6 reviews focused on the card text. This is a genuine, newly-confirmed factual overclaim in the ROOT source-of-truth artifact (not a propagation miss of an already-made decision -- nobody had previously decided to remove it from expertise/decisions), so per the Human Decision defining MECHANICAL_CONSISTENCY_REPAIR, fact_sheet is categorically excluded from that path (q1-factory-schema.mjs CONSISTENCY_REPAIR_EXCLUDED_TYPES) and this must go through normal repair. Both design-stage budgets are exhausted (repair 1/1, redesign 2/2) -> ESCALATE, exactly as instructed for a HIGH/BLOCKER touching CORE/A-E/Game Translation/gameplay mechanic content. HIGH-2 [CONSISTENCY_REPAIR_GUARD_INCOMPLETE, a Factory mechanism gap, already fixed independently of this pipeline]: q1-factory-schema.mjs's CONSISTENCY_REPAIR_PROTECTED_FIELDS left first_5_seconds completely unprotected and omitted play_seeds.information_gained/next_judgment_or_action/C_used -- hardened in this same session (first_5_seconds now fully protected like scope_core/ae; the 3 missing play_seeds fields added), self-test re-run 32/32, no fixture regressed. MEDIUM (shuffle lifecycle, 375px layout) carried forward as mandatory game_spec/implementation-QA acceptance criteria, unchanged from r3-r6. The remaining fix (removing the bilateral-pattern claim from fact_sheet's expertise/decisions, and reassessing whether unilateral-vs-bilateral remains valid as a discriminating axis in the mechanic at all) is a real content correction to the root fact_sheet, not eligible for consistency-repair, and requires a Human Decision (a further Limited Human Exception) or stopping here.",
+      "evidence": "factory/projects/legacy-clue-join/design/design-review-r7.result.json",
+      "return_to": "PROFESSION_RESEARCH",
+      "preserve": "t1d-flexible-commit-and-defend mechanic (unaffected by this finding), per-session shuffle, the 3 non-heart-failure candidate cards, patient values consistent with ch1-3, existing medical.ts discoveryEcho/resolution",
+      "must_change": "fact_sheet.expertise and decisions must not assert a bilateral-pattern claim beyond what the cited 日本心臓財団 source states; must reassess whether unilateral-vs-bilateral should remain part of the game's discriminating axis at all, or be dropped in favor of the already-source-supported axes (subacute onset, inflammatory markers, focal imaging)",
+      "design_iteration": 3,
+      "at": "2026-09-09T04:34:06.340Z"
     }
   ],
   "human_decisions": [],
@@ -1023,7 +1114,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T21:16:08.849Z",
-  "updated_at": "2026-09-09T00:24:38.761Z",
+  "updated_at": "2026-09-09T04:34:06.341Z",
   "history": [
     {
       "at": "2026-09-08T21:16:08.850Z",
@@ -2066,6 +2157,172 @@
         "action": "ESCALATED",
         "reason": "same fundamental failure persists after finite repair+redesign budget"
       }
+    },
+    {
+      "at": "2026-09-09T04:26:56.079Z",
+      "event": "state_change",
+      "from": "ESCALATED",
+      "to": "RETURNED",
+      "note": "consistency repair on scope_core v7 — budgets unaffected (repair_count=1, redesign_count=2)"
+    },
+    {
+      "at": "2026-09-09T04:26:56.079Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v7",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r6 propagation miss: derived_from still named superseded fact_sheet_v2",
+      "was_escalated": true,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.619Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v7"
+      ],
+      "reason": "r6 propagation miss: derived_from still named superseded fact_sheet_v2/scope_core_v2",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.722Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v7",
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "r6 propagation miss: notes prose named superseded fact_sheet_v2",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:08.794Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "r6 propagation miss: risks wording said 'exact evidence match' inconsistent with the adjacent 4-combination system_reaction",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.702Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v7"
+      ],
+      "reason": "clearing staleness cascaded from the play_seeds reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.774Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v7"
+      ],
+      "reason": "clearing staleness cascaded from the ae reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.879Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v14",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v7",
+        "legacy-clue-join:c_compression:v7"
+      ],
+      "reason": "clearing staleness cascaded from the c_compression/play_seeds reference fixes; adopted mechanic unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:24.949Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14"
+      ],
+      "reason": "clearing staleness cascaded from game_translations reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:25.051Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14",
+        "legacy-clue-join:first_5_seconds:v7"
+      ],
+      "reason": "r6 propagation miss: clinical_model_correction still asserted the removed 'bilateral pattern' claim as source-supported",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:27:25.122Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v14"
+      ],
+      "reason": "clearing staleness cascaded from game_translations reference fix; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T04:34:06.341Z",
+      "event": "state_change",
+      "from": "RETURNED",
+      "to": "ESCALATED",
+      "note": "FACTUAL_PROFESSION_ERROR persists after repair_count=1, redesign_count=2"
+    },
+    {
+      "at": "2026-09-09T04:34:06.341Z",
+      "event": "failure_routed",
+      "failure_id": "f-7",
+      "code": "FACTUAL_PROFESSION_ERROR",
+      "return_to": "PROFESSION_RESEARCH",
+      "decision": {
+        "action": "ESCALATED",
+        "reason": "same fundamental failure persists after finite repair+redesign budget"
+      }
     }
   ],
   "redesign": [
@@ -2088,7 +2345,7 @@
   ],
   "escalation": {
     "reason": "same fundamental failure persists after finite repair+redesign budget",
-    "failure_code": "ANSWER_LEAK",
-    "at": "2026-09-09T00:24:38.760Z"
+    "failure_code": "FACTUAL_PROFESSION_ERROR",
+    "at": "2026-09-09T04:34:06.341Z"
   }
 }

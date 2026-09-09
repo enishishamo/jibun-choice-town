@@ -356,7 +356,12 @@ export const CONSISTENCY_REPAIR_PROTECTED_FIELDS = {
   reference_research: [],
   c_compression: ["original_C", "compressed_C", "preserved_D", "how_player_still_performs_D"],
   game_translations: ["adopted_translation_id"],
-  first_5_seconds: [],
+  // r7 fix (CONSISTENCY_REPAIR_GUARD_INCOMPLETE): first_5_seconds was left with ZERO protected
+  // fields -- every one of its required fields describes actual first-play UX behavior (what is
+  // shown, what the child is expected to infer/do next), i.e. it is exactly as meaning-bearing as
+  // scope_core/ae. Protect the whole schema-required set; only non-required metadata
+  // (revision_note etc.) stays free.
+  first_5_seconds: ["zero_to_two_seconds", "two_to_five_seconds", "first_expected_touch", "first_system_reaction", "next_expected_inference", "next_expected_action"],
   no_manual_exploit_check: [],
   core_back_check: ["core_still_intact", "scope_still_representative", "d_still_performed_by_child", "pass"],
 };
@@ -364,7 +369,11 @@ export const CONSISTENCY_REPAIR_PROTECTED_FIELDS = {
 // entry that matters: every play_seed the way the mechanic is described, and
 // for game_translations ONLY the currently-adopted entry — "adopted Game
 // Translationを変更しない"; historical rejected entries may be edited freely).
-const PLAY_SEED_PROTECTED_ITEM_FIELDS = ["authentic_causal_loop", "player_action", "system_reaction", "D_expressed", "E_reached"];
+// r7 fix (CONSISTENCY_REPAIR_GUARD_INCOMPLETE): information_gained/next_judgment_or_action/C_used
+// were missing -- they describe what C is used and what the child learns/decides next, i.e. they
+// are just as meaning-bearing as the causal-loop fields already protected. Only "risks" (a risk
+// ASSESSMENT, not a behavior description) and "seed_id" stay free per seed.
+const PLAY_SEED_PROTECTED_ITEM_FIELDS = ["authentic_causal_loop", "player_action", "system_reaction", "information_gained", "next_judgment_or_action", "C_used", "D_expressed", "E_reached"];
 const TRANSLATION_PROTECTED_ITEM_FIELDS = ["goal", "first_visible_state", "primary_action", "C_interaction", "system_reaction", "information_gained", "player_next_judgment", "D_externalization", "E_consequence", "retry_or_rethink", "job_reveal_bridge"];
 // no_manual_exploit_check's protected fields are nested (booleans = a verdict).
 const NO_MANUAL_PROTECTED_NESTED = {
