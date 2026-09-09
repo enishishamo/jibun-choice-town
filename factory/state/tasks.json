@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-09T05:54:46.334Z",
+      "updated_at": "2026-09-09T06:22:45.462Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -1501,6 +1501,32 @@
           "at": "2026-09-09T05:54:46.334Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-09T06:22:45.117Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "selftest fixture"
+        },
+        {
+          "at": "2026-09-09T06:22:45.158Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "/Users/nishimuraemiri/jibun-choice-town/factory/state/selftests/fixtures/q-task-review.json",
+          "score": 82,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-09T06:22:45.348Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-09T06:22:45.463Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
         }
       ]
     },
@@ -1704,7 +1730,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-08T21:15:04.880Z",
-      "updated_at": "2026-09-09T05:54:50.597Z",
+      "updated_at": "2026-09-09T06:22:49.473Z",
       "history": [
         {
           "at": "2026-09-08T21:15:04.881Z",
@@ -1949,6 +1975,20 @@
           "from": "BLOCKED",
           "to": "SUPERSEDED",
           "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-09T06:22:49.316Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-09T06:22:49.474Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
         }
       ]
     },
@@ -1992,11 +2032,11 @@
       "task_type": "game-content",
       "status": "READY",
       "repair_count": 0,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
       "review_required": true,
-      "qa_status": null,
-      "qa_evidence": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
       "deploy_status": null,
       "release_commit": null,
       "blocked_reason": null,
@@ -2005,13 +2045,35 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-08T21:16:08.810Z",
-      "updated_at": "2026-09-08T21:16:08.811Z",
+      "updated_at": "2026-09-09T06:45:45.131Z",
       "history": [
         {
           "at": "2026-09-08T21:16:08.811Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-09T06:25:10.566Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v1.json"
+        },
+        {
+          "at": "2026-09-09T06:42:17.175Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json"
+        },
+        {
+          "at": "2026-09-09T06:45:45.132Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
+          "score": 86,
+          "high_count": 0,
+          "override_note": null
         }
       ]
     },

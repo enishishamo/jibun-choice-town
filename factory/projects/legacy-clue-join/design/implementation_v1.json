@@ -1,0 +1,8 @@
+{
+  "component_files": ["src/q1/DiagnoseGame.tsx"],
+  "logic_module": "src/q1/clueJoinLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-clue-join.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/medical/er_exam.jpg, no new asset)",
+  "d_preserved_statement": "The child still performs the real judgment: committing to one of 4 diagnosis candidates via an explicit 'これだと思う' action (never pre-filled or suggested by the system) and independently selecting which of the 6 gathered findings are the actual decisive evidence for it. Both are scored together only after the child's own submission; the system never reveals the correct diagnosis or evidence set before that point (verified by gameplay-qa-clue-join.mjs's CORRECT_DIAGNOSIS pre-commit-hint and answer-leak checks). This mirrors the real differential-diagnosis structure preserved through c_compression/game_translations: match findings against candidate patterns, commit to the best-fitting one, and be able to say why."
+}

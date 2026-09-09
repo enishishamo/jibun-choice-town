@@ -4,10 +4,10 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "clue_join",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 3,
-  "repair_count": 1,
+  "repair_count": 2,
   "redesign_count": 2,
   "artifacts": {
     "fact_sheet": {
@@ -1348,6 +1348,185 @@
           "consistency_repair": true
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-clue-join:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/game_spec_v1.json",
+      "payload": {
+        "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見を選んで『まとめる』。正解は肺炎、決め手は検査・画像を必ず含み、話・診察は任意（呼吸状態・循環は含めない）という4通りの組み合わせのいずれか。",
+        "initial_visual_state": "4つの診断候補カード（タイトル、『？』読み物ボタンで一般的な典型像を表示、『これだと思う』コミットボタン）。6つの所見カード（話・診察・呼吸状態・検査・画像・循環、タップで選択トグル）。下部に『▶ これでまとめてみる（あと2回）』。カードの表示順は今夜のセッション開始時に1回だけ独立にシャッフルされ（診断カード・所見カードそれぞれ）、同じ夜の間は固定。説明文・操作手順の文章はない。",
+        "interactive_objects": [
+          "diagnosis candidate card x4 (『？』read-only pattern text toggle, 『これだと思う』commit button, mutually exclusive — only one committed at a time)",
+          "evidence card x6 (tap to toggle selection, multi-select, free to change before submit)",
+          "submit button (budgeted, 2 attempts)"
+        ],
+        "primary_action": "診断候補カードの1つに『これだと思う』でコミットする（自由に変更可、コストなし）。所見カードを複数タップして根拠として選ぶ（自由に変更可、コストなし）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。",
+        "C": "6つの所見カードの内容（話=発症の経過、診察=聴診の音の質、呼吸状態=SpO₂・呼吸数、検査=白血球・CRP実数値、画像=肺の変化、循環=血圧）と、4つの診断候補カードの傾向的な典型像（fact_sheet.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像、『〜ことが多い』という表現で断定を避ける）。",
+        "D": "所見全体を4つの診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ（決め手＝検査・画像は必須、話・診察は任意、呼吸状態・循環は不可）。整合しなければ、フラットな『もう一度見比べてみよう』を手がかりに自分で選び直す。",
+        "system_reactions": [
+          "所見カードタップ → 選択状態のトグル（視覚変化のみ、コストなし）",
+          "診断候補カードの『？』タップ → 典型像テキストの開閉（コストなし）",
+          "診断候補カードの『これだと思う』タップ → その候補にコミット（他候補は自動解除、コストなし、変更自由）",
+          "提出（診断=肺炎 かつ 所見選択が『検査・画像を含み、呼吸状態・循環を含まない』4通りのいずれか） → 成功。結論・選んだ根拠・心不全/喘息発作/気胸それぞれの傾向的な典型像との対比を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だが、どの病気かを決める手がかりにはならなかった』と明記して治療方針（既存resolution/discoveryEcho、変更なし）へ",
+          "提出（診断・所見のいずれかまたは両方が条件を満たさない） → フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』の一言のみ。診断/所見どちらが違うか、多い/少ないかは一切示さない",
+          "budget消費後、不一致が続けばpartialへ"
+        ],
+        "state_transitions": [
+          "night(選択中) -> success(診断=肺炎かつ所見が有効な4通りの組み合わせのいずれかに一致)",
+          "night -> retry(不一致、budget消費、budget>0ならnightへ戻る)",
+          "night -> partial(budget=0で未成功、正直な保留)",
+          "success/partial -> restart可能(同じ患者/所見のまま選び直し、表示順は再シャッフル)"
+        ],
+        "failure_behavior": "予算内の不一致はフラットな一言のみでnightへ戻る。2回とも不一致なら『今回ははっきりした決め手にたどりつけなかった。応援の医師と、もう一度手がかりを見直すことになった』という正直なpartial（進行は可能、Job Revealは成功時と同じdiscoveryEchoに接続——実際の救急外来でも保留・コンサルトは正直な結果であり成功の偽装ではない）",
+        "retry_behavior": "partial後は『もう一度考える』で同じ6所見・4候補のまま再挑戦できる（restartSameCase相当、内容は変えない、表示順は再シャッフル）",
+        "E": "正しい診断＋根拠の組み合わせに成功すると、結論と根拠、代替診断3つそれぞれとの対比、呼吸状態/循環の位置づけの明記が示され、既存のresolution（『肺で炎症が起きている可能性が高い』）→discoveryEchoへ進む。E自体（治療方針を医師が決める）は医師自身の権限内で閉じており、他者の裁量判断は介在しない。",
+        "job_reveal": "既存 factory側 src/data/content/medical.ts の med-diagnose experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし。",
+        "first_5_seconds": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json 準拠",
+        "no_manual_requirements": "操作手順の説明文なし。所見カード・候補カードの意味は、タップと『？』読み物のみで発見できる。budgeted submitボタンの『あと2回』表示は既存Q1games（clue_board/xray_shoot等）と同じ予算表示の慣習に従う。",
+        "mobile_constraints": "375px幅、10カード（候補4+所見6）+ボタン+フィードバック+残回数がスクロールなしで収まるレイアウト。診断候補カードは2x2グリッド、所見カードは2列x3行または横スクロールなしの縦積み。タップ領域44px以上。診断候補・所見カードの表示順は、独立したFisher-Yatesシャッフルをセッション開始時（コンポーネントmount時）に1回だけ生成し、useState等で保持して同じ夜の間は再生成しない（partial後の再挑戦・restartSameCase時のみ再生成）。採点は常にID（seg/pointに相当するカードID）で行い、表示上のindex/positionを一切参照しない。『？』典型像を開いてもコミット状態・所見選択・残回数・送信ボタンへ迷わず戻れるレイアウトにする（典型像はモーダルではなくインラインの折りたたみとし、他の操作を隠さない）。",
+        "asset_requirements": [
+          "no new art asset — reuses public/assets/medical/er_exam.jpg (place image, already used by med-doctor/med-diagnose, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, same as ClueBoardGame.tsx/DiagnoseGame.tsx precedent)"
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:ae:v12",
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T05:59:57.315Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/game_spec_v1.json",
+          "created_at": "2026-09-09T05:59:57.321Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-clue-join:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "Redesign is a pure text/card UI (diagnosis candidate cards + evidence cards), matching the existing ClueBoardGame.tsx/DiagnoseGame.tsx CSS-card precedent. Reuses the existing place image public/assets/medical/er_exam.jpg (already shipped, unchanged, owned by med-doctor/med-diagnose experience wiring in src/data/content/medical.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_spec:v1"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:00:20.213Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/art_brief_v1.json",
+          "created_at": "2026-09-09T06:00:20.214Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-clue-join:implementation:v2",
+      "artifact_type": "implementation",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/implementation_v2.json",
+      "payload": {
+        "component_files": [
+          "src/q1/DiagnoseGame.tsx"
+        ],
+        "logic_module": "src/q1/clueJoinLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-clue-join.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/medical/er_exam.jpg, no new asset)",
+        "d_preserved_statement": "The child still performs the real judgment: committing to one of 4 diagnosis candidates via an explicit 'これだと思う' action (never pre-filled or suggested by the system) and independently selecting which of the 6 gathered findings are the actual decisive evidence for it. Both are scored together only after the child's own submission; the system never reveals the correct diagnosis or evidence set before that point (verified by gameplay-qa-clue-join.mjs's CORRECT_DIAGNOSIS pre-commit-hint and answer-leak checks). This mirrors the real differential-diagnosis structure preserved through c_compression/game_translations: match findings against candidate patterns, commit to the best-fitting one, and be able to say why.",
+        "revision_note": "v2 (implementation review r1 FAIL 74, 2 HIGH, 0 blockers, repair — repair_count 2/2, downstream repair per q1-pipeline.mjs 'fail' rules, no design-stage budget touched, IMPLEMENTATION_CHANGED_D routed to IMPLEMENTATION only): (1) CLINICAL_MODEL_OVERSTATED — src/q1/DiagnoseGame.tsx's success screen no longer labels the 3 alternative diagnoses with absolute exclusion ('○○ではない'); it now shows a '○○との比較' heading with each candidate's own tendency-worded pattern text followed by a single comparative sentence ('今回そろった所見は、これよりも肺炎の典型像によく合う。'), preserving fact_sheet_v12's non-absolute framing while still satisfying game_spec's requirement to contrast the 3 alternatives. (2) DISCLOSURE_TOUCH_TARGET_TOO_SMALL — the diagnosis-candidate '?' disclosure (src/index.css .dx-more) is now a real 38x38px circular button (was 0 padding/no min-height, ~18px effective), restructured into a single dx-head row (dx-name + the '?' circle) so overall card height did not grow; re-measured live at 375x812: document.scrollHeight now exactly 812px (was 819px pre-fix), i.e. fits with zero overflow."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:game_spec:v1"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:41:55.309Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/implementation_v1.json",
+          "created_at": "2026-09-09T06:23:50.626Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/implementation_v2.json",
+          "created_at": "2026-09-09T06:41:55.310Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-clue-join:implementation_qa:v2",
+      "artifact_type": "implementation_qa",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
+      "payload": {
+        "first_5_seconds": "Verified live in the Browser pane at 375x812: entering the chapter shows the task-bar goal line, 4 diagnosis candidate cards and 6 evidence cards immediately, all interactive with no explanatory paragraph — matches first_5_seconds_v6.json/no_manual_requirements.",
+        "touch_targets": "join-main (evidence cards) min-height 44px, dx-commit (diagnosis commit button) min-height 44px. v2 fix: dx-more ('?' typical-pattern disclosure) is now a real 38x38px circular button (border+background, no longer padding:0 relying on the global button reset) — re-measured live via getBoundingClientRect(): {height:38, width:38}.",
+        "mobile_375": "v2 re-measured live at 375x812 after the touch-target fix: document.scrollHeight is exactly 812px == innerHeight (0px overflow, was 819px/7px in v1) — restructuring the '?' button into the diagnosis-name row (dx-head) instead of a separate full-width row kept card height the same or smaller while fixing the tap target.",
+        "direct_manipulation": "Diagnosis commit and evidence selection are both direct taps on the card itself (or its commit button) with immediate visual feedback (border/background color change, checkmark) — verified live via click-and-screenshot in the Browser pane.",
+        "reaction_timing": "State updates (commit highlight, evidence toggle, submit feedback) render synchronously on tap with no artificial delay, consistent with every other Q1 game in this app.",
+        "c_to_d": "Verified: the 6 evidence cards (話/診察/呼吸状態/検査/画像/循環) and 4 diagnosis candidates' typical-pattern text (fact_sheet.candidate_reference_cards, opened via the '?' circle) are the only information available; the child must compare them and commit — the component never auto-suggests or highlights a correct pairing (gameplay-qa-clue-join.mjs: 'CORRECT_DIAGNOSIS is never used before the success screen').",
+        "consequence": "A winning submission (pneumonia + an evidence set that is a superset of {lab,xray} and subset of {lab,xray,talk,exam}) shows a distinct success screen contrasting the 3 other candidates and explicitly notes why spo2/bp were not decisive; a losing submission returns one flat, uninformative sentence with no diagnosis/evidence-specific hint (verified live and by gameplay-qa-clue-join.mjs's answer-leak/random-guess-rate checks). v2 fix (CLINICAL_MODEL_OVERSTATED): the 3-alternative contrast on the success screen no longer states absolute exclusion ('○○ではない'); it now shows '○○との比較' followed by that candidate's own fact_sheet-sourced tendency text and a single comparative sentence ('今回そろった所見は、これよりも肺炎の典型像によく合う。'), preserving fact_sheet_v12's non-absolute/tendency-only framing — re-verified live end to end after the fix.",
+        "retry": "Within budget (2 attempts), a wrong submission decrements the counter shown on the submit button ('あと1回') and lets the child freely re-commit/re-select with the SAME shuffled order (no reshuffle mid-session) — verified live. After budget exhaustion, the honest partial screen offers both 'もう一度考える' (resets budget to 2, reshuffles orders, verified live) and '先へ進む' (calls onPartialComplete, verified live — Job Reveal still fires).",
+        "answer_leak": "gameplay-qa-clue-join.mjs verifies: no diagnosis candidate's read-only pattern text contains a verdict phrase or names another candidate; CORRECT_DIAGNOSIS is never referenced before the outcome is decided; the per-session shuffle is id-based (scoring never touches display position). Live testing confirmed the '?' pattern disclosure never reveals or implies which candidate is correct.",
+        "brute_force": "gameplay-qa-clue-join.mjs: select_all / has-number-only / no-number-only heuristics all win 0% of simulated cases (N=8000); blind random evidence+diagnosis stays at 3.06% (matches design-sim.mjs's disclosed theoretical baseline); the r2-class fixed-position exploit (first-displayed candidate + evidence positions 1,2,4,5) matches the chance baselines 1/60 (single try) and 1/30 (2-try cycled), i.e. no better than blind guessing once shuffled.",
+        "visual_affordance": "Committed diagnosis card and selected evidence cards both get a clear orange border/background change plus a checkmark; the disabled submit button (before any diagnosis is committed) is visually dimmed via the existing btn:disabled opacity rule; the '?' disclosure is now a visibly bordered circular button rather than bare text — verified live via screenshot.",
+        "no_manual": "No instructional/how-to-play text anywhere in the screen; card meaning is discoverable via tap and the '?' disclosure only, matching no_manual_exploit_check_v9.json and every sibling Q1 game's convention.",
+        "job_reveal": "onComplete/onPartialComplete both route to the existing shared Q1 shell, which renders medical.ts's unchanged med-diagnose discoveryEcho/resolution/seed-picker — verified live end to end (success path reached the '🎉 肺で炎症が起きている可能性が高い' discoveryEcho screen; ch4 flipped from active to done and ch5 med-pharm unlocked).",
+        "pass": true,
+        "evidence": {
+          "gameplay_qa": "node factory/harness/gameplay-qa-clue-join.mjs -> 31 passed, 0 failed (re-run after v2 fix)",
+          "self_test": "node factory/harness/q1-factory-selftest.mjs -> 41/41 passed",
+          "typecheck": "npx tsc --noEmit -p . -> no output (clean, re-run after v2 fix)",
+          "build": "npm run build -> succeeded (re-run after v2 fix)",
+          "lint": "npm run lint -> no new errors/warnings introduced by DiagnoseGame.tsx, clueJoinLogic.ts, or gameplay-qa-clue-join.mjs",
+          "implementation_review_r1": "factory/projects/legacy-clue-join/impl-review-r1.result.json — FAIL 74, 2 HIGH (CLINICAL_MODEL_OVERSTATED, DISCLOSURE_TOUCH_TARGET_TOO_SMALL), 0 blockers. Both fixed in this v2 revision (see revision_note in implementation_v2.json).",
+          "live_browser_verification": "Browser pane at 375x812 after the v2 fix: re-measured dx-more at {height:38,width:38}; document.scrollHeight === innerHeight === 812 (0px overflow); replayed a full success run (committed pneumonia + lab/xray, confirmed the reworded '○○との比較' contrast text, confirmed Job Reveal/discoveryEcho fires)."
+        }
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-clue-join:implementation:v2"
+      ],
+      "design_iteration": 3,
+      "created_at": "2026-09-09T06:42:05.730Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-clue-join/design/implementation_qa_v1.json",
+          "created_at": "2026-09-09T06:24:26.622Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-clue-join/design/implementation_qa_v2.json",
+          "created_at": "2026-09-09T06:42:05.731Z",
+          "creator": "claude"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -1367,7 +1546,23 @@
     "stale": false,
     "recorded_at": "2026-09-09T05:53:14.642Z"
   },
-  "impl_review": null,
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 86,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-clue-join/impl-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 3,
+    "repair_count_at_review": 2,
+    "stale": false,
+    "recorded_at": "2026-09-09T06:45:37.635Z"
+  },
   "art_review": null,
   "failures": [
     {
@@ -1446,6 +1641,17 @@
       "must_change": "fact_sheet.expertise and decisions must not assert a bilateral-pattern claim beyond what the cited 日本心臓財団 source states; must reassess whether unilateral-vs-bilateral should remain part of the game's discriminating axis at all, or be dropped in favor of the already-source-supported axes (subacute onset, inflammatory markers, focal imaging)",
       "design_iteration": 3,
       "at": "2026-09-09T04:34:06.340Z"
+    },
+    {
+      "failure_id": "f-8",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "implementation review r1 FAIL 74 (CA74/GQ78), 2 HIGH, 0 blockers: (1) CLINICAL_MODEL_OVERSTATED — success screen labeled alternative diagnoses with absolute exclusion (\"○○ではない\"), contradicting fact_sheet's tendency-only/non-absolute-exclusion policy; (2) DISCLOSURE_TOUCH_TARGET_TOO_SMALL — dx-more ('? どんな病気') had no padding/min-height, ~18px effective tap height, far below the app's ~38px secondary-disclosure precedent. Both are implementation-only defects (not required or implied by game_spec/game_translations); D itself (explicit commit + explicit evidence selection) was never touched.",
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r1.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design, spec, art",
+      "must_change": "implementation must restore the specified D",
+      "design_iteration": 3,
+      "at": "2026-09-09T06:36:29.000Z"
     }
   ],
   "human_decisions": [],
@@ -1454,7 +1660,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T21:16:08.849Z",
-  "updated_at": "2026-09-09T05:53:23.696Z",
+  "updated_at": "2026-09-09T06:45:55.096Z",
   "history": [
     {
       "at": "2026-09-08T21:16:08.850Z",
@@ -3348,6 +3554,152 @@
       "at": "2026-09-09T05:53:23.696Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-09T05:59:57.321Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-09T05:59:57.321Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v18",
+        "legacy-clue-join:ae:v12",
+        "legacy-clue-join:play_seeds:v11",
+        "legacy-clue-join:c_compression:v11"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:00:20.214Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-09T06:00:20.214Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:23:50.626Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-09T06:23:50.626Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:24:26.622Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-09T06:24:26.622Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:36:29.001Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "REPAIRING",
+      "note": "IMPLEMENTATION_CHANGED_D -> IMPLEMENTATION (downstream repair)"
+    },
+    {
+      "at": "2026-09-09T06:36:29.001Z",
+      "event": "failure_routed",
+      "failure_id": "f-8",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 2
+      }
+    },
+    {
+      "at": "2026-09-09T06:36:38.378Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-09T06:41:55.310Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation:v2",
+      "invalidated": [
+        "implementation_qa",
+        "impl_review"
+      ],
+      "sources": [
+        "legacy-clue-join:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:42:05.731Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-clue-join:implementation_qa:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:implementation:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T06:42:05.772Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "IMPLEMENTATION_CHANGED_D repair 2/2: fixed CLINICAL_MODEL_OVERSTATED (absolute exclusion wording -> tendency-based comparison) and DISCLOSURE_TOUCH_TARGET_TOO_SMALL (dx-more now a real 38x38px circle); re-verified 31/31 gameplay-qa, 41/41 selftest, clean tsc/build/lint, live 375x812 (0px overflow)."
+    },
+    {
+      "at": "2026-09-09T06:42:05.773Z",
+      "event": "repair_done",
+      "note": "IMPLEMENTATION_CHANGED_D repair 2/2: fixed CLINICAL_MODEL_OVERSTATED (absolute exclusion wording -> tendency-based comparison) and DISCLOSURE_TOUCH_TARGET_TOO_SMALL (dx-more now a real 38x38px circle); re-verified 31/31 gameplay-qa, 41/41 selftest, clean tsc/build/lint, live 375x812 (0px overflow)."
+    },
+    {
+      "at": "2026-09-09T06:45:37.636Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-clue-join/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-09T06:45:55.095Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-09T06:45:55.096Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
     }
   ],
   "redesign": [

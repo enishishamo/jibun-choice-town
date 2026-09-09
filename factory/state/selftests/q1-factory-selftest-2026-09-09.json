@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-09-09T05:54:59.866Z",
+  "ran_at": "2026-09-09T06:22:58.951Z",
   "passed": 41,
   "failed": 0,
   "total": 41,
@@ -236,7 +236,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (8/2)",
+        "wip_refusal": "WIP full (9/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -339,10 +339,14 @@
           "priority": 1
         },
         "wip": {
-          "active": 10,
+          "active": 11,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
+            {
+              "game_id": "legacy-clue-join",
+              "state": "ART_BRIEF_READY"
+            },
             {
               "game_id": "legacy-sow-and-grow",
               "state": "AE_READY"
