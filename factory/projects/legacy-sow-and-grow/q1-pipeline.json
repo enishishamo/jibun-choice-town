@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "sow_and_grow",
   "creator": "claude-code",
-  "state": "FIRST_PLAY_READY",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 1,
   "repair_count": 0,
@@ -839,7 +839,23 @@
       ]
     }
   },
-  "independent_review": null,
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 70,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sow-and-grow/design-review-r6.result.json",
+    "input": "factory/projects/legacy-sow-and-grow/design-review-r6-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-09T23:37:08.293Z"
+  },
   "impl_review": null,
   "art_review": null,
   "failures": [],
@@ -849,7 +865,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-09T04:36:02.222Z",
-  "updated_at": "2026-09-09T23:28:25.542Z",
+  "updated_at": "2026-09-09T23:37:17.153Z",
   "history": [
     {
       "at": "2026-09-09T04:36:02.222Z",
@@ -2008,6 +2024,33 @@
       "sources": [
         "legacy-sow-and-grow:game_translations:v7"
       ]
+    },
+    {
+      "at": "2026-09-09T23:37:08.294Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sow-and-grow/design-review-r6.result.json"
+    },
+    {
+      "at": "2026-09-09T23:37:08.294Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-09T23:37:17.151Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-09T23:37:17.153Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ]
 }
