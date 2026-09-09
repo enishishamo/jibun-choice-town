@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r5",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 70,
+    "career_authenticity_score": 84,
+    "game_quality_score": 70,
+    "blockers": [
+      "ARTIFACT_CHAIN_INCONSISTENT: design-sim.mjs still presents superseded reference_research_v3.json as the current supporting reference for the real-world variety-pattern claim. The authoritative current artifact is reference_research_v5.json, so the Round-4 stale-live-citation defect is not fully closed."
+    ],
+    "high": [],
+    "medium": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION: an unsuccessful commitment only reports a flat failure and provides no diagnosis or same-session opportunity to apply what was learned. This remains a genuine but non-gating first-play weakness; the anti-brute-force rationale makes the omission defensible."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "BLOCKER",
+        "finding": "The live simulation documentation cites superseded reference_research_v3.json while describing the current real-world grounding. This is not a historical version note and must point to current reference_research_v5.json.",
+        "file": "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:31"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "Failure communicates only that the selected variety did not fit; it does not reveal which condition failed or support an informed correction within the session.",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:10"
+      }
+    ],
+    "round4_findings_confirmed_closed": {
+      "artifact_chain_consistent": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_byte_identical_to_committed_result": true,
+      "full_citation_sweep_performed": true,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json:16 — The expertise claim is now properly narrowed: the Fukui evidence supports early/late sowing suitability differences and explicitly documents heat tolerance only for 向陽二号, while stating that 愛紅 and 夏播用彩誉 heat tolerance is not reported.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json:40 — Exact fictional-variety day counts and heat-tolerance assignments are explicitly separated from the real early/late/standard tendency grounding.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v5.json:5 — The current research artifact consistently distinguishes source-backed sowing-timing patterns and 向陽二号 heat tolerance from the fictional heat trade-offs assigned to the other varieties.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:31 — Current-behavior documentation says “see reference_research_v3.json,” a superseded artifact; this is the one remaining stale live citation found in the full sweep.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:32 — The adjacent live citations correctly point to fact_sheet_v4.json and game_translations_v5.json.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:175 — Reproduced month_only_fixed_mapping win rate is 0.7919, materially below full reasoning.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:176 — Legitimate full reasoning reproduces a 1.0 success rate.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:185 — Exhaustive state analysis still reports no_variety_dominates_any_multi_candidate_month=true.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:193 — Every month retains at least one accepted state.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:196 — zero_winner_session_rate remains 0.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:13 — Season-neutral names つぶたね/まんまる/ことね remain in place, so the narrowed expertise text does not reintroduce an answer leak.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:14 — Per-session independent card-order shuffling remains a mandatory game-spec acceptance condition.",
+      "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json:2 — The consolidated player-facing disclaimer remains visible and accurately says the variety numbers are game-only learning settings.",
+      "factory/projects/legacy-sow-and-grow/design/ae_v3.json:6 — Success and failure outcomes remain honestly differentiated.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json:4 — CORE and給食SCOPE remain representative of deadline-, season-, and forecast-informed cultivation planning.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json:5 — The profession-name-hidden test remains satisfied through occupation-neutral initial framing and agriculture-specific C/D context.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:10 — Wrong choices receive only a flat failure reaction without the failed condition being identified.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:15 — The design explicitly avoids same-session retry to prevent mechanical elimination from restoring brute-force success.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:158 — The script was executed in the read-only environment; its write failure was handled non-fatally and its stdout matched the committed result byte-for-byte, including the final newline."
+    ],
+    "recommended_actions": [
+      "Change design-sim.mjs:31 from reference_research_v3.json to reference_research_v5.json, then rerun the citation sweep and simulation byte comparison.",
+      "Carry REACTION_DOES_NOT_TEACH_NEXT_ACTION as non-gating implementation polish; if feedback is enhanced, avoid identifying the exact winning variety or enabling same-session exhaustive retries."
+    ]
+  },
+  "elapsed_sec": 166.206
+}

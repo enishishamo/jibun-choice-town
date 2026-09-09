@@ -28,7 +28,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 
 // All three are summer-sowing (June-September) candidates, matching the real fukui trial anchor
 // and the real qualitative pattern differences among 愛紅 (fast/vigorous)/向陽二号 (standard,
-// heat-hardy, wide window)/夏播用彩誉 (late-sowing specialist) -- see reference_research_v3.json.
+// heat-hardy, wide window)/夏播用彩誉 (late-sowing specialist) -- see reference_research_v5.json.
 // Exact day-counts/heat-tolerance are fictionalized teaching data (fact_sheet_v4.json's
 // uncertainties + game_translations_v5.json's explicit in-game disclosure of this).
 const VARIETIES = [
