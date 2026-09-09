@@ -4,19 +4,19 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "clue_join",
   "creator": "claude-code",
-  "state": "ESCALATED",
-  "current_stage": "PROFESSION_RESEARCH",
+  "state": "RETURNED",
+  "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 3,
   "repair_count": 1,
   "redesign_count": 2,
   "artifacts": {
     "fact_sheet": {
-      "artifact_id": "legacy-clue-join:fact_sheet:v6",
+      "artifact_id": "legacy-clue-join:fact_sheet:v7",
       "artifact_type": "fact_sheet",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/fact_sheet_v6.json",
+      "file": "factory/projects/legacy-clue-join/design/fact_sheet_v7.json",
       "payload": {
         "profession": "医師（救急外来、鑑別診断）",
         "sources": [
@@ -48,12 +48,12 @@
         ],
         "expertise": [
           "日本呼吸器学会『成人肺炎診療ガイドライン2024』(jrs.or.jp/publication/jrs_guidelines/20240319125656.html): 市中肺炎の診断は臨床像・身体所見・検査・画像を組み合わせて行う",
-          "日本心臓財団『心不全の診断と検査』(jhf.or.jp/check/heart_failure/10): 心不全は聴診・胸部X線・心電図・心エコー・血液検査（BNP）などを総合して判断する。胸部X線所見には心陰影拡大・胸水・両側性の変化（butterfly/bat-wing陰影）などがある",
+          "日本心臓財団『心不全の診断と検査』(jhf.or.jp/check/heart_failure/10): 心不全は聴診・胸部X線・心電図・心エコー・血液検査（BNP）などを総合して判断する。胸部X線所見には心陰影拡大・肺うっ血などがある。",
           "日本呼吸器学会『気管支喘息』citizen page (jrs.or.jp/citizen/disease/c/c-01.html): 発作的に咳・喘鳴（ゼーゼー、ヒューヒュー）を伴う呼吸困難が起こる",
           "日本呼吸器学会『気胸』citizen page (jrs.or.jp/citizen/disease/g/g-04.html): 気胸は胸腔内に空気が貯留し肺が虚脱する病態で、胸痛・呼吸困難が突然起こり、胸部レントゲンで診断できる"
         ],
         "candidate_reference_cards": {
-          "note": "4つの診断候補カード（読み物、正解は示さない）の確定文言。各出典のcitizen向け一般的記述に基づく一般像。design review r3 HIGH是正: いずれの記述も『〜ことが多い』という傾向表現に統一し、片側/両側や炎症値の有無を絶対的な排他規則として提示しない（肺炎が多発性・両側性のこともある、心不全が非典型像のこともある、という現実の幅を尊重する）。決め手は単一の所見ではなく、発症の経過・聴診・炎症所見・画像という複数の所見が全体としてどの典型像に一番よく合うかという組み合わせで判断する。 design review r4 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードから、引用元（日本心臓財団）が直接裏付けていない『血液の炎症の数値は上がらない』という比較主張を削除した。日本心臓財団のページが実際に述べるBNP・胸部X線所見（心陰影拡大・両側性変化）のみを根拠とする。 design review r5 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードの『両方の肺に変化が出やすい』という表現は引用元（日本心臓財団）が明示的に述べていなかったため、同ページが実際に支持する心陰影拡大・肺うっ血（肺に水がたまる）という表現に絞った。",
+          "note": "4つの診断候補カード（読み物、正解は示さない）の確定文言。各出典のcitizen向け一般的記述に基づく一般像。design review r3 HIGH是正: いずれの記述も『〜ことが多い』という傾向表現に統一し、片側/両側や炎症値の有無を絶対的な排他規則として提示しない（肺炎が多発性・両側性のこともある、心不全が非典型像のこともある、という現実の幅を尊重する）。決め手は単一の所見ではなく、発症の経過・聴診・炎症所見・画像という複数の所見が全体としてどの典型像に一番よく合うかという組み合わせで判断する。 design review r4 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードから、引用元（日本心臓財団）が直接裏付けていない『血液の炎症の数値は上がらない』という比較主張を削除した。日本心臓財団のページが実際に述べるBNP・胸部X線所見（心陰影拡大・両側性変化）のみを根拠とする。 design review r5 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE）: 心不全カードの『両方の肺に変化が出やすい』という表現は引用元（日本心臓財団）が明示的に述べていなかったため、同ページが実際に支持する心陰影拡大・肺うっ血（肺に水がたまる）という表現に絞った。 design review r7 HIGH是正（FACTUAL_GROUNDING_INCOMPLETE、fact-correct narrowing_only）: expertise/decisionsに残っていた両側性（butterfly/bat-wing陰影）主張を削除し、candidate_reference_cards.heart_failureと一致させた。片側性/両側性という軸自体を鑑別の決め手からは外す。",
           "pneumonia": {
             "text": "肺炎（はいえん）: からだの一部で炎症が起き、数日かけて熱・せきが出ることが多い。聴診でパチパチ・プツプツという音、画像でその部分に変化が出やすく、血液の炎症の数値も上がりやすい。",
             "source": "日本呼吸器学会 成人肺炎診療ガイドライン2024"
@@ -89,7 +89,7 @@
         ],
         "decisions": [
           "4つの鑑別候補（肺炎／心不全／喘息発作／気胸）のうち、所見全体と最も整合する1つを選ぶ",
-          "選んだ診断と矛盾する所見（例: 心不全候補なら片側性所見・炎症高値は典型像と合わない）がないかを確認する",
+          "選んだ診断と矛盾する所見がないかを確認する",
           "血圧のように診断の決め手にならない所見を、決め手と混同しない"
         ],
         "outputs_or_value": "所見と整合する診断（肺炎の疑い）に基づき、治療方針（本編では『治療を始めよう』）へ進める",
@@ -98,16 +98,23 @@
           "本症例の詳細な検査値・画像所見はプロトタイプ用に簡略化されている（fact_sheet v1からの継続）。4つの候補の一般像は各学会・財団のcitizen向け一般記述に基づくが、本症例が実際にどの所見の組み合わせなら『心不全ではない』と確実に言い切れるかの臨床的閾値（例: BNP具体値）までは踏み込まない——ゲームは一般像との整合/矛盾の比較に留める。",
           "design review r3 HIGH是正: 右胸の聴診所見をパチパチ（プツプツ、断続性ラ音）と明記し、喘息候補が特徴とするゼーゼー（連続性ラ音・喘鳴）と紛れないようにした。ch1のClueBoardGame.tsxの元の聴診結果テキスト（『ゼーゼー、プツプツという音』）は断続性・連続性の両方の音を含む簡略化された表現だったが、ch4ではこの症例の診断を左右する断続性（プツプツ）の質に着目することを明記する。",
           "design review r4 HIGH是正: 心不全カードの炎症数値に関する比較主張（削除済み）は引用元で直接裏付けられていなかった。肺炎の炎症数値上昇（lab所見）は本症例の検査結果そのものとして扱い、他候補との比較主張には用いない。",
-          "design review r5 HIGH是正: 心不全カードから両側性を明示するのではなく、引用元が直接述べる心陰影拡大・肺うっ血のみを記載する。"
+          "design review r5 HIGH是正: 心不全カードから両側性を明示するのではなく、引用元が直接述べる心陰影拡大・肺うっ血のみを記載する。",
+          "design review r7 HIGH是正（fact-correct narrowing_only）: expertise[1]/decisions[1]に残っていた両側性(butterfly/bat-wing)主張を削除。片側性/両側性を鑑別軸として使わない（候補カード・ゲーム内Cはこの軸を含まない）。"
         ],
         "derived_from": "reverse_audit + light research (research-rules.md準拠、官公庁・学会の一次情報を優先)",
         "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
-        "revision_note": "v3 (design review r2 HIGH是正): 気管支喘息・気胸の出典URLを実際にsourcesへ追加（v2はレビュープロンプトに記載しただけでファイル未反映というARTIFACT_CHAIN/FACTUAL_GROUNDING是正）。4候補カードの確定文言をcandidate_reference_cardsとして明記し、game_translations/game_spec/実装がすべてこの文言を参照する単一の正本とする。 v4 (design review r3 HIGH是正): 候補カード文言を非排他的な傾向表現に統一。exam所見の表現をパチパチ（プツプツ）に限定し、喘息候補のゼーゼーとの混同を避けた。 v5 (design review r4 HIGH是正): 心不全カードの未裏付け主張を削除。 v6 (design review r5 HIGH是正): 心不全カードの表現を引用元が直接支持する範囲（心陰影拡大・肺うっ血）に絞った。"
+        "revision_note": "v3 (design review r2 HIGH是正): 気管支喘息・気胸の出典URLを実際にsourcesへ追加（v2はレビュープロンプトに記載しただけでファイル未反映というARTIFACT_CHAIN/FACTUAL_GROUNDING是正）。4候補カードの確定文言をcandidate_reference_cardsとして明記し、game_translations/game_spec/実装がすべてこの文言を参照する単一の正本とする。 v4 (design review r3 HIGH是正): 候補カード文言を非排他的な傾向表現に統一。exam所見の表現をパチパチ（プツプツ）に限定し、喘息候補のゼーゼーとの混同を避けた。 v5 (design review r4 HIGH是正): 心不全カードの未裏付け主張を削除。 v6 (design review r5 HIGH是正): 心不全カードの表現を引用元が直接支持する範囲（心陰影拡大・肺うっ血）に絞った。 v7 (design review r7 HIGH是正, fact-correct narrowing_only): expertise/decisionsの両側性主張を削除し、片側性/両側性を鑑別軸から外した。"
       },
       "creator": "claude-code",
       "source_artifacts": [],
       "design_iteration": 3,
-      "created_at": "2026-09-09T00:19:07.636Z",
+      "created_at": "2026-09-09T05:02:42.350Z",
+      "fact_correction": {
+        "evidence": "/tmp/clue-join-fact-check.json",
+        "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+        "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+        "impact": "narrowing_only"
+      },
       "versions": [
         {
           "version": 1,
@@ -144,13 +151,20 @@
           "file": "factory/projects/legacy-clue-join/design/fact_sheet_v6.json",
           "created_at": "2026-09-09T00:19:07.637Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/fact_sheet_v7.json",
+          "created_at": "2026-09-09T05:02:42.351Z",
+          "creator": "claude-code",
+          "fact_correction": true
         }
       ]
     },
     "scope_core": {
-      "artifact_id": "legacy-clue-join:scope_core:v7",
+      "artifact_id": "legacy-clue-join:scope_core:v8",
       "artifact_type": "scope_core",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
@@ -164,9 +178,11 @@
         "revision_note": "v3 (design review r3 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6/ae_v3/game_translations_v6と整合させた。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6へ更新。"
       },
       "creator": "claude-code",
-      "source_artifacts": [],
+      "source_artifacts": [
+        "legacy-clue-join:fact_sheet:v7"
+      ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:26:56.078Z",
+      "created_at": "2026-09-09T05:18:16.368Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -211,32 +227,39 @@
           "created_at": "2026-09-09T04:26:56.079Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/scope_core_v5.json",
+          "created_at": "2026-09-09T05:18:16.369Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "ae": {
-      "artifact_id": "legacy-clue-join:ae:v7",
+      "artifact_id": "legacy-clue-join:ae:v9",
       "artifact_type": "ae",
-      "version": 7,
+      "version": 9,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/ae_v7.json",
+      "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
       "payload": {
         "A": "医療編／前半：診断まで／救急外来（もどってきた）。3日前からの発熱・咳・労作時呼吸困難で来院した患者について、ch1-3で集めた話・診察・検査・画像がそろった。",
         "B": "6つの所見（話・診察・SpO₂・検査・画像・血圧）を、4つの鑑別診断候補（肺炎／心不全／喘息発作／気胸）と照らし合わせ、1つにコミットし、決め手になる所見で裏付ける診断パズル",
-        "C": "問診（発症からの経過）・聴診（片側性か両側性か）・SpO₂/呼吸数・血液検査（白血球・CRP）・胸部X線画像・血圧。それぞれの所見が持つ意味（片側性/両側性、炎症の有無、発症様式）と、4つの鑑別診断候補それぞれの典型像（fact_sheet_v6.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像）",
+        "C": "問診（発症からの経過）・聴診・SpO₂/呼吸数・血液検査（白血球・CRP）・胸部X線画像・血圧。それぞれの所見が持つ意味（炎症の有無、発症様式）と、4つの鑑別診断候補それぞれの典型像（fact_sheet_v6.candidate_reference_cards、各学会・財団のcitizen向け記述に基づく一般像）",
         "D": "所見全体を4つの鑑別診断候補の典型像と照らし合わせ、1つの候補にコミットし、実際にその診断を裏付ける決め手になる所見を選ぶ。整合しなければ、コミットと根拠のどちらか（または両方）を自分で選び直す",
         "E": "正しい診断（肺炎）と、それを裏付ける所見の組み合わせ（複数の妥当な組み合わせがありうる）が選べたら、治療方針へ進める。整合しなければ、フラットな『もう一度見比べてみよう』とだけ示され、システムは診断・所見のどちらが違うかを一切指摘しない。2回考えても整合しない場合は、応援の医師と見直すという正直な保留（partial）になる",
         "derived_from": "reverse_audit + fact_sheet_v6 + scope_core_v5",
         "reverse_audit": "factory/state/legacy/reverse-audits/clue_join.json",
-        "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6/scope_core_v5へ更新。"
+        "revision_note": "v3 (design review r2是正): 候補数を3→4（気胸を追加）に更新し、fact_sheet_v6で定義した4候補の典型像を参照するよう明記。Dは『矛盾をシステムが指摘する』という表現を『自分で選び直す』に統一し、採用translation（t1c、完全フラットフィードバック）と整合させた。 v4 (design review r3): 候補数記述・Dの表現に変更なし（既に4候補・自分で選び直すという表現になっており一貫性は保たれていた）。c_compression/scope_core/play_seedsを同じ4候補・フラットフィードバックへ統一する側の修正。 v5 (design review r4 HIGH是正: ARTIFACT_CHAIN_INCONSISTENT): Eの記述が『矛盾する所見をシステムが指摘する』という、採用t1cとは異なる古い挙動を残していたのを、完全にフラットなフィードバックへ統一した。 design review r5 HIGH是正: fact_sheetの参照をv6へ更新。 (PREPARED, r6 fix, not submitted): derived_fromの参照をfact_sheet_v6/scope_core_v5へ更新。 v8 (design review r7 HIGH是正, fact-correct narrowing_only): Cの記述から片側性/両側性という、引用元が支持しない軸への言及を削除。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:scope_core:v7"
+        "legacy-clue-join:scope_core:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:08.618Z",
+      "created_at": "2026-09-09T05:18:31.189Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -281,13 +304,27 @@
           "created_at": "2026-09-09T04:27:08.619Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:17:47.646Z",
+          "creator": "claude-code",
+          "fact_correction": true
+        },
+        {
+          "version": 9,
+          "file": "factory/projects/legacy-clue-join/design/ae_v8.json",
+          "created_at": "2026-09-09T05:18:31.191Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "core_scope_check": {
-      "artifact_id": "legacy-clue-join:core_scope_check:v6",
+      "artifact_id": "legacy-clue-join:core_scope_check:v7",
       "artifact_type": "core_scope_check",
-      "version": 6,
+      "version": 7,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
@@ -300,11 +337,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:scope_core:v7",
-        "legacy-clue-join:ae:v7"
+        "legacy-clue-join:scope_core:v8",
+        "legacy-clue-join:ae:v9"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:08.721Z",
+      "created_at": "2026-09-09T05:18:31.305Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -343,13 +380,20 @@
           "created_at": "2026-09-09T04:27:08.722Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-clue-join/design/core_scope_check_v3_prepared.json",
+          "created_at": "2026-09-09T05:18:31.306Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "play_seeds": {
-      "artifact_id": "legacy-clue-join:play_seeds:v7",
+      "artifact_id": "legacy-clue-join:play_seeds:v8",
       "artifact_type": "play_seeds",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
@@ -398,10 +442,10 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:ae:v7"
+        "legacy-clue-join:ae:v9"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:08.794Z",
+      "created_at": "2026-09-09T05:18:31.381Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -446,13 +490,20 @@
           "created_at": "2026-09-09T04:27:08.794Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/play_seeds_v8_prepared.json",
+          "created_at": "2026-09-09T05:18:31.382Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "reference_research": {
-      "artifact_id": "legacy-clue-join:reference_research:v7",
+      "artifact_id": "legacy-clue-join:reference_research:v8",
       "artifact_type": "reference_research",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
@@ -480,10 +531,10 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:play_seeds:v7"
+        "legacy-clue-join:play_seeds:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:24.701Z",
+      "created_at": "2026-09-09T05:18:31.457Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -528,13 +579,20 @@
           "created_at": "2026-09-09T04:27:24.701Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/reference_research_v2.json",
+          "created_at": "2026-09-09T05:18:31.458Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "c_compression": {
-      "artifact_id": "legacy-clue-join:c_compression:v7",
+      "artifact_id": "legacy-clue-join:c_compression:v8",
       "artifact_type": "c_compression",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
@@ -550,10 +608,10 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:ae:v7"
+        "legacy-clue-join:ae:v9"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:24.773Z",
+      "created_at": "2026-09-09T05:18:31.532Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -598,16 +656,23 @@
           "created_at": "2026-09-09T04:27:24.774Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/c_compression_v5.json",
+          "created_at": "2026-09-09T05:18:31.533Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "game_translations": {
-      "artifact_id": "legacy-clue-join:game_translations:v14",
+      "artifact_id": "legacy-clue-join:game_translations:v15",
       "artifact_type": "game_translations",
-      "version": 14,
+      "version": 15,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-clue-join/design/game_translations_v10.json",
+      "file": "factory/projects/legacy-clue-join/design/game_translations_v11.json",
       "payload": {
         "translations": [
           {
@@ -616,7 +681,7 @@
             "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸、毎回ランダムな順序で表示）から1つに『これだと思う』と決め、6つの所見（毎回ランダムな順序で表示）の中から決め手になる所見を選んで『まとめる』（検査・画像は必ず含み、話・診察は選んでも選ばなくてもよい。呼吸状態・循環は含めない、という複数の妥当な組み合わせを受け付ける）",
             "first_visible_state": "4つの診断候補カード（表示順は毎回シャッフル。それぞれ『？』で一般的な典型像=fact_sheet_v6.candidate_reference_cardsの確定文言（傾向表現に統一済み）を読める、『これだと思う』ボタン）と、6つの所見カード（話（3日前からの発熱・咳・労作時呼吸困難の経過）・診察（右胸のパチパチ/プツプツという音）・呼吸状態（SpO₂88%・頻呼吸）・検査（白血球・CRP高値の実数値）・画像（右肺の変化）・循環（血圧128/78）、表示順は毎回シャッフル、タップで選択/解除）。下に『▶ これでまとめてみる』（あと2回）。説明文はない。",
             "primary_action": "診断候補カードのどれか1つの『これだと思う』ボタンをタップして選ぶ（自由に変更可）。所見カードを複数タップして根拠として選ぶ（自由に変更可）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。カードの表示順は1回の夜の間は固定、新しい症例/やり直しで再シャッフルされる。",
-            "C_interaction": "所見カードの内容（片側性/両側性、炎症の有無、発症様式）と4つの診断候補カードの傾向的な典型像を見比べ、どの所見が実際に決め手になるかを判断する。血液検査（炎症の数値）と画像（肺の変化）の2つは特に決め手になりやすい核となる根拠で、必ず含める必要がある。話（発症の経過）と診察（聴診の音）はこの2つを補強する根拠として選んでもよいし、選ばなくてもよい（心不全でも聴診異常が起こりうることを踏まえ、決め手として必須とはしない）。呼吸状態（SpO₂）・循環（血圧）は重要な情報だが決め手にはならない。",
+            "C_interaction": "所見カードの内容（炎症の有無、発症様式）と4つの診断候補カードの傾向的な典型像を見比べ、どの所見が実際に決め手になるかを判断する。血液検査（炎症の数値）と画像（肺の変化）の2つは特に決め手になりやすい核となる根拠で、必ず含める必要がある。話（発症の経過）と診察（聴診の音）はこの2つを補強する根拠として選んでもよいし、選ばなくてもよい（心不全でも聴診異常が起こりうることを踏まえ、決め手として必須とはしない）。呼吸状態（SpO₂）・循環（血圧）は重要な情報だが決め手にはならない。",
             "system_reaction": "選んだ診断が正しく（肺炎）、かつ根拠の所見が検査・画像を含み、呼吸状態・循環を含まない組み合わせ（話・診察の有無は自由）であれば成功。結果画面では、選んだ根拠に加え、心不全・喘息発作・気胸それぞれの傾向的な典型像との対比を示し、呼吸状態・循環は『からだの重さ・緊急度を知るための大事な情報だけど、どの病気かを決める手がかりにはならなかった』と明記する。診断・根拠のどちらか（または両方）が条件を満たさなければ、フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』という一言だけを返す。",
             "information_gained": "どの所見が実際に診断を絞り込む決め手になり、どの所見は（重要ではあっても）decisive ではないか。決め手になる所見は診断候補の典型像との一致・矛盾によってのみ判断できる",
             "player_next_judgment": "指摘のない、フラットな『もう一度見比べてみよう』を手がかりに、診断・根拠の両方を見直す。2回目の失敗で正直な保留（partial）",
@@ -626,7 +691,7 @@
             "job_reveal_bridge": "既存のdiscoveryEcho（『さっき、話・からだ・検査・画像をつなげて、ばらばらの手がかりを1つの見立てにまとめたよね』）がそのまま使える",
             "strengths": "design review r4（HIGH×3、うち1件は局所修理不可: CLINICAL_MODEL_UNDERDETERMINED）是正として、決め手所見の受容範囲を『検査・画像は必須、話・診察は任意、呼吸状態・循環は不可』という柔軟な基準へ変更した。これにより査読者自身が提示した妥当な代替（話・検査・画像、聴診なし）を含む4通りの組み合わせすべてが正解として受け入れられる（design-sim.mjs: all_four_legitimate_variants_win=true）。同時に、内容を見ない攻略（select_all/カテゴリ/数値/深刻さ/位置ヒューリスティック）はいずれも0%〜乱択水準のままであることを検証済み（呼吸状態・循環という2枚を除外し、検査・画像という2枚を含めるという条件は、依然としてカテゴリラベル・数値パターン・深刻さの単一の表面特徴からは導けない）。ae.Eのフラットフィードバックへの統一（HIGH: ARTIFACT_CHAIN_INCONSISTENT是正）、心不全カードの未裏付け主張の削除（HIGH: FACTUAL_GROUNDING_INCOMPLETE是正）も反映。",
             "weaknesses": "受容される組み合わせが4通りに増えたことで、design-sim上の乱択勝率がわずかに上昇した（2回の予算で約3.1%、旧版の約0.8%から上昇。ただしいずれも§3の閾値を大きく下回る）。375px×10カードのレイアウトとシャッフルのライフサイクル正確性は引き続き実装段階の検証項目。",
-            "risk": "design-sim-result.json (v4): legitimate（4通りすべて）100%、select_all系・カテゴリ/数値/深刻さヒューリスティック0%、乱択（2回の予算）約3.1%、位置ヒューリスティックは理論値（1/60, 1/30）と一致。理論的残存リスク（根拠は特定できたが診断名だけ当てずっぽう、候補数4なので約51%）は変わらず記録するが、根拠特定自体が診断名を強く含意するため内容非依存の攻略とはみなさない。",
+            "risk": "design-sim-result.json (v4): legitimate（4通りすべて）100%、select_all系・カテゴリ/数値/深刻さヒューリスティック0%、乱択（2回の予算）約3.1%、位置ヒューリスティックは理論値（1/60, 1/30）と一致。理論的残存リスク（根拠は特定できたが診断名だけ当てずっぽう、候補数4なので約51%）は変わらず記録するが、根拠特定自体が診断名を強く含意するため内容非依存の攻略とはみなさない。 design review r7 HIGH是正（fact-correct narrowing_only）: C_interactionから片側性/両側性という、引用元が支持しない軸への言及を削除。実際の採点（決め手所見の必須/任意/不可の判定）はこの軸に依存しておらず変更なし。",
             "adoption_or_rejection_reason": "採用（design review r4のHIGH×3是正）。CLINICAL_MODEL_UNDERDETERMINED（局所修理不可、redesign対象）に対応するため、決め手所見の判定を『検査・画像必須、話・診察は任意、呼吸状態・循環は不可』という柔軟な基準へ変更し、査読者自身が示した妥当な代替を含む4通りの組み合わせを正解として受け入れるt1d-flexible-commit-and-defendを新たに採用した。ae.Eのフィードバック記述統一、心不全カードの未裏付け主張削除も同時に反映。design-simで全4通りの正解が成功し、内容非依存の攻略は引き続き乱択水準にとどまることを検証済み。"
           },
           {
@@ -711,12 +776,17 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:play_seeds:v7",
-        "legacy-clue-join:c_compression:v7"
+        "legacy-clue-join:play_seeds:v8",
+        "legacy-clue-join:c_compression:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:24.878Z",
-      "consistency_repair": true,
+      "created_at": "2026-09-09T05:18:42.691Z",
+      "fact_correction": {
+        "evidence": "/tmp/clue-join-fact-check.json",
+        "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+        "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+        "impact": "narrowing_only"
+      },
       "versions": [
         {
           "version": 1,
@@ -802,13 +872,20 @@
           "created_at": "2026-09-09T04:27:24.879Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 15,
+          "file": "factory/projects/legacy-clue-join/design/game_translations_v11.json",
+          "created_at": "2026-09-09T05:18:42.692Z",
+          "creator": "claude-code",
+          "fact_correction": true
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "legacy-clue-join:first_5_seconds:v7",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v8",
       "artifact_type": "first_5_seconds",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
@@ -822,10 +899,10 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v14"
+        "legacy-clue-join:game_translations:v15"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:24.948Z",
+      "created_at": "2026-09-09T05:18:54.732Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -870,13 +947,20 @@
           "created_at": "2026-09-09T04:27:24.949Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/first_5_seconds_v6.json",
+          "created_at": "2026-09-09T05:18:54.732Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v7",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v8",
       "artifact_type": "no_manual_exploit_check",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
@@ -906,11 +990,11 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v14",
-        "legacy-clue-join:first_5_seconds:v7"
+        "legacy-clue-join:game_translations:v15",
+        "legacy-clue-join:first_5_seconds:v8"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:25.050Z",
+      "created_at": "2026-09-09T05:18:54.839Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -955,13 +1039,20 @@
           "created_at": "2026-09-09T04:27:25.051Z",
           "creator": "claude-code",
           "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v8_prepared.json",
+          "created_at": "2026-09-09T05:18:54.840Z",
+          "creator": "claude-code",
+          "consistency_repair": true
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "legacy-clue-join:core_back_check:v7",
+      "artifact_id": "legacy-clue-join:core_back_check:v8",
       "artifact_type": "core_back_check",
-      "version": 7,
+      "version": 8,
       "status": "CURRENT",
       "stale_because": null,
       "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
@@ -974,10 +1065,10 @@
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-clue-join:game_translations:v14"
+        "legacy-clue-join:game_translations:v15"
       ],
       "design_iteration": 3,
-      "created_at": "2026-09-09T04:27:25.121Z",
+      "created_at": "2026-09-09T05:18:54.915Z",
       "consistency_repair": true,
       "versions": [
         {
@@ -1020,6 +1111,13 @@
           "version": 7,
           "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
           "created_at": "2026-09-09T04:27:25.122Z",
+          "creator": "claude-code",
+          "consistency_repair": true
+        },
+        {
+          "version": 8,
+          "file": "factory/projects/legacy-clue-join/design/core_back_check_v7.json",
+          "created_at": "2026-09-09T05:18:54.916Z",
           "creator": "claude-code",
           "consistency_repair": true
         }
@@ -1114,7 +1212,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-08T21:16:08.849Z",
-  "updated_at": "2026-09-09T04:34:06.341Z",
+  "updated_at": "2026-09-09T05:18:54.916Z",
   "history": [
     {
       "at": "2026-09-08T21:16:08.850Z",
@@ -2323,6 +2421,189 @@
         "action": "ESCALATED",
         "reason": "same fundamental failure persists after finite repair+redesign budget"
       }
+    },
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "event": "state_change",
+      "from": "ESCALATED",
+      "to": "RETURNED",
+      "note": "factual evidence correction on fact_sheet v7 — budgets unaffected (repair_count=1, redesign_count=2)"
+    },
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:fact_sheet:v7",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [],
+      "reason": "r7 HIGH: expertise/decisions asserted a bilateral-pattern claim the cited JHF source never states",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": true,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:17:47.646Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:ae:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v7"
+      ],
+      "reason": "same claim removed from ae.C (fact_sheet's root correction propagated to the design-content field that mentioned it)",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:16.369Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:scope_core:v8",
+      "invalidated": [
+        "ae"
+      ],
+      "sources": [
+        "legacy-clue-join:fact_sheet:v7"
+      ],
+      "reason": "clearing staleness cascaded from the fact_sheet fact-correct; scope_core content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.191Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:ae:v9",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v8"
+      ],
+      "reason": "clearing staleness cascaded from scope_core consistency repair; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.306Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_scope_check:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:scope_core:v8",
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.382Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:play_seeds:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.458Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:reference_research:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v8"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:31.533Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:c_compression:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:ae:v9"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:42.692Z",
+      "event": "fact_correction_applied",
+      "artifact_id": "legacy-clue-join:game_translations:v15",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:play_seeds:v8",
+        "legacy-clue-join:c_compression:v8"
+      ],
+      "reason": "same claim removed from the ADOPTED translation's C_interaction",
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "impact": "narrowing_only",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.732Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:first_5_seconds:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.840Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:no_manual_exploit_check:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15",
+        "legacy-clue-join:first_5_seconds:v8"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
+    },
+    {
+      "at": "2026-09-09T05:18:54.916Z",
+      "event": "consistency_repair_applied",
+      "artifact_id": "legacy-clue-join:core_back_check:v8",
+      "invalidated": [],
+      "sources": [
+        "legacy-clue-join:game_translations:v15"
+      ],
+      "reason": "clearing cascade; content unchanged",
+      "was_escalated": false,
+      "repair_count": 1,
+      "redesign_count": 2
     }
   ],
   "redesign": [
@@ -2346,6 +2627,37 @@
   "escalation": {
     "reason": "same fundamental failure persists after finite repair+redesign budget",
     "failure_code": "FACTUAL_PROFESSION_ERROR",
-    "at": "2026-09-09T04:34:06.341Z"
-  }
+    "at": "2026-09-09T04:34:06.341Z",
+    "resolved_via": "fact_correction",
+    "resolved_at": "2026-09-09T05:02:42.351Z"
+  },
+  "fact_corrections": [
+    {
+      "at": "2026-09-09T05:02:42.351Z",
+      "artifact_type": "fact_sheet",
+      "version": 7,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "r7 HIGH: expertise/decisions asserted a bilateral-pattern claim the cited JHF source never states"
+    },
+    {
+      "at": "2026-09-09T05:17:47.646Z",
+      "artifact_type": "ae",
+      "version": 8,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same claim removed from ae.C (fact_sheet's root correction propagated to the design-content field that mentioned it)"
+    },
+    {
+      "at": "2026-09-09T05:18:42.692Z",
+      "artifact_type": "game_translations",
+      "version": 15,
+      "claim_removed": "heart failure typically shows a bilateral/butterfly (bat-wing) pattern on chest X-ray, used as a discriminator against unilateral pneumonia findings",
+      "cited_source": "https://www.jhf.or.jp/check/heart_failure/10/",
+      "impact": "narrowing_only",
+      "reason": "same claim removed from the ADOPTED translation's C_interaction"
+    }
+  ]
 }
