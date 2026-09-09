@@ -314,3 +314,5 @@
 {"ts":"2026-09-09T00:16:31.957Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r5-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":223.164}
 {"ts":"2026-09-09T00:23:49.219Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r6-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":195.63}
 {"ts":"2026-09-09T04:31:35.773Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r7-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":184.56}
+{"ts":"2026-09-09T05:22:36.640Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r8-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":183.693}
+{"ts":"2026-09-09T05:42:43.496Z","tool":"codex-review","label":"review","prompt_file":"factory/projects/legacy-clue-join/design/design-review-r9-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":217.217}
