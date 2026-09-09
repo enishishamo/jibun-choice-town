@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "Redesign is a pure text/card UI (3 variety cards + status display + commit button), matching the existing DiagnoseGame.tsx/ClueBoardGame.tsx CSS-card precedent. Reuses the existing place image public/assets/kyushoku/farm_field.jpg (already shipped, unchanged, used by the farmer-lunch experience in src/data/content/schoolLunch.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+}

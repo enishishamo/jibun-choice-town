@@ -4258,6 +4258,10 @@ img {
 }
 .dx-commit.on { border-color: var(--orange); background: var(--orange); color: #fff; }
 
+/* 品種選び（sow_and_grow） */
+.farm-grid { grid-template-columns: 1fr; }
+.farm-disclaimer { font-size: 11px; margin: 2px 4px 0; }
+
 /* 病室・ベッドサイド */
 .bedside {
   display: flex; align-items: center; gap: 13px;

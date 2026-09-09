@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "sow_and_grow",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "IMPL_QA_PASSED",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
   "redesign_count": 0,
@@ -837,6 +837,163 @@
           "creator": "claude"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-sow-and-grow:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/game_spec_v1.json",
+      "payload": {
+        "goal": "今日の月・注文の締め切り月・今年の気象予報（毎セッションランダム）を見て、3つの品種（つぶたね/まんまる/ことね、いずれも夏まき候補）のうち、播種適期に今の月が含まれ、収穫日数が締め切りまでの残り日数以内で、耐暑性が予報に合う品種を選んでまく。1回のコミット判断。",
+        "initial_visual_state": "『今日の日付は◯月。給食室から「△月までに、にんじんXkg」という注文が来た。今年の夏の予報は□□。』という状況表示と、3つの品種カード（つぶたね/まんまる/ことね、タップで播種適期・収穫日数・耐暑性が読める）、『これでまく』ボタン。品種カードの下に1行、『※品種の数値はこのゲームの中だけの、学習用の設定です』という共通の注記。カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          "variety candidate card x3（つぶたね/まんまる/ことね、タップで播種適期・収穫日数・耐暑性を開く読み物、名前自体には季節を示す言葉を含めない）",
+          "commit button（『これでまく』、1品種を選んでタップ、1回のみ）"
+        ],
+        "primary_action": "3つの品種カードを見比べ、状況表示（今日の月・締め切り・予報）と照らし合わせて1つを選び、『これでまく』を押す（自由に見比べてから決められる、コストなし。押すと結果が確定する1回のコミット、同一セッション内でのまき直しはない）",
+        "C": "3つの品種それぞれの播種適期・収穫までの日数・耐暑性（つぶたね=早い/暑さに弱い、まんまる=遅い/暑さに強い/広い適期、ことね=中くらい/暑さに弱い/遅まき専用——福井県実証データが比較した愛紅/向陽二号/夏播用彩誉の早さ・遅さの傾向と向陽二号の耐暑性のみ実在根拠あり、他は学習用の架空設定）。今日の月、注文の締め切りまでの残り日数、今年の気象予報（毎セッションランダム、rejection samplingにより必ず1つ以上正解が存在する状態のみ出題）。",
+        "D": "3つの品種カードの情報を、今日の月・締め切りまでの残り日数・気象予報と照らし合わせ、季節（播種適期に今の月が含まれる）・日数（収穫日数が締め切りに間に合う）・耐暑性（予報が猛暑なら耐暑性が必要）の3条件すべてを満たす品種を選んでまく。複数品種が季節的に候補となる月（6・7・8月）では、締め切り・耐暑性の実際の組み合わせによって勝つ品種が変わるため、月だけでは決まらない。",
+        "system_reactions": [
+          "品種カードタップ → 播種適期・収穫日数・耐暑性の開閉（コストなし）",
+          "『これでまく』タップ → 選んだ品種が3条件すべてに合えば『順調に育っている』という結果を経て収穫成功。1つでも合わなければ、発芽不良または生育不良という結果になり、どの条件で合わなかったかは示さない（フラットな結果）",
+          "同一セッション内でのまき直しはない（1回のコミット）"
+        ],
+        "state_transitions": [
+          "選択中 -> success（3条件すべてに合う品種を選んだ）",
+          "選択中 -> partial（3条件のいずれかに合わない品種を選んだ、正直な失敗）",
+          "success/partial -> 章に入り直せば新しいセッション（今日の月・締め切り・予報が再ランダム化）"
+        ],
+        "failure_behavior": "1回のコミットが3条件のいずれかに合わなければ、フラットな一言（『思ったように育たなかった』）のみを返し、どの条件が合わなかったかは示さない。進行はブロックしない——正直な失敗として先へ進める（Job Revealは成功時と同じdiscoveryEchoに接続）。",
+        "retry_behavior": "同一セッション内の再挑戦（まき直し）はない。6・7・8月は複数品種が季節的に候補となるため、まき直しを許すと締め切り・耐暑性を読まずに残りの候補を総当たりするだけで高確率で成功してしまう（design-sim.mjs v4で検証: 2品種を両方試せば実質的に正解が保証される）。本当のやり直しは章に入り直し、今日の月・締め切り・予報が新しくランダム化された状態で挑戦すること。",
+        "E": "3条件すべてに合っていれば締め切りまでに収穫でき、給食室へ出荷される（既存resolution『にんじん300kg、収穫！』）。合わなければ正直な失敗結果を経て、同じdiscoveryEcho（品種・天候を読みながら必要な時期から逆算して育てる、という体験）へ進む。",
+        "job_reveal": "既存 factory側 src/data/content/schoolLunch.ts の farmer-lunch experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし。",
+        "first_5_seconds": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json 準拠",
+        "no_manual_requirements": "操作手順の説明文なし。品種カードの意味はタップのみで発見できる。学習用設定の注記は1行のみ、品種カード群の下に共通表示。",
+        "mobile_constraints": "375px幅、3品種カード+状況表示+学習用設定の注記+『これでまく』ボタンがスクロールなしかそれに近い形で収まるレイアウト。品種カードは縦積みまたは1列グリッド。タップ領域44px以上。品種カードの表示順は、独立したFisher-Yatesシャッフルをセッション開始時（コンポーネントmount時）に1回だけ生成し、useState等で保持して同じセッションの間は再生成しない。採点は常にID（品種id）で行い、表示上のindex/positionを一切参照しない。",
+        "asset_requirements": [
+          "no new art asset — reuses public/assets/kyushoku/farm_field.jpg (place image, already used by farmer-lunch experience, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, matching clue_join/DiagnoseGame.tsx precedent)"
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:38:53.911Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_spec_v1.json",
+          "created_at": "2026-09-09T23:38:53.912Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-sow-and-grow:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "Redesign is a pure text/card UI (3 variety cards + status display + commit button), matching the existing DiagnoseGame.tsx/ClueBoardGame.tsx CSS-card precedent. Reuses the existing place image public/assets/kyushoku/farm_field.jpg (already shipped, unchanged, used by the farmer-lunch experience in src/data/content/schoolLunch.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:39:11.576Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/art_brief_v1.json",
+          "created_at": "2026-09-09T23:39:11.577Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-sow-and-grow:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/FarmGame.tsx"
+        ],
+        "logic_module": "src/q1/farmLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-sow-grow.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/kyushoku/farm_field.jpg, no new asset)",
+        "d_preserved_statement": "The child still performs the real judgment: reading each of 3 variety cards' sowing window/harvest-days/heat-tolerance and comparing them against the session's randomized today's-month/deadline/forecast to find the one variety (when it exists) satisfying all 3 criteria, then committing via an explicit 'これでまく' tap — never pre-filled or suggested by the system. src/q1/farmLogic.ts mirrors factory/projects/legacy-sow-and-grow/design/design-sim.mjs's VARIETIES/evaluate/newSession exactly, so the shipped scoring rules are provably identical to the design-stage exploit simulation that verified: every session is solvable (legitimate_full_reasoning=100%), no fixed-variety memorization strategy wins reliably (<60%), and no variety dominates a month with 2+ seasonal candidates."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:53:05.396Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/implementation_v1.json",
+          "created_at": "2026-09-09T23:53:05.397Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-sow-and-grow:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "Verified live in the Browser pane at 375x812: entering the chapter shows the task-bar status line (今日の月・締め切り・予報) and 3 variety cards immediately, all interactive with no explanatory paragraph — matches first_5_seconds_v2.json/no_manual_requirements.",
+        "touch_targets": "join/dx-derived .dx-commit (variety commit button) min-height 44px, .dx-more ('?' pattern disclosure) is a 38x38px circle (same as clue_join's DiagnoseGame.tsx precedent, reused verbatim via shared CSS classes) — all meet the 44px/38px conventions already established in this app.",
+        "mobile_375": "Measured live via screenshot at 375x812: single-column stack of 3 variety cards + task-bar + disclaimer line all render with generous vertical margin left over (well under one screen), no horizontal scroll.",
+        "direct_manipulation": "Each variety card's '?' toggle and 'これでまく' commit button are direct taps with immediate visual feedback (pattern text open/close, card border highlight) — verified live via click-and-read in the Browser pane.",
+        "reaction_timing": "State updates (pattern disclosure, outcome resolution) render synchronously on tap with no artificial delay, consistent with every other Q1 game in this app.",
+        "c_to_d": "Verified: the task-bar status line (today's month / deadline / forecast) and the 3 variety cards' pattern text (sowing window / harvest days / heat tolerance, opened via '?') are the only information available; the child must compare them and commit — the component never auto-suggests or highlights the correct variety (gameplay-qa-sow-grow.mjs source-level check confirms no CORRECT-variety hint appears before commit).",
+        "consequence": "A winning commit shows a distinct success screen naming the chosen variety and confirming all 3 conditions matched; a losing commit shows a distinct honest-partial screen with a flat, non-diagnostic message (no hint which of season/deadline/heat failed) — verified live for both paths, and confirmed the partial path calls onPartialComplete (a real implementation bug was found live-testing where it initially called onComplete directly, rendering the SAME success-framed Job Reveal chip for a wrong answer — fixed, and a source-level regression check added to gameplay-qa-sow-grow.mjs).",
+        "retry": "By design (game_translations_v5.json's retry_or_rethink, reasoned and confirmed sound by design review r4/r5's independent verdict), there is no same-session retry — a wrong commit resolves immediately to the honest partial screen. A genuine do-over requires replaying the chapter (a freshly re-randomized session). Verified live: committing a variety immediately transitions to success or partial, no in-place re-selection is offered.",
+        "answer_leak": "gameplay-qa-sow-grow.mjs verifies: variety names contain no season kanji (春/夏/秋/冬); the component never redeclares its own variety data (imports from farmLogic.ts only, so no drifted duplicate); no fixed month/deadline/forecast literal from the old implementation remains in code (only in a historical comment). Live testing confirmed the '?' pattern disclosure never reveals or implies which variety is correct.",
+        "brute_force": "gameplay-qa-sow-grow.mjs: every fixed-variety memorization strategy (always_plant_tsubutane/manmaru/kotone) wins under 42% of sessions (N=8000); content-blind random guessing (39.9%) stays well below full reasoning (100%, by construction every session is solvable); no variety wins 100% of any multi-candidate month's own accepted states (mirrors design-sim.mjs v4's verified no_variety_dominates_any_multi_candidate_month=true).",
+        "visual_affordance": "Committed variety card gets a clear orange border/background change; the '?' disclosure is a visibly bordered circular button (same visual language as clue_join's dx-more) — verified live via screenshot.",
+        "no_manual": "No instructional/how-to-play text anywhere in the screen; card meaning is discoverable via tap and the '?' disclosure only, plus one shared learning-setting disclaimer line below the cards, matching no_manual_exploit_check_v5.json and every sibling Q1 game's convention.",
+        "job_reveal": "onComplete/onPartialComplete both route to the existing shared Q1 shell, which renders schoolLunch.ts's unchanged farmer-lunch discoveryEcho/resolution/seed-picker — verified live end to end for both the success path (🎉 にんじん300kg、収穫！) and the honest-partial path (🤔 けっかを送ったけど、まだ全部はつながっていないかも — a genuinely different framing chip, not the success one).",
+        "pass": true,
+        "evidence": {
+          "gameplay_qa": "node factory/harness/gameplay-qa-sow-grow.mjs -> 18 passed, 0 failed",
+          "self_test": "node factory/harness/q1-factory-selftest.mjs -> 41/41 passed",
+          "typecheck": "npx tsc --noEmit -p . -> no output (clean)",
+          "build": "npm run build -> succeeded",
+          "lint": "npm run lint -> no new errors/warnings introduced by FarmGame.tsx, farmLogic.ts, or gameplay-qa-sow-grow.mjs",
+          "live_browser_verification": "Browser pane at 375x812: navigated Home -> 社会を冒険する -> 給食が間に合わない！-> このにんじん、どうやって育てた？-> やってみる, played a full success run (season/deadline/heat all matched, confirmed success screen and Job Reveal/discoveryEcho and ★farmer-lunch experience completion), and a full honest-partial run (deliberately committed a season-mismatched variety, confirmed the distinct partial screen and — after finding and fixing a real onPartialComplete-vs-onComplete bug — confirmed the Job Reveal shows a genuinely different, non-success framing chip for the partial path)."
+        }
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:54:26.738Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
+          "created_at": "2026-09-09T23:54:26.739Z",
+          "creator": "claude"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -865,7 +1022,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-09T04:36:02.222Z",
-  "updated_at": "2026-09-09T23:37:17.153Z",
+  "updated_at": "2026-09-09T23:54:26.739Z",
   "history": [
     {
       "at": "2026-09-09T04:36:02.222Z",
@@ -2051,6 +2208,70 @@
       "at": "2026-09-09T23:37:17.153Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-09T23:38:53.912Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-09T23:38:53.912Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:39:11.577Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-09T23:39:11.577Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:53:05.397Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-09T23:53:05.397Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:54:26.739Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-09T23:54:26.739Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:implementation:v1"
+      ]
     }
   ]
 }

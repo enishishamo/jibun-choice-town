@@ -1,0 +1,8 @@
+{
+  "component_files": ["src/q1/FarmGame.tsx"],
+  "logic_module": "src/q1/farmLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-sow-grow.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/kyushoku/farm_field.jpg, no new asset)",
+  "d_preserved_statement": "The child still performs the real judgment: reading each of 3 variety cards' sowing window/harvest-days/heat-tolerance and comparing them against the session's randomized today's-month/deadline/forecast to find the one variety (when it exists) satisfying all 3 criteria, then committing via an explicit 'これでまく' tap — never pre-filled or suggested by the system. src/q1/farmLogic.ts mirrors factory/projects/legacy-sow-and-grow/design/design-sim.mjs's VARIETIES/evaluate/newSession exactly, so the shipped scoring rules are provably identical to the design-stage exploit simulation that verified: every session is solvable (legitimate_full_reasoning=100%), no fixed-variety memorization strategy wins reliably (<60%), and no variety dominates a month with 2+ seasonal candidates."
+}

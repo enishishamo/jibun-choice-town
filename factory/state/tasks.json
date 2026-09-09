@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-09T06:22:45.462Z",
+      "updated_at": "2026-09-09T23:53:28.911Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -1527,6 +1527,32 @@
           "at": "2026-09-09T06:22:45.463Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-09T23:53:28.564Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "selftest fixture"
+        },
+        {
+          "at": "2026-09-09T23:53:28.603Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "/Users/nishimuraemiri/jibun-choice-town/factory/state/selftests/fixtures/q-task-review.json",
+          "score": 82,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-09T23:53:28.798Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-09T23:53:28.912Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
         }
       ]
     },
@@ -1730,7 +1756,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-08T21:15:04.880Z",
-      "updated_at": "2026-09-09T06:22:49.473Z",
+      "updated_at": "2026-09-09T23:53:32.949Z",
       "history": [
         {
           "at": "2026-09-08T21:15:04.881Z",
@@ -1989,6 +2015,20 @@
           "from": "BLOCKED",
           "to": "SUPERSEDED",
           "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-09T23:53:32.793Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-09T23:53:32.949Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
         }
       ]
     },
@@ -2098,8 +2138,8 @@
       "review_status": null,
       "review_evidence": null,
       "review_required": true,
-      "qa_status": null,
-      "qa_evidence": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
       "deploy_status": null,
       "release_commit": null,
       "blocked_reason": null,
@@ -2108,13 +2148,19 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-09T04:36:02.184Z",
-      "updated_at": "2026-09-09T04:36:02.184Z",
+      "updated_at": "2026-09-09T23:55:07.284Z",
       "history": [
         {
           "at": "2026-09-09T04:36:02.185Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-09T23:55:07.285Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json"
         }
       ]
     }
