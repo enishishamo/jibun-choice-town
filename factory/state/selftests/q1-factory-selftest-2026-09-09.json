@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-09T05:35:00.090Z",
-  "passed": 39,
+  "ran_at": "2026-09-09T05:45:09.300Z",
+  "passed": 40,
   "failed": 0,
-  "total": 39,
+  "total": 40,
   "results": [
     {
       "id": "A",
@@ -585,6 +585,17 @@
       "detail": {
         "replace_reason": "not eligible for fact-correct: fact_sheet.expertise is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim",
         "genuine_accepted": true
+      }
+    },
+    {
+      "id": "NN",
+      "name": "a replacement attack moved to an extra (non-required) field is refused, a genuine narrowing of that same extra field is accepted, and an undeclared brand-new field is refused",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "replace_reason": "not eligible for fact-correct: fact_sheet.candidate_reference_cards is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim",
+        "genuine_accepted": true,
+        "new_field_reason": "not eligible for fact-correct: fact_sheet.candidate_reference_cards is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim"
       }
     }
   ],

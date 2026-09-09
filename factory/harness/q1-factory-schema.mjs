@@ -520,17 +520,24 @@ export function checkFactCorrectionEligible(type, oldPayload, newPayload, impact
   }
   if (!oldPayload) return { eligible: false, reason: "no existing (CURRENT) artifact to compare against — fact-correct needs a baseline to narrow from" };
   if (type === "fact_sheet") {
-    // fact_sheet is what this path exists to correct — but every SCHEMA-REQUIRED (substantive)
-    // field must still be a genuine narrowing of what was there, never a replacement (r8 fix: this
-    // used to be unconditional). Extra bookkeeping fields beyond the canonical schema
-    // (candidate_reference_cards, revision_note, derived_from, reverse_audit, ...) are treated the
-    // same way consistency-repair treats non-protected fields: free to edit, since they are
-    // provenance/documentation about the correction itself, not a substantive claim about the
-    // profession.
-    for (const f of ARTIFACT_SCHEMAS.fact_sheet.required) {
-      if (!(f in newPayload)) continue; // dropping a whole optional... required fields must stay present (validateArtifact enforces this separately)
+    // fact_sheet is what this path exists to correct — but every substantive field must still be a
+    // genuine narrowing of what was there, never a replacement (r8 fix: this used to be
+    // unconditional). r9 fix: checking only ARTIFACT_SCHEMAS.fact_sheet.required left
+    // candidate_reference_cards (an EXTRA field this project added as the single canonical source
+    // of the in-game candidate card TEXT — real, player-facing content) completely unchecked, so
+    // the exact same same-length-replacement attack r8 found could simply move there. Fail-closed
+    // instead: check EVERY field except an explicit, narrow allowlist of genuine bookkeeping (only
+    // pointers/changelogs about the correction itself, never content a player or the game reads).
+    // A newly-invented field that is neither on the allowlist nor pre-existing is refused outright
+    // (see the "gained a field" check below) rather than silently trusted as "probably metadata".
+    const FACT_SHEET_METADATA_FIELDS = new Set(["derived_from", "reverse_audit", "revision_note"]);
+    for (const f of Object.keys(oldPayload)) {
+      if (FACT_SHEET_METADATA_FIELDS.has(f)) continue;
+      if (!(f in newPayload)) continue; // dropping a whole field entirely is a valid narrowing; validateArtifact still enforces required fields stay present
       if (!isNarrowingOf(newPayload[f], oldPayload[f])) return { eligible: false, reason: `fact_sheet.${f} is not a narrowing of its previous content — it contains something that was not there before, which is more than removing an unsupported claim` };
     }
+    const newSubstantiveKeys = Object.keys(newPayload).filter((k) => !FACT_SHEET_METADATA_FIELDS.has(k));
+    if (newSubstantiveKeys.some((k) => !(k in oldPayload))) return { eligible: false, reason: "fact_sheet gained a substantive field that did not exist before — that is new content, not a correction" };
     return { eligible: true };
   }
   if (!FACT_CORRECTION_NARROWING_TYPES.includes(type)) {
