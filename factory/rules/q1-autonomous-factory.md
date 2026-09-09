@@ -107,6 +107,52 @@ budget を消費してはいけない。後者を `q1-pipeline.mjs consistency-r
 - **budget を緩める仕組みではない。** 意味・ルール・ゲーム挙動を変える必要が
   生じたら、その時点で通常の repair/redesign/escalation に戻す。
 
+## Factual Evidence Correction（consistency repairとも design repairとも別）
+
+**Human Decision（2026-09-09、legacy-clue-join r7）。** 独立レビューや
+fact-check が「fact_sheet の主張を、引用元がそもそも支持していない」ことを
+発見した場合、それは新しい医学的判断でも Game Design 変更でもなく、根拠が
+確認できない主張を訂正するだけの話であり、毎回 Human Decision で止めない。
+`q1-pipeline.mjs fact-correct <game_id> <fact_sheet|scope_core|ae|
+game_translations> --file <path> --evidence <fact-check.json> --reason "..."`
+として rules-as-code 化した（`q1-factory-schema.mjs` の
+`FACT_CORRECTION_EVIDENCE_REQUIRED` / `FACT_CORRECTION_IMPACT_LEVELS` /
+`checkFactCorrectionEligible`）。consistency repair との違い: **これは
+fact_sheet 自体、および CORE/SCOPE・A-E・採用中 Game Translation を対象に
+含められる**（consistency repair はこの4つを対象外にしている）。
+
+- 対象: citation が claim を支持していない／source に存在しない内容を
+  Fact Sheet が主張している／source・version 更新で従来 claim が支持され
+  なくなった／fact-check で既存 claim が誤り・unsupported と判明した。
+- `--evidence` は `claim_removed` / `cited_source` /
+  `source_does_not_support_because` / `core_ae_translation_impact`
+  （`none` | `narrowing_only` | `requires_new_design_choice`）を必須とする
+  構造化ファイル。
+- `core_ae_translation_impact: none` — fact_sheet 以外は完全に無変更
+  （byte-identical）でなければならない。
+- `core_ae_translation_impact: narrowing_only` — `scope_core`/`ae`/
+  採用中 `game_translations` エントリの該当フィールドを、**縮める方向にの
+  み**変更できる（提出前後のシリアライズ長で機械チェック。1文字でも
+  伸びれば拒否）。新しい鑑別軸・新しい仕組みを追加することはできない。
+  seed/translation の増減、`adopted_translation_id` の変更も不可（それは
+  redesign）。
+- `core_ae_translation_impact: requires_new_design_choice` — この経路では
+  即座に拒否される。複数の医学的に妥当な解釈から Human が価値判断で選ぶ
+  必要がある場合は、Product Identity なら human-decision、それ以外は通常の
+  repair/redesign へ。
+- citation だけを引用している **下流** artifact（`no_manual_exploit_check`
+  や `play_seeds.risks` 等）は対象外——それは consistency repair の役割。
+- `consistency-repair` と同様、**repair_count/redesign_count/
+  design_iterationを一切変更しない**。ESCALATED 中でも呼べ、成功すると
+  state は `RETURNED` へ戻る。Product Identity domain を持つ open Human
+  Decision があればこの経路自体を使えない。
+- self-test GG-LL（2026-09-09、計38/38）: impact=noneは budget-free／
+  narrowing_only は縮小のみ許可し伸びれば拒否／requires_new_design_choice
+  は即拒否／citation-onlyの下流artifactは対象外／budgetは一切動かない
+  （real repair 消費後も）／Product Identity はブロックする、を機械テスト。
+- **budget を無制限化する仕組みではない。** 「根拠として支持されない主張を
+  取り除く」以外の目的では使わない。
+
 ## Independence / Evidence
 
 - Independent review evidence は `factory/harness/codex-review.mjs` の出力のみ

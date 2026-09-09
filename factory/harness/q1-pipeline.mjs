@@ -16,6 +16,16 @@
 //     field defining CORE/SCOPE/A-E/the adopted mechanic/a pass-fail verdict, or a type where that is
 //     everything (fact_sheet/game_spec/art_brief/art_production/implementation*) — use submit+fail
 //     for those. Usable even while ESCALATED (moves ESCALATED -> RETURNED on success).
+//   fact-correct <game_id> <fact_sheet|scope_core|ae|game_translations> --file <path.json>
+//     --evidence <fact-check.json> --reason "..." [--source ...]
+//     for when independent review/fact-check finds fact_sheet asserted something its cited source
+//     does not support. May narrow fact_sheet and (only if the evidence declares
+//     core_ae_translation_impact=narrowing_only) the SAME claim out of scope_core/ae/the ADOPTED
+//     game_translations entry -- every affected field checked to get no LONGER, never grow. Refused
+//     outright if the evidence declares core_ae_translation_impact=requires_new_design_choice (that
+//     is a value judgment: use human-decision or normal repair/redesign). Does NOT touch
+//     repair_count/redesign_count/design_iteration. Not a way around REPAIR_MAX_PER_ITERATION /
+//     REDESIGN_MAX — only for removing/narrowing what was never actually supported.
 //   status <game_id> | list [--state <STATE>] | stale <game_id>
 //   review <game_id> --evidence <codex-review-result.json> --input <prompt-file> [--reviewer codex-review] [--creator <id>] [--kind design|implementation]
 //   fail <game_id> --code <FAILURE_CODE> --reason "..." --evidence <path> [--return-to <STAGE>] [--must-change "..."] [--preserve "..."]
@@ -42,6 +52,7 @@ import {
   REPAIR_MAX_PER_ITERATION, REDESIGN_MAX, FAILURE_ROUTES, FAILURE_CODES, HUMAN_DECISION_DOMAINS,
   TRIGGERS, ARTIFACT_SCHEMAS, ARTIFACT_TYPES, transitiveDownstream, validateArtifact,
   gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE, checkConsistencyRepairEligible,
+  validateFactCorrectionEvidence, checkFactCorrectionEligible, FACT_CORRECTION_NARROWING_TYPES,
 } from "./q1-factory-schema.mjs";
 
 const HARNESS = dirname(fileURLToPath(import.meta.url));
@@ -354,6 +365,81 @@ switch (cmd) {
     log(p, "consistency_repair_applied", { artifact_id: rec.artifact_id, invalidated, sources: rec.source_artifacts, reason, was_escalated: wasEscalated, repair_count: p.repair_count, redesign_count: p.redesign_count });
     savePipeline(p);
     console.log(JSON.stringify({ accepted: true, kind: "consistency_repair", artifact_id: rec.artifact_id, version, invalidated, state: p.state, repair_count: p.repair_count, redesign_count: p.redesign_count, budgets_unaffected: true }, null, 2));
+    break;
+  }
+
+  // ------------------------------------------------------ factual evidence correction
+  // Distinct from BOTH design repair/redesign AND consistency-repair. For when independent review
+  // (or a fact-check) finds that fact_sheet asserted something its cited source does not actually
+  // support. Unlike consistency-repair, this path MAY touch fact_sheet itself and, when genuinely
+  // needed to remove/narrow the same unsupported claim there too, scope_core/ae/game_translations
+  // (the adopted entry only) — but ONLY as a narrowing (every affected field must get no LONGER,
+  // checked mechanically) and NEVER as an excuse to introduce a new idea. Does NOT touch
+  // repair_count/redesign_count/design_iteration. See q1-factory-schema.mjs
+  // checkFactCorrectionEligible for exactly what is and is not allowed.
+  case "fact-correct": {
+    const [gameId, type] = rest;
+    const file = flag("file");
+    const evidenceFile = flag("evidence");
+    const reason = flag("reason");
+    if (!gameId || !type || !file || !evidenceFile || !reason) fail('usage: fact-correct <game_id> <artifact_type> --file <path.json> --evidence <fact-check.json> --reason "..." [--source ...]');
+    const p = loadPipeline(gameId);
+    if (!["fact_sheet", ...FACT_CORRECTION_NARROWING_TYPES].includes(type)) refuse({ accepted: false, reason: `not eligible for fact-correct: ${type} is not fact_sheet or ${FACT_CORRECTION_NARROWING_TYPES.join("/")}; for anything else that merely cites the corrected claim, use consistency-repair` });
+    const openPIDecision = (p.human_decisions ?? []).find((h) => h.status === "open" && (h.domains ?? []).length > 0);
+    if (openPIDecision) refuse({ accepted: false, reason: `open Human Decision ${openPIDecision.id} (domains: ${(openPIDecision.domains ?? []).join(",")}) — Product Identity issues cannot use fact-correct` });
+    let evidence;
+    try { evidence = JSON.parse(readFileSync(evidenceFile, "utf8")); } catch (e) { fail(`could not read/parse --evidence ${evidenceFile}: ${e.message}`); }
+    const ev = validateFactCorrectionEvidence(evidence);
+    if (!ev.ok) refuse({ accepted: false, reason: "evidence is not valid fact-correction evidence", problems: ev.problems });
+    let payload;
+    try { payload = JSON.parse(readFileSync(file, "utf8")); } catch (e) { fail(`could not read/parse ${file}: ${e.message}`); }
+    const v = validateArtifact(type, payload);
+    if (!v.ok) refuse({ accepted: false, artifact_type: type, problems: v.problems });
+    const declared = payload.human_decision_domains ?? [];
+    if (declared.length) refuse({ accepted: false, reason: "this submission declares human_decision_domains — that is a Product Identity change, not a factual correction; use submit" });
+    const prev = p.artifacts[type];
+    const elig = checkFactCorrectionEligible(type, prev?.payload, payload, evidence.core_ae_translation_impact);
+    if (!elig.eligible) refuse({ accepted: false, reason: `not eligible for fact-correct: ${elig.reason}`, hint: evidence.core_ae_translation_impact === "requires_new_design_choice" ? "route to human-decision or normal repair/redesign" : "this looks like more than a narrowing — route it through fail/repair-done or redesign instead" });
+    const sources = flags("source").map((s) => { const [t, ver] = s.split("@"); return { artifact_type: t, version: Number(ver) }; });
+    for (const s of sources) {
+      const src = p.artifacts[s.artifact_type];
+      if (!src) refuse({ accepted: false, reason: `--source ${s.artifact_type}@${s.version} does not exist on this pipeline` });
+      if (src.version !== s.version) refuse({ accepted: false, reason: `--source ${s.artifact_type}@${s.version} is not the current version (current is v${src.version}) — refusing to build on a stale upstream` });
+      if (src.status === "STALE") refuse({ accepted: false, reason: `--source ${s.artifact_type} is STALE (${src.stale_because}) — re-submit it first` });
+    }
+    const version = prev ? prev.version + 1 : 1;
+    const rec = {
+      artifact_id: `${gameId}:${type}:v${version}`, artifact_type: type, version, status: "CURRENT", stale_because: null, file, payload,
+      creator: flag("creator", p.creator), source_artifacts: sources.map((s) => `${gameId}:${s.artifact_type}:v${s.version}`),
+      design_iteration: p.design_iteration, created_at: now(), fact_correction: { evidence: evidenceFile, claim_removed: evidence.claim_removed, cited_source: evidence.cited_source, impact: evidence.core_ae_translation_impact },
+      versions: [...(prev?.versions ?? []), { version, file, created_at: now(), creator: flag("creator", p.creator), fact_correction: true }],
+    };
+    p.artifacts[type] = rec;
+    const invalidated = [];
+    if (prev) {
+      for (const d of transitiveDownstream(type)) {
+        if (p.artifacts[d] && p.artifacts[d].status !== "STALE") { p.artifacts[d].status = "STALE"; p.artifacts[d].stale_because = `${type} changed v${prev.version}->v${version} (factual evidence correction: ${evidence.claim_removed})`; invalidated.push(d); }
+      }
+      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
+        p.independent_review.stale = true; p.independent_review.stale_because = `${type} changed v${prev.version}->v${version} (factual evidence correction)`; invalidated.push("independent_review");
+      }
+      if (p.impl_review && !p.impl_review.stale && ["game_spec", "implementation", "game_translations", "art_production"].includes(type)) { p.impl_review.stale = true; invalidated.push("impl_review"); }
+    }
+    p.current_stage = stageOfArtifact(type);
+    const wasEscalated = p.state === "ESCALATED";
+    if (["RETURNED", "REPAIRING", "REDESIGNING"].includes(p.state)) {
+      // stay — a repair/redesign already in flight keeps its own review cycle
+    } else if (wasEscalated) {
+      setState(p, "RETURNED", `factual evidence correction on ${type} v${version} — budgets unaffected (repair_count=${p.repair_count}, redesign_count=${p.redesign_count})`);
+      if (p.escalation && !p.escalation.resolved_via) { p.escalation.resolved_via = "fact_correction"; p.escalation.resolved_at = now(); }
+    } else {
+      const next = STATE_AFTER_ARTIFACT[type];
+      if (next && p.state !== "GAME_DESIGN_READY") setState(p, next, `factual evidence correction: artifact ${type} v${version}`);
+    }
+    p.fact_corrections = [...(p.fact_corrections ?? []), { at: now(), artifact_type: type, version, claim_removed: evidence.claim_removed, cited_source: evidence.cited_source, impact: evidence.core_ae_translation_impact, reason }];
+    log(p, "fact_correction_applied", { artifact_id: rec.artifact_id, invalidated, sources: rec.source_artifacts, reason, claim_removed: evidence.claim_removed, impact: evidence.core_ae_translation_impact, was_escalated: wasEscalated, repair_count: p.repair_count, redesign_count: p.redesign_count });
+    savePipeline(p);
+    console.log(JSON.stringify({ accepted: true, kind: "fact_correction", artifact_id: rec.artifact_id, version, invalidated, state: p.state, repair_count: p.repair_count, redesign_count: p.redesign_count, budgets_unaffected: true }, null, 2));
     break;
   }
 
@@ -775,7 +861,7 @@ switch (cmd) {
   }
 
   default:
-    console.error("commands: init | submit | consistency-repair | status | list | stale | review | fail | repair-done | redesign | gate | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
+    console.error("commands: init | submit | consistency-repair | fact-correct | status | list | stale | review | fail | repair-done | redesign | gate | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
     process.exit(2);
 }
 

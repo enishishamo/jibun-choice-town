@@ -436,6 +436,94 @@ export function checkConsistencyRepairEligible(type, oldPayload, newPayload) {
   return { eligible: true };
 }
 
+// -------------------------------------------------- factual evidence correction
+// 2026-09-09 (Human Decision, legacy-clue-join r7): a THIRD category, distinct from both design
+// repair/redesign and MECHANICAL_CONSISTENCY_REPAIR. Consistency-repair exists for "artifacts fell
+// out of sync with a decision already made"; this exists for "fact_sheet asserted something the
+// cited source does not actually support" (independent review found the citation does not back
+// the claim, the source changed, or a fact-check found the claim wrong outright). fact_sheet is
+// EXCLUDED from consistency-repair on purpose (it is the root of the whole evidence chain, so any
+// edit there is a real content change) — this path is the disciplined way to still fix a genuinely
+// unsupported claim without spending a REPAIR/REDESIGN slot on "remove something that was never
+// actually true", which is not a design judgment call at all.
+//
+// This is NOT a way around REPAIR_MAX_PER_ITERATION / REDESIGN_MAX. The line is drawn exactly at
+// "does fixing this require someone to WEIGH competing, equally-valid design options" (a real
+// judgment call — must use repair/redesign or escalate) vs. "does fixing this only require REMOVING
+// or NARROWING what turned out to be unsupported" (never grows a claim, never introduces a new
+// idea). The operator must self-declare which case this is (`core_ae_translation_impact`), and the
+// declaration is checked, not merely trusted: for "none" every field of every affected
+// CORE/A-E/adopted-translation artifact must stay byte-identical (exactly as strict as consistency
+// repair); for "narrowing_only" those fields may change ONLY by getting no LONGER (a shrink/removal
+// signal, checked per field by serialized length) — anything that grows, or anything the operator
+// tags "requires_new_design_choice", is refused outright and must go through human-decision
+// (Product Identity) or normal repair/redesign (a genuine multiple-valid-interpretations choice).
+export const FACT_CORRECTION_EVIDENCE_REQUIRED = ["claim_removed", "cited_source", "source_does_not_support_because", "core_ae_translation_impact"];
+export const FACT_CORRECTION_IMPACT_LEVELS = ["none", "narrowing_only", "requires_new_design_choice"];
+// Artifact types this path may touch besides fact_sheet itself — exactly the three the Human named
+// (CORE/SCOPE, A-E, the adopted Game Translation). Anything else that merely CITES a corrected
+// claim (no_manual_exploit_check, play_seeds.risks, ...) is wording/provenance sync and belongs to
+// the EXISTING consistency-repair path, not this one.
+export const FACT_CORRECTION_NARROWING_TYPES = ["scope_core", "ae", "game_translations"];
+
+/** Returns {ok, problems[]} — same shape/convention as validateArtifact / validateReviewEvidenceFile. */
+export function validateFactCorrectionEvidence(payload) {
+  const problems = [];
+  if (!payload || typeof payload !== "object") return { ok: false, problems: ["fact-correction evidence must be a JSON object"] };
+  for (const k of FACT_CORRECTION_EVIDENCE_REQUIRED) if (!isNonEmpty(payload[k])) problems.push(`missing required field: ${k}`);
+  if (payload.core_ae_translation_impact && !FACT_CORRECTION_IMPACT_LEVELS.includes(payload.core_ae_translation_impact)) {
+    problems.push(`core_ae_translation_impact must be one of ${FACT_CORRECTION_IMPACT_LEVELS.join(", ")}`);
+  }
+  return { ok: problems.length === 0, problems };
+}
+
+/** Returns {eligible:true} or {eligible:false, reason}. `impact` is the evidence's declared
+ *  core_ae_translation_impact (already schema-validated by validateFactCorrectionEvidence). */
+export function checkFactCorrectionEligible(type, oldPayload, newPayload, impact) {
+  if (impact === "requires_new_design_choice") {
+    return { eligible: false, reason: "declared core_ae_translation_impact=requires_new_design_choice — this needs someone to pick among multiple valid design options, which is a value judgment, not a factual correction. Use human-decision (if Product Identity) or normal repair/redesign (if a design-stage choice)." };
+  }
+  if (type === "fact_sheet") return { eligible: true }; // this path exists specifically to correct fact_sheet
+  if (!FACT_CORRECTION_NARROWING_TYPES.includes(type)) {
+    return { eligible: false, reason: `${type} is not eligible for fact-correct narrowing (only fact_sheet and ${FACT_CORRECTION_NARROWING_TYPES.join("/")} are) — an artifact that only CITES the corrected claim belongs on the consistency-repair path instead` };
+  }
+  if (!oldPayload) return { eligible: false, reason: "no existing (CURRENT) artifact to compare against" };
+  if (impact === "none") {
+    // exactly as strict as consistency-repair: this type must not need to change AT ALL
+    if (!deepEqual(oldPayload, newPayload)) return { eligible: false, reason: `declared core_ae_translation_impact=none but ${type}'s content changed — either the impact declaration is wrong (use narrowing_only) or this isn't actually needed` };
+    return { eligible: true };
+  }
+  // narrowing_only: protected fields may shrink (or stay the same) but never grow, and the option
+  // space (which seeds/translations exist, which one is adopted) may never change.
+  const lenOf = (v) => JSON.stringify(v ?? "").length;
+  if (type === "scope_core") {
+    for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS.scope_core) {
+      if (lenOf(newPayload[f]) > lenOf(oldPayload[f])) return { eligible: false, reason: `scope_core.${f} got LONGER — narrowing_only may only remove/shrink content, not add it` };
+    }
+  }
+  if (type === "ae") {
+    for (const f of CONSISTENCY_REPAIR_PROTECTED_FIELDS.ae) {
+      if (lenOf(newPayload[f]) > lenOf(oldPayload[f])) return { eligible: false, reason: `ae.${f} got LONGER — narrowing_only may only remove/shrink content, not add it` };
+    }
+  }
+  if (type === "game_translations") {
+    const oldTr = Array.isArray(oldPayload.translations) ? oldPayload.translations : [];
+    const newTr = Array.isArray(newPayload.translations) ? newPayload.translations : [];
+    if (oldPayload.adopted_translation_id !== newPayload.adopted_translation_id) return { eligible: false, reason: "game_translations.adopted_translation_id changed — that is a redesign, not a factual correction" };
+    if (oldTr.length !== newTr.length || !deepEqual(oldTr.map((t) => t.translation_id).sort(), newTr.map((t) => t.translation_id).sort())) {
+      return { eligible: false, reason: "translations were added or removed — that changes the option space, not just a fact" };
+    }
+    const oldAdopted = oldTr.find((t) => t.translation_id === oldPayload.adopted_translation_id);
+    const newAdopted = newTr.find((t) => t.translation_id === newPayload.adopted_translation_id);
+    if (oldAdopted && newAdopted) {
+      for (const f of TRANSLATION_PROTECTED_ITEM_FIELDS) {
+        if (lenOf(newAdopted[f]) > lenOf(oldAdopted[f])) return { eligible: false, reason: `the adopted translation's '${f}' got LONGER — narrowing_only may only remove/shrink content (e.g. drop a discriminating axis that turned out unsupported), not add a new one` };
+      }
+    }
+  }
+  return { eligible: true };
+}
+
 // ----------------------------------------------- GAME_DESIGN_READY checklist
 // Each entry: {id, check(pipeline) -> string|null (null = satisfied)}.
 // `pipeline` is the per-game record maintained by q1-pipeline.mjs.

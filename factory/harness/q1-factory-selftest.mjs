@@ -476,6 +476,78 @@ let qTask = "selftest-q1-release";
   record("FF", "an open Human Decision with Product Identity domains blocks consistency-repair entirely, regardless of what artifact type is targeted", hd.status === 0 && cr.status === 1 && cr.json?.accepted === false && /Product Identity/.test(cr.json?.reason ?? ""), { hd_id: hd.json?.human_decision?.id, cr_reason: cr.json?.reason });
 }
 
+// ================================================================ 2026-09-09 regressions (FACTUAL_EVIDENCE_CORRECTION, Human Decision after legacy-clue-join r7)
+// GG: citation-does-not-support-claim, impact=none -> corrects fact_sheet without touching budgets or ae/scope_core/game_translations
+{
+  init("selftest-gg");
+  submitAll("selftest-gg");
+  run(PIPE, ["review", "selftest-gg", "--evidence", fx("gg-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  run(PIPE, ["gate", "selftest-gg"]);
+  const before = pipeline("selftest-gg");
+  const fsNarrowed = { ...ART.fact_sheet, expertise: ["a claim the cited source does not actually support, now removed"] };
+  const ev = fx("gg-ev.json", { claim_removed: "an unsupported claim", cited_source: "https://example.gov/x", source_does_not_support_because: "the page never states this", core_ae_translation_impact: "none" });
+  const fc = run(PIPE, ["fact-correct", "selftest-gg", "fact_sheet", "--file", fx("gg-fs.json", fsNarrowed), "--evidence", ev, "--reason", "citation does not support the claim"]);
+  const after = pipeline("selftest-gg");
+  record("GG", "a citation-does-not-support-claim correction (impact=none) is accepted via fact-correct without touching repair_count/redesign_count", fc.status === 0 && fc.json?.accepted === true && fc.json?.budgets_unaffected === true && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count && after.artifacts.fact_sheet.version === before.artifacts.fact_sheet.version + 1, { repair: [before.repair_count, after.repair_count], fc_reason: fc.json?.reason });
+}
+// HH: impact=narrowing_only lets ae/scope_core/game_translations shrink the SAME claim out, still budget-free; growing content is refused
+{
+  init("selftest-hh");
+  submitAll("selftest-hh");
+  run(PIPE, ["review", "selftest-hh", "--evidence", fx("hh-pass.json", reviewFixture("PASS")), "--input", PROMPT]);
+  run(PIPE, ["gate", "selftest-hh"]);
+  const before = pipeline("selftest-hh");
+  const evNarrow = fx("hh-ev.json", { claim_removed: "an axis the source never supported", cited_source: "https://example.gov/x", source_does_not_support_because: "not stated by the source", core_ae_translation_impact: "narrowing_only" });
+  const fsShrunk = { ...ART.fact_sheet, decisions: ["d"] }; // shorter than original ART.fact_sheet.decisions
+  const fc1 = run(PIPE, ["fact-correct", "selftest-hh", "fact_sheet", "--file", fx("hh-fs.json", fsShrunk), "--evidence", evNarrow, "--reason", "removing the unsupported axis from the fact sheet"]);
+  const aeShrunk = { ...ART.ae, C: "c" }; // shorter than "専門性"
+  const fc2 = run(PIPE, ["fact-correct", "selftest-hh", "ae", "--file", fx("hh-ae.json", aeShrunk), "--evidence", evNarrow, "--reason", "the same axis no longer belongs in C", "--source", `fact_sheet@${pipeline("selftest-hh").artifacts.fact_sheet.version}`]);
+  const aeGrown = { ...ART.ae, C: "a much longer replacement description that introduces a brand new idea" };
+  const fc3 = run(PIPE, ["fact-correct", "selftest-hh", "ae", "--file", fx("hh-ae2.json", aeGrown), "--evidence", evNarrow, "--reason", "trying to sneak in a longer replacement"]);
+  const after = pipeline("selftest-hh");
+  record("HH", "narrowing_only accepts a shrink to ae/fact_sheet without touching budgets, but refuses a field that gets LONGER", fc1.status === 0 && fc2.status === 0 && fc3.status === 1 && fc3.json?.accepted === false && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count, { fc1: fc1.json?.accepted, fc2: fc2.json?.accepted, fc3_reason: fc3.json?.reason });
+}
+// II: core_ae_translation_impact=requires_new_design_choice is refused outright regardless of artifact type
+{
+  init("selftest-ii");
+  submitAll("selftest-ii");
+  const evChoice = fx("ii-ev.json", { claim_removed: "a load-bearing discriminator", cited_source: "https://example.gov/x", source_does_not_support_because: "not stated", core_ae_translation_impact: "requires_new_design_choice" });
+  const fc = run(PIPE, ["fact-correct", "selftest-ii", "fact_sheet", "--file", fx("ii-fs.json", { ...ART.fact_sheet, decisions: ["d"] }), "--evidence", evChoice, "--reason", "trying to force a value-judgment correction through"]);
+  record("II", "an evidence file declaring requires_new_design_choice is refused outright, even for fact_sheet itself", fc.status === 1 && fc.json?.accepted === false && /value judgment|requires_new_design_choice/.test(fc.json?.reason ?? ""), { fc_reason: fc.json?.reason });
+}
+// JJ: a downstream artifact that only CITES the corrected claim (not fact_sheet/scope_core/ae/game_translations) is not eligible via fact-correct — must use consistency-repair
+{
+  init("selftest-jj");
+  submitAll("selftest-jj");
+  const ev = fx("jj-ev.json", { claim_removed: "x", cited_source: "https://example.gov/x", source_does_not_support_because: "y", core_ae_translation_impact: "none" });
+  const fc = run(PIPE, ["fact-correct", "selftest-jj", "no_manual_exploit_check", "--file", fx("jj-nm.json", ART.no_manual_exploit_check), "--evidence", ev, "--reason", "trying to route a citation-only fix through fact-correct"]);
+  record("JJ", "no_manual_exploit_check (a citation-only downstream artifact) is not eligible for fact-correct — must use consistency-repair instead", fc.status === 1 && fc.json?.accepted === false && /not eligible for fact-correct/.test(fc.json?.reason ?? ""), { fc_reason: fc.json?.reason });
+}
+// KK: fact-correct never recovers or consumes repair/redesign budget, even repeated after a real repair already happened, and clears ESCALATED like consistency-repair
+{
+  init("selftest-kk");
+  submitAll("selftest-kk");
+  run(PIPE, ["review", "selftest-kk", "--evidence", fx("kk-fail.json", reviewFixture("FAIL")), "--input", PROMPT]);
+  run(PIPE, ["fail", "selftest-kk", "--code", "D_REPLACED_BY_TRIVIA", "--reason", "fixture", "--evidence", fx("kk-fail-ev.json", { fixture: true })]);
+  run(PIPE, ["repair-done", "selftest-kk", "--note", "fixture repair"]);
+  run(PIPE, ["submit", "selftest-kk", "game_spec", "--file", fx("kk-spec.json", ART.game_spec), "--source", "game_translations@1"]);
+  run(PIPE, ["escalate", "selftest-kk", "--reason", "fixture: budgets exhausted, HIGH persists"]);
+  const before = pipeline("selftest-kk");
+  const ev = fx("kk-ev.json", { claim_removed: "x", cited_source: "https://example.gov/x", source_does_not_support_because: "y", core_ae_translation_impact: "none" });
+  const fc = run(PIPE, ["fact-correct", "selftest-kk", "fact_sheet", "--file", fx("kk-fs.json", { ...ART.fact_sheet, decisions: ["d"] }), "--evidence", ev, "--reason", "fixture correction while escalated"]);
+  const after = pipeline("selftest-kk");
+  record("KK", "fact-correct clears ESCALATED -> RETURNED like consistency-repair, and never changes repair_count/redesign_count even after a real repair already consumed budget", fc.status === 0 && before.state === "ESCALATED" && after.state === "RETURNED" && after.repair_count === before.repair_count && after.redesign_count === before.redesign_count, { before_state: before.state, after_state: after.state, repair: [before.repair_count, after.repair_count] });
+}
+// LL: an open Product Identity Human Decision blocks fact-correct entirely
+{
+  init("selftest-ll");
+  submitAll("selftest-ll");
+  const hd = run(PIPE, ["human-decision", "selftest-ll", "--domain", "core_philosophy", "--note", "fixture: needs a philosophy decision"]);
+  const ev = fx("ll-ev.json", { claim_removed: "x", cited_source: "https://example.gov/x", source_does_not_support_because: "y", core_ae_translation_impact: "none" });
+  const fc = run(PIPE, ["fact-correct", "selftest-ll", "fact_sheet", "--file", fx("ll-fs.json", { ...ART.fact_sheet, decisions: ["d"] }), "--evidence", ev, "--reason", "trying to route around an open Product Identity decision"]);
+  record("LL", "an open Human Decision with Product Identity domains blocks fact-correct entirely", hd.status === 0 && fc.status === 1 && fc.json?.accepted === false && /Product Identity/.test(fc.json?.reason ?? ""), { hd_id: hd.json?.human_decision?.id, fc_reason: fc.json?.reason });
+}
+
 // ================================================================ cleanup
 if (!KEEP) {
   for (const id of new Set(created)) rmSync(join(ROOT, "factory", "projects", id), { recursive: true, force: true });
@@ -509,7 +581,7 @@ const summary = { ran_at: new Date().toISOString(), passed: results.filter((r) =
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.json`), JSON.stringify(summary, null, 2) + "\n");
 writeFileSync(join(OUT_DIR, `q1-factory-selftest-${DATE}.md`), [
   `# Q1 Factory self-test — ${DATE}`, "",
-  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) and BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
+  `Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), and GG-LL (2026-09-09 legacy-clue-join r7 Human Decision: FACTUAL_EVIDENCE_CORRECTION — citation-does-not-support-claim corrections are budget-free at impact=none, narrowing_only allows a shrink into CORE/A-E/the adopted translation but refuses anything that grows, requires_new_design_choice is refused outright, citation-only downstream artifacts must use consistency-repair instead, budgets are never recovered or consumed even after a real repair, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids \`selftest-*\`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.`, "",
   `Result: **${summary.passed}/${summary.total} PASS**${failed ? ` (${failed} FAIL)` : ""}`, "",
   "| id | scenario | result | mode |", "|---|---|---|---|",
   ...results.map((r) => `| ${r.id} | ${r.name} | ${r.ok ? "PASS" : "FAIL"} | ${r.mode} |`), "",

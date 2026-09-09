@@ -1,8 +1,8 @@
 {
-  "ran_at": "2026-09-09T04:33:24.661Z",
-  "passed": 32,
+  "ran_at": "2026-09-09T04:51:58.482Z",
+  "passed": 38,
   "failed": 0,
-  "total": 32,
+  "total": 38,
   "results": [
     {
       "id": "A",
@@ -236,7 +236,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (8/2)",
+        "wip_refusal": "WIP full (9/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -334,18 +334,22 @@
       "detail": {
         "next": {
           "kind": "resume_pipeline",
-          "game_id": "legacy-clue-join",
-          "state": "RETURNED",
+          "game_id": "selftest-e",
+          "state": "REPAIRING",
           "priority": 1
         },
         "wip": {
-          "active": 10,
+          "active": 11,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
             {
-              "game_id": "legacy-clue-join",
-              "state": "RETURNED"
+              "game_id": "legacy-sow-and-grow",
+              "state": "AE_READY"
+            },
+            {
+              "game_id": "selftest-ll-debug",
+              "state": "RESEARCHING"
             },
             {
               "game_id": "selftest-a",
@@ -506,6 +510,71 @@
       "detail": {
         "hd_id": "hd-1",
         "cr_reason": "open Human Decision hd-1 (domains: mascot) — Product Identity issues cannot use consistency-repair"
+      }
+    },
+    {
+      "id": "GG",
+      "name": "a citation-does-not-support-claim correction (impact=none) is accepted via fact-correct without touching repair_count/redesign_count",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "repair": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "HH",
+      "name": "narrowing_only accepts a shrink to ae/fact_sheet without touching budgets, but refuses a field that gets LONGER",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "fc1": true,
+        "fc2": true,
+        "fc3_reason": "not eligible for fact-correct: ae.C got LONGER — narrowing_only may only remove/shrink content, not add it"
+      }
+    },
+    {
+      "id": "II",
+      "name": "an evidence file declaring requires_new_design_choice is refused outright, even for fact_sheet itself",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "fc_reason": "not eligible for fact-correct: declared core_ae_translation_impact=requires_new_design_choice — this needs someone to pick among multiple valid design options, which is a value judgment, not a factual correction. Use human-decision (if Product Identity) or normal repair/redesign (if a design-stage choice)."
+      }
+    },
+    {
+      "id": "JJ",
+      "name": "no_manual_exploit_check (a citation-only downstream artifact) is not eligible for fact-correct — must use consistency-repair instead",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "fc_reason": "not eligible for fact-correct: no_manual_exploit_check is not fact_sheet or scope_core/ae/game_translations; for anything else that merely cites the corrected claim, use consistency-repair"
+      }
+    },
+    {
+      "id": "KK",
+      "name": "fact-correct clears ESCALATED -> RETURNED like consistency-repair, and never changes repair_count/redesign_count even after a real repair already consumed budget",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "before_state": "ESCALATED",
+        "after_state": "RETURNED",
+        "repair": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "LL",
+      "name": "an open Human Decision with Product Identity domains blocks fact-correct entirely",
+      "ok": true,
+      "mode": "mechanical",
+      "detail": {
+        "hd_id": "hd-1",
+        "fc_reason": "open Human Decision hd-1 (domains: core_philosophy) — Product Identity issues cannot use fact-correct"
       }
     }
   ],

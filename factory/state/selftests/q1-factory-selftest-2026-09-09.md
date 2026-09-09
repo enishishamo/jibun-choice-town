@@ -1,8 +1,8 @@
 # Q1 Factory self-test — 2026-09-09
 
-Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) and BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
+Scenarios A-W from the 2026-09-08 master request (§29, §40) plus X-Z, AA (2026-09-09 leak-detective E2E gap regressions: parked legacy items never auto-started, design-review staleness scope, art-review state protection, Limited Human Exception cap) BB-FF (2026-09-09 legacy-clue-join r6 Human Decision: MECHANICAL_CONSISTENCY_REPAIR — stale reference alone is repair-eligible, downstream stale-claim survival routes to it and clears ESCALATED without resetting budgets, meaning-changing submissions are refused, budgets are never recovered or consumed by it, Product Identity blocks it outright), and GG-LL (2026-09-09 legacy-clue-join r7 Human Decision: FACTUAL_EVIDENCE_CORRECTION — citation-does-not-support-claim corrections are budget-free at impact=none, narrowing_only allows a shrink into CORE/A-E/the adopted translation but refuses anything that grows, requires_new_design_choice is refused outright, citation-only downstream artifacts must use consistency-repair instead, budgets are never recovered or consumed even after a real repair, Product Identity blocks it outright), run against the real scripts with fixture pipelines (game ids `selftest-*`, removed afterwards). Fixture review evidence is codex-review.mjs SHAPED ONLY (never a real review) and is deleted after the run.
 
-Result: **32/32 PASS**
+Result: **38/38 PASS**
 
 | id | scenario | result | mode |
 |---|---|---|---|
@@ -38,5 +38,11 @@ Result: **32/32 PASS**
 | DD | changing ae.D, the ADOPTED translation's system_reaction, or anything in fact_sheet is refused by consistency-repair (must use normal repair/redesign) | PASS | mechanical |
 | EE | repeated consistency-repair calls never change repair_count or redesign_count in either direction, even after a real repair already happened | PASS | mechanical |
 | FF | an open Human Decision with Product Identity domains blocks consistency-repair entirely, regardless of what artifact type is targeted | PASS | mechanical |
+| GG | a citation-does-not-support-claim correction (impact=none) is accepted via fact-correct without touching repair_count/redesign_count | PASS | mechanical |
+| HH | narrowing_only accepts a shrink to ae/fact_sheet without touching budgets, but refuses a field that gets LONGER | PASS | mechanical |
+| II | an evidence file declaring requires_new_design_choice is refused outright, even for fact_sheet itself | PASS | mechanical |
+| JJ | no_manual_exploit_check (a citation-only downstream artifact) is not eligible for fact-correct — must use consistency-repair instead | PASS | mechanical |
+| KK | fact-correct clears ESCALATED -> RETURNED like consistency-repair, and never changes repair_count/redesign_count even after a real repair already consumed budget | PASS | mechanical |
+| LL | an open Human Decision with Product Identity domains blocks fact-correct entirely | PASS | mechanical |
 
 Mechanically executed: every scenario above invoked `q1-pipeline.mjs` / `q1-trigger.mjs` / `q1-legacy-audit.mjs` / `task-state.mjs` for real and asserted on their exit codes and JSON output. Not exercised here (dry-run by design): a real Codex review, real image generation, a real browser QA run, and a real `git push` — those are exercised by the NEW Q1 demonstration and the release path respectively.
