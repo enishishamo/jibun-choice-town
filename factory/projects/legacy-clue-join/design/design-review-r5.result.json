@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 66,
+    "career_authenticity_score": 66,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [
+      "ARTIFACT_CHAIN_INCONSISTENT — §3 release-blocker-class defect: the adopted s1 play seed still says success requires exactly {talk,exam,lab,xray}, contradicting t1d's four accepted combinations. Several current artifacts also point implementation toward obsolete fact_sheet_v3/v4 rather than current v5, and design-sim comments still describe the evidence subproblem as 1-in-63 although four subsets are now accepted. Fixable by one local repair.",
+      "FACTUAL_GROUNDING_INCOMPLETE — polish/non-§3 item: the heart-failure card removed the unsupported inflammatory-marker claim, but its remaining claim that bilateral lung changes are typical is not supported by the cited 日本心臓財団 diagnosis-and-testing page, which supports cardiomegaly, pulmonary fluid/congestion, crackles, and BNP but does not state a bilateral-pattern rule. The adopted translation additionally references fact_sheet_v4, risking restoration of the removed claim. Fixable by one local repair."
+    ],
+    "medium": [
+      "SHUFFLE_LIFECYCLE_UNVERIFIED — implementation-only polish item: the acceptance criterion is adequately specific—one shuffle per session, stable through attempts/remounts as defined, reshuffle on restart, and ID-based scoring—but must be mechanically verified in gameplay QA.",
+      "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — implementation-only polish item: the 375px criterion identifies all required elements and navigation behavior clearly enough for GAME_SPEC, but actual fit, touch targets, scrolling behavior, and return from expanded candidate cards remain unverified."
+    ],
+    "low": [
+      "The design-sim header and explanatory comments retain obsolete t1c/three-candidate/exact-set language even though executable logic models t1d correctly.",
+      "The no-manual artifact claims the SpO2/BP importance clarification appears in both the result screen and candidate cards, but candidate cards do not discuss those two findings; the adopted result-screen specification does contain the clarification."
+    ],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "Current play_seeds_v6.system_reaction requires the obsolete exact four-card evidence set; current artifacts contain stale fact_sheet_v3/v4 implementation references; and simulation commentary still uses obsolete one-valid-subset reasoning. This is §3 release-blocker-class because implementing the seed or stale pointer can reject legitimate choices or restore unsupported content.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "FACTUAL_GROUNDING_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "The cited 日本心臓財団 page supports cardiomegaly and pulmonary congestion/fluid but not the card's explicit bilateral-lung-change tendency; t1d also points to obsolete fact_sheet_v4. This is a polish/non-§3 grounding defect because the statement is clinically plausible rather than a major clinical error, but its declared source chain is not adequate.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "Implementation must prove session-stable independent shuffles and ID-based grading across mount, retry, partial, restart, and React remount. Implementation-only polish item; acceptance criteria are sufficiently concrete.",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "The ten-card diagnostic interface has not been validated at 375px. Implementation-only polish item; the specified QA criterion is sufficiently concrete for GAME_SPEC.",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "round4_findings_confirmed_closed": {
+      "clinical_model_defensible": true,
+      "artifact_chain_fully_consistent": false,
+      "factual_grounding_adequate": false
+    },
+    "wider_acceptance_window_exploit_found": false,
+    "sim_verification": {
+      "reran": true,
+      "all_four_variants_win": true,
+      "own_adversarial_strategy": "Blindly choose a random diagnosis and evidence subset across two attempts; fresh execution produced 3.06%. Select-all remained 0%, and fixed displayed positions with two diagnosis slots produced 3.26%, consistent with chance. A clinically informed {exam,lab,xray} submission wins. {lab,xray,spo2} is reasonably rejected because the player is asked to select decisive differential evidence: SpO2 establishes severity/hypoxemia but does not distinguish these four candidates. Normal BP is likewise non-discriminating. Requiring lab+xray while making talk/exam optional is a defensible line for this simplified case.",
+      "notes": "Executed the current simulation logic from stdin because the read-only workspace prevented its final writeFileSync. All four legitimate variants returned 100%; exactly four of 252 joint diagnosis/evidence combinations won. Executable logic is correct, although its historical comments contain stale exact-set/1-in-63 statements."
+    },
+    "ready_for_game_spec": false,
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md — gates A-I and §3 classify C-free bypass, answer leakage, dishonest outcomes, and immediate answer disclosure as release-class defects.",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — executable validator accepts every superset of {lab,xray} within {lab,xray,talk,exam}; fresh execution reports all_four_legitimate_variants_win=true and four winning joint combinations.",
+      "factory/projects/legacy-clue-join/design/play_seeds_v6.json — adopted s1 system_reaction still requires exactly talk+exam+lab+xray, directly contradicting its later flexible-rule risk text.",
+      "factory/projects/legacy-clue-join/design/game_translations_v8.json — adopted t1d correctly specifies four combinations and flat feedback, but first_visible_state points to obsolete fact_sheet_v4 rather than current v5.",
+      "factory/projects/legacy-clue-join/design/ae_v5.json — C points to obsolete fact_sheet_v3; E correctly uses flat feedback and an honest two-failure partial outcome.",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v5.json — heart-failure inflammatory-marker claim is removed, but bilateral lung changes remain attributed to the cited 日本心臓財団 page.",
+      "日本心臓財団『心不全の診断と検査』 — supports integrated diagnosis, cardiomegaly, pulmonary fluid/congestion, crackles, and BNP; no explicit bilateral-pattern statement was found.",
+      "日本呼吸器学会 asthma and pneumothorax citizen pages — support the asthma card's episodic recurrent narrowing/wheeze and the pneumothorax card's pleural air with sudden chest pain/dyspnea.",
+      "factory/projects/legacy-clue-join/design/no_manual_exploit_check_v6.json — gives concrete implementation QA criteria for shuffle lifecycle and 375px layout, but retains stale artifact-version references.",
+      "src/data/content/medical.ts — med-diagnose remains clue_join; its resolution and discoveryEcho accurately connect the performed integration to diagnosis without naming the profession before play.",
+      "factory/state/legacy/reverse-audits/clue_join.json — confirms GAME_TRANSLATION_REBUILD classification was appropriate because C existed but D, feedback, and brute-force resistance failed in the shipped legacy implementation."
+    ],
+    "recommended_actions": [
+      "Use the single iteration-3 local repair to update play_seeds_v6.system_reaction to the four-combination t1d rule and replace every current-artifact reference to fact_sheet_v3/v4 with fact_sheet_v5.",
+      "Either remove the heart-failure card's bilateral-pattern phrase, replacing it with source-supported pulmonary fluid/congestion wording, or add an authoritative source that explicitly supports the bilateral tendency.",
+      "Update design-sim comments and risk prose from one accepted subset/1-in-63 to four accepted subsets/4-in-63; retain the measured 3.06% joint blind-guess result.",
+      "After repair, rerun independent design review before GAME_SPEC; preserve the explicit shuffle-lifecycle and 375px acceptance criteria for implementation QA."
+    ]
+  },
+  "elapsed_sec": 223.164
+}

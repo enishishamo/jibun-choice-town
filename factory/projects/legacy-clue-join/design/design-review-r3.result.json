@@ -1,0 +1,101 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 58,
+    "game_quality_score": 68,
+    "blockers": [],
+    "high": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "finding": "現行チェーンは4候補・完全フラット反応に統一されていない。scope_core_v2.core、c_compression_v3.how_player_still_performs_D/failure_risk、採用seedのrisksに3候補・3択が残り、c_compression_v3はさらに誤診断時に「具体的な矛盾を示す」と規定する。ae_v3.Eとplay_seeds_v4.next_judgment_or_actionも、システムから矛盾所見を指摘される前提で、採用t1cの「正解探索情報を一切含めない」反応と衝突する。仕様化の入力が複数の異なるゲームを指すため、実装前に修正必須。§3 RELEASE BLOCKER-classではないがHIGH。"
+      },
+      {
+        "code": "CLINICAL_MODEL_OVERSTATED",
+        "finding": "候補カードと採点規則が、肺炎を局所・心不全を両側という強すぎる二分法にしている。肺炎カードの「聴診や画像でその部分だけに変化が出やすい」と心不全カードの「両方の肺に変化が出やすい」は一般像を排他的な鑑別規則へ押し広げており、肺炎は多発・両側性、心不全は非典型画像もあり得る。また症例の右胸所見はch1では「ゼーゼー、プツプツ」で、喘息候補自身がゼーゼーを特徴としているため、examを肺炎の必須かつ決め手とする採点は曖昧。候補カードを読んだ子どもが合理的に異なる根拠集合を選べるため、仕様化前に正確な比較軸とカード文言を再構成すべき。重大な診療行為の断定まではしていないため§3 RELEASE BLOCKER-classではないがHIGH。"
+      }
+    ],
+    "medium": [
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "finding": "375px幅に候補4枚（各カードにタイトル・読み物操作・コミット操作）、所見6枚、フィードバック、残回数、送信ボタンを置く具体的な情報階層・折り畳み・スクロール時の送信導線が未定義。設計段階から仕様へ進むこと自体は可能だが、10～12歳向けの可読性は実装QAで必須。§3 RELEASE BLOCKER-classではなく実装検証項目。"
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "finding": "採用案は独立Fisher–Yatesとセッション内固定を明記しているため設計上の位置漏れは閉じるが、clue_join実装はまだ存在せず、初回mount、partial後、章の再開、React remountの各境界で本当に一度だけ再生成されるかは未検証。IDで採点し表示indexを採点に使わない回帰テストが必要。§3 RELEASE BLOCKER-classではなく実装限定。"
+      }
+    ],
+    "low": [
+      {
+        "code": "DESIGN_SIM_DOCUMENTATION_STALE",
+        "finding": "design-sim.mjsのコメントとexhaustiveコメントに「3 diagnosis」「189 joint combos」が残る一方、実コードと出力は4候補・252通りで正しく動く。判定結果には影響しないが監査性を損なうpolish item。"
+      },
+      {
+        "code": "CHAPTER_DATA_PROVENANCE_IMPRECISE",
+        "finding": "design-sim.mjsはtalkカードに数値がある根拠を「actual 38.6C already established in ch1」と説明するが、ch1では38.6℃は問診ではなくVITALS由来。表示カードの最終文言と情報源を仕様で明確化すべきpolish item。"
+      }
+    ],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "現行scope/core、c_compression、採用play seedが3候補および具体的矛盾フィードバックを残し、t1cの4候補・完全フラット反応と矛盾する。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "CLINICAL_MODEL_OVERSTATED",
+        "severity": "HIGH",
+        "finding": "局所対両側を肺炎対心不全の排他的規則として扱い、喘鳴を含む右胸所見を肺炎の必須根拠に固定しているため、合理的な鑑別とexact-set採点が一致しない。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "375pxで10カードと各操作・送信導線が読める具体的レイアウトが未検証。",
+        "fixable_by_local_repair": true
+      },
+      {
+        "code": "SHUFFLE_LIFECYCLE_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "設計は妥当だが、全ライフサイクルで一回だけシャッフルされID採点されることは実装QA待ち。",
+        "fixable_by_local_repair": true
+      }
+    ],
+    "round2_findings_confirmed_closed": {
+      "position_leak_closed": true,
+      "artifact_chain_consistent": false,
+      "factual_grounding_adequate": false
+    },
+    "redesign_stayed_within_translation_scope": true,
+    "sim_verification": {
+      "reran": true,
+      "position_strategies_match_chance_baseline": true,
+      "own_adversarial_strategy": "固定位置1,2,4,5を維持し、同一セッション内では診断位置1→2を巡回し、失敗後は新規セッションを繰り返す戦略を検討した。単一セッション成功率は約1/30で、期待約30セッションを要し、初回プレイで容易な突破とはいえない。シャッフル前配列の知識から表示位置を予測する記述上の経路もなく、診断列と所見列は独立シャッフルされる。実装がMath.random相当を一回だけ呼び、IDで採点する限り新たな設計段階BLOCKERにはならない。",
+      "notes": "書込み制限により原スクリプトは結果ファイル更新時にEPERMとなったため、計算部分を変更せず最終writeFileSyncだけ除いて標準出力へ再実行した。8000件で単回0.0160（理論1/60=0.0167）、2回巡回0.0326（理論1/30=0.0333）、ランダム2回0.0077、残余戦略0.5068。約51%残余は正しい4枚集合を既に特定する必要があり、位置漏れ閉鎖後に実用的な内容非依存攻略へ変化していない。"
+    },
+    "gate_bypass_found": false,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §2–3 — Cを使わない突破、UI答え漏れ、容易な総当たり、虚偽成功がrelease-blocker候補。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — 診断列と所見列を独立Fisher–Yatesし、固定位置戦略をセッションごとに検証。実行値は単回0.0160、巡回0.0326。",
+      "factory/projects/legacy-clue-join/design/scope_core_v2.json — 現行COREが肺炎・心不全・喘息発作の3候補と明記。",
+      "factory/projects/legacy-clue-join/design/c_compression_v3.json — compressed_Cは4候補だがhow_player_still_performs_Dは3候補、failure_riskは3択と具体的矛盾提示を残す。",
+      "factory/projects/legacy-clue-join/design/play_seeds_v4.json — 採用s1のsystem_reactionはフラットだがnext_judgment_or_actionは「矛盾を指摘された所見」、risksは3択1/3を残す。",
+      "factory/projects/legacy-clue-join/design/ae_v3.json — Dは自力見直しだがEは誤診時に矛盾する所見を指摘されると記載し、t1cと衝突。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v3.json — 4件のURLと4候補の確定カード文言は実在するが、肺炎の局所性と心不全の両側性を強い一般則として記述。",
+      "src/q1/clueBoardLogic.ts — 右胸の実所見は「ゼーゼー、プツプツ」で、喘息カードの特徴とも部分一致する。",
+      "factory/projects/legacy-clue-join/design/game_translations_v6.json — 採用t1cは4候補、完全フラット反応、2回制限、失敗後partial、Job Reveal接続を明記し、A–Iの基本構造は成立。",
+      "factory/projects/legacy-clue-join/design/first_5_seconds_v4.json — 説明文なしで候補・所見を直接操作できる一方、375pxの具体的収容方法は未定義。"
+    ],
+    "recommended_actions": [
+      "scope_core_v2、ae_v3、c_compression_v3、play_seeds_v4の採用経路を4候補・完全フラット反応へ実際に統一し、自己申告だけの整合性記述を修正する。",
+      "肺炎・心不全のカードを非排他的な表現に直し、症例固有の鑑別軸は発症経過、発熱、炎症反応、画像所見を組み合わせた総合整合性として提示する。喘鳴を含むexamをexact必須根拠にするなら、肺炎での所見と喘息との差が子どもに読める文言へ修正する。",
+      "仕様にシャッフル生成位置、保持境界、partial/restart/remount時の再生成条件、IDベース採点、固定乱数を用いた回帰テストを明記する。",
+      "375pxワイヤーフレームまたは受入条件を追加し、候補説明を開いても診断コミット状態、所見選択、残回数、送信ボタンへ迷わず戻れることを検証する。"
+    ]
+  },
+  "elapsed_sec": 238.012
+}

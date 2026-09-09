@@ -39,13 +39,13 @@
     "legacy-clue-join": {
       "game_id": "legacy-clue-join",
       "profession": "医師",
-      "state": "AE_READY",
+      "state": "ESCALATED",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "clue_join",
       "task_id": "q1-rebuild-clue-join",
-      "repair_count": 0,
-      "redesign_count": 0,
-      "updated_at": "2026-09-08T21:16:09.087Z",
+      "repair_count": 1,
+      "redesign_count": 2,
+      "updated_at": "2026-09-09T00:24:38.761Z",
       "depends_on": []
     }
   }

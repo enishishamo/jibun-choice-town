@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "CORE（複数所見を診断候補の典型像と照合し、決め手になる所見を見極める）はtranslation後も維持。SCOPEは救急外来診療（ch1-3で収集した所見の統合）のまま変更なし。Dは『決め手になる所見を選ぶ』という子ども自身の選択操作として外在化され、システムが判断を代行する部分はない（診断結論は成功時に結果として示されるのみで、子どもの操作を代替するものではない）。design-sim（factory/projects/legacy-clue-join/design/design-sim.mjs）で正解は63通りの部分集合のうちちょうど1通りであり、乱択では2回の予算で約3%にとどまることを機械的に検証済み。既存のdiscoveryEcho/resolution（medical.tsのmed-diagnose experience）は内容変更なしでそのまま整合する。",
+  "pass": true
+}

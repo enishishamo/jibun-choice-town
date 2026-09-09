@@ -1,0 +1,104 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 54,
+    "career_authenticity_score": 62,
+    "game_quality_score": 54,
+    "blockers": [
+      "ANSWER_LEAK_POSITION — 勝利所見は修復前と同じ固定位置1・2・4・5で、正解診断も提示順の1番目（肺炎）。候補1番目と所見1・2・4・5を選ぶ完全な内容非依存戦略が初回で100%成功する。§3の「Cを使わなくても突破できる」「選択肢/UI自体が答えを漏らす」に該当するRELEASE BLOCKER。",
+      "BRUTE_FORCE_SUCCESS — 上記の位置漏れを考慮すると、申告された約51%残余は難しい所見推論を前提としない。固定位置で正解所見集合を得て診断を2候補巡回でき、さらに現在の固定診断順なら1回で成功する。§3の「総当たりだけで容易に突破できる」に該当するRELEASE BLOCKER。"
+    ],
+    "high": [
+      "ARTIFACT_CHAIN_INCONSISTENT — ae_v2、play_seeds_v3、c_compression_v2は依然3候補を記述し、ae_v2は誤答時に矛盾所見を指摘、play_seeds_v3は『指摘された所見』を手掛かりにする、c_compression_v2は具体的矛盾フィードバックを要求している。4候補・完全フラット反馈の採用仕様と矛盾する。仕様化前に解消必須だが、それ自体は§3 RELEASE BLOCKER-classではない。",
+      "FACTUAL_GROUNDING_INCOMPLETE — CURRENTのfact_sheet_v2には喘息追加URLも気胸出典も存在せず、気胸はそもそもCORE、A-E、圧縮Cに未反映。日本呼吸器学会の喘息ページは発作性・喘鳴・反復を支持するが『画像正常』を支持せず、日本心臓財団の指定ページも心不全の両側性所見や『炎症正常』を直接支持しない。候補カードの正確な典型像文面も成果物にないため、4候補の主張をclaim-levelで検証できない。仕様化前に解消必須だが、現時点で重大な臨床誤情報が確定したわけではなく§3 RELEASE BLOCKER-classとはしない。"
+    ],
+    "medium": [
+      "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED — 375pxで診断4カード、所見6カード、各候補の2操作、44pxタップ領域、送信ボタンをスクロールなしで収めるとの宣言だけで、寸法・ワイヤーフレーム・実測がない。実装検証事項でありpolish item。",
+      "SIM_AUDIT_INCOMPLETE — シミュレーションは再現できたが、最重要の固定位置戦略と固定診断順戦略を実装していない。また4×63=252通りなのに判定キーとコメントが189通りのままで、結果ファイルには申告されたnotesもない。監査補助の品質問題であり、それ自体はpolish item。"
+    ],
+    "low": [
+      "FUN_WEAK — 主な反応が選択ハイライトと読み物モーダルで、誤答時の世界反応は同一テキストのみ。推理は成立し得るが、触感・驚き・患者状態への因果的反応が弱い。PLUS品質上のpolish item。"
+    ],
+    "failure_codes": [
+      {
+        "code": "ANSWER_LEAK_POSITION",
+        "severity": "BLOCKER",
+        "finding": "診断候補の先頭が肺炎、所見の固定位置1・2・4・5が正解集合であり、内容を読まず先頭診断とその4位置を選べば100%成功する。§3 RELEASE BLOCKER-class。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "BRUTE_FORCE_SUCCESS",
+        "severity": "BLOCKER",
+        "finding": "位置漏れにより正解所見集合が無推論で既知となるため、診断巡回の残余は容易な総当たりになる。現在の固定順では巡回すら不要。§3 RELEASE BLOCKER-class。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "ae_v2、play_seeds_v3、c_compression_v2が3候補および具体的矛盾フィードバックを残し、採用translationの4候補・完全フラット反馈と矛盾する。非§3だがspec前修正必須。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "FACTUAL_GROUNDING_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "CURRENT成果物に喘息URLがなく、気胸出典もない。指定出典は『喘息なら画像正常』『心不全なら炎症正常・両側性』を直接裏付けず、正確な候補カード文面も未定義。非§3だがspec前修正必須。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "VISUAL_GAMEPLAY_LEGIBILITY_UNVERIFIED",
+        "severity": "MEDIUM",
+        "finding": "375px・10カード・44px操作領域・スクロールなしの同時成立を示すレイアウト証拠がない。実装寄りのpolish item。",
+        "fixable_by_local_repair": false
+      },
+      {
+        "code": "SIM_AUDIT_INCOMPLETE",
+        "severity": "MEDIUM",
+        "finding": "固定位置と固定診断順を試験せず、252通りを189と命名し、申告されたnotesも結果に存在しない。polish itemだが、漏れ検出能力を損なっている。",
+        "fixable_by_local_repair": false
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "no_content_blind_shortcut_found": false,
+      "diagnosis_commit_genuinely_scored": true,
+      "artifact_chain_consistent": false,
+      "factual_grounding_adequate": false,
+      "clinical_model_correct": true,
+      "feedback_flat_confirmed": true
+    },
+    "residual_51pct_risk_verdict": "unacceptable",
+    "residual_51pct_reasoning": "抽象的に『内容から正解所見を導出済みだが診断名だけ盲目的に選ぶ』条件なら2/4は単なる候補数上限であり、単独では必ずしも§3違反ではない。しかし実際の設計では正解所見が修復前と同じ固定位置1・2・4・5で、診断の正解も固定提示順の先頭にある。したがって前提の『難しい1-in-63問題を解いた』は成立せず、位置だけで所見を確定して診断を巡回できる。これは初回の内容非依存攻略であり、§3の容易な総当たりおよびUI回答漏れに該当する。",
+    "sim_verification": {
+      "reran": true,
+      "exactly_one_winning_combo": true,
+      "own_adversarial_strategy": "診断候補の提示順1番目を選び、所見カードの提示順1・2・4・5だけを選択して最初のsubmitを行う。設計記載の固定順では内容を一切読まず100%成功する。診断順だけランダム化しても、同じ所見位置と異なる診断2件を2回試せば約50%成功する。",
+      "notes": "元スクリプトはread-only環境で結果書込み時にEPERMとなったため、writeFileSync行だけ除いて同じロジックを実行した。出力は保存済み結果と一致し、random joint guessing=0.0077、exact-evidence blind diagnosis cycling=0.5068、winning_joint_combos=1。ただしposition/order戦略は未実装で、判定名は誤って189と記載されている。"
+    },
+    "gate_bypass_found": true,
+    "e_closes_inside_own_authority": true,
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md §3 — C不使用、UI回答漏れ、容易な総当たりはRELEASE BLOCKER。",
+      "factory/projects/legacy-clue-join/design/game_translations_v3.json — 診断を肺炎／心不全／喘息発作／気胸、所見を話／診察／呼吸状態／検査／画像／循環の固定順で列挙し、正解を先頭診断と所見1・2・4・5に定義。",
+      "factory/projects/legacy-clue-join/design/design-sim.mjs — position/order戦略がなく、REQUIRED_EVIDENCEは従来と同じtalk/exam/lab/xray。コメントと判定キーは189通りのままだが実際のループは252通り。",
+      "factory/projects/legacy-clue-join/design/design-sim-result.json — winning_joint_combos=1、blind diagnosis cycle=0.5068だが、申告されたnotesフィールドは存在しない。",
+      "factory/projects/legacy-clue-join/design/ae_v2.json — 3候補のままで、誤答時に矛盾所見を指摘すると記載。",
+      "factory/projects/legacy-clue-join/design/play_seeds_v3.json — player_action/C_used/risksは3候補のまま、next_judgment_or_actionは存在しない矛盾指摘を前提とする。",
+      "factory/projects/legacy-clue-join/design/c_compression_v2.json — 3候補のままで、誤診断時に具体的矛盾を示す仕様を要求。",
+      "factory/projects/legacy-clue-join/design/fact_sheet_v2.json — 公式URLは肺炎ガイドラインと日本心臓財団のみで、喘息追加URLと気胸出典がない。",
+      "https://www.jrs.or.jp/citizen/disease/c/c-01.html — 喘息の発作性、喘鳴、症状反復は支持するが、候補説明の『画像正常』までは支持しない。",
+      "https://www.jhf.or.jp/check/heart_failure/10/ — 問診・聴診・X線・心電図・心エコー・血液検査による総合判断、肺うっ血、BNPを支持するが、『炎症正常』『両側性』を直接記載しない。",
+      "https://www.jrs.or.jp/citizen/disease/g/g-04.html — 気胸の突然の胸痛・呼吸困難とX線/CT所見を支持する公式情報だが、CURRENT成果物から引用されていない。",
+      "src/q1/clueBoardLogic.ts — 38.6℃、SpO₂ 88%、血圧128/78はch1値と整合。",
+      "factory/projects/legacy-clue-join/design/game_spec_v1.json — 診断コミットと所見集合が同一提出で採点され、誤答は単一メッセージ、2回失敗は正直なpartial。Gate D、G、Hは設計上成立。"
+    ],
+    "recommended_actions": [
+      "修復上限到達後もBLOCKERが残るため、第二のlocal repairではなくREDESIGNへ送る。REDESIGN予算も尽きている場合はESCALATEする。",
+      "新translationではカード順をランダム化するだけに依存せず、勝利集合が固定インデックスや単純な提示構造と一致しない仕組みに変更し、位置・順序戦略をシミュレーションへ明示追加する。",
+      "4候補をCORE/A-E/fact sheet/C compression/play seedまで正式に通し直し、各候補カードの正確な表示文とclaim-level公式出典を記録する。",
+      "再設計時に375px実測ワイヤーフレームを用意し、10カード、候補詳細、44pxタップ領域、送信操作の可読性を確認する。"
+    ]
+  },
+  "elapsed_sec": 228.265
+}

@@ -1,0 +1,25 @@
+{
+  "goal": "4つの診断候補（肺炎／心不全／喘息発作／気胸）から1つに『これだと思う』とコミットし、6つの所見（話・診察・呼吸状態・検査・画像・循環）の中から決め手になる所見だけ（話・診察・検査・画像の4枚）をちょうど選んで『まとめる』",
+  "initial_visual_state": "画面上部に4つの診断候補カード（タイトル+『？』読み物マーク+『これだと思う』ボタン、タップで一般的な典型像を表示・コミット。正解は示さない）。下に6つの所見カード（from=話/診察/呼吸状態/検査/画像/循環、text=既存の患者所見。話には既存ch1のtemp 38.6℃を明記、検査には白血球・CRPの実数値を明記し数値の有無が決め手/非決め手をまたいで混在するようにする、タップで選択トグル）。下部に予算表示『▶ これでまとめてみる（あと2回）』。説明文・操作手順の文はない。",
+  "interactive_objects": ["diagnosis candidate card x4 (『？』read-only pattern text, 『これだと思う』commit button, mutually exclusive selection)", "evidence card x6 (tap to toggle selection)", "submit button (budgeted, 2 attempts)"],
+  "primary_action": "診断候補カードの1つに『これだと思う』でコミット（自由に変更可）。所見カードをタップして選択/解除する（自由、コストなし）。『▶ これでまとめてみる』で確定（budgeted、あと2回）。診断コミットと所見選択は同一提出で同時に評価される。",
+  "C": "6つの所見（話・診察・呼吸状態・検査・画像・循環）と4つの診断候補カードの一般的な典型像（片側性/両側性、炎症所見の有無、発症様式、突然か数日かけてか）",
+  "D": "所見全体を4つの診断候補の典型像と照らし合わせ、1つの診断にコミットし、実際にその診断を裏付ける決め手になる所見だけを選ぶ（呼吸状態・循環は重要だが決め手にはならないと見極める）",
+  "system_reactions": [
+    "所見カードタップ → 選択状態のトグル（視覚変化のみ、コストなし）",
+    "診断候補カードの『？』タップ → 典型像テキストの開閉（コストなし）",
+    "診断候補カードの『これだと思う』タップ → その候補にコミット（他候補は自動解除、コストなし、変更自由）",
+    "提出（診断=肺炎 かつ 所見選択が決め手4枚とちょうど一致） → 成功。結論・選んだ根拠・他候補との対比（心不全/喘息/気胸それぞれなぜ合わないか）・呼吸状態と循環は『重要だが決め手ではない』という明記を示し、既存resolution/discoveryEcho（medical.ts, 変更なし）へ",
+    "提出（診断・所見のいずれかまたは両方が不一致） → フラットな『まだ、はっきりまとめきれていないみたい。見立てと手がかりを、もう一度見比べてみよう』の一言のみ。診断/所見どちらが違うか、多い/少ないかは一切示さない",
+    "budget消費後、不一致が続けばpartialへ"
+  ],
+  "state_transitions": ["night(選択中) -> success(診断=肺炎かつ所見が決め手4枚ちょうど一致)", "night -> retry(不一致、budget消費、budget>0ならnightへ戻る)", "night -> partial(budget=0で未成功、正直な保留)", "success/partial -> restart可能(同じ患者/所見のまま選び直し)"],
+  "failure_behavior": "予算内の不一致はフラットな一言のみでnightへ戻る。2回とも不一致なら『今回ははっきりした決め手にたどりつけなかった。応援の医師と、もう一度手がかりを見直すことになった』という正直なpartial（進行は可能、Job Revealは成功時と同じdiscoveryEchoに接続——実際の救急外来でも保留・コンサルトは正直な結果であり成功の偽装ではない）",
+  "retry_behavior": "partial後は『もう一度考える』で同じ6所見・4候補のまま再挑戦できる（restartSameCase相当、内容は変えない）",
+  "E": "正しい診断＋根拠4枚ちょうどの選択に成功すると、結論と根拠、代替診断3つそれぞれとの対比、呼吸状態/循環の位置づけの明記が示され、既存のresolution（『肺で炎症が起きている可能性が高い』）→discoveryEchoへ進む。E自体（治療方針を医師が決める）は医師自身の権限内で閉じており、他者の裁量判断は介在しない",
+  "job_reveal": "既存 factory側 src/data/content/medical.ts の med-diagnose experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし（診断コミットを含む新しいDとも整合することをcore_back_check_v3で確認済み）。",
+  "first_5_seconds": "factory/projects/legacy-clue-join/design/first_5_seconds_v3.json 準拠",
+  "no_manual_requirements": "操作手順の説明文なし。所見カード・候補カードの意味は、タップと『？』読み物のみで発見できる。budgeted submitボタンの『あと2回』表示は既存Q1games（clue_board/xray_shoot等）と同じ予算表示の慣習に従う。",
+  "mobile_constraints": "375px幅、10カード（候補4+所見6）+ボタンがスクロールなしで収まるレイアウト。タップ領域44px以上。既存DiagnoseGame.tsxのjoin-grid/join-card CSSクラスを流用・調整する。",
+  "asset_requirements": ["no new art asset — reuses public/assets/medical/er_exam.jpg (place image, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, same as ClueBoardGame.tsx/DiagnoseGame.tsx precedent)"]
+}
