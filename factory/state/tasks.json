@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-09T04:25:58.752Z",
+      "updated_at": "2026-09-09T04:33:17.799Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -1137,6 +1137,32 @@
           "at": "2026-09-09T04:25:58.752Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-09T04:33:17.477Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "selftest fixture"
+        },
+        {
+          "at": "2026-09-09T04:33:17.513Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "/Users/nishimuraemiri/jibun-choice-town/factory/state/selftests/fixtures/q-task-review.json",
+          "score": 82,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-09T04:33:17.693Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-09T04:33:17.800Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
         }
       ]
     },
@@ -1340,7 +1366,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-08T21:15:04.880Z",
-      "updated_at": "2026-09-09T04:26:02.592Z",
+      "updated_at": "2026-09-09T04:33:21.613Z",
       "history": [
         {
           "at": "2026-09-08T21:15:04.881Z",
@@ -1385,6 +1411,20 @@
         },
         {
           "at": "2026-09-09T04:26:02.593Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-09T04:33:21.467Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-09T04:33:21.614Z",
           "event": "status_change",
           "from": "BLOCKED",
           "to": "SUPERSEDED",
@@ -1449,6 +1489,34 @@
       "history": [
         {
           "at": "2026-09-08T21:16:08.811Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        }
+      ]
+    },
+    "q1-rebuild-sow-and-grow": {
+      "task_id": "q1-rebuild-sow-and-grow",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-09T04:36:02.184Z",
+      "updated_at": "2026-09-09T04:36:02.184Z",
+      "history": [
+        {
+          "at": "2026-09-09T04:36:02.185Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"

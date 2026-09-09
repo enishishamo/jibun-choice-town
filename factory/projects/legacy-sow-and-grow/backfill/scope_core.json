@@ -1,0 +1,8 @@
+{
+  "core": "品種をまき、月を進めて結果を見て、失敗ならリセットして別品種を試すループである",
+  "scope": "給食編",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/sow_and_grow.json"
+}

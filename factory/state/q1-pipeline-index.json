@@ -47,6 +47,18 @@
       "redesign_count": 2,
       "updated_at": "2026-09-09T04:34:06.341Z",
       "depends_on": []
+    },
+    "legacy-sow-and-grow": {
+      "game_id": "legacy-sow-and-grow",
+      "profession": "農家・生産者",
+      "state": "AE_READY",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "sow_and_grow",
+      "task_id": "q1-rebuild-sow-and-grow",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-09T04:36:02.442Z",
+      "depends_on": []
     }
   }
 }

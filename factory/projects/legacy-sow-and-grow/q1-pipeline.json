@@ -1,0 +1,195 @@
+{
+  "game_id": "legacy-sow-and-grow",
+  "profession": "農家・生産者",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "sow_and_grow",
+  "creator": "claude-code",
+  "state": "AE_READY",
+  "current_stage": "GAME_TRANSLATION",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v1",
+      "artifact_type": "fact_sheet",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/fact_sheet.json",
+      "payload": {
+        "profession": "農家・生産者",
+        "sources": [
+          {
+            "url": "factory/state/audits/q1-audit.json",
+            "type": "internal_audit"
+          }
+        ],
+        "who_or_what_they_serve": "(from current implementation — verify)",
+        "representative_duties": [
+          "注文時期、播種適期、生育日数、耐暑性を照合して品種を選び、時間を進め、乾燥時に灌水して収穫する"
+        ],
+        "expertise": [
+          "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+        ],
+        "tools": [
+          "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+        ],
+        "information_used": [
+          "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+        ],
+        "decisions": [
+          "品種を畑へまき、生育結果を観察し、必要時に灌水し、失敗なら畑をリセットして別品種を試す"
+        ],
+        "outputs_or_value": "失敗画面のリセットボタンで品種選択へ戻り、別の種を試す",
+        "adjacent_profession_boundaries": "(verify)",
+        "uncertainties": [
+          "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+        ],
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/sow_and_grow.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T04:36:02.331Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/fact_sheet.json",
+          "created_at": "2026-09-09T04:36:02.332Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-sow-and-grow:scope_core:v1",
+      "artifact_type": "scope_core",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/scope_core.json",
+      "payload": {
+        "core": "品種をまき、月を進めて結果を見て、失敗ならリセットして別品種を試すループである",
+        "scope": "給食編",
+        "scope_is_representative_because": "(current implementation; verify)",
+        "profession_name_hidden_test": "(re-run)",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/sow_and_grow.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T04:36:02.368Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/scope_core.json",
+          "created_at": "2026-09-09T04:36:02.369Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-sow-and-grow:ae:v1",
+      "artifact_type": "ae",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/ae.json",
+      "payload": {
+        "A": "給食編",
+        "B": "注文時期、播種適期、生育日数、耐暑性を照合して品種を選び、時間を進め、乾燥時に灌水して収穫する",
+        "C": "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性",
+        "D": "品種を畑へまき、生育結果を観察し、必要時に灌水し、失敗なら畑をリセットして別品種を試す",
+        "E": "失敗画面のリセットボタンで品種選択へ戻り、別の種を試す",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/sow_and_grow.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T04:36:02.405Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/ae.json",
+          "created_at": "2026-09-09T04:36:02.406Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-sow-and-grow",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-09T04:36:02.222Z",
+  "updated_at": "2026-09-09T04:36:02.442Z",
+  "history": [
+    {
+      "at": "2026-09-09T04:36:02.222Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "sow_and_grow"
+    },
+    {
+      "at": "2026-09-09T04:36:02.294Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-sow-and-grow"
+    },
+    {
+      "at": "2026-09-09T04:36:02.332Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.332Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.369Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.369Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.406Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.406Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.442Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    }
+  ]
+}
