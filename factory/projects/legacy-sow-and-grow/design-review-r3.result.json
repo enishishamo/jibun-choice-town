@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 62,
+    "career_authenticity_score": 62,
+    "game_quality_score": 70,
+    "blockers": [],
+    "high": [
+      "ARTIFACT_CHAIN_INCONSISTENT: all eleven current files exist, but the current chain contradicts itself about the revised variety model and retains superseded simulation/fact-sheet claims. Most importantly, reference_research_v3 describes つぶたね as heat-tolerant and directly grounded in 愛紅, while the adopted translation and simulator require it to be heat-vulnerable. play_seeds_v2 still reports the obsolete 60.7% reasoning result and 39.3% unwinnable-session rate; core_back_check_v2 cites design-sim v3 instead of the current v4; scope/core checks still cite fact_sheet_v2. The current design therefore lacks one internally consistent, implementable source of truth."
+    ],
+    "medium": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION remains: an incorrect choice produces only an undifferentiated failure and immediately ends the session. The child receives no diagnostic clue, in-session reconsideration, or subsequent judgment in which to apply what was learned.",
+      "The player-facing fictional-data disclaimer closes the direct misinformation defect, but placing the same small disclaimer at the bottom of every card is visually inefficient and may compete with decision-critical data on a 375px layout. Consolidate it into one clearly readable note associated with the card set."
+    ],
+    "low": [
+      "The design-sim note names a nonexistent/outdated field, no_variety_dominates_any_month, while the actual output field is no_variety_dominates_any_multi_candidate_month.",
+      "first_5_seconds_v1 does not mention the newly mandatory player-facing learning-setting disclosure, despite game_translations_v4 defining it as part of the first visible state."
+    ],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "Current artifacts disagree about つぶたね's heat tolerance and retain obsolete numerical results and upstream references, so an implementer cannot faithfully derive one authoritative design from the current chain.",
+        "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "Flat failure followed by session termination supplies no actionable information or first-play opportunity to reconsider the deadline, sowing window, or forecast.",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json"
+      }
+    ],
+    "round2_findings_confirmed_closed": {
+      "c_not_needed_for_d": true,
+      "brute_force_month_mapping": true,
+      "factual_profession_error": true,
+      "artifact_chain_complete": false,
+      "simulation_reproducible": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_byte_identical_to_committed_result": true,
+      "no_domination_in_multi_candidate_months_verified": true,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/q1-pipeline.json — artifacts.*.file identifies all eleven listed files as CURRENT, and every listed path exists.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:35 — current scoring defines つぶたね as 90 days and heat-vulnerable.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:36 — まんまる is 150 days and heat-tolerant, matching game_translations_v4's stated fast-fragile/slow-tough model.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json:5 — the current research artifact instead maps 愛紅 to つぶたね as 「早まき向き・早生・耐暑性あり」, directly contradicting the adopted heat-vulnerable property.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json:5 — the same field calls the real trial the direct basis for the fictional varieties, making the contradiction material rather than incidental commentary.",
+      "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json:13 — the current seed retains obsolete v2 figures: legitimate reasoning 60.7%, blind choice 20.2%, and approximately 39.3% unwinnable sessions.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json:4 — the current scope artifact cites superseded fact_sheet_v2.json.",
+      "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json:5 — the current core/scope check also cites superseded fact_sheet_v2.json.",
+      "factory/projects/legacy-sow-and-grow/design/core_back_check_v2.json:5 — the current back-check says design-sim v3 was verified, although the authoritative simulator and result are v4.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json:7 — every child-facing card explicitly says its values are learning settings used only inside the game; this is sufficient to close the prior undisclosed-fictional-data defect.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json:10 — incorrect choices receive a flat growth failure with no reason.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json:12 — failure offers no next judgment or in-session retry.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:54 — all stochastic generation uses the deterministic mulberry32 generator; no Math.random, clock-derived value, or other unseeded random source remains.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:91 — exhaustionCount is initialized independently.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:94 — the counter is not touched during successful resampling.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:102 — exhaustionCount increments only after all 200 attempts fail, before the deterministic fallback.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:103 — fallback selects stateSpace[sowMonth][0], which is an exhaustively enumerated accepted state for the same month.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:106 — every month is exhaustively checked to contain at least one accepted state.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:117 — bestFixedMapping independently maximizes the exhaustive per-month win rate over every variety.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:151 — June and July rates are 0.75 for つぶたね and 0.5 for まんまる; neither reaches 1.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:158 — August rates are 0.6667 for both eligible varieties; neither reaches 1.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:161 — September gives ことね a 1.0 rate, honestly explained by it being the only seasonally eligible variety that month.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:165 — the computed optimal fixed mapping exactly matches June/July→つぶたね, August→まんまる, September→ことね.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:175 — the optimal fixed mapping wins 79.19%, materially below legitimate full reasoning at 100%.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:180 — the multi-candidate domination check covers exactly June, July, and August and deliberately excludes only single-candidate September.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:193 — exhaustive enumeration confirms every month has an accepted state; observed exhaustion and zero-winner rates are both zero.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json:7 — season-neutral names and mandatory independent card-order shuffling keep the prior label and position answer leaks closed.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json:14 — success and failure lead to honestly distinct shipment outcomes rather than disguising failure as success.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json:5 — the hidden-profession test remains grounded in agricultural C and D rather than exposing the profession name before play.",
+      "factory/rules/q1-first-play-standard.md:31 — THINK AGAIN expects room to reconsider at least once after failure.",
+      "executed command: node design-sim.mjs | cmp -s - design-sim-result.json — cmp exited 0; stdout was byte-identical to the committed result despite the expected nonfatal EPERM on the attempted file write."
+    ],
+    "recommended_actions": [
+      "Reconcile reference_research_v3 with the adopted model: either provide evidence for the fast-but-heat-vulnerable つぶたね abstraction or explicitly describe the trade-off as fictional rather than mapping it to a heat-tolerant real variety.",
+      "Propagate the v4 simulator results through play_seeds, scope_core, core_scope_check, and core_back_check; replace obsolete v2/v3 statistics and superseded fact-sheet/simulator references.",
+      "Add one bounded, non-answer-revealing reconsideration step—for example, indicate that one of the three conditions failed and return the child to the unchanged cards for a final choice.",
+      "Present the learning-setting disclosure once at readable body size near the complete variety-card set and include it explicitly in first_5_seconds.",
+      "Correct the simulator note to use the actual no_variety_dominates_any_multi_candidate_month field name."
+    ]
+  },
+  "elapsed_sec": 152.873
+}
