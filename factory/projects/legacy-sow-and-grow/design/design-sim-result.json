@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-09-09T07:59:06.413Z",
+  "varieties": [
+    {
+      "id": "natsu",
+      "name": "あかね夏",
+      "window": [
+        7,
+        8
+      ],
+      "harvest_days": 110,
+      "heat_ok": true
+    },
+    {
+      "id": "fuyu",
+      "name": "ふゆみね",
+      "window": [
+        9,
+        10
+      ],
+      "harvest_days": 130,
+      "heat_ok": false
+    },
+    {
+      "id": "haru",
+      "name": "はるひな",
+      "window": [
+        3,
+        4
+      ],
+      "harvest_days": 100,
+      "heat_ok": false
+    }
+  ],
+  "n": 20000,
+  "strategies": {
+    "always_plant_natsu": 0.3337,
+    "always_plant_fuyu": 0.1052,
+    "always_plant_haru": 0.1678,
+    "legitimate_pick_seasonal_variety": 0.6068,
+    "random_pick_content_blind": 0.2019
+  },
+  "session_shape": {
+    "zero_winner": 7865,
+    "one_winner": 12135
+  },
+  "verdict": {
+    "memorization_exploit_closed": true,
+    "legitimate_reasoning_beats_blind_guessing": true,
+    "legitimate_reasoning_margin_over_blind": 0.4049,
+    "random_guessing_disclosed_residual": 0.2019,
+    "zero_winner_session_rate": 0.3932,
+    "one_winner_session_rate": 0.6068
+  },
+  "notes": "v2: season windows scored EXACTLY as the real fact_sheet_v2.json values shown on each card (no internal widening) -- season match is a single deterministic elimination to the one in-window variety, and the mechanic is single-shot commit only (no same-session switching), per src/q1/labCheckLogic.ts's established precedent in this codebase (a real do-over is a fresh replay with a newly-shuffled session, not a second try against the same facts). deadlineOffsetMonths is drawn from [4,5,6] rather than [3,4,5] because monthsNeeded(harvest_days) is 4 for natsu/haru and 5 for fuyu -- an offset of 3 would make EVERY variety fail the time check regardless of season, which is a guaranteed-unwinnable session by construction rather than an honest difficulty outcome, so 3 was excluded. zero_winner_session_rate (~34%) is disclosed as an open concern for the independent reviewer: roughly a third of sessions are unwinnable even with perfect reasoning (deadline too tight or forecast too hot for the only in-season variety) -- defensible as honest difficulty (real farming plans sometimes fail) but possibly too high for a children's game; flagged rather than silently accepted."
+}
