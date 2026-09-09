@@ -143,6 +143,19 @@
       "github_actions_run": "34270843759",
       "production_verified": "live bundle assets/index-UTM7EiT0.js contains the released strings (leak_trace / 静かな点は根拠にならない / 修理班が水を戻して掘っている / 水道の漏水を見つける仕事); assets/heat/place-leak.png 200 (1,673,864 bytes); the night screen renders on GitHub Pages (21 hit circles, budgets row)",
       "note": "First NEW Q1 (research → design → art → implementation → release) produced end-to-end by the Q1 Autonomous Game Factory. Open polish: records strip legibility (factory/state/backlog/leak-detective-records-strip-legibility.md). Factory fix shipped on the dev branch: design-review staleness is now triggered only by design-stage artifacts (q1-pipeline.mjs); mechanism gap logged: human-decision CLI accepts Product Identity domains only."
+    },
+    {
+      "date": "2026-09-09",
+      "policy": "factory/rules/deploy-release-policy.md (routine content repair/rebuild, product_identity_impact NONE) via factory/rules/q1-autonomous-factory.md legacy LEGACY_AUDIT_REQUIRED path",
+      "content": "legacy-clue-join (医師編ch4、gameType clue_join): replaced the old answer-leaking/content-blind implementation with t1d-flexible-commit-and-defend — explicit commit to one of 4 diagnosis candidates (肺炎/心不全/喘息発作/気胸, tendency-worded pattern text, per-session shuffled) plus explicit selection of the decisive findings among 6 (検査/画像 required, 話/診察 optional, 呼吸状態/循環 never decisive, also per-session shuffled); flat failure feedback; honest 2-attempt partial with retry+proceed. Before: tapping any 3+ 'lung-pointing' clues won regardless of reasoning, and the '?' notes told the child which body region each clue meant. After: the child must commit to a specific diagnosis and defend it with the right evidence combination, with zero position/category/number/alarm-word shortcuts.",
+      "commit": "b4910cf95bdeb7ef788e7df341755c3cf775fe7c",
+      "bookkeeping_commit": "6ef255af22f32c0bd2258314d6128c08827c9ef9",
+      "task": "q1-rebuild-clue-join",
+      "pipeline": "factory/projects/legacy-clue-join/q1-pipeline.json",
+      "qa": "design reviews r1-r10 (r10 PASS 82, CA88/GQ82); two independent implementation reviews (r1 FAIL 74/2 HIGH — absolute-exclusion wording contradicting fact_sheet's tendency-only policy, and an ~18px disclosure tap target — both fixed as one downstream repair; r2 PASS 86, CA88/GQ86, 0 blockers/high); gameplay-qa-clue-join.mjs 31/31; q1-factory-selftest.mjs 41/41; tsc/build/lint clean; 375x812 live verification (0px scroll overflow); release-gate-check PASS locally and in CI",
+      "github_actions_run": "34323177174",
+      "production_verified": "2026-09-09, live browser navigation to https://enishishamo.github.io/jibun-choice-town/ — seeded med-lab/med-radio completion, played ch4 end to end: new commit-and-defend UI rendered, correct diagnosis+evidence produced the success screen with the reworded non-absolute alternative-comparison text, Job Reveal fired",
+      "note": "Also shipped the Factory tooling this release needed: MECHANICAL_CONSISTENCY_REPAIR and FACTUAL_EVIDENCE_CORRECTION (two new rules-as-code mechanisms in q1-factory-schema.mjs/q1-pipeline.mjs, distinct from design repair/redesign and budget-neutral, hardened over several adversarial review rounds), plus q1-legacy-audit.mjs/q1-trigger.mjs (the reverse-audit/trigger machinery this rebuild was processed through) — none of these existed on main before this release."
     }
   ]
 }
