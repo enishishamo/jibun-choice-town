@@ -323,3 +323,4 @@
 {"ts":"2026-09-09T08:25:41.734Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r1-retry","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":220.146}
 {"ts":"2026-09-09T08:38:37.938Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r2","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":167.809}
 {"ts":"2026-09-09T23:15:00.772Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r3","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r3-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":152.873}
+{"ts":"2026-09-09T23:23:07.791Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r4","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r4-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":129.759}

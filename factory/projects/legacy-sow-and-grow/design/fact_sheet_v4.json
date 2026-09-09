@@ -39,5 +39,5 @@
     "学校給食向け出荷契約の具体的な数量・時期の決め方は未確認。旧実装の『11月に300kg』という数量自体は架空の設定として扱う",
     "ゲーム内の3つの架空品種（つぶたね/まんまる/ことね）は、福井県実証データが比較した実在3品種（愛紅/夏播用彩誉/向陽二号）の性質差の傾向（早まき向き/遅まき向き/標準で幅広い）を参考にした架空設定であり、個々の収穫日数・耐暑性の具体的な数値は一次資料で個別に確認されたものではない（FACT_CHECK_REQUIRED、design_translationのrevision_note参照）"
   ],
-  "revision_note": "v3 (design review r1 FAIL 38是正): (1) FACTUAL_PROFESSION_ERROR — 品種ごとの具体的な日数・耐暑性が架空設定であることを明記し、根拠となった実在3品種の傾向（愛紅=早まき向き、夏播用彩誉=遅まき向き、向陽二号=標準で幅広い）を明示。(2) representative_duties/decisionsから『同一シーズン内での品種切り替え』の記述を削除（ae_v3.jsonのCORE見直しに合わせて整合、旧v2で残っていたARTIFACT_CHAIN_INCONSISTENT状態を解消）。v2からの変更点はこの2点のみで、一次資料そのものの引用内容は変更していない。"
+  "revision_note": "v4 (design review r4 FAIL 64是正、ARTIFACT_CHAIN_INCONSISTENT): expertiseの『品種によって...暑さへの強さが異なる』という一文が、あたかも福井県実証データが3品種すべての耐暑性差を述べているかのように読めたため、実際に同資料が明示するのは向陽二号の耐暑性のみであることを明記し、愛紅・夏播用彩誉の耐暑性については『同資料に記載がない』と明確化（reference_research_v4.jsonの是正と整合）。v3 (design review r1 FAIL 38是正): (1) FACTUAL_PROFESSION_ERROR — 品種ごとの具体的な日数・耐暑性が架空設定であることを明記し、根拠となった実在3品種の傾向（愛紅=早まき向き、夏播用彩誉=遅まき向き、向陽二号=標準で幅広い）を明示。(2) representative_duties/decisionsから『同一シーズン内での品種切り替え』の記述を削除（ae_v3.jsonのCORE見直しに合わせて整合、旧v2で残っていたARTIFACT_CHAIN_INCONSISTENT状態を解消）。"
 }
