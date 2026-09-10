@@ -1385,14 +1385,14 @@
       "qa_status": "PASS",
       "qa_evidence": "factory/projects/legacy-layer-and-compare/design/implementation_qa_v2.json",
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "8c2f8b620c0924b5a5a3ca4bd7f19d431230d2c0",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T03:39:21.513Z",
-      "updated_at": "2026-09-10T07:16:39.839Z",
+      "updated_at": "2026-09-10T07:22:49.681Z",
       "history": [
         {
           "at": "2026-09-10T03:39:21.513Z",
@@ -1415,6 +1415,12 @@
           "score": 84,
           "high_count": 0,
           "override_note": null
+        },
+        {
+          "at": "2026-09-10T07:22:49.682Z",
+          "event": "release_commit_set",
+          "sha": "8c2f8b620c0924b5a5a3ca4bd7f19d431230d2c0",
+          "given": "8c2f8b620c0924b5a5a3ca4bd7f19d431230d2c0"
         }
       ]
     }
