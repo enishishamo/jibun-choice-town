@@ -385,7 +385,7 @@ export const schoolLunch: ContentModule = {
       professionId: "logistics",
       eventId: "lunch-late",
       gameType: "load_and_route",
-      place: { name: "食材を届ける会社（朝7:00）", image: K("delivery_center"), fit: "cover", focus: "center 45%" },
+      place: { name: "食材を届ける会社（朝7:00）", image: K("delivery_check"), fit: "cover", focus: "center 45%" },
       mission: {
         title: "2つの学校に、調理が始まる前に\n食材を届けたい！",
         lines: ["温度と、回る順番。どっちも考えて出発しよう。"],
@@ -393,7 +393,7 @@ export const schoolLunch: ContentModule = {
       tools: [
         { id: "order", name: "学校からの注文書", emoji: "📄", desc: "今日届ける食材のリスト。" },
         { id: "temp", name: "保存温度の資料", emoji: "🌡", desc: "食材ごとの、運ぶときの温度の決まり。" },
-        { id: "truck", name: "トラックの情報", image: A("item-truck"), desc: "冷蔵室と常温室がある配送車。" },
+        { id: "truck", name: "トラックの情報", image: A("item-truck"), desc: "冷凍室・冷蔵室（5℃と10℃の2段階）・常温室がある配送車。" },
         { id: "time", name: "納品時刻", emoji: "⏰", desc: "学校に届ける締め切りの時刻。" },
       ],
       resolution: {

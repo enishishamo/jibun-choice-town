@@ -1,0 +1,11 @@
+{
+  "component_files": [
+    "src/q1/LogisticsGame.tsx",
+    "src/data/content/schoolLunch.ts"
+  ],
+  "logic_module": "src/q1/logisticsLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-load-route.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none (art_brief v1: no_art_required=true). Implementation review r1 BLOCKER (ANSWER_LEAK): the originally-wired public/assets/kyushoku/delivery_center.jpg bakes in visible text labels for an old, wrong 3-zone model (冷凍-18℃以下／冷蔵0〜10℃／常温10〜25℃ -- the exact incorrect -18℃ figure fact_sheet_v4.json's uncertainties already flagged as unsupported) and visibly pre-sorts fish into the frozen compartment, contradicting the shipped 4-zone validZones model (raw_fish is cold5-only). Fixed by switching schoolLunch.ts's logistics-lunch place.image to the already-existing public/assets/kyushoku/delivery_check.jpg (a generic inspection scene with no baked-in temperature labels), still within art_brief v1's no_art_required scope -- no new art was generated.",
+  "d_preserved_statement": "logisticsLogic.tsのFOODS/ZONES/ARCHETYPES/zoneWin/newRouteSessionはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。各食材を保存条件（validZonesモデル: 魚介類・食肉・乳製品・冷凍食品は上限条件、野菜・穀類は専用の常温区分）を満たす荷室へ積み分ける判断と、2校の移動時間・受け入れ時刻・学校間移動時間を照らし合わせて間に合う訪問順を選ぶ判断は、LogisticsGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。積み分け・訪問順が両方決まって初めて『出発する』が活性化し、1回のコミットで結果が確定する（同一セッション内の個別フィードバック付き再挑戦は実装されていない）。 実装レビューr1のHIGH是正: tools配列のtruck項目の説明文が『冷蔵室と常温室がある配送車』と、実際の4ゾーン（冷凍/冷蔵5℃/冷蔵10℃/常温）と矛盾していたため、正確な記述に修正した（このtools配列自体は現行のQ1シェルでは画面に描画されない未使用データだが、正確性のため修正）。"
+}
