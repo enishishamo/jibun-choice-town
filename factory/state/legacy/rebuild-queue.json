@@ -1,6 +1,6 @@
 {
   "note": "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.",
-  "generated_at": "2026-09-10T14:58:56.495Z",
+  "generated_at": "2026-09-10T19:16:29.965Z",
   "wip_limit": 2,
   "items": [
     {
@@ -149,9 +149,8 @@
       ],
       "priority_score": 4.58,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "in_progress",
-      "game_id": "legacy-move-try",
-      "started_at": "2026-09-10T15:01:29.072Z"
+      "status": "parked_human_decision",
+      "parked_reason": "task q1-rebuild-move-try is HUMAN_DECISION_REQUIRED"
     },
     {
       "game_type": "hotel_receive",
@@ -162,9 +161,8 @@
       ],
       "priority_score": 4.59,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "in_progress",
-      "game_id": "legacy-hotel-receive",
-      "started_at": "2026-09-10T16:38:25.738Z"
+      "status": "parked_human_decision",
+      "parked_reason": "task q1-rebuild-hotel-receive is HUMAN_DECISION_REQUIRED"
     },
     {
       "game_type": "delay_recover",
@@ -175,7 +173,7 @@
       ],
       "priority_score": 4.64,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "queued"
+      "status": "done"
     },
     {
       "game_type": "crowd_flow",
