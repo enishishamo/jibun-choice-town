@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "allocate_and_forecast",
   "creator": "claude-code",
-  "state": "RELEASE_CANDIDATE",
+  "state": "RELEASED",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
   "repair_count": 2,
@@ -1084,10 +1084,10 @@
   "human_decisions": [],
   "limited_exceptions": [],
   "task_id": "q1-rebuild-allocate-and-forecast",
-  "version": null,
+  "version": "v1.0",
   "depends_on": [],
   "created_at": "2026-09-10T07:30:35.493Z",
-  "updated_at": "2026-09-10T14:50:14.714Z",
+  "updated_at": "2026-09-10T14:57:52.611Z",
   "history": [
     {
       "at": "2026-09-10T07:30:35.494Z",
@@ -1946,6 +1946,18 @@
       "at": "2026-09-10T14:50:14.714Z",
       "event": "gate_passed",
       "gate": "RELEASE"
+    },
+    {
+      "at": "2026-09-10T14:57:52.610Z",
+      "event": "state_change",
+      "from": "RELEASE_CANDIDATE",
+      "to": "RELEASED",
+      "note": "version v1.0"
+    },
+    {
+      "at": "2026-09-10T14:57:52.611Z",
+      "event": "version_set",
+      "version": "v1.0"
     }
   ],
   "redesign": [

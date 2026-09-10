@@ -195,6 +195,19 @@
       "github_actions_run": "34449721515",
       "production_verified": "2026-09-10, live browser navigation to https://enishishamo.github.io/jibun-choice-town/ — played the urban-heat experience: the new 3-location diagnose-and-fix UI rendered with a live-randomized location draw, confirmed the disclosure-gating hint (\"※3つの地点すべての「？」を見てから実施しよう\") is shown and the commit button stays disabled until all three locations' data has been opened, matching the implementation review r2 fix.",
       "note": "Four design review rounds: r1 closed CORE_DATA_AXIS_NOT_REQUIRED (単一のunfixable役割が風軸にしか異常を示さず、日射・舗装の2軸だけを読み風を無視する戦略が実質100%成功していた —対象シナリオの症状を模倣するwind-confoundモデルで是正)。r2は3件のBLOCKER（wind-confoundの因果的な未裏付け=対策効果ゼロという主張を、資源配分・優先順位づけの失敗という説明に修正／Gate G「考え直す余地」への対応を、総当たりを再導入しない非採点の振り返り選択で追加／複数ラウンドにわたる版番号記載の陳腐化を版番号を書かない注記に置き換え）。r3はr2自身の修正の適用漏れ（4箇所のライブフィールドに古い『効果が出ない』という断定表現が残っていた）を指摘され是正。r4 PASS。実装レビューはr1(FAIL 48、BLOCKER×2: データを一切読まずにコミットできた／振り返り選択をせずに先へ進めた)→r2(PASS 84)。"
+    },
+    {
+      "date": "2026-09-10",
+      "policy": "factory/rules/deploy-release-policy.md (routine content repair/rebuild, product_identity_impact NONE) via factory/rules/q1-autonomous-factory.md legacy LEGACY_AUDIT_REQUIRED path",
+      "content": "legacy-allocate-and-forecast（猛暑編、gameType allocate_and_forecast）: 旧実装（家庭・農業・工業の利用率スライダーを10%刻みで調整するだけで、3部門を均等に絞っても貯水率さえ保てば成功する記憶ゲーム、部門ごとの結果の違いがない、危険水準に落ちても「今日からやり直す」で同一試行内の総当たりができた）を、t5-brief-and-allocate-correctedで置き換えた。子どもは毎セッション貯水率・雨予報・家庭/農業/工業の5枚のデータをすべて「？」で読んでから、今週の制限の強さ（軽い/中程度/重い）を1つ、割り当て先のセクターを1つ選んで実施する判断を、1回のコミットで確定する。家庭・農業・工業の3セクターは完全に対称な候補で、実在するセクター別非対称制限率（石川・加古川は家庭用水だけ、佐波川は3用途とも同率、肱川は農業用水だけ等）どおり、どのセクターも毎回のタイミング事情・需要側の余地次第で正解になり得る。単一の軸だけを読む単純な判断は約58%にとどまり正しい推論の100%を大きく下回るよう設計されている。誤答時はフラットな結果のみで、対応自体の効果がゼロという意味ではなく資源配分・優先順位づけの失敗として描かれ、非採点の振り返り選択（セクター・強さの両方を再考、結果は変わらない）を経てから先に進む。Before: 3部門を均等に絞れば必ず成功し、部門ごとの結果の違いがなく、失敗しても即座にやり直せた。After: 家庭を含むどのセクターが正解かは毎回変わり、5枚のデータをすべて読まないと実施ボタンが押せず、単純な発見的手法は約58%にとどまる。",
+      "commit": "6286a850aed3835eee25ac8717cd41e1e284675f",
+      "bookkeeping_commit": "d8fec1f68eccda2101d5e6d59a07d37afbe729ba",
+      "task": "q1-rebuild-allocate-and-forecast",
+      "pipeline": "factory/projects/legacy-allocate-and-forecast/q1-pipeline.json",
+      "qa": "design reviews r1-r4 (1 repair, 1 redesign, 1 repair; r4 PASS 76, CA78/GQ76, 0 blockers/high); implementation reviews r1-r2 (r2 PASS 76, CA78/GQ76, 0 blockers/high, 1 non-blocking medium); gameplay-qa-water-allocation.mjs 32/32; design-sim.mjs v4 byte-reproducible (seeded RNG throughout); tsc/oxlint/vite build clean (worktree + local); 375x812 live verification of both the success and honest-failure+two-question-reflection paths; release-gate-check PASS locally and in CI",
+      "github_actions_run": "34492249145",
+      "production_verified": "2026-09-10, live browser navigation to https://enishishamo.github.io/jibun-choice-town/ — played the water-heat experience: the new dual-decision UI rendered with a live-randomized session draw, confirmed the reservoir meter baseline and disclosure-gating hint (\"※5枚すべての「？」を見てから実施しよう\") are shown and the commit button stays disabled until all five cards have been opened.",
+      "note": "4 design review rounds across 2 design_iterations (1 repair, then REPAIR budget exhausted -> REDESIGN t1->t5, then 1 more repair): r1 closed CORE_DISTORTED_BY_GAME (household常時除外がresearch.mdの実データ石川・加古川・佐波川と矛盾) and C_NOT_NEEDED_FOR_D。r2はhouseholdの需要側の余地を代替水源の有無としていたのが実際の因果関係（代替水源は制限回避の手段）と逆転していたCORE_CAUSAL_MODEL_DISTORTEDを新たに検出、REPAIR budget exhausted(1/1)のためREDESIGN(t1->t5)。r3はREDESIGN後も残ったCORE_CAUSAL_MODEL_DISTORTED（AC使用量という水固有でない根拠）とARTIFACT_CHAIN_INCONSISTENT（fact_sheetが未更新）を検出、庭の水やり・洗車等の不要不急な使い方という水固有の軸に再修正。r4 PASS 76。実装レビューはr1(FAIL 52、BLOCKER: THINK_AGAIN_CONTEXT_MISSING振り返り画面がデータを再掲していなかった、HIGH: VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE)→r2(PASS 76、非blocking MEDIUM: 回帰チェックの分離が不十分という指摘を追加是正)。"
     }
   ]
 }
