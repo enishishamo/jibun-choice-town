@@ -1,0 +1,7 @@
+{
+  "legitimate_full_reasoning": 1,
+  "random_order": 0.3296,
+  "always_tap_display_slot_1_first": 0.3296,
+  "always_tap_display_slot_3_first": 0.3306,
+  "fraction_of_all_orderings_that_win": 0.3333
+}

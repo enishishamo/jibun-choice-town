@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-delay-recover-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 58,
+    "game_quality_score": 72,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED: The adopted design turns a qualified hospitality pattern—earlier notice generally preserves adjustment options—into a deterministic school-trip rule that the hotel must be the first of three near-instantaneous taps or dinner is irreversibly lost. research.md confirms neither this first-position threshold nor that contacting venue or bus first necessarily consumes enough real time to cause failure. The design further states that hotel-first is the 'only method,' overstates hotel as the only party with a real time constraint rather than the only one confirmed by this research, and does not disclose this first-of-three rule as a game operationalization in t1's risk field."
+    ],
+    "high": [],
+    "medium": [
+      "The position-leak analysis is incomplete: the simulator itself shows that always reversing the displayed order succeeds 100%. Hotel-last does not directly reveal the answer, so this is not a blocker by itself, but no_manual_exploit_check_v1.json incorrectly concludes that every fixed strategy is inferior or non-revealing without addressing the perfect reverse-order heuristic.",
+      "The design promises equal information volume and visual hierarchy across all three cards while requiring the hotel card alone to contain the decisive cutoff explanation. That can create a visible text-length/card-height cue unless implementation explicitly normalizes collapsed and expanded card geometry."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "A general, individually sourced 'earlier hotel notice is better' pattern is converted into a certain school-trip outcome: hotel must be contacted before both other parties, otherwise dinner is missed. The adopted risk field discusses display order but does not honestly label the first-of-three cutoff as a game-balance operationalization unsupported by a confirmed real threshold.",
+        "file": "factory/projects/legacy-delay-recover/design/ae_v1.json"
+      },
+      {
+        "code": "POSITION_LEAK_ANALYSIS_INCOMPLETE",
+        "severity": "MEDIUM",
+        "finding": "The recorded simulation gives reverse_ui_list_order_always=1, but the exploit review broadly claims fixed strategies remain below full reasoning or that the fixed layout cannot suggest the answer. Hotel-last is not a direct answer leak, yet the perfect reverse-order shortcut must be acknowledged and tested with children or mitigated.",
+        "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v1.json"
+      },
+      {
+        "code": "VISUAL_HIERARCHY_LEAK_RISK",
+        "severity": "MEDIUM",
+        "finding": "The hotel card necessarily contains unique decision-critical cutoff information, contradicting the promise that all three cards have the same information amount. Without an explicit equal-geometry requirement, text length may visually identify the special card before its content is read.",
+        "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v1.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "5 passed, 0 failed; legitimate_full_reasoning=1, random_order=0.3296, ui_list_order_always=0, reverse_ui_list_order_always=1, fraction_of_all_orderings_that_win=0.3333.",
+      "brute_force_closed": true,
+      "hotel_priority_claim_appropriately_hedged": false,
+      "no_invented_numeric_threshold": true,
+      "research_md_table_corrections_reflected": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-delay-recover/research.md:287 — Sources establish risk from unannounced substantial delay, not certain failure after two other brief contacts.",
+      "factory/projects/legacy-delay-recover/research.md:297 — The hotel evidence is explicitly limited to individual-guest practice and is not school-trip/group-specific.",
+      "factory/projects/legacy-delay-recover/research.md:304 — Research supports a gradual relationship ('later narrows adjustment room') and says concrete turn/action thresholds are a design choice, not a confirmed standard.",
+      "factory/projects/legacy-delay-recover/design/ae_v1.json:4 — The design states that only the hotel has the time constraint, converting 'only one confirmed by this research' into an absolute real-world claim.",
+      "factory/projects/legacy-delay-recover/design/ae_v1.json:5 — It calls hotel-first the only way to preserve dinner, a certainty not established by research.",
+      "factory/projects/legacy-delay-recover/design/ae_v1.json:6 — It deterministically equates any non-first hotel contact with irreversible dinner failure.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v1.json:10 — The adopted outcome repeats the unsupported binary first-position causality.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v1.json:15 — Contacts are one-shot, immutable, and followed only by a non-scored reflection; this closes free reorder and resubmit.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v1.json:19 — The adopted risk field discusses display-order leakage but does not disclose hotel-first as an invented operationalization rather than a sourced real threshold.",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v1.json:10 — Cancellation, repeat contact, and resubmission are expressly prohibited.",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v1.json:11 — The design records reverse-order success as 100% but then overgeneralizes that fixed strategies do not match full reasoning.",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v1.json:15 — Equal information amount is promised despite the hotel card alone carrying extra decisive information.",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v1.json:41 — Failure reflection re-presents the same three cards read-only and remains non-scored, satisfying Gate G.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v1.json:14 — Success and failure use distinct onComplete/onPartialComplete outcomes, satisfying Gate H.",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:52 — The simulator reduces success to order[0] === 'hotel'; it verifies combinatorics, not the real-world validity of that threshold.",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:122 — All five executable checks passed."
+    ],
+    "recommended_actions": [
+      "Replace the deterministic 'hotel must be first or dinner is lost' consequence with an explicitly fictionalized operationalization whose outcome is proportional and honest—for example, hotel-first preserves the best adjustment options, while later contact produces a weaker/uncertain outcome rather than guaranteed dinner loss.",
+      "State consistently that the hotel is the only party for which this research confirmed a specific time-sensitive consequence, not necessarily the only party that has one in real school-trip operations.",
+      "Add to t1's risk and player-facing framing that first-of-three is a simplified game rule, not an official hospitality or school-trip threshold.",
+      "Revise the position-leak analysis to acknowledge reverse-order-always wins and require usability testing or layout variation that does not create a learnable positional shortcut.",
+      "Specify equal collapsed dimensions and non-revealing overflow/expansion behavior for the three cards rather than claiming equal information volume."
+    ]
+  },
+  "elapsed_sec": 86.618
+}

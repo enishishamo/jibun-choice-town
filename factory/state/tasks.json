@@ -1473,6 +1473,50 @@
           "given": "6286a850aed3835eee25ac8717cd41e1e284675f"
         }
       ]
+    },
+    "q1-rebuild-delay-recover": {
+      "task_id": "q1-rebuild-delay-recover",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-delay-recover/impl-review-r2.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-10T19:05:15.306Z",
+      "updated_at": "2026-09-10T19:05:29.668Z",
+      "history": [
+        {
+          "at": "2026-09-10T19:05:15.307Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-10T19:05:29.630Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-delay-recover/impl-review-r2.result.json",
+          "score": 94,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-10T19:05:29.669Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json"
+        }
+      ]
     }
   }
 }

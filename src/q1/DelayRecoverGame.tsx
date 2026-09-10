@@ -1,101 +1,73 @@
 // Q1: 添乗員・旅程管理担当 (gameType: delay_recover)
-// B: 新幹線が遅れて、見学先・バス・宿の予定がつながって崩れそう。
-// C: 何がどうつながって崩れるかを見せる影響マップ。学校の最終判断は
-//    添乗員がひとりで決めるものではない、という制約もここに含む。
-// D: 「状況確認→連絡→変更案→学校の承認→共有」の順で、行動カードを
-//    ならべる。安全確認や学校連絡をとばした案は成立しない。
+// B: 修学旅行中、新幹線が30分遅延した。到着後の見学先・バス・宿の3つの関係先すべてに影響が及ぶ。
+//    添乗員として、状況確認→学校への報告→3つの関係先への連絡→学校の承認→共有、という流れの中で
+//    対応を組み立てる。
+// C: 遅延の状況（30分・運送機関の事情）、確定行程表上どの関係先に影響が及ぶか、そして宿泊施設だけが
+//    持つ実在の傾向（夕食提供の締切があり、早く連絡するほど調整の余地が残る）。詳細はdelayRecoverLogic.ts。
+// D: 状況確認→学校報告→3者への連絡（宿を他の2者より先に）→学校承認→共有、という前提条件で
+//    ゲートされた流れの中で、連絡ボタンをタップする順序そのもので宿泊施設への優先度を表現する。
+//
+// 2026-09-10 (Q1 Autonomous Factory, legacy-delay-recover rebuild, t5-hedged-evidence-scope): 旧実装は
+// 行動カードを自由に追加・削除・並び替えて何度でも再提出できる構造だった（reverse audit: exploit
+// "select-all"、進行コストのない総当たり）。新実装は、5段階の流れを前提条件ゲート（各ボタンは前段階
+// が終わるまでdisabled）で強制し、3つの関係先への連絡を1回性のタップ（押した瞬間に確定、取り消し・
+// 再連絡不可）にすることで、旧来の自由な並び替え・再提出を構造的に排除した。3つの関係先カードの
+// 画面上の表示順はセッションごとにランダム化し（design review r1 MEDIUM是正: 固定表示順を逆に辿る
+// だけの戦略が意図せず常に成功していた）、位置ではなく内容を読むことでしか正解に近づけないようにした。
+// 判定基準（宿を2者より先に連絡したかどうか）は、研究が確認した実在の傾向をゲームとして単純化した
+// 運用上のルールであり、他の2者に時間的制約が一切ないことを意味しない（design review r2 BLOCKER
+// 是正: 学習到達点の文言が排他的な誤解を招かないよう、design chain全体で証拠限定的な表現に統一した）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
+import {
+  CONTACTS,
+  CONTACT_DETAIL,
+  CONTACT_LABELS,
+  contactOrderWins,
+  newSession,
+  type ContactId,
+  type Session,
+} from "./delayRecoverLogic";
 
-interface Action { id: string; name: string; icon: string; must?: boolean }
-const ACTIONS: Action[] = [
-  { id: "check", name: "状況を確認する", icon: "🔍", must: true },
-  { id: "notify_school", name: "学校へ状況を伝える", icon: "🏫", must: true },
-  { id: "notify_site", name: "見学先へ連絡する", icon: "⛩️" },
-  { id: "notify_bus", name: "バスへ連絡する", icon: "🚌" },
-  { id: "notify_hotel", name: "宿へ連絡する", icon: "🏮" },
-  { id: "plan_swap", name: "見学の順番を入れかえる", icon: "🔀" },
-  { id: "plan_short", name: "自由時間を短くする", icon: "⏱️" },
-  { id: "plan_dinner", name: "夕食の時間をずらす", icon: "🍚" },
-  { id: "approve", name: "学校の承認を得る", icon: "✅", must: true },
-  { id: "share", name: "全員へ確定内容を共有する", icon: "📣", must: true },
-];
-const PLAN_IDS = ["plan_swap", "plan_short", "plan_dinner"];
-const NOTIFY_IDS = ["notify_site", "notify_bus", "notify_hotel"];
-const PLAN_LABEL: Record<string, string> = {
-  plan_swap: "見学の順番を入れかえて",
-  plan_short: "自由時間を短くして",
-  plan_dinner: "夕食の時間をずらして",
-};
+export default function DelayRecoverGame({ onComplete, onPartialComplete }: Q1GameProps) {
+  const [session] = useState<Session>(() => newSession());
+  const [checkOpened, setCheckOpened] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [openedContacts, setOpenedContacts] = useState<Set<ContactId>>(new Set());
+  const [contactedOrder, setContactedOrder] = useState<ContactId[]>([]);
+  const [approved, setApproved] = useState(false);
+  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "done">("playing");
+  const [reflectOrder, setReflectOrder] = useState<ContactId[]>([]);
 
-const IMPACTS = [
-  { id: "site", icon: "⛩️", name: "見学先", text: "予約していた時間に間に合わない" },
-  { id: "bus", icon: "🚌", name: "バス", text: "駅での待ち時間が長くなる" },
-  { id: "hotel", icon: "🏮", name: "宿", text: "夕食の時間が後ろにずれこむ" },
-];
+  const openContact = (id: ContactId) =>
+    setOpenedContacts((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
 
-export default function DelayRecoverGame({ onComplete }: Q1GameProps) {
-  const [confirmed, setConfirmed] = useState(false);
-  const [line, setLine] = useState<string[]>([]);
-  const [note, setNote] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
+  const contact = (id: ContactId) =>
+    setContactedOrder((prev) => (prev.includes(id) ? prev : [...prev, id]));
 
-  const move = (i: number, d: number) => {
-    const j = i + d;
-    if (j < 0 || j >= line.length) return;
-    const n = [...line];
-    [n[i], n[j]] = [n[j], n[i]];
-    setLine(n);
-    setNote(null);
+  const share = () => {
+    const win = contactOrderWins(contactedOrder);
+    setOutcome(win ? "done" : "reflecting");
   };
-  const pool = ACTIONS.filter((a) => !line.includes(a.id));
 
-  if (!confirmed) {
-    return (
-      <div className="game board-game">
-        <div className="task-bar">
-          <span className="task-now">新幹線が、30分おくれるという放送があった</span>
-          <span className="task-sub">まず、状況を見てみよう</span>
-        </div>
-        <div className="stack">
-          {IMPACTS.map((i) => (
-            <div key={i.id} className="trip-impact-row">
-              <span className="trip-impact-icon">{i.icon}</span>
-              <span className="trip-impact-body">
-                <b>{i.name}</b>
-                <small>⚠️ {i.text}</small>
-              </span>
-            </div>
-          ))}
-        </div>
-        <p className="game-line soft center-line">
-          1つの遅れが、見学先・バス・宿の予定へつながっている。
-        </p>
-        <button className="btn primary big" onClick={() => setConfirmed(true)}>
-          状況を確認した
-        </button>
-      </div>
-    );
-  }
+  const toggleReflect = (id: ContactId) =>
+    setReflectOrder((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
-  if (done) {
-    const plans = line.filter((id) => PLAN_IDS.includes(id)).map((id) => PLAN_LABEL[id]);
+  if (outcome === "done") {
     return (
       <div className="game board-game">
         <div className="result-card good">
           <span className="result-title">予定を、つなぎ直せた！</span>
           <p className="join-conclusion">
-            学校の承認のもと、{plans.join("・")}対応した。
+            宿の夕食提供に間に合い、学校の承認のもと関係先へ確定内容を共有した。
           </p>
-          <div className="result-rows">
-            {line.map((id) => {
-              const a = ACTIONS.find((x) => x.id === id)!;
-              return <span key={id} className="rrow"><b>{a.icon} {a.name}</b></span>;
-            })}
-          </div>
         </div>
         <p className="game-line soft center-line">
-          添乗員だけでは決めない。学校・見学先・バス・宿、みんなへつなぎ直す仕事。
+          添乗員だけでは決めない。学校の承認を得ながら、見学先・バス・宿、みんなへつなぎ直す仕事。
         </p>
         <button className="btn primary big" onClick={onComplete}>
           みんなに知らせる
@@ -104,77 +76,121 @@ export default function DelayRecoverGame({ onComplete }: Q1GameProps) {
     );
   }
 
+  if (outcome === "reflecting") {
+    const canFinish = reflectOrder.length === CONTACTS.length;
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">予定を、うまくつなぎ直せなかった</span>
+          <p className="game-line soft">
+            宿の夕食提供には間に合わなかったみたい。同じ3つの関係先のデータをもう一度見比べて、
+            次はどの順で連絡するか考えてみよう。
+          </p>
+        </div>
+        <div className="dx-grid route-grid">
+          {CONTACTS.map((id) => (
+            <div key={id} className="dx-card">
+              <div className="dx-head">
+                <span className="dx-name">{CONTACT_LABELS[id].icon} {CONTACT_LABELS[id].name}</span>
+              </div>
+              <p className="dx-pattern">{CONTACT_DETAIL[id]}</p>
+            </div>
+          ))}
+        </div>
+        <p className="game-line soft center-line farm-disclaimer">
+          今度はどの順で連絡すればよかったと思う？（タップした順にえらぼう）
+        </p>
+        <div className="choice-row wrap">
+          {CONTACTS.map((id) => (
+            <button
+              key={id}
+              className={`dx-commit ${reflectOrder.includes(id) ? "on" : ""}`}
+              onClick={() => toggleReflect(id)}
+            >
+              {reflectOrder.includes(id) ? `${reflectOrder.indexOf(id) + 1}. ` : ""}
+              {CONTACT_LABELS[id].icon} {CONTACT_LABELS[id].name}
+            </button>
+          ))}
+        </div>
+        <p className="game-line soft center-line farm-disclaimer">※この選択で結果は変わりません</p>
+        <button
+          className="btn primary big"
+          disabled={!canFinish}
+          onClick={() => (onPartialComplete ?? onComplete)()}
+        >
+          先へ進む
+        </button>
+      </div>
+    );
+  }
+
+  const allContacted = contactedOrder.length === CONTACTS.length;
+
   return (
     <div className="game board-game">
       <div className="task-bar">
-        <span className="task-now">やることを、順番にならべよう</span>
-        <span className="task-sub">タップで追加、↑↓でならべかえ</span>
+        <span className="task-now">新幹線が、30分おくれるという放送があった</span>
+        <span className="task-sub">状況を確認して、順番に対応しよう</span>
       </div>
 
-      <div className="timeline">
-        {line.length === 0 && <p className="trip-day-empty">ここに行動カードがならぶ</p>}
-        {line.map((id, i) => {
-          const a = ACTIONS.find((x) => x.id === id)!;
-          return (
-            <div key={id} className="tl-item">
-              <div className="tl-row">
-                <b>{i + 1}</b>
-                <span className="tl-name">{a.icon} {a.name}</span>
-                <span className="tl-ctrl">
-                  <button className="tl-btn" onClick={() => move(i, -1)} disabled={i === 0}>↑</button>
-                  <button className="tl-btn" onClick={() => move(i, 1)} disabled={i === line.length - 1}>↓</button>
-                  <button
-                    className="tl-btn del"
-                    onClick={() => { setLine(line.filter((x) => x !== id)); setNote(null); }}
-                  >×</button>
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {pool.length > 0 && (
-        <div className="act-pool">
-          <span className="doc-label">🗂 使える行動カード</span>
-          <div className="choice-row wrap">
-            {pool.map((a) => (
-              <button
-                key={a.id}
-                className="act-card"
-                onClick={() => { setLine([...line, a.id]); setNote(null); }}
-              >
-                <span className="choice-emoji">{a.icon}</span>
-                <span className="act-name">{a.name}</span>
-              </button>
-            ))}
-          </div>
+      <div className="dx-card">
+        <div className="dx-head">
+          <span className="dx-name">🔍 状況確認</span>
+          <button className="dx-more" aria-label="データを見る" onClick={() => setCheckOpened(true)}>
+            {checkOpened ? "－" : "？"}
+          </button>
         </div>
+        {checkOpened && (
+          <p className="dx-pattern">新幹線が30分遅延しています。到着後の見学先・バス・宿すべてに影響が及びます。</p>
+        )}
+      </div>
+
+      <button className="btn primary big" disabled={!checkOpened || reported} onClick={() => setReported(true)}>
+        {reported ? "✓ 学校へ報告した" : "学校へ状況を報告する"}
+      </button>
+
+      {reported && (
+        <>
+          <p className="game-line soft center-line">3つの関係先に連絡しよう</p>
+          <div className="dx-grid route-grid">
+            {session.displayOrder.map((id) => {
+              const isOpened = openedContacts.has(id);
+              const isContacted = contactedOrder.includes(id);
+              return (
+                <div key={id} className={`dx-card ${isContacted ? "selected" : ""}`}>
+                  <div className="dx-head">
+                    <span className="dx-name">{CONTACT_LABELS[id].icon} {CONTACT_LABELS[id].name}</span>
+                    {!isContacted && (
+                      <button className="dx-more" aria-label="データを見る" onClick={() => openContact(id)}>
+                        {isOpened ? "－" : "？"}
+                      </button>
+                    )}
+                  </div>
+                  {isContacted ? (
+                    <p className="dx-pattern good">連絡済み（{contactedOrder.indexOf(id) + 1}番目）</p>
+                  ) : (
+                    isOpened && (
+                      <>
+                        <p className="dx-pattern">{CONTACT_DETAIL[id]}</p>
+                        <button className="btn choice on" onClick={() => contact(id)}>
+                          連絡する
+                        </button>
+                      </>
+                    )
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
-      {note && <p className="game-note">{note}</p>}
+      <button className="btn primary big" disabled={!allContacted || approved} onClick={() => setApproved(true)}>
+        {approved ? "✓ 学校の承認を得た" : "学校の承認を得る"}
+      </button>
 
-      <button
-        className="btn primary big"
-        onClick={() => {
-          if (line[0] !== "check") { setNote("まず状況を確認するところから始めよう。"); return; }
-          if (!line.includes("notify_school")) { setNote("学校への連絡が抜けているよ。"); return; }
-          const notifyCount = line.filter((id) => NOTIFY_IDS.includes(id)).length;
-          if (notifyCount < 2) { setNote("見学先・バス・宿。関係する先へ連絡できているかな？"); return; }
-          const planCount = line.filter((id) => PLAN_IDS.includes(id)).length;
-          if (planCount < 1) { setNote("このままでは間に合わない。変更案を考えよう。"); return; }
-          const approveIdx = line.indexOf("approve");
-          const shareIdx = line.indexOf("share");
-          if (approveIdx === -1) { setNote("学校の承認を得るところが抜けているよ。"); return; }
-          if (shareIdx === -1) { setNote("最後に、みんなへ共有することを忘れずに。"); return; }
-          if (shareIdx !== line.length - 1) { setNote("共有する前に、学校の承認を得られているか、順番をたしかめよう。"); return; }
-          const lastPlanIdx = Math.max(...line.map((id, i) => (PLAN_IDS.includes(id) ? i : -1)));
-          if (approveIdx < lastPlanIdx) { setNote("変更案を決めてから、学校の承認を得よう。"); return; }
-          setNote(null);
-          setDone(true);
-        }}
-      >
-        ▶ この対応でいく
+      <button className="btn primary big" disabled={!approved} onClick={share}>
+        全員へ共有する
       </button>
     </div>
   );

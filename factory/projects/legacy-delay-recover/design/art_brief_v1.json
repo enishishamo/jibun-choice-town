@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "このゲーム画面自体はシーン画像を使用せず、絵文字・アイコン・CSSのみで構成する——legacy-hotel-receive/legacy-move-try/legacy-allocate-and-forecastと同じ、既存Q1の非画像UIパターンに従う。既存の public/assets/schooltrip/school-trip-tour-conductor.jpg（trip-conductorプロフェッション・delay-trip体験のplace画像として既に使用中）をReadツールで直接視覚的に確認したところ、新幹線の駅で添乗員が電話をかけ、時計アイコン（時間の切迫感）とともに、城（見学先）・バス・建物（学校または宿）の3方向へ電話の吹き出しが伸びる構図——このリビルドの新しい仕組み（状況確認後、3つの関係先へ連絡する、宿が時間的に優先度の高い対象）と視覚的に整合しており、旧実装（自由な並び替え・再提出UI）に固有の操作画面は一切描かれていない。ART_ANSWER_LEAK/視覚的ミスリードのおそれがないため、この既存画像はそのまま再利用してよい（新規制作不要）。"
+}

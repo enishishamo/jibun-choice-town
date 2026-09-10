@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v1.jsonのcoreとae_v1.jsonのD/Eは、『3つの関係先のうち時間的制約を持つ宿泊施設への連絡を優先する』という単一の判断軸と、design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、random_order≈0.33、ui_list_order_always=0）を一貫して記述しており矛盾はない。scopeの『運送機関の遅延に対応する場面』はfact_sheet_v1.jsonの一次資料（旅行業法第12条の10の旅程管理義務、修学旅行実施規則の報告・指示義務）が示す添乗員の中核業務そのものであり、周辺的な作業ではない。旧実装の『2/3の閾値』『共有は厳密に最後』という根拠の薄い制約は、research.md §5の検証結果を踏まえ、それぞれ『3者すべてへの連絡』『共有は承認より後』というより根拠に忠実な形へ改めた上でcore/AEに反映済みであることを確認した。profession_name_hidden_testは、C（遅延という事象、宿泊施設だけが持つ時間的制約）とD（宿泊施設への連絡優先度の判断）が他の既存Q1ゲーム（例: legacy-hotel-receiveの部屋定員確認・アレルギー対応）と重複しないことを確認済み。"
+}

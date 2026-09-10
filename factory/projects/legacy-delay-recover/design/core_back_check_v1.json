@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-priority-checklist-recover（v1）は、scope_core_v1.jsonのcoreが定義する『3つの関係先のうち、時間的制約を持つ宿泊施設への連絡を優先する』という単一の判断軸を、game_translations_v1.jsonのC_interaction/D_externalizationがそのまま保持している。research.md §5が仕分けた『維持してよい制約』（状況確認が最初、学校連絡必須、3者すべてへの連絡、承認は連絡完了後）と『根拠が薄いため緩和すべき制約』（共有の厳密な最後尾位置→承認後という前提条件ゲートへ緩和、2/3の閾値→3者全員必須へ変更）が、scope_core_v1.json/ae_v1.json/game_translations_v1.json/play_seeds_v1.json/c_compression_v1.json/no_manual_exploit_check_v1.json/reference_research_v1.json/fact_sheet_v1.jsonのすべてに一貫して反映されていることを確認した。旧実装のreverse-audit指摘（select-all／進行コストのない自由な並び替え）は、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消している。t3（具体的な分数のタイマーを実在の基準として提示）・t4（共有の厳密な配列最後尾位置を維持）はいずれもCORE_CAUSAL_MODEL_DISTORTED相当のリスクで却下済みであり、t1には研究が裏付けない具体性・厳密さが持ち込まれていないことを確認した。first_5_seconds_v1.jsonの初回タップ体験（状況確認カードを開く→報告ボタンが有効化される→3枚のカードを開いて読む→連絡順序を選ぶ）も、c_compression_v1.jsonが定義した圧縮後のCとD（宿カードの時間的制約を読み、連絡順序で優先度を判断する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v1.jsonのfixed_failure_pattern検証（design-sim-result.json v1）により、ランダムな順序戦略（約33%）も、画面の並び順のまま機械的に進める戦略（0%）も、いずれも完全な推論（100%）を下回るか明確に失敗することを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

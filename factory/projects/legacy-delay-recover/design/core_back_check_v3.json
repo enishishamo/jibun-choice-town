@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t5-hedged-evidence-scope（game_translations_v4.json、REDESIGN #1）は、scope_core_v2.json/ae_v2.jsonが定義する『3つの関係先のうち、宿泊施設への連絡を優先する』という単一の判断軸と、design-sim.mjs v2のcontactOrderWins（宿を2者より先に連絡したかどうか）を、t1-priority-checklist-recoverから完全に維持している——判定ロジック・UI構造（1回性タップ、表示順ランダム化、disclosure gate）は一切変更していない。design review r2のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED再発: game_translations_v2.json/play_seeds_v2.jsonの学習到達点フィールドが『宿以外に時間的制約は一切存在しない』という研究が裏付けない排他的な結論を暗黙に教えていた）を受け、game_translations_v4.json（t5）/play_seeds_v3.json/reference_research_v3.json/c_compression_v3.jsonのすべてで、『このゲームで研究がこの状況に具体的に結びつけて確認できたのは宿だけ』という証拠限定的な表現へ統一し、貸切バスの運転時間規制という実在する制約（定量的な波及は未確認）にも触れることで、『確認できなかった』ことと『実在しない』ことを混同しない表現を徹底したことを確認した。ae_v2.json/fact_sheet_v2.json/c_compression（の判定ロジック部分）は、design review r2で既に適切な留保表現になっていることが確認済みであり、変更していない。旧実装のreverse-audit指摘（select-all／進行コストのない自由な並び替え）は、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消している。no_manual_exploit_check_v3.json/first_5_seconds_v3.jsonは内容の変更なく、staleness解消のための再提出であることを確認した。design-sim.mjs v2の検証結果（legitimate_full_reasoning=1.0、random_order≈0.33、表示位置ヒューリスティックも≈0.33）は変更されていない——D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

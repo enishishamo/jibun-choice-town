@@ -133,8 +133,8 @@ export const schoolTrip: ContentModule = {
       discoveryLine: "遅れの影響を整理して、学校・見学先・バス・宿へ\nつなぎ直す仕事！",
       q2: [
         { id: "what", title: "どんな仕事？", icon: "📱",
-          body: ["当日の運行状況を確認し、学校・交通機関・見学先・宿泊施設へ連絡します。",
-                 "変更案を作って学校の確認を得たうえで、関係先へ変更内容を共有します。"] },
+          body: ["当日の運行状況を確認し、見学先・バス・宿へ連絡します。",
+                 "特に宿は連絡が遅れるほど対応が難しくなるため、優先して連絡します。学校の承認を得たうえで、関係先へ確定内容を共有します。"] },
         { id: "kinds", title: "旅のあいだの役割", icon: "🧩", body: [],
           list: ["現地で案内・調整をする人（添乗員）", "旅程を管理する人", "学校側の引率者", "…など"] },
         { id: "become", title: "どうやったらなれる？", icon: "🎓",
@@ -196,7 +196,7 @@ export const schoolTrip: ContentModule = {
       mission: { title: "新幹線が遅れた。\n予定をつなぎ直そう", lines: ["見学先・バス・宿へ、順番に連絡していこう。"] },
       tools: [], resolution: { title: "予定を、つなぎ直せた", lines: [] },
       discoveryEcho: "さっき、状況を確認して、関係先へ連絡し、学校の承認を得てから変更を伝えたよね。それが、この仕事の中心です。",
-      seeds: ["状況を確認する", "関係先へ連絡する", "変更案を考える", "みんなに知らせる", "特にない"],
+      seeds: ["状況を確認する", "優先順位を考える", "関係先へ連絡する", "みんなに知らせる", "特にない"],
     },
     {
       id: "hotel-trip", professionId: "trip-hotel", eventId: "school-trip", gameType: "hotel_receive",

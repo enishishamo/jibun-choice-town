@@ -109,7 +109,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   trip_plan: TripPlanGame, // 予定カードを3日間へ組み立てる
   safety_plan: SafetyPlanGame, // 班へ引率を割りあて、役割を決める
   bus_ops: BusOpsGame, // 班・運転士・経路をバスへそろえる
-  delay_recover: DelayRecoverGame, // 状況確認→連絡→承認→共有の順で立て直す
+  delay_recover: DelayRecoverGame, // 状況確認→連絡（宿を優先）→承認→共有の順で立て直す
   hotel_receive: HotelReceiveGame, // 部屋→食事→入浴の3段階で受け入れる
   // 商店街・開店編
   tenant_match: TenantMatchGame, // 相手の意向×物件条件×全体バランスで組み合わせる
