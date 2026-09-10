@@ -61,6 +61,20 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
     setOpenedCards((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   };
 
+  const readingOf = (id: CardId): string => {
+    if (id === "reservoir") return RESERVOIR_TEXT[session.reservoir];
+    if (id === "rain") return RAIN_TEXT[session.rain];
+    const sector = id as Sector;
+    return `${URGENCY_TEXT[sector][session.sectors[sector].urgency]} ／ ${CAPACITY_TEXT[sector][session.sectors[sector].capacity]}`;
+  };
+
+  const cardLabel = (id: CardId): string => {
+    if (id === "reservoir") return "💧 貯水率";
+    if (id === "rain") return "🌦 雨予報";
+    const sector = id as Sector;
+    return `${SECTOR_LABELS[sector].icon} ${SECTOR_LABELS[sector].name}`;
+  };
+
   const commit = () => {
     if (selectedSector === null || selectedDepth === null) return;
     const win = sessionWin(session, selectedSector, selectedDepth);
@@ -112,6 +126,23 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
             <div className="meter-fill" style={{ width: `${resultMeter ?? meter}%` }} />
           </div>
         </div>
+        {selectedSector && (
+          <p className="game-line soft center-line">
+            {SECTOR_LABELS[selectedSector].icon} {SECTOR_LABELS[selectedSector].name}の様子は変わっていない
+          </p>
+        )}
+
+        <p className="game-line soft center-line farm-disclaimer">今週のデータをもう一度見比べよう</p>
+        <div className="dx-grid route-grid">
+          {cardOrder.map((id) => (
+            <div key={id} className="dx-card">
+              <div className="dx-head">
+                <span className="dx-name">{cardLabel(id)}</span>
+              </div>
+              <p className="dx-pattern">{readingOf(id)}</p>
+            </div>
+          ))}
+        </div>
 
         <p className="game-line soft center-line farm-disclaimer">
           ①今週、本当はどこに一番重い制限を割り当てるべきだったと思う？
@@ -160,17 +191,20 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
         <span className="task-sub">データを読んで、割り当て先と制限の強さを決めよう</span>
       </div>
 
+      <div className="meter">
+        <span>貯水率</span>
+        <div className="meter-bar">
+          <div className="meter-fill" style={{ width: `${meter}%` }} />
+        </div>
+      </div>
+
       <div className="dx-grid route-grid">
         {cardOrder.map((id) => {
           const isSector = id !== "reservoir" && id !== "rain";
-          const label = id === "reservoir" ? "貯水率" : id === "rain" ? "雨予報" : SECTOR_LABELS[id as Sector].name;
-          const icon = id === "reservoir" ? "💧" : id === "rain" ? "🌦" : SECTOR_LABELS[id as Sector].icon;
           return (
             <div key={id} className={`dx-card ${isSector && selectedSector === id ? "selected" : ""}`}>
               <div className="dx-head">
-                <span className="dx-name">
-                  {icon} {label}
-                </span>
+                <span className="dx-name">{cardLabel(id)}</span>
                 <button
                   className="dx-more"
                   aria-label={openCard === id ? "とじる" : "データを見る"}
@@ -179,18 +213,7 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
                   {openCard === id ? "－" : "？"}
                 </button>
               </div>
-              {openCard === id && (
-                <p className="dx-pattern">
-                  {id === "reservoir" && RESERVOIR_TEXT[session.reservoir]}
-                  {id === "rain" && RAIN_TEXT[session.rain]}
-                  {isSector && (
-                    <>
-                      {URGENCY_TEXT[id as Sector][session.sectors[id as Sector].urgency]} ／{" "}
-                      {CAPACITY_TEXT[id as Sector][session.sectors[id as Sector].capacity]}
-                    </>
-                  )}
-                </p>
-              )}
+              {openCard === id && <p className="dx-pattern">{readingOf(id)}</p>}
               {isSector && (
                 <button className={`dx-commit ${selectedSector === id ? "on" : ""}`} onClick={() => setSelectedSector(id as Sector)}>
                   ここに割り当てる

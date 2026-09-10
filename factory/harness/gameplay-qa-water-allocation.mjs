@@ -135,6 +135,18 @@ check("rain-only depth heuristic caps near 50%", results.rain_only_depth <= 0.55
   check("sector card display order is shuffled once per mount, not rendered in fixed SECTORS order", src.includes("useState<CardId[]>(() => shuffledIds(ALL_CARD_IDS))") && src.includes("cardOrder.map"));
   check("depth button display order is shuffled once per mount, not rendered in fixed DEPTHS order", src.includes("useState<Depth[]>(() => shuffledIds(DEPTHS))") && src.includes("depthOrder.map"));
   check("scoring is id-based (sessionWin reads correctSector/correctDepth by id), never position-based", !/session\.sectors\[\d/.test(body) && !/slots\[\d/.test(body));
+  check("the reflection screen re-presents all 5 readings (THINK_AGAIN_CONTEXT_MISSING regression, impl review r1 BLOCKER) — not just the 2 question sets", (() => {
+    const reflectBlock = body.split('outcome === "reflecting"')[1]?.split("return (")[1]?.split('outcome === "playing"')[0] ?? "";
+    return reflectBlock.includes("readingOf(id)") && reflectBlock.includes("cardOrder.map");
+  })());
+  check("the reflection screen shows the previously-selected sector's unchanged state (VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE regression, impl review r1 HIGH)", (() => {
+    const reflectBlock = body.split('outcome === "reflecting"')[1]?.split("return (")[1]?.split('outcome === "playing"')[0] ?? "";
+    return reflectBlock.includes("selectedSector") && reflectBlock.includes("様子は変わっていない");
+  })());
+  check("the playing (pre-commit) screen shows a reservoir meter baseline before any commit (impl review r1 HIGH)", (() => {
+    const playingBlock = body.split('outcome === "reflecting"')[0] ?? body;
+    return (playingBlock.match(/className="meter"/g) || []).length >= 1;
+  })());
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
