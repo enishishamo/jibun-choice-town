@@ -2192,11 +2192,11 @@
       "task_type": "game-content",
       "status": "READY",
       "repair_count": 0,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-load-and-route/impl-review-r2.result.json",
       "review_required": true,
-      "qa_status": null,
-      "qa_evidence": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-load-and-route/design/implementation_qa_v2.json",
       "deploy_status": null,
       "release_commit": null,
       "blocked_reason": null,
@@ -2205,13 +2205,29 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T01:16:42.806Z",
-      "updated_at": "2026-09-10T01:16:42.807Z",
+      "updated_at": "2026-09-10T03:22:04.503Z",
       "history": [
         {
           "at": "2026-09-10T01:16:42.807Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-10T03:22:04.468Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-load-and-route/design/implementation_qa_v2.json"
+        },
+        {
+          "at": "2026-09-10T03:22:04.504Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-load-and-route/impl-review-r2.result.json",
+          "score": 90,
+          "high_count": 0,
+          "override_note": null
         }
       ]
     }

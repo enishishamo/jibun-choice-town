@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-load-and-route-impl-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 90,
+    "career_authenticity_score": 92,
+    "game_quality_score": 90,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "failure_codes": [],
+    "round1_findings_confirmed_closed": {
+      "answer_leak_intro_art": true,
+      "truck_description_accurate": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "27 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit passed. npx vite build could not create node_modules/.vite-temp/vite.config.ts.* because the sandbox is read-only (EPERM); this is an environment limitation, not evidence of a source/build defect.",
+      "lint": "npx oxlint src/q1/LogisticsGame.tsx src/q1/logisticsLogic.ts src/data/content/schoolLunch.ts passed with no findings",
+      "delivery_check_jpg_free_of_contradicting_labels": true,
+      "ready_for_release": true
+    },
+    "evidence": [
+      "src/data/content/schoolLunch.ts:388 — logistics-lunch now resolves its intro image through K(\"delivery_check\"); K at line 9 produces the existing assets/kyushoku/delivery_check.jpg path.",
+      "public/assets/kyushoku/delivery_check.jpg — Independent pixel inspection found no numeric temperature labels, named temperature zones, explicit compartment count, or visual mapping to the four gameplay choices. The clipboard uses item icons and colored marks but does not associate them with frozen/cold5/cold10/ambient, so it does not reveal an answer.",
+      "public/assets/kyushoku/delivery_center.jpg — Independent comparison confirmed the replaced image contains the contradictory labels 冷凍-18℃以下, 冷蔵0〜10℃, 常温10〜25℃ and depicts fish beneath the frozen label; that image is no longer wired to this experience.",
+      "factory/projects/legacy-load-and-route/design/art_brief_v1.json:3 — no_art_required is true and explicitly lists both delivery_center.jpg and delivery_check.jpg as reusable existing assets.",
+      "src/data/content/schoolLunch.ts:396 — truck description now identifies 冷凍室, separate 5℃ and 10℃ refrigerated levels, and 常温室, accurately covering all four gameplay zones.",
+      "src/screens/Q1Screen.tsx:45 — the shell renders experience.place.image during the intro, confirming that the image swap directly closes the child-visible round-1 blocker.",
+      "src/screens/Q1Screen.tsx:84 — the shell passes experience into the registered game but does not render experience.tools.",
+      "src/q1/LogisticsGame.tsx:36 — LogisticsGame destructures only onComplete and onPartialComplete; it never consumes experience.tools. Repository-wide search found no shell/screen rendering of experience.tools, so the corrected truck text is currently dead Q1 data and the former prose defect had no child-visible impact in this shell.",
+      "src/q1/logisticsLogic.ts:28 — shipped validZones remain correct: raw_fish accepts cold5 only; raw_meat and milk accept cold5 or cold10; frozen items accept frozen; potato, bread, and flour accept ambient.",
+      "src/q1/logisticsLogic.ts:38 — the shipped model still exposes exactly frozen, cold5, cold10, and ambient.",
+      "src/q1/logisticsLogic.ts:83 — zoneWin evaluates membership in each food's validZones, so meat and milk placed in cold5 are accepted.",
+      "factory/harness/gameplay-qa-load-route.mjs:49 — the passing harness explicitly checks raw fish as cold5-only and meat/milk as accepting both cold5 and cold10.",
+      "src/q1/LogisticsGame.tsx:60 — departure evaluates the complete placement and route exactly once and transitions immediately to success or partial.",
+      "src/q1/LogisticsGame.tsx:80 — failure remains a distinct flat outcome without item-level answer disclosure or an in-session retry.",
+      "src/q1/LogisticsGame.tsx:89 — the failure continuation invokes onPartialComplete, falling back only when that callback is unavailable.",
+      "src/screens/Q1Screen.tsx:87 — the shell supplies distinct success and partial callbacks; lines 101-108 render different discovery framing for the two outcomes, preserving Gate H.",
+      "factory/harness/gameplay-qa-load-route.mjs:146 — the passing Gate H regression check requires the partial branch to use onPartialComplete and reject a direct onComplete handler.",
+      "src/q1/registry.ts:77 — load_and_route remains registered to LogisticsGame.",
+      "src/q1/LogisticsGame.tsx:167 — departure remains disabled until all food placements and both route selections are complete.",
+      "src/data/content/schoolLunch.ts:384 — logistics-lunch identity, profession, event, and gameType wiring remain intact around the two targeted edits."
+    ],
+    "recommended_actions": []
+  },
+  "elapsed_sec": 158.79
+}
