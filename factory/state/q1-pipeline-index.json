@@ -99,13 +99,13 @@
     "legacy-move-try": {
       "game_id": "legacy-move-try",
       "profession": "理学療法士",
-      "state": "REPAIRING",
+      "state": "ESCALATED",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "move_try",
       "task_id": "q1-rebuild-move-try",
       "repair_count": 1,
       "redesign_count": 2,
-      "updated_at": "2026-09-10T16:31:57.272Z",
+      "updated_at": "2026-09-10T16:35:43.046Z",
       "depends_on": []
     }
   }

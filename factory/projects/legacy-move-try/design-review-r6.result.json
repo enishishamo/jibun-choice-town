@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r6",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 52,
+    "game_quality_score": 76,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED — The walk caregiver gate is removed and both walk mappings are grounded, but the live standup model still makes training the unconditional answer whenever the environment is not adjustable. research.md does not establish that training safely or adequately addresses a missing support point, nor that training is independent of caregiver supervision; it explicitly says no single rule separating training, equipment, and pacing was found."
+    ],
+    "high": [
+      "PLAY_SEED_INTERNAL_CONTRADICTION — s4 says that when height cannot be changed, the correct response varies with the cause, but the actual mapping assigns training for both causes whenever envAdjustable=false."
+    ],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Live design fields retain the unsupported v5 premise that training is unaffected by caregiver availability and is always available, and use that premise to make train universally correct for standup when the environment is not adjustable. The research supports training as a broad intervention category, but not this supervision-independent gate or support-deficit mapping.",
+        "file": "factory/projects/legacy-move-try/design/fact_sheet_v6.json"
+      },
+      {
+        "code": "PLAY_SEED_INTERNAL_CONTRADICTION",
+        "severity": "HIGH",
+        "finding": "s4 states that responses to a non-adjustable environment differ by cause, while design-sim.mjs maps both legs+not_adjustable and support+not_adjustable to train. This makes the seed's claimed learning internally false.",
+        "file": "factory/projects/legacy-move-try/design/play_seeds_v6.json"
+      }
+    ],
+    "round5_findings_confirmed_closed": {
+      "walk_caregiver_gate_removed": true,
+      "walk_direct_mappings_honestly_grounded": true,
+      "no_residual_unsupported_claims": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6 passed, 0 failed; legitimate_full_reasoning=1, random_pick=0.0882, standup_cause_axis_only=0.5021, standup_env_axis_only=0.7491, single_axis_only_combined=0.7491",
+      "standup_unchanged_and_sound": false,
+      "walk_single_axis_mappings_grounded": true,
+      "no_withdrawn_content_presented_as_current": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-move-try/research.md:229 — Research explicitly says no clear single rule separating equipment, training, and pacing was found.",
+      "factory/projects/legacy-move-try/research.md:274 — FACT_CHECK_REQUIRED reiterates that no primary-source decision rule for training versus equipment/environment adjustment versus rest was established.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:93 — Walk candidates are only cane and rest.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:140 — Walk is genuinely single-axis: balance→cane and endurance→rest, with no caregiver condition.",
+      "factory/projects/legacy-move-try/research.md:117 — Walking instability requiring a larger support base is documented as an indication for a cane category.",
+      "factory/projects/legacy-move-try/research.md:99 — Endurance/cardiopulmonary limitation and pacing with rest are documented intervention concepts.",
+      "factory/projects/legacy-move-try/design/fact_sheet_v6.json:48 — A live expertise field still claims training is unaffected by caregiver supervision and is the only intervention always available; research.md does not support that claim.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:125 — Both non-adjustable standup cases unconditionally map to train, including support-point deficiency.",
+      "factory/projects/legacy-move-try/design/play_seeds_v6.json:44 — s4 incorrectly says the response to a non-adjustable environment changes according to cause, contradicting the universal-train mapping.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:233 — The executed simulator reported all six checks passing, including 0.5021/0.7491/0.7491 for the three requested axis metrics."
+    ],
+    "recommended_actions": [
+      "Escalate for human decision because repair and redesign budgets are exhausted.",
+      "Remove the unsupported claim that training is supervision-independent or always available, then obtain clinical grounding or human approval for the support+not_adjustable→train standup mapping.",
+      "Rewrite s4 information_gained so it accurately reflects the implemented mapping, or revise the mapping with defensible evidence."
+    ]
+  },
+  "elapsed_sec": 116.116
+}

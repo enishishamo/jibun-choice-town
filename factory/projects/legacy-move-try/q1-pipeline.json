@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "move_try",
   "creator": "claude-code",
-  "state": "REPAIRING",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "ESCALATED",
+  "current_stage": "GAME_TRANSLATION",
   "design_iteration": 3,
   "repair_count": 1,
   "redesign_count": 2,
@@ -953,6 +953,17 @@
       "must_change": "the game must not distort what the profession produces",
       "design_iteration": 3,
       "at": "2026-09-10T16:23:41.012Z"
+    },
+    {
+      "failure_id": "f-6",
+      "failure_code": "CORE_DISTORTED_BY_GAME",
+      "failure_reason": "design review r6 FAIL 52 (5th consecutive round with the CORE_CAUSAL_MODEL_DISTORTED code, this time newly targeting standup for the first time in 6 rounds): fact_sheet_v6.json's expertise bullet claims training is 'supervision-independent and always available' to justify standup's support+not_adjustable->train cell, but research.md does not establish that training specifically, adequately addresses a missing support point (a balance/proprioception-type deficit), only that it is a broad capacity-building category. HIGH: play_seeds s4's information_gained field is stale from the pre-v5 mapping and now internally contradicts design-sim.mjs (claims the correct response to a non-adjustable environment 'varies by cause' when both legs and support branches now converge on train). repair_count is 1/1 (REPAIR_MAX) and redesign_count is 2/2 (REDESIGN_MAX) for design_iteration 3 -- no repair or redesign budget remains.",
+      "evidence": "factory/projects/legacy-move-try/design-review-r6.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "fact sheet",
+      "must_change": "the game must not distort what the profession produces",
+      "design_iteration": 3,
+      "at": "2026-09-10T16:35:43.045Z"
     }
   ],
   "human_decisions": [],
@@ -961,7 +972,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T15:01:28.822Z",
-  "updated_at": "2026-09-10T16:31:57.272Z",
+  "updated_at": "2026-09-10T16:35:43.046Z",
   "history": [
     {
       "at": "2026-09-10T15:01:28.823Z",
@@ -1889,6 +1900,24 @@
       "sources": [
         "legacy-move-try:game_translations:v6"
       ]
+    },
+    {
+      "at": "2026-09-10T16:35:43.046Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "ESCALATED",
+      "note": "CORE_DISTORTED_BY_GAME persists after repair_count=1, redesign_count=2"
+    },
+    {
+      "at": "2026-09-10T16:35:43.046Z",
+      "event": "failure_routed",
+      "failure_id": "f-6",
+      "code": "CORE_DISTORTED_BY_GAME",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "ESCALATED",
+        "reason": "same fundamental failure persists after finite repair+redesign budget"
+      }
     }
   ],
   "redesign": [
@@ -1908,5 +1937,10 @@
       "reason": "design review r3/r4 both found CORE_CAUSAL_MODEL_DISTORTED on invented per-cell techniques (rest/compensate) that research.md does not document at cell-level granularity -- research.md explicitly disclaims a single decision rule connecting cause+condition to a specific technique. Redesigning the standup/walk mapping to drop invented candidates entirely: when no device/environment/caregiver support is available, training (訓練) -- a broad, cause-agnostic capacity-building category research.md explicitly documents -- becomes the universal honest fallback for BOTH causes in that branch. This deliberately accepts a disclosed domain floor on the condition axis alone (~75%, matching the established legacy-allocate-and-forecast precedent for a proven, unavoidable structural floor) while keeping the cause axis fully exploit-resistant (~50%, since cause diagnosis genuinely and specifically determines which device type applies when one is available).",
       "at": "2026-09-10T16:10:33.375Z"
     }
-  ]
+  ],
+  "escalation": {
+    "reason": "same fundamental failure persists after finite repair+redesign budget",
+    "failure_code": "CORE_DISTORTED_BY_GAME",
+    "at": "2026-09-10T16:35:43.046Z"
+  }
 }

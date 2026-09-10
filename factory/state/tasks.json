@@ -2367,7 +2367,7 @@
     "q1-rebuild-move-try": {
       "task_id": "q1-rebuild-move-try",
       "task_type": "game-content",
-      "status": "READY",
+      "status": "HUMAN_DECISION_REQUIRED",
       "repair_count": 0,
       "review_status": null,
       "review_evidence": null,
@@ -2376,19 +2376,25 @@
       "qa_evidence": null,
       "deploy_status": null,
       "release_commit": null,
-      "blocked_reason": null,
-      "human_decision_required": false,
+      "blocked_reason": "q1-pipeline ESCALATED after design_iteration 3 exhausted both REPAIR (1/1) and REDESIGN (2/2) budget. 6 consecutive design reviews (r1-r6), the last 5 of which (r2-r6) all found the identical CORE_CAUSAL_MODEL_DISTORTED BLOCKER on successive attempted fixes for the standup/walk multi-axis fix-selection mapping -- research.md documents broad intervention categories (device/environment, pacing, training) for this profession but explicitly disclaims any single documented decision rule connecting a specific cause+condition combination to a specific technique ('個々の臨床判断...臨床推論として行われている'). r6's final finding specifically challenges whether training genuinely, adequately addresses a missing support-point deficiency (as opposed to a leg-strength deficiency) closely enough to be the honest universal fallback for standup's support+not_adjustable cell -- a defensible-sounding but ultimately unresolved clinical-grounding question this Factory's iterative design-review process cannot settle further within the given research.md. See factory/projects/legacy-move-try/design-review-r6.result.json and q1-pipeline.json's failures array (f-1..f-6) for the full history. Needs a human decision: (a) commission additional, more granular PT research specifically on cause-to-technique decision rules to ground the remaining cell, (b) approve a narrower/more conservative mechanic for standup that avoids this specific claim (e.g. drop standup's env-adjustable axis too, making all 3 movements single-axis -- a bigger simplification than any redesign attempted so far), or (c) accept the current design as a disclosed simplification via explicit human sign-off, overriding the automated design-review gate for this one cell.",
+      "human_decision_required": true,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T15:01:28.779Z",
-      "updated_at": "2026-09-10T15:01:28.780Z",
+      "updated_at": "2026-09-10T16:36:11.208Z",
       "history": [
         {
           "at": "2026-09-10T15:01:28.780Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-10T16:36:11.209Z",
+          "event": "blocked",
+          "reason": "q1-pipeline ESCALATED after design_iteration 3 exhausted both REPAIR (1/1) and REDESIGN (2/2) budget. 6 consecutive design reviews (r1-r6), the last 5 of which (r2-r6) all found the identical CORE_CAUSAL_MODEL_DISTORTED BLOCKER on successive attempted fixes for the standup/walk multi-axis fix-selection mapping -- research.md documents broad intervention categories (device/environment, pacing, training) for this profession but explicitly disclaims any single documented decision rule connecting a specific cause+condition combination to a specific technique ('個々の臨床判断...臨床推論として行われている'). r6's final finding specifically challenges whether training genuinely, adequately addresses a missing support-point deficiency (as opposed to a leg-strength deficiency) closely enough to be the honest universal fallback for standup's support+not_adjustable cell -- a defensible-sounding but ultimately unresolved clinical-grounding question this Factory's iterative design-review process cannot settle further within the given research.md. See factory/projects/legacy-move-try/design-review-r6.result.json and q1-pipeline.json's failures array (f-1..f-6) for the full history. Needs a human decision: (a) commission additional, more granular PT research specifically on cause-to-technique decision rules to ground the remaining cell, (b) approve a narrower/more conservative mechanic for standup that avoids this specific claim (e.g. drop standup's env-adjustable axis too, making all 3 movements single-axis -- a bigger simplification than any redesign attempted so far), or (c) accept the current design as a disclosed simplification via explicit human sign-off, overriding the automated design-review gate for this one cell.",
+          "human_decision": true
         }
       ]
     }
