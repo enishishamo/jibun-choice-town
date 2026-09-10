@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "hotel_receive",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "ART_BRIEF_READY",
+  "current_stage": "ART_BRIEF",
   "design_iteration": 1,
   "repair_count": 1,
   "redesign_count": 0,
@@ -616,6 +616,78 @@
           "creator": "sonnet"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-hotel-receive:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/game_spec_v1.json",
+      "payload": {
+        "goal": "花組・月組・星組の3班それぞれについて、人数データ・提示された部屋タイプ・アレルギー調査票（メンバー個人単位）の読み物をすべて確認したうえで、部屋の判定（この部屋でよい／別の部屋が必要）と、個別対応食が必要なメンバーの選択を、班ごとに1回のコミットとして確定する。",
+        "initial_visual_state": "『修学旅行の団体が到着する日』という短い導入テキストのあと、花組・月組・星組の3枚の班カード（固定表示、閉じた状態、それぞれ中立のアイコン付き）、班ごとの部屋判定ボタン2個（『この部屋でよい』／『別の部屋が必要』、disabled）、メンバーごとの個別対応食チェックボックス（disabled）、班ごとの実施ボタン（disabled）。説明文はない。花組が最初にアクティブな班として強調表示される。",
+        "interactive_objects": [
+          "班カード（タップで開閉、開くと人数データ・提示された部屋タイプ・メンバーごとのアレルギー調査票が表示される）",
+          "部屋判定ボタン（『この部屋でよい』／『別の部屋が必要』の2択、班のすべてのデータを開くまでdisabled）",
+          "メンバーごとの個別対応食チェックボックス（複数選択可、0人〜全員、班のすべてのデータを開くまでdisabled）",
+          "班ごとの実施ボタン（部屋判定を1つ選ぶまでdisabled。チェックボックスは0人選択でも有効な状態として扱ってよい）",
+          "振り返り画面の非採点選択（失敗時のみ表示、3班の元データを読み取り専用で再掲したうえでの選び直し）"
+        ],
+        "primary_action": "班カードの『？』をすべてタップして読み物を開く→部屋判定ボタンを1つ選ぶ→個別対応食が必要なメンバーをチェックする（0人以上）→『チェックインする』を押すと1回のコミットでその班の結果が確定する→次の班へ進む（3班繰り返し）。",
+        "C": "班ごとの人数データ（3〜6名）、提示された部屋タイプ（トリプルルーム定員3名／基準室定員4名／特別室定員6名のいずれか）、アレルギー事前調査票（班のメンバーごと、Aさん・Bさんなどのラベルで、7大アレルギー品目——卵・牛乳・小麦・そば・落花生・えび・かに——ごとの除去要否）。",
+        "D": "提示された部屋タイプの定員が、班の実際の人数に足りているかを人数データと見比べて判定する（足りていれば『この部屋でよい』、足りなければ『別の部屋が必要』）。同時に、アレルギー調査票をメンバー全員分読み、実際に除去要の品目があるメンバーだけを個別対応食としてチェックする（アレルギーのないメンバーまで含めない、該当するメンバーを見落とさない）。この2つの判断は独立しており、班ごとに1回のコミットで確定する。",
+        "system_reactions": "選んだ部屋判定・個別対応食対象者の両方がその班の実際の状況（design-sim.mjsのroomOk/flaggedMembers）に合っていれば、その班のアイコンが『完了』状態（緑色・チェックマーク）に変わり、『（班名）のチェックインが完了した』という短いテキストが表示される。どちらか一方でも誤っていれば、アイコンが第3の『まだできない』状態（オレンジ色・注意マーク）に変わり、『（班名）はまだチェックインできない』というフラットな結果が表示される（どちらの判断が誤っていたかは個別に示さない）。3班すべての結果が出そろった時点で1つでも失敗があれば、非採点の振り返り画面へ遷移する。",
+        "state_transitions": "各班: 未読(中立アイコン) → 読了・未コミット(中立アイコンのまま、ボタン活性化) → コミット済み・成功(緑・チェック) または コミット済み・失敗(オレンジ・注意マーク)。3班すべてコミット後: 全班成功→onComplete結果画面、1班以上失敗→振り返り画面(非採点選択)→onPartialComplete結果画面。",
+        "failure_behavior": "班ごとに1回のコミットで結果が確定し、その場での訂正・やり直しはない。個別の失敗理由（部屋判定かアレルギー対象者か）は開示しない。3班中1班以上が失敗した場合、onCompleteではなくonPartialCompleteを呼び、Gate H HONEST OUTCOMEに従った異なるトップフレーミングの結果画面へ遷移する。",
+        "retry_behavior": "班ごとの得点に影響するやり直しはない（brute force排除、旧実装の欠陥修正の核）。1つでも失敗した場合のみ、3班の元データ（人数・提示された部屋タイプ・アレルギー調査票）を読み取り専用で再提示し、班ごとに『今度はどう判断すればよかったと思う？』という非採点の振り返り選択を挟む——この選択はスコアに影響せず、結末（onPartialComplete）も変えない。振り返り選択が全班分完了するまで、結果画面へ進むボタンはdisabledにする。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことでのみ可能。",
+        "E": "3班すべてで部屋判定・個別対応食対象者の両方が正しければ、団体は問題なくチェックインを終え、滞在を始められる、という成功結果（onComplete）。1つでも誤っていれば、その班はまだチェックインが完了しない、という正直な結果（onPartialComplete）。成功・失敗いずれの場合も、班アイコンの状態変化という視覚的フィードバックを伴う。",
+        "job_reveal": "『修学旅行の団体が到着する日』という導入から、ホテル・旅館の団体受入担当という仕事の紹介へつなげる。学校側が決めた班編成を、宿泊施設側が実際に空いている部屋・個人単位のアレルギー対応へ収める、という実在の役割分担をテキストで明示する（研究: 学校が班編成の原案を作り、宿泊施設はその人数を実際の客室へ当てはめる、児童・生徒個人単位のアレルギー情報がフロント・厨房・配膳で共有される）。",
+        "first_5_seconds": "first_5_seconds_v2.jsonを参照。導入テキスト表示（0-2秒）→花組カードへの最初のタップ（2-5秒、カードが開き人数・部屋・アレルギーデータが表示される）→部屋判定とメンバー選択を両方行わないと実施ボタンが押せないという推測→判定・選択→実施。",
+        "no_manual_requirements": "説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる既存Q1の規約に従う。班カードの名前（花組・月組・星組）・部屋タイプの名前・メンバーラベル（Aさん・Bさんなど）は正当な開示。部屋判定ボタン・メンバーチェックボックスの表示順（メンバーの並び順など）は正解を示唆しない（no_manual_exploit_check_v2.json参照）。",
+        "mobile_constraints": "375px幅を基準に、班カード・部屋判定ボタン2個・メンバーごとのチェックボックス（3〜6個）・実施ボタンが縦に収まるレイアウトを実装時に検証する。メンバー数が多い班（5〜6名）ではチェックリストが縦に伸びるため、スクロール可能な領域として実装するか、コンパクトな一覧表示にする。振り返り画面は3班ぶんのデータ再掲＋3つの振り返り選択になるため、画面が長くなることを想定し、スクロール可能にする。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存のpublic/assets/schooltrip/school-trip-hotel.jpgは旧実装の仕組み（手動グリッド配置・入浴時間帯の時計アイコン）を視覚的に示す内容が焼き込まれており、本リビルドの新しい仕組み（提示された1室の充足確認、メンバー個人単位のアレルギー選択）とは一致しないため使用しない。legacy-move-try/legacy-allocate-and-forecast（water-heat）と同様、絵文字・アイコン・CSSのみで構成し、シーン画像を使用しない。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:game_translations:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T17:11:48.262Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/game_spec_v1.json",
+          "created_at": "2026-09-10T17:11:48.263Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-hotel-receive:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "このゲームはシーン画像を使用せず、絵文字・アイコン・CSSのみで構成する——legacy-move-try（src/q1/MoveTryGame.tsx）・legacy-allocate-and-forecast（水資源ゲーム）と同じ、既存Q1の非画像UIパターンに従う。既存の public/assets/schooltrip/school-trip-hotel.jpg（旧hotel_receiveの背景として使われていた可能性のある画像）をReadツールで直接確認したところ、手動でペグ人形を部屋グリッドへ配置する操作・食事トレイ・入浴時間帯を示す時計アイコンとグループ分けが具体的に描かれており、これは旧実装（手動グリッド配置＋入浴時間帯調整）の仕組みを視覚的に示す内容である。本リビルドの新しい仕組み（提示された1室の定員充足を確認する検証タスク、メンバー個人単位のアレルギー選択、入浴時間帯調整は扱わない）とは一致しないため、この画像は再利用しない——再利用すると、存在しない操作（グリッド配置・入浴時間帯選択）を子どもに示唆してしまうおそれがある（ART_ANSWER_LEAK/視覚的ミスリードの回避）。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T17:11:54.152Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/art_brief_v1.json",
+          "created_at": "2026-09-10T17:11:54.153Z",
+          "creator": "sonnet"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -656,7 +728,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T16:38:25.488Z",
-  "updated_at": "2026-09-10T17:09:45.744Z",
+  "updated_at": "2026-09-10T17:11:54.153Z",
   "history": [
     {
       "at": "2026-09-10T16:38:25.489Z",
@@ -1050,6 +1122,38 @@
       "at": "2026-09-10T17:09:45.743Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T17:11:48.263Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T17:11:48.263Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T17:11:54.153Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T17:11:54.153Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:game_spec:v1"
+      ]
     }
   ]
 }
