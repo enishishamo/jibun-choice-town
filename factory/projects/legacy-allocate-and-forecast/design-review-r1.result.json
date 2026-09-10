@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 43,
+    "career_authenticity_score": 43,
+    "game_quality_score": 46,
+    "blockers": [
+      "CORE_DISTORTED_BY_GAME: 実務は利水者間の協議・合意による複数セクターの段階的な制限調整なのに、ゲームは毎回「農業か工業のどちらか一方だけが唯一の正解」で「家庭は絶対に正解にならない」という個人向け正解当てに置換している。research.md自身の表には上水だけを制限する石川・加古川・筑後川、上水を含む複数用途を制限する高梁川・小瀬川・吉野川等があり、家庭常時除外は根拠と明確に矛盾する。",
+      "C_NOT_NEEDED_FOR_D: 家庭をラベルだけで常時除外し、残る農業・工業について一方の軸だけ読む戦略が83.09%または83.72%成功する。design-simはこの抜け道を測定しながら、恣意的な85%閾値でPASSさせている。さらに「full_reasoning」の実装はalt=yesが一意なら即決するため、全セッションで両軸を読む処理ですらない。",
+      "ANSWER_LEAK / Gate G violation: 本判断は「最も深く制限するセクター」を選ぶ操作なのに、失敗後の振り返りは「本当はどこを一番守るべきだった？」と逆向きの問いを出す。家庭は常に守るというルールから回答が自明で、失敗した制限先・制限深度を考え直す行為にならない。加えてs3は失敗直後に「家庭への制限は見送るべきだった」と個別正解を明示し、採用翻訳のフラットフィードバックと即答禁止に反する。"
+    ],
+    "high": [
+      "TEXT_ONLY_CONSEQUENCE: 採用翻訳が規定する主要反応は「貯水率が保たれ、被害を防げた」「対応が今週の状況に合っていなかった」という文章結果だけで、貯水率メーター、配水状態、農地・工場・家庭の反応などの視覚的世界変化が指定されていない。WORLD_FEEDBACK_QUALITYを満たさない。",
+      "ARTIFACT_CHAIN_INCONSISTENT: reference_research_v1.jsonはlegacy-clue-joinを「1回のコミット、非採点の振り返り」の先例として列挙するが、実際の採用翻訳は「あと2回」のスコア付き提出と、失敗後の再提出を明記している。異なる先例だという必要な区別が正しく記録されていない。",
+      "ARTIFACT_CHAIN_INCONSISTENT: play_seeds_v1.jsonのs3は家庭誤選択時に個別原因を明示する一方、game_translations_v1.jsonの採用t1は失敗時に「どこがどう違うかは示さない」と規定する。実装者がどちらを採用すべきか一意でない。"
+    ],
+    "medium": [
+      "no_manual_exploit_check_v1.jsonの色・位置・階層評価は「同じ見た目にする意図」「実装段階で検証」とするだけで、具体的なレイアウトや状態別スタイルを検査していない。設計段階の留保としては理解できるが、pass:trueは証拠より強い。",
+      "research.mdは貯水率と雨に加えて「貯水率が下がるスピード」も残すべき情報に挙げるが、圧縮後のCとシミュレーターは現在値のHIGH/LOWとSOON/FARだけで、低下速度を脱落させている。",
+      "research.md末尾には古い非バージョン名fact_sheet.json / scope_core.jsonが残っており、現在のfact_sheet_v1.json / scope_core_v1.jsonへの参照として機械的に同期されていない。"
+    ],
+    "low": [
+      "first_5_seconds_v1.jsonの「実施ボタん」は表記揺れ。",
+      "t2とt3の却下理由自体は妥当だが、検討範囲が狭い。協議会らしい代替案として、複数セクターの配分案を作り、各利水者の許容条件を満たすまで段階的に調整する翻訳が比較対象にない。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "BLOCKER",
+        "finding": "家庭を常時除外し、農業か工業の単一正解を当てるモデルは、上水のみ・複数用途・同率制限を含む実データと、利水者間の合意形成という実務を歪めている。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs"
+      },
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "BLOCKER",
+        "finding": "家庭除外後の単一軸戦略が約83%成功し、full_reasoning実装も多くのケースで一方の軸だけで即決するため、セクター判断の全2軸は genuinely required ではない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs"
+      },
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "BLOCKER",
+        "finding": "非採点振り返りが制限先ではなく「守る先」を尋ね、常時保護される家庭という自明な回答を作る。s3はさらに家庭を制限すべきでなかったと即答する。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v1.json"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "HIGH",
+        "finding": "採用翻訳のフラットな失敗結果と、逆向きで自明な振り返り問いでは、制限深度と割り当て先を再検討する次の判断につながらない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json"
+      },
+      {
+        "code": "NO_CONSEQUENCE",
+        "severity": "HIGH",
+        "finding": "主要結果が文章メッセージとしてのみ規定され、必須の視覚的な世界・状態変化が設計されていない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "15 passed, 0 failed。保存結果とも一致した。ただしチェック10のfull_reasoningは全軸を常時読む処理ではなく、チェック11・12は単一軸戦略の83.09%/83.72%成功を85%以下という閾値で不当にPASSさせているため、15 PASSは設計健全性を証明しない。",
+      "core_representative": false,
+      "household_confound_sound": false,
+      "causal_realism_grounded": false,
+      "gate_g_genuinely_non_scored": false,
+      "clue_join_citation_accurate": false,
+      "disclosure_gate_specified_for_implementation": true,
+      "citation_chain_consistent": false
+    },
+    "evidence": [
+      "factory/projects/legacy-allocate-and-forecast/research.md:21 — 実務は複数主体による協議・合意形成で、個人が一存でセクター配分を決めない。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:56 — 取水制限の実施・強化・緩和・解除を利水者間で合意させることが代表的実務。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:276 — 実在運用は一度の判断ではなく、状況に応じて制限率を強化・緩和する。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:303 — 実データには上水だけ、農水だけ、工水だけ、複数用途、全用途同率の各パターンが存在する。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:307 — 石川は上水40%のみ、家庭常時除外モデルへの直接的反証。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:313 — 佐波川は3用途すべて10%、単一セクターだけが正解というモデルへの反証。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:370 — researchが求めるのは「どれを、どの時期に、どれだけ絞るか」であり、家庭を候補外に固定することではない。",
+      "factory/projects/legacy-allocate-and-forecast/design/scope_core_v1.json:2 — 家庭用水を常に対象外とする不正確な定数をCOREに固定している。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:7 — householdは常に保護されると断定しているが、researchの上水制限実例と矛盾する。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:13 — 毎回agriculture/industrialのちょうど一方だけを正解にする。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:46 — 非対象パターンから正解と同じ2軸値を意図的に除外し、必ず一意解になる人工ルールを作っている。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:169 — full_reasoningはaltが一意ならurgencyを使わず即決するため、名称どおりの全2軸推論ではない。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:227 — 83%成功する単一軸戦略を85%以下という基準だけでPASSさせている。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim-result.json:20 — household除外＋altのみで0.8309成功。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim-result.json:21 — household除外＋urgencyのみで0.8372成功。",
+      "factory/projects/legacy-allocate-and-forecast/design/ae_v1.json:6 — 全5カード開示まで実行ボタンを活性化しない実装要件は明記されている。",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json:10 — 採用翻訳は失敗時に個別の誤りを示さないと規定する。",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json:10 — 振り返りが「最も深く制限する先」ではなく「一番守る先」を尋ね、操作目的と反転している。",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json:14 — zero-effectではなく資源配分・優先順位失敗とする表現自体はresearchの新潟事例と整合する。",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v1.json:15 — 振り返りは非採点で結果を変えないと明記され、スコア分離の仕様自体は明確。",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v1.json:31 — s3は家庭への制限を見送るべきだったと即時に個別正解を教え、採用翻訳と矛盾する。",
+      "factory/projects/legacy-allocate-and-forecast/design/reference_research_v1.json:16 — clue-joinを1コミット・非採点振り返りの先例群として誤って列挙している。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json:8 — 実際のclue-join採用翻訳は「あと2回」のbudgeted scored commit。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json:15 — 失敗後に診断・根拠を見直して再提出する、本作とは異なる得点付き再挑戦。",
+      "factory/projects/legacy-allocate-and-forecast/design/no_manual_exploit_check_v1.json:12 — 色リーク防止は実装意図だけで、現時点では未検証。",
+      "factory/projects/legacy-allocate-and-forecast/design/no_manual_exploit_check_v1.json:14 — 位置シャッフルも将来の実装条件であり、現在のUIに対する検証ではない。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:414 — 現行名ではないfact_sheet.json / scope_core.jsonへの参照が残る。"
+    ],
+    "recommended_actions": [
+      "家庭常時除外と「農業か工業の一方だけが正解」という生成規則を廃止し、上水のみ・複数用途・同率を含む実データに沿った複数の配分パターンをモデル化する。",
+      "単一正解当てではなく、貯水・降雨条件から総制限量を決め、各利水者の最低条件・代替手段を見ながら複数セクターへ配分し、合意可能な案を作る翻訳を追加比較する。",
+      "各セクター判断軸が本当に必要になるようケース集合を再設計し、既知の定数＋単一軸で80%以上成功する戦略はFAILさせる。適応的に一軸だけ読んで即決する戦略も別途検査する。",
+      "振り返りを「今週、どこに最も深い制限を割り当て直す？ 強さはどうする？」など本コミットと同方向の問いに直し、家庭という自明解を作らない。",
+      "s3の個別正解開示を削除し、採用翻訳のフラットフィードバックへ全成果物を同期する。",
+      "結果として貯水率メーター、配水線、農地・工場・住宅の状態が選択に応じて変化する視覚フィードバックをtranslation段階で必須指定する。",
+      "reference_research_v1.jsonでclue-joinは「2回の得点付き再提出を持つ異なる先例」と明記し、非採点振り返りの実際の採用元だけを別に記載する。",
+      "全5カード開封ゲートに加え、カードを開くだけで内容を読まない操作を防げない点を踏まえ、攻略上それぞれの情報内容が必要になるケース設計とQAを用意する。"
+    ]
+  },
+  "elapsed_sec": 228.403
+}
