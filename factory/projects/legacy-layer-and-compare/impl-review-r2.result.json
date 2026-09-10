@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-layer-and-compare-impl-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 88,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [
+      "The disclosure-gate regression check is structurally weak: it verifies that canCommit mentions allDataRead and openedSlots exists, but does not verify that toggleOpen records each tapped index without removing it or that allDataRead derives from openedSlots.size. The implementation itself is correct, so this does not gate release."
+    ],
+    "failure_codes": [],
+    "round1_findings_confirmed_closed": {
+      "core_data_disclosure_not_required": true,
+      "think_again_skippable": true,
+      "tool_order_not_shuffled": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "27 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit passed. npx vite build could not run in the read-only sandbox because Vite attempted to write node_modules/.vite-temp; this is an EPERM environment restriction, not evidence of a broken build.",
+      "lint": "npx oxlint src/q1/UrbanHeatGame.tsx src/q1/heatDiagnosisLogic.ts passed with no findings.",
+      "disclosure_gate_genuinely_enforced": true,
+      "reflection_gate_genuinely_enforced": true,
+      "ready_for_release": true
+    },
+    "evidence": [
+      "src/q1/UrbanHeatGame.tsx:43 — openedSlots is initialized as an empty Set, so no disclosure is credited initially.",
+      "src/q1/UrbanHeatGame.tsx:47 — allDataRead becomes true only when openedSlots.size equals the three generated session slots.",
+      "src/q1/UrbanHeatGame.tsx:48 — canCommit requires allDataRead, a selected location, and a selected tool.",
+      "src/q1/UrbanHeatGame.tsx:50 — toggleOpen is the only disclosure handler and receives the mapped location index.",
+      "src/q1/UrbanHeatGame.tsx:51 — opening and closing affect only openSlot presentation state.",
+      "src/q1/UrbanHeatGame.tsx:52 — toggleOpen adds an unseen index and preserves an already-seen index; closing never removes disclosure credit.",
+      "src/q1/UrbanHeatGame.tsx:123 — every location's real 「？」/close button invokes toggleOpen(i), and no other UI path writes openedSlots.",
+      "src/q1/UrbanHeatGame.tsx:143 — tools remain selectable before all disclosures; the disclosure gate applies at final commit rather than tool selection.",
+      "src/q1/UrbanHeatGame.tsx:155 — the real 実施する button is disabled until canCommit is true.",
+      "src/q1/UrbanHeatGame.tsx:45 — reflectionPick starts null and has no pre-reflection initialization path.",
+      "src/q1/UrbanHeatGame.tsx:58 — a failed scored commit enters reflecting without modifying reflectionPick.",
+      "src/q1/UrbanHeatGame.tsx:90 — reflectionPick is set only by tapping one of the three reflection location buttons.",
+      "src/q1/UrbanHeatGame.tsx:101 — the real 先へ進む button is disabled while reflectionPick is null.",
+      "src/q1/UrbanHeatGame.tsx:39 — toolOrder is shuffled once in a useState initializer.",
+      "src/q1/UrbanHeatGame.tsx:144 — tool cards render from toolOrder rather than fixed TOOLS order.",
+      "src/q1/UrbanHeatGame.tsx:148 — selection stores the tool ID, not its display index.",
+      "src/q1/UrbanHeatGame.tsx:57 — scoring passes selectedTool and selectedSlot to sessionWin; no tool-position scoring exists.",
+      "src/q1/UrbanHeatGame.tsx:44 — the outcome union contains only playing, reflecting, and success; partial was removed.",
+      "src/q1/heatDiagnosisLogic.ts:28 — ROLES values match design/design-sim.mjs:65-71 exactly in role IDs and readings.",
+      "src/q1/heatDiagnosisLogic.ts:35 — TOOLS matches design/design-sim.mjs:72 exactly and in the same order.",
+      "src/q1/heatDiagnosisLogic.ts:62 — ARCHETYPES match design/design-sim.mjs:80-83 exactly in IDs, roles, correctRole, and correctTool.",
+      "src/q1/heatDiagnosisLogic.ts:104 — sessionWin remains ID-based and equivalent to design/design-sim.mjs:98-99.",
+      "src/q1/UrbanHeatGame.tsx:79 — failure says the heat did not ease as much as expected, not that the intervention had zero effect.",
+      "src/q1/UrbanHeatGame.tsx:81 — failure explicitly acknowledges the intervention may not have been wasted and attributes failure to leaving the dominant cause unresolved.",
+      "factory/harness/gameplay-qa-heat-diagnosis.mjs:125 — the disclosure regression checks the real disabled binding and canCommit operands, but not toggleOpen's add-only semantics, so it could be made to pass by an incorrectly wired openedSlots implementation.",
+      "factory/harness/gameplay-qa-heat-diagnosis.mjs:129 — the reflection regression scopes its exact disabled-condition search to the reflecting render block, and therefore tests the real reflection path in the current component.",
+      "factory/harness/gameplay-qa-heat-diagnosis.mjs:133 — the tool-order regression verifies one-time shuffled initialization and rendering through toolOrder."
+    ],
+    "recommended_actions": [
+      "Strengthen the disclosure regression with a behavior-level component test, or at minimum assert that allDataRead is derived from openedSlots.size and toggleOpen uses an add-only functional Set update for the tapped index."
+    ]
+  },
+  "elapsed_sec": 147.051
+}

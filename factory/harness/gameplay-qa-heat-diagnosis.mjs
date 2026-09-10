@@ -124,7 +124,18 @@ check("'avoid wind, apply fixed tool' strategies stay well below full reasoning"
   check("the post-failure reflection step exists and is visually distinct from the scored commit step", src.includes("reflectionPick") && src.includes("結果は変わりません"));
   check("commit button requires a location, a tool, AND that all three locations' data has been opened — CORE_DATA_DISCLOSURE_NOT_REQUIRED regression (impl review r1 BLOCKER)", (() => {
     const canCommitLine = src.match(/const canCommit = ([^;]+);/)?.[1] ?? "";
-    return /disabled=\{!canCommit\}/.test(src) && canCommitLine.includes("allDataRead") && canCommitLine.includes("selectedSlot !== null") && canCommitLine.includes("selectedTool !== null") && src.includes("openedSlots");
+    const allDataReadLine = src.match(/const allDataRead = ([^;]+);/)?.[1] ?? "";
+    const toggleOpenBody = src.match(/const toggleOpen = \(i: number\) => \{([\s\S]*?)\};/)?.[1] ?? "";
+    return (
+      /disabled=\{!canCommit\}/.test(src) &&
+      canCommitLine.includes("allDataRead") && canCommitLine.includes("selectedSlot !== null") && canCommitLine.includes("selectedTool !== null") &&
+      allDataReadLine.includes("openedSlots.size") &&
+      // toggleOpen must be an add-only functional update (never remove an index, e.g. re-closing a
+      // card must not revoke disclosure credit -- impl review r2 LOW: strengthen beyond string
+      // presence to actually check add-only semantics).
+      /setOpenedSlots\(\(prev\) => \(prev\.has\(i\) \? prev : new Set\(prev\)\.add\(i\)\)\)/.test(toggleOpenBody) &&
+      !/delete|filter/.test(toggleOpenBody)
+    );
   })());
   check("the reflection continue button is disabled until a reflection pick is made — THINK_AGAIN_SKIPPABLE regression (impl review r1 BLOCKER)", (() => {
     const reflectBlock = body.split('outcome === "reflecting"')[1]?.split("return (")[1]?.split('outcome === "playing"')[0] ?? "";
