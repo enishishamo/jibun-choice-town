@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-delay-recover-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 82,
+    "career_authenticity_score": 82,
+    "game_quality_score": 91,
+    "blockers": [],
+    "high": [
+      "The shipped content still attributes an unperformed change-plan activity to the child. The implementation only checks status, reports, records three contact taps, obtains approval, and shares; it never lets the child create or consider a change proposal. Nevertheless, the profession copy says 「変更案を作って」 and the interest seed says 「変更案を考える」. The seed directly violates the project rule that seeds describe only actions actually played, and contradicts implementation_qa_v1.json's claim that the pre-existing content was already accurate."
+    ],
+    "medium": [
+      "The content regression test is materially under-scoped. It checks only for reorder wording within the delay-trip slice and therefore passes despite the stale 「変更案を考える」 seed. It also does not verify hotel prioritization, all three affected parties, or the absence of plan-selection language across the trip-conductor profession entry. Several JSX assertions similarly rely on unbounded token-presence regexes rather than associating prerequisites with the intended button, so they could pass after certain regressions. The current implementation was manually verified as correct, but the shipped harness does not reliably protect all behavior claimed by its test names."
+    ],
+    "low": [
+      "The status and contact disclosure controls display a 「－」 symbol after opening, conventionally suggesting collapse, but their handlers only set/add the opened state and cannot close the cards. This differs from the approved design's open/close wording, though it does not affect disclosure, scoring, or exploit resistance."
+    ],
+    "failure_codes": [
+      {
+        "code": "CONTENT_MECHANIC_MISMATCH",
+        "severity": "HIGH",
+        "finding": "Player-facing profession copy and an interest seed claim that the child creates or considers a change proposal, an action absent from the rebuilt mechanic.",
+        "file": "src/data/content/schoolTrip.ts"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The schoolTrip regression assertion excludes only reorder phrases and consequently passes while stale change-plan wording remains; other source assertions are also based on weak, incompletely scoped token presence.",
+        "file": "factory/harness/gameplay-qa-delay-recover.mjs"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "21 passed, 0 failed; however, the content and several JSX regression checks are insufficiently scoped and one passes despite a real stale-content defect.",
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "disclosure_gate_genuinely_enforced": true,
+      "batching_bug_absent": true,
+      "position_leak_closed": true,
+      "gate_h_correct": true,
+      "gate_g_correct": true,
+      "content_copy_accurate": false,
+      "ready_for_release": false
+    },
+    "evidence": [
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs — executed successfully: 6 passed, 0 failed; legitimate reasoning=1, random order=0.3296, positional strategies≈0.33.",
+      "src/q1/delayRecoverLogic.ts:16-36 — CONTACTS, hotel-first win rule, Fisher-Yates shuffle, and per-session display order structurally match design-sim.mjs.",
+      "src/q1/DelayRecoverGame.tsx:42-58 — openContact, contact, and toggleReflect all read state from functional-updater prev values; the React batching state-loss bug is absent.",
+      "src/q1/DelayRecoverGame.tsx:49-55 — contact taps are idempotently appended once, and share derives the outcome directly from contactOrderWins(contactedOrder).",
+      "src/q1/DelayRecoverGame.tsx:90-119 — loss reflection re-presents CONTACT_DETAIL for all three contacts and the selected reflection order does not influence onPartialComplete.",
+      "src/q1/DelayRecoverGame.tsx:156-180 — playing cards render through session.displayOrder; unopened cards contain no detail body or contact button, and contacted cards replace their controls with a locked summary.",
+      "src/q1/DelayRecoverGame.tsx:188-193 — approval requires all three recorded contacts and sharing requires approval.",
+      "src/q1/DelayRecoverGame.tsx:139-140,164-166 — opened controls show a minus symbol although their handlers cannot collapse them.",
+      "src/data/content/schoolTrip.ts:133-143 — profession copy generally describes coordination correctly, but line 137 says the player-facing role creates a change proposal, which the game never implements.",
+      "src/data/content/schoolTrip.ts:194-199 — mission and discoveryEcho describe the new contact/approval flow, but the 「変更案を考える」 seed names an action the child did not perform.",
+      "src/data/content/schoolTrip.ts:56 — lens summary 「遅れをつなぎ直す」 is accurate and contains no stale mechanic.",
+      "factory/harness/gameplay-qa-delay-recover.mjs:107-111 — content regression checks only 状況確認, 学校の承認, and three reorder expressions; they omit stale change-plan wording and hotel-priority coverage.",
+      "factory/harness/gameplay-qa-delay-recover.mjs:80-90 — disclosure, lock, and partial-outcome checks use broad token/regex presence without consistently bounding the intended JSX control.",
+      "src/index.css:139-147,2690-2695,4235-4266 — the component reuses established btn, choice-row, dx-card, dx-grid, dx-commit, and route-grid styles; no new unverified CSS was introduced.",
+      "src/q1/HotelReceiveGame.tsx:166-209,254-325 — the same layout and interaction classes are used by the previously shipped comparison game.",
+      "src/q1/registry.ts:112 — registry comment accurately records status check, hotel-priority contact, approval, and sharing."
+    ],
+    "recommended_actions": [
+      "Replace 「変更案を作って」 and 「変更案を考える」 with actions actually performed, such as comparing the three parties' impacts, prioritizing the hotel, obtaining school approval, and sharing confirmed information.",
+      "Expand the content regression test to inspect both the complete trip-conductor profession entry and delay-trip experience, rejecting stale change-plan/plan-card/reordering terminology and positively asserting the three-party hotel-priority mechanic.",
+      "Refactor JSX regression checks to extract or structurally parse the exact playing, reflection, and button blocks rather than relying on unbounded token-presence regexes.",
+      "Either make the disclosure buttons genuinely toggle closed or keep them one-way and replace the post-open minus symbol with a non-collapse status indicator."
+    ]
+  },
+  "elapsed_sec": 77.501
+}

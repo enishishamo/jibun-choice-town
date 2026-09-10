@@ -4,10 +4,10 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "delay_recover",
   "creator": "claude-code",
-  "state": "IMPL_QA_PASSED",
+  "state": "UNDER_REVIEW",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
-  "repair_count": 0,
+  "repair_count": 1,
   "redesign_count": 1,
   "artifacts": {
     "fact_sheet": {
@@ -778,12 +778,12 @@
       ]
     },
     "implementation": {
-      "artifact_id": "legacy-delay-recover:implementation:v1",
+      "artifact_id": "legacy-delay-recover:implementation:v2",
       "artifact_type": "implementation",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/implementation_v1.json",
+      "file": "factory/projects/legacy-delay-recover/design/implementation_v2.json",
       "payload": {
         "component_files": [
           "src/q1/DelayRecoverGame.tsx"
@@ -791,59 +791,77 @@
         "logic_module": "src/q1/delayRecoverLogic.ts",
         "qa_harness": "factory/harness/gameplay-qa-delay-recover.mjs",
         "spec_version": "game_spec_v1.json",
-        "art_version_or_none": "none (art_brief v1: no_art_required=true, no new scene image. The existing public/assets/schooltrip/school-trip-tour-conductor.jpg was independently visually verified via the Read tool: it depicts the conductor at the station with a clock and phone lines fanning out to a castle/venue, a bus, and a building -- already thematically aligned with the new mechanic and containing no old-implementation-specific UI, so it continues to be used as-is for the trip-conductor profession/delay-trip experience place image)",
-        "d_preserved_statement": "The reviewed mechanic (t5-hedged-evidence-scope, design review r3 PASS 86) is preserved exactly: the child confirms the status card, reports to school, then reads all 3 affected-party cards (見学先/バス/宿, displayed in a per-session randomized order) and contacts them via one-shot taps -- only the hotel card discloses a real time-sensitive consequence (dinner-service cutoff), so contacting it before the other two is the judgment this game asks for (src/q1/delayRecoverLogic.ts's contactOrderWins mirrors design-sim.mjs byte-for-byte). Once all 3 are contacted, school approval and sharing are each gated behind their own prerequisite (button disabled until the prior stage completes), closing the reverse-audit's select-all/free-reorder exploit structurally rather than just discouraging it. Gate H (onComplete only when contactOrderWins is true, onPartialComplete otherwise with an honestly distinct failure framing) and Gate G (non-scored reflection re-presenting all 3 contacts' original detail text read-only, continue button gated on a full reflection order being picked) are both implemented and verified via source-level regression checks. Browser-verified end-to-end: both the success path (hotel contacted first, 🎉-style celebratory framing) and the failure path (hotel contacted last, honest distinct framing + reflection screen with data re-presented and gated continue) render and behave correctly, including two deliberate rapid-batched-click regression tests (opening/contacting 2 cards in the same synchronous script call) that confirm the functional-updater state pattern used throughout (contact/openContact/toggleReflect all read from setState's prev, not the render-scope closure) correctly registers every action under React 18 automatic batching -- this specifically guards against the exact class of bug found and fixed in legacy-hotel-receive's implementation review r1."
+        "art_version_or_none": "none (art_brief v1: no_art_required=true; existing school-trip-tour-conductor.jpg reused as-is, unchanged from v1)",
+        "d_preserved_statement": "Unchanged from implementation_v1.json -- the mechanic itself (contactOrderWins, prerequisite-gated 5-stage flow, one-shot contact taps, randomized display order) was not touched by this repair; impl review r1 found 0 blockers/high against the mechanic itself (batching_bug_absent, position_leak_closed, brute_force_genuinely_closed, gate_h_correct, gate_g_correct, logic_matches_design_sim all confirmed true).",
+        "repair_v2_impl_review_r1_findings_addressed": {
+          "CONTENT_MECHANIC_MISMATCH (HIGH)": "src/data/content/schoolTrip.ts's trip-conductor profession 'what' body said '変更案を作って学校の確認を得たうえで' (creates a change proposal) -- the rebuilt mechanic never has the child draft a proposal; contacting a party IS the proposal (per旅行業法12条の10's代替サービスの手配, already established in fact_sheet_v2.json). Fixed to '当日の運行状況を確認し、見学先・バス・宿へ連絡します。特に宿は連絡が遅れるほど対応が難しくなるため、優先して連絡します。学校の承認を得たうえで、関係先へ確定内容を共有します。' -- describes the actual 3-contact structure and hotel-priority judgment instead. delay-trip experience's seeds list had '変更案を考える' (an unperformed action per this project's rule that seeds must describe only actions actually played) -- replaced with '優先順位を考える' (an action the child genuinely performs: recognizing which of the 3 parties to prioritize).",
+          "QA_REGRESSION_VACUOUS (MEDIUM)": "The content regression check only scanned an 800-char slice of the delay-trip experience for OLD free-reorder wording, missing the different stale-content pattern (unperformed change-proposal claim) entirely, and several JSX regression checks used unbounded body-wide regex searches (/isOpened &&\\s*\\(/, /isContacted \\? \\(/) that could match anywhere in the file rather than being bound to the actual contact-card rendering block. Fixed: content checks now scan the FULL trip-conductor profession entry and delay-trip experience entry (bounded by adjacent entry ids, not an arbitrary char count), assert both the absence of the stale change-proposal phrasing AND the positive presence of the 3-party/hotel-priority description; JSX checks now extract the exact session.displayOrder.map(...) callback block via string boundaries before searching within it. Verified the new content check actually catches the original regression by reverting schoolTrip.ts and confirming the check fails (git stash test)."
+        },
+        "low_finding_not_changed": "The disclosure buttons show '－' after opening even though openContact/toggleReflect are add-only (no collapse) -- impl review r1 flagged this as LOW (cosmetic honesty of the toggle symbol). This exactly matches HotelReceiveGame.tsx's already-shipped identical pattern (toggleCard is also add-only, also shows '－' post-open with no collapse path), so changing it here would be an inconsistency with established codebase convention rather than a fix. Left as-is per the reviewer's own LOW severity (does not affect disclosure, scoring, or exploit resistance)."
       },
       "creator": "claude-code",
       "source_artifacts": [
         "legacy-delay-recover:game_spec:v1"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-10T18:54:17.946Z",
+      "created_at": "2026-09-10T19:01:26.109Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-delay-recover/design/implementation_v1.json",
           "created_at": "2026-09-10T18:54:17.946Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-delay-recover/design/implementation_v2.json",
+          "created_at": "2026-09-10T19:01:26.110Z",
+          "creator": "claude-code"
         }
       ]
     },
     "implementation_qa": {
-      "artifact_id": "legacy-delay-recover:implementation_qa:v1",
+      "artifact_id": "legacy-delay-recover:implementation_qa:v2",
       "artifact_type": "implementation_qa",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/implementation_qa_v1.json",
+      "file": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json",
       "payload": {
-        "first_5_seconds": "PASS. Browser-verified: intro shows '新幹線が、30分おくれるという放送があった' with the status-check card closed ('？' only) and all other buttons (report/approve/share) greyed out and unresponsive until the status card is opened, matching first_5_seconds_v3.json/game_spec_v1.json.",
-        "touch_targets": "PASS. All interactive elements use the existing dx-more/dx-commit/btn choice/btn primary big classes shared with legacy-hotel-receive and other shipped Q1 games, which already meet the project's touch-target sizing convention.",
-        "mobile_375": "PASS. Browser-verified at 375x812 (resize_window preset mobile): the playing view (status card + 3 contact cards + 3 action buttons) and the reflecting view (3 read-only data cards + 3 reflection choice buttons) both render without horizontal overflow; the 3 closed contact cards render at identical height regardless of the hotel card's longer expanded content (screenshot confirmed -- satisfies design review r1's VISUAL_HIERARCHY_LEAK_RISK requirement structurally, since collapsed cards show no body text until opened).",
-        "direct_manipulation": "PASS. Every judgment (open a card, report, contact a party, approve, share, pick a reflection order) is a direct tap on the specific object it concerns -- no drag-and-drop, no free reordering UI (the old exploit's core mechanism is entirely absent from this rebuild).",
-        "reaction_timing": "PASS. State updates (card open, button enable/disable, contact recorded, screen transition) are synchronous React state changes with no artificial delay; verified responsive across two full playthroughs (one win, one loss).",
-        "c_to_d": "PASS. Browser-verified: the win/loss outcome genuinely depended on which contact card was tapped first (hotel-first play-through won; venue-then-bus-then-hotel play-through lost), and this required actually reading the hotel card's unique time-sensitive explanation -- the card's screen position varied session to session (confirmed: one session showed 宿/見学先/バス order, another showed バス/見学先/宿), so a position-based heuristic could not have produced the correct answer in both sessions.",
-        "consequence": "PASS. A contacted card immediately locks to a 'connected (Nth)' read-only state with no re-open of its contact button, and the approve/share buttons only unlock once their real prerequisite is met -- confirmed by inspecting `disabled` state directly via JS before and after each stage.",
-        "retry": "PASS. Verified no in-session retry exists: each contact tap is a one-shot, idempotent action (tapping an already-contacted card's card does nothing further since its button is gone), and the whole session resolves in a single share() call with no live-retry path back into the playing view -- this is the core select-all/free-reorder fix from the reverse audit. The non-scored reflection step (Gate G) was verified separately: the continue button starts disabled, stays disabled after a partial reflection pick, and only enables once all 3 reflection choices are made; the picked reflection order has no bearing on onPartialComplete firing.",
-        "answer_leak": "PASS. The 3 contact cards render in a per-session randomized order (session.displayOrder) -- verified directly by comparing two separate sessions' card orderings, which differed. No color/label/position cue distinguishes the hotel card before it's opened and read.",
-        "brute_force": "PASS. gameplay-qa-delay-recover.mjs (21/21 checks) verifies both the pure-logic exploit resistance (legitimate_full_reasoning=1.0, random_order≈0.33, display-position heuristics≈0.33 -- all well below full reasoning) and the source-level absence of any free-reorder/undo/re-tap path, plus the absence of every old-implementation literal (PLAN_IDS, approveIdx/shareIdx array-position checks, tl-btn reorder controls).",
-        "visual_affordance": "PASS. Disabled state (greyed-out buttons) clearly reads as not-yet-actionable until prerequisites are met; verified via screenshot at both desktop and 375px mobile width. A contacted card's locked summary visually differs (via the `selected` class) from an uncontacted card.",
-        "no_manual": "PASS. No tutorial/explanation text anywhere in the flow; verified by reading the actual rendered first screen ('？' affordance only, no instructional copy) matching no_manual_exploit_check_v3.json's requirements.",
-        "job_reveal": "PASS. Browser-verified both outcomes: full success shows '予定を、つなぎ直せた！' with the discoveryEcho-aligned framing (添乗員だけでは決めない、学校の承認を得ながら...), and failure shows the honestly distinct '予定を、うまくつなぎ直せなかった' framing (Gate H) -- both correctly reach the profession name 添乗員・旅程管理担当 and 図鑑 addition via the shared Q1 shell. schoolTrip.ts's existing delay-trip/trip-conductor content was checked and found already accurate to the new mechanic (no stale old-mechanic references existed pre-rebuild, unlike legacy-hotel-receive) -- no content changes were needed.",
+        "first_5_seconds": "PASS. Unchanged from v1 -- not affected by this repair.",
+        "touch_targets": "PASS. Unchanged from v1.",
+        "mobile_375": "PASS. Unchanged from v1 (content-only repair, no layout changes).",
+        "direct_manipulation": "PASS. Unchanged from v1.",
+        "reaction_timing": "PASS. Unchanged from v1.",
+        "c_to_d": "PASS. Unchanged from v1 -- the mechanic itself was not touched by this repair.",
+        "consequence": "PASS. Unchanged from v1.",
+        "retry": "PASS. Unchanged from v1.",
+        "answer_leak": "PASS. Unchanged from v1.",
+        "brute_force": "PASS. gameplay-qa-delay-recover.mjs: 24/24 checks (up from 21/21 in v1; 3 new checks this repair verify (a) the full trip-conductor profession entry and delay-trip experience entry contain no stale change-proposal wording, (b) the delay-trip experience positively describes the new flow, (c) the profession entry positively names all 3 contacts plus the hotel-priority judgment, (d) the seeds list uses an actually-performed action). Pure-logic exploit resistance unchanged from v1.",
+        "visual_affordance": "PASS. Unchanged from v1.",
+        "no_manual": "PASS. Unchanged from v1.",
+        "job_reveal": "PASS. Content fixed this repair: schoolTrip.ts's trip-conductor profession 'what' body no longer claims the child drafts a change proposal (見学先・バス・宿への連絡と宿優先の判断を正しく描写). delay-trip experience's seeds list replaced '変更案を考える' (unperformed) with '優先順位を考える' (actually performed). Browser-verified: completed a full win playthrough, confirmed the job-reveal screen (🎉 予定を、つなぎ直せた) renders the updated seeds list correctly ('優先順位を考える' present, no console errors) and reaches 添乗員・旅程管理担当 / 図鑑追加 as before.",
+        "content_regression_check_verified_non_vacuous": "Confirmed by reverting schoolTrip.ts to its pre-repair state (git stash) and re-running gameplay-qa-delay-recover.mjs: the new content check correctly FAILED against the original stale content, then re-passed once restored -- proving the check would have caught this exact regression rather than passing vacuously (impl review r1's MEDIUM QA_REGRESSION_VACUOUS finding addressed).",
         "pass": true,
-        "evidence": "factory/harness/gameplay-qa-delay-recover.mjs (21/21 PASS); npx tsc --noEmit (clean); npm run lint (clean, no new warnings); npm run build (succeeds). Browser pane end-to-end playthrough at desktop (1280x720) covering: (a) a full win (status confirm -> report -> hotel contacted first among 3 randomized-order cards, including a deliberate rapid-batched-click test opening/contacting the remaining 2 cards in one synchronous script call to regression-test the functional-updater state pattern -> approve -> share -> onComplete framing); (b) a full loss (hotel contacted last -> onPartialComplete framing -> reflection screen with all 3 cards re-presented read-only -> reflection order picked via another batched-click test -> continue button correctly gated then enabled); (c) mobile layout verified at 375x812 with screenshots of both the playing view (confirming closed-card height parity across all 3 contact cards) and the reflecting view."
+        "evidence": "factory/harness/gameplay-qa-delay-recover.mjs (24/24 PASS, verified non-vacuous against the actual regression via git-stash revert test); npx tsc --noEmit (clean); npm run lint (clean, no new warnings); npm run build (succeeds). Browser pane playthrough at desktop (1280x720): full win path (hotel contacted first) through to the job-reveal screen, confirming the updated seeds text renders with no console errors."
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:implementation:v1"
+        "legacy-delay-recover:implementation:v2"
       ],
       "design_iteration": 2,
-      "created_at": "2026-09-10T18:54:17.989Z",
+      "created_at": "2026-09-10T19:01:26.152Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-delay-recover/design/implementation_qa_v1.json",
           "created_at": "2026-09-10T18:54:17.990Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json",
+          "created_at": "2026-09-10T19:01:26.153Z",
           "creator": "claude-code"
         }
       ]
@@ -866,7 +884,23 @@
     "stale": false,
     "recorded_at": "2026-09-10T18:44:07.166Z"
   },
-  "impl_review": null,
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "FAIL",
+    "score": 82,
+    "blockers": 0,
+    "high": 1,
+    "evidence": "factory/projects/legacy-delay-recover/impl-review-r1.result.json",
+    "input": "factory/projects/legacy-delay-recover/impl-review-r1-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 2,
+    "repair_count_at_review": 0,
+    "stale": true,
+    "recorded_at": "2026-09-10T19:00:43.207Z"
+  },
   "art_review": null,
   "failures": [
     {
@@ -879,6 +913,17 @@
       "must_change": "the game must not distort what the profession produces",
       "design_iteration": 1,
       "at": "2026-09-10T18:25:56.786Z"
+    },
+    {
+      "failure_id": "f-2",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "impl review r1 (score 82): HIGH CONTENT_MECHANIC_MISMATCH -- pre-existing schoolTrip.ts content (trip-conductor profession's what-body and delay-trip experience's seeds) claimed the child creates/considers a change proposal (変更案を作って/変更案を考える), an action the rebuilt mechanic never implements (the new D collapsed change-proposal into the contact action itself). I had assumed this pre-existing content was already accurate and did not check it against the new mechanic closely enough. MEDIUM QA_REGRESSION_VACUOUS: the content regression check was scoped too narrowly (checked only for old free-reorder wording, not this different stale-content pattern) and several JSX regression checks used unbounded whole-file regex searches rather than binding to the specific rendering block. LOW: the disclosure buttons show a '－' after opening even though they cannot actually collapse (one-way disclosure) -- matches existing shipped precedent (HotelReceiveGame.tsx's identical add-only toggleCard pattern) so left as-is.",
+      "evidence": "factory/projects/legacy-delay-recover/impl-review-r1.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design, spec, art",
+      "must_change": "implementation must restore the specified D",
+      "design_iteration": 2,
+      "at": "2026-09-10T19:00:51.927Z"
     }
   ],
   "human_decisions": [],
@@ -887,7 +932,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T18:54:17.990Z",
+  "updated_at": "2026-09-10T19:01:33.109Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1408,6 +1453,65 @@
       "sources": [
         "legacy-delay-recover:implementation:v1"
       ]
+    },
+    {
+      "at": "2026-09-10T19:00:43.208Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-delay-recover/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-10T19:00:51.927Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "REPAIRING",
+      "note": "IMPLEMENTATION_CHANGED_D -> IMPLEMENTATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-10T19:00:51.927Z",
+      "event": "failure_routed",
+      "failure_id": "f-2",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-10T19:01:26.110Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:implementation:v2",
+      "invalidated": [
+        "implementation_qa",
+        "impl_review"
+      ],
+      "sources": [
+        "legacy-delay-recover:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T19:01:26.153Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:implementation_qa:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:implementation:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T19:01:33.108Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "v2: HIGH CONTENT_MECHANIC_MISMATCH repair -- fixed schoolTrip.ts's trip-conductor profession what-body and delay-trip experience seeds, which claimed an unperformed change-proposal action. MEDIUM QA_REGRESSION_VACUOUS repair -- broadened content checks to scan full entries with bounded string boundaries, tightened JSX checks to bind to the actual rendering block, verified non-vacuous via git-stash revert test. LOW disclosure-symbol finding left as-is (matches established HotelReceiveGame.tsx precedent). Mechanic itself unchanged, 0 blockers/high against it in r1."
+    },
+    {
+      "at": "2026-09-10T19:01:33.109Z",
+      "event": "repair_done",
+      "note": "v2: HIGH CONTENT_MECHANIC_MISMATCH repair -- fixed schoolTrip.ts's trip-conductor profession what-body and delay-trip experience seeds, which claimed an unperformed change-proposal action. MEDIUM QA_REGRESSION_VACUOUS repair -- broadened content checks to scan full entries with bounded string boundaries, tightened JSX checks to bind to the actual rendering block, verified non-vacuous via git-stash revert test. LOW disclosure-symbol finding left as-is (matches established HotelReceiveGame.tsx precedent). Mechanic itself unchanged, 0 blockers/high against it in r1."
     }
   ],
   "redesign": [

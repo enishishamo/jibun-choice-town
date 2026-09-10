@@ -123,13 +123,13 @@
     "legacy-delay-recover": {
       "game_id": "legacy-delay-recover",
       "profession": "添乗員・旅程管理担当",
-      "state": "IMPL_QA_PASSED",
+      "state": "UNDER_REVIEW",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "delay_recover",
       "task_id": null,
-      "repair_count": 0,
+      "repair_count": 1,
       "redesign_count": 1,
-      "updated_at": "2026-09-10T18:54:17.990Z",
+      "updated_at": "2026-09-10T19:01:33.109Z",
       "depends_on": []
     }
   }

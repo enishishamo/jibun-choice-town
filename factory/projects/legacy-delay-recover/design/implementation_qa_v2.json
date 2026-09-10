@@ -1,0 +1,18 @@
+{
+  "first_5_seconds": "PASS. Unchanged from v1 -- not affected by this repair.",
+  "touch_targets": "PASS. Unchanged from v1.",
+  "mobile_375": "PASS. Unchanged from v1 (content-only repair, no layout changes).",
+  "direct_manipulation": "PASS. Unchanged from v1.",
+  "reaction_timing": "PASS. Unchanged from v1.",
+  "c_to_d": "PASS. Unchanged from v1 -- the mechanic itself was not touched by this repair.",
+  "consequence": "PASS. Unchanged from v1.",
+  "retry": "PASS. Unchanged from v1.",
+  "answer_leak": "PASS. Unchanged from v1.",
+  "brute_force": "PASS. gameplay-qa-delay-recover.mjs: 24/24 checks (up from 21/21 in v1; 3 new checks this repair verify (a) the full trip-conductor profession entry and delay-trip experience entry contain no stale change-proposal wording, (b) the delay-trip experience positively describes the new flow, (c) the profession entry positively names all 3 contacts plus the hotel-priority judgment, (d) the seeds list uses an actually-performed action). Pure-logic exploit resistance unchanged from v1.",
+  "visual_affordance": "PASS. Unchanged from v1.",
+  "no_manual": "PASS. Unchanged from v1.",
+  "job_reveal": "PASS. Content fixed this repair: schoolTrip.ts's trip-conductor profession 'what' body no longer claims the child drafts a change proposal (見学先・バス・宿への連絡と宿優先の判断を正しく描写). delay-trip experience's seeds list replaced '変更案を考える' (unperformed) with '優先順位を考える' (actually performed). Browser-verified: completed a full win playthrough, confirmed the job-reveal screen (🎉 予定を、つなぎ直せた) renders the updated seeds list correctly ('優先順位を考える' present, no console errors) and reaches 添乗員・旅程管理担当 / 図鑑追加 as before.",
+  "content_regression_check_verified_non_vacuous": "Confirmed by reverting schoolTrip.ts to its pre-repair state (git stash) and re-running gameplay-qa-delay-recover.mjs: the new content check correctly FAILED against the original stale content, then re-passed once restored -- proving the check would have caught this exact regression rather than passing vacuously (impl review r1's MEDIUM QA_REGRESSION_VACUOUS finding addressed).",
+  "pass": true,
+  "evidence": "factory/harness/gameplay-qa-delay-recover.mjs (24/24 PASS, verified non-vacuous against the actual regression via git-stash revert test); npx tsc --noEmit (clean); npm run lint (clean, no new warnings); npm run build (succeeds). Browser pane playthrough at desktop (1280x720): full win path (hotel contacted first) through to the job-reveal screen, confirming the updated seeds text renders with no console errors."
+}

@@ -77,11 +77,17 @@ function mulberry32(a) {
     return !!reportBtn && !!approveBtn && !!shareBtn;
   })());
 
-  check("a contact button only renders once its own card has been opened (disclosure gate per contact, not a global one)", /isOpened &&\s*\(/.test(body) && body.includes("isContacted ?"));
+  check("a contact button only renders once its own card has been opened, and only for a not-yet-contacted card (disclosure gate per contact, bound to the actual card-rendering block, not an unbounded whole-file token search)", (() => {
+    const cardBlock = body.split("session.displayOrder.map((id) => {")[1]?.split("            })}")[0] ?? "";
+    return cardBlock.includes("isOpened &&") && cardBlock.includes("isContacted ?") && cardBlock.includes("連絡する");
+  })());
 
   check("the 3 contact cards render in session.displayOrder (randomized per session), not a fixed CONTACTS identity order -- closes the position-leak the same way design-sim.mjs's displayOrder models it", body.includes("session.displayOrder.map((id) =>"));
 
-  check("a contacted card shows a locked 'connected' state (no re-open of the contact button) -- proves no retry path once tapped", /isContacted \? \(/.test(body) && body.includes("連絡済み"));
+  check("a contacted card shows a locked 'connected' state text bound to the same card-rendering block (no re-open of the contact button) -- proves no retry path once tapped", (() => {
+    const cardBlock = body.split("session.displayOrder.map((id) => {")[1]?.split("            })}")[0] ?? "";
+    return cardBlock.includes("isContacted ? (") && cardBlock.includes("連絡済み");
+  })());
 
   check("the done branch (full win) and the reflecting branch (loss) are structurally distinct outcome() states, matching Gate H HONEST OUTCOME", body.includes('outcome === "done"') && body.includes('outcome === "reflecting"'));
 
@@ -104,10 +110,26 @@ function mulberry32(a) {
 
   check("no old-implementation literals reintroduced (old exploit: free timeline reorder, plan-card selection, approve/share array-index checks)", !/PLAN_IDS|PLAN_LABEL|approveIdx|shareIdx|lastPlanIdx/.test(body));
 
-  check("schoolTrip.ts's delay-trip experience describes the new flow (状況確認→連絡→学校承認, matching the rebuilt mechanic) rather than the old free-reorder prompt (which lived only in the component's own UI text, never in content data)", (() => {
-    const idx = schoolTrip.indexOf('id: "delay-trip"');
-    const around = schoolTrip.slice(idx, idx + 800);
-    return around.includes("状況を確認") && around.includes("学校の承認") && !/並べ替え|ならべよう|↑↓で/.test(around);
+  check("schoolTrip.ts's FULL trip-conductor profession entry and delay-trip experience entry (not just a narrow slice) contain no stale 'create/consider a change proposal' wording (変更案を作って/変更案を考える) -- impl review r1 HIGH CONTENT_MECHANIC_MISMATCH regression: the rebuilt mechanic never lets the child draft a change proposal, only contact the 3 parties (hotel prioritized) and get school approval", (() => {
+    const professionEntry = schoolTrip.slice(schoolTrip.indexOf('id: "trip-conductor"'), schoolTrip.indexOf('id: "trip-hotel"'));
+    const experienceEntry = schoolTrip.slice(schoolTrip.indexOf('id: "delay-trip"'), schoolTrip.indexOf('id: "hotel-trip"'));
+    return !/変更案を作って|変更案を考える/.test(professionEntry) && !/変更案を作って|変更案を考える/.test(experienceEntry);
+  })());
+
+  check("schoolTrip.ts's delay-trip experience describes the new flow (状況確認→連絡→学校承認, matching the rebuilt mechanic) and does not reintroduce the old free-reorder prompt", (() => {
+    const experienceEntry = schoolTrip.slice(schoolTrip.indexOf('id: "delay-trip"'), schoolTrip.indexOf('id: "hotel-trip"'));
+    return experienceEntry.includes("状況を確認") && experienceEntry.includes("学校の承認") && !/並べ替え|ならべよう|↑↓で/.test(experienceEntry);
+  })());
+
+  check("schoolTrip.ts's trip-conductor profession entry positively describes the 3-party contact structure (見学先・バス・宿, all three named) AND the hotel-priority judgment (優先), rather than a vague generic summary", (() => {
+    const professionEntry = schoolTrip.slice(schoolTrip.indexOf('id: "trip-conductor"'), schoolTrip.indexOf('id: "trip-hotel"'));
+    return professionEntry.includes("見学先") && professionEntry.includes("バス") && professionEntry.includes("宿へ連絡") && professionEntry.includes("優先");
+  })());
+
+  check("schoolTrip.ts's delay-trip experience seeds list an action actually performed (優先順位を考える) instead of the stale, unperformed 変更案を考える", (() => {
+    const experienceEntry = schoolTrip.slice(schoolTrip.indexOf('id: "delay-trip"'), schoolTrip.indexOf('id: "hotel-trip"'));
+    const seedsLine = experienceEntry.match(/seeds: \[([^\]]*)\]/)?.[1] ?? "";
+    return seedsLine.includes("優先順位を考える") && !seedsLine.includes("変更案");
   })());
 
   check("registry.ts's delay_recover comment mentions the hotel-priority judgment, not just the generic 4-stage shape", registry.includes("宿を優先"));

@@ -359,3 +359,4 @@
 {"ts":"2026-09-10T18:25:08.115Z","tool":"codex-review","label":"legacy-delay-recover-design-r1","prompt_file":"factory/projects/legacy-delay-recover/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":86.618}
 {"ts":"2026-09-10T18:34:28.977Z","tool":"codex-review","label":"legacy-delay-recover-design-r2","prompt_file":"factory/projects/legacy-delay-recover/design-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":58.943}
 {"ts":"2026-09-10T18:43:43.317Z","tool":"codex-review","label":"legacy-delay-recover-design-r3","prompt_file":"factory/projects/legacy-delay-recover/design-review-r3-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":93.914}
+{"ts":"2026-09-10T18:56:32.518Z","tool":"codex-review","label":"legacy-delay-recover-impl-r1","prompt_file":"factory/projects/legacy-delay-recover/impl-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":77.501}
