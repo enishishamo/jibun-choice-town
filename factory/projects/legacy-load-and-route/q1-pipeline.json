@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "load_and_route",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "IMPL_QA_PASSED",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
   "redesign_count": 0,
@@ -779,6 +779,182 @@
           "creator": "claude"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-load-and-route:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/game_spec_v1.json",
+      "payload": {
+        "goal": "今日届く4つの食材（8種類のプールから毎セッションランダム抽選）を、それぞれの保存温度基準（validZonesモデル: 生鮮魚介類は冷蔵5℃のみ、食肉・鯨肉・乳製品は冷蔵5℃/冷蔵10℃のどちらでも、冷凍食品は冷凍のみ、生鮮野菜・穀類加工品は常温のみ）を満たす荷室へ積み分け、2校（毎セッション移動時間・受け入れ時刻がランダム化、3種類のバランス型archetypeから均等抽選）を両校とも間に合う順で訪問する。積み分け・訪問順を決めたら『出発する』を1回だけ押して結果を確定する（design/game_translations_v4.jsonのt1-zone-and-route、design/design-sim.mjsで検証済み）。",
+        "initial_visual_state": "『今日の食材』として4枚の食材カード（中立的な名前——冷凍/冷蔵/常温などの荷室名を含まない、タップで保存の目安の読み物が開く）と、4つの荷室スロット（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温——いずれも温度帯のみを示す中立アイコン、食材形の絵文字は使わない）。下に2つの学校カード（たんぽぽ小/けやき小、タップで移動時間・受け入れ時刻の読み物が開く）と、タップした順で番号がつく訪問順選択。『出発する』ボタン（積み分け・訪問順の両方が決まるまで非活性）。食材カード・学校カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          {
+            "id": "food_card",
+            "count": 4,
+            "behavior": "タップして開くと保存の目安の読み物（温度基準の文章、具体的な◯℃の数値と根拠を含む）が表示される。その後4つの荷室スロットのいずれかをタップして割り振る（自由に変更可、コストなし）。"
+          },
+          {
+            "id": "zone_slot",
+            "count": 4,
+            "behavior": "🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温の4つ。食材カードの割り振り先。割り振り済みの食材が視覚的にスロット内へ移動する（正誤フィードバックはまだ出さない）。"
+          },
+          {
+            "id": "school_card",
+            "count": 2,
+            "behavior": "タップして開くと移動時間・受け入れ時刻の読み物が表示される。タップした順に訪問順の番号がつく（1番目/2番目）。再タップで番号を変更可。"
+          },
+          {
+            "id": "departure_button",
+            "label": "出発する",
+            "behavior": "4食材すべての荷室割り振りと2校の訪問順が決まって初めて活性化。押すと1回のコミットで結果が確定する（同一セッション内のやり直しはない）。"
+          }
+        ],
+        "primary_action": "各食材カードをタップして保存の目安を読み、4つの荷室スロットのいずれかへ割り振る。2つの学校カードをタップした順に訪問順として選ぶ。『出発する』を押して1回のコミットで結果を確定する。",
+        "C": "食材ごとの保存温度基準の読み物（生鮮魚介類は5℃以下、食肉・鯨肉/乳・濃縮乳等は10℃以下、冷凍食品全般は-15℃以下、生鮮野菜は10℃前後で低すぎても品質が落ちる、穀類加工品は室温——design/fact_sheet_v4.json）。学校ごとの移動時間・受け入れ時刻の読み物（design/design-sim.mjsのARCHETYPES、3種類のバランス型シナリオから均等抽選、独立にA/Bミラー）。",
+        "D": "各食材を、その食材の保存条件を満たす荷室へ積み分ける判断（魚介類・食肉・乳製品・冷凍食品は『◯℃以下』という上限条件のため、食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらでもよいが魚介類は冷蔵5℃のみ、野菜・穀類は専用の常温区分のみで冷蔵・冷凍側には寄せられない）。2校それぞれの移動時間と受け入れ時刻を照らし合わせ、両校とも間に合う訪問順を選ぶ判断（単純な『近い方を先に』『締切が早い方を先に』という一次元の判断だけでは理論上2/3しか正解できない設計）。",
+        "system_reactions": [
+          {
+            "trigger": "食材カードを荷室スロットへ割り振る",
+            "reaction": "食材カードが視覚的にそのスロット内へ移動する。正誤フィードバックはまだ出さない。"
+          },
+          {
+            "trigger": "学校カードをタップする",
+            "reaction": "タップした順に訪問順の番号（1/2）が表示される。"
+          },
+          {
+            "trigger": "『出発する』を押す（コミット）",
+            "reaction": "4食材すべての荷室割り振り（validZones判定）と訪問順（archetypeのcorrectOrder判定）を同時に評価する。両方正しければ成功、どちらか一方でも誤っていればフラットな失敗。個別にどこが誤っていたかは一切示さない。"
+          }
+        ],
+        "state_transitions": {
+          "browsing_and_assigning": "食材・学校カードを読み、割り振り・訪問順を自由に変更できる状態。出発ボタンは全項目が決まるまで非活性。",
+          "committed": "『出発する』を押した瞬間に確定。以後この状態には戻れない。",
+          "outcome": "成功（onComplete）または失敗（onPartialComplete）のいずれかに遷移。"
+        },
+        "failure_behavior": "積み分け・訪問順のどちらか（または両方）が誤っていた場合、フラットな『うまく届けられなかった』という結果になる。どの食材・どちらの訪問順が誤っていたかは一切示さない（個別フィードバックはBRUTE_FORCE_SUCCESSの温床になるため意図的に排除——design/play_seeds_v4.jsonのs2却下理由を参照）。onPartialComplete（onCompleteではない）を呼び、Job Revealチップがsuccessと異なる正直な枠組みで表示されることを実装QAで確認する（Gate H HONEST OUTCOME、legacy-sow-and-growのFarmGame.tsxで一度回帰した実績あり——同じ回帰チェックをgameplay-qaに追加すること）。",
+        "retry_behavior": "この場でのやり直しはない（1回のコミット）。章に入り直せば、食材の組み合わせ・学校の移動時間/締切が新しくランダム化された、本当の意味でのやり直しができる。",
+        "E": "積み分け・訪問順の両方が正しければ『2校とも安全な状態で時間までに届いた』という成功結果（schoolLunch.tsのresolution参照）。どちらか一方でも誤っていれば正直な失敗結果になり、センターへ連絡して見直すという実務同様の枠組みで話は先に進む（進行はブロックしない）。",
+        "job_reveal": "既存のdiscoveryEcho（schoolLunch.tsのlogistics-lunchエントリ、『食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。』）がそのまま使える。実装は成功・失敗いずれの結果からもjob revealへ接続する。",
+        "first_5_seconds": "design/first_5_seconds_v4.jsonの内容をそのまま採用: 4枚の食材カード（中立的な名前、タップで保存の目安が読める）と4つの荷室（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温）、下に2つの学校カード（たんぽぽ小/けやき小、タップで移動時間・受け入れ時刻が読める）が見える。最初に期待されるタップは、気になる食材カードをタップして保存の目安を開く、または荷室スロットをタップして割り振ること。",
+        "no_manual_requirements": "説明文なし。design/no_manual_exploit_check_v4.jsonの要件をすべて満たす: (1) タップと『？』的開示のみの操作規約（既存Q1と同一）。(2) 食材カードの保存の目安と学校カードの移動時間・受け入れ時刻という文脈だけで、どれが正解かをシステムが直接教えない。(3) 荷室に食材形状を連想させるアイコン（魚・肉・牛乳等の絵文字）を使わない——温度帯のみを示す中立アイコン（🧊/❄️/🌡️/📦）に限定する。食材カード側のアイコンも、特定の荷室を連想させる形状（雪の結晶・温度計・箱の形など）を使わない。(4) 食材の表示名は中立的なもの（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉）に限定し、荷室名（冷凍・冷蔵・常温等）を含む表示名を使わない。(5) 食材カード・学校カードの色・強調表示は正解を示唆しない。(6) 食材カード・学校カードの表示順は毎セッション独立にシャッフルする（位置による答え漏れを防ぐ）。(7) 単発コミットで、同一セッション内の総当たり再挑戦は成立しない。",
+        "mobile_constraints": "375px幅を基準に、4枚の食材カード＋4つの荷室スロット＋2枚の学校カード＋出発ボタンが横スクロールなしで収まるレイアウトにする。食材カードは1カラムの縦積み（既存のclue_join/sow_and_growの`.dx-card`/`.dx-head`/`.dx-name`パターンを再利用）、荷室スロットは4つを横並びまたは2x2グリッドでタップ領域を十分に確保する。学校カードも縦積みで、タップした順の番号を大きく見やすく表示する。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存の`public/assets/kyushoku/delivery_center.jpg`（schoolLunch.tsのplace.image、K(\"delivery_center\")）と`delivery_check.jpg`をそのまま流用する。荷室・食材のアイコンは絵文字（🧊/❄️/🌡️/📦、食材カードは名前テキストのみ）で構成し、画像アセットを新規に必要としない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_translations:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:50:43.761Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/game_spec_v1.json",
+          "created_at": "2026-09-10T02:50:43.762Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-load-and-route:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "既存の`public/assets/kyushoku/delivery_center.jpg`（配送センターの場面画像、schoolLunch.tsのlogistics-lunchエントリで既に使用中）と`delivery_check.jpg`をそのまま流用する。ゲーム画面自体は食材カード・荷室スロット・学校カードで構成され、荷室アイコンは温度帯のみを示す絵文字（🧊冷凍/❄️冷蔵5℃/🌡️冷蔵10℃/📦常温）、食材はテキストの名前のみで表現する（design review r3のANSWER_LEAK是正: 食材形状を連想させる絵文字は使わない）ため、新規イラスト生成は不要。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:50:53.513Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+          "created_at": "2026-09-10T02:50:53.514Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-load-and-route:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/LogisticsGame.tsx"
+        ],
+        "logic_module": "src/q1/logisticsLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-load-route.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/kyushoku/delivery_center.jpg)",
+        "d_preserved_statement": "logisticsLogic.tsのFOODS/ZONES/ARCHETYPES/zoneWin/newRouteSessionはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。各食材を保存条件（validZonesモデル: 魚介類・食肉・乳製品・冷凍食品は上限条件、野菜・穀類は専用の常温区分）を満たす荷室へ積み分ける判断と、2校の移動時間・受け入れ時刻・学校間移動時間を照らし合わせて間に合う訪問順を選ぶ判断は、LogisticsGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。積み分け・訪問順が両方決まって初めて『出発する』が活性化し、1回のコミットで結果が確定する（同一セッション内の個別フィードバック付き再挑戦は実装されていない）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_spec:v1",
+        "legacy-load-and-route:art_brief:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:08:44.817Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_v1.json",
+          "created_at": "2026-09-10T03:08:44.817Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-load-and-route:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "実機確認済み: 起動直後に4枚の食材カード（中立的な名前）と4つの荷室ボタン行（🧊冷凍/❄️冷蔵5℃/🌡️冷蔵10℃/📦常温）、下に2つの学校カードが見える。説明文なし。design/first_5_seconds_v4.json通り。",
+        "touch_targets": "食材カードの「？」ボタン・荷室ボタン・学校カードの「？」ボタン・訪問順ボタン・出発ボタンはいずれも既存の.dx-more/.zone-btn/.dx-commit/.btnクラス（44px前後の最小高さを持つ既存パターン）を再利用しており、新規に小さすぎるタップ領域を追加していない。",
+        "mobile_375": "375x812のビューポートで実機確認済み: document.documentElement.scrollWidth===clientWidth===375（横スクロールなし）。食材カード（1カラム縦積み、荷室ボタンは2x2グリッド）・学校カード・出発ボタンがすべて画面内に収まる。",
+        "direct_manipulation": "食材カードをタップ→保存の目安が開く、荷室ボタンをタップ→即座に選択状態（オレンジ色）に変わる、学校カードをタップ→即座に訪問順の番号が表示される、を実機ブラウザで確認済み。",
+        "reaction_timing": "各タップの視覚反応（選択色の変化、番号表示、詳細テキストの開閉）は即時（Reactの状態更新、アニメーション遅延なし）。",
+        "c_to_d": "実機確認済み: 食材カードの「？」を開くと実際の保存温度基準の読み物（例:『食肉・鯨肉は10℃以下で保存する決まり』）が表示され、その情報を読んでから荷室ボタンを選ぶという一連の流れが機能する。学校カードも同様に移動時間・受け入れ時刻を読んでから訪問順を選べる。",
+        "consequence": "実機確認済み: 正しい組み合わせ（とり肉→冷蔵10℃、コロッケ→冷凍、牛乳→冷蔵5℃、じゃがいも→常温、たんぽぽ小→1番目、けやき小→2番目）で出発すると『2校とも、安全な状態で時間までに届いた！』の成功結果とJob Revealへ正しく接続することを確認。誤った組み合わせ（4食材すべてを冷凍に割り振り）で出発すると『うまく届けられなかった』というフラットな失敗結果になり、個別の誤り箇所は一切示されないことを確認。",
+        "retry": "実機確認済み: 失敗後も『先へ進む』でJob Reveal（しごと図鑑追加）まで正直に進行し、ブロックしない。同一セッション内のその場でのやり直しはなく（gameplay-qa-load-route.mjsで積み直しリテラルが存在しないことを機械的に確認済み）、章に入り直せば新しいランダム条件で再挑戦できる。",
+        "answer_leak": "gameplay-qa-load-route.mjsで機械的に確認: 荷室アイコン（🧊/❄️/🌡️/📦）に食材形状の絵文字（🐟🥩🥛🍗🥔🍞）を含まないこと、食材表示名（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉）が冷凍/冷蔵/常温を含まないことを検証済み。実機でも学校名・荷室の色/強調表示が正解を示唆しないことを目視確認。",
+        "brute_force": "gameplay-qa-load-route.mjsで機械的に確認: 固定単一荷室戦略（always_place_all_in_*）は全て5%未満、ランダム荷室推測は1%未満、単純な訪問順発見的手法（近い方を先に/締切が早い方を先に）はいずれも66.7%の理論上限に収まり完全な推論(100%)を大きく下回る。1回のコミットで結果が確定し、個別フィードバックが一切ないため総当たり攻略が成立しない（旧実装のfailText相当のコードが存在しないことも機械的に確認済み）。",
+        "visual_affordance": "選択済みの荷室ボタン・訪問順ボタンはオレンジ色に変化し、食材カード・学校カード自体も選択済み状態で枠線がオレンジになる（既存の.dx-card.selected/.dx-commit.on/.zone-btn.onパターンを再利用）。出発ボタンは条件が揃うまで視覚的に非活性（薄い色）になることを実機確認済み。",
+        "no_manual": "実機確認済み: ゲーム画面に説明文はなく、食材・学校カードの「？」を開いて読む以外に手がかりはない。design/no_manual_exploit_check_v4.jsonの要件（icon_leak/label_leak/position_leak/spam_submit等）はgameplay-qa-load-route.mjsおよび実機確認で満たされていることを確認。",
+        "job_reveal": "実機確認済み: 成功時・失敗時いずれも既存のdiscoveryEcho（『さっき、食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。』）としごと図鑑追加画面へ正しく接続することを確認。成功時は🎉、失敗時は🤔の異なるトップフレーミングチップが表示され、Gate H HONEST OUTCOMEが機能していることを実機で確認済み。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-load-route.mjs（27/27 PASS）、npx tsc --noEmit（エラーなし）、npx oxlint src/q1/LogisticsGame.tsx src/q1/logisticsLogic.ts（エラーなし）、npx vite build（成功）、Browser paneでの実機確認（成功パス・失敗パス・375pxモバイルビューポート・保存目安/移動時間の読み物開閉・Job Reveal接続をすべて確認）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:08:55.769Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_qa_v1.json",
+          "created_at": "2026-09-10T03:08:55.769Z",
+          "creator": "claude"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -807,7 +983,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T01:16:42.848Z",
-  "updated_at": "2026-09-10T02:48:38.019Z",
+  "updated_at": "2026-09-10T03:08:55.770Z",
   "history": [
     {
       "at": "2026-09-10T01:16:42.848Z",
@@ -1808,6 +1984,71 @@
       "at": "2026-09-10T02:48:38.019Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T02:50:43.762Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T02:50:43.762Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:50:53.514Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T02:50:53.514Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:08:44.817Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-10T03:08:44.818Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_spec:v1",
+        "legacy-load-and-route:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:08:55.770Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-10T03:08:55.770Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:implementation:v1"
+      ]
     }
   ]
 }

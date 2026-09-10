@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "既存の`public/assets/kyushoku/delivery_center.jpg`（配送センターの場面画像、schoolLunch.tsのlogistics-lunchエントリで既に使用中）と`delivery_check.jpg`をそのまま流用する。ゲーム画面自体は食材カード・荷室スロット・学校カードで構成され、荷室アイコンは温度帯のみを示す絵文字（🧊冷凍/❄️冷蔵5℃/🌡️冷蔵10℃/📦常温）、食材はテキストの名前のみで表現する（design review r3のANSWER_LEAK是正: 食材形状を連想させる絵文字は使わない）ため、新規イラスト生成は不要。"
+}
