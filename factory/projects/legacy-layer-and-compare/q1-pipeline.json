@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "layer_and_compare",
   "creator": "claude-code",
-  "state": "PLAY_SEEDS_READY",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "EXISTING_GAME_RESEARCH",
   "design_iteration": 1,
   "repair_count": 0,
@@ -879,7 +879,23 @@
       ]
     }
   },
-  "independent_review": null,
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 88,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-layer-and-compare/design-review-r4.result.json",
+    "input": "factory/projects/legacy-layer-and-compare/design-review-r4-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-10T06:09:50.059Z"
+  },
   "impl_review": null,
   "art_review": null,
   "failures": [],
@@ -889,7 +905,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T03:39:21.551Z",
-  "updated_at": "2026-09-10T06:05:51.268Z",
+  "updated_at": "2026-09-10T06:09:50.101Z",
   "history": [
     {
       "at": "2026-09-10T03:39:21.552Z",
@@ -2120,6 +2136,33 @@
       "sources": [
         "legacy-layer-and-compare:play_seeds:v6"
       ]
+    },
+    {
+      "at": "2026-09-10T06:09:50.060Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-layer-and-compare/design-review-r4.result.json"
+    },
+    {
+      "at": "2026-09-10T06:09:50.060Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-10T06:09:50.100Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-10T06:09:50.101Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ]
 }
