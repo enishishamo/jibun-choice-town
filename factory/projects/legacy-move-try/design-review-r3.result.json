@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 38,
+    "career_authenticity_score": 38,
+    "game_quality_score": 78,
+    "blockers": [
+      "The redesigned mapping remains causally distorted. research.md establishes rest/pacing as a real intervention category, but does not establish it as a substitute that makes standing safe when a support point is missing or makes walking safe when dynamic balance is impaired and no caregiver is present. It also does not justify caregiver availability as the deciding factor between rest and training for endurance impairment. The new mapping therefore replaces the rejected universal symbols with another math-driven symbol rather than independently grounding every cell."
+    ],
+    "high": [
+      "play_seeds_v3.json s4 is disclosure-gate compatible, but its error scenario is not plausibly framed: the child explicitly reads an unambiguous statement that height cannot be changed and then chooses height adjustment anyway. This depicts ignoring the literal feasibility condition, not a credible child-level misapplication of two clinical data axes."
+    ],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The round-2 causal-realism finding is not closed. standup support+not_adjustable→rest does not remedy the missing support needed to stand; walk balance+caregiver_no→rest does not remedy dynamic-balance impairment or establish safe independent walking; and endurance+caregiver_no→train versus endurance+caregiver_yes→rest is unsupported because the research does not say pacing requires a caregiver. Merely establishing rest/pacing as an intervention category does not independently justify these cell-specific mappings or their claimed successful safe-movement outcome.",
+        "file": "factory/projects/legacy-move-try/design/design-sim.mjs"
+      },
+      {
+        "code": "IMPLAUSIBLE_DISCLOSURE_GATE_ERROR",
+        "severity": "HIGH",
+        "finding": "s4 now follows the mechanical disclosure gate, but the stated mistake requires the child to read the explicit, disqualifying fact 'height cannot be changed' and immediately choose height adjustment. No ambiguity, competing interpretation, or plausible misconception explains the choice, so the seed remains an artificial failure script rather than a genuine child-level judgment error.",
+        "file": "factory/projects/legacy-move-try/design/play_seeds_v3.json"
+      }
+    ],
+    "round2_findings_confirmed_closed": {
+      "off_diagonal_cells_now_independently_grounded": false,
+      "visual_feedback_third_state_added": true,
+      "play_seeds_s4_disclosure_gate_consistent": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "8/8 checks passed; legitimate_full_reasoning=1, random_pick=0.0432, standup_cause_axis_only=0.5078, standup_env_axis_only=0.4998, walk_cause_axis_only=0.4947, walk_caregiver_axis_only=0.4963, single_axis_only_combined=0.2547.",
+      "no_axis_constant_branch": true,
+      "all_cells_independently_grounded": false,
+      "no_stale_v2_mapping_references": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-move-try/research.md:103 — Research lists pacing/rest alongside environment, device, and training interventions but supplies no movement- and condition-specific mapping for the disputed cells.",
+      "factory/projects/legacy-move-try/research.md:230 — Research expressly states that no clear single decision rule separating training, devices, and rest/pacing was found.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:57 — support+not_adjustable is assigned rest even though resting supplies no missing support point.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:73 — balance+caregiver_no is assigned rest despite the stated goal of making the walk safe; pausing does not correct dynamic balance.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:75 — endurance cases switch from rest to training solely on caregiver availability without research support that safe pacing cannot be self-managed.",
+      "factory/projects/legacy-move-try/design/play_seeds_v3.json:29 — s3 accurately describes the current balance+caregiver_yes→cane and balance+caregiver_no→rest mapping, but repeats its unsupported causal claim.",
+      "factory/projects/legacy-move-try/design/play_seeds_v3.json:17 — s2 accurately describes the current legs+adjustable→height and legs+not_adjustable→train mapping.",
+      "factory/projects/legacy-move-try/design/play_seeds_v3.json:41 — s4 explicitly says the child reads that height is unchangeable and nevertheless chooses height adjustment.",
+      "factory/projects/legacy-move-try/design/ae_v3.json:6 — Failed movements transition to an orange/caution third visual state distinct from neutral and green/check success, applying generically to any of the three movements.",
+      "factory/projects/legacy-move-try/design/game_translations_v3.json:10 — Translation t1 repeats the concrete three-state icon behavior for each selected movement.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:66 — Standup table is height/train and rail/rest, so neither row nor column is constant.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:84 — Walk table is cane/rest and rest/train, so neither row nor column is constant."
+    ],
+    "recommended_actions": [
+      "Replace the unsupported cells with mappings whose cause-specific safety effect and condition dependency are directly supported by research; do not preserve a Latin-square structure if realism cannot support it.",
+      "In particular, do not present rest as making a support-deficient stand or balance-impaired walk safely achievable. If the intended outcome is 'do not attempt; wait for reassessment/help,' model that as a distinct deferred/unsafe-to-proceed outcome rather than successful completion of the movement.",
+      "Rework s4 around a credible misunderstanding, such as ambiguous environmental feasibility, confusing chair-height adjustment with another available modification, or correctly reading both facts but choosing an intervention whose limitation requires genuine synthesis rather than contradicting a literal statement."
+    ]
+  },
+  "elapsed_sec": 107.594
+}
