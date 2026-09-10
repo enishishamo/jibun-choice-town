@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "allocate_and_forecast",
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 2,
   "repair_count": 1,
@@ -800,21 +800,20 @@
   },
   "independent_review": {
     "kind": "design",
-    "verdict": "FAIL",
-    "score": 42,
-    "blockers": 2,
+    "verdict": "PASS",
+    "score": 76,
+    "blockers": 0,
     "high": 0,
-    "evidence": "factory/projects/legacy-allocate-and-forecast/design-review-r3.result.json",
-    "input": "factory/projects/legacy-allocate-and-forecast/design-review-r3-prompt.md",
+    "evidence": "factory/projects/legacy-allocate-and-forecast/design-review-r4.result.json",
+    "input": "factory/projects/legacy-allocate-and-forecast/design-review-r4-prompt.md",
     "reviewer": "codex-review",
     "creator": "sonnet",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 2,
-    "repair_count_at_review": 0,
-    "stale": true,
-    "recorded_at": "2026-09-10T08:58:03.597Z",
-    "stale_because": "fact_sheet changed v4->v5"
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-10T14:14:03.205Z"
   },
   "impl_review": null,
   "art_review": null,
@@ -859,7 +858,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T07:30:35.493Z",
-  "updated_at": "2026-09-10T14:10:31.214Z",
+  "updated_at": "2026-09-10T14:14:07.469Z",
   "history": [
     {
       "at": "2026-09-10T07:30:35.494Z",
@@ -1539,6 +1538,33 @@
       "at": "2026-09-10T14:10:31.214Z",
       "event": "repair_done",
       "note": "design review r3 FAIL 42 (BLOCKER x2) 是正: household capacity軸を『不要不急の使い方（庭の水やり・洗車等）を後回しにできるか』という水固有・方向妥当な軸に再修正、fact_sheet/scope_core/ae/c_compression/reference_researchのdecisions/information_used/representative_dutiesをセクターごとに書き分けて整合を取った"
+    },
+    {
+      "at": "2026-09-10T14:14:03.206Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-allocate-and-forecast/design-review-r4.result.json"
+    },
+    {
+      "at": "2026-09-10T14:14:03.206Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-10T14:14:07.468Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-10T14:14:07.469Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ],
   "redesign": [

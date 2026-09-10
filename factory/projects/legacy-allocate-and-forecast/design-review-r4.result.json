@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-design-r4",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 76,
+    "career_authenticity_score": 78,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "c_compression_v4.json still contradicts itself: removed_complexity says reservoir decline rate was deleted, but reason_for_removal says it was integrated into the HIGH/LOW reservoir snapshot and SOON/FAR rain forecast. Those two snapshots do not encode a rate, so the round-3 disclosure finding is not fully resolved."
+    ],
+    "low": [
+      "The new household mechanism is genuinely water-specific and directionally valid, but it is a core scoring premise supported only as an explicitly disclosed generalization rather than by any of research.md's six cited primary sources. The disclosure prevents a false citation claim, but implementation should add a direct authoritative source.",
+      "play_seeds_v4.json retains one stale reference to household '使用量が変わる' even though the adopted axis is specifically whether discretionary uses can be deferred. This does not alter scoring, but weakens chain hygiene.",
+      "The adopted t5 translation remains cluttered with historical change-log language and stale 'design-sim.mjs v3' labels despite the current source identifying itself as v4. Its operative fields are nevertheless internally consistent."
+    ],
+    "failure_codes": [
+      {
+        "code": "RATE_OF_DECLINE_SCOPE_DISCLOSURE_AMBIGUOUS",
+        "severity": "MEDIUM",
+        "finding": "The artifact explicitly removes decline rate but subsequently claims it was integrated into current reservoir level and rain timing; neither snapshot represents rate of change.",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/c_compression_v4.json"
+      }
+    ],
+    "round3_findings_confirmed_closed": {
+      "core_causal_model_distorted": true,
+      "artifact_chain_inconsistent": true,
+      "rate_of_decline_disclosure": false,
+      "reference_research_household_axis": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "12 passed, 0 failed; capacity_only_smart=0.5830, urgency_only_smart=0.5838, reservoir_only_depth=0.4961, rain_only_depth=0.4961; results match design-sim-result.json.",
+      "design_sim_math_unchanged_from_r3": true,
+      "household_mechanism_genuinely_grounded": true,
+      "fact_sheet_fully_swept": true,
+      "translation_internally_consistent": true,
+      "ready_for_implementation": true
+    },
+    "evidence": [
+      "factory/projects/legacy-allocate-and-forecast/research.md:321 — The household-discretionary-use rule is absent; research instead documents household backup sources and later-stage distribution controls.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v4.json:38 — Allocation duties now distinguish agriculture's rotation/reuse, industry's mutual-aid agreement, and household discretionary-use deferral.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v4.json:49 — The household rule is explicitly identified as a general practice not individually documented by research.md's six primary sources.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v4.json:60 — Decision information uses sector-specific demand-side capacity and no longer places household backup sources on the scoring axis.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v4.json:75 — Groundwater and desalination remain correctly separated as protections against household restrictions.",
+      "factory/projects/legacy-allocate-and-forecast/design/c_compression_v4.json:4 — Decline rate is explicitly listed as omitted with the flow-prediction calculation.",
+      "factory/projects/legacy-allocate-and-forecast/design/c_compression_v4.json:5 — The same artifact still says decline rate was integrated into two snapshot axes, preserving the round-3 ambiguity.",
+      "factory/projects/legacy-allocate-and-forecast/design/reference_research_v4.json:6 — The reference now distinguishes agriculture, industrial, and household capacity mechanisms instead of applying generic alternative means uniformly.",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v4.json:85 — Adopted t5 consistently uses discretionary household use as capacity and keeps backup sources outside household scoring.",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v4.json:33 — A residual statement says household timing circumstances or 'usage amount' may change, partially echoing the discarded demand framing.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:53 — SECTORS remains household/agriculture/industrial.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:58 — SINGLE_AXIS_PASS_BAR remains fixed at 0.60.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:63 — DEPTH_TABLE remains HIGH/SOON=light, HIGH/FAR=medium, LOW/SOON=medium, LOW/FAR=heavy.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:77 — NON_TARGET_PATTERNS remains the symmetric 50/50 two-pattern construction.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:85 — newSession retains the round-3 generation and scoring inputs unchanged.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:108 — sessionWin still requires both sector and depth to be correct.",
+      "git diff cf2a7ee^ cf2a7ee -- design/design-sim.mjs — Only header comments changed; the requested scoring constants, tables, patterns, newSession, sessionWin, and verification math are byte-identical to round 3."
+    ],
+    "recommended_actions": [
+      "Rewrite c_compression_v4.json reason_for_removal to state plainly that decline rate is omitted and is not represented or integrated by HIGH/LOW plus SOON/FAR.",
+      "Add a direct authoritative municipal or government source for staged restrictions on outdoor/non-essential household water use, then attach that source to the fact sheet.",
+      "Replace play_seeds_v4.json's residual '使用量が変わる' wording with the actual axis: whether discretionary uses can be deferred.",
+      "Clean adopted t5's historical change-log prose and update narrative references from design-sim v3 to v4 before implementation handoff."
+    ]
+  },
+  "elapsed_sec": 135.072
+}
