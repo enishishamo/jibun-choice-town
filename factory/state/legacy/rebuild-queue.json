@@ -138,7 +138,9 @@
       ],
       "priority_score": 4.54,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "queued"
+      "status": "in_progress",
+      "game_id": "legacy-allocate-and-forecast",
+      "started_at": "2026-09-10T07:30:35.720Z"
     },
     {
       "game_type": "move_try",

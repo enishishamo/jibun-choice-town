@@ -2306,6 +2306,34 @@
           "given": "8c2f8b620c0924b5a5a3ca4bd7f19d431230d2c0"
         }
       ]
+    },
+    "q1-rebuild-allocate-and-forecast": {
+      "task_id": "q1-rebuild-allocate-and-forecast",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-10T07:30:35.455Z",
+      "updated_at": "2026-09-10T07:30:35.456Z",
+      "history": [
+        {
+          "at": "2026-09-10T07:30:35.456Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        }
+      ]
     }
   }
 }

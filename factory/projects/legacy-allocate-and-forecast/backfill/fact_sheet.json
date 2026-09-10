@@ -1,0 +1,32 @@
+{
+  "profession": "水資源の管理・調整に関わる仕事",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "家庭・農業・工業への水配分を10%刻みで設定し、3週間後の雨まで貯水率を危険水準に落とさず維持する資源配分シミュレーション"
+  ],
+  "expertise": [
+    "現在と予測貯水率、履歴、3週間後までの降雨予測、3部門の基礎消費量、配分を絞った際の社会的影響文"
+  ],
+  "tools": [
+    "現在と予測貯水率、履歴、3週間後までの降雨予測、3部門の基礎消費量、配分を絞った際の社会的影響文"
+  ],
+  "information_used": [
+    "現在と予測貯水率、履歴、3週間後までの降雨予測、3部門の基礎消費量、配分を絞った際の社会的影響文"
+  ],
+  "decisions": [
+    "3部門の利用率を調整し、7日進めて貯水率と各部門への影響を観察しながら雨までの配分を決める"
+  ],
+  "outputs_or_value": "危険水準到達後に「今日からやり直す」で貯水率・週・履歴・失敗履歴を初期化する。利用率設定は初期化されない",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/allocate_and_forecast.json"
+}
