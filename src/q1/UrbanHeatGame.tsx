@@ -16,6 +16,12 @@
 // フラットな失敗結果のみを返す1回のコミット判断にした（design-sim.mjs参照、design review r4
 // PASS 88）。失敗時は同じデータを再提示する非採点の振り返り選択を挟み、Q1 First-Play Standard
 // Gate G「考え直す余地」に対応する（この振り返りは結果を一切変えない）。
+//
+// 実装レビューr1（FAIL 48、BLOCKER×2、MEDIUM×1）是正: (1) CORE_DATA_DISCLOSURE_NOT_REQUIRED —
+// 3地点すべての「？」を開く（読む）まで「実施する」を活性化しないようにした（openedSlots）。
+// (2) THINK_AGAIN_SKIPPABLE — 振り返り選択（reflectionPick）をしないまま「先へ進む」を押せて
+// しまっていたため、選択するまで非活性にした。(3) TOOL_ORDER_NOT_SHUFFLED — 対策カードの表示順を
+// 毎セッション独立にシャッフルするようにした（toolOrder、IDベースの判定は変更なし）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import {
@@ -24,18 +30,27 @@ import {
   TOOL_LABELS,
   newSession,
   sessionWin,
+  shuffledIds,
   type Tool,
 } from "./heatDiagnosisLogic";
 
 export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameProps) {
   const [session] = useState(() => newSession());
+  const [toolOrder] = useState<Tool[]>(() => shuffledIds(TOOLS) as Tool[]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [openSlot, setOpenSlot] = useState<number | null>(null);
-  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "success" | "partial">("playing");
+  const [openedSlots, setOpenedSlots] = useState<Set<number>>(new Set());
+  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "success">("playing");
   const [reflectionPick, setReflectionPick] = useState<number | null>(null);
 
-  const canCommit = selectedSlot !== null && selectedTool !== null;
+  const allDataRead = openedSlots.size === session.slots.length;
+  const canCommit = allDataRead && selectedSlot !== null && selectedTool !== null;
+
+  const toggleOpen = (i: number) => {
+    setOpenSlot(openSlot === i ? null : i);
+    setOpenedSlots((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+  };
 
   const commit = () => {
     if (selectedSlot === null || !selectedTool) return;
@@ -81,7 +96,11 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
         <p className="game-line soft center-line farm-disclaimer">
           ※この選択で結果は変わりません。もう一度3つの地点を見比べてみよう
         </p>
-        <button className="btn primary big" onClick={() => (onPartialComplete ?? onComplete)()}>
+        <button
+          className="btn primary big"
+          disabled={reflectionPick === null}
+          onClick={() => (onPartialComplete ?? onComplete)()}
+        >
           先へ進む
         </button>
       </div>
@@ -103,7 +122,7 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
               <button
                 className="dx-more"
                 aria-label={openSlot === i ? "とじる" : "データを見る"}
-                onClick={() => setOpenSlot(openSlot === i ? null : i)}
+                onClick={() => toggleOpen(i)}
               >
                 {openSlot === i ? "－" : "？"}
               </button>
@@ -122,7 +141,7 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
       </div>
 
       <div className="zone-row">
-        {TOOLS.map((tool) => (
+        {toolOrder.map((tool) => (
           <button
             key={tool}
             className={`zone-btn ${selectedTool === tool ? "on" : ""}`}
@@ -136,6 +155,11 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
       <button className="btn primary big" disabled={!canCommit} onClick={commit}>
         実施する
       </button>
+      {!allDataRead && (
+        <p className="game-line soft center-line farm-disclaimer">
+          ※3つの地点すべての「？」を見てから実施しよう
+        </p>
+      )}
     </div>
   );
 }

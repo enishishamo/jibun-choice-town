@@ -122,7 +122,16 @@ check("'avoid wind, apply fixed tool' strategies stay well below full reasoning"
     return reflectBlock.includes("onPartialComplete") && !/onClick=\{onComplete\}/.test(reflectBlock);
   })());
   check("the post-failure reflection step exists and is visually distinct from the scored commit step", src.includes("reflectionPick") && src.includes("結果は変わりません"));
-  check("commit button is disabled until both a location and a tool are selected", /disabled=\{!canCommit\}/.test(src) && /canCommit\s*=\s*selectedSlot !== null && selectedTool !== null/.test(src));
+  check("commit button requires a location, a tool, AND that all three locations' data has been opened — CORE_DATA_DISCLOSURE_NOT_REQUIRED regression (impl review r1 BLOCKER)", (() => {
+    const canCommitLine = src.match(/const canCommit = ([^;]+);/)?.[1] ?? "";
+    return /disabled=\{!canCommit\}/.test(src) && canCommitLine.includes("allDataRead") && canCommitLine.includes("selectedSlot !== null") && canCommitLine.includes("selectedTool !== null") && src.includes("openedSlots");
+  })());
+  check("the reflection continue button is disabled until a reflection pick is made — THINK_AGAIN_SKIPPABLE regression (impl review r1 BLOCKER)", (() => {
+    const reflectBlock = body.split('outcome === "reflecting"')[1]?.split("return (")[1]?.split('outcome === "playing"')[0] ?? "";
+    return /disabled=\{reflectionPick === null\}/.test(reflectBlock);
+  })());
+  check("tool card display order is shuffled once per mount, not rendered in fixed TOOLS order — TOOL_ORDER_NOT_SHUFFLED regression (impl review r1 MEDIUM)", src.includes("useState<Tool[]>(() => shuffledIds(TOOLS)") && src.includes("toolOrder.map"));
+  check("no unused 'partial' outcome state left in the type union (impl review r1 LOW)", !/"playing" \| "reflecting" \| "success" \| "partial"/.test(src));
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
