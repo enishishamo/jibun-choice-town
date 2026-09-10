@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-layer-and-compare-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 55,
+    "career_authenticity_score": 86,
+    "game_quality_score": 55,
+    "blockers": [],
+    "high": [
+      {
+        "finding": "モデルはCOREで宣言された「日射・風・舗装の3軸を読む」ことを要求しない。日射と舗装だけを調べ、strongならその地点へshade、asphaltならその地点へwater_pavementを選ぶ戦略は、WIND/FINEの風データを一切読まず100%成功する。この戦略がシミュレーションのチェック集合から欠落しており、legitimate_full_reasoning=100%との差も測定されていない。排他的な2 archetype化は各単一軸戦略を約58%に抑えるが、全3軸の必要性は保証しない。",
+        "file": "factory/projects/legacy-layer-and-compare/design/design-sim.mjs"
+      },
+      {
+        "finding": "失敗時に判断を考え直す実質的な機会がない。結果は診断と対策のどちらが誤りかも分からない「効果が出なかった」だけで、そのまま別結末へ進む。章への再入場では条件が再抽選され、同じ判断を再検討できないため、q1-first-play-standardのTHINK AGAINを満たさない。総当たりを防ぐため再submitを禁止すること自体は妥当だが、非送信型の再診断・根拠選択なども用意されていない。",
+        "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json"
+      }
+    ],
+    "medium": [
+      {
+        "finding": "fact_sheet、scope_core、aeはpipeline上のcurrent versionが2である一方、各currentファイルのrevision_noteはv1とだけ記録している。同一_v1ファイルをversion 2として再登録した事情を成果物自身から判別できず、要求されたartifact-version追跡として不整合。",
+        "file": "factory/projects/legacy-layer-and-compare/q1-pipeline.json"
+      }
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_DATA_AXIS_NOT_REQUIRED",
+        "severity": "HIGH",
+        "finding": "日射+舗装だけの未検証戦略が100%成功し、風軸と「風は地点対策不能」という制約を無視できる。",
+        "file": "factory/projects/legacy-layer-and-compare/design/design-sim.mjs"
+      },
+      {
+        "code": "THINK_AGAIN_MISSING",
+        "severity": "HIGH",
+        "finding": "失敗後は無情報の結果を受け取って終了し、同一条件について考え直す判断や操作がない。",
+        "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json"
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "MEDIUM",
+        "finding": "pipeline current version 2とcurrentファイル内のv1 revision_noteが一致しない。",
+        "file": "factory/projects/legacy-layer-and-compare/q1-pipeline.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "single_axis_exploit_genuinely_capped": true,
+      "citation_sweep_clean": false,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:43-46 — SUN/PAVEMENTは各fixable軸だけが異常、WINDは風だけが異常、FINEは全軸正常で、2軸だけからfixable地点を一意に特定できる。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:51-60 — 各sessionにはSUNまたはPAVEMENTの一方だけが存在するため、日射と舗装を走査すれば必ず正解地点・道具が直接決まる。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:96-135 — 単一軸、風回避、first-bad等は検査するが、日射+舗装のみで風を無視する100%戦略がない。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim-result.json:61-74 — 再実行stdoutはcommitted resultと一致し、単一軸約58%、固定約17%、風回避固定約25%、first-bad約50%だった。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:114-117 — avoid_wind_then_fixed_shadeはfix-sun確率1/2×非WIND先頭がSUNである確率1/2=25%。fix-pavementでは固定shadeなので0%。実測25.44%は設計から導かれ、バグによるcapではない。",
+      "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json:9 — 風の制約も読み取る必要があると主張するが、モデル上は日射・舗装だけで100%判定できる。",
+      "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json:10-15 — 失敗時は原因を示さず、再挑戦もなく、そのまま先へ進む。",
+      "factory/rules/q1-first-play-standard.md:28-29 — PRIMARY QUALITY GATE Gは、失敗時に少なくとも一度考え直せる余地を要求する。",
+      "factory/projects/legacy-layer-and-compare/design/play_seeds_v1.json:16-25 — rejected s2は旧実装同様、効果が出るまで2〜3回置き直せるためBRUTE_FORCE_SUCCESSとする判断が正しい。",
+      "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v2.json:12-15 — fixable異常とWIND異常を同じ強調度にし、中立名・独立shuffle・均等なvisual hierarchyをdesign_spec受入条件とするため、現段階では色・名称・位置リーク防止が明示されている。",
+      "factory/projects/legacy-layer-and-compare/research.md:98-111 — 風の道は都市計画レベルの長期誘導を要し、海風・河川風等は都市/地区スケールで個別地点では実施できないと一次資料に基づき整理されている。",
+      "factory/projects/legacy-layer-and-compare/research.md:125-130 — 実務の連携相手、審議・予算・許認可の境界も明示され、ゲームが仕事全体ではなく代表的な原因診断・対策選定を圧縮したものと位置づけられる。",
+      "factory/projects/legacy-layer-and-compare/q1-pipeline.json:13-19 — fact_sheet current versionは2だがcurrent fileはfact_sheet_v1.json。",
+      "factory/projects/legacy-layer-and-compare/design/fact_sheet_v1.json:49 — current fact_sheetのrevision_noteはv1とのみ記載。",
+      "factory/projects/legacy-layer-and-compare/q1-pipeline.json:109-150 — scope_coreとaeもcurrent version 2、_v1 filenameとして登録されている。",
+      "factory/projects/legacy-layer-and-compare/design/scope_core_v1.json:6 — scope_coreのrevision_noteはv1。",
+      "factory/projects/legacy-layer-and-compare/design/ae_v1.json:7 — aeのrevision_noteはv1。"
+    ],
+    "recommended_actions": [
+      "設計モデルに「日射と舗装だけを読み、見つかった異常へ対応工具を置く」戦略を追加し、現行では100%になることを回帰テストで可視化する。",
+      "風軸を本当に必要にする症例構成へ変更する。例えばfixable軸の異常と風異常が同一地点にも現れ得るようにし、風阻害がある地点では局所対策が不適切となる症例を混ぜる。ただし現実の複合原因を歪めず、各症例の正解を一次資料で説明できること。",
+      "総当たり可能な再submitを復活させず、失敗後に同じ3地点を再確認して「どの原因を見落としたか」等を選ぶ非コミット型の再考ステップを追加する。即答や正解地点の開示は避ける。",
+      "fact_sheet、scope_core、aeのrevision_noteをpipeline version 2の生成理由と一致させるか、artifact versionとcontent revisionを別フィールドで明確に区別する。",
+      "game_specでは異常3種の色・アイコン・大きさを同格にすること、中立地点名と原因割当を独立shuffleすることをテスト可能な受入条件として維持する。"
+    ]
+  },
+  "elapsed_sec": 165.444
+}

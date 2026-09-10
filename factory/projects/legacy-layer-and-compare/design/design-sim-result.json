@@ -1,20 +1,25 @@
 {
   "n": 20000,
   "roles": {
-    "SUN": {
+    "SUN_TARGET": {
       "sun": "strong",
       "wind": "strong",
       "pavement": "retentive"
     },
-    "PAVEMENT": {
+    "PAVEMENT_TARGET": {
       "sun": "weak",
       "wind": "strong",
       "pavement": "asphalt"
     },
-    "WIND": {
-      "sun": "weak",
+    "WIND_CONFOUND_SUN": {
+      "sun": "strong",
       "wind": "weak",
       "pavement": "retentive"
+    },
+    "WIND_CONFOUND_PAVEMENT": {
+      "sun": "weak",
+      "wind": "weak",
+      "pavement": "asphalt"
     },
     "FINE": {
       "sun": "weak",
@@ -30,21 +35,21 @@
     {
       "id": "fix-sun",
       "roles": [
-        "SUN",
-        "WIND",
+        "SUN_TARGET",
+        "WIND_CONFOUND_SUN",
         "FINE"
       ],
-      "correctRole": "SUN",
+      "correctRole": "SUN_TARGET",
       "correctTool": "shade"
     },
     {
       "id": "fix-pavement",
       "roles": [
-        "PAVEMENT",
-        "WIND",
+        "PAVEMENT_TARGET",
+        "WIND_CONFOUND_PAVEMENT",
         "FINE"
       ],
-      "correctRole": "PAVEMENT",
+      "correctRole": "PAVEMENT_TARGET",
       "correctTool": "water_pavement"
     }
   ],
@@ -66,8 +71,9 @@
     "fixed_slot2_shade": 0.1648,
     "fixed_slot2_water_pavement": 0.1658,
     "random_pick": 0.1701,
-    "sun_axis_only_then_random": 0.5894,
-    "pavement_axis_only_then_random": 0.5807,
+    "sun_axis_only_then_random": 0.3408,
+    "pavement_axis_only_then_random": 0.3295,
+    "sun_then_pavement_never_wind": 0.5002,
     "avoid_wind_then_fixed_shade": 0.2544,
     "avoid_wind_then_fixed_water_pavement": 0.2481,
     "avoids_wind_then_random": 0.2512,
@@ -78,13 +84,15 @@
     "fixed_slot_tool_guesses_fail": true,
     "random_pick_stays_low": true,
     "single_axis_shortcut_capped": true,
+    "sun_then_pavement_never_wind_capped": true,
     "avoids_wind_heuristic_capped": true,
     "avoid_wind_then_fixed_tool_capped": true,
     "first_bad_looking_heuristic_capped": true,
-    "margin_over_sun_axis_shortcut": 0.4106,
-    "margin_over_pavement_axis_shortcut": 0.4193,
+    "margin_over_sun_axis_shortcut": 0.6592,
+    "margin_over_pavement_axis_shortcut": 0.6705,
+    "margin_over_sun_then_pavement_never_wind": 0.4998,
     "archetype_distribution_balanced": true,
     "correct_slot_position_balanced": true
   },
-  "notes": "v1: real causes (日射/舗装/風) and countermeasures (街路樹・日除け/保水性舗装, no point-fix for 風) per research.md. Each session draws ONE of 2 archetypes (fix-sun / fix-pavement, 50/50) so the fixable-by-shade location is NOT guaranteed every session -- this specifically prevents a single-axis 'always check 日射, apply shade' strategy from reaching ~100% by exploiting an always-present SUN role (an earlier draft of this design had both SUN and PAVEMENT present every session and would have allowed exactly that exploit). WIND (unfixable at point scale, per 環境省データシート表3.2 -- wind-corridor measures are city/district-scale only) and FINE (nothing to fix) are always-present distractors. sun_axis_only_then_random / pavement_axis_only_then_random verify a strategy that reads only one cause axis is capped near 58% (wins its own archetype 100%, falls back to a 1-in-6 random guess on the other), well below full reasoning's 100%. avoid_wind_then_fixed_shade / avoid_wind_then_fixed_water_pavement additionally verify a strategy that correctly reads ONLY the 風 axis to avoid the unfixable location, then applies a fixed tool to whichever other slot comes first in display order without ever distinguishing SUN/PAVEMENT/FINE -- capped near 25%, since it never actually reads 日射/舗装."
+  "notes": "v2 (design review r1 FAIL 55 repair, HIGH CORE_DATA_AXIS_NOT_REQUIRED): v1's WIND distractor had an anomaly ONLY on the 風 axis, so a strategy reading just 日射+舗装 (never 風) could uniquely identify the target every session -- 風 was decorative. v2 replaces the plain WIND distractor in each archetype with a WIND-CONFOUND that mimics that archetype's target symptom on the target's own axis (sun=strong for fix-sun's confound, pavement=asphalt for fix-pavement's confound) while differing only on 風 (its real, unfixable dominant cause) -- grounded in research.md's documented failure mode of diagnosing from a single surface symptom without checking the dominant cause. sun_then_pavement_never_wind (the EXACT strategy r1's reviewer identified winning ~100% under v1) is now capped near 50% (each archetype presents exactly two symptom-matching candidates -- the target and its wind-confound -- so this strategy degenerates to a 50/50 guess between them every session, with 風 the only axis that would break the tie). sun_axis_only_then_random / pavement_axis_only_then_random are capped near 33% (that 50/50-within-its-own-archetype plus a 1-in-6 random fallback in the archetype where its axis shows no anomaly at all -- previously ~58% under v1, which was itself far short of v1's true ~100% flaw once sun+pavement were combined). avoid_wind_then_fixed_* / avoids_wind_then_random (reads 風 only, ignores the target axis) remain capped near 25%, since knowing to exclude the confound still leaves target vs FINE undecided."
 }

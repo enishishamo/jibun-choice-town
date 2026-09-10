@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for legacy-layer-and-compare / t1-diagnose-and-fix (v1).
+// Design-stage exploit simulation for legacy-layer-and-compare / t1-diagnose-and-fix (v2).
 //
 // Audit finding (factory/state/legacy/reverse-audits/layer_and_compare.json): C_required=false,
 // brute_force=true -- the OLD implementation (UrbanHeatGame.tsx) let the child apply the single
@@ -8,15 +8,22 @@
 // addressed that location's real cause, and a "別の場所に置きなおす" button let the child retry
 // in-place until they stumbled on the one location flagged fixable=true.
 //
-// v1 design (per factory/projects/legacy-layer-and-compare/research.md, 環境省 ヒートアイランド
-// 対策ガイドライン): real heat-island causes are 日射 (strong solar exposure), 舗装 (asphalt heat
-// storage), and 風 (wind blocked by dense buildings) -- and NOT ALL causes have a single-point fix:
-// 風 (wind-corridor) countermeasures only work at city/district scale (環境省データシート表3.2),
-// so a location whose real problem is wind-blockage genuinely CANNOT be fixed by a single placed
-// countermeasure. This is the source of real C⇄D structure the old game lacked: the child must
-// read each location's 日射/風/舗装 readings, find the ONE location whose problem matches an
-// available tool (街路樹・日除け for 日射, 保水性舗装 for 舗装), and apply the matching tool --
-// never the wind-blocked location (no tool fixes it) and never a location with no problem at all.
+// v2 fixes over v1 (superseded -- see design-review-r1.result.json, FAIL 55, 2 HIGH):
+// CORE_DATA_AXIS_NOT_REQUIRED (HIGH): v1 gave the WIND distractor an anomaly ONLY on the 風 axis,
+// with 日射/舗装 both reading "fine". That meant a strategy reading ONLY 日射 and 舗装 (falling
+// back from one to the other, never touching 風 at all) could uniquely identify the correct target
+// every single session -- the target was always the ONE slot with a sun/pavement anomaly, since
+// WIND's anomaly never appeared on those two axes and FINE had no anomaly anywhere. 風 data was
+// completely decorative. Fixed: each archetype's "unfixable" distractor is now a WIND-CONFOUND --
+// a location that is ACTUALLY wind-dominated (unfixable) but ALSO happens to show the SAME
+// surface symptom as that archetype's real target (sun=strong in the fix-sun archetype, pavement=
+// asphalt in fix-pavement), differing from the true target ONLY on the 風 axis. This mirrors a real
+// documented failure mode in research.md's "よくある失敗" (原因を診断せずに単一の対策をどこにでも
+// 当てはめる) -- a location can show a symptom matching an available tool while its DOMINANT,
+// actual-actionable cause is something the tool can't touch. A strategy that reads only the target
+// axis (sun or pavement) now faces TWO matching candidates per relevant archetype and must also
+// check 風 to tell them apart -- see sun_axis_only_then_random / pavement_axis_only_then_random
+// below, now capped near 33% instead of the old (broken) ~100%.
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -37,26 +44,27 @@ function shuffle(arr, rand) {
 }
 
 // ---------------------------------------------------------------- roles (real causes)
-// 日射/風/舗装 readings per role -- each role has EXACTLY ONE "bad" axis (research.md 3節: 3つの
-// 原因を体感できる形に翻訳). "fine" = no problem on that axis.
+// 日射/風/舗装 readings per role. Each archetype's WIND-CONFOUND role deliberately shares the
+// target's surface symptom on ONE axis (so a single-axis reader is fooled) but differs on 風 (its
+// real, unfixable dominant cause) -- see header comment.
 export const ROLES = {
-  SUN: { sun: "strong", wind: "strong", pavement: "retentive" }, // 日射が強い（さえぎるものがない）
-  PAVEMENT: { sun: "weak", wind: "strong", pavement: "asphalt" }, // 地面がアスファルトで蓄熱
-  WIND: { sun: "weak", wind: "weak", pavement: "retentive" }, // 建物が密集し風が通らない（個人の一手では直せない）
+  SUN_TARGET: { sun: "strong", wind: "strong", pavement: "retentive" }, // 日射が強い（さえぎるものがない）。風は通り、他は正常
+  PAVEMENT_TARGET: { sun: "weak", wind: "strong", pavement: "asphalt" }, // 地面がアスファルトで蓄熱。風は通り、他は正常
+  WIND_CONFOUND_SUN: { sun: "strong", wind: "weak", pavement: "retentive" }, // 見た目は日射問題だが、実際は建物密集で風が通らないのが支配的原因（個人の一手では直せない）
+  WIND_CONFOUND_PAVEMENT: { sun: "weak", wind: "weak", pavement: "asphalt" }, // 見た目は舗装問題だが、実際は建物密集で風が通らないのが支配的原因（個人の一手では直せない）
   FINE: { sun: "weak", wind: "strong", pavement: "retentive" }, // 特に問題なし
 };
 export const TOOLS = ["shade", "water_pavement"]; // 街路樹・日除け / 保水性・遮熱性舗装 -- 風を直す道具はない（研究: 都市/地区スケール専用）
 
 // ---------------------------------------------------------------- archetypes
 // Exactly one scenario type per session (50/50): the fixable role present is EITHER SUN OR
-// PAVEMENT, never both -- this is what prevents a single-axis heuristic ("always look for 日射=
-// strong, apply shade") from winning every session just because a fixable-by-shade location is
-// always present (design review self-check: an earlier draft of this model guaranteed both SUN and
-// PAVEMENT every session, which let a shade-only strategy win ~100% by ignoring 舗装 entirely).
-// Every session also includes WIND (the unfixable trap) and FINE (nothing to fix) as distractors.
+// PAVEMENT, never both (design review r1 confirmed this half of the model is sound -- prevents a
+// "sun-guaranteed-every-session" exploit). Each archetype's distractor pair is FINE (no problem)
+// plus a WIND-CONFOUND that mimics THAT archetype's target symptom (see ROLES comment) -- this is
+// what forces genuine cross-axis reading rather than a single-axis or two-axis-without-wind shortcut.
 export const ARCHETYPES = [
-  { id: "fix-sun", roles: ["SUN", "WIND", "FINE"], correctRole: "SUN", correctTool: "shade" },
-  { id: "fix-pavement", roles: ["PAVEMENT", "WIND", "FINE"], correctRole: "PAVEMENT", correctTool: "water_pavement" },
+  { id: "fix-sun", roles: ["SUN_TARGET", "WIND_CONFOUND_SUN", "FINE"], correctRole: "SUN_TARGET", correctTool: "shade" },
+  { id: "fix-pavement", roles: ["PAVEMENT_TARGET", "WIND_CONFOUND_PAVEMENT", "FINE"], correctRole: "PAVEMENT_TARGET", correctTool: "water_pavement" },
 ];
 
 function pick(arr, rand) { return arr[Math.floor(rand() * arr.length)]; }
@@ -93,44 +101,57 @@ for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
 }
 // content-blind random (slot, tool) guess.
 results.random_pick = rate((s, rand) => sessionWin(s, Math.floor(rand() * 3), pick(TOOLS, rand)));
-// reads ONLY the 日射 axis: finds a slot with sun=strong and shades it; if none, guesses randomly.
-// This is the single-axis exploit an earlier design draft allowed to win ~100% -- verify it now
-// fails whenever this session's archetype is fix-pavement (no sun=strong slot exists that session).
+// reads ONLY the 日射 axis: finds a slot with sun=strong and shades it (picking the first match in
+// display order if there are two -- the fix-sun archetype now always has exactly two: SUN_TARGET
+// and WIND_CONFOUND_SUN); if no slot has sun=strong, guesses randomly. design review r1 HIGH fix:
+// this is now capped well below 100% because it can no longer uniquely identify the target.
 results.sun_axis_only_then_random = rate((s, rand) => {
-  const idx = s.slots.findIndex((sl) => sl.sun === "strong");
-  if (idx >= 0) return sessionWin(s, idx, "shade");
+  const matches = s.slots.map((sl, i) => (sl.sun === "strong" ? i : -1)).filter((i) => i >= 0);
+  if (matches.length > 0) return sessionWin(s, matches[0], "shade");
   return sessionWin(s, Math.floor(rand() * 3), pick(TOOLS, rand));
 });
 // symmetric check for the 舗装 axis.
 results.pavement_axis_only_then_random = rate((s, rand) => {
-  const idx = s.slots.findIndex((sl) => sl.pavement === "asphalt");
-  if (idx >= 0) return sessionWin(s, idx, "water_pavement");
+  const matches = s.slots.map((sl, i) => (sl.pavement === "asphalt" ? i : -1)).filter((i) => i >= 0);
+  if (matches.length > 0) return sessionWin(s, matches[0], "water_pavement");
   return sessionWin(s, Math.floor(rand() * 3), pick(TOOLS, rand));
 });
-// reads ONLY the 風 axis to identify and AVOID the wind-blocked slot (genuine partial reasoning),
-// then applies a FIXED tool to the first remaining (display-order) non-wind slot -- never actually
-// distinguishes SUN/PAVEMENT/FINE from each other. Two variants (fixed tool = shade / water_pavement).
+// reads 日射+舗装 together (fallback: check sun first, else pavement) but STILL never reads 風 --
+// this is the EXACT strategy design review r1 found winning ~100% under the v1 model. Verify it is
+// now capped: in each archetype it faces the same "two symptom-matching candidates, no 風 to break
+// the tie" problem as the single-axis checks above.
+results.sun_then_pavement_never_wind = rate((s, rand) => {
+  const sunMatches = s.slots.map((sl, i) => (sl.sun === "strong" ? i : -1)).filter((i) => i >= 0);
+  if (sunMatches.length > 0) return sessionWin(s, sunMatches[0], "shade");
+  const pavMatches = s.slots.map((sl, i) => (sl.pavement === "asphalt" ? i : -1)).filter((i) => i >= 0);
+  if (pavMatches.length > 0) return sessionWin(s, pavMatches[0], "water_pavement");
+  return sessionWin(s, Math.floor(rand() * 3), pick(TOOLS, rand));
+});
+// reads ONLY the 風 axis to identify and AVOID the wind-dominated slot(s), then applies a FIXED
+// tool to the first remaining (display-order) slot -- never actually reads 日射/舗装 to distinguish
+// the real target from FINE.
 for (const fixedTool of TOOLS) {
   results[`avoid_wind_then_fixed_${fixedTool}`] = rate((s) => {
-    const idx = s.slots.findIndex((sl) => sl.roleId !== "WIND");
+    const idx = s.slots.findIndex((sl) => sl.wind !== "weak");
     return sessionWin(s, idx, fixedTool);
   });
 }
-// correctly avoids the wind-blocked slot (knows wind isn't point-fixable) but otherwise guesses
-// randomly between the remaining 2 slots and 2 tools -- partial reasoning, still well below full.
+// correctly avoids the wind-dominated slot but otherwise guesses randomly between the remaining 2
+// slots (target + FINE) and 2 tools -- genuine partial reasoning (風 axis only), still well below full.
 results.avoids_wind_then_random = rate((s, rand) => {
-  const candidates = [0, 1, 2].filter((i) => s.slots[i].roleId !== "WIND");
+  const candidates = [0, 1, 2].filter((i) => s.slots[i].wind !== "weak");
   const slotIndex = candidates[Math.floor(rand() * candidates.length)];
   return sessionWin(s, slotIndex, pick(TOOLS, rand));
 });
-// applies whichever tool targets the FIRST slot (by display order) that has any non-fine reading,
-// regardless of whether that slot is actually the archetype's correctRole -- catches a "just fix
-// whatever looks bad first" strategy that never distinguishes WIND (unfixable) from a real target.
+// applies whichever tool targets the FIRST slot (by display order) that has any non-fine reading on
+// ANY axis, regardless of whether that slot is actually the archetype's correctRole -- catches a
+// "just fix whatever looks bad first" strategy that never distinguishes the wind-confound from a
+// real target.
 results.first_bad_looking_slot = rate((s) => {
   const idx = s.slots.findIndex((sl) => sl.sun === "strong" || sl.pavement === "asphalt" || sl.wind === "weak");
   if (idx < 0) return false;
   const sl = s.slots[idx];
-  const tool = sl.sun === "strong" ? "shade" : sl.pavement === "asphalt" ? "water_pavement" : "shade"; // wind has no matching tool; guess shade
+  const tool = sl.sun === "strong" ? "shade" : sl.pavement === "asphalt" ? "water_pavement" : "shade"; // wind-only anomaly has no matching tool; guess shade
   return sessionWin(s, idx, tool);
 });
 
@@ -151,11 +172,13 @@ const verdict = {
   fixed_slot_tool_guesses_fail: Object.keys(results).filter((k) => k.startsWith("fixed_slot")).every((k) => results[k] < 0.3),
   random_pick_stays_low: results.random_pick < 0.3,
   single_axis_shortcut_capped: results.sun_axis_only_then_random <= 0.7 && results.pavement_axis_only_then_random <= 0.7,
+  sun_then_pavement_never_wind_capped: results.sun_then_pavement_never_wind <= 0.7,
   avoids_wind_heuristic_capped: results.avoids_wind_then_random <= 0.7,
   avoid_wind_then_fixed_tool_capped: TOOLS.every((t) => results[`avoid_wind_then_fixed_${t}`] <= 0.7),
   first_bad_looking_heuristic_capped: results.first_bad_looking_slot <= 0.7,
   margin_over_sun_axis_shortcut: Number((results.legitimate_full_reasoning - results.sun_axis_only_then_random).toFixed(4)),
   margin_over_pavement_axis_shortcut: Number((results.legitimate_full_reasoning - results.pavement_axis_only_then_random).toFixed(4)),
+  margin_over_sun_then_pavement_never_wind: Number((results.legitimate_full_reasoning - results.sun_then_pavement_never_wind).toFixed(4)),
   archetype_distribution_balanced: Object.values(archCounts).every((c) => Math.abs(c / N - 0.5) < 0.02),
   correct_slot_position_balanced: Object.values(slotCounts).every((c) => Math.abs(c / N - 1 / 3) < 0.02),
 };
@@ -169,7 +192,7 @@ const out = {
   correctSlotPositionDistribution: slotCounts,
   results,
   verdict,
-  notes: "v1: real causes (日射/舗装/風) and countermeasures (街路樹・日除け/保水性舗装, no point-fix for 風) per research.md. Each session draws ONE of 2 archetypes (fix-sun / fix-pavement, 50/50) so the fixable-by-shade location is NOT guaranteed every session -- this specifically prevents a single-axis 'always check 日射, apply shade' strategy from reaching ~100% by exploiting an always-present SUN role (an earlier draft of this design had both SUN and PAVEMENT present every session and would have allowed exactly that exploit). WIND (unfixable at point scale, per 環境省データシート表3.2 -- wind-corridor measures are city/district-scale only) and FINE (nothing to fix) are always-present distractors. sun_axis_only_then_random / pavement_axis_only_then_random verify a strategy that reads only one cause axis is capped near 58% (wins its own archetype 100%, falls back to a 1-in-6 random guess on the other), well below full reasoning's 100%. avoid_wind_then_fixed_shade / avoid_wind_then_fixed_water_pavement additionally verify a strategy that correctly reads ONLY the 風 axis to avoid the unfixable location, then applies a fixed tool to whichever other slot comes first in display order without ever distinguishing SUN/PAVEMENT/FINE -- capped near 25%, since it never actually reads 日射/舗装.",
+  notes: "v2 (design review r1 FAIL 55 repair, HIGH CORE_DATA_AXIS_NOT_REQUIRED): v1's WIND distractor had an anomaly ONLY on the 風 axis, so a strategy reading just 日射+舗装 (never 風) could uniquely identify the target every session -- 風 was decorative. v2 replaces the plain WIND distractor in each archetype with a WIND-CONFOUND that mimics that archetype's target symptom on the target's own axis (sun=strong for fix-sun's confound, pavement=asphalt for fix-pavement's confound) while differing only on 風 (its real, unfixable dominant cause) -- grounded in research.md's documented failure mode of diagnosing from a single surface symptom without checking the dominant cause. sun_then_pavement_never_wind (the EXACT strategy r1's reviewer identified winning ~100% under v1) is now capped near 50% (each archetype presents exactly two symptom-matching candidates -- the target and its wind-confound -- so this strategy degenerates to a 50/50 guess between them every session, with 風 the only axis that would break the tie). sun_axis_only_then_random / pavement_axis_only_then_random are capped near 33% (that 50/50-within-its-own-archetype plus a 1-in-6 random fallback in the archetype where its axis shows no anomaly at all -- previously ~58% under v1, which was itself far short of v1's true ~100% flaw once sun+pavement were combined). avoid_wind_then_fixed_* / avoids_wind_then_random (reads 風 only, ignores the target axis) remain capped near 25%, since knowing to exclude the confound still leaves target vs FINE undecided.",
 };
 try {
   writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）はfact_sheet_v2.jsonの一次資料（環境省ヒートアイランド対策ガイドライン3章、千代田区ヒートアイランド対策計画）と整合する。SCOPE（街・猛暑/暑い市街地）は実際のヒートアイランド対策業務の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『対策後に地点の暑さが実際にやわらぐ』を含む文脈全体はまちの暑さ対策・都市計画の判断を指し、他の登場職業とは重複しない。 design review r1是正のcascade: fact_sheet/scope_core/aeのバージョン番号2はbackfillプレースホルダー置き換えによるカウンタ繰り上がりであり、CORE/SCOPEの整合性・代表性は変わらない。"
+}
