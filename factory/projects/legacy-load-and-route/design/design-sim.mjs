@@ -1,10 +1,29 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for legacy-load-and-route / t1-zone-and-route (v3).
+// Design-stage exploit simulation for legacy-load-and-route / t1-zone-and-route (v4).
 //
 // Audit finding (factory/state/legacy/reverse-audits/load_and_route.json): exploit=memorize,
 // player_judgment_required=false, brute_force=true -- the OLD implementation had 4 fixed cargo
 // items with fixed correct storage zones and 2 fixed schools with a hardcoded route order, zero
 // randomization, plus per-item failure messages enabling brute-force retry.
+//
+// v4 fixes over v3 (superseded -- see design-review-r3.result.json, FAIL 68, 1 BLOCKER, 1 HIGH):
+// 1. ANSWER_LEAK (BLOCKER): the zone display icons in first_5_seconds/game_translations used
+//    food-shaped emoji (🐟 for cold5, 🥛 for cold10) that map 1:1 onto specific drawn foods
+//    (さば/牛乳), letting a child solve zone placement by icon-matching without reading the C
+//    (storage-limit text) at all. Fixed in design/first_5_seconds_v4.json and
+//    design/game_translations_v4.json: zone icons are now neutral (❄️/🌡️ by temperature, not by
+//    food shape). This file (design-sim.mjs) has no UI/icon layer, so it required no code change,
+//    only the comment/notes update below for chain consistency.
+// 2. CORE_DISTORTED_BY_PROSE (HIGH): v3's fact_sheet/comments said "every threshold in the source
+//    table is an upper bound, colder is always safe" as a blanket rule -- but that only holds for
+//    4 of the 6 real categories (fish/meat/milk/frozen); 生鮮果実・野菜's "10℃前後" is a RANGE
+//    (too cold causes quality loss, not a safety issue but still a real constraint per research.md)
+//    and 穀類加工品's "室温" is a separate ambient category, not a coldness scale at all. Comments
+//    and fact_sheet_v4.json now scope the "colder is safe" claim to only the 4 categories where it
+//    is actually true; potato/bread/flour keep exactly one validZone (ambient), matching the
+//    (unchanged) FOODS data below.
+// 3. LOW: route_zero_winner_rate's assertion only threw on a multi-winner (ambiguous) archetype,
+//    not a zero-winner (unsolvable) one. Now asserts both.
 //
 // v3 fixes over v2 (superseded -- see design-review-r2.result.json, FAIL 62, 1 BLOCKER):
 // 1. CORE_DISTORTED_BY_GAME (BLOCKER, still open after v2's r1 repair): 厚生労働省's storage
@@ -45,12 +64,18 @@ function shuffle(arr, rand) {
 
 // ---------------------------------------------------------------- part 1: zones
 // Real-grounded per 厚生労働省「大量調理施設衛生管理マニュアル」別添1 (see
-// factory/projects/legacy-load-and-route/research.md and fact_sheet_v3.json). Every threshold in
-// the source table is an upper bound ("◯C以下"), so a food is correctly stored in ANY zone at or
-// below its own limit -- `validZones` lists every zone that satisfies a food's real requirement,
-// not a single "correct answer" (design review r2 BLOCKER fix: v2 wrongly treated cold5/cold10 as
-// mutually exclusive categories, scoring meat/milk in cold5 -- which is strictly SAFER, not wrong
-// -- as a failure).
+// factory/projects/legacy-load-and-route/research.md and fact_sheet_v4.json). ONLY 4 of the 6
+// source categories are upper bounds ("◯C以下"): 生鮮魚介類/食肉・鯨肉/乳・濃縮乳等/冷凍食品全般 --
+// for these, a food is correctly stored in ANY zone at or below its own limit, so `validZones`
+// lists every such zone (design review r2 BLOCKER fix: v2 wrongly treated cold5/cold10 as mutually
+// exclusive categories, scoring meat/milk in cold5 -- which is strictly SAFER, not wrong -- as a
+// failure). This does NOT generalize to the other 2 categories (design review r3 HIGH fix,
+// CORE_DISTORTED_BY_PROSE: an earlier draft of this comment/fact_sheet wrongly implied "every
+// threshold is an upper bound, colder is always safe" as a blanket rule) -- 生鮮果実・野菜's
+// "10℃前後" is a RANGE (too cold causes low-temperature sweetening / quality loss per 農林水産省,
+// see research.md), and 穀類加工品's "室温" is a distinct ambient category, not a point on the same
+// cold-to-frozen scale. Both potato/bread/flour therefore have exactly ONE validZone (ambient),
+// never frozen or cold.
 export const FOODS = [
   { id: "raw_fish", validZones: ["cold5"] },              // 生鮮魚介類: 5℃以下 -- only cold5 satisfies this
   { id: "raw_meat", validZones: ["cold5", "cold10"] },    // 食肉・鯨肉: 10℃以下 -- cold5 (colder) also satisfies this
@@ -158,7 +183,11 @@ for (const arc of ARCHETYPES) {
     if (winners.length > 1) multiWinnerCount++;
   }
 }
+// design review r3 LOW fix: the r2 fix only threw on ambiguous (multi-winner) ground truth; it
+// silently allowed a broken archetype with ZERO valid orders (an unsolvable session) to slip
+// through. Assert exactly one winner in every one of the 6 combos, not just "not more than one".
 if (multiWinnerCount > 0) throw new Error(`route archetype has more than one valid order in ${multiWinnerCount} of 6 archetype/mirror combos -- ambiguous ground truth`);
+if (zeroWinnerCount > 0) throw new Error(`route archetype has zero valid orders in ${zeroWinnerCount} of 6 archetype/mirror combos -- unsolvable session`);
 const routeZeroWinnerRate = Number((zeroWinnerCount / 6).toFixed(4));
 
 const verdict = {
@@ -182,7 +211,7 @@ const out = {
   zone: { foods: FOODS, zones: ZONES, drawSize: DRAW_SIZE, results: zoneResults },
   route: { archetypes: ARCHETYPES, archetypeDistribution: archCounts, results: routeResults },
   verdict,
-  notes: "v3 (design review r2 FAIL 62 repair, BLOCKER CORE_DISTORTED_BY_GAME): the 厚生労働省 storage thresholds are all upper bounds ('◯C以下'), so v2's model -- treating cold5/cold10 as mutually exclusive categories and scoring meat/milk placed in cold5 (colder, still within their 10C limit) as WRONG -- contradicted the source table it claimed to implement. v3 gives each food a `validZones` list (every zone that satisfies its real limit): raw_fish -> [cold5] only (5C is strictly tighter than meat/milk's 10C), raw_meat/milk -> [cold5, cold10] (either satisfies 10C or below). The exploit-relevance check is redefined to what actually violates a real threshold: 'treats_all_cold_items_as_cold10' (ignoring fish's stricter limit) now fails whenever a session draws raw_fish; the mirror-image 'treats_all_cold_items_as_cold5' (always picking the colder, safer option) is verified to be a LEGITIMATE strategy (100% win rate), not a penalized guess -- this matches real food-safety practice (colder is always safe) and correctly reflects the fact_sheet's own upper-bound framing. route_zero_winner_rate is now computed by enumerating all 3 archetypes x 2 mirror states and asserting exactly one winner each (design review r2 LOW fix -- was previously a hand-typed literal 0).",
+  notes: "v4 (design review r3 FAIL 68 repair, BLOCKER ANSWER_LEAK + HIGH CORE_DISTORTED_BY_PROSE): the zone-model logic and FOODS data are UNCHANGED from v3 (round-2's blocker fix was confirmed closed by the r3 reviewer) -- this round's fixes were (1) removing food-shaped zone icons (🐟/🥛) from the UI-facing design docs (first_5_seconds/game_translations), which had let a child match icon-to-food without reading the storage-limit text at all, and (2) correcting fact_sheet/comment prose that had over-generalized 'every threshold is an upper bound, colder is always safe' to ALL 6 real categories -- it only holds for fish/meat/milk/frozen; 生鮮果実・野菜's 10℃前後 is a range (quality, not safety) and 穀類加工品's 室温 is a separate ambient category, both correctly kept at exactly one validZone (ambient) in the FOODS data, which never claimed otherwise. Also asserts route_zero_winner_rate has zero UNsolvable archetypes, not just zero ambiguous ones (r3 LOW fix). v3 (design review r2 FAIL 62 repair, BLOCKER CORE_DISTORTED_BY_GAME): the 厚生労働省 storage thresholds for fish/meat/milk/frozen are upper bounds ('◯C以下'), so v2's model -- treating cold5/cold10 as mutually exclusive categories and scoring meat/milk placed in cold5 (colder, still within their 10C limit) as WRONG -- contradicted the source table it claimed to implement. v3 gives each food a `validZones` list (every zone that satisfies its real limit): raw_fish -> [cold5] only (5C is strictly tighter than meat/milk's 10C), raw_meat/milk -> [cold5, cold10] (either satisfies 10C or below). The exploit-relevance check is redefined to what actually violates a real threshold: 'treats_all_cold_items_as_cold10' (ignoring fish's stricter limit) now fails whenever a session draws raw_fish; the mirror-image 'treats_all_cold_items_as_cold5' (always picking the colder, safer option) is verified to be a LEGITIMATE strategy (100% win rate), not a penalized guess. route_zero_winner_rate is computed by enumerating all 3 archetypes x 2 mirror states and asserting exactly one winner each (design review r2 LOW fix -- was previously a hand-typed literal 0).",
 };
 try {
   writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

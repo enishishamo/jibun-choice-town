@@ -1,0 +1,101 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-load-and-route-design-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 72,
+    "blockers": [
+      {
+        "code": "ANSWER_LEAK",
+        "finding": "初期画面の荷室ラベルが「🐟冷蔵5℃」「🥛冷蔵10℃」で、同時に表示される食材名「さば」「牛乳」と直接対応する。Cを読まずアイコン照合で少なくとも魚・乳の配置を推測でき、現行のcolor_leak/visual_hierarchy_leak自己宣言とも矛盾する。",
+        "file": "factory/projects/legacy-load-and-route/design/game_translations_v3.json:7"
+      }
+    ],
+    "high": [
+      {
+        "code": "CORE_DISTORTED_BY_PROSE",
+        "finding": "現行成果物とシミュレーターの説明は、野菜の「10℃前後」と穀類の「室温」を同じ列挙内に含めながら「これらは全て◯℃以下」「より低い温度帯は常に安全」と一般化している。research.md自身がじゃがいもの過冷却による品質問題を明記し、コードもambient品や生鮮品を冷凍帯では不正解にしているため、教材文言・コード・根拠が不整合。5℃対10℃の冷蔵範囲に限定して表現する必要がある。",
+        "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v3.json:32"
+      }
+    ],
+    "medium": [],
+    "low": [
+      {
+        "finding": "route archetype検査は複数正解時だけthrowし、正解ゼロのarchetypeではthrowしない。route_zero_winner_rateは正しく計算されるが、「6通りすべてがexactly one winnerでなければassert」という修正要求を完全には満たしていない。",
+        "file": "factory/projects/legacy-load-and-route/design/design-sim.mjs:149"
+      },
+      {
+        "finding": "採用seedのinformation_gainedは成功・失敗を分岐せず、失敗時にも実際の正しい積み場所と訪問順を得たように読める。game_translations_v3.json:11では修正済みだが、現行play_seedsとの意味的不整合が残る。",
+        "file": "factory/projects/legacy-load-and-route/design/play_seeds_v3.json:8"
+      }
+    ],
+    "failure_codes": [
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "BLOCKER",
+        "finding": "荷室の魚・牛乳アイコンが表示食材と直接対応し、C非依存の正解手掛かりになる。",
+        "file": "factory/projects/legacy-load-and-route/design/game_translations_v3.json:7"
+      },
+      {
+        "code": "CORE_DISTORTED_BY_PROSE",
+        "severity": "HIGH",
+        "finding": "「より低温なら常に安全」という無限定の説明が、野菜・常温品に関する根拠およびvalidZones実装と矛盾する。",
+        "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v3.json:32"
+      }
+    ],
+    "round2_blocker_confirmed_closed": true,
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "zone_validzones_model_verified": true,
+      "citation_sweep_clean": true,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-load-and-route/research.md:63 — 穀類加工品は室温であり、数値上限ではない。",
+      "factory/projects/legacy-load-and-route/research.md:78 — 生鮮果実・野菜は「10℃前後」で、単純な上限条件ではない。",
+      "factory/projects/legacy-load-and-route/research.md:79 — 生鮮魚介類は5℃以下。",
+      "factory/projects/legacy-load-and-route/research.md:80 — 乳等は10℃以下。",
+      "factory/projects/legacy-load-and-route/research.md:99 — 野菜の「10℃前後」は他の「◯℃以下」と異なり、過度な低温も望ましくないと明記。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:55 — raw_fish.validZonesはcold5のみ。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:56 — raw_meat.validZonesはcold5とcold10。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:57 — milk.validZonesはcold5とcold10。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:58 — 冷凍食品はfrozenのみ。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:60 — potatoはambientのみ。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:68 — zoneWinはvalidZones.includesで判定。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:120 — cold10統一戦略は魚の実在閾値違反を検査。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:70 — cold10統一戦略の成功率は0.4995で、魚を含む約半数で失敗。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:71 — cold5統一戦略は1.0で、意図した冷蔵範囲では不当に罰されない。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:65 — always_place_all_in_frozenは0。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:69 — random_zone_per_itemは0.0101でCはdecorativeではない。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:76 — 3つのroute archetypeを維持。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:151 — 3 archetype×2 mirrorを全列挙。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:161 — throwはmultiWinnerCountだけを検査しzeroWinnerCountを検査しない。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:134 — 計算されたroute_zero_winner_rateは0。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:136 — tighter-deadline heuristicは0.6663。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:137 — nearer heuristicは0.6694。",
+      "factory/projects/legacy-load-and-route/design/scope_core_v3.json:5 — profession_name_hidden_testを維持。",
+      "factory/projects/legacy-load-and-route/design/game_translations_v3.json:11 — 成功・失敗別のinformation_gainedは正しく分岐。",
+      "factory/projects/legacy-load-and-route/design/game_translations_v3.json:14 — 失敗を成功扱いせず、センター連絡を伴う失敗結果として進行。",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v3.json:35 — 検収は学校側の検収責任者に正しく帰属。",
+      "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v3.json:10 — 単発コミットで同一セッション総当たりを防止。",
+      "factory/projects/legacy-load-and-route/design/game_translations_v3.json:7 — 荷室アイコン🐟・🥛が食材名さば・牛乳への答え手掛かりになる。",
+      "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v3.json:12 — 正解を示唆しないという設計宣言が実際の荷室アイコン仕様と矛盾。",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v3.json:32 — 「これらは全て◯℃以下」とする現行文言が同じ文中の野菜10℃前後・穀類室温と矛盾。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:49 — ANY zone at or belowとするコメントが、ambient/frozenを分離する実際のvalidZonesと一致しない。",
+      "factory/projects/legacy-load-and-route/design/play_seeds_v3.json:8 — 失敗時のinformation_gainedを分岐していない。",
+      "factory/projects/legacy-load-and-route/q1-pipeline.json — artifactsの11パスは提示されたCURRENTファイルと一致。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:1 — 実行stdoutはコミット済みJSONと完全一致。"
+    ],
+    "recommended_actions": [
+      "荷室から食材カテゴリを示す🐟・🥛アイコンを除去し、温度値だけの中立的かつ同格な表示にする。",
+      "「低いほど常に安全」を「5℃と10℃の冷蔵候補を比較する限り、5℃は10℃以下の基準も満たす」に限定し、野菜・常温品・冷凍可否には一般化しない。fact_sheet、AE、translation、simコメント・notesを同時修正する。",
+      "route検査をzeroWinnerCount > 0 || multiWinnerCount > 0でthrowするexactly-one assertionにする。",
+      "play_seeds_v3.json:8もgame_translations_v3.json:11と同じ成功・失敗分岐へ更新する。"
+    ]
+  },
+  "elapsed_sec": 178.778
+}
