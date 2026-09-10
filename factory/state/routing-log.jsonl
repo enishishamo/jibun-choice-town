@@ -328,3 +328,4 @@
 {"ts":"2026-09-09T23:36:34.742Z","tool":"codex-review","label":"legacy-sow-and-grow-design-r6","prompt_file":"factory/projects/legacy-sow-and-grow/design-review-r6-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":143.592}
 {"ts":"2026-09-09T23:59:13.293Z","tool":"codex-review","label":"legacy-sow-and-grow-impl-r1","prompt_file":"factory/projects/legacy-sow-and-grow/impl-review-r1-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":132.644}
 {"ts":"2026-09-10T02:00:09.383Z","tool":"codex-review","label":"legacy-load-and-route-design-r1","prompt_file":"factory/projects/legacy-load-and-route/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":226.716}
+{"ts":"2026-09-10T02:16:45.994Z","tool":"codex-review","label":"legacy-load-and-route-design-r2","prompt_file":"factory/projects/legacy-load-and-route/design-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":188.144}

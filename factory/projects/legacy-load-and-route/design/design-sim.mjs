@@ -1,29 +1,28 @@
 #!/usr/bin/env node
-// Design-stage exploit simulation for legacy-load-and-route / t1-zone-and-route (v2).
+// Design-stage exploit simulation for legacy-load-and-route / t1-zone-and-route (v3).
 //
 // Audit finding (factory/state/legacy/reverse-audits/load_and_route.json): exploit=memorize,
 // player_judgment_required=false, brute_force=true -- the OLD implementation had 4 fixed cargo
 // items with fixed correct storage zones and 2 fixed schools with a hardcoded route order, zero
 // randomization, plus per-item failure messages enabling brute-force retry.
 //
-// v2 fixes over v1 (superseded, not committed -- see design-review-r1.result.json, FAIL 64,
-// 2 HIGH):
-// 1. CORE_DISTORTED_BY_GAME (HIGH): v1 collapsed the researched fish-vs-meat distinction
-//    (厚生労働省 large-scale-kitchen manual: raw fish 5C, raw meat 10C -- genuinely different
-//    thresholds) into a single "cold" zone, so the researched nuance never actually affected
-//    scoring. v2 splits this into two real zones, cold5 (raw fish) and cold10 (raw meat/dairy),
-//    and drops the unsourced "retort" item (reviewer: no fact_sheet grounding for it) in favor of
-//    a second real room-temperature category (dry grain products, per the same source table).
-// 2. C_NOT_NEEDED_FOR_D (HIGH): v1's naive Cartesian rejection-sampling over 2-value choice sets
-//    retained only 7 of 32 raw tuples as solvable, and BOTH the "nearer first" and "tighter
-//    deadline first" heuristics happened to be correct on 6 of those 7 (~85.7%) -- an accident of
-//    which few tuples survived rejection, not a designed property. v2 replaces this with the
-//    reviewer's prescribed fix: an explicit, hand-verified, BALANCED scenario pool of exactly 3
-//    archetypes (both heuristics agree, only nearer-first correct, only tighter-deadline-first
-//    correct), each drawn with equal 1/3 probability and independently mirrored (which named slot
-//    is "first" is randomized separately from which is objectively correct) so that over many
-//    sessions each single-axis heuristic is provably correct in exactly 2 of 3 archetypes = 66.7%,
-//    a guaranteed 33.3pp margin below full reasoning's 100% -- not a hoped-for empirical average.
+// v3 fixes over v2 (superseded -- see design-review-r2.result.json, FAIL 62, 1 BLOCKER):
+// 1. CORE_DISTORTED_BY_GAME (BLOCKER, still open after v2's r1 repair): 厚生労働省's storage
+//    thresholds are all "◯C or below" -- upper bounds, not exclusive bands. v2 modeled cold5/
+//    cold10 as mutually exclusive categories and scored raw_meat/milk placed in cold5 as WRONG,
+//    even though 5C satisfies their real "10C or below" requirement (colder is always safe). That
+//    contradicted the very source table fact_sheet_v3.json cites. v3 fixes this at the root: each
+//    food now has a `validZones` list (the zones that satisfy its real threshold), raw_meat/milk
+//    accept EITHER cold5 or cold10, raw_fish accepts ONLY cold5 (its 5C limit is strictly tighter
+//    than meat/milk's 10C limit, so cold10 does not satisfy it). The exploit-relevance check is
+//    redefined to what the reviewer prescribed: a strategy that treats "any cold-appropriate item"
+//    as cold10 (i.e. never bothers to notice fish's stricter limit) now genuinely fails whenever a
+//    session draws raw_fish, because cold10 is NOT in raw_fish's validZones.
+// 2. C_NOT_NEEDED_FOR_D (HIGH, closed in v2, unchanged in v3): the reviewer's prescribed fix --
+//    an explicit, hand-verified, BALANCED scenario pool of exactly 3 archetypes (both heuristics
+//    agree, only nearer-first correct, only tighter-deadline-first correct), each drawn with equal
+//    1/3 probability and independently mirrored -- stays as-is; route_zero_winner_rate is now
+//    computed and asserted (not hand-typed) per the r2 LOW finding.
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -46,24 +45,27 @@ function shuffle(arr, rand) {
 
 // ---------------------------------------------------------------- part 1: zones
 // Real-grounded per 厚生労働省「大量調理施設衛生管理マニュアル」別添1 (see
-// factory/projects/legacy-load-and-route/research.md and fact_sheet_v2.json). Two DISTINCT
-// refrigerated zones (5C for fish, 10C for meat/dairy) so the researched distinction is actually
-// gameplay-relevant, not decorative (design review r1 CORE_DISTORTED_BY_GAME fix).
+// factory/projects/legacy-load-and-route/research.md and fact_sheet_v3.json). Every threshold in
+// the source table is an upper bound ("◯C以下"), so a food is correctly stored in ANY zone at or
+// below its own limit -- `validZones` lists every zone that satisfies a food's real requirement,
+// not a single "correct answer" (design review r2 BLOCKER fix: v2 wrongly treated cold5/cold10 as
+// mutually exclusive categories, scoring meat/milk in cold5 -- which is strictly SAFER, not wrong
+// -- as a failure).
 export const FOODS = [
-  { id: "raw_fish", zone: "cold5" },       // 生鮮魚介類: 5℃以下
-  { id: "raw_meat", zone: "cold10" },      // 食肉・鯨肉: 10℃以下
-  { id: "milk", zone: "cold10" },          // 乳・濃縮乳等: 10℃以下
-  { id: "frozen_croquette", zone: "frozen" },  // 冷凍食品全般: -15℃以下
-  { id: "frozen_vegetable", zone: "frozen" },  // 冷凍食品全般: -15℃以下
-  { id: "potato", zone: "ambient" },       // 生鮮果実・野菜: 10℃前後（冷やしすぎ注意）
-  { id: "bread", zone: "ambient" },        // 穀類加工品: 室温
-  { id: "flour", zone: "ambient" },        // 穀類加工品（小麦粉等）: 室温
+  { id: "raw_fish", validZones: ["cold5"] },              // 生鮮魚介類: 5℃以下 -- only cold5 satisfies this
+  { id: "raw_meat", validZones: ["cold5", "cold10"] },    // 食肉・鯨肉: 10℃以下 -- cold5 (colder) also satisfies this
+  { id: "milk", validZones: ["cold5", "cold10"] },        // 乳・濃縮乳等: 10℃以下 -- same as above
+  { id: "frozen_croquette", validZones: ["frozen"] },     // 冷凍食品全般: -15℃以下
+  { id: "frozen_vegetable", validZones: ["frozen"] },     // 冷凍食品全般: -15℃以下
+  { id: "potato", validZones: ["ambient"] },              // 生鮮果実・野菜: 10℃前後（冷やしすぎ注意）
+  { id: "bread", validZones: ["ambient"] },               // 穀類加工品: 室温
+  { id: "flour", validZones: ["ambient"] },               // 穀類加工品（小麦粉等）: 室温
 ];
 export const ZONES = ["frozen", "cold5", "cold10", "ambient"];
 export const DRAW_SIZE = 4;
 
 function drawFoods(rand) { return shuffle(FOODS, rand).slice(0, DRAW_SIZE); }
-function zoneWin(drawn, placement) { return drawn.every((f) => placement[f.id] === f.zone); }
+function zoneWin(drawn, placement) { return drawn.every((f) => f.validZones.includes(placement[f.id])); }
 
 // ---------------------------------------------------------------- part 2: route
 // Balanced stratified scenario pool (design review r1 fix -- replaces Cartesian rejection
@@ -107,14 +109,23 @@ const N = 20000;
 // ---- part 1 checks ----
 function rate1(fn) { let w = 0; for (let i = 0; i < N; i++) { const rand = mulberry32(i * 7919 + 13); const drawn = drawFoods(rand); if (fn(drawn, rand)) w++; } return Number((w / N).toFixed(4)); }
 const zoneResults = {};
-zoneResults.legitimate_all_correct = rate1((drawn) => { const placement = Object.fromEntries(drawn.map((f) => [f.id, f.zone])); return zoneWin(drawn, placement); });
+zoneResults.legitimate_all_correct = rate1((drawn) => { const placement = Object.fromEntries(drawn.map((f) => [f.id, f.validZones[0]])); return zoneWin(drawn, placement); });
 for (const z of ZONES) zoneResults[`always_place_all_in_${z}`] = rate1((drawn) => { const placement = Object.fromEntries(drawn.map((f) => [f.id, z])); return zoneWin(drawn, placement); });
 zoneResults.random_zone_per_item = rate1((drawn, rand) => { const placement = Object.fromEntries(drawn.map((f) => [f.id, pick(ZONES, rand)])); return zoneWin(drawn, placement); });
-// specifically test the fish-vs-meat distinction the reviewer flagged as decorative in v1: a
-// strategy that treats "cold5" and "cold10" as interchangeable (always assigns whichever of the
-// two a fixed rule picks) must now fail whenever a session draws BOTH a cold5 and a cold10 item.
-zoneResults.conflates_cold5_and_cold10 = rate1((drawn) => {
-  const placement = Object.fromEntries(drawn.map((f) => [f.id, (f.zone === "cold5" || f.zone === "cold10") ? "cold5" : f.zone]));
+// design review r2 BLOCKER fix: the exploit-relevance check must actually violate a food's real
+// threshold, not an invented exclusivity rule. A strategy that ignores raw_fish's stricter 5C limit
+// and treats every cold-appropriate item (fish/meat/milk) as cold10 fails exactly when a session
+// draws raw_fish (cold10 is not in raw_fish.validZones) -- this is the genuine, sourced consequence
+// of the fish-vs-meat threshold difference, unlike v2's invented "meat in cold5 is wrong" check.
+zoneResults.treats_all_cold_items_as_cold10 = rate1((drawn) => {
+  const placement = Object.fromEntries(drawn.map((f) => [f.id, (f.id === "raw_fish" || f.id === "raw_meat" || f.id === "milk") ? "cold10" : f.validZones[0]]));
+  return zoneWin(drawn, placement);
+});
+// sanity check: the inverse (always play it safe -- everything cold-appropriate to cold5) must
+// still be a LEGITIMATE strategy (cold5 satisfies both fish's 5C and meat/milk's 10C limits), i.e.
+// it should win exactly as often as full correct reasoning, not be penalized as an "exploit".
+zoneResults.treats_all_cold_items_as_cold5 = rate1((drawn) => {
+  const placement = Object.fromEntries(drawn.map((f) => [f.id, (f.id === "raw_fish" || f.id === "raw_meat" || f.id === "milk") ? "cold5" : f.validZones[0]]));
   return zoneWin(drawn, placement);
 });
 
@@ -130,12 +141,33 @@ routeResults.random_order = rate2((s, i) => { const rand = mulberry32(i * 104729
 const archCounts = {};
 for (let i = 0; i < N; i++) { const s = newRouteSession(mulberry32(i * 7919 + 13)); archCounts[s.archetype] = (archCounts[s.archetype] ?? 0) + 1; }
 
+// design review r2 LOW fix: route_zero_winner_rate must be COMPUTED from the hand-verified
+// archetypes, not hand-typed as a literal 0. Enumerate all 3 archetypes x 2 mirror states (the only
+// 6 possible sessions, since travel/deadline values are fixed per archetype) and assert each has
+// exactly one winner -- if a future edit to ARCHETYPES breaks this, the script throws instead of
+// silently keeping a stale "0".
+let zeroWinnerCount = 0;
+let multiWinnerCount = 0;
+for (const arc of ARCHETYPES) {
+  for (const mirror of [false, true]) {
+    const dispA = mirror ? arc.slotB : arc.slotA;
+    const dispB = mirror ? arc.slotA : arc.slotB;
+    const s = { travelA: dispA.travel, dlA: dispA.deadline, travelB: dispB.travel, dlB: dispB.deadline, between: arc.between };
+    const winners = routeWinners(s);
+    if (winners.length === 0) zeroWinnerCount++;
+    if (winners.length > 1) multiWinnerCount++;
+  }
+}
+if (multiWinnerCount > 0) throw new Error(`route archetype has more than one valid order in ${multiWinnerCount} of 6 archetype/mirror combos -- ambiguous ground truth`);
+const routeZeroWinnerRate = Number((zeroWinnerCount / 6).toFixed(4));
+
 const verdict = {
   zone_legitimate_always_wins: zoneResults.legitimate_all_correct === 1,
   zone_fixed_zone_guess_fails: ZONES.every((z) => zoneResults[`always_place_all_in_${z}`] < 0.05),
   zone_random_guess_stays_low: zoneResults.random_zone_per_item < 0.05,
-  zone_fish_meat_distinction_is_load_bearing: zoneResults.conflates_cold5_and_cold10 < 0.5,
-  route_zero_winner_rate: 0, // every archetype has exactly one valid order by hand-verified construction
+  zone_fish_threshold_is_load_bearing: zoneResults.treats_all_cold_items_as_cold10 < 0.7,
+  zone_conservative_cold5_strategy_is_legitimate: zoneResults.treats_all_cold_items_as_cold5 === 1,
+  route_zero_winner_rate: routeZeroWinnerRate, // computed from the hand-verified archetypes, asserted above
   route_legitimate_always_wins: routeResults.legitimate_full_reasoning === 1,
   route_tighter_deadline_heuristic_rate: routeResults.tighter_deadline_first,
   route_nearer_heuristic_rate: routeResults.nearer_first,
@@ -150,7 +182,7 @@ const out = {
   zone: { foods: FOODS, zones: ZONES, drawSize: DRAW_SIZE, results: zoneResults },
   route: { archetypes: ARCHETYPES, archetypeDistribution: archCounts, results: routeResults },
   verdict,
-  notes: "v2 (design review r1 FAIL 64 repair): (1) split the single 'cold' zone into cold5 (raw fish, 5C per 厚生労働省) and cold10 (raw meat/dairy, 10C) so the researched fish-vs-meat distinction is load-bearing -- zone_fish_meat_distinction_is_load_bearing verifies a strategy that conflates the two zones fails on most sessions. Dropped the unsourced 'retort' item, added 'flour' (grain products, room temperature, same source table) as its real-grounded replacement. (2) replaced Cartesian rejection sampling with a hand-verified, balanced 3-archetype scenario pool (both-agree / nearer-only-correct / tighter-only-correct), each drawn with equal probability and independently mirrored (which slot displays as 'A' vs 'B' is randomized separately from correctness) -- this GUARANTEES (not just empirically observes) that each single-axis heuristic is correct in exactly 2 of 3 archetypes, i.e. a provable 66.7% ceiling and 33.3pp margin below full reasoning's 100%, exactly matching the independent reviewer's prescribed fix (see route-tuning-notes.md for the reviewer's exact recommendation and the hand-derivation of each archetype).",
+  notes: "v3 (design review r2 FAIL 62 repair, BLOCKER CORE_DISTORTED_BY_GAME): the 厚生労働省 storage thresholds are all upper bounds ('◯C以下'), so v2's model -- treating cold5/cold10 as mutually exclusive categories and scoring meat/milk placed in cold5 (colder, still within their 10C limit) as WRONG -- contradicted the source table it claimed to implement. v3 gives each food a `validZones` list (every zone that satisfies its real limit): raw_fish -> [cold5] only (5C is strictly tighter than meat/milk's 10C), raw_meat/milk -> [cold5, cold10] (either satisfies 10C or below). The exploit-relevance check is redefined to what actually violates a real threshold: 'treats_all_cold_items_as_cold10' (ignoring fish's stricter limit) now fails whenever a session draws raw_fish; the mirror-image 'treats_all_cold_items_as_cold5' (always picking the colder, safer option) is verified to be a LEGITIMATE strategy (100% win rate), not a penalized guess -- this matches real food-safety practice (colder is always safe) and correctly reflects the fact_sheet's own upper-bound framing. route_zero_winner_rate is now computed by enumerating all 3 archetypes x 2 mirror states and asserting exactly one winner each (design review r2 LOW fix -- was previously a hand-typed literal 0).",
 };
 try {
   writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

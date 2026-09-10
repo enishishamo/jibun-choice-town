@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-load-and-route-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 62,
+    "career_authenticity_score": 62,
+    "game_quality_score": 78,
+    "blockers": [
+      "冷蔵5℃を、肉・乳の上限基準である「10℃以下」と排他的な不正解として扱っている。5℃は10℃以下を満たすため、raw_meat/milkをcold5に置く安全な判断を失敗扱いする現行モデルは保存温度基準を歪める。さらにconflates_cold5_and_cold10は全冷蔵品をcold5へ置く安全側の戦略を誤答として採点しており、78.6%失敗という数値はC必要性ではなく誤った排他採点から生じている。"
+    ],
+    "high": [],
+    "medium": [],
+    "low": [
+      "design-sim.mjsのroute_zero_winner_rateは算出値ではなく0をハードコードしている。今回は3 archetypeを独立に再計算して全て一意解と確認できたため判定には影響しないが、game_spec前に自動列挙へ置き換えると回帰検出が堅牢になる。",
+      "game_translations_v2.jsonのinformation_gainedは正しい配置・順序が得られると記す一方、失敗時には誤り箇所を一切示さないため、失敗プレイヤーがその情報を得るとは限らない。結果別に記述を分けると正確になる。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "BLOCKER",
+        "finding": "厚労省資料の5℃以下・10℃以下は排他的カテゴリではなく上限条件である。ところがFOODSとzoneWinはraw_meat/milkをcold10だけに固定し、cold5への配置を不正解にする。fact_sheet自身も実運用で別コンテナに分けるか未確認と明記しており、4排他ゾーン採点を支えない。したがってラウンド1のCORE修正は真正には閉じていない。",
+        "file": "factory/projects/legacy-load-and-route/design/design-sim.mjs"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "core_distorted_by_game": false,
+      "c_not_needed_for_d": true,
+      "answer_leak": true,
+      "unsourced_item": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "archetype_math_verified": true,
+      "citation_sweep_clean": true,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-load-and-route/research.md:64 — 食肉の根拠は「10℃以下」であり、5℃を不適合とする排他的指定ではない。",
+      "factory/projects/legacy-load-and-route/research.md:79 — 生鮮魚介類は5℃以下で、cold10では基準を満たさない。",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v2.json:39 — 魚介類と食肉類を別コンテナで運ぶ実運用は未確認で、4荷室化は学習目的の簡略化と明記されている。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:53 — raw_fishをcold5へ固定している。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:54 — raw_meatをcold10だけへ固定し、安全なcold5配置を認めない。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:55 — milkもcold10だけへ固定し、安全なcold5配置を認めない。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:66 — zoneWinは完全一致だけを合格にするため、上限温度として適合する colder zone を誤答にする。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:116 — conflates戦略は冷蔵品を全てcold5へ置くが、物理的には全て各上限以下である。",
+      "factory/projects/legacy-load-and-route/design-sim-result.json:44 — conflates_cold5_and_cold10=0.2142、すなわち78.58%失敗は誤った排他採点による。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:75 — both-agreeはABのみ有効: AB=(10≤30,40≤90)、BAのA到着70>30。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:76 — nearer-only-correctはABのみ有効: AB=(15≤50,35≤45)、BAのA到着55>50。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:77 — tighter-only-correctはBAのみ有効: BA=(25≤30,45≤50)、ABのB到着35>30。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:92 — archetype選択後に独立したmirror乱数を引いている。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:95 — correctIsSlotA !== mirrorのXORは表示A/B反転時に正解順を正しく反転する。",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:100 — 実行結果はtighter_deadline_first=0.6663、nearer_first=0.6694で、均等3 archetypeの理論2/3と整合する。",
+      "factory/projects/legacy-load-and-route/design/game_translations_v2.json:7 — 食材名と学校表示順をセッションごとにシャッフルし、位置暗記を閉じる。",
+      "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v2.json:10 — 単一コミット・同一セッション再提出なしでspam-submitを閉じる。",
+      "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v2.json:13 — 8表示名はいずれも冷凍・冷蔵・常温を直接含まない。ミックス野菜も加工形態を示すだけで保存ゾーンを一意に漏らさない。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:60 — unsourced retortはflourへ置換されている。",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v2.json:16 — 小麦粉を含む穀類加工品の室温根拠が明記されている。",
+      "factory/projects/legacy-load-and-route/design/scope_core_v2.json:5 — profession_name_hidden_testを維持している。",
+      "factory/projects/legacy-load-and-route/design/ae_v2.json:6 — 失敗を成功扱いせず、連絡・見直しが必要な結果として正直に分岐する。",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v2.json:19 — 検収は学校側の検収責任者の仕事で、配送員自身ではないと正しく帰属している。",
+      "factory/projects/legacy-load-and-route/design/game_translations_v2.json:11 — 正解を開示しない失敗結果なのに、正しい配置・順序をinformation_gainedとしている。",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:138 — route_zero_winner_rateは検査結果ではなく定数0である。"
+    ],
+    "recommended_actions": [
+      "荷室を温度上限としてモデル化し、raw_meat/milkはcold5とcold10の双方を適合、raw_fishはcold5のみ適合とする。複数正解を許容しても魚をcold10へ置く戦略は失敗するため、5℃対10℃の判断は引き続き意味を持つ。",
+      "排他的な4コンテナ分類を必須にしたい場合は、温度上限とは別に、魚・肉を分離する実在の衛生・運用根拠を追加し、その根拠をCとして明示する。",
+      "conflates_cold5_and_cold10検査を「全冷蔵品をcold10へ置く」など、実際に魚の5℃上限を破る戦略へ変更する。",
+      "route_zero_winner_rateを各archetypeのrouteWinners件数から計算し、exactly one winnerを自動assertする。"
+    ]
+  },
+  "elapsed_sec": 188.144
+}

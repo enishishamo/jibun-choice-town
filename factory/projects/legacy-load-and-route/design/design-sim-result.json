@@ -4,35 +4,53 @@
     "foods": [
       {
         "id": "raw_fish",
-        "zone": "cold5"
+        "validZones": [
+          "cold5"
+        ]
       },
       {
         "id": "raw_meat",
-        "zone": "cold10"
+        "validZones": [
+          "cold5",
+          "cold10"
+        ]
       },
       {
         "id": "milk",
-        "zone": "cold10"
+        "validZones": [
+          "cold5",
+          "cold10"
+        ]
       },
       {
         "id": "frozen_croquette",
-        "zone": "frozen"
+        "validZones": [
+          "frozen"
+        ]
       },
       {
         "id": "frozen_vegetable",
-        "zone": "frozen"
+        "validZones": [
+          "frozen"
+        ]
       },
       {
         "id": "potato",
-        "zone": "ambient"
+        "validZones": [
+          "ambient"
+        ]
       },
       {
         "id": "bread",
-        "zone": "ambient"
+        "validZones": [
+          "ambient"
+        ]
       },
       {
         "id": "flour",
-        "zone": "ambient"
+        "validZones": [
+          "ambient"
+        ]
       }
     ],
     "zones": [
@@ -48,8 +66,9 @@
       "always_place_all_in_cold5": 0,
       "always_place_all_in_cold10": 0,
       "always_place_all_in_ambient": 0,
-      "random_zone_per_item": 0.0046,
-      "conflates_cold5_and_cold10": 0.2142
+      "random_zone_per_item": 0.0101,
+      "treats_all_cold_items_as_cold10": 0.4995,
+      "treats_all_cold_items_as_cold5": 1
     }
   },
   "route": {
@@ -110,7 +129,8 @@
     "zone_legitimate_always_wins": true,
     "zone_fixed_zone_guess_fails": true,
     "zone_random_guess_stays_low": true,
-    "zone_fish_meat_distinction_is_load_bearing": true,
+    "zone_fish_threshold_is_load_bearing": true,
+    "zone_conservative_cold5_strategy_is_legitimate": true,
     "route_zero_winner_rate": 0,
     "route_legitimate_always_wins": true,
     "route_tighter_deadline_heuristic_rate": 0.6663,
@@ -120,5 +140,5 @@
     "route_margin_over_nearer_heuristic": 0.3306,
     "route_archetype_distribution_balanced": true
   },
-  "notes": "v2 (design review r1 FAIL 64 repair): (1) split the single 'cold' zone into cold5 (raw fish, 5C per 厚生労働省) and cold10 (raw meat/dairy, 10C) so the researched fish-vs-meat distinction is load-bearing -- zone_fish_meat_distinction_is_load_bearing verifies a strategy that conflates the two zones fails on most sessions. Dropped the unsourced 'retort' item, added 'flour' (grain products, room temperature, same source table) as its real-grounded replacement. (2) replaced Cartesian rejection sampling with a hand-verified, balanced 3-archetype scenario pool (both-agree / nearer-only-correct / tighter-only-correct), each drawn with equal probability and independently mirrored (which slot displays as 'A' vs 'B' is randomized separately from correctness) -- this GUARANTEES (not just empirically observes) that each single-axis heuristic is correct in exactly 2 of 3 archetypes, i.e. a provable 66.7% ceiling and 33.3pp margin below full reasoning's 100%, exactly matching the independent reviewer's prescribed fix (see route-tuning-notes.md for the reviewer's exact recommendation and the hand-derivation of each archetype)."
+  "notes": "v3 (design review r2 FAIL 62 repair, BLOCKER CORE_DISTORTED_BY_GAME): the 厚生労働省 storage thresholds are all upper bounds ('◯C以下'), so v2's model -- treating cold5/cold10 as mutually exclusive categories and scoring meat/milk placed in cold5 (colder, still within their 10C limit) as WRONG -- contradicted the source table it claimed to implement. v3 gives each food a `validZones` list (every zone that satisfies its real limit): raw_fish -> [cold5] only (5C is strictly tighter than meat/milk's 10C), raw_meat/milk -> [cold5, cold10] (either satisfies 10C or below). The exploit-relevance check is redefined to what actually violates a real threshold: 'treats_all_cold_items_as_cold10' (ignoring fish's stricter limit) now fails whenever a session draws raw_fish; the mirror-image 'treats_all_cold_items_as_cold5' (always picking the colder, safer option) is verified to be a LEGITIMATE strategy (100% win rate), not a penalized guess -- this matches real food-safety practice (colder is always safe) and correctly reflects the fact_sheet's own upper-bound framing. route_zero_winner_rate is now computed by enumerating all 3 archetypes x 2 mirror states and asserting exactly one winner each (design review r2 LOW fix -- was previously a hand-typed literal 0)."
 }
