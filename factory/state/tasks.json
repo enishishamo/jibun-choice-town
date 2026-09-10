@@ -1273,6 +1273,50 @@
           "given": "b4910cf"
         }
       ]
+    },
+    "q1-rebuild-sow-and-grow": {
+      "task_id": "q1-rebuild-sow-and-grow",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-09T04:36:02.184Z",
+      "updated_at": "2026-09-10T00:00:18.311Z",
+      "history": [
+        {
+          "at": "2026-09-09T04:36:02.185Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-09T23:55:07.285Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json"
+        },
+        {
+          "at": "2026-09-10T00:00:18.311Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json",
+          "score": 74,
+          "high_count": 0,
+          "override_note": null
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "t1-season-deadline-match（design review r1是正版）は、CORE（締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を選ぶ）をそのまま表現している。子どもは3つの品種カード（つぶたね/まんまる/ことね）と状況表示（今日の月・締め切り・予報）を自分で見比べて1つの品種にコミットし、システムは先に正解を示さない。SCOPE（給食編）も変わらず代表的。design-sim.mjs v3で記憶攻略・季節のみの推論がいずれも完全な推論に劣ること、詰みセッションが0であることを確認済み。",
+  "pass": true
+}

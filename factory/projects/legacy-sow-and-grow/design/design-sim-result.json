@@ -1,0 +1,199 @@
+{
+  "varieties": [
+    {
+      "id": "tsubutane",
+      "name": "つぶたね",
+      "window": [
+        6,
+        7
+      ],
+      "harvest_days": 90,
+      "heat_ok": false
+    },
+    {
+      "id": "manmaru",
+      "name": "まんまる",
+      "window": [
+        6,
+        7,
+        8
+      ],
+      "harvest_days": 150,
+      "heat_ok": true
+    },
+    {
+      "id": "kotone",
+      "name": "ことね",
+      "window": [
+        8,
+        9
+      ],
+      "harvest_days": 105,
+      "heat_ok": false
+    }
+  ],
+  "n": 20000,
+  "months": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "deadline_offsets": [
+    3,
+    4,
+    5
+  ],
+  "state_space": {
+    "6": [
+      {
+        "offset": 3,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane"
+        ]
+      },
+      {
+        "offset": 4,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane",
+          "manmaru"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": true,
+        "winners": [
+          "manmaru"
+        ]
+      }
+    ],
+    "7": [
+      {
+        "offset": 3,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane"
+        ]
+      },
+      {
+        "offset": 4,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": false,
+        "winners": [
+          "tsubutane",
+          "manmaru"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": true,
+        "winners": [
+          "manmaru"
+        ]
+      }
+    ],
+    "8": [
+      {
+        "offset": 4,
+        "forecastHot": false,
+        "winners": [
+          "kotone"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": false,
+        "winners": [
+          "manmaru",
+          "kotone"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": true,
+        "winners": [
+          "manmaru"
+        ]
+      }
+    ],
+    "9": [
+      {
+        "offset": 4,
+        "forecastHot": false,
+        "winners": [
+          "kotone"
+        ]
+      },
+      {
+        "offset": 5,
+        "forecastHot": false,
+        "winners": [
+          "kotone"
+        ]
+      }
+    ]
+  },
+  "month_only_policy_win_rate": {
+    "6_tsubutane": 0.75,
+    "6_manmaru": 0.5,
+    "6_kotone": 0,
+    "7_tsubutane": 0.75,
+    "7_manmaru": 0.5,
+    "7_kotone": 0,
+    "8_tsubutane": 0,
+    "8_manmaru": 0.6667,
+    "8_kotone": 0.6667,
+    "9_tsubutane": 0,
+    "9_manmaru": 0,
+    "9_kotone": 1
+  },
+  "best_fixed_mapping": {
+    "6": "tsubutane",
+    "7": "tsubutane",
+    "8": "manmaru",
+    "9": "kotone"
+  },
+  "strategies": {
+    "always_plant_tsubutane": 0.3788,
+    "always_plant_manmaru": 0.4171,
+    "always_plant_kotone": 0.4137,
+    "month_only_fixed_mapping": 0.7919,
+    "legitimate_full_reasoning": 1,
+    "random_pick_content_blind": 0.4031
+  },
+  "verdict": {
+    "months_with_multiple_seasonal_candidates": [
+      6,
+      7,
+      8
+    ],
+    "no_variety_dominates_any_multi_candidate_month": true,
+    "single_candidate_months_trivially_100pct_by_construction": [
+      9
+    ],
+    "month_only_fixed_mapping_win_rate": 0.7919,
+    "memorization_exploit_closed": true,
+    "legitimate_reasoning_beats_month_only_mapping_by": 0.2081,
+    "legitimate_reasoning_beats_blind_guessing_by": 0.5969,
+    "every_month_has_at_least_one_accepted_state": true,
+    "rejection_sampling_exhaustion_count": 0,
+    "rejection_sampling_exhaustion_rate": 0,
+    "zero_winner_session_rate": 0
+  },
+  "notes": "v4 (design review r2 FAIL 36 repair): つぶたね/まんまる/ことね given genuine trade-offs (fast+fragile / slow+tough / medium+fragile-late) instead of a strict dominance ordering, so no single variety wins 100% of a month's own rejection-sampling-accepted states in any month with 2+ seasonally-eligible candidates (no_variety_dominates_any_multi_candidate_month=true; single-candidate September is deliberately excluded from this check since 100% there is correct by construction, not an exploit) -- the reviewer's exact exploit (memorize a fixed month->variety mapping) is measured directly as month_only_fixed_mapping_win_rate and now sits well below full reasoning. Rejection sampling no longer throws on exhaustion (REJECTION_SAMPLING_NOT_TOTAL fix) -- it falls back to a deterministic pre-enumerated valid state for that month (state_space[] is computed by EXHAUSTIVE enumeration up front, so every month is proven, not merely observed, to have at least one valid state: every_month_has_at_least_one_accepted_state). exhaustion_count is a real counter incremented only when the resample loop is actually exhausted (SIMULATION_REPRODUCIBILITY/METRIC_MISNAMED fix -- this is no longer a tautological post-hoc check on already-successful sessions). generated_at is intentionally NOT included in this file's output (SIMULATION_REPRODUCIBILITY fix): every RNG stream in this script is seeded (mulberry32), so re-running `node design-sim.mjs` should reproduce this exact file byte-for-byte -- an independent reviewer can diff the two directly instead of needing to ignore a timestamp field. The write is now wrapped in try/catch so a read-only sandbox prints the result to stdout instead of crashing."
+}

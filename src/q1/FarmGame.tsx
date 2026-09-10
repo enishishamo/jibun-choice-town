@@ -1,211 +1,121 @@
 // Q1: 農家・生産者 (gameType: sow_and_grow)
-// B: 11月に給食用にんじん300kgが必要。今は7月。
-// D: 種袋を畑へドラッグしてまく → 時間を進める → 品種が合わないと
-//    「発芽しない」「まだ小さい」という“結果”が返り、リセットして
-//    別の品種を試せる（試す→結果→やり直しのループ）。
-// C: 種袋の栽培情報・気象情報・注文の時期。読まずに試しても、結果から
-//    資料に戻れる。途中で土が乾く→かん水設備を動かす軽い操作あり。
+// B: 給食室から注文が来た。今の月・締め切り・気象予報に合う品種を選ぶ。
+// C: 3つの品種の播種適期・収穫日数・耐暑性。今日の月・締め切りまでの
+//    残り日数・気象予報（毎セッションランダム）。
+// D: 状況を品種カードと照らし合わせ、3条件（時期・日数・耐暑性）すべてに
+//    合う品種を選んでまく（詳細は farmLogic.ts）。
+//
+// 2026-09-10 (Q1 Autonomous Factory, legacy-sow-and-grow rebuild,
+// t1-season-deadline-match): 旧実装は月・締め切り・気象予報が常に固定
+// （今は7月、11月に300kg、猛暑予報）で、品種を選んだ時点で結果（成功/
+// 失敗のタイムライン）が完全に決まっていた——内容を読まずに「あかね夏を
+// 選べば必ず勝てる」という記憶ゲームだった（reverse audit:
+// exploit=memorize, player_judgment_required=false）。新実装では今日の
+// 月・締め切り・気象予報を毎セッションランダム化し、3品種に本物の
+// トレードオフ（早いが暑さに弱い/遅いが暑さに強い/中くらいで遅まき専用）
+// を持たせることで、複数品種が季節的候補になる月では締め切り・耐暑性の
+// 実際の組み合わせが答えを左右するようにした（design-sim.mjs参照）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoCards from "./InfoCards";
-import { useDragDrop } from "./useDragDrop";
+import { evaluate, newSession, shuffledIds, VARIETIES, VARIETY_IDS } from "./farmLogic";
 
-const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
+export default function FarmGame({ onComplete, onPartialComplete }: Q1GameProps) {
+  const [session] = useState(() => newSession());
+  const [order] = useState(() => shuffledIds(VARIETY_IDS));
+  const [committed, setCommitted] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<"playing" | "success" | "partial">("playing");
 
-// ※品種名は架空。性質は一般的な「夏まき秋冬どり」にんじん栽培に沿わせた設定。
-interface Seed {
-  id: string;
-  name: string;
-  sow: string;
-  days: string;
-  heat: string;
-}
-const SEEDS: Seed[] = [
-  { id: "natsu", name: "あかね夏", sow: "まきどき 7〜8月", days: "収穫まで 約110日", heat: "暑さに強い" },
-  { id: "fuyu", name: "ふゆみね", sow: "まきどき 9〜10月", days: "収穫まで 約130日", heat: "寒さに強い" },
-  { id: "haru", name: "はるひな", sow: "まきどき 3〜4月", days: "収穫まで 約100日", heat: "暑さに弱い" },
-];
+  const varietyList = order.map((id) => VARIETIES.find((v) => v.id === id)!);
 
-// 各品種を「今（7月）」にまいたときの、月ごとの結果
-const TIMELINE: Record<string, { month: string; text: string; fail?: string }[]> = {
-  natsu: [
-    { month: "7月", text: "種まき完了。数日で芽が出た！暑さに強い品種だ。" },
-    { month: "8月", text: "☀️ 猛暑つづき。土がカラカラにかわいてきた…！" },
-    { month: "10月", text: "葉がぐんぐんしげって、土の中でにんじんが太ってきた。" },
-    { month: "11月", text: "収穫のとき！注文どおりの時期に間に合った。" },
-  ],
-  haru: [
-    { month: "7月", text: "種まき完了。…数日たっても芽が出ない。" },
-    {
-      month: "8月",
-      text: "",
-      fail: "真夏の高温で、ほとんど発芽しなかった…。この品種は暑さに弱い。🌡気象情報と種袋を見比べてみよう。",
-    },
-  ],
-  fuyu: [
-    { month: "7月", text: "種まき完了。芽は出たけど、なんだか小さい…。" },
-    { month: "9月", text: "少しずつ育っている。" },
-    {
-      month: "11月",
-      text: "",
-      fail: "11月になったけど、まだ細くて小さい…。この品種の収穫は冬をこえた先。📅注文の時期と「収穫までの日数」を見比べてみよう。",
-    },
-  ],
-};
-
-export default function FarmGame({ onComplete }: Q1GameProps) {
-  const [planted, setPlanted] = useState<Seed | null>(null);
-  const [step, setStep] = useState(0);
-  const [watered, setWatered] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [harvested, setHarvested] = useState(false);
-
-  const sow = (itemId: string, zoneId: string) => {
-    if (zoneId !== "field") return;
-    setPlanted(SEEDS.find((s) => s.id === itemId)!);
-    setStep(0);
-    setWatered(false);
-    setSelected(null);
+  const sow = (varietyId: string) => {
+    setCommitted(varietyId);
+    const v = VARIETIES.find((x) => x.id === varietyId)!;
+    const win = evaluate(v, session.sowMonth, session.deadlineOffsetMonths, session.forecastHot).win;
+    setOutcome(win ? "success" : "partial");
   };
 
-  const { drag, startDrag, surfaceProps } = useDragDrop(sow, (id) =>
-    setSelected(selected === id ? null : id),
-  );
+  if (outcome === "success") {
+    const chosen = VARIETIES.find((v) => v.id === committed)!;
+    return (
+      <div className="game board-game">
+        <div className="result-card good">
+          <span className="result-title">にんじん300kg、収穫！</span>
+          <p className="join-conclusion">
+            → <strong>{chosen.name}</strong>は、季節・締め切り・暑さのすべてに合っていた
+          </p>
+        </div>
+        <p className="game-line soft center-line">
+          給食室からの注文は、何か月も前の品種選びから始まっていた。
+        </p>
+        <button className="btn primary big" onClick={onComplete}>
+          給食室へ届けよう！
+        </button>
+      </div>
+    );
+  }
 
-  const docs = [
-    {
-      id: "order",
-      icon: "📅",
-      title: "注文（必要な時期）",
-      body: <p>給食室から：<strong>11月に、にんじん300kg</strong>。今日は7月のはじめ。</p>,
-    },
-    {
-      id: "weather",
-      icon: "🌡",
-      title: "気象情報",
-      body: (
-        <>
-          <p>今年の夏は猛暑予報。にんじんの芽が出やすいのは<strong>15〜25℃くらい</strong>。</p>
-          <p>真夏は土が高温・乾燥しやすい。水の管理も大事。</p>
-        </>
-      ),
-    },
-    {
-      id: "soil",
-      icon: "🟤",
-      title: "土壌診断",
-      body: <p>土はやわらかく水はけ良好、堆肥入れずみ。準備はOK！</p>,
-    },
-  ];
-
-  const timeline = planted ? TIMELINE[planted.id] : [];
-  const current = timeline[step];
-  const isFail = !!current?.fail;
-  const isLast = planted && step >= timeline.length - 1 && !isFail;
-  const needWater = planted?.id === "natsu" && step === 1 && !watered;
+  if (outcome === "partial") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">思ったように育たなかった</span>
+          <p className="game-line soft">
+            季節・締め切り・暑さのどれかが合わなかったみたい。次はどう育てるか、みんなで考え直すことになった。
+          </p>
+        </div>
+        <button className="btn primary big" onClick={() => (onPartialComplete ?? onComplete)()}>
+          先へ進む
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="game board-game" {...surfaceProps}>
-      <div className="mission-bar">
-        <span className="mission-bar-title">
-          11月の給食に、にんじん300kg。どの種をまく？
+    <div className="game board-game">
+      <div className="task-bar">
+        <span className="task-now">
+          今日は{session.sowMonth}月。給食室から「{((session.sowMonth - 1 + session.deadlineOffsetMonths) % 12) + 1}
+          月までに、にんじんXkg」という注文が来た。今年の夏の予報は{session.forecastHot ? "猛暑" : "例年並み"}。
         </span>
-        <div className="mission-chips">
-          <span className={`mchip ${planted ? "ok" : ""}`}>{planted ? "✓" : "・"} 種をまく</span>
-          <span className={`mchip ${harvested ? "ok" : ""}`}>{harvested ? "✓" : "・"} 育てて収穫</span>
-        </div>
+        <span className="task-sub">どの品種を選ぶ？</span>
       </div>
 
-      {/* the field */}
-      <div
-        className={`field-plot ${drag || selected ? "ready" : ""}`}
-        data-drop="field"
-        onClick={() => {
-          if (selected && !planted) sow(selected, "field");
-        }}
-        style={{ backgroundImage: `url(${K("farm_field")})` }}
-      >
-        {!planted ? (
-          <span className="field-hint">🥕 ここに種袋をドラッグ</span>
-        ) : (
-          <div className="field-state">
-            <span className="field-month">{current?.month}</span>
-            <span className="field-text">
-              {isFail ? "…うまくいかなかった" : current?.text}
-            </span>
-          </div>
-        )}
+      <div className="dx-grid farm-grid">
+        {varietyList.map((v) => {
+          const isCommitted = committed === v.id;
+          return (
+            <div key={v.id} className={`dx-card ${isCommitted ? "selected" : ""}`}>
+              <div className="dx-head">
+                <span className="dx-name">{v.name}</span>
+                <button
+                  className="dx-more"
+                  aria-label={openId === v.id ? "とじる" : "どんな品種か見る"}
+                  onClick={() => setOpenId(openId === v.id ? null : v.id)}
+                >
+                  {openId === v.id ? "－" : "？"}
+                </button>
+              </div>
+              {openId === v.id && (
+                <p className="dx-pattern">
+                  播種適期 {v.window.map((m) => `${m}月`).join("・")} / 収穫まで約{v.harvestDays}日 /
+                  暑さに{v.heatOk ? "強い" : "弱い"}
+                </p>
+              )}
+              <button
+                className={`dx-commit ${isCommitted ? "on" : ""}`}
+                onClick={() => sow(v.id)}
+              >
+                これでまく
+              </button>
+            </div>
+          );
+        })}
       </div>
 
-      {/* seeds */}
-      {!planted && (
-        <div className="choice-row">
-          {SEEDS.map((s) => (
-            <button
-              key={s.id}
-              className={`seed-card drag-item ${selected === s.id ? "selected" : ""}`}
-              onPointerDown={startDrag(s.id)}
-            >
-              <span className="choice-name">🌱 {s.name}</span>
-              <small>{s.sow}</small>
-              <small>{s.days}</small>
-              <small>{s.heat}</small>
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* grow controls / results */}
-      {planted && isFail && (
-        <>
-          <p className="game-note">{current.fail}</p>
-          <button
-            className="btn primary big"
-            onClick={() => {
-              setPlanted(null);
-              setStep(0);
-            }}
-          >
-            畑をリセットして、別の種を試す
-          </button>
-        </>
-      )}
-      {planted && !isFail && needWater && (
-        <button
-          className="btn primary big"
-          onClick={() => setWatered(true)}
-        >
-          💦 かん水設備（スプリンクラー）を動かす
-        </button>
-      )}
-      {planted && !isFail && !needWater && !isLast && (
-        <button className="btn primary big" onClick={() => setStep((s) => s + 1)}>
-          ⏩ 時間をすすめる
-        </button>
-      )}
-      {isLast && !harvested && (
-        <button className="btn primary big" onClick={() => setHarvested(true)}>
-          🥕 300kgを収穫して箱づめ！
-        </button>
-      )}
-      {harvested && (
-        <>
-          <p className="game-line center-line">
-            トラックが畑に来た。今日の給食は、何か月も前のこの畑から始まる。
-          </p>
-          <button className="btn primary big" onClick={onComplete}>
-            給食室へ届けよう！
-          </button>
-        </>
-      )}
-
-      <InfoCards cards={docs} label="こまったら見る資料" />
-
-      {drag && (
-        <div className="drag-ghost" style={{ left: drag.x, top: drag.y }}>
-          🌱
-        </div>
-      )}
+      <p className="game-line soft center-line farm-disclaimer">
+        ※品種の数値はこのゲームの中だけの、学習用の設定です
+      </p>
     </div>
   );
 }

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "t1-season-deadline-matchは、CORE（締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を選ぶ）をそのまま表現している。子どもは3つの品種カードと状況表示（今日の月・締め切り・予報）を自分で見比べて1つの品種にコミットし、システムは先に正解を示さない。SCOPE（給食編）も変わらず代表的。design-sim.mjs v2で記憶攻略が成立しないこと、内容を読む判断が乱択を明確に上回ることを確認済み。",
+  "pass": true
+}

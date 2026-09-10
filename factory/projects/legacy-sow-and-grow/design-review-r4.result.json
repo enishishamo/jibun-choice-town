@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r4",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "career_authenticity_score": 64,
+    "game_quality_score": 70,
+    "blockers": [
+      "ARTIFACT_CHAIN_INCONSISTENT: The Round-3 finding is not fully closed. The current reference_research correction says only 向陽二号’s heat tolerance is source-backed, but fact_sheet_v3 still attributes variety-to-variety heat-strength differences to the source. Current artifacts and design-sim.mjs also retain live references to superseded game_translations_v4.json instead of authoritative v5."
+    ],
+    "high": [],
+    "medium": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION remains open: a wrong choice gives only flat failure and no diagnosis or guided reconsideration. The rejection of an immediate second variety attempt is mathematically sound and this MEDIUM should not block game_spec."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "BLOCKER",
+        "finding": "The current chain remains internally inconsistent: fact_sheet_v3 implies the source establishes heat-strength differences among varieties, whereas reference_research_v3 says only 向陽二号’s heat tolerance is documented and the other heat properties are fictional. In addition, current documents and simulation comments point to superseded game_translations_v4.json.",
+        "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json"
+      },
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "Failure communicates only that the selected variety did not fit, without identifying a mismatched dimension or prompting a new comparison. The no-retry rationale correctly prevents a guaranteed two-choice brute-force strategy, so this can remain implementation-deferred and need not gate game_spec.",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json"
+      }
+    ],
+    "round3_findings_confirmed_closed": {
+      "artifact_chain_consistent": false
+    },
+    "reaction_does_not_teach_next_action_verdict": "justification_sound_stays_open_medium",
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_byte_identical_to_committed_result": true,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/q1-pipeline.json:19 — fact_sheet_v3.json is the authoritative current fact sheet.",
+      "factory/projects/legacy-sow-and-grow/q1-pipeline.json:106 — scope_core_v3.json is authoritative despite pipeline version 5, confirming filename/version handling was checked.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json:16 — states that varieties differ in heat strength in a sentence attributed to the Fukui source, although the examples only expressly establish 向陽二号’s heat tolerance.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json:40 — acknowledges that individual fictional varieties’ heat-tolerance settings were not individually verified, leaving line 16’s broader source attribution misleading.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json:5 — correctly says only 向陽二号→まんまる heat tolerance is source-backed and つぶたね/ことね heat properties are fictional, but also cites superseded game_translations_v4.json.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:14 — present-tense position-leak evidence cites superseded game_translations_v4.json rather than authoritative v5.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:19 — revision evidence likewise names game_translations_v4.json.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:33 — simulation documentation still points to game_translations_v4.json for the disclosure.",
+      "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json:13 — obsolete Round-3 percentages were replaced with v4 results: 100%, 79.19%, and 40.3%, with zero unwinnable sessions.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json:4 — now cites fact_sheet_v3.json.",
+      "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json:5 — now cites fact_sheet_v3.json and confirms the hidden-profession test.",
+      "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json:5 — now cites design-sim.mjs v4 and records 79.19%, non-dominance, and zero dead states.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:7 — specifies one shared player-visible disclaimer beneath all three cards, avoiding per-card duplication; card order is independently shuffled.",
+      "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json:2 — explicitly includes the single shared disclosure in the initial visible state.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:15 — retry reasoning is internal documentation, not included in first_visible_state or any player-facing result string, so it creates no answer leak.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:35 — つぶたね is eligible in June/July, fast, and heat-vulnerable.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:36 — まんまる is eligible in June–August, slow, and heat-tolerant.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:37 — ことね is eligible in August/September, medium-speed, and heat-vulnerable; therefore June, July, and August each have exactly two seasonal candidates.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:73 — rejection sampling admits only states having at least one winner. With exactly two seasonal candidates, failure of the first implies the other candidate wins; a second attempt would therefore guarantee success without deadline/heat reasoning.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:10 — wrong selections produce an honest failure reaction but deliberately reveal no failed condition.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:14 — unsuccessful sessions are explicitly framed as missing the shipment rather than success.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:134 — the corrected notes field is no_variety_dominates_any_multi_candidate_month.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:185 — no_variety_dominates_any_multi_candidate_month is true.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:196 — zero_winner_session_rate is 0.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:13 — neutral variety names close the prior label-based ANSWER_LEAK.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:14 — per-session card shuffling is mandatory, closing the position leak at design intent level.",
+      "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json:5 — child performs the profession-specific comparison and commit; the system does not reveal the answer first.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json:5 — profession_name_hidden_test remains satisfied through agricultural C/D specificity without naming the profession first.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:158 — script prints deterministic JSON even when its attempted write is denied by the read-only review environment.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:198 — committed notes use the corrected non-dominance field name.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:1 — independently executed stdout compared byte-for-byte equal to the committed file."
+    ],
+    "recommended_actions": [
+      "Reword fact_sheet_v3.json line 16 so the source-backed claims are limited to early/late sowing patterns and 向陽二号’s documented heat tolerance; explicitly identify the other heat-tolerance differences as fictional balancing data.",
+      "Replace every live game_translations_v4.json reference with authoritative game_translations_v5.json in reference_research_v3.json, no_manual_exploit_check_v5.json, and design-sim.mjs, then rerun the complete cross-reference audit.",
+      "Carry REACTION_DOES_NOT_TEACH_NEXT_ACTION as a non-gating MEDIUM into game_spec; add a non-retry learning cue after commitment, such as highlighting which condition categories mismatched only after the result, without allowing another selection in the same session."
+    ]
+  },
+  "elapsed_sec": 129.759
+}

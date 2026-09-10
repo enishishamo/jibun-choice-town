@@ -1,0 +1,63 @@
+{
+  "translations": [
+    {
+      "translation_id": "t1-season-deadline-match",
+      "play_seed": "s1-deadline-match",
+      "goal": "今日の月・注文の締め切り月・今年の気象予報（毎セッションランダム）を見て、3つの品種（つぶたね/まんまる/ことね、いずれも夏まき候補）のうち、播種適期に今の月が含まれ、収穫日数が締め切りまでの残り日数以内で、耐暑性が予報に合う品種を選んでまく。1回のコミット判断。",
+      "first_visible_state": "『今日の日付は◯月。給食室から「△月までに、にんじんXkg」という注文が来た。今年の夏の予報は□□。』という状況表示と、3つの品種カード（つぶたね/まんまる/ことね、それぞれ播種適期・収穫日数・耐暑性を読める）、『これでまく』ボタン。説明文はない。",
+      "primary_action": "3つの品種カードのうち1つをタップして『これでまく』を押す（自由に見比べてから決められる、コストなし。まくと結果が確定する1回のコミット）",
+      "C_interaction": "3つの品種カードの播種適期・収穫日数・耐暑性を、今日の月・締め切りまでの残り日数・気象予報と見比べて、3条件すべてに合う品種を判断する。3品種はいずれも夏まき候補で播種適期が部分的に重なるため、月だけでは1つに絞れないことが多く、締め切り・耐暑性まで確認する必要がある",
+      "system_reaction": "選んだ品種が3条件（時期・日数・耐暑性）すべてに合えば『順調に育っている』という結果を経て収穫成功。1つでも合わなければ、発芽不良または生育不良という結果になり、その理由は示さない（フラットな結果）",
+      "information_gained": "3条件のうち、実際に選んだ品種がどこで合わなかったかは示されない。合わなかったこと自体は分かる",
+      "player_next_judgment": "結果を受け止める。同一セッション内での再挑戦はない——src/q1/labCheckLogic.tsの既存の前例（1回の挑戦で判断を固定し、外れたら別の結末へ進む。本当のやり直しは章に入り直すこと）に倣う",
+      "D_externalization": "品種カードのタップ＋『これでまく』という子ども自身の明示的な選択が、そのまま栽培計画の判断を表現する。システムは先に正解を示さない",
+      "E_consequence": "3条件すべてに合っていれば出荷成功。1つでも合わなければ、正直に『間に合わなかった』という結果になり、話は先に進む（進行はブロックしない）",
+      "retry_or_rethink": "この場でのまき直しはない（1回のコミット）。章に入り直せば、今日の月・締め切り・予報が新しくランダム化された、本当の意味でのやり直しができる",
+      "job_reveal_bridge": "既存のdiscoveryEcho（品種を締め切りと天気に照らして選ぶ、という体験）がそのまま使える",
+      "strengths": "design review r1（FAIL 38、3 BLOCKER）是正版。(1) ANSWER_LEAK是正: 品種名を季節を示唆しない中立な名前（つぶたね/まんまる/ことね）に変更。(2) C_NOT_NEEDED_FOR_D/CORE_DISTORTED_BY_GAME是正: 3品種すべてを夏まきの範囲内で播種適期を重ねる設計に変更し、約75%のセッションで2品種以上が季節的候補になるようにした結果、締め切り・耐暑性という残り2条件が実際に答えを左右するようになった（design-sim.mjs v3: season_only_heuristic=76.4% < legitimate_full_reasoning=100%、+23.6pt）。(3) FAILURE_DISGUISED_AS_SUCCESS是正: deadline/forecastをrejection samplingで生成し、詰みセッション（zero_winner）を完全に排除（0%、旧v2は39.3%）。固定品種を選ぶ攻略（always_plant_*）は最大50.5%にとどまる。",
+      "weaknesses": "375px×3品種カード+状況表示のレイアウトは実装段階の検証項目。品種カードの表示順は実装段階でセッションごとにシャッフルする必要がある（no_manual_exploit_check_v4.json参照）。",
+      "risk": "design-sim-result.json (v3): legitimate_full_reasoning=100%、season_only_heuristic=76.4%、random_pick_content_blind=42.8%、always_plant_*は最大50.5%（memorization_exploit_closed=true）、zero_winner_session_rate=0（rejection_sampling_never_exhausted=true、20,000セッション全てで200回以内に解が見つかった）。",
+      "adoption_or_rejection_reason": "採用。design review r1の3 BLOCKERすべてに対応した改訂版。s1（複数条件の照合）を、季節重複のある3品種設計で忠実に表現する。s2（除外的な読み方）はs1と判定ロジックが同一のためUIの見せ方としてs1に統合。s3（水やり）は補強要素として実装段階で追加を検討する。"
+    },
+    {
+      "translation_id": "t2-continuous-dial",
+      "play_seed": "s1-deadline-match",
+      "goal": "『育成条件ダイヤル』を回して、気温・水分量を理想範囲に合わせ続ける",
+      "first_visible_state": "気温・水分量を示す2つのスライダーと、目標範囲を示すバー",
+      "primary_action": "スライダーをドラッグして目標範囲内に収める",
+      "C_interaction": "目標範囲の数値とスライダーの現在値を見比べる",
+      "system_reaction": "範囲内に収まれば生育が進む、外れれば生育が止まる",
+      "information_gained": "現在のスライダー位置と目標範囲のズレ",
+      "player_next_judgment": "ズレを修正し続ける",
+      "D_externalization": "スライダー操作自体は品種特有の判断を表現しない",
+      "E_consequence": "範囲内を維持できれば収穫",
+      "retry_or_rethink": "いつでもスライダーを動かし直せる",
+      "job_reveal_bridge": "弱い（品種選びという職業固有の判断が薄れる）",
+      "strengths": "操作の即時性は高い",
+      "weaknesses": "品種ごとの播種適期・耐暑性という農業特有のCが実質使われず、一般的な『範囲内に収める』ミニゲームになってしまう（D_REPLACED_BY_TRIVIA、C_NOT_NEEDED_FOR_D）。締め切りまでの残り日数という時間的制約も表現しにくい。",
+      "risk": "CORE（品種選び）が実装に反映されないリスクが高い",
+      "adoption_or_rejection_reason": "却下。農家・生産者固有の判断（品種ごとの属性を締め切り・気象と照合する）が、一般的な『ダイヤルを範囲内に保つ』操作に置き換わってしまい、CORE_DISTORTED_BY_GAMEに該当する。"
+    },
+    {
+      "translation_id": "t3-elimination-ladder",
+      "play_seed": "s2-pre-commit-elimination",
+      "goal": "3つの品種カードを1枚ずつ見て、条件に合わない品種を都度タップして除外していく",
+      "first_visible_state": "3つの品種カードと、今日の月・締め切り・予報の表示",
+      "primary_action": "『この品種は違う』を都度タップして除外する",
+      "C_interaction": "個々の品種カードと条件を1つずつ見比べる",
+      "system_reaction": "除外が正しければその品種が薄く表示される。誤って正しい品種を除外しようとすると拒否される",
+      "information_gained": "個々の品種が条件に合うかどうかの一問一答的フィードバック",
+      "player_next_judgment": "残りの品種でさらに除外を進める",
+      "D_externalization": "一問一答の除外操作の連続",
+      "E_consequence": "最後の1品種が正しい選択として残る",
+      "retry_or_rethink": "除外をやり直せる",
+      "job_reveal_bridge": "弱い（一問一答の反復に近づく）",
+      "strengths": "操作は単純で分かりやすい",
+      "weaknesses": "品種カードごとに即時の正誤フィードバックが出るため、総当たり的に全品種を試せば正解が推測できてしまう（clue_joinのs2-elimination-ladderが却下されたのと同じ理由）。3つの条件を『組み合わせて』見るCOREの一体感も弱い。",
+      "risk": "即時フィードバックによる総当たり攻略のリスクが高い",
+      "adoption_or_rejection_reason": "却下。個々の除外に即時の正誤フィードバックを与える設計は、条件を総合的に照合するというCOREの判断を、一問一答の反復に置き換えてしまう（D_REPLACED_BY_TRIVIAに近い）。"
+    }
+  ],
+  "adopted_translation_id": "t1-season-deadline-match",
+  "adoption_rationale": "t1（design review r1是正版）は、CORE/AEで定義した『締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を選ぶ』という判断を、季節が一部重なる3品種設計＋rejection samplingによって、季節・締め切り・耐暑性の3条件すべてが実際に機能する形で表現する。design-sim.mjs v3で、記憶による攻略（最大50.5%）が完全な推論（100%）に明確に劣り、季節だけの推論（76.4%）も完全な推論に劣ることを検証済み。t2はCOREを歪め、t3は総当たり攻略のリスクが高いため却下した。"
+}

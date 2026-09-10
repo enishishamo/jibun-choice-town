@@ -1,0 +1,32 @@
+{
+  "profession": "農家・生産者",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "注文時期、播種適期、生育日数、耐暑性を照合して品種を選び、時間を進め、乾燥時に灌水して収穫する"
+  ],
+  "expertise": [
+    "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+  ],
+  "tools": [
+    "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+  ],
+  "information_used": [
+    "11月に300kgという注文、7月の播種時点、猛暑予報、発芽適温、土壌診断、各種袋の播種期・収穫日数・耐暑性"
+  ],
+  "decisions": [
+    "品種を畑へまき、生育結果を観察し、必要時に灌水し、失敗なら畑をリセットして別品種を試す"
+  ],
+  "outputs_or_value": "失敗画面のリセットボタンで品種選択へ戻り、別の種を試す",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/sow_and_grow.json"
+}

@@ -1,0 +1,2313 @@
+{
+  "game_id": "legacy-sow-and-grow",
+  "profession": "農家・生産者",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "sow_and_grow",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v4",
+      "artifact_type": "fact_sheet",
+      "version": 4,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json",
+      "payload": {
+        "profession": "農家・生産者（にんじんの夏まき露地栽培・出荷計画）",
+        "sources": [
+          {
+            "url": "https://www.takii.co.jp/tsk/manual/pdf/ninjin.pdf",
+            "type": "seed_company_manual",
+            "org": "タキイ種苗株式会社"
+          },
+          {
+            "url": "https://www.ja-atsugi.or.jp/learn/garden/kateisaien/2023/05.html",
+            "type": "cooperative_guidance",
+            "org": "JAあつぎ（神奈川県厚木市農業協同組合）"
+          },
+          {
+            "url": "https://www.pref.fukui.lg.jp/doc/sakai-noso/enngeisinnkou/jissyouseika_d/fil/005.pdf",
+            "type": "government_extension_trial_data",
+            "org": "福井県 坂井農林総合事務所"
+          }
+        ],
+        "who_or_what_they_serve": "決まった時期（学校給食など）までに、決まった量の作物を収穫・出荷できる状態に育てて届ける相手（学校給食室・JA出荷部会・産直組合など）。",
+        "representative_duties": [
+          "注文の締め切り時期と、今の時点からその締め切りまでの日数を照らし合わせ、間に合う品種・播種時期を選ぶ",
+          "播種後の発芽状況（土の乾き・発芽の有無）を観察し、必要なら灌水する"
+        ],
+        "expertise": [
+          "にんじんの発芽適温は15〜25℃（発芽可能温度幅は8〜30℃、35℃以上ではほぼ発芽しない）。夏まきの発芽日数は15〜20℃で8〜10日ほど（タキイ種苗『タキイのニンジン栽培マニュアル』、JAあつぎ『ニンジン 適期の種まきとかん水を』）。",
+          "播種してから発芽までの8〜10日間は土の乾燥を避ける必要があり、乾いていれば灌水する。過湿でも酸素不足で発芽不良になる（JAあつぎ）。",
+          "実際の産地データ（福井県 坂井農林総合事務所の実証試験）では、7〜8月に播種したにんじんは約111〜112日後（11〜12月）に収穫できている。同じ夏まきの枠内でも、品種によって播種の早さ・遅さへの適性が異なる（同資料：愛紅は早め〜8月上旬の播種で生育旺盛、夏播用彩誉は8月中旬という遅い播種でも上物収量が高い）。耐暑性について同資料が明示的に述べているのは向陽二号（晩抽性・耐暑性を備えた標準品種）のみで、愛紅・夏播用彩誉の耐暑性の高低は同資料に記載がない。時期がズレると肥大不足や色が薄くなる（タキイ種苗マニュアル）。"
+        ],
+        "tools": [
+          "品種ごとの播種適期・収穫までの日数・耐暑性が書かれた種袋・栽培資料",
+          "気象予報（猛暑・気温の見通し）",
+          "灌水設備"
+        ],
+        "information_used": [
+          "注文の締め切り時期（いつまでに、どれだけ必要か）",
+          "今日の日付と、そこから締め切りまでの残り日数",
+          "各品種の播種適期・収穫までの日数・耐暑性",
+          "気象予報（猛暑が続くかどうか）",
+          "播種後の発芽・生育の実際の様子（観察結果）"
+        ],
+        "decisions": [
+          "締め切りに間に合う播種適期・収穫日数・耐暑性を持つ品種を選ぶ（タキイ種苗マニュアル：早まき・遅まきは肥大悪化）",
+          "発芽までの期間、土が乾いていれば灌水する（JAあつぎ）"
+        ],
+        "outputs_or_value": "締め切りまでに、注文どおりの量の作物を収穫・出荷できる状態に育てること。",
+        "adjacent_profession_boundaries": "品種の遺伝的な改良（育種）や、施肥設計の細かい成分計算、病害虫の診断・薬剤選定は、この職業の中心的な判断ではない（別の専門領域）。",
+        "uncertainties": [
+          "この職業が個人農家か、産地・JA出荷部会としての判断かは一次資料で断定できていない",
+          "にんじん特有の高温障害の臨界温度は未確認（大根の高温障害データ〈平均25℃/最高30℃、農畜産業振興機構〉はにんじんに直接は適用しない）",
+          "学校給食向け出荷契約の具体的な数量・時期の決め方は未確認。旧実装の『11月に300kg』という数量自体は架空の設定として扱う",
+          "ゲーム内の3つの架空品種（つぶたね/まんまる/ことね）は、福井県実証データが比較した実在3品種（愛紅/夏播用彩誉/向陽二号）の性質差の傾向（早まき向き/遅まき向き/標準で幅広い）を参考にした架空設定であり、個々の収穫日数・耐暑性の具体的な数値は一次資料で個別に確認されたものではない（FACT_CHECK_REQUIRED、design_translationのrevision_note参照）"
+        ],
+        "revision_note": "v4 (design review r4 FAIL 64是正、ARTIFACT_CHAIN_INCONSISTENT): expertiseの『品種によって...暑さへの強さが異なる』という一文が、あたかも福井県実証データが3品種すべての耐暑性差を述べているかのように読めたため、実際に同資料が明示するのは向陽二号の耐暑性のみであることを明記し、愛紅・夏播用彩誉の耐暑性については『同資料に記載がない』と明確化（reference_research_v4.jsonの是正と整合）。v3 (design review r1 FAIL 38是正): (1) FACTUAL_PROFESSION_ERROR — 品種ごとの具体的な日数・耐暑性が架空設定であることを明記し、根拠となった実在3品種の傾向（愛紅=早まき向き、夏播用彩誉=遅まき向き、向陽二号=標準で幅広い）を明示。(2) representative_duties/decisionsから『同一シーズン内での品種切り替え』の記述を削除（ae_v3.jsonのCORE見直しに合わせて整合、旧v2で残っていたARTIFACT_CHAIN_INCONSISTENT状態を解消）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:25:17.694Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/fact_sheet.json",
+          "created_at": "2026-09-09T04:36:02.332Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v2.json",
+          "created_at": "2026-09-09T07:39:34.422Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v3.json",
+          "created_at": "2026-09-09T08:32:13.301Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json",
+          "created_at": "2026-09-09T23:25:17.695Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-sow-and-grow:scope_core:v7",
+      "artifact_type": "scope_core",
+      "version": 7,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json",
+      "payload": {
+        "core": "注文の締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を見つけ、収穫日数・耐暑性の条件も満たすかを確かめたうえで、まくかどうかを判断するループ。",
+        "scope": "給食編（学校給食向けの、決まった時期・量の野菜を育てて届ける場面）",
+        "scope_is_representative_because": "『注文の締め切りに、品種の播種適期・収穫日数・耐暑性を照らし合わせて選ぶ』という判断は、fact_sheet_v4.jsonの一次資料（タキイ種苗マニュアル、JAあつぎ、福井県農業改良普及機関の実証データ）が示す実際の栽培計画の核であり、学校給食向けという場面はその典型的な適用例。",
+        "profession_name_hidden_test": "『締め切りまでの日数と天気の見通しを見て、今の時期に合う種を選び、間に合うか・暑さに耐えられるかを確かめてまく』という記述だけでは職業名を当てられないが、E（実際に収穫・出荷する）と組み合わせた文脈全体は、決まった納期に向けて作物を育てて届ける農家・生産者の判断を指す。他の職業とはC（品種ごとの播種適期・収穫日数・耐暑性という農業特有のデータ）とD（それを締め切り・天気と照らし合わせて選ぶ判断）が異なるため重複しない。",
+        "revision_note": "v3: design-sim.mjs v2の検証で、同一セッション内での品種の切り替えは実際の播種適期の非重複性により常に失敗するだけの見せかけの選択肢と判明したため（他の2品種は季節が合わず、切り替えても意味がない）、COREを『1回のコミット判断』に統一（ae_v3.jsonのrevision_note参照）。v2にあった『思わしくなければ締め切りまでの余裕を見て別の品種に切り替える』という反復判断の記述を削除。判断の中身（複数条件を照らし合わせて品種を選ぶ）自体はv2から変わらない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:fact_sheet:v4"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:27:35.332Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/scope_core.json",
+          "created_at": "2026-09-09T04:36:02.369Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v2.json",
+          "created_at": "2026-09-09T07:46:06.918Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json",
+          "created_at": "2026-09-09T07:59:54.625Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json",
+          "created_at": "2026-09-09T08:32:24.595Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json",
+          "created_at": "2026-09-09T23:19:01.963Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v3.json",
+          "created_at": "2026-09-09T23:25:28.091Z",
+          "creator": "claude"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json",
+          "created_at": "2026-09-09T23:27:35.333Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-sow-and-grow:ae:v7",
+      "artifact_type": "ae",
+      "version": 7,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+      "payload": {
+        "A": "給食編（学校給食向けの、決まった時期・量の野菜を育てて届ける場面）",
+        "B": "給食室から『◯月までに、にんじんXkgほしい』という注文が来た。今日は△月。今年の夏の予報は□□。どの品種を選ぶかを決めないといけない。",
+        "C": "3つの品種それぞれの播種適期・収穫までの日数・耐暑性（種袋の情報）。今日の日付、注文の締め切りまでの残り日数、今年の気象予報（毎セッションランダム）。",
+        "D": "今日の月が播種適期に含まれる品種を見つけ、その品種の収穫日数が締め切りまでの残り日数に間に合うか、耐暑性が気象予報に合うかを確かめたうえで、まくかどうかを判断する。",
+        "E": "3つの条件（時期・日数・耐暑性）すべてに合っていれば、締め切りまでに収穫でき、給食室へ出荷される。1つでも合わなければ、正直に『間に合わなかった』という結果になる。",
+        "revision_note": "v3: 同一セッション内での品種の『まき直し（切り替え）』は、実際の播種適期が品種ごとに重ならないため、季節が合わない他の2品種へ切り替えても常に失敗するだけの見せかけの選択肢になってしまうと判明した（design-sim.mjs v2で検証）。src/q1/labCheckLogic.tsの既存の前例（1回の挑戦で判断を固定し、外れたら正直な結果へ進む——同じ場でのやり直しではなく章への入り直しが本当のやり直し）に倣い、Dを『1回のコミット判断』に統一。旧v2にあった『締め切りまでの残り日数を見て切り替える』という反復判断は、実際には機能しない見せかけの複雑さだったため削除。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:scope_core:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:27:44.610Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sow-and-grow/backfill/ae.json",
+          "created_at": "2026-09-09T04:36:02.406Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v2.json",
+          "created_at": "2026-09-09T07:46:06.974Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+          "created_at": "2026-09-09T07:59:54.666Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+          "created_at": "2026-09-09T08:32:24.637Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+          "created_at": "2026-09-09T23:19:13.722Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+          "created_at": "2026-09-09T23:25:28.132Z",
+          "creator": "claude"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-sow-and-grow/design/ae_v3.json",
+          "created_at": "2026-09-09T23:27:44.610Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v6",
+      "artifact_type": "core_scope_check",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v3.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "CORE（締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を見つけ、条件を満たすか確かめてまく）はfact_sheet_v4.jsonの一次資料と整合する。SCOPE（給食編）は実際の産地・JAが学校給食向けに野菜を供給する場面の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『収穫・出荷』を含む文脈全体は農家・生産者の判断を指し、他の登場職業とは重複しない。",
+        "revision_note": "v2: scope_core_v3/ae_v3（同一セッション内切り替えを削除し1回のコミット判断に統一）に合わせて更新。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:ae:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:27:44.649Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v1.json",
+          "created_at": "2026-09-09T07:46:36.075Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T08:02:01.545Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T08:32:34.322Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T23:19:23.304Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v2.json",
+          "created_at": "2026-09-09T23:25:39.437Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_scope_check_v3.json",
+          "created_at": "2026-09-09T23:27:44.650Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v6",
+      "artifact_type": "play_seeds",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-deadline-match",
+            "authentic_causal_loop": "注文の締め切りまでの残り日数と、今年の夏の気象予報を見る→各品種の播種適期・収穫日数・耐暑性と照らし合わせる→締め切りに間に合い、かつ予報に合う品種を選んでまく→結果が出る",
+            "player_action": "今日の日付・締め切り日・今年の気象予報（毎回セッションごとにランダム化）を確認し、3つの品種カードから1つを選んでまく（1回のコミット、同一セッション内でのまき直しはない）",
+            "system_reaction": "選んだ品種の播種適期が今の時期に合わず、または収穫日数が締め切りまでの残り日数を超えていれば発芽不良・収穫遅れという結果に。予報が猛暑なのに耐暑性の低い品種を選んでいれば発芽不良に。3条件（時期・日数・耐暑性）すべてに合う品種を選べば順調に育つ",
+            "information_gained": "3つの品種のうち、今回の締め切り・気象条件に実際に合うのはどれか",
+            "next_judgment_or_action": "結果を受け止め、正直な成功/失敗の結末へ進む（同一セッション内の再挑戦はない——本当のやり直しは章に入り直して新しい条件で挑戦すること）",
+            "C_used": "品種ごとの播種適期・収穫日数・耐暑性（種袋情報）、今日の日付、締め切り日、今年の気象予報",
+            "D_expressed": "複数の条件（時期・日数・耐暑性）を締め切りと予報に照らし合わせて品種を選ぶという、実際の栽培計画の判断",
+            "E_reached": "3条件すべてに合っていれば出荷成功。1つでも合わなければ、正直に『間に合わなかった』という結果になる",
+            "risks": "毎回同じ条件（同じ締め切り・同じ予報）だと、正解品種を覚えるだけの当てずっぽうになる（BRUTE_FORCE_SUCCESS）。締め切り日・気象予報を毎セッションランダム化し、正解が固定されないようにする必要がある。さらに、複数品種が同じ月に季節的候補となる場合、いずれか一方が常に有利になってしまうと『月だけ覚える』攻略が成立してしまう（design review r2で発見）ため、品種間に早さ⇄耐暑性のトレードオフを持たせる必要がある（design-sim.mjs v4で検証済み：memorization_exploit_closed=true、legitimate_full_reasoning=100% vs 月固定攻略79.19% vs 乱択40.3%、詰みセッションはrejection samplingにより0%）"
+          },
+          {
+            "seed_id": "s2-pre-commit-elimination",
+            "authentic_causal_loop": "3つの品種カードをまだ何も選ばずに読み比べる→今の月に播種適期が合わない品種を2つ、頭の中で除外する→残った1つの品種が締め切り・気象予報にも合うかを確かめてから、はじめてまく",
+            "player_action": "3つの品種カードを開いて読み比べ、今の月に合う品種を絞り込んでから『これでまく』を押す",
+            "system_reaction": "s1と同じ判定（3条件すべてを満たせば成功）。s1との違いは、コミット前に除外的に読み比べるという認知プロセスの強調のみで、システムの挙動は同一",
+            "information_gained": "s1と同じ",
+            "next_judgment_or_action": "s1と同じ",
+            "C_used": "s1と同じ",
+            "D_expressed": "s1と同じ判断を、除外的な読み方として表現したもの",
+            "E_reached": "s1と同じ",
+            "risks": "s1と実質的に同じ判定ロジックであり、独立したtranslationとしては差別化が薄い。UIの見せ方（読み比べを促す導線）としてs1に統合するのが妥当"
+          },
+          {
+            "seed_id": "s3-water-budget",
+            "authentic_causal_loop": "発芽までの期間、土の乾き具合を観察する→乾いていれば灌水する（灌水できる回数に限りがある）→乾燥・過湿のどちらでも発芽不良になりうるため、本当に必要なときだけ灌水する",
+            "player_action": "数日おきに土の状態（乾いている/湿っている）を確認し、灌水するかどうかをその都度選ぶ（灌水回数は限られている）",
+            "system_reaction": "乾いているのに灌水しないと乾燥で発芽不良に。湿っているのに灌水すると過湿で発芽不良に。適切なタイミングでだけ灌水すれば順調に発芽する",
+            "information_gained": "毎回の土の状態を見て、灌水が必要かどうか",
+            "next_judgment_or_action": "限られた灌水回数をどこで使うか",
+            "C_used": "土の状態（乾燥/過湿）、灌水回数の上限",
+            "D_expressed": "『とりあえず毎回水をやる』では過湿で失敗するため、観察に基づいた判断が必要",
+            "E_reached": "適切に灌水できれば発芽が順調に進み、そのまま品種選びの結果へつながる",
+            "risks": "この判断だけでは品種選び（締め切り・耐暑性の照合）というCOREの中心的な判断が薄れ、水やりミニゲームに矮小化されるおそれがある（D_REPLACED_BY_TRIVIAに近い）。単独のtranslationとしてではなく、s1の補強要素として使うのが妥当"
+          }
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:ae:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:27:53.763Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v1.json",
+          "created_at": "2026-09-09T07:48:09.201Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+          "created_at": "2026-09-09T08:02:01.586Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+          "created_at": "2026-09-09T08:32:34.364Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+          "created_at": "2026-09-09T23:19:23.346Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+          "created_at": "2026-09-09T23:25:39.477Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/play_seeds_v2.json",
+          "created_at": "2026-09-09T23:27:53.764Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-sow-and-grow:reference_research:v6",
+      "artifact_type": "reference_research",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v5.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "福井県 坂井農林総合事務所『夏播きニンジンの有望品種検討』実証試験（PDF: https://www.pref.fukui.lg.jp/doc/sakai-noso/enngeisinnkou/jissyouseika_d/fil/005.pdf）— 実在する複数の商業品種（愛紅/夏播用彩誉/向陽二号など）を同一条件下で比較した官公庁の実証データ",
+            "relevant_mechanic": "3つの架空品種（つぶたね/まんまる/ことね）のうち、早さ・遅さの傾向差だけは実在データに根拠がある。愛紅は7月・8月上旬播種で生育旺盛（→つぶたね：早まき向き・早生）。夏播用彩誉は8/17という遅い播種日でも標準品種より上物収量が高い（→ことね：遅まき向き・晩生・遅まき専用）。向陽二号は晩抽性・耐暑性を備え春〜夏作まで対応する定番品種（→まんまる：広い播種期・標準的だが収穫までやや時間がかかる）。耐暑性については、実在資料が明示的に述べているのは向陽二号（→まんまる）の耐暑性のみ。つぶたね（愛紅）・ことね（夏播用彩誉）の耐暑性の高低は実在資料に記載がなく、design review r2是正（複数候補の重なりで締め切り・耐暑性が実際に答えを左右するようにする）のために、早さと耐暑性を反比例させるゲームバランス上の架空設定として付与したものであり、実在品種の性質として提示しているわけではない（fact_sheet_v4.json/game_translations_v5.jsonのカード上の学習用設定表示と対応）",
+            "borrowed_principle": "実在する複数品種が『同じ夏まきという大枠の中で、播種の早さ・遅さへの適性が異なる』という現実の構造を、架空の3品種に投影する。品種名自体には季節を直接示す言葉を使わない（design review r1のANSWER_LEAK是正）。耐暑性のトレードオフは実在データにない架空の追加設定であることを明示する（design review r3のARTIFACT_CHAIN_INCONSISTENT是正）",
+            "surface_elements_not_to_copy": "実在品種の正式な商業名（愛紅・夏播用彩誉・向陽二号）はそのまま使わない（架空名のまま）。実在品種の正確な収穫日数・耐暑性の閾値（向陽二号以外）は今回のリサーチで個別に確認できていないため、架空設定として扱う（fact_sheet_v4.jsonのuncertaintiesに記載）"
+          },
+          {
+            "reference": "既存Q1 forecast_and_balance（PowerGame、猛暑編、2026-09-08 Factory repair済み）",
+            "relevant_mechanic": "毎セッションで条件（需要予測・供給量）をランダム化し、時間を進めながら条件に合わせて選択する構造",
+            "borrowed_principle": "『今日の月・締め切り・気象予報』を毎セッションランダム化し、正解の品種が固定されないようにする",
+            "surface_elements_not_to_copy": "forecast_and_balanceの電力需給という題材・数値バランスはそのまま持ち込まない"
+          },
+          {
+            "reference": "既存Q1 clue_join（同じ医師チャプター、2026-09-09 Factory repair済み）— design review r1-r10を経た『複数条件を組み合わせて判断する』設計の前例",
+            "relevant_mechanic": "複数の候補それぞれの一般的な特徴を読み物として提示し、子ども自身が明示的にコミットする（システムが先に正解を示さない）。複数条件（診断＋根拠）を組み合わせて判定する構造",
+            "borrowed_principle": "3つの品種カードの播種適期・収穫日数・耐暑性という読み物を見比べ、子どもが自分で『これでまく』とコミットする構造。deadline/heatが複数候補のうちどれが実際に勝てるかを分岐させる設計（clue_joinのCORE_MINIMUM/OPTIONAL_SUPPORTのような複数条件AND判定と同型）",
+            "surface_elements_not_to_copy": "clue_joinの診断＋根拠という二軸判定はそのまま持ち込まない（sow_and_growは単一品種選択＋3条件判定という別の構造）"
+          }
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:play_seeds:v6"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:27:53.803Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v1.json",
+          "created_at": "2026-09-09T07:48:54.904Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v1.json",
+          "created_at": "2026-09-09T08:02:12.034Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json",
+          "created_at": "2026-09-09T08:32:52.766Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v3.json",
+          "created_at": "2026-09-09T23:19:33.596Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v4.json",
+          "created_at": "2026-09-09T23:25:50.292Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/reference_research_v5.json",
+          "created_at": "2026-09-09T23:27:53.804Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-sow-and-grow:c_compression:v7",
+      "artifact_type": "c_compression",
+      "version": 7,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v4.json",
+      "payload": {
+        "original_C": "実際の栽培計画では、施肥設計（成分比・投入量）、生理障害の原因分類（裂根・岐根・青首・抽苔の生理機構）、土壌の詳細診断、品種の商業的系統・育種会社情報、経営上の収量・単価計算など、非常に多くの専門情報と経営判断が関わる（タキイ種苗マニュアル、福井県農業改良普及機関の実証データより）。",
+        "compressed_C": "3つの品種（つぶたね/まんまる/ことね、いずれも夏まき、それぞれ早さ⇄暑さへの強さのトレードオフを持つ）それぞれの播種適期・収穫までの日数・耐暑性という3つの属性と、今日の日付・注文の締め切り日・今年の気象予報（猛暑か穏やかか）という3つの状況情報に圧縮。品種ごとの具体的な数値はゲーム内の学習用設定であることをカード上に明示する。",
+        "removed_complexity": "施肥成分・生理障害の機序・土壌の詳細診断・品種の商業的系統名・収量や単価などの経営数値",
+        "reason_for_removal": "10-12歳が1画面・数十秒で扱える情報量を超える。これらは実務でも専門知識や経験を要する領域であり、Q1のCORE（締め切り・気象に照らして品種を選ぶ）にとって本質的ではない（C_NOT_NEEDED_FOR_Dを避けつつ圧縮）。",
+        "preserved_D": "締め切りまでの残り日数と気象の見通しに、品種の播種適期・収穫日数・耐暑性を照らし合わせて選ぶという、実際の栽培計画の本質的な判断構造",
+        "how_player_still_performs_D": "3つの品種はいずれも夏まき候補だが、早さと耐暑性の間に本物のトレードオフがある（福井県実証データが比較した愛紅=早まき向き・夏播用彩誉=遅まき向き・向陽二号=標準で幅広い、という実在の傾向差を反映）。design-sim.mjs v4の検証で、複数候補が重なる月（6・7・8月）のいずれでも、締め切り・耐暑性の実際の組み合わせによって勝つ品種が変わり、月だけを覚える攻略（79.2%）は完全な推論（100%）に明確に劣ることを確認した（design review r2が指摘した『月だけで100%勝ててしまう』問題を解消）。",
+        "failure_risk": "圧縮しすぎると『いつも同じ品種を選べば勝てる』という記憶ゲームに戻ってしまうリスクがある（今回のGAME_TRANSLATION_REBUILDの直接の原因）。design review r1・r2の2ラウンドを経て、(1)品種名から季節を推測できないこと、(2)月だけの判断では複数候補のいずれか一方が常に勝つことはないこと（no_variety_dominates_any_multi_candidate_month=true）、(3)詰み（3条件すべてを満たす品種が存在しない）セッションが完全に0であること、(4)品種ごとの具体的数値が架空の学習用設定であることをカード上で明示していること、をすべて数値・実装記述で検証済み。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:play_seeds:v6"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:28:04.336Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v1.json",
+          "created_at": "2026-09-09T07:49:23.811Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v2.json",
+          "created_at": "2026-09-09T08:02:12.078Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v3.json",
+          "created_at": "2026-09-09T08:34:14.714Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v4.json",
+          "created_at": "2026-09-09T23:10:45.012Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v4.json",
+          "created_at": "2026-09-09T23:19:33.645Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v4.json",
+          "created_at": "2026-09-09T23:25:50.333Z",
+          "creator": "claude"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-sow-and-grow/design/c_compression_v4.json",
+          "created_at": "2026-09-09T23:28:04.337Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-sow-and-grow:game_translations:v7",
+      "artifact_type": "game_translations",
+      "version": 7,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-season-deadline-match",
+            "play_seed": "s1-deadline-match",
+            "goal": "今日の月・注文の締め切り月・今年の気象予報（毎セッションランダム）を見て、3つの品種（つぶたね/まんまる/ことね、いずれも夏まき候補）のうち、播種適期に今の月が含まれ、収穫日数が締め切りまでの残り日数以内で、耐暑性が予報に合う品種を選んでまく。1回のコミット判断。",
+            "first_visible_state": "『今日の日付は◯月。給食室から「△月までに、にんじんXkg」という注文が来た。今年の夏の予報は□□。』という状況表示と、3つの品種カード（つぶたね/まんまる/ことね、それぞれ播種適期・収穫日数・耐暑性を読める）、『これでまく』ボタン。品種カードの一段下、3枚すべてに共通する場所に1行だけ『※品種の数値はこのゲームの中だけの、学習用の設定です』という注記を表示する（design review r3是正: カードごとに繰り返さず1箇所にまとめ、375pxで決定に必要な情報と競合しないようにする）。カードの表示順は毎セッション独立にシャッフルされる（実装上の必須要件——design_specで明示的な受け入れ条件とする）。説明文はない。",
+            "primary_action": "3つの品種カードのうち1つをタップして『これでまく』を押す（自由に見比べてから決められる、コストなし。まくと結果が確定する1回のコミット）",
+            "C_interaction": "3つの品種カードの播種適期・収穫日数・耐暑性を、今日の月・締め切りまでの残り日数・気象予報と見比べて、3条件すべてに合う品種を判断する。3品種はいずれも夏まき候補で播種適期が部分的に重なり、かつ『早いが暑さに弱い』『遅いが暑さに強い』というトレードオフを持つため、月だけでも締め切りだけでも決まらず、3条件の組み合わせで初めて答えが決まることが多い",
+            "system_reaction": "選んだ品種が3条件（時期・日数・耐暑性）すべてに合えば『順調に育っている』という結果を経て収穫成功。1つでも合わなければ、発芽不良または生育不良という結果になり、その理由は示さない（フラットな結果）",
+            "information_gained": "3条件のうち、実際に選んだ品種がどこで合わなかったかは示されない。合わなかったこと自体は分かる",
+            "player_next_judgment": "結果を受け止める。同一セッション内での再挑戦はない——src/q1/labCheckLogic.tsの既存の前例（1回の挑戦で判断を固定し、外れたら別の結末へ進む。本当のやり直しは章に入り直すこと）に倣う",
+            "D_externalization": "品種カードのタップ＋『これでまく』という子ども自身の明示的な選択が、そのまま栽培計画の判断を表現する。システムは先に正解を示さない",
+            "E_consequence": "3条件すべてに合っていれば出荷成功。1つでも合わなければ、正直に『間に合わなかった』という結果になり、話は先に進む（進行はブロックしない）",
+            "retry_or_rethink": "この場でのまき直しはない（1回のコミット）。章に入り直せば、今日の月・締め切り・予報が新しくランダム化された、本当の意味でのやり直しができる。design review r1〜r3が繰り返し指摘したREACTION_DOES_NOT_TEACH_NEXT_ACTION（同一セッション内の学習機会がない）について、あえて『外れたら別品種で再挑戦』を設けない理由を明記する: 6・7・8月は複数品種が季節的に候補となるため（design-sim.mjs v4の季節重複設計）、1回外れた後にもう一度別の候補を試せる仕組みを許すと、季節が合う残り1〜2品種を機械的に総当たりするだけで、締め切り・耐暑性を実際には読まなくても高確率で成功してしまう（『2回のうち2品種を両方試す』が事実上の必勝法になり、design review r2で是正したはずのBRUTE_FORCE_SUCCESSが別の形で復活する）。したがって、同一セッション内の再挑戦を意図的に設けないことは見落としではなく、季節重複設計とセットで安全性を保つための設計判断である。",
+            "job_reveal_bridge": "既存のdiscoveryEcho（品種を締め切りと天気に照らして選ぶ、という体験）がそのまま使える",
+            "strengths": "design review r2（FAIL 36、2 NEW BLOCKER）是正版。C_NOT_NEEDED_FOR_D/CORE_DISTORTED_BY_GAME是正: r1是正版(v3)は3品種に強弱の一方的な優劣があり、月が分かれば締め切り・耐暑性を見なくても勝てる『月→品種』の固定対応表が100%勝ててしまっていた（design review r2が発見）。v4では各品種に本物のトレードオフ（つぶたね=早いが暑さに弱い、まんまる=遅いが暑さに強い、ことね=中間だが暑さに弱い・遅まき専用）を持たせ、複数候補が重なる月（6・7・8月）では、締め切り・予報の実際の組み合わせによって勝つ品種が変わるようにした。design-sim.mjs v4で検証: 査読者が指摘した攻略そのもの（月だけを覚えて固定品種を選ぶ『month_only_fixed_mapping』）は79.2%にとどまり、完全な推論（100%）に対し20.8pt劣ることを確認。FAILURE_DISGUISED_AS_SUCCESS是正: rejection sampling（詰みセッションを0にする）は継続、例外時に例外を投げず決定的なフォールバック状態を使うよう修正（本番での予期しないクラッシュを排除）。FACTUAL_PROFESSION_ERROR是正: カード自体に『このゲームの中だけの、学習用の設定です』という一文を明示し、実在品種の正確な数値と誤認されないようにした。",
+            "weaknesses": "375px×3品種カード+状況表示のレイアウトは実装段階の検証項目。",
+            "risk": "design-sim-result.json (v4): legitimate_full_reasoning=100%、month_only_fixed_mapping=79.19%（+20.8pt差）、random_pick_content_blind=40.3%、always_plant_*は最大41.7%（memorization_exploit_closed=true）、zero_winner_session_rate=0（every_month_has_at_least_one_accepted_state=true、exhaustive enumerationで証明済み、rejection_sampling_exhaustion_count=0/20000）。no_variety_dominates_any_multi_candidate_month=true（6・7・8月のいずれも、複数候補のうちどちらか一方が常に勝つことはない）。",
+            "adoption_or_rejection_reason": "採用。design review r2の2 BLOCKERすべてに対応した改訂版。s1（複数条件の照合）を、トレードオフのある3品種設計で忠実に表現する。s2（除外的な読み方）はs1と判定ロジックが同一のためUIの見せ方としてs1に統合。s3（水やり）は補強要素として実装段階で追加を検討する。"
+          },
+          {
+            "translation_id": "t2-continuous-dial",
+            "play_seed": "s1-deadline-match",
+            "goal": "『育成条件ダイヤル』を回して、気温・水分量を理想範囲に合わせ続ける",
+            "first_visible_state": "気温・水分量を示す2つのスライダーと、目標範囲を示すバー",
+            "primary_action": "スライダーをドラッグして目標範囲内に収める",
+            "C_interaction": "目標範囲の数値とスライダーの現在値を見比べる",
+            "system_reaction": "範囲内に収まれば生育が進む、外れれば生育が止まる",
+            "information_gained": "現在のスライダー位置と目標範囲のズレ",
+            "player_next_judgment": "ズレを修正し続ける",
+            "D_externalization": "スライダー操作自体は品種特有の判断を表現しない",
+            "E_consequence": "範囲内を維持できれば収穫",
+            "retry_or_rethink": "いつでもスライダーを動かし直せる",
+            "job_reveal_bridge": "弱い（品種選びという職業固有の判断が薄れる）",
+            "strengths": "操作の即時性は高い",
+            "weaknesses": "品種ごとの播種適期・耐暑性という農業特有のCが実質使われず、一般的な『範囲内に収める』ミニゲームになってしまう（D_REPLACED_BY_TRIVIA、C_NOT_NEEDED_FOR_D）。締め切りまでの残り日数という時間的制約も表現しにくい。",
+            "risk": "CORE（品種選び）が実装に反映されないリスクが高い",
+            "adoption_or_rejection_reason": "却下。農家・生産者固有の判断（品種ごとの属性を締め切り・気象と照合する）が、一般的な『ダイヤルを範囲内に保つ』操作に置き換わってしまい、CORE_DISTORTED_BY_GAMEに該当する。"
+          },
+          {
+            "translation_id": "t3-elimination-ladder",
+            "play_seed": "s2-pre-commit-elimination",
+            "goal": "3つの品種カードを1枚ずつ見て、条件に合わない品種を都度タップして除外していく",
+            "first_visible_state": "3つの品種カードと、今日の月・締め切り・予報の表示",
+            "primary_action": "『この品種は違う』を都度タップして除外する",
+            "C_interaction": "個々の品種カードと条件を1つずつ見比べる",
+            "system_reaction": "除外が正しければその品種が薄く表示される。誤って正しい品種を除外しようとすると拒否される",
+            "information_gained": "個々の品種が条件に合うかどうかの一問一答的フィードバック",
+            "player_next_judgment": "残りの品種でさらに除外を進める",
+            "D_externalization": "一問一答の除外操作の連続",
+            "E_consequence": "最後の1品種が正しい選択として残る",
+            "retry_or_rethink": "除外をやり直せる",
+            "job_reveal_bridge": "弱い（一問一答の反復に近づく）",
+            "strengths": "操作は単純で分かりやすい",
+            "weaknesses": "品種カードごとに即時の正誤フィードバックが出るため、総当たり的に全品種を試せば正解が推測できてしまう（clue_joinのs2-elimination-ladderが却下されたのと同じ理由）。3つの条件を『組み合わせて』見るCOREの一体感も弱い。",
+            "risk": "即時フィードバックによる総当たり攻略のリスクが高い",
+            "adoption_or_rejection_reason": "却下。個々の除外に即時の正誤フィードバックを与える設計は、条件を総合的に照合するというCOREの判断を、一問一答の反復に置き換えてしまう（D_REPLACED_BY_TRIVIAに近い）。"
+          }
+        ],
+        "adopted_translation_id": "t1-season-deadline-match",
+        "adoption_rationale": "t1（design review r2是正版）は、CORE/AEで定義した『締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を選ぶ』という判断を、トレードオフのある3品種設計＋rejection samplingによって、季節・締め切り・耐暑性の3条件すべてが実際に、どの月でも機能する形で表現する。design-sim.mjs v4で、査読者指摘の月固定攻略（79.2%）が完全な推論（100%）に明確に劣ることを検証済み。t2はCOREを歪め、t3は総当たり攻略のリスクが高いため却下した。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:c_compression:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:28:14.062Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v1.json",
+          "created_at": "2026-09-09T07:51:01.184Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v2.json",
+          "created_at": "2026-09-09T08:02:23.236Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v3.json",
+          "created_at": "2026-09-09T08:34:14.756Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v4.json",
+          "created_at": "2026-09-09T23:10:45.056Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json",
+          "created_at": "2026-09-09T23:19:42.926Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json",
+          "created_at": "2026-09-09T23:25:59.109Z",
+          "creator": "claude"
+        },
+        {
+          "version": 7,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json",
+          "created_at": "2026-09-09T23:28:14.063Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v6",
+      "artifact_type": "first_5_seconds",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json",
+      "payload": {
+        "zero_to_two_seconds": "『今日の日付は◯月。給食室から「△月までに、にんじんXkg」という注文が来た。今年の夏の予報は□□。』という状況表示と、3つの品種カード（つぶたね/まんまる/ことね、タップで播種適期・収穫日数・耐暑性が読める）が見える。カードの並び順はセッションごとに変わる。カード欄の下に1行、『※品種の数値はこのゲームの中だけの、学習用の設定です』という注記が見える。",
+        "two_to_five_seconds": "3つの品種カードの下に『これでまく』ボタンがあり、カードをタップすると詳しい情報が開く。子どもは状況表示とカードを見比べ始める。",
+        "first_expected_touch": "気になる品種カードをタップして詳しい情報を開く",
+        "first_system_reaction": "タップした品種カードが開き、播種適期・収穫日数・耐暑性が読める（コミットはまだ確定しない）",
+        "next_expected_inference": "状況表示（今日の月・締め切り・予報）と品種カードの情報を見比べれば、どの品種が条件に合うか自分で判断できそうだと気づく",
+        "next_expected_action": "比較したうえで1つの品種を選び、『これでまく』を押す"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:28:25.460Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-09T08:03:09.750Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-09T08:34:58.472Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-09T23:10:55.357Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-09T23:19:54.263Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-09T23:26:14.649Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-09T23:28:25.460Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v6",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": "説明文なしで、品種カードのタップ（開く）と『これでまく』ボタンのタップだけで操作方法が分かる。既存Q1（clue_join等）と同じ、タップと『？』的開示のみの規約に従う。",
+          "contextual_cue_only": "状況表示（今日の月・締め切り・予報）と品種カードの情報という文脈だけで、どれが正解かをシステムが直接教えない。読み比べる以外に手がかりはない。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": "1回の提出で選べる品種は1つだけなので、select-allに相当する攻略は存在しない",
+          "tap_all": "3つの品種カードを全部開いて情報を読むこと自体はコストがなく許容される（内容を読む行為であり、攻略ではない）が、まく品種の選択自体は1つに限られ、1回のコミットで確定する",
+          "spam_submit": "1回のコミットで結果が確定し、同一セッション内でのまき直しはない（labCheckLogic.tsの前例に倣う）ため、連打による総当たりは成立しない",
+          "fixed_failure_pattern": "design-sim.mjs v4検証（design review r2 BLOCKER是正）: 今日の月・締め切り月・気象予報を毎セッションランダム化した結果、査読者が指摘した攻略そのもの——月だけを覚えて固定品種を選ぶ『month_only_fixed_mapping』——は79.19%にとどまり、完全な推論（legitimate_full_reasoning=100%）に対し-20.8pt劣る。複数候補が重なる月（6・7・8月）のいずれでも、単一品種が常に勝つことはない（no_variety_dominates_any_multi_candidate_month=true）",
+          "color_leak": "品種カードの色・強調表示は正解を示唆しない設計を意図（実装段階で検証が必要）",
+          "label_leak": "design review r1のBLOCKER是正: 旧品種名（あかね夏/ふゆみね/はるひな）は季節を直接示唆しANSWER_LEAKだった。品種名を季節と無関係な中立名（つぶたね/まんまる/ことね）に変更し、名前から播種適期を推測できないようにした",
+          "position_leak": "design review r2の指摘を受け、game_translations_v5.jsonのfirst_visible_stateで『カードの表示順は毎セッション独立にシャッフルされる』ことを実装上の必須要件として明記（実装段階でclue_join/clue_boardの前例=per-session Fisher-Yatesシャッフルに倣う）。design_specの明示的な受け入れ条件とし、実装QAでも検証する",
+          "visual_hierarchy_leak": "3つの品種カードは同じ見た目・同じ情報量で提示し、視覚的な強弱で正解を示唆しない設計を意図",
+          "pass": true
+        },
+        "design_sim_evidence": "factory/projects/legacy-sow-and-grow/design/design-sim-result.json",
+        "revision_note": "v5: design review r2（FAIL 36、2 BLOCKER: C_NOT_NEEDED_FOR_D/CORE_DISTORTED_BY_GAME、3 HIGH: FACTUAL_PROFESSION_ERROR/ARTIFACT_CHAIN_INCOMPLETE/SIMULATION_REPRODUCIBILITY_FAILURE）是正版。fixed_failure_patternの数値をdesign-sim.mjs v4の実測値（査読者の実際の攻略提案=month_only_fixed_mappingを直接測定）に更新。position_leakを『実装段階の任意対応』から『design_specの必須要件』に格上げ（r2 recommended_actions対応）。FACTUAL_PROFESSION_ERRORはgame_translations_v5.jsonのカード上の学習用設定明示で対応（fact_sheet内部のuncertainties開示だけでなくplayer-facingにも明記）。ARTIFACT_CHAIN_INCOMPLETE/SIMULATION_REPRODUCIBILITY_FAILUREはdesign-sim.mjs自体の修正（write try/catch、generated_at除去、決定的fallback）とレビュープロンプト側でのファイルパス明示で対応。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:28:25.501Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v3.json",
+          "created_at": "2026-09-09T08:03:09.791Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v4.json",
+          "created_at": "2026-09-09T08:34:58.514Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-09T23:10:55.400Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-09T23:19:54.303Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-09T23:26:14.690Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-09T23:28:25.502Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v6",
+      "artifact_type": "core_back_check",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "t1-season-deadline-match（design review r2是正版）は、CORE（締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を選ぶ）をそのまま表現している。子どもは3つの品種カード（つぶたね/まんまる/ことね）と状況表示（今日の月・締め切り・予報）を自分で見比べて1つの品種にコミットし、システムは先に正解を示さない。SCOPE（給食編）も変わらず代表的。design-sim.mjs v4で、査読者が指摘した『月だけを覚える』攻略（79.19%）が完全な推論（100%）に明確に劣ること、複数候補が重なる月（6・7・8月）のいずれでも単一品種が常に勝つことはないこと、詰みセッションが0であることを確認済み。",
+        "pass": true
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:28:25.541Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v1.json",
+          "created_at": "2026-09-09T08:03:09.832Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v2.json",
+          "created_at": "2026-09-09T08:34:58.555Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v2.json",
+          "created_at": "2026-09-09T23:10:55.441Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json",
+          "created_at": "2026-09-09T23:19:54.345Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json",
+          "created_at": "2026-09-09T23:26:14.729Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json",
+          "created_at": "2026-09-09T23:28:25.542Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-sow-and-grow:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/game_spec_v1.json",
+      "payload": {
+        "goal": "今日の月・注文の締め切り月・今年の気象予報（毎セッションランダム）を見て、3つの品種（つぶたね/まんまる/ことね、いずれも夏まき候補）のうち、播種適期に今の月が含まれ、収穫日数が締め切りまでの残り日数以内で、耐暑性が予報に合う品種を選んでまく。1回のコミット判断。",
+        "initial_visual_state": "『今日の日付は◯月。給食室から「△月までに、にんじんXkg」という注文が来た。今年の夏の予報は□□。』という状況表示と、3つの品種カード（つぶたね/まんまる/ことね、タップで播種適期・収穫日数・耐暑性が読める）、『これでまく』ボタン。品種カードの下に1行、『※品種の数値はこのゲームの中だけの、学習用の設定です』という共通の注記。カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          "variety candidate card x3（つぶたね/まんまる/ことね、タップで播種適期・収穫日数・耐暑性を開く読み物、名前自体には季節を示す言葉を含めない）",
+          "commit button（『これでまく』、1品種を選んでタップ、1回のみ）"
+        ],
+        "primary_action": "3つの品種カードを見比べ、状況表示（今日の月・締め切り・予報）と照らし合わせて1つを選び、『これでまく』を押す（自由に見比べてから決められる、コストなし。押すと結果が確定する1回のコミット、同一セッション内でのまき直しはない）",
+        "C": "3つの品種それぞれの播種適期・収穫までの日数・耐暑性（つぶたね=早い/暑さに弱い、まんまる=遅い/暑さに強い/広い適期、ことね=中くらい/暑さに弱い/遅まき専用——福井県実証データが比較した愛紅/向陽二号/夏播用彩誉の早さ・遅さの傾向と向陽二号の耐暑性のみ実在根拠あり、他は学習用の架空設定）。今日の月、注文の締め切りまでの残り日数、今年の気象予報（毎セッションランダム、rejection samplingにより必ず1つ以上正解が存在する状態のみ出題）。",
+        "D": "3つの品種カードの情報を、今日の月・締め切りまでの残り日数・気象予報と照らし合わせ、季節（播種適期に今の月が含まれる）・日数（収穫日数が締め切りに間に合う）・耐暑性（予報が猛暑なら耐暑性が必要）の3条件すべてを満たす品種を選んでまく。複数品種が季節的に候補となる月（6・7・8月）では、締め切り・耐暑性の実際の組み合わせによって勝つ品種が変わるため、月だけでは決まらない。",
+        "system_reactions": [
+          "品種カードタップ → 播種適期・収穫日数・耐暑性の開閉（コストなし）",
+          "『これでまく』タップ → 選んだ品種が3条件すべてに合えば『順調に育っている』という結果を経て収穫成功。1つでも合わなければ、発芽不良または生育不良という結果になり、どの条件で合わなかったかは示さない（フラットな結果）",
+          "同一セッション内でのまき直しはない（1回のコミット）"
+        ],
+        "state_transitions": [
+          "選択中 -> success（3条件すべてに合う品種を選んだ）",
+          "選択中 -> partial（3条件のいずれかに合わない品種を選んだ、正直な失敗）",
+          "success/partial -> 章に入り直せば新しいセッション（今日の月・締め切り・予報が再ランダム化）"
+        ],
+        "failure_behavior": "1回のコミットが3条件のいずれかに合わなければ、フラットな一言（『思ったように育たなかった』）のみを返し、どの条件が合わなかったかは示さない。進行はブロックしない——正直な失敗として先へ進める（Job Revealは成功時と同じdiscoveryEchoに接続）。",
+        "retry_behavior": "同一セッション内の再挑戦（まき直し）はない。6・7・8月は複数品種が季節的に候補となるため、まき直しを許すと締め切り・耐暑性を読まずに残りの候補を総当たりするだけで高確率で成功してしまう（design-sim.mjs v4で検証: 2品種を両方試せば実質的に正解が保証される）。本当のやり直しは章に入り直し、今日の月・締め切り・予報が新しくランダム化された状態で挑戦すること。",
+        "E": "3条件すべてに合っていれば締め切りまでに収穫でき、給食室へ出荷される（既存resolution『にんじん300kg、収穫！』）。合わなければ正直な失敗結果を経て、同じdiscoveryEcho（品種・天候を読みながら必要な時期から逆算して育てる、という体験）へ進む。",
+        "job_reveal": "既存 factory側 src/data/content/schoolLunch.ts の farmer-lunch experience（discoveryEcho/resolution/seeds）をそのまま使用。変更なし。",
+        "first_5_seconds": "factory/projects/legacy-sow-and-grow/design/first_5_seconds_v2.json 準拠",
+        "no_manual_requirements": "操作手順の説明文なし。品種カードの意味はタップのみで発見できる。学習用設定の注記は1行のみ、品種カード群の下に共通表示。",
+        "mobile_constraints": "375px幅、3品種カード+状況表示+学習用設定の注記+『これでまく』ボタンがスクロールなしかそれに近い形で収まるレイアウト。品種カードは縦積みまたは1列グリッド。タップ領域44px以上。品種カードの表示順は、独立したFisher-Yatesシャッフルをセッション開始時（コンポーネントmount時）に1回だけ生成し、useState等で保持して同じセッションの間は再生成しない。採点は常にID（品種id）で行い、表示上のindex/positionを一切参照しない。",
+        "asset_requirements": [
+          "no new art asset — reuses public/assets/kyushoku/farm_field.jpg (place image, already used by farmer-lunch experience, unchanged), all in-game UI is CSS/HTML card design (Claude ownership, matching clue_join/DiagnoseGame.tsx precedent)"
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:38:53.911Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/game_spec_v1.json",
+          "created_at": "2026-09-09T23:38:53.912Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-sow-and-grow:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "Redesign is a pure text/card UI (3 variety cards + status display + commit button), matching the existing DiagnoseGame.tsx/ClueBoardGame.tsx CSS-card precedent. Reuses the existing place image public/assets/kyushoku/farm_field.jpg (already shipped, unchanged, used by the farmer-lunch experience in src/data/content/schoolLunch.ts). No new illustration content is needed; all visual work (card layout, grid, typography, states) is Claude-owned UI/CSS per art-style.md ownership split."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:39:11.576Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/art_brief_v1.json",
+          "created_at": "2026-09-09T23:39:11.577Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-sow-and-grow:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/FarmGame.tsx"
+        ],
+        "logic_module": "src/q1/farmLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-sow-grow.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none — art_brief v1 declares no_art_required: true (reuses public/assets/kyushoku/farm_field.jpg, no new asset)",
+        "d_preserved_statement": "The child still performs the real judgment: reading each of 3 variety cards' sowing window/harvest-days/heat-tolerance and comparing them against the session's randomized today's-month/deadline/forecast to find the one variety (when it exists) satisfying all 3 criteria, then committing via an explicit 'これでまく' tap — never pre-filled or suggested by the system. src/q1/farmLogic.ts mirrors factory/projects/legacy-sow-and-grow/design/design-sim.mjs's VARIETIES/evaluate/newSession exactly, so the shipped scoring rules are provably identical to the design-stage exploit simulation that verified: every session is solvable (legitimate_full_reasoning=100%), no fixed-variety memorization strategy wins reliably (<60%), and no variety dominates a month with 2+ seasonal candidates."
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:53:05.396Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/implementation_v1.json",
+          "created_at": "2026-09-09T23:53:05.397Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-sow-and-grow:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "Verified live in the Browser pane at 375x812: entering the chapter shows the task-bar status line (今日の月・締め切り・予報) and 3 variety cards immediately, all interactive with no explanatory paragraph — matches first_5_seconds_v2.json/no_manual_requirements.",
+        "touch_targets": "join/dx-derived .dx-commit (variety commit button) min-height 44px, .dx-more ('?' pattern disclosure) is a 38x38px circle (same as clue_join's DiagnoseGame.tsx precedent, reused verbatim via shared CSS classes) — all meet the 44px/38px conventions already established in this app.",
+        "mobile_375": "Measured live via screenshot at 375x812: single-column stack of 3 variety cards + task-bar + disclaimer line all render with generous vertical margin left over (well under one screen), no horizontal scroll.",
+        "direct_manipulation": "Each variety card's '?' toggle and 'これでまく' commit button are direct taps with immediate visual feedback (pattern text open/close, card border highlight) — verified live via click-and-read in the Browser pane.",
+        "reaction_timing": "State updates (pattern disclosure, outcome resolution) render synchronously on tap with no artificial delay, consistent with every other Q1 game in this app.",
+        "c_to_d": "Verified: the task-bar status line (today's month / deadline / forecast) and the 3 variety cards' pattern text (sowing window / harvest days / heat tolerance, opened via '?') are the only information available; the child must compare them and commit — the component never auto-suggests or highlights the correct variety (gameplay-qa-sow-grow.mjs source-level check confirms no CORRECT-variety hint appears before commit).",
+        "consequence": "A winning commit shows a distinct success screen naming the chosen variety and confirming all 3 conditions matched; a losing commit shows a distinct honest-partial screen with a flat, non-diagnostic message (no hint which of season/deadline/heat failed) — verified live for both paths, and confirmed the partial path calls onPartialComplete (a real implementation bug was found live-testing where it initially called onComplete directly, rendering the SAME success-framed Job Reveal chip for a wrong answer — fixed, and a source-level regression check added to gameplay-qa-sow-grow.mjs).",
+        "retry": "By design (game_translations_v5.json's retry_or_rethink, reasoned and confirmed sound by design review r4/r5's independent verdict), there is no same-session retry — a wrong commit resolves immediately to the honest partial screen. A genuine do-over requires replaying the chapter (a freshly re-randomized session). Verified live: committing a variety immediately transitions to success or partial, no in-place re-selection is offered.",
+        "answer_leak": "gameplay-qa-sow-grow.mjs verifies: variety names contain no season kanji (春/夏/秋/冬); the component never redeclares its own variety data (imports from farmLogic.ts only, so no drifted duplicate); no fixed month/deadline/forecast literal from the old implementation remains in code (only in a historical comment). Live testing confirmed the '?' pattern disclosure never reveals or implies which variety is correct.",
+        "brute_force": "gameplay-qa-sow-grow.mjs: every fixed-variety memorization strategy (always_plant_tsubutane/manmaru/kotone) wins under 42% of sessions (N=8000); content-blind random guessing (39.9%) stays well below full reasoning (100%, by construction every session is solvable); no variety wins 100% of any multi-candidate month's own accepted states (mirrors design-sim.mjs v4's verified no_variety_dominates_any_multi_candidate_month=true).",
+        "visual_affordance": "Committed variety card gets a clear orange border/background change; the '?' disclosure is a visibly bordered circular button (same visual language as clue_join's dx-more) — verified live via screenshot.",
+        "no_manual": "No instructional/how-to-play text anywhere in the screen; card meaning is discoverable via tap and the '?' disclosure only, plus one shared learning-setting disclaimer line below the cards, matching no_manual_exploit_check_v5.json and every sibling Q1 game's convention.",
+        "job_reveal": "onComplete/onPartialComplete both route to the existing shared Q1 shell, which renders schoolLunch.ts's unchanged farmer-lunch discoveryEcho/resolution/seed-picker — verified live end to end for both the success path (🎉 にんじん300kg、収穫！) and the honest-partial path (🤔 けっかを送ったけど、まだ全部はつながっていないかも — a genuinely different framing chip, not the success one).",
+        "pass": true,
+        "evidence": {
+          "gameplay_qa": "node factory/harness/gameplay-qa-sow-grow.mjs -> 18 passed, 0 failed",
+          "self_test": "node factory/harness/q1-factory-selftest.mjs -> 41/41 passed",
+          "typecheck": "npx tsc --noEmit -p . -> no output (clean)",
+          "build": "npm run build -> succeeded",
+          "lint": "npm run lint -> no new errors/warnings introduced by FarmGame.tsx, farmLogic.ts, or gameplay-qa-sow-grow.mjs",
+          "live_browser_verification": "Browser pane at 375x812: navigated Home -> 社会を冒険する -> 給食が間に合わない！-> このにんじん、どうやって育てた？-> やってみる, played a full success run (season/deadline/heat all matched, confirmed success screen and Job Reveal/discoveryEcho and ★farmer-lunch experience completion), and a full honest-partial run (deliberately committed a season-mismatched variety, confirmed the distinct partial screen and — after finding and fixing a real onPartialComplete-vs-onComplete bug — confirmed the Job Reveal shows a genuinely different, non-success framing chip for the partial path)."
+        }
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-sow-and-grow:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-09T23:54:26.738Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
+          "created_at": "2026-09-09T23:54:26.739Z",
+          "creator": "claude"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 70,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sow-and-grow/design-review-r6.result.json",
+    "input": "factory/projects/legacy-sow-and-grow/design-review-r6-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-09T23:37:08.293Z"
+  },
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 74,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json",
+    "input": "factory/projects/legacy-sow-and-grow/impl-review-r1-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-10T00:00:05.277Z"
+  },
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-sow-and-grow",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-09T04:36:02.222Z",
+  "updated_at": "2026-09-10T00:00:18.390Z",
+  "history": [
+    {
+      "at": "2026-09-09T04:36:02.222Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "sow_and_grow"
+    },
+    {
+      "at": "2026-09-09T04:36:02.294Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-sow-and-grow"
+    },
+    {
+      "at": "2026-09-09T04:36:02.332Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.332Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.369Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.369Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.406Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-09T04:36:02.406Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T04:36:02.442Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-09T07:39:34.423Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-09T07:39:34.423Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T07:46:06.918Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-09T07:46:06.918Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:46:06.974Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-09T07:46:06.974Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:46:36.075Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-09T07:46:36.075Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:48:09.201Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-09T07:48:09.201Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:48:54.904Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-09T07:48:54.904Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:49:23.811Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-09T07:49:23.811Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:51:01.185Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-09T07:51:01.185Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:59:54.625Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v3"
+    },
+    {
+      "at": "2026-09-09T07:59:54.625Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v3",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T07:59:54.666Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v3"
+    },
+    {
+      "at": "2026-09-09T07:59:54.666Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:02:01.545Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v2"
+    },
+    {
+      "at": "2026-09-09T08:02:01.545Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:02:01.586Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v2"
+    },
+    {
+      "at": "2026-09-09T08:02:01.586Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:02:12.035Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v2"
+    },
+    {
+      "at": "2026-09-09T08:02:12.035Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:02:12.079Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v2"
+    },
+    {
+      "at": "2026-09-09T08:02:12.079Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:02:23.236Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v2"
+    },
+    {
+      "at": "2026-09-09T08:02:23.236Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:03:09.751Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-09T08:03:09.751Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:03:09.791Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-09T08:03:09.791Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:03:09.832Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-09T08:03:09.832Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:03:20.424Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "independent_review_pass"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:32:13.301Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v3"
+    },
+    {
+      "at": "2026-09-09T08:32:13.301Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v3",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T08:32:24.595Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v4"
+    },
+    {
+      "at": "2026-09-09T08:32:24.595Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:32:24.637Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v4"
+    },
+    {
+      "at": "2026-09-09T08:32:24.637Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:32:34.322Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v3"
+    },
+    {
+      "at": "2026-09-09T08:32:34.322Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:32:34.364Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v3"
+    },
+    {
+      "at": "2026-09-09T08:32:34.364Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:32:52.766Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v3"
+    },
+    {
+      "at": "2026-09-09T08:32:52.766Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:34:14.715Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v3"
+    },
+    {
+      "at": "2026-09-09T08:34:14.715Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:34:14.756Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v3"
+    },
+    {
+      "at": "2026-09-09T08:34:14.756Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:34:58.472Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v2"
+    },
+    {
+      "at": "2026-09-09T08:34:58.472Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:34:58.514Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v2"
+    },
+    {
+      "at": "2026-09-09T08:34:58.514Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T08:34:58.555Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v2"
+    },
+    {
+      "at": "2026-09-09T08:34:58.555Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:10:45.012Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v4"
+    },
+    {
+      "at": "2026-09-09T23:10:45.012Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v4",
+      "invalidated": [
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:10:45.056Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v4"
+    },
+    {
+      "at": "2026-09-09T23:10:45.056Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:10:55.357Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v3"
+    },
+    {
+      "at": "2026-09-09T23:10:55.357Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:10:55.400Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v3"
+    },
+    {
+      "at": "2026-09-09T23:10:55.400Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:10:55.441Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v3"
+    },
+    {
+      "at": "2026-09-09T23:10:55.441Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:01.963Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v5"
+    },
+    {
+      "at": "2026-09-09T23:19:01.963Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v5",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:13.722Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v5"
+    },
+    {
+      "at": "2026-09-09T23:19:13.722Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:23.304Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v4"
+    },
+    {
+      "at": "2026-09-09T23:19:23.304Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:23.346Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v4"
+    },
+    {
+      "at": "2026-09-09T23:19:23.346Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:33.596Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v4"
+    },
+    {
+      "at": "2026-09-09T23:19:33.596Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:33.645Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v5"
+    },
+    {
+      "at": "2026-09-09T23:19:33.645Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:42.926Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v5"
+    },
+    {
+      "at": "2026-09-09T23:19:42.926Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:54.263Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v4"
+    },
+    {
+      "at": "2026-09-09T23:19:54.263Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:54.304Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v4"
+    },
+    {
+      "at": "2026-09-09T23:19:54.304Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:19:54.345Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v4"
+    },
+    {
+      "at": "2026-09-09T23:19:54.345Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:17.695Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v4"
+    },
+    {
+      "at": "2026-09-09T23:25:17.695Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:fact_sheet:v4",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-09T23:25:28.092Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v6"
+    },
+    {
+      "at": "2026-09-09T23:25:28.092Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:28.132Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v6"
+    },
+    {
+      "at": "2026-09-09T23:25:28.132Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:39.437Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v5"
+    },
+    {
+      "at": "2026-09-09T23:25:39.437Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:39.477Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v5"
+    },
+    {
+      "at": "2026-09-09T23:25:39.477Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:50.292Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v5"
+    },
+    {
+      "at": "2026-09-09T23:25:50.292Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:50.333Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v6"
+    },
+    {
+      "at": "2026-09-09T23:25:50.333Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:25:59.109Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v6"
+    },
+    {
+      "at": "2026-09-09T23:25:59.109Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:26:14.650Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v5"
+    },
+    {
+      "at": "2026-09-09T23:26:14.650Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:26:14.690Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v5"
+    },
+    {
+      "at": "2026-09-09T23:26:14.690Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:26:14.729Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v5"
+    },
+    {
+      "at": "2026-09-09T23:26:14.729Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:27:35.333Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v7"
+    },
+    {
+      "at": "2026-09-09T23:27:35.333Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:scope_core:v7",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "legacy-sow-and-grow:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:27:44.611Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v7"
+    },
+    {
+      "at": "2026-09-09T23:27:44.611Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:ae:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:scope_core:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:27:44.650Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v6"
+    },
+    {
+      "at": "2026-09-09T23:27:44.650Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_scope_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:27:53.764Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v6"
+    },
+    {
+      "at": "2026-09-09T23:27:53.764Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:play_seeds:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:ae:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:27:53.805Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v6"
+    },
+    {
+      "at": "2026-09-09T23:27:53.805Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:reference_research:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:28:04.338Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v7"
+    },
+    {
+      "at": "2026-09-09T23:28:04.338Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:c_compression:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:play_seeds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:28:14.063Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v7"
+    },
+    {
+      "at": "2026-09-09T23:28:14.063Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_translations:v7",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:c_compression:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:28:25.460Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v6"
+    },
+    {
+      "at": "2026-09-09T23:28:25.461Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:first_5_seconds:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:28:25.502Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v6"
+    },
+    {
+      "at": "2026-09-09T23:28:25.502Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:no_manual_exploit_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:28:25.542Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v6"
+    },
+    {
+      "at": "2026-09-09T23:28:25.542Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:core_back_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:37:08.294Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sow-and-grow/design-review-r6.result.json"
+    },
+    {
+      "at": "2026-09-09T23:37:08.294Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-09T23:37:17.151Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-09T23:37:17.153Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-09T23:38:53.912Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-09T23:38:53.912Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:39:11.577Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-09T23:39:11.577Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:53:05.397Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-09T23:53:05.397Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-09T23:54:26.739Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-09T23:54:26.739Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sow-and-grow:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sow-and-grow:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T00:00:05.278Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-10T00:00:18.389Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T00:00:18.390Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ]
+}

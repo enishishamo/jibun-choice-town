@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-design-r6",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 70,
+    "career_authenticity_score": 84,
+    "game_quality_score": 70,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "REACTION_DOES_NOT_TEACH_NEXT_ACTION: an unsuccessful commitment only reports a flat failure and provides no diagnosis or same-session opportunity to apply what was learned. This remains a genuine but non-gating first-play weakness; the anti-brute-force rationale makes the omission defensible."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "REACTION_DOES_NOT_TEACH_NEXT_ACTION",
+        "severity": "MEDIUM",
+        "finding": "Failure communicates only that the selected variety did not fit; it does not reveal which condition failed or support an informed correction within the session.",
+        "file": "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:10"
+      }
+    ],
+    "round5_findings_confirmed_closed": {
+      "artifact_chain_consistent": true
+    },
+    "citation_sweep": {
+      "live_citations_found": [
+        "core_scope_check_v3.json:5 — fact_sheet_v4.json — live citation; current",
+        "design-sim.mjs:31 — reference_research_v5.json — live citation; current",
+        "design-sim.mjs:32 — fact_sheet_v4.json — live citation; current",
+        "design-sim.mjs:33 — game_translations_v5.json — live citation; current",
+        "no_manual_exploit_check_v5.json:14 — game_translations_v5.json — live citation; current",
+        "no_manual_exploit_check_v5.json:19 — game_translations_v5.json — legitimate history inside revision_note; describes the past r2 repair state and names the still-current file",
+        "scope_core_v4.json:4 — fact_sheet_v4.json — live citation; current",
+        "fact_sheet_v4.json:42 — reference_research_v4.json — legitimate history inside revision_note; explicitly describes the v4 creation-time correction",
+        "reference_research_v5.json:5 — fact_sheet_v4.json — live citation; current",
+        "reference_research_v5.json:5 — game_translations_v5.json — live citation; current",
+        "reference_research_v5.json:7 — fact_sheet_v4.json — live citation; current"
+      ],
+      "all_point_to_current": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_byte_identical_to_committed_result": true,
+      "ready_for_game_spec": true
+    },
+    "evidence": [
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:31 — The Round-5 stale live citation now points to current reference_research_v5.json; adjacent citations point to fact_sheet_v4.json and game_translations_v5.json.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:175 — Re-execution reproduces month_only_fixed_mapping=0.7919, materially below legitimate_full_reasoning=1.0.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:185 — no_variety_dominates_any_multi_candidate_month remains true for June, July, and August.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:193 — Every month has at least one accepted state; rejection-sampling exhaustion remains zero.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim-result.json:196 — zero_winner_session_rate remains 0.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:13 — Season-neutral variety names keep the prior ANSWER_LEAK closed.",
+      "factory/projects/legacy-sow-and-grow/design/no_manual_exploit_check_v5.json:14 — Independent per-session card shuffling remains a mandatory game-spec requirement.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json:16 — Heat-tolerance evidence remains accurately narrowed to 向陽二号; the source is not claimed to establish heat tolerance for 愛紅 or 夏播用彩誉.",
+      "factory/projects/legacy-sow-and-grow/design/fact_sheet_v4.json:40 — Fictional day-count and heat-tolerance assignments remain explicitly separated from source-backed timing tendencies.",
+      "factory/projects/legacy-sow-and-grow/design/reference_research_v5.json:5 — Research framing consistently distinguishes source-backed sowing tendencies from fictional gameplay trade-offs.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:7 — The consolidated player-facing disclaimer states that variety numbers are game-only learning settings.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:10 — Failure remains flat and non-diagnostic, supporting the carried non-gating MEDIUM finding.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:14 — Success and failure are honestly differentiated; failure is not disguised as success.",
+      "factory/projects/legacy-sow-and-grow/design/game_translations_v5.json:15 — Same-session retry is deliberately excluded to prevent exhaustive elimination from restoring brute-force success.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json:4 — CORE and the school-lunch SCOPE remain representative of deadline-, season-, and forecast-informed cultivation planning.",
+      "factory/projects/legacy-sow-and-grow/design/scope_core_v4.json:5 — The profession-name-hidden test remains satisfied.",
+      "factory/projects/legacy-sow-and-grow/design/core_back_check_v3.json:5 — The child still performs the agriculture-specific comparison and commitment rather than receiving the answer.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:158 — The script handled the read-only write failure non-fatally; its stdout compared byte-identically to the committed result (cmp status 0)."
+    ],
+    "recommended_actions": [
+      "Proceed to GAME_DESIGN_READY / game_spec.",
+      "Carry REACTION_DOES_NOT_TEACH_NEXT_ACTION as non-gating implementation polish; any enhanced feedback should avoid revealing the winning variety or enabling same-session exhaustive retries."
+    ]
+  },
+  "elapsed_sec": 143.592
+}

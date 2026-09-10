@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "CORE（締め切りまでの残り日数と気象の見通しを踏まえて、今の時期に合う品種を見つけ、条件を満たすか確かめてまく）はfact_sheet_v4.jsonの一次資料と整合する。SCOPE（給食編）は実際の産地・JAが学校給食向けに野菜を供給する場面の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『収穫・出荷』を含む文脈全体は農家・生産者の判断を指し、他の登場職業とは重複しない。",
+  "revision_note": "v2: scope_core_v3/ae_v3（同一セッション内切り替えを削除し1回のコミット判断に統一）に合わせて更新。"
+}
