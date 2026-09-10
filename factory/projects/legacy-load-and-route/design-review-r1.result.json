@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-load-and-route-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "career_authenticity_score": 68,
+    "game_quality_score": 64,
+    "blockers": [],
+    "high": [
+      "The temperature mechanic materially distorts its cited standards. The research distinguishes four operational requirements—5℃以下, 10℃以下, -15℃以下, and vegetables around 10℃—but the adopted game provides only 冷凍/冷蔵/常温. In the simulator, fish and meat collapse into the same cold zone and potato is assigned ambient, even though the research explicitly says vegetables around 10℃ are not equivalent to a 10℃以下 refrigerator and does not support uncontrolled room-temperature storage. The cold-zone temperature is also unspecified, so the claimed fish-versus-meat distinction never affects the player's decision.",
+      "The route subgame remains too exploitable by content-independent heuristics. With the adopted arrays, only seven of the 32 raw tuples are solvable; BETWEEN=50 produces no solvable tuple. Of those seven retained tuples, each named heuristic succeeds on six, explaining the approximately 85.7% result. A child can therefore ignore the arrival-time calculation and win the route decision about six times in seven. That is inadequate for a mechanic claiming that genuine calculation is required."
+    ],
+    "medium": [
+      "The design does not specify user-facing food names separately from simulator IDs. If labels such as 「冷凍コロッケ」 or 「冷凍野菜」 are displayed, they directly reveal the 冷凍 answer. The game specification must require neutral item names and put classification facts only in the opened保存情報.",
+      "The simulator's retort→ambient mapping is not established by research.md or fact_sheet_v1.json. The cited table supports specific categories such as grain products, sugar, oils, and beverages at room temperature, but the generic retort category needs a source or replacement."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_DISTORTED_BY_GAME",
+        "severity": "HIGH",
+        "finding": "Four materially different cited temperature requirements are collapsed into three inadequately defined zones; fish versus meat becomes the same action, while potato is assigned to ambient without support for uncontrolled room temperature.",
+        "file": "factory/projects/legacy-load-and-route/design/design-sim.mjs"
+      },
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "HIGH",
+        "finding": "The route's full arrival-time reasoning can be skipped with approximately 85.5–85.8% success by a single-glance nearer-first or tighter-deadline-first rule.",
+        "file": "factory/projects/legacy-load-and-route/design/design-sim-result.json"
+      },
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "MEDIUM",
+        "finding": "Neutral user-facing food labels are not mandated; displaying the modeled frozen-food identifiers as labels would disclose their destination zone.",
+        "file": "factory/projects/legacy-load-and-route/design/game_translations_v1.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "memorization_exploit_genuinely_closed": true,
+      "route_heuristic_margin_acceptable": false,
+      "route_heuristic_margin_recommended_fix": "Do not merely tune the present two-value Cartesian arrays: their rejection-sampled distribution retains only 7 solvable tuples and gives each heuristic 6/7 success. Replace route generation with an explicit balanced scenario pool stratified equally among (1) both heuristics correct, (2) only nearer-first correct, and (3) only tighter-deadline-first correct, with mirrored A/B variants and exactly one valid order. Equal weighting makes each heuristic succeed in 2/3 of sessions (66.7%), a 33.3pp reasoning margin. Re-run the simulator over that exact production sampler and require every scenario to stay within the 120-minute envelope.",
+      "factual_grounding_plausible": false,
+      "no_retry_justification_sound": true,
+      "core_preserved_not_trivialized": false,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/projects/legacy-load-and-route/research.md:78 — The source specifies fresh fruit and vegetables at around 10℃.",
+      "factory/projects/legacy-load-and-route/research.md:83 — The research identifies fish at 5℃以下 and meat at 10℃以下 as a meaningful distinction.",
+      "factory/projects/legacy-load-and-route/research.md:99 — The research expressly says 10℃前後 vegetables are not the same as the 10℃以下 refrigerated category.",
+      "factory/projects/legacy-load-and-route/research.md:159 — Inspection is correctly identified as the school's responsibility, not the delivery worker's.",
+      "factory/projects/legacy-load-and-route/research.md:182 — Specific school travel times and deadlines are explicitly identified as unsourced game assumptions.",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v1.json:19 — The fact sheet correctly assigns inspection to the school-side inspection manager.",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v1.json:41 — The fact sheet honestly records the legacy −18℃ figure as unsupported.",
+      "factory/projects/legacy-load-and-route/design/fact_sheet_v1.json:42 — The fact sheet honestly labels in-game travel and deadline numbers as educational hypothetical settings rather than sourced facts.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:47 — The food pool contains eight entries.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:48 — Raw fish is mapped to the generic cold zone.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:49 — Raw meat is mapped to that same generic cold zone, eliminating the stated 5℃/10℃ decision distinction.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:53 — Potato is mapped to ambient despite the cited requirement being around 10℃ and the research warning that this is a distinct category.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:55 — Retort food is mapped to ambient without corresponding grounding in the cited fact sheet.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:68 — Route travel choices are [10,40].",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:69 — Between-school choices are [30,50]; independent enumeration shows no retained solvable tuple uses 50.",
+      "factory/projects/legacy-load-and-route/design/design-sim.mjs:70 — Deadline choices are [35,55].",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:45 — Full temperature-rule reasoning wins 100%.",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:49 — Random per-item zone guessing wins only 1.44%, so the old fixed-solution memorization exploit is closed.",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:67 — Tighter-deadline-first succeeds 85.76%.",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:68 — Nearer-first succeeds 85.48%.",
+      "factory/projects/legacy-load-and-route/design/game_translations_v1.json:15 — Same-session retries are prohibited, preventing feedback-driven repeated submissions.",
+      "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v1.json:14 — Per-session shuffling is explicitly required as a design-spec acceptance condition and implementation-QA check.",
+      "factory/projects/legacy-load-and-route/design/core_scope_check_v1.json:5 — The hidden-profession test is substantively supported: the described data and actions distinguish logistics from the adjacent school-lunch roles.",
+      "factory/projects/legacy-load-and-route/design/design-sim-result.json:1 — Independent execution produced byte-for-byte stdout equality with the committed result."
+    ],
+    "recommended_actions": [
+      "Add separately defined 5℃以下 and 10℃以下 refrigerated compartments, plus a controlled 10℃前後 produce compartment, or narrow the food pool so every remaining item truthfully maps to one of the implemented compartments.",
+      "Replace the independently rejection-sampled route arrays with the balanced, mirrored scenario-pool sampler described in route_heuristic_margin_recommended_fix, then commit new simulation evidence.",
+      "Remove or source the generic retort item.",
+      "Mandate neutral user-facing food names; specifically prohibit destination words such as 「冷凍」 in card labels while allowing the opened preservation information to disclose the legitimate decision data.",
+      "Preserve the single-shot commit and flat failure result; the rejected item-level retry loop would meaningfully narrow each item's three-zone search and permit systematic convergence within a small number of retries."
+    ]
+  },
+  "elapsed_sec": 226.716
+}

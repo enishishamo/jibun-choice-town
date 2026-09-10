@@ -4,15 +4,15 @@
     "foods": [
       {
         "id": "raw_fish",
-        "zone": "cold"
+        "zone": "cold5"
       },
       {
         "id": "raw_meat",
-        "zone": "cold"
+        "zone": "cold10"
       },
       {
         "id": "milk",
-        "zone": "cold"
+        "zone": "cold10"
       },
       {
         "id": "frozen_croquette",
@@ -31,55 +31,94 @@
         "zone": "ambient"
       },
       {
-        "id": "retort",
+        "id": "flour",
         "zone": "ambient"
       }
     ],
     "zones": [
       "frozen",
-      "cold",
+      "cold5",
+      "cold10",
       "ambient"
     ],
     "drawSize": 4,
     "results": {
       "legitimate_all_correct": 1,
       "always_place_all_in_frozen": 0,
-      "always_place_all_in_cold": 0,
+      "always_place_all_in_cold5": 0,
+      "always_place_all_in_cold10": 0,
       "always_place_all_in_ambient": 0,
-      "random_zone_per_item": 0.0144
+      "random_zone_per_item": 0.0046,
+      "conflates_cold5_and_cold10": 0.2142
     }
   },
   "route": {
-    "travelChoices": [
-      10,
-      40
+    "archetypes": [
+      {
+        "id": "both-agree",
+        "slotA": {
+          "travel": 10,
+          "deadline": 30
+        },
+        "slotB": {
+          "travel": 40,
+          "deadline": 90
+        },
+        "between": 30,
+        "correctIsSlotA": true
+      },
+      {
+        "id": "nearer-only-correct",
+        "slotA": {
+          "travel": 15,
+          "deadline": 50
+        },
+        "slotB": {
+          "travel": 35,
+          "deadline": 45
+        },
+        "between": 20,
+        "correctIsSlotA": true
+      },
+      {
+        "id": "tighter-only-correct",
+        "slotA": {
+          "travel": 15,
+          "deadline": 50
+        },
+        "slotB": {
+          "travel": 25,
+          "deadline": 30
+        },
+        "between": 20,
+        "correctIsSlotA": false
+      }
     ],
-    "betweenChoices": [
-      30,
-      50
-    ],
-    "deadlineChoices": [
-      35,
-      55
-    ],
+    "archetypeDistribution": {
+      "nearer-only-correct": 6674,
+      "tighter-only-correct": 6613,
+      "both-agree": 6713
+    },
     "results": {
       "legitimate_full_reasoning": 1,
-      "tighter_deadline_first": 0.8576,
-      "nearer_first": 0.8548,
-      "random_order": 0.5689
+      "tighter_deadline_first": 0.6663,
+      "nearer_first": 0.6694,
+      "random_order": 0.5023
     }
   },
   "verdict": {
     "zone_legitimate_always_wins": true,
     "zone_fixed_zone_guess_fails": true,
     "zone_random_guess_stays_low": true,
+    "zone_fish_meat_distinction_is_load_bearing": true,
     "route_zero_winner_rate": 0,
-    "route_exhaustion_count": 0,
     "route_legitimate_always_wins": true,
-    "route_tighter_deadline_heuristic_not_dominant": true,
-    "route_nearer_heuristic_not_dominant": true,
-    "route_legitimate_margin_over_tighter_heuristic": 0.1424,
-    "route_legitimate_margin_over_nearer_heuristic": 0.1452
+    "route_tighter_deadline_heuristic_rate": 0.6663,
+    "route_nearer_heuristic_rate": 0.6694,
+    "route_heuristics_guaranteed_below_full_reasoning": true,
+    "route_margin_over_tighter_heuristic": 0.3337,
+    "route_margin_over_nearer_heuristic": 0.3306,
+    "route_archetype_distribution_balanced": true
   },
-  "notes": "v1: part 1 (zone matching) draws 4 of 8 real food-category facts per session (shuffled), requiring all 4 placed correctly -- a fixed 'always guess zone Z' or fully-random-per-item strategy both fail near 0% since the pool spans all 3 zones and only exact matches win. part 2 (route sequencing) rejection-samples (travelA, travelB, between, dlA, dlB) from discrete choice sets tuned via factory/projects/legacy-load-and-route/design/route-tuning-notes.md so neither 'visit whichever has the nearer travel time first' nor 'visit whichever has the tighter deadline first' is a dominant heuristic (both stay meaningfully below legitimate full reasoning's 100%) -- this directly avoids the exact BLOCKER legacy-sow-and-grow's design review r2 found in an earlier draft (a variety/order that dominated regardless of the session's actual numbers)."
+  "notes": "v2 (design review r1 FAIL 64 repair): (1) split the single 'cold' zone into cold5 (raw fish, 5C per 厚生労働省) and cold10 (raw meat/dairy, 10C) so the researched fish-vs-meat distinction is load-bearing -- zone_fish_meat_distinction_is_load_bearing verifies a strategy that conflates the two zones fails on most sessions. Dropped the unsourced 'retort' item, added 'flour' (grain products, room temperature, same source table) as its real-grounded replacement. (2) replaced Cartesian rejection sampling with a hand-verified, balanced 3-archetype scenario pool (both-agree / nearer-only-correct / tighter-only-correct), each drawn with equal probability and independently mirrored (which slot displays as 'A' vs 'B' is randomized separately from correctness) -- this GUARANTEES (not just empirically observes) that each single-axis heuristic is correct in exactly 2 of 3 archetypes, i.e. a provable 66.7% ceiling and 33.3pp margin below full reasoning's 100%, exactly matching the independent reviewer's prescribed fix (see route-tuning-notes.md for the reviewer's exact recommendation and the hand-derivation of each archetype)."
 }

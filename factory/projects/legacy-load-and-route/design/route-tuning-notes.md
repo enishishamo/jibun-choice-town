@@ -1,48 +1,69 @@
 # Route parameter tuning notes (part 2: school visit sequencing)
 
+## v1 (superseded)
+
 Model: two schools A/B, each with `travel` (depot→school minutes) and `dl`
 (deadline, minutes after departure). Visiting A first: arriveA=travelA,
 arriveB=travelA+between. Visiting B first: arriveB=travelB,
-arriveA=travelB+between. An order is valid if both its arrivals are within
+arriveA=travelB+between. An order is valid if both arrivals are within
 their own deadlines.
 
-Goal: find discrete choice sets for (travel, between, deadline) such that:
-- every session (after rejection sampling) has at least one valid order,
-- neither "visit whichever has the smaller travel time first" (nearer-first)
-  nor "visit whichever has the smaller deadline first" (tighter-deadline-first)
-  is a reliable predictor of the correct order — otherwise a child could win
-  by applying one single-glance rule without actually computing arrival times
-  against each school's own deadline, exactly the class of exploit design
-  review r2 found in legacy-sow-and-grow's first repair attempt (a variety/
-  month mapping that won regardless of the session's real numbers).
+v1 used Cartesian rejection sampling over 2-value choice sets
+(TRAVEL_CHOICES=[10,40], BETWEEN_CHOICES=[30,50], DEADLINE_CHOICES=[35,55]).
+Design review r1 (FAIL 64) found this retained only 7 of the 32 raw
+(travelA,travelB,between,dlA,dlB) tuples as solvable, and BOTH the
+"nearer first" and "tighter deadline first" heuristics happened to be
+correct on 6 of those 7 tuples (~85.7%) -- an accident of which few tuples
+survived rejection, not a designed property (C_NOT_NEEDED_FOR_D, HIGH).
 
-Method: enumerated small discrete choice sets by hand first (2-4 values per
-axis), computed both heuristics' overall win rate against the "always find a
-valid order if one exists" baseline (100% by construction) over the full
-20,000-sample rejection-sampled distribution used by design-sim.mjs, then
-did a randomized search (300 trials, requiring >=50% of sessions to have
-exactly one valid order so most sessions genuinely require the calculation)
-over wider ranges to see how much further either heuristic's rate could be
-pushed down. The random search found degenerate configs (heuristics at 0%)
-only when one deadline choice was smaller than every travel choice, making
-it permanently infeasible and effectively collapsed by resampling to a
-single deadline value in practice — not a meaningful result, so those were
-discarded.
+## v2 (adopted) -- reviewer-prescribed balanced scenario pool
 
-Adopted config: TRAVEL_CHOICES=[10, 40], BETWEEN_CHOICES=[30, 50],
-DEADLINE_CHOICES=[35, 55] (all minutes). Verified (N=20000,
-factory/projects/legacy-load-and-route/design/design-sim-result.json):
+The reviewer's exact recommendation: "Replace route generation with an
+explicit balanced scenario pool stratified equally among (1) both
+heuristics correct, (2) only nearer-first correct, and (3) only
+tighter-deadline-first correct, with mirrored A/B variants and exactly one
+valid order. Equal weighting makes each heuristic succeed in 2/3 of
+sessions (66.7%), a 33.3pp reasoning margin."
+
+Implemented exactly as specified. Three archetypes, each hand-verified to
+have EXACTLY one valid visiting order (verified with a standalone script
+before committing, and again via design-sim.mjs's exhaustive per-archetype
+checks):
+
+1. **both-agree**: slotA(travel=10, deadline=30), slotB(travel=40,
+   deadline=90), between=30. Only order AB (slotA first) is valid
+   (BA: arriveB=40<=90 ok, but arriveA=40+30=70<=30 fails). Both
+   "nearer first" (10<40) and "tighter deadline first" (30<90) agree with
+   the correct answer (slotA first).
+2. **nearer-only-correct**: slotA(travel=15, deadline=50), slotB(travel=35,
+   deadline=45), between=20. Only order AB (slotA first) is valid
+   (BA: arriveB=35<=45 ok, but arriveA=35+20=55<=50 fails). "nearer first"
+   (15<35) correctly picks slotA; "tighter deadline first" (45<50)
+   incorrectly picks slotB — slotB's deadline LOOKS tighter in absolute
+   terms, but slotA can't tolerate being visited second (55>50) while
+   slotB can (35<=45), so slotA must go first despite its looser-looking
+   deadline number.
+3. **tighter-only-correct**: slotA(travel=15, deadline=50), slotB(travel=25,
+   deadline=30), between=20. Only order BA (slotB first) is valid
+   (AB: arriveA=15<=50 ok, but arriveB=15+20=35<=30 fails). "tighter
+   deadline first" (30<50) correctly picks slotB; "nearer first" (15<25)
+   incorrectly picks slotA — slotA is nearer, but its very loose deadline
+   (50) means it tolerates being visited second (45<=50), while slotB's
+   tight deadline (30) cannot tolerate the between-time added by going
+   second (25+20=45>30), so slotB must go first despite being farther.
+
+Each session draws one of the 3 archetypes uniformly at random, then
+independently "mirrors" which slot is displayed as school A vs school B
+(so display position never correlates with correctness — id/slot-based
+scoring only, matching this Factory's per-session-shuffle convention).
+
+Verified (N=20000, design-sim-result.json):
 - legitimate_full_reasoning = 100% (every session solvable by construction)
-- tighter_deadline_first = 85.8% (14.2pp below full reasoning)
-- nearer_first = 85.5% (14.5pp below full reasoning)
-- neither heuristic exceeds 90% (route_tighter_deadline_heuristic_not_dominant
-  / route_nearer_heuristic_not_dominant both true)
-
-This margin is comparable in kind to legacy-sow-and-grow's final accepted
-design (a fixed month-only mapping there won 79.2% vs 100% full reasoning,
-independently PASSed by design review r6) — not identical in magnitude, but
-the same qualitative property (every simple content-blind heuristic loses
-meaningfully more often than genuine per-session calculation) that review
-process accepted as sufficient. Disclosed transparently here rather than
-claimed as a stronger guarantee than it is; the independent design reviewer
-should make the final call on whether this margin is adequate.
+- tighter_deadline_first = 66.63%, nearer_first = 66.94% — both land at the
+  theoretically guaranteed 2/3 ceiling (correct on exactly 2 of 3
+  archetypes), not an empirical accident
+- archetype distribution: ~33.3% each (route_archetype_distribution_balanced
+  = true), confirming the sampler is genuinely balanced
+- margin over either heuristic: 33.06–33.37 percentage points — a
+  GUARANTEED margin by construction, not a sampled estimate, and larger
+  than legacy-sow-and-grow's accepted 20.8pp margin
