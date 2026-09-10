@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-load-and-route-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 70,
+    "game_quality_score": 68,
+    "blockers": [
+      "The reused intro artwork actively contradicts and leaks the shipped mechanic: delivery_center.jpg visibly labels only three temperature categories (冷凍-18℃以下／冷蔵0〜10℃／常温10〜25℃), depicts foods already sorted by those categories, and places fish in the frozen compartment. The game instead requires four zones (冷凍-15℃／冷蔵5℃／冷蔵10℃／常温) and scores raw fish as cold5 only. Because schoolLunch.ts:388 displays this asset for logistics-lunch before the game, it can teach incorrect answers and bypass the legitimate 「？」 disclosures."
+    ],
+    "high": [
+      "The existing truck tool description says the vehicle has only 「冷蔵室と常温室」, omitting the frozen compartment and the mechanically essential distinction between 5℃ and 10℃ refrigerated zones. This contradicts the four-zone decision model presented immediately afterward."
+    ],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "ANSWER_LEAK",
+        "severity": "BLOCKER",
+        "finding": "The pre-game delivery-center artwork exposes food-to-zone associations and incompatible temperature labels before commitment, including fish under 冷凍-18℃以下 even though raw fish is accepted only in cold5 by the shipped rules.",
+        "file": "public/assets/kyushoku/delivery_center.jpg"
+      },
+      {
+        "code": "CORE_DISTORTED_BY_PROSE",
+        "severity": "HIGH",
+        "finding": "The truck tool describes only refrigerated and ambient rooms, while gameplay requires frozen, cold5, cold10, and ambient zones.",
+        "file": "src/data/content/schoolLunch.ts:396"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "27 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit passed. npm run build could not write node_modules/.tmp/*.tsbuildinfo because the sandbox is read-only (EPERM); no compilation defect was reported before that infrastructure failure.",
+      "lint": "npx oxlint src/q1/LogisticsGame.tsx src/q1/logisticsLogic.ts passed with no findings",
+      "logisticsLogic_matches_design_sim_exactly": true,
+      "session_generation_correct": true,
+      "answer_leak_found": true,
+      "gate_h_fix_verified": true,
+      "no_session_retry_confirmed": true,
+      "cold5_for_meat_milk_accepted_as_correct": true,
+      "scroll_812_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/logisticsLogic.ts:28 — FOODS data matches design-sim: raw_fish=[cold5], raw_meat/milk=[cold5,cold10], frozen foods=[frozen], and potato/bread/flour=[ambient].",
+      "src/q1/logisticsLogic.ts:38 — ZONES matches design-sim exactly: frozen, cold5, cold10, ambient.",
+      "src/q1/logisticsLogic.ts:107 — All three ARCHETYPES and their travel/deadline/between/correctIsSlotA values match design-sim exactly.",
+      "src/q1/logisticsLogic.ts:79 — drawFoods performs the same shuffle-and-slice 4-of-8 draw as design-sim.",
+      "src/q1/logisticsLogic.ts:125 — newRouteSession uses the same equal archetype selection and independent A/B mirroring logic as design-sim.",
+      "src/q1/logisticsLogic.ts:151 — newSession combines drawFoods and newRouteSession using the same random source.",
+      "src/q1/LogisticsGame.tsx:37 — Session is generated once through useState(() => newSession()).",
+      "src/q1/LogisticsGame.tsx:38 — Food display order is independently shuffled once through a useState initializer.",
+      "src/q1/LogisticsGame.tsx:42 — School-card display order is independently shuffled once through a useState initializer.",
+      "src/q1/LogisticsGame.tsx:50 — Display ordering resolves foods by id; scoring remains id-based.",
+      "src/q1/LogisticsGame.tsx:51 — Departure readiness requires all four food assignments.",
+      "src/q1/LogisticsGame.tsx:52 — Departure readiness also requires both schools in the explicit visit order.",
+      "src/q1/LogisticsGame.tsx:83 — Failure renders a distinct, flat 「うまく届けられなかった」 outcome without item-level answers.",
+      "src/q1/LogisticsGame.tsx:89 — Partial outcome calls (onPartialComplete ?? onComplete)().",
+      "src/q1/LogisticsGame.tsx:100 — The shared school-to-school travel-time line displays session.route.between consistently with route scoring.",
+      "src/q1/LogisticsGame.tsx:120 — Storage-limit text is disclosed only through each food card's 「？」 control.",
+      "src/q1/LogisticsGame.tsx:125 — Zone assignment is explicit and initially unfilled; no correctness styling or suggestion is applied before commit.",
+      "src/q1/LogisticsGame.tsx:154 — Each school's center travel time and deadline are disclosed through its own 「？」 control.",
+      "src/q1/LogisticsGame.tsx:167 — 出発する stays disabled until food placement and visit order are complete.",
+      "src/q1/LogisticsGame.tsx:171 — The learning-setting disclaimer follows the commit control and does not reveal a zone or route answer.",
+      "src/q1/logisticsLogic.ts:53 — FOOD_STORAGE_TEXT accurately states fish 5℃以下, meat/milk 10℃以下, frozen food -15℃以下, vegetables 10℃前後, and grains at room temperature without generalizing that colder is always safe.",
+      "src/q1/logisticsLogic.ts:63 — Zone icons are neutral temperature/container symbols rather than food-shaped icons.",
+      "factory/harness/gameplay-qa-load-route.mjs:146 — The harness contains a source-level Gate H regression check that requires onPartialComplete and rejects direct onComplete in the partial branch; it passed.",
+      "factory/harness/gameplay-qa-load-route.mjs:49 — Harness explicitly verifies raw fish only accepts cold5 and meat/milk accept both cold5 and cold10; the checks passed.",
+      "src/q1/registry.ts:77 — load_and_route remains mapped to LogisticsGame with no competing mapping found.",
+      "src/data/content/schoolLunch.ts:384 — Existing logistics-lunch id and profession/event wiring remain intact.",
+      "src/data/content/schoolLunch.ts:406 — Seeds honestly use 「一度で正しく判断する」 and the rest of the array remains coherent.",
+      "src/index.css:4266 — route-grid is forced to one column, preventing card-grid horizontal overflow.",
+      "src/index.css:4268 — zone buttons wrap into a 2×2 layout and have a 40px minimum height.",
+      "src/index.css:4254 — Reused dx-commit has a 44px minimum height; dx-more is the existing shared 38×38 control.",
+      "src/data/content/schoolLunch.ts:388 — logistics-lunch references delivery_center.jpg as its place image.",
+      "public/assets/kyushoku/delivery_center.jpg — Visible baked labels use a conflicting three-zone model (冷凍-18℃以下／冷蔵0〜10℃／常温10〜25℃) and visibly pre-sort fish, meat, and vegetables.",
+      "src/data/content/schoolLunch.ts:396 — Truck description claims only refrigerated and ambient rooms despite the four-zone gameplay model."
+    ],
+    "recommended_actions": [
+      "Replace or revise delivery_center.jpg so it contains no pre-sorted foods or temperature labels, or make its labels exactly compatible with the neutral four-zone model without revealing assignments.",
+      "Update the truck tool description to identify the four gameplay compartments accurately: 冷凍-15℃、冷蔵5℃、冷蔵10℃、常温.",
+      "Add a harness assertion covering the referenced intro asset or its approved metadata so incompatible baked-in temperature labels cannot regress unnoticed.",
+      "Re-run the 27-check harness, oxlint, tsc, build in a writable environment, and browser-check both outcome paths after correcting the pre-game content."
+    ]
+  },
+  "elapsed_sec": 180.456
+}

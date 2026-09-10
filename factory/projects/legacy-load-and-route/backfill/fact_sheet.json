@@ -1,0 +1,32 @@
+{
+  "profession": "給食食材の配送員",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "食材を保存温度別の荷室へ積み分けた後、2校の移動時間と納品期限から配送順を決め、検収結果を受ける"
+  ],
+  "expertise": [
+    "注文書、食品別保存温度、冷凍・冷蔵・常温の荷室、学校間の所要時間、出発時刻、各校の納品期限"
+  ],
+  "tools": [
+    "注文書、食品別保存温度、冷凍・冷蔵・常温の荷室、学校間の所要時間、出発時刻、各校の納品期限"
+  ],
+  "information_used": [
+    "注文書、食品別保存温度、冷凍・冷蔵・常温の荷室、学校間の所要時間、出発時刻、各校の納品期限"
+  ],
+  "decisions": [
+    "各食材を荷室へ配置し、2校を訪問する順番を選び、検収と到着時刻の結果から積載または経路を修正する"
+  ],
+  "outputs_or_value": "温度失敗は積載画面、遅配はルート画面へ差し戻され、既存の選択を修正できる",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/load_and_route.json"
+}

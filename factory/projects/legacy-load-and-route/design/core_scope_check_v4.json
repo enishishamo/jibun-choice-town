@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "CORE（食材ごとの保存温度基準に沿って積み分け、複数校の移動時間・受け入れ時刻から間に合う訪問順を選ぶ）はfact_sheet_v3.jsonの一次資料（厚生労働省の保存温度基準表、文部科学省・厚生労働省の『調理後2時間以内』基準）と整合する。SCOPE（給食編）は実際の配送業務の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『時間内・適温で届ける』を含む文脈全体は配送・物流の判断を指し、他の登場職業とは重複しない。 design review r2是正版: CORE『保存温度基準に沿って積み分け』は、基準が上限条件であり複数の荷室が基準を満たしうる（食肉・乳製品は冷蔵5℃/10℃のどちらでもよい）という正しいモデルに基づいてもCORE/SCOPEの整合性・代表性は変わらない。"
+}

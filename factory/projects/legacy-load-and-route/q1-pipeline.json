@@ -1,0 +1,2147 @@
+{
+  "game_id": "legacy-load-and-route",
+  "profession": "給食食材の配送員",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "load_and_route",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-load-and-route:fact_sheet:v5",
+      "artifact_type": "fact_sheet",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v4.json",
+      "payload": {
+        "profession": "学校給食センターの配送業務に関わる仕事（給食食材・給食の配送員）",
+        "sources": [
+          {
+            "url": "https://www.mext.go.jp/b_menu/hakusho/nc/__icsFiles/afieldfile/2009/09/10/1283821_1.pdf",
+            "type": "government_standard",
+            "org": "文部科学省（学校給食衛生管理基準、告示第64号）"
+          },
+          {
+            "url": "https://www.mhlw.go.jp/file/06-Seisakujouhou-11130500-Shokuhinanzenbu/0000139151.pdf",
+            "type": "government_manual",
+            "org": "厚生労働省（大量調理施設衛生管理マニュアル）"
+          },
+          {
+            "url": "https://www.maff.go.jp/j/syouan/seisaku/acryl_amide/a_syosai/teigen/zigyosya.html",
+            "type": "government_guidance",
+            "org": "農林水産省（食品中のアクリルアミドを減らすための取組）"
+          },
+          {
+            "url": "https://www.city.okawa.lg.jp/s077/010/020/010/050/020/2siyou1108.pdf",
+            "type": "municipal_specification",
+            "org": "大川市教育委員会（学校給食センター給食配送業務仕様書）"
+          }
+        ],
+        "who_or_what_they_serve": "決められた温度帯を保ったまま、各学校の受け入れ時刻（検収・配食）までに食材や給食を届けられる相手（各学校の検収責任者・調理従事者・児童生徒）。",
+        "representative_duties": [
+          "各食材を、実際の保存温度基準（食品の種類ごとに異なる）に沿って正しい荷室・コンテナへ積み分ける",
+          "複数校を訪問する際、移動時間と各校の受け入れ時刻（調理後2時間以内の給食提供という基準に基づく）を照らし合わせて、間に合う訪問順を選ぶ",
+          "到着が遅れそうな場合は、速やかにセンターへ連絡し指示を仰ぐ（大川市仕様書に明記された実務）"
+        ],
+        "expertise": [
+          "厚生労働省『大量調理施設衛生管理マニュアル』別添1の保存温度基準（原文どおり）: 生鮮魚介類は5℃以下、食肉・鯨肉は10℃以下、冷凍食品全般（冷凍食肉・冷凍魚介類等）は-15℃以下、生鮮果実・野菜は10℃前後、乳・濃縮乳等は10℃以下、穀類加工品（小麦粉等）は室温。このうち生鮮魚介類・食肉・鯨肉・乳・濃縮乳等・冷凍食品全般の4カテゴリは『◯℃以下』という上限条件であり、より低い温度帯でも基準を満たす（例: 10℃以下が基準の食肉・乳製品を5℃で保存しても、より厳しい条件を満たしているため安全）。ただし魚介類の基準（5℃以下）は食肉・乳製品の基準（10℃以下）より厳しいため、食肉・乳製品を10℃の場所に置く判断は魚介類には使えない（design review r2是正: 旧設計は4つの温度帯を互いに排他的なカテゴリとして扱い、食肉・乳製品を5℃側に置くことを誤答扱いにしていたが、これは基準の『以下』という性質と矛盾していた）。この『低いほど安全』という性質は生鮮魚介類・食肉・鯨肉・乳・濃縮乳等・冷凍食品にのみ当てはまり、一般化できない: 生鮮果実・野菜の10℃前後は上限ではなく範囲（低すぎても品質が落ちる、下記参照）、穀類加工品の室温は温度帯そのものが異なる常温区分であり、どちらも冷蔵・冷凍側へ寄せることは基準を満たさない（design review r3是正: v3の記述が『これらは全て上限条件』と誤って一般化し、野菜・穀類の記述と矛盾していた）。",
+          "生鮮野菜（じゃがいも等）は冷やしすぎると品質が落ちる。農林水産省の資料では、じゃがいもは8℃以上での保存が望ましいとされ、低温（8℃未満）での長期保存は『低温糖化』を招き、加熱調理時のアクリルアミド生成量が増えるとされている（これは食中毒予防の衛生基準ではなく、品質面の理由）。",
+          "学校給食衛生管理基準（文部科学省）・大量調理施設衛生管理マニュアル（厚生労働省）はいずれも『調理後2時間以内に給食できるようにする』ことを求めており、複数校へ配送する場合はこの制約の中で訪問順を決める必要がある。ある学校を先に訪問すると、その分だけ次の学校への到着が遅れるため、訪問順によっては一方の学校が間に合わなくなることがある。",
+          "検収（食品の受け入れ検査、温度確認を含む）は学校側があらかじめ定めた検収責任者の仕事であり、配送員自身が検収を行うわけではない（学校給食衛生管理基準 第3(3)一）。配送員の役割は『正しい温度を保って、時間内に届けること』。"
+        ],
+        "tools": [
+          "食材ごとの保存温度基準表（種類によって温度が異なる）",
+          "配送車内の温度帯別コンテナ（冷凍-15℃／冷蔵5℃／冷蔵10℃／常温の4種類）",
+          "各校までの移動時間・受け入れ時刻の情報"
+        ],
+        "information_used": [
+          "今日届ける食材のリストと、それぞれの保存温度基準",
+          "各校までの移動時間、学校間の移動時間",
+          "各校の受け入れ時刻（調理後2時間以内という全体の制約の中で校ごとに異なりうる）"
+        ],
+        "decisions": [
+          "各食材を、その食材の保存温度基準（◯℃以下）を満たす温度帯の荷室（冷凍-15℃／冷蔵5℃／冷蔵10℃／常温）へ積み分ける（食肉・乳製品は10℃以下なので冷蔵5℃・冷蔵10℃のどちらでもよいが、魚介類は5℃以下なので冷蔵5℃のみ、冷凍食品は冷凍のみ、常温品は常温のみ、という基準の厳しさの違いを読み取る）",
+          "複数校の移動時間と受け入れ時刻を比較し、両校とも間に合う訪問順を選ぶ"
+        ],
+        "outputs_or_value": "決められた温度を保ったまま、決められた時刻までに、各学校へ安全な状態で食材・給食を届けること。",
+        "adjacent_profession_boundaries": "検収（受け入れ検査）そのものは学校側の検収責任者が行い、配送員の仕事ではない。配送・回収計画そのものの立案や、緊急時の経路変更の最終判断はセンター側が行う（配送員は計画に従って実際に運転し、遅延時はセンターへ連絡して指示を仰ぐ）。",
+        "uncertainties": [
+          "この職の実務主体（委託業者の運転手か、給食センター職員か）は自治体により異なり、一次資料からは断定できない",
+          "魚介類と食肉類を実際に同一の冷蔵コンテナで運ぶか、物理的に分けて運ぶかという実運用の粒度は、保存温度基準表（各食材の上限温度を定めるのみ）からは分からず確認できていない。ゲーム上は基準表が定める上限温度をそのまま比較条件として扱う（食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらでも基準を満たすが、魚介類は冷蔵5℃でなければ基準を満たさない）。物理的な区画分けそのものを断定するものではない。",
+          "じゃがいもの低温障害的な扱いについて、食中毒予防の衛生基準（厚労省・文科省）としての一次資料は確認できておらず、農水省のアクリルアミド低減資料（品質観点）のみを根拠とする",
+          "旧実装（src/q1/LogisticsGame.tsx）が使っていた冷凍-18℃という数値は、保存温度基準表の『冷凍食品全般-15℃以下』とも『凍結卵-18℃以下』とも一致せず、根拠不明",
+          "2校間の具体的な移動時間・各校の受け入れ締切の実数値は、自治体内部の配送・回収計画（非公開）に属し、一次資料からは確認できなかった。ゲーム内で使う具体的な分数は、リサーチで確認した制約構造（調理後2時間以内・校ごとに受け入れ時刻が異なりうる・訪問順が到着時刻を左右する）を土台にした学習用の仮設定であり、実在資料からの引用ではない"
+        ],
+        "revision_note": "v3 (design review r2 FAIL 62是正、BLOCKER: CORE_DISTORTED_BY_GAME再指摘): v2は冷蔵5℃/冷蔵10℃を互いに排他的なカテゴリとして扱い、食肉・乳製品を冷蔵5℃に置く判断を誤答としていたが、これは保存温度基準が全て『◯℃以下』という上限条件であるという一次資料の性質と矛盾していた（10℃以下の基準は5℃でも満たされる）。expertise/decisions/uncertaintiesの記述を、温度帯を上限条件として比較する正しいモデルに修正した。v2 (design review r1 FAIL 64是正、CORE_DISTORTED_BY_GAME): 荷室を『冷凍/冷蔵/常温』の3種類から『冷凍-15℃/冷蔵5℃/冷蔵10℃/常温』の4種類に変更し、魚介類（5℃）と食肉（10℃）の基準差が実際の積み分け判断に影響するようにした（旧v1は両方を1つの冷蔵荷室にまとめており、この違いが判断に反映されなかった）。根拠不明だった『レトルト』食材を、同じ基準表の実在カテゴリ『穀類加工品（小麦粉等、室温）』に置き換えた。v1: reverse-audit backfillのプレースホルダーを、実在の一次資料（厚生労働省・文部科学省・農林水産省・大川市教育委員会）に基づく内容に置き換えた。旧実装の-18℃という冷凍基準は根拠不明と判明したため-15℃（厚労省基準表の実際の数値）に修正。 v4 (design review r3 FAIL 68是正、BLOCKER: ANSWER_LEAK、HIGH: CORE_DISTORTED_BY_PROSE): expertiseの『これらは全て上限条件』という記述が野菜（10℃前後=範囲、低温糖化リスクあり）・穀類（室温=別区分）にまで誤って一般化されていた点を是正し、『低いほど安全』は生鮮魚介類・食肉・乳製品・冷凍食品の4カテゴリに限定されることを明記した。game_translations/first_5_secondsの荷室アイコン表記にあった食材を直接連想させる絵文字（🐟=魚、🥛=乳製品）を除去し、温度帯のみを示す中立的なアイコンに変更（design/first_5_seconds_v4.json、design/game_translations_v4.json参照）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:06.043Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-load-and-route/backfill/fact_sheet.json",
+          "created_at": "2026-09-10T01:16:42.968Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v1.json",
+          "created_at": "2026-09-10T01:48:21.470Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v2.json",
+          "created_at": "2026-09-10T02:04:11.551Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v3.json",
+          "created_at": "2026-09-10T02:30:25.530Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/fact_sheet_v4.json",
+          "created_at": "2026-09-10T02:41:06.048Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-load-and-route:scope_core:v6",
+      "artifact_type": "scope_core",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/scope_core_v4.json",
+      "payload": {
+        "core": "今日の食材を、種類ごとに異なる実在の保存温度基準に沿って正しい荷室へ積み分け、複数校の移動時間と受け入れ時刻を照らし合わせて、両校とも間に合う訪問順を選ぶ判断のループ。",
+        "scope": "給食編（学校給食向けに、決まった温度と時刻を守って食材を届ける場面）",
+        "scope_is_representative_because": "『食材ごとに異なる保存温度基準に沿って積み分け、複数校の移動時間と受け入れ時刻から間に合う訪問順を選ぶ』という判断は、fact_sheet_v4.jsonの一次資料（厚生労働省の保存温度基準表、文部科学省・厚生労働省の『調理後2時間以内』基準、大川市教育委員会の配送業務仕様書）が示す実際の配送業務の核であり、学校給食向けという場面はその典型的な適用例。",
+        "profession_name_hidden_test": "『食材ごとに違う保存温度の決まりを見て正しい場所に積み、複数の届け先までの時間と受け入れ時刻を見比べて間に合う順番を選ぶ』という記述だけでは職業名を当てられないが、E（実際に時間内・適温で届ける）と組み合わせた文脈全体は、決まった温度と時刻を守って物を運ぶ配送・物流の判断を指す。他の登場職業（調理員・農家など）とはC（保存温度基準・移動時間という物流特有のデータ）とD（それを積み分け・訪問順選びに反映する判断）が異なるため重複しない。",
+        "revision_note": "v1: reverse-audit backfillの記述を、fact_sheet_v2.jsonの一次資料に基づいて具体化した。 v2 (design review r2 FAIL 62是正、BLOCKER再指摘のcascade): fact_sheet_v3.jsonの引用を更新（保存温度基準は上限条件であり、複数の荷室が基準を満たす場合はそのいずれでもよいというモデルに是正）。CORE/SCOPEの記述自体に変更はない。 v3 (design review r3 FAIL 68是正のcascade): fact_sheet_v4.jsonの引用を更新。CORE/SCOPEの記述自体に変更はない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:fact_sheet:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:13.725Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-load-and-route/backfill/scope_core.json",
+          "created_at": "2026-09-10T01:16:43.008Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/scope_core_v1.json",
+          "created_at": "2026-09-10T01:49:33.101Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/scope_core_v1.json",
+          "created_at": "2026-09-10T02:05:09.133Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/scope_core_v2.json",
+          "created_at": "2026-09-10T02:11:28.207Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/scope_core_v3.json",
+          "created_at": "2026-09-10T02:30:33.548Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-load-and-route/design/scope_core_v4.json",
+          "created_at": "2026-09-10T02:41:13.725Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-load-and-route:ae:v6",
+      "artifact_type": "ae",
+      "version": 6,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/ae_v4.json",
+      "payload": {
+        "A": "給食編（学校給食向けに、決まった温度と時刻を守って食材を届ける場面）",
+        "B": "今日届ける食材のリストと、2つの学校それぞれまでの移動時間・受け入れ時刻（毎セッションランダム）が渡された。積み分けと訪問順を決めて出発しないといけない。",
+        "C": "食材ごとの保存温度基準（種類によって異なる：生鮮魚介類5℃以下、食肉10℃以下、冷凍食品-15℃以下、生鮮野菜10℃前後で冷やしすぎ注意、乳製品10℃以下、穀類加工品は室温）。2校それぞれまでの移動時間、学校間の移動時間、2校それぞれの受け入れ時刻。",
+        "D": "各食材を、その食材の保存条件を満たす荷室（冷凍-15℃／冷蔵5℃／冷蔵10℃／常温の4種類）へ積み分ける。魚介類・食肉・乳製品・冷凍食品は『◯℃以下』という上限条件のため、基準を複数の荷室が満たす場合（例: 10℃以下が基準の食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらでもよい）はそのいずれでもよいが、より厳しい基準の食材（5℃以下が基準の魚介類）を基準を満たさない荷室に置くことはできない。野菜・穀類加工品は上限条件ではなく専用の温度帯（常温）が決まっており、冷蔵・冷凍側に寄せることはできない（design review r3是正: 『◯℃以下』という上限条件の性質を全食材に一般化していた誤りを修正）。2校それぞれの移動時間と受け入れ時刻を照らし合わせ、両校とも間に合う訪問順を選ぶ。",
+        "E": "積み分けが全て正しく、かつ訪問順が両校の受け入れ時刻に間に合っていれば、2校とも安全な状態で時間までに届く。どちらか一方でも誤っていれば、正直に『うまく届けられなかった』という結果になり、実務同様センターへ連絡して見直すことになる。",
+        "revision_note": "v2 (design review r1 FAIL 64是正、CORE_DISTORTED_BY_GAME): Dの荷室を『冷凍・冷蔵・常温』の3種類から『冷凍-15℃/冷蔵5℃/冷蔵10℃/常温』の4種類に変更し、魚（5℃）と肉（10℃）の基準差が実際の判断に影響するようにした（fact_sheet_v2.jsonのrevision_note参照）。v1: fact_sheet_v1.jsonの一次資料に基づき、C・Dを具体化。旧実装にあった『積み直し・経路を考え直す』という同一セッション内の反復ループは、design-sim.mjsの検証でブルートフォースの温床になりうるため、1回のコミット判断に統一する方針とした（既存のlegacy-clue-join/legacy-sow-and-growの前例に倣う）。 v3 (design review r2 FAIL 62是正、BLOCKER CORE_DISTORTED_BY_GAME再指摘): Dの荷室判定を『4種類から1つを選ぶ』という排他的な記述から、『保存温度基準（上限条件）を満たす荷室であればよい』という正しいモデルに修正した（食肉・乳製品は冷蔵5℃・10℃のどちらも正しい。fact_sheet_v3.json/design-sim.mjs v3参照）。 v4 (design review r3 FAIL 68是正、HIGH: CORE_DISTORTED_BY_PROSE): Dの記述が『保存温度基準（◯℃以下）を満たす』という上限条件の性質を野菜・穀類加工品にまで一般化していた誤りを修正し、上限条件が成り立つのは魚介類・食肉・乳製品・冷凍食品のみで、野菜・穀類は専用の温度帯（常温）が決まっていることを明記した（fact_sheet_v4.json参照）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:scope_core:v6"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:13.765Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-load-and-route/backfill/ae.json",
+          "created_at": "2026-09-10T01:16:43.049Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/ae_v1.json",
+          "created_at": "2026-09-10T01:49:33.143Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/ae_v2.json",
+          "created_at": "2026-09-10T02:05:09.173Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/ae_v2.json",
+          "created_at": "2026-09-10T02:11:38.891Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/ae_v3.json",
+          "created_at": "2026-09-10T02:30:33.590Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-load-and-route/design/ae_v4.json",
+          "created_at": "2026-09-10T02:41:13.766Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-load-and-route:core_scope_check:v5",
+      "artifact_type": "core_scope_check",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v5.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "CORE（食材ごとの保存温度基準に沿って積み分け、複数校の移動時間・受け入れ時刻から間に合う訪問順を選ぶ）はfact_sheet_v4.jsonの一次資料（厚生労働省の保存温度基準表、文部科学省・厚生労働省の『調理後2時間以内』基準）と整合する。SCOPE（給食編）は実際の配送業務の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『時間内・適温で届ける』を含む文脈全体は配送・物流の判断を指し、他の登場職業とは重複しない。 design review r2是正版: CORE『保存温度基準に沿って積み分け』は、基準が上限条件であり複数の荷室が基準を満たしうる（食肉・乳製品は冷蔵5℃/10℃のどちらでもよい）という正しいモデルに基づいてもCORE/SCOPEの整合性・代表性は変わらない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:ae:v6"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:22.681Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v1.json",
+          "created_at": "2026-09-10T01:49:54.000Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v1.json",
+          "created_at": "2026-09-10T02:06:27.395Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v3.json",
+          "created_at": "2026-09-10T02:11:49.166Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v4.json",
+          "created_at": "2026-09-10T02:30:41.247Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/core_scope_check_v5.json",
+          "created_at": "2026-09-10T02:41:22.682Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-load-and-route:play_seeds:v5",
+      "artifact_type": "play_seeds",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/play_seeds_v4.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-zone-and-route",
+            "authentic_causal_loop": "今日届く食材（毎セッションランダムに選ばれる）を見て、それぞれの保存温度基準に合う荷室へ積み分ける→2校それぞれの移動時間・受け入れ時刻（毎セッションランダム）を見て、両校とも間に合う訪問順を選ぶ→出発して結果を受け取る",
+            "player_action": "4つの食材カードをタップして、それぞれ冷凍/冷蔵5℃/冷蔵10℃/常温のいずれかに割り振る→2つの学校カードをタップした順に訪問順として選ぶ→『出発する』を1回だけ押す（1回のコミット、同一セッション内でのやり直しはない）",
+            "system_reaction": "4つの食材すべてが正しい荷室に割り振られ、かつ選んだ訪問順が両校の受け入れ時刻に間に合っていれば『2校とも安全な状態で時間までに届いた』という成功。1つでも誤っていれば、フラットな『うまく届けられなかった』という結果になり、どこがどう違うかは示さない",
+            "information_gained": "結果によって異なる（design review r3是正: 以前は成功・失敗を分岐せず一律の書き方だった）。成功時: 今回の食材の組み合わせと訪問順のすべてが実際に基準・締切を満たしていたと分かる。失敗時: 積み分け・訪問順のどちらか（または両方）が誤っていたという結果のみで、どこがどう違ったかは一切示されない（個別フィードバックを与えないことがBRUTE_FORCE_SUCCESS防止の要件であるため、s2却下理由を参照）。",
+            "next_judgment_or_action": "結果を受け止め、正直な成功/失敗の結末へ進む（同一セッション内の再挑戦はない——本当のやり直しは章に入り直して新しい条件で挑戦すること）",
+            "C_used": "食材ごとの保存温度基準（種類によって異なる）、2校それぞれまでの移動時間・学校間の移動時間、2校それぞれの受け入れ時刻",
+            "D_expressed": "食材の性質を保存温度基準と照合して積み分ける判断と、複数の届け先の移動時間・締切を照合して訪問順を選ぶ判断という、実際の配送業務の中核",
+            "E_reached": "積み分け・訪問順の両方が正しければ2校とも時間内に届く。どちらか一方でも誤っていれば正直な失敗結果になる",
+            "risks": "食材の保存温度基準・学校の移動時間/締切が毎回同じ固定内容だと、正解の組み合わせを覚えるだけの当てずっぽうになる（旧実装で発生していた問題そのもの）。食材は8種類のプールから毎セッション4つをランダムに選び、学校の移動時間・締切も毎セッションランダム化し、かつ単純な『近い方を先に』『締切が早い方を先に』という一次元の判断だけでは正解が決まらないよう数値を設計する必要がある（design review r1是正: 単純なランダム化だけでは一次元の発見的手法が偶然85%台の高い的中率になってしまったため、design-sim.mjs v2で3種類のバランス型シナリオ（両方の手法が一致/近い方のみ正解/締切が早い方のみ正解）を均等に出題する方式に変更し、いずれの手法も理論上ちょうど2/3=66.7%にしか正解できないことを保証）。また魚（5℃）と肉（10℃）の基準差が積み分け判断に実際に影響するよう、冷蔵を2つの荷室に分けた（同上是正）（design review r2是正: 保存温度基準は『◯℃以下』という上限条件のため、食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらに置いても基準を満たす——これを誤って『排他的な1つの正解』としてモデル化していたv2のBLOCKERをdesign-sim.mjs v3で是正した。魚介類の5℃基準はより厳しいため、冷蔵10℃側に置く判断はできない、という基準の厳しさの違いは変わらず判断の核である）"
+          },
+          {
+            "seed_id": "s2-load-then-fix",
+            "authentic_causal_loop": "食材を積む→学校で検収に引っかかったら、センターへ戻って積み直す→再度出発する、を繰り返して正解にたどり着く",
+            "player_action": "食材を積んで出発し、検収で失敗したら『センターへ戻って積み直す』を選んでやり直す",
+            "system_reaction": "検収に失敗した食材を個別に示し、正しい荷室を探るヒントになる",
+            "information_gained": "どの食材がどう間違っていたかという個別フィードバック",
+            "next_judgment_or_action": "指摘された食材だけ積み直して再挑戦する",
+            "C_used": "s1と同じ",
+            "D_expressed": "s1と同じ判断を、個別フィードバック付きの反復として表現したもの",
+            "E_reached": "最終的には必ず正解にたどり着ける",
+            "risks": "旧実装がまさにこの設計だった。個別の食材ごとに『これは違う』という具体的フィードバックを返すと、総当たりで全食材×全荷室の組み合わせを試せば必ず正解にたどり着けてしまう（BRUTE_FORCE_SUCCESS）。学校の訪問順についても同様に、失敗のたびに個別のヒントを与えると総当たりで攻略できる。CORE_SCOPE_CHECKを通らない設計として却下し、s1（フラットな結果・1回のコミット）を採用する根拠とする"
+          },
+          {
+            "seed_id": "s3-priority-only",
+            "authentic_causal_loop": "食材を『優先度の高いもの』から並べ替えるだけで、具体的な温度基準を読まなくても大まかに正解に近づける",
+            "player_action": "食材カードを画面上でドラッグして優先度順に並べる",
+            "system_reaction": "並べ替えた順序に応じて点数がつく",
+            "information_gained": "並べ替えの結果としての点数",
+            "next_judgment_or_action": "点数を見てさらに並べ替える",
+            "C_used": "食材の名前のみ（保存温度基準は使われない）",
+            "D_expressed": "並べ替えという操作自体は保存温度基準の判断を表現しない",
+            "E_reached": "点数が一定以上になれば成功",
+            "risks": "保存温度基準という実務特有のCが実質使われず、一般的な『並べ替えて点数を稼ぐ』ミニゲームになってしまう（C_NOT_NEEDED_FOR_D、D_REPLACED_BY_TRIVIA）。却下。"
+          }
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:ae:v6"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:22.731Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/play_seeds_v1.json",
+          "created_at": "2026-09-10T01:50:34.668Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/play_seeds_v2.json",
+          "created_at": "2026-09-10T02:06:27.437Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/play_seeds_v2.json",
+          "created_at": "2026-09-10T02:11:49.208Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/play_seeds_v3.json",
+          "created_at": "2026-09-10T02:30:41.289Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/play_seeds_v4.json",
+          "created_at": "2026-09-10T02:41:22.732Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-load-and-route:reference_research:v5",
+      "artifact_type": "reference_research",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/reference_research_v5.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "厚生労働省『大量調理施設衛生管理マニュアル』別添1（原材料・製品等の保存温度）、文部科学省『学校給食衛生管理基準』（告示第64号）",
+            "relevant_mechanic": "食材ごとの保存温度基準（生鮮魚介類5℃以下、食肉10℃以下、冷凍食品-15℃以下、生鮮野菜10℃前後、乳製品10℃以下、穀類加工品は室温）と、『調理後2時間以内に給食できるようにする』という全体の時間制約の直接の根拠",
+            "borrowed_principle": "実在する保存温度基準表と時間制約を、8種類の食材プール（毎セッション4つをランダム抽選）と2校の移動時間/締切（毎セッションランダム）という圧縮された形でゲームに投影する",
+            "surface_elements_not_to_copy": "基準表の全20カテゴリはそのまま出さない（給食で扱う実際の食材に絞った5〜8カテゴリのプールに圧縮）。具体的な2校間の移動時間・締切の実数値は自治体内部の非公開資料のため、リサーチで確認した制約構造（2時間ルール・訪問順が到着時刻を左右する）を土台にした学習用の仮設定として扱う（fact_sheet_v4.jsonのuncertaintiesに明記）"
+          },
+          {
+            "reference": "既存Q1 legacy-sow-and-grow（t1-season-deadline-match、design review r1-r6を経た前例）",
+            "relevant_mechanic": "毎セッションで条件（季節・締め切り・気象予報）をランダム化し、複数の候補が重なる場合には単一の発見的手法（heuristic）が常に勝つことのないよう、候補間に本物のトレードオフを持たせる設計",
+            "borrowed_principle": "『近い方を先に』『締切が早い方を先に』という一次元の判断だけでは正解が決まらないよう、2校の移動時間・締切の数値をdesign-sim.mjsで数値検証してから決定する（route-tuning-notes.md参照）。design review r2で見つかった『固定の対応表が常に勝ってしまう』というBLOCKERを最初から回避する",
+            "surface_elements_not_to_copy": "sow_and_growの品種名・農業という題材はそのまま持ち込まない（load_and_routeは食材の保存温度と配送順という別の構造）"
+          },
+          {
+            "reference": "既存Q1 clue_join / labCheckLogic.ts（1回のコミット判断、同一セッション内での再挑戦なしという前例）",
+            "relevant_mechanic": "フラットな失敗フィードバック（どこが違うか個別に示さない）と、1回のコミットで結果が確定する設計により、個別フィードバックを使った総当たり攻略を防ぐ",
+            "borrowed_principle": "積み分け・訪問順の両方を1回のコミットで確定し、失敗時は『うまく届けられなかった』というフラットな結果のみを返す（旧実装が個別食材ごとの失敗理由を示していたことがBRUTE_FORCE_SUCCESSの温床だったため、play_seeds_v4.jsonのs2却下理由を参照）",
+            "surface_elements_not_to_copy": "clue_joinの複数所見選択という判定構造はそのまま持ち込まない（load_and_routeは積み分け+訪問順という別の二部構成）"
+          }
+        ]
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:play_seeds:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:29.893Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/reference_research_v1.json",
+          "created_at": "2026-09-10T01:52:42.134Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/reference_research_v1.json",
+          "created_at": "2026-09-10T02:06:47.544Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/reference_research_v3.json",
+          "created_at": "2026-09-10T02:11:59.269Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/reference_research_v4.json",
+          "created_at": "2026-09-10T02:30:50.526Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/reference_research_v5.json",
+          "created_at": "2026-09-10T02:41:29.894Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-load-and-route:c_compression:v5",
+      "artifact_type": "c_compression",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/c_compression_v4.json",
+      "payload": {
+        "original_C": "実際の配送業務では、車両積載量・コンテナ重量制限、業務時間帯の契約条件、配送・回収計画全体（複数校・複数便）、記帳義務（配食時刻の記録等）、緊急時の連絡体制など、非常に多くの運用情報が関わる（大川市教育委員会の仕様書、厚生労働省・文部科学省の基準より）。",
+        "compressed_C": "8種類の食材（毎セッション4つをランダム抽選）それぞれの保存温度基準（生鮮魚介類5℃以下、食肉10℃以下、冷凍食品-15℃以下、生鮮野菜10℃前後、乳製品10℃以下、穀類加工品は室温——4種類の荷室に対応）と、2校それぞれまでの移動時間・学校間の移動時間・2校それぞれの受け入れ時刻（毎セッション3種類のバランス型シナリオから均等に出題）に圧縮。",
+        "removed_complexity": "車両積載量・コンテナ重量制限、契約上の業務時間帯、配送・回収計画全体、記帳義務、緊急連絡体制の詳細",
+        "reason_for_removal": "10-12歳が1画面・数十秒で扱える情報量を超える。これらは実務でも専門知識や経験を要する領域であり、Q1のCORE（保存温度基準に沿って積み分け、移動時間・締切から訪問順を選ぶ）にとって本質的ではない（C_NOT_NEEDED_FOR_Dを避けつつ圧縮）。",
+        "preserved_D": "食材の性質を保存温度基準と照合して積み分ける判断と、複数の届け先の移動時間・締切を照合して訪問順を選ぶ判断という、実際の配送業務の本質的な判断構造",
+        "how_player_still_performs_D": "8種類の食材プール×2校の移動時間/締切という圧縮された情報でも、種類ごとに異なる保存温度基準（魚5℃/肉10℃/冷凍-15℃/野菜10℃前後/常温、4種類の荷室に対応）を正しく読み取る判断と、単純な『近い方を先に』『締切が早い方を先に』では正解が決まらない訪問順の判断が、本物の判断として成立する（design-sim.mjs v4 / route-tuning-notes.mdで検証。魚介類・食肉・乳製品・冷凍食品は『◯℃以下』という上限条件のため、食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらでも基準を満たすが、魚介類は冷蔵5℃でなければ基準を満たさない、という基準の厳しさの違いを正しく読み取る必要がある（野菜・穀類は上限条件ではなく専用の常温区分））。",
+        "failure_risk": "圧縮しすぎると『いつも同じ組み合わせを選べば勝てる』という記憶ゲームに戻ってしまうリスクがある（旧実装がまさにそうだった）。design review r1（FAIL 64、2 HIGH）是正: (1) 魚・肉を同じ冷蔵荷室にまとめていたため基準差が判断に影響しなかった問題を、荷室を4種類に分けて解消。(2) 訪問順の数値をCartesian rejection samplingで生成していたところ、たまたま生き残った7通りの組み合わせのうち単純な発見的手法が6/7=85%台で正解してしまっていた問題を、3種類のバランス型シナリオ（両方一致/近い方のみ正解/締切が早い方のみ正解）を均等出題する方式に変更し、いずれの発見的手法も理論上ちょうど2/3=66.7%（33.3pt差）にしか正解できないことを設計上保証した（route-tuning-notes.md参照）。 design review r2（FAIL 62、BLOCKER CORE_DISTORTED_BY_GAME再指摘）是正: v2は冷蔵5℃/10℃を互いに排他的な荷室として扱い、食肉・乳製品を冷蔵5℃に置く判断を誤答としていたが、これは保存温度基準が上限条件であるという一次資料の性質と矛盾していた。design-sim.mjs v3でvalidZones（各食材が満たす荷室のリスト）モデルに是正し、food-safety上正しい『より低い温度帯は常に安全』という判断を正しく合格扱いにした。 design review r3（FAIL 68、1 BLOCKER: ANSWER_LEAK、1 HIGH: CORE_DISTORTED_BY_PROSE）是正: 荷室アイコンが食材絵文字と直接対応していた問題、および『上限条件・低いほど安全』を野菜・穀類にまで一般化していた記述の誤りを是正した。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:play_seeds:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:29.933Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/c_compression_v1.json",
+          "created_at": "2026-09-10T01:53:11.853Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/c_compression_v2.json",
+          "created_at": "2026-09-10T02:07:32.748Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/c_compression_v2.json",
+          "created_at": "2026-09-10T02:11:59.312Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/c_compression_v3.json",
+          "created_at": "2026-09-10T02:30:50.569Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/c_compression_v4.json",
+          "created_at": "2026-09-10T02:41:29.934Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-load-and-route:game_translations:v5",
+      "artifact_type": "game_translations",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/game_translations_v4.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-zone-and-route",
+            "play_seed": "s1-zone-and-route",
+            "goal": "今日届く4つの食材（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉の8種類プールから毎セッションランダム抽選）を、それぞれの保存温度基準に合う荷室（冷凍-15℃／冷蔵5℃／冷蔵10℃／常温）へ積み分ける。2つの学校（たんぽぽ小/けやき小、それぞれの移動時間・受け入れ時刻は毎セッションランダム）を、両校とも間に合う順番で訪問する。積み分け・訪問順を決めたら『出発する』を1回だけ押す。",
+            "first_visible_state": "『今日の食材』として4枚の食材カード（それぞれ中立的な名前——冷凍/冷蔵などの荷室名を含まない——とタップで開く保存の目安を読める）と、4つの荷室（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温）。下に2つの学校カード（たんぽぽ小/けやき小、それぞれタップで移動時間・受け入れ時刻を読める）とタップした順で番号がつく訪問順選択。『出発する』ボタン。食材カード・学校カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+            "primary_action": "各食材カードをタップして冷凍-15℃/冷蔵5℃/冷蔵10℃/常温のいずれかに割り振る（自由に変更可、コストなし）。2つの学校カードをタップした順に訪問順として選ぶ（自由に変更可、コストなし）。『出発する』を押すと結果が確定する1回のコミット。",
+            "C_interaction": "食材カードの保存の目安（読み物、名前からは断定できない）を、実際の性質と照らし合わせて正しい荷室を判断する。食肉・乳製品（10℃以下が基準）は冷蔵5℃・冷蔵10℃のどちらに置いても基準を満たすが、魚（5℃以下が基準）は冷蔵5℃でなければ基準を満たさない——この『低いほど安全』という性質は魚介類・食肉・乳製品・冷凍食品にのみ当てはまり、野菜（10℃前後は低すぎても品質が落ちる範囲）・穀類（室温という別区分）には当てはまらない、という読み取りが必要（design-sim.mjs v4検証）。学校カードの移動時間・受け入れ時刻を、もう一方の学校への訪問による遅れと照らし合わせて、両校とも間に合う訪問順を判断する。訪問順は3種類のバランス型シナリオ（両方の単純な判断基準が一致するケース／近い方を先にすべきケース／締切が早い方を先にすべきケースだが実際は違う場合を含む）から均等に出題されるため、単純に『近い方を先に』『締切が早い方を先に』だけでは正解が理論上2/3しか当たらない（design-sim.mjs v4検証）。",
+            "system_reaction": "4つの食材すべてが正しい荷室に入っており、かつ選んだ訪問順が両校の受け入れ時刻に間に合っていれば、『2校とも安全な状態で時間までに届いた』という成功。1つでも誤っていれば、フラットな『うまく届けられなかった』という結果になり、どこがどう違うかは示さない",
+            "information_gained": "結果によって異なる。成功時: 今回の食材の組み合わせ・訪問順のすべてが実際に基準・締切を満たしていたと分かる（ただし『どの食材がどの荷室でも良かったか』のような詳細な内訳までは示さない）。失敗時: 積み分け・訪問順のどちらか（または両方）が誤っていたという結果のみで、どこがどう違ったかは一切示されない——個別フィードバックを与えないことがBRUTE_FORCE_SUCCESS防止の要件であるため（play_seeds_v4.jsonのs2却下理由を参照）。",
+            "player_next_judgment": "結果を受け止める。同一セッション内の再挑戦はない——src/q1/labCheckLogic.tsの前例（1回の挑戦で判断を固定し、外れたら別の結末へ進む）に倣う",
+            "D_externalization": "食材カードのタップによる荷室割り振りと、学校カードのタップ順による訪問順選択という、子ども自身の明示的な選択が、そのまま配送計画の判断を表現する。システムは先に正解を示さない",
+            "E_consequence": "積み分け・訪問順の両方が正しければ2校とも時間内に届く。どちらか一方でも誤っていれば、正直に『うまく届けられなかった』という結果になり、実務同様センターへ連絡して見直すことになる、という形で話は先に進む（進行はブロックしない）",
+            "retry_or_rethink": "この場でのやり直しはない（1回のコミット）。章に入り直せば、食材の組み合わせ・学校の移動時間/締切が新しくランダム化された、本当の意味でのやり直しができる。同一セッション内の個別フィードバック付き再挑戦（旧実装の設計）は、総当たり攻略の温床になるため採用しない（play_seeds_v4.jsonのs2却下理由を参照）。",
+            "job_reveal_bridge": "既存のdiscoveryEcho（食材を温度ごとに積み分け、回る順番も考えた、という体験）がそのまま使える",
+            "strengths": "design review r2（FAIL 62、1 BLOCKER: CORE_DISTORTED_BY_GAME再指摘）是正版。r2 BLOCKER是正: 保存温度基準は全て『◯℃以下』という上限条件であるにもかかわらず、v2は冷蔵5℃/10℃を互いに排他的な荷室として扱い、食肉・乳製品を冷蔵5℃（より安全）に置く判断を誤答としていた。design-sim.mjs v3でvalidZonesモデル（各食材が満たす荷室のリスト）に是正し、食肉・乳製品は冷蔵5℃・10℃のどちらでも正解、魚は冷蔵5℃のみ正解となるようにした（zone_fish_threshold_is_load_bearing=true: 魚の厳しい基準を無視して全ての冷蔵品を冷蔵10℃に置く戦略は約50%失敗する。zone_conservative_cold5_strategy_is_legitimate=true: 全ての冷蔵品を安全側の冷蔵5℃に置く戦略は100%成功する、という食品安全の実務と整合する結果を確認）。r1是正（CORE_DISTORTED_BY_GAME/C_NOT_NEEDED_FOR_D）は正版のまま維持: 魚・肉の基準差自体は荷室を分けたことで引き続き判断に影響し、訪問順の出題も手作業検証済みの3種類のバランス型シナリオ（均等出題、理論上ちょうど66.7%上限）のまま。ANSWER_LEAK是正: 食材の表示名を中立化し、荷室名を食材名に含めないことを必須要件とした。 design review r3（FAIL 68、1 BLOCKER: ANSWER_LEAK、1 HIGH: CORE_DISTORTED_BY_PROSE）是正: 荷室アイコンが食材の絵文字（🐟=魚、🥛=乳製品）と直接対応し、Cを読まずアイコン一致だけで積み分けを推測できてしまう問題があったため、温度帯のみを示す中立的なアイコン（❄️/🌡️）に変更した。またfact_sheet/design-sim.mjsのコメントが『全ての基準が上限条件・低いほど常に安全』と誤って一般化し、野菜（10℃前後は範囲、低温では品質低下）・穀類（室温は別区分）の記述と矛盾していた点を、魚介類・食肉・乳製品・冷凍食品の4カテゴリに限定する記述に是正した（design-sim.mjs v4 / fact_sheet_v4.json）。",
+            "weaknesses": "375px×4食材カード+4荷室+2学校カード+出発ボタンのレイアウトは実装段階の検証項目。",
+            "risk": "design-sim-result.json (v3): zone.legitimate_all_correct=100%、zone.always_place_all_in_*は0%、zone.treats_all_cold_items_as_cold10=49.95%（魚の5℃基準を無視して全ての冷蔵品を10℃に置く戦略は約半数のセッション——魚が抽選された場合——で失敗する）、zone.treats_all_cold_items_as_cold5=100%（安全側に倒す戦略は正しく全問正解になる）。route.legitimate_full_reasoning=100%、route.tighter_deadline_first=66.6%、route.nearer_first=66.9%（いずれも33pt以上劣る、route_heuristics_guaranteed_below_full_reasoning=true、route_archetype_distribution_balanced=true）。route.route_zero_winner_rate=0（3シナリオ×2ミラー=6通り全てで一意な正解を持つことを、ハードコードではなく実際のarchetypeデータから計算し検証済み）。 design-sim-result.json (v4): zone/route の数値・検証内容はv3から変更なし（round-2のBLOCKER修正はr3レビューアが再確認済み）。今回の修正はUIアイコン表記とfact_sheetの説明文言のみ。",
+            "adoption_or_rejection_reason": "採用。design review r1の2 HIGHすべてに対応した改訂版。s1（積み分け+訪問順の二部構成）がCORE/AEで定義した判断を最も忠実に表現する。s2（個別フィードバック付き反復）は旧実装そのものであり総当たり攻略のリスクが高いため却下。s3（優先度並べ替えのみ）はCOREの保存温度基準という判断が実質使われなくなるため却下。 design review r2のBLOCKER是正により、保存温度基準の上限条件という性質を正しく反映したモデルになった。"
+          },
+          {
+            "translation_id": "t2-load-then-fix",
+            "play_seed": "s2-load-then-fix",
+            "goal": "食材を積んで出発し、検収で失敗した食材があれば個別に示され、センターへ戻って積み直して再挑戦する",
+            "first_visible_state": "4つの食材カードと4つの荷室、『出発する』ボタン",
+            "primary_action": "食材を荷室へ割り振って出発。失敗があれば個別の食材ごとに『これは違う』と示され、積み直して再出発",
+            "C_interaction": "個々の食材カードと保存基準を1つずつ見比べる",
+            "system_reaction": "失敗した食材を個別に名指しして知らせる",
+            "information_gained": "どの食材がどう間違っていたかという個別フィードバック",
+            "player_next_judgment": "指摘された食材だけ積み直して再挑戦する",
+            "D_externalization": "個別フィードバックに基づく反復的な試行錯誤",
+            "E_consequence": "最終的には必ず正解にたどり着ける",
+            "retry_or_rethink": "何度でも積み直せる",
+            "job_reveal_bridge": "弱い（試行錯誤の反復に近づく）",
+            "strengths": "旧実装と同じ、直感的で分かりやすい",
+            "weaknesses": "個別の食材ごとに具体的フィードバックを返すため、総当たりで全食材×全荷室の組み合わせを試せば必ず正解にたどり着けてしまう（BRUTE_FORCE_SUCCESS）。旧実装がまさにこの設計で、reverse auditが exploit=memorize/brute_force=trueと判定した根本原因の1つ。",
+            "risk": "総当たり攻略のリスクが非常に高い",
+            "adoption_or_rejection_reason": "却下。個別フィードバック付きの反復は、COREの判断を一問一答の総当たりに置き換えてしまう（BRUTE_FORCE_SUCCESS、旧実装の根本問題そのもの）。"
+          },
+          {
+            "translation_id": "t3-priority-only",
+            "play_seed": "s3-priority-only",
+            "goal": "食材カードを優先度順に並べ替えるだけで点数を稼ぐ",
+            "first_visible_state": "4つの食材カードが並んだリスト",
+            "primary_action": "カードをドラッグして並べ替える",
+            "C_interaction": "食材の名前のみを見る（保存温度基準は使われない）",
+            "system_reaction": "並べ替えた順序に応じて点数がつく",
+            "information_gained": "並べ替えの結果としての点数",
+            "player_next_judgment": "点数を見てさらに並べ替える",
+            "D_externalization": "並べ替え操作自体は保存温度基準の判断を表現しない",
+            "E_consequence": "点数が一定以上になれば成功",
+            "retry_or_rethink": "何度でも並べ替えられる",
+            "job_reveal_bridge": "弱い",
+            "strengths": "操作は単純",
+            "weaknesses": "保存温度基準という実務特有のCが実質使われず、一般的な『並べ替えて点数を稼ぐ』ミニゲームになってしまう（C_NOT_NEEDED_FOR_D、D_REPLACED_BY_TRIVIA）。",
+            "risk": "CORE（保存温度基準に沿った積み分け）が実装に反映されないリスクが高い",
+            "adoption_or_rejection_reason": "却下。保存温度基準という職業固有の判断が、一般的な並べ替え操作に置き換わってしまい、CORE_DISTORTED_BY_GAMEに該当する。"
+          }
+        ],
+        "adopted_translation_id": "t1-zone-and-route",
+        "adoption_rationale": "t1（design review r3是正版）は、CORE/AEで定義した『食材ごとの保存温度基準に沿って積み分け、複数校の移動時間・締切から間に合う訪問順を選ぶ』という判断を、4種類の荷室（魚肉の基準差を反映）と、手作業で検証済みの3種類のバランス型訪問順シナリオによって表現する。design-sim.mjs v4で、記憶による攻略・単純な発見的手法がいずれも理論上保証された margin で完全な推論に劣ること、かつ保存温度基準（上限条件）を正しく満たす安全側の判断は不当に不正解扱いされないことを検証済み。t2はBRUTE_FORCE_SUCCESSのリスクが高く、t3はCOREを歪めるため却下した。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:play_seeds:v5",
+        "legacy-load-and-route:c_compression:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:37.382Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/game_translations_v1.json",
+          "created_at": "2026-09-10T01:54:17.865Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/game_translations_v2.json",
+          "created_at": "2026-09-10T02:08:51.996Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/game_translations_v2.json",
+          "created_at": "2026-09-10T02:12:11.543Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/game_translations_v3.json",
+          "created_at": "2026-09-10T02:30:57.727Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/game_translations_v4.json",
+          "created_at": "2026-09-10T02:41:37.383Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v5",
+      "artifact_type": "first_5_seconds",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v4.json",
+      "payload": {
+        "zero_to_two_seconds": "4枚の食材カード（中立的な名前、タップで保存の目安が読める）と4つの荷室（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温）、下に2つの学校カード（たんぽぽ小/けやき小、タップで移動時間・受け入れ時刻が読める）が見える。",
+        "two_to_five_seconds": "食材カードの下に荷室選択ボタンがあり、タップすると割り振られる。学校カードをタップした順に訪問順の番号がつく。子どもは食材と荷室、学校の情報を見比べ始める。",
+        "first_expected_touch": "気になる食材カードをタップして保存の目安を開く、または荷室ボタンをタップして割り振る",
+        "first_system_reaction": "タップした食材カードが開き保存の目安が読める、または荷室に割り振られて視覚的に反映される（コミットはまだ確定しない）",
+        "next_expected_inference": "食材ごとの保存の目安と荷室の対応、学校の移動時間・受け入れ時刻を見比べれば、正しい組み合わせが自分で判断できそうだと気づく（食肉・乳製品は冷蔵5℃・10℃のどちらでも基準を満たすが、魚介類は冷蔵5℃でなければならない、という基準の厳しさの違いにも気づく）",
+        "next_expected_action": "4つの食材すべてを荷室に割り振り、2つの学校を訪問順にタップしたうえで『出発する』を押す"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_translations:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:45.085Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-10T01:55:12.011Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-10T02:09:50.756Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-10T02:12:24.520Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v3.json",
+          "created_at": "2026-09-10T02:31:07.348Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/first_5_seconds_v4.json",
+          "created_at": "2026-09-10T02:41:45.085Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v5",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v4.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": "説明文なしで、食材カードのタップ（荷室割り振り）と学校カードのタップ（訪問順選択）だけで操作方法が分かる。既存Q1（clue_join/sow_and_grow等）と同じ、タップと『？』的開示のみの規約に従う。",
+          "contextual_cue_only": "食材カードの保存の目安と学校カードの移動時間・受け入れ時刻という文脈だけで、どれが正解かをシステムが直接教えない。読み比べる以外に手がかりはない。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": "食材ごとに1つの荷室しか選べず、学校の訪問順もタップした順で一意に決まるため、select-allに相当する攻略は存在しない",
+          "tap_all": "食材カード・学校カードを全部開いて情報を読むこと自体はコストがなく許容される（内容を読む行為であり、攻略ではない）が、実際の割り振り・訪問順選択と『出発する』は1回のコミットで確定する",
+          "spam_submit": "1回のコミットで結果が確定し、同一セッション内でのやり直しはない（labCheckLogic.tsの前例に倣う）ため、連打による総当たりは成立しない",
+          "fixed_failure_pattern": "design-sim.mjs v3検証（design review r2 BLOCKER是正）: 食材は8種類のプールから毎セッション4つをランダム抽選（シャッフル表示）し、学校の訪問順は3種類のバランス型シナリオから均等出題した結果、固定ゾーン推測（always_place_all_in_*）は0%、単純な訪問順の発見的手法（tighter_deadline_first/nearer_first）はいずれも66.6〜66.9%にとどまり、完全な推論（100%）に対し33pt以上劣ることを設計により保証。積み分けについては、魚の5℃基準を無視して全ての冷蔵品を冷蔵10℃に置く戦略（treats_all_cold_items_as_cold10）は約50%失敗する一方、安全側の冷蔵5℃に統一する戦略（treats_all_cold_items_as_cold5）は保存温度基準（上限条件）を正しく満たすため100%成功する——これは記憶や決め打ちの当てずっぽうではなく、実際に基準を満たしているため合格扱いになる正しい挙動。",
+          "color_leak": "食材カード・学校カードの色・強調表示は正解を示唆しない設計を意図（実装段階で検証が必要）",
+          "label_leak": "design review r1のMEDIUM是正: 食材の表示名は中立的なもの（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉）に限定し、『冷凍コロッケ』のように荷室名（冷凍・冷蔵・常温等）を含む表示名は使わない——これはgame_specの明示的な受け入れ条件とする。学校名（たんぽぽ小/けやき小）自体も距離や時刻を直接示す言葉を含めない。",
+          "position_leak": "実装段階でclue_join/sow_and_growの前例（per-session Fisher-Yatesシャッフル）に倣い、食材カード・学校カードの表示順をセッションごとにシャッフルする必要がある（design_specの明示的な受け入れ条件とし、実装QAでも検証する）",
+          "visual_hierarchy_leak": "食材カード・学校カードは同じ見た目・同じ情報量で提示し、視覚的な強弱で正解を示唆しない設計を意図",
+          "pass": true,
+          "icon_leak": "design review r3（FAIL 68、BLOCKER: ANSWER_LEAK）是正: 荷室の表示アイコンに食材を直接連想させる絵文字（🐟=魚、🥛=乳製品など）を使わない——温度帯のみを示す中立的なアイコン（🧊/❄️/🌡️/📦）に限定する。食材カード側のアイコンも同様に、特定の荷室を連想させる形状（雪の結晶、温度計、箱の形など）を使わない。これはgame_spec/実装の明示的な受け入れ条件とする（design/first_5_seconds_v4.json、design/game_translations_v4.json参照）。"
+        },
+        "design_sim_evidence": "factory/projects/legacy-load-and-route/design/design-sim-result.json",
+        "revision_note": "v2: design review r1（FAIL 64、2 HIGH: CORE_DISTORTED_BY_GAME/C_NOT_NEEDED_FOR_D、1 MEDIUM: ANSWER_LEAK）是正版。fixed_failure_patternの数値をdesign-sim.mjs v2の実測値（理論保証された66.7%上限）に更新。label_leakに『食材の表示名から荷室名を除く』という具体的な必須要件を追加。 v3: design review r2（FAIL 62、1 BLOCKER: CORE_DISTORTED_BY_GAME再指摘）是正版。fixed_failure_patternの数値・説明をdesign-sim.mjs v3のvalidZonesモデル（上限条件を満たす荷室であればよい）に合わせて更新。 v4: design review r3（FAIL 68、1 BLOCKER: ANSWER_LEAK、1 HIGH: CORE_DISTORTED_BY_PROSE）是正版。荷室アイコンが食材の絵文字と直接対応する問題を明示的なicon_leakチェック項目として追加した。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_translations:v5",
+        "legacy-load-and-route:first_5_seconds:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:45.126Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v1.json",
+          "created_at": "2026-09-10T01:55:12.052Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-10T02:09:50.798Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-10T02:12:24.562Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v3.json",
+          "created_at": "2026-09-10T02:31:07.388Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/no_manual_exploit_check_v4.json",
+          "created_at": "2026-09-10T02:41:45.126Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-load-and-route:core_back_check:v5",
+      "artifact_type": "core_back_check",
+      "version": 5,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/core_back_check_v4.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "t1-zone-and-route（design review r2是正版）は、CORE（食材ごとの保存温度基準——上限条件——を満たす荷室に積み分け、複数校の移動時間・締切から間に合う訪問順を選ぶ）をそのまま表現している。子どもは食材カード・学校カードの情報を自分で見比べて割り振り・訪問順を決め、システムは先に正解を示さない。SCOPE（給食編）も変わらず代表的。design-sim.mjs v4で、魚の5℃基準が肉・乳の10℃基準より厳しいという違いが実際の判断に影響すること（肉・乳を誤って冷蔵10℃のみに固定する判断はできないが、より安全な冷蔵5℃に置く判断は正しい選択として成立する。ただしこの性質は野菜・穀類には当てはまらない）、単純な発見的手法がいずれも理論保証されたmarginで完全な推論に劣ることを確認済み。design review r3是正: 荷室アイコンが食材を直接連想させていた問題も是正済み。",
+        "pass": true
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_translations:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:41:45.165Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/core_back_check_v1.json",
+          "created_at": "2026-09-10T01:55:12.091Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/core_back_check_v2.json",
+          "created_at": "2026-09-10T02:09:50.837Z",
+          "creator": "claude"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-load-and-route/design/core_back_check_v2.json",
+          "created_at": "2026-09-10T02:12:24.602Z",
+          "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-load-and-route/design/core_back_check_v3.json",
+          "created_at": "2026-09-10T02:31:07.431Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-load-and-route/design/core_back_check_v4.json",
+          "created_at": "2026-09-10T02:41:45.165Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-load-and-route:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/game_spec_v1.json",
+      "payload": {
+        "goal": "今日届く4つの食材（8種類のプールから毎セッションランダム抽選）を、それぞれの保存温度基準（validZonesモデル: 生鮮魚介類は冷蔵5℃のみ、食肉・鯨肉・乳製品は冷蔵5℃/冷蔵10℃のどちらでも、冷凍食品は冷凍のみ、生鮮野菜・穀類加工品は常温のみ）を満たす荷室へ積み分け、2校（毎セッション移動時間・受け入れ時刻がランダム化、3種類のバランス型archetypeから均等抽選）を両校とも間に合う順で訪問する。積み分け・訪問順を決めたら『出発する』を1回だけ押して結果を確定する（design/game_translations_v4.jsonのt1-zone-and-route、design/design-sim.mjsで検証済み）。",
+        "initial_visual_state": "『今日の食材』として4枚の食材カード（中立的な名前——冷凍/冷蔵/常温などの荷室名を含まない、タップで保存の目安の読み物が開く）と、4つの荷室スロット（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温——いずれも温度帯のみを示す中立アイコン、食材形の絵文字は使わない）。下に2つの学校カード（たんぽぽ小/けやき小、タップで移動時間・受け入れ時刻の読み物が開く）と、タップした順で番号がつく訪問順選択。『出発する』ボタン（積み分け・訪問順の両方が決まるまで非活性）。食材カード・学校カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          {
+            "id": "food_card",
+            "count": 4,
+            "behavior": "タップして開くと保存の目安の読み物（温度基準の文章、具体的な◯℃の数値と根拠を含む）が表示される。その後4つの荷室スロットのいずれかをタップして割り振る（自由に変更可、コストなし）。"
+          },
+          {
+            "id": "zone_slot",
+            "count": 4,
+            "behavior": "🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温の4つ。食材カードの割り振り先。割り振り済みの食材が視覚的にスロット内へ移動する（正誤フィードバックはまだ出さない）。"
+          },
+          {
+            "id": "school_card",
+            "count": 2,
+            "behavior": "タップして開くと移動時間・受け入れ時刻の読み物が表示される。タップした順に訪問順の番号がつく（1番目/2番目）。再タップで番号を変更可。"
+          },
+          {
+            "id": "departure_button",
+            "label": "出発する",
+            "behavior": "4食材すべての荷室割り振りと2校の訪問順が決まって初めて活性化。押すと1回のコミットで結果が確定する（同一セッション内のやり直しはない）。"
+          }
+        ],
+        "primary_action": "各食材カードをタップして保存の目安を読み、4つの荷室スロットのいずれかへ割り振る。2つの学校カードをタップした順に訪問順として選ぶ。『出発する』を押して1回のコミットで結果を確定する。",
+        "C": "食材ごとの保存温度基準の読み物（生鮮魚介類は5℃以下、食肉・鯨肉/乳・濃縮乳等は10℃以下、冷凍食品全般は-15℃以下、生鮮野菜は10℃前後で低すぎても品質が落ちる、穀類加工品は室温——design/fact_sheet_v4.json）。学校ごとの移動時間・受け入れ時刻の読み物（design/design-sim.mjsのARCHETYPES、3種類のバランス型シナリオから均等抽選、独立にA/Bミラー）。",
+        "D": "各食材を、その食材の保存条件を満たす荷室へ積み分ける判断（魚介類・食肉・乳製品・冷凍食品は『◯℃以下』という上限条件のため、食肉・乳製品は冷蔵5℃・冷蔵10℃のどちらでもよいが魚介類は冷蔵5℃のみ、野菜・穀類は専用の常温区分のみで冷蔵・冷凍側には寄せられない）。2校それぞれの移動時間と受け入れ時刻を照らし合わせ、両校とも間に合う訪問順を選ぶ判断（単純な『近い方を先に』『締切が早い方を先に』という一次元の判断だけでは理論上2/3しか正解できない設計）。",
+        "system_reactions": [
+          {
+            "trigger": "食材カードを荷室スロットへ割り振る",
+            "reaction": "食材カードが視覚的にそのスロット内へ移動する。正誤フィードバックはまだ出さない。"
+          },
+          {
+            "trigger": "学校カードをタップする",
+            "reaction": "タップした順に訪問順の番号（1/2）が表示される。"
+          },
+          {
+            "trigger": "『出発する』を押す（コミット）",
+            "reaction": "4食材すべての荷室割り振り（validZones判定）と訪問順（archetypeのcorrectOrder判定）を同時に評価する。両方正しければ成功、どちらか一方でも誤っていればフラットな失敗。個別にどこが誤っていたかは一切示さない。"
+          }
+        ],
+        "state_transitions": {
+          "browsing_and_assigning": "食材・学校カードを読み、割り振り・訪問順を自由に変更できる状態。出発ボタンは全項目が決まるまで非活性。",
+          "committed": "『出発する』を押した瞬間に確定。以後この状態には戻れない。",
+          "outcome": "成功（onComplete）または失敗（onPartialComplete）のいずれかに遷移。"
+        },
+        "failure_behavior": "積み分け・訪問順のどちらか（または両方）が誤っていた場合、フラットな『うまく届けられなかった』という結果になる。どの食材・どちらの訪問順が誤っていたかは一切示さない（個別フィードバックはBRUTE_FORCE_SUCCESSの温床になるため意図的に排除——design/play_seeds_v4.jsonのs2却下理由を参照）。onPartialComplete（onCompleteではない）を呼び、Job Revealチップがsuccessと異なる正直な枠組みで表示されることを実装QAで確認する（Gate H HONEST OUTCOME、legacy-sow-and-growのFarmGame.tsxで一度回帰した実績あり——同じ回帰チェックをgameplay-qaに追加すること）。",
+        "retry_behavior": "この場でのやり直しはない（1回のコミット）。章に入り直せば、食材の組み合わせ・学校の移動時間/締切が新しくランダム化された、本当の意味でのやり直しができる。",
+        "E": "積み分け・訪問順の両方が正しければ『2校とも安全な状態で時間までに届いた』という成功結果（schoolLunch.tsのresolution参照）。どちらか一方でも誤っていれば正直な失敗結果になり、センターへ連絡して見直すという実務同様の枠組みで話は先に進む（進行はブロックしない）。",
+        "job_reveal": "既存のdiscoveryEcho（schoolLunch.tsのlogistics-lunchエントリ、『食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。』）がそのまま使える。実装は成功・失敗いずれの結果からもjob revealへ接続する。",
+        "first_5_seconds": "design/first_5_seconds_v4.jsonの内容をそのまま採用: 4枚の食材カード（中立的な名前、タップで保存の目安が読める）と4つの荷室（🧊冷凍-15℃／❄️冷蔵5℃／🌡️冷蔵10℃／📦常温）、下に2つの学校カード（たんぽぽ小/けやき小、タップで移動時間・受け入れ時刻が読める）が見える。最初に期待されるタップは、気になる食材カードをタップして保存の目安を開く、または荷室スロットをタップして割り振ること。",
+        "no_manual_requirements": "説明文なし。design/no_manual_exploit_check_v4.jsonの要件をすべて満たす: (1) タップと『？』的開示のみの操作規約（既存Q1と同一）。(2) 食材カードの保存の目安と学校カードの移動時間・受け入れ時刻という文脈だけで、どれが正解かをシステムが直接教えない。(3) 荷室に食材形状を連想させるアイコン（魚・肉・牛乳等の絵文字）を使わない——温度帯のみを示す中立アイコン（🧊/❄️/🌡️/📦）に限定する。食材カード側のアイコンも、特定の荷室を連想させる形状（雪の結晶・温度計・箱の形など）を使わない。(4) 食材の表示名は中立的なもの（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉）に限定し、荷室名（冷凍・冷蔵・常温等）を含む表示名を使わない。(5) 食材カード・学校カードの色・強調表示は正解を示唆しない。(6) 食材カード・学校カードの表示順は毎セッション独立にシャッフルする（位置による答え漏れを防ぐ）。(7) 単発コミットで、同一セッション内の総当たり再挑戦は成立しない。",
+        "mobile_constraints": "375px幅を基準に、4枚の食材カード＋4つの荷室スロット＋2枚の学校カード＋出発ボタンが横スクロールなしで収まるレイアウトにする。食材カードは1カラムの縦積み（既存のclue_join/sow_and_growの`.dx-card`/`.dx-head`/`.dx-name`パターンを再利用）、荷室スロットは4つを横並びまたは2x2グリッドでタップ領域を十分に確保する。学校カードも縦積みで、タップした順の番号を大きく見やすく表示する。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存の`public/assets/kyushoku/delivery_center.jpg`（schoolLunch.tsのplace.image、K(\"delivery_center\")）と`delivery_check.jpg`をそのまま流用する。荷室・食材のアイコンは絵文字（🧊/❄️/🌡️/📦、食材カードは名前テキストのみ）で構成し、画像アセットを新規に必要としない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_translations:v5"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:50:43.761Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/game_spec_v1.json",
+          "created_at": "2026-09-10T02:50:43.762Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-load-and-route:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "既存の`public/assets/kyushoku/delivery_center.jpg`（配送センターの場面画像、schoolLunch.tsのlogistics-lunchエントリで既に使用中）と`delivery_check.jpg`をそのまま流用する。ゲーム画面自体は食材カード・荷室スロット・学校カードで構成され、荷室アイコンは温度帯のみを示す絵文字（🧊冷凍/❄️冷蔵5℃/🌡️冷蔵10℃/📦常温）、食材はテキストの名前のみで表現する（design review r3のANSWER_LEAK是正: 食材形状を連想させる絵文字は使わない）ため、新規イラスト生成は不要。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T02:50:53.513Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+          "created_at": "2026-09-10T02:50:53.514Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-load-and-route:implementation:v2",
+      "artifact_type": "implementation",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/implementation_v2.json",
+      "payload": {
+        "component_files": [
+          "src/q1/LogisticsGame.tsx",
+          "src/data/content/schoolLunch.ts"
+        ],
+        "logic_module": "src/q1/logisticsLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-load-route.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true). Implementation review r1 BLOCKER (ANSWER_LEAK): the originally-wired public/assets/kyushoku/delivery_center.jpg bakes in visible text labels for an old, wrong 3-zone model (冷凍-18℃以下／冷蔵0〜10℃／常温10〜25℃ -- the exact incorrect -18℃ figure fact_sheet_v4.json's uncertainties already flagged as unsupported) and visibly pre-sorts fish into the frozen compartment, contradicting the shipped 4-zone validZones model (raw_fish is cold5-only). Fixed by switching schoolLunch.ts's logistics-lunch place.image to the already-existing public/assets/kyushoku/delivery_check.jpg (a generic inspection scene with no baked-in temperature labels), still within art_brief v1's no_art_required scope -- no new art was generated.",
+        "d_preserved_statement": "logisticsLogic.tsのFOODS/ZONES/ARCHETYPES/zoneWin/newRouteSessionはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。各食材を保存条件（validZonesモデル: 魚介類・食肉・乳製品・冷凍食品は上限条件、野菜・穀類は専用の常温区分）を満たす荷室へ積み分ける判断と、2校の移動時間・受け入れ時刻・学校間移動時間を照らし合わせて間に合う訪問順を選ぶ判断は、LogisticsGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。積み分け・訪問順が両方決まって初めて『出発する』が活性化し、1回のコミットで結果が確定する（同一セッション内の個別フィードバック付き再挑戦は実装されていない）。 実装レビューr1のHIGH是正: tools配列のtruck項目の説明文が『冷蔵室と常温室がある配送車』と、実際の4ゾーン（冷凍/冷蔵5℃/冷蔵10℃/常温）と矛盾していたため、正確な記述に修正した（このtools配列自体は現行のQ1シェルでは画面に描画されない未使用データだが、正確性のため修正）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:game_spec:v1",
+        "legacy-load-and-route:art_brief:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:17:19.794Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_v1.json",
+          "created_at": "2026-09-10T03:08:44.817Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_v2.json",
+          "created_at": "2026-09-10T03:17:19.795Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-load-and-route:implementation_qa:v2",
+      "artifact_type": "implementation_qa",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-load-and-route/design/implementation_qa_v2.json",
+      "payload": {
+        "first_5_seconds": "実機確認済み: 起動直後に4枚の食材カード（中立的な名前）と4つの荷室ボタン行（🧊冷凍/❄️冷蔵5℃/🌡️冷蔵10℃/📦常温）、下に2つの学校カードが見える。説明文なし。design/first_5_seconds_v4.json通り。",
+        "touch_targets": "食材カードの「？」ボタン・荷室ボタン・学校カードの「？」ボタン・訪問順ボタン・出発ボタンはいずれも既存の.dx-more/.zone-btn/.dx-commit/.btnクラス（44px前後の最小高さを持つ既存パターン）を再利用しており、新規に小さすぎるタップ領域を追加していない。",
+        "mobile_375": "375x812のビューポートで実機確認済み: document.documentElement.scrollWidth===clientWidth===375（横スクロールなし）。食材カード（1カラム縦積み、荷室ボタンは2x2グリッド）・学校カード・出発ボタンがすべて画面内に収まる。",
+        "direct_manipulation": "食材カードをタップ→保存の目安が開く、荷室ボタンをタップ→即座に選択状態（オレンジ色）に変わる、学校カードをタップ→即座に訪問順の番号が表示される、を実機ブラウザで確認済み。",
+        "reaction_timing": "各タップの視覚反応（選択色の変化、番号表示、詳細テキストの開閉）は即時（Reactの状態更新、アニメーション遅延なし）。",
+        "c_to_d": "実機確認済み: 食材カードの「？」を開くと実際の保存温度基準の読み物（例:『食肉・鯨肉は10℃以下で保存する決まり』）が表示され、その情報を読んでから荷室ボタンを選ぶという一連の流れが機能する。学校カードも同様に移動時間・受け入れ時刻を読んでから訪問順を選べる。 tools配列のtruck説明文（実際には現行シェルで未描画のデータ）も4ゾーンの正確な記述に修正済み。",
+        "consequence": "実機確認済み: 正しい組み合わせ（とり肉→冷蔵10℃、コロッケ→冷凍、牛乳→冷蔵5℃、じゃがいも→常温、たんぽぽ小→1番目、けやき小→2番目）で出発すると『2校とも、安全な状態で時間までに届いた！』の成功結果とJob Revealへ正しく接続することを確認。誤った組み合わせ（4食材すべてを冷凍に割り振り）で出発すると『うまく届けられなかった』というフラットな失敗結果になり、個別の誤り箇所は一切示されないことを確認。",
+        "retry": "実機確認済み: 失敗後も『先へ進む』でJob Reveal（しごと図鑑追加）まで正直に進行し、ブロックしない。同一セッション内のその場でのやり直しはなく（gameplay-qa-load-route.mjsで積み直しリテラルが存在しないことを機械的に確認済み）、章に入り直せば新しいランダム条件で再挑戦できる。",
+        "answer_leak": "gameplay-qa-load-route.mjsで機械的に確認: 荷室アイコン（🧊/❄️/🌡️/📦）に食材形状の絵文字（🐟🥩🥛🍗🥔🍞）を含まないこと、食材表示名（さば/とり肉/牛乳/コロッケ/ミックス野菜/じゃがいも/パン/小麦粉）が冷凍/冷蔵/常温を含まないことを検証済み。実機でも学校名・荷室の色/強調表示が正解を示唆しないことを目視確認。 実装レビューr1のBLOCKER是正: schoolLunch.tsのlogistics-lunchが参照する導入場面の画像をdelivery_center.jpg（冷凍-18℃以下/冷蔵0〜10℃/常温10〜25℃という誤った3ゾーンの数値ラベルが焼き込まれ、魚が冷凍区画に仕分け済みの状態で描かれていた——実際のゲームでは魚はcold5のみ正解）からdelivery_check.jpg（温度ラベルの焼き込みがない一般的な検品シーン）に差し替えた。実機で導入画面を再確認し、数値ラベルや矛盾する仕分け済み表示が一切ないことを確認済み。",
+        "brute_force": "gameplay-qa-load-route.mjsで機械的に確認: 固定単一荷室戦略（always_place_all_in_*）は全て5%未満、ランダム荷室推測は1%未満、単純な訪問順発見的手法（近い方を先に/締切が早い方を先に）はいずれも66.7%の理論上限に収まり完全な推論(100%)を大きく下回る。1回のコミットで結果が確定し、個別フィードバックが一切ないため総当たり攻略が成立しない（旧実装のfailText相当のコードが存在しないことも機械的に確認済み）。",
+        "visual_affordance": "選択済みの荷室ボタン・訪問順ボタンはオレンジ色に変化し、食材カード・学校カード自体も選択済み状態で枠線がオレンジになる（既存の.dx-card.selected/.dx-commit.on/.zone-btn.onパターンを再利用）。出発ボタンは条件が揃うまで視覚的に非活性（薄い色）になることを実機確認済み。",
+        "no_manual": "実機確認済み: ゲーム画面に説明文はなく、食材・学校カードの「？」を開いて読む以外に手がかりはない。design/no_manual_exploit_check_v4.jsonの要件（icon_leak/label_leak/position_leak/spam_submit等）はgameplay-qa-load-route.mjsおよび実機確認で満たされていることを確認。",
+        "job_reveal": "実機確認済み: 成功時・失敗時いずれも既存のdiscoveryEcho（『さっき、食材を温度ごとに積み分けて、回る順番も考えたよね。給食の食材を届ける仕事は、温度と時間を守って、食べ物の安全を学校までつないでいます。』）としごと図鑑追加画面へ正しく接続することを確認。成功時は🎉、失敗時は🤔の異なるトップフレーミングチップが表示され、Gate H HONEST OUTCOMEが機能していることを実機で確認済み。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-load-route.mjs（27/27 PASS）、npx tsc --noEmit（エラーなし）、npx oxlint src/q1/LogisticsGame.tsx src/q1/logisticsLogic.ts（エラーなし）、npx vite build（成功）、Browser paneでの実機確認（成功パス・失敗パス・375pxモバイルビューポート・保存目安/移動時間の読み物開閉・Job Reveal接続をすべて確認）。。実装レビューr1のBLOCKER/HIGH是正後、npx tsc --noEmit / oxlint / gameplay-qa-load-route.mjs（27/27 PASS）/ vite buildを再実行し、Browser paneで導入画面の差し替えを実機確認した。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-load-and-route:implementation:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:17:19.836Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_qa_v1.json",
+          "created_at": "2026-09-10T03:08:55.769Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-load-and-route/design/implementation_qa_v2.json",
+          "created_at": "2026-09-10T03:17:19.837Z",
+          "creator": "claude"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 88,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-load-and-route/design-review-r4.result.json",
+    "input": "factory/projects/legacy-load-and-route/design-review-r4-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-10T02:48:31.536Z"
+  },
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 90,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-load-and-route/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-load-and-route/impl-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-10T03:21:18.195Z"
+  },
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-load-and-route",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-10T01:16:42.848Z",
+  "updated_at": "2026-09-10T03:22:17.863Z",
+  "history": [
+    {
+      "at": "2026-09-10T01:16:42.848Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "load_and_route"
+    },
+    {
+      "at": "2026-09-10T01:16:42.927Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-load-and-route"
+    },
+    {
+      "at": "2026-09-10T01:16:42.968Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-10T01:16:42.968Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T01:16:43.008Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-10T01:16:43.008Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T01:16:43.049Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-10T01:16:43.049Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T01:16:43.088Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-10T01:48:21.471Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-10T01:48:21.471Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T01:49:33.102Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-10T01:49:33.102Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:49:33.143Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-10T01:49:33.143Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:49:54.000Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-10T01:49:54.000Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:50:34.668Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-10T01:50:34.668Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:52:42.134Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-10T01:52:42.134Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:53:11.853Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-10T01:53:11.853Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:54:17.866Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-10T01:54:17.866Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:c_compression:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:55:12.011Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-10T01:55:12.011Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:55:12.052Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-10T01:55:12.052Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:55:12.092Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-10T01:55:12.092Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T01:55:22.424Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "independent_review_pass"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:04:11.551Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v3"
+    },
+    {
+      "at": "2026-09-10T02:04:11.551Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:fact_sheet:v3",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T02:05:09.133Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v3"
+    },
+    {
+      "at": "2026-09-10T02:05:09.133Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:05:09.173Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v3"
+    },
+    {
+      "at": "2026-09-10T02:05:09.174Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:scope_core:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:06:27.395Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v2"
+    },
+    {
+      "at": "2026-09-10T02:06:27.395Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_scope_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:06:27.437Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v2"
+    },
+    {
+      "at": "2026-09-10T02:06:27.437Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:play_seeds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:06:47.544Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v2"
+    },
+    {
+      "at": "2026-09-10T02:06:47.544Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:07:32.748Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v2"
+    },
+    {
+      "at": "2026-09-10T02:07:32.748Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:c_compression:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:08:51.996Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v2"
+    },
+    {
+      "at": "2026-09-10T02:08:51.996Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_translations:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:09:50.756Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v2"
+    },
+    {
+      "at": "2026-09-10T02:09:50.756Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:09:50.798Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v2"
+    },
+    {
+      "at": "2026-09-10T02:09:50.798Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:09:50.837Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v2"
+    },
+    {
+      "at": "2026-09-10T02:09:50.837Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:28.207Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v4"
+    },
+    {
+      "at": "2026-09-10T02:11:28.207Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v4",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "legacy-load-and-route:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:38.891Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v4"
+    },
+    {
+      "at": "2026-09-10T02:11:38.891Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:scope_core:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:49.166Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v3"
+    },
+    {
+      "at": "2026-09-10T02:11:49.166Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_scope_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:49.208Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v3"
+    },
+    {
+      "at": "2026-09-10T02:11:49.208Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:play_seeds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:59.269Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v3"
+    },
+    {
+      "at": "2026-09-10T02:11:59.269Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:reference_research:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:11:59.313Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v3"
+    },
+    {
+      "at": "2026-09-10T02:11:59.313Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:c_compression:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:12:11.543Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v3"
+    },
+    {
+      "at": "2026-09-10T02:12:11.543Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_translations:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:12:24.521Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v3"
+    },
+    {
+      "at": "2026-09-10T02:12:24.521Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:12:24.562Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v3"
+    },
+    {
+      "at": "2026-09-10T02:12:24.562Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:12:24.603Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v3"
+    },
+    {
+      "at": "2026-09-10T02:12:24.603Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_back_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:25.530Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v4"
+    },
+    {
+      "at": "2026-09-10T02:30:25.530Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:fact_sheet:v4",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T02:30:33.548Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v5"
+    },
+    {
+      "at": "2026-09-10T02:30:33.548Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:33.590Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v5"
+    },
+    {
+      "at": "2026-09-10T02:30:33.590Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:scope_core:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:41.247Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v4"
+    },
+    {
+      "at": "2026-09-10T02:30:41.247Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_scope_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:41.289Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v4"
+    },
+    {
+      "at": "2026-09-10T02:30:41.289Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:play_seeds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:50.526Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v4"
+    },
+    {
+      "at": "2026-09-10T02:30:50.526Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:reference_research:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:50.569Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v4"
+    },
+    {
+      "at": "2026-09-10T02:30:50.569Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:c_compression:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:30:57.727Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v4"
+    },
+    {
+      "at": "2026-09-10T02:30:57.727Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_translations:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v4",
+        "legacy-load-and-route:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:31:07.348Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v4"
+    },
+    {
+      "at": "2026-09-10T02:31:07.348Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:31:07.388Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v4"
+    },
+    {
+      "at": "2026-09-10T02:31:07.388Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v4",
+        "legacy-load-and-route:first_5_seconds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:31:07.431Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v4"
+    },
+    {
+      "at": "2026-09-10T02:31:07.431Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_back_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:06.048Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v5"
+    },
+    {
+      "at": "2026-09-10T02:41:06.048Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:fact_sheet:v5",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T02:41:13.725Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v6"
+    },
+    {
+      "at": "2026-09-10T02:41:13.725Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:scope_core:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:fact_sheet:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:13.766Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v6"
+    },
+    {
+      "at": "2026-09-10T02:41:13.766Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:ae:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:scope_core:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:22.682Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v5"
+    },
+    {
+      "at": "2026-09-10T02:41:22.682Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_scope_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:22.732Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v5"
+    },
+    {
+      "at": "2026-09-10T02:41:22.732Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:play_seeds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:29.894Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v5"
+    },
+    {
+      "at": "2026-09-10T02:41:29.894Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:reference_research:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:29.934Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v5"
+    },
+    {
+      "at": "2026-09-10T02:41:29.934Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:c_compression:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:37.383Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v5"
+    },
+    {
+      "at": "2026-09-10T02:41:37.383Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_translations:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:play_seeds:v5",
+        "legacy-load-and-route:c_compression:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:45.085Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v5"
+    },
+    {
+      "at": "2026-09-10T02:41:45.086Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:first_5_seconds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:45.127Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v5"
+    },
+    {
+      "at": "2026-09-10T02:41:45.127Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:no_manual_exploit_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v5",
+        "legacy-load-and-route:first_5_seconds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:41:45.166Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v5"
+    },
+    {
+      "at": "2026-09-10T02:41:45.166Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:core_back_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:48:31.536Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-load-and-route/design-review-r4.result.json"
+    },
+    {
+      "at": "2026-09-10T02:48:31.536Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-10T02:48:38.019Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-10T02:48:38.019Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T02:50:43.762Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T02:50:43.762Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T02:50:53.514Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T02:50:53.514Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:08:44.817Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-10T03:08:44.818Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:game_spec:v1",
+        "legacy-load-and-route:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:08:55.770Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-10T03:08:55.770Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:17:19.795Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v2"
+    },
+    {
+      "at": "2026-09-10T03:17:19.795Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation:v2",
+      "invalidated": [
+        "implementation_qa"
+      ],
+      "sources": [
+        "legacy-load-and-route:game_spec:v1",
+        "legacy-load-and-route:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:17:19.837Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v2"
+    },
+    {
+      "at": "2026-09-10T03:17:19.837Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-load-and-route:implementation_qa:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-load-and-route:implementation:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:21:18.196Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-load-and-route/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T03:21:27.770Z",
+      "event": "gate_refused",
+      "gate": "RELEASE",
+      "reasons": [
+        "task-state can-deploy: qa_status is null, must be PASS",
+        "task-state can-deploy: review_required=true but review_status is null, must be PASS with valid canonical evidence (see set-review)"
+      ]
+    },
+    {
+      "at": "2026-09-10T03:22:17.862Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T03:22:17.863Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ]
+}

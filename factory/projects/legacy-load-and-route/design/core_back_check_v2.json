@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "t1-zone-and-route（design review r1是正版）は、CORE（食材ごとの保存温度基準に沿って積み分け、複数校の移動時間・締切から間に合う訪問順を選ぶ）をそのまま表現している。子どもは食材カード・学校カードの情報を自分で見比べて割り振り・訪問順を決め、システムは先に正解を示さない。SCOPE（給食編）も変わらず代表的。design-sim.mjs v2で、魚肉の基準差が実際の判断に影響すること、単純な発見的手法がいずれも理論保証された margin で完全な推論に劣ることを確認済み。",
+  "pass": true
+}

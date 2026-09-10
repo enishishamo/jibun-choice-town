@@ -1,0 +1,144 @@
+{
+  "n": 20000,
+  "zone": {
+    "foods": [
+      {
+        "id": "raw_fish",
+        "validZones": [
+          "cold5"
+        ]
+      },
+      {
+        "id": "raw_meat",
+        "validZones": [
+          "cold5",
+          "cold10"
+        ]
+      },
+      {
+        "id": "milk",
+        "validZones": [
+          "cold5",
+          "cold10"
+        ]
+      },
+      {
+        "id": "frozen_croquette",
+        "validZones": [
+          "frozen"
+        ]
+      },
+      {
+        "id": "frozen_vegetable",
+        "validZones": [
+          "frozen"
+        ]
+      },
+      {
+        "id": "potato",
+        "validZones": [
+          "ambient"
+        ]
+      },
+      {
+        "id": "bread",
+        "validZones": [
+          "ambient"
+        ]
+      },
+      {
+        "id": "flour",
+        "validZones": [
+          "ambient"
+        ]
+      }
+    ],
+    "zones": [
+      "frozen",
+      "cold5",
+      "cold10",
+      "ambient"
+    ],
+    "drawSize": 4,
+    "results": {
+      "legitimate_all_correct": 1,
+      "always_place_all_in_frozen": 0,
+      "always_place_all_in_cold5": 0,
+      "always_place_all_in_cold10": 0,
+      "always_place_all_in_ambient": 0,
+      "random_zone_per_item": 0.0101,
+      "treats_all_cold_items_as_cold10": 0.4995,
+      "treats_all_cold_items_as_cold5": 1
+    }
+  },
+  "route": {
+    "archetypes": [
+      {
+        "id": "both-agree",
+        "slotA": {
+          "travel": 10,
+          "deadline": 30
+        },
+        "slotB": {
+          "travel": 40,
+          "deadline": 90
+        },
+        "between": 30,
+        "correctIsSlotA": true
+      },
+      {
+        "id": "nearer-only-correct",
+        "slotA": {
+          "travel": 15,
+          "deadline": 50
+        },
+        "slotB": {
+          "travel": 35,
+          "deadline": 45
+        },
+        "between": 20,
+        "correctIsSlotA": true
+      },
+      {
+        "id": "tighter-only-correct",
+        "slotA": {
+          "travel": 15,
+          "deadline": 50
+        },
+        "slotB": {
+          "travel": 25,
+          "deadline": 30
+        },
+        "between": 20,
+        "correctIsSlotA": false
+      }
+    ],
+    "archetypeDistribution": {
+      "nearer-only-correct": 6674,
+      "tighter-only-correct": 6613,
+      "both-agree": 6713
+    },
+    "results": {
+      "legitimate_full_reasoning": 1,
+      "tighter_deadline_first": 0.6663,
+      "nearer_first": 0.6694,
+      "random_order": 0.5023
+    }
+  },
+  "verdict": {
+    "zone_legitimate_always_wins": true,
+    "zone_fixed_zone_guess_fails": true,
+    "zone_random_guess_stays_low": true,
+    "zone_fish_threshold_is_load_bearing": true,
+    "zone_conservative_cold5_strategy_is_legitimate": true,
+    "route_zero_winner_rate": 0,
+    "route_legitimate_always_wins": true,
+    "route_tighter_deadline_heuristic_rate": 0.6663,
+    "route_nearer_heuristic_rate": 0.6694,
+    "route_heuristics_guaranteed_below_full_reasoning": true,
+    "route_margin_over_tighter_heuristic": 0.3337,
+    "route_margin_over_nearer_heuristic": 0.3306,
+    "route_archetype_distribution_balanced": true
+  },
+  "notes": "v4 (design review r3 FAIL 68 repair, BLOCKER ANSWER_LEAK + HIGH CORE_DISTORTED_BY_PROSE): the zone-model logic and FOODS data are UNCHANGED from v3 (round-2's blocker fix was confirmed closed by the r3 reviewer) -- this round's fixes were (1) removing food-shaped zone icons (🐟/🥛) from the UI-facing design docs (first_5_seconds/game_translations), which had let a child match icon-to-food without reading the storage-limit text at all, and (2) correcting fact_sheet/comment prose that had over-generalized 'every threshold is an upper bound, colder is always safe' to ALL 6 real categories -- it only holds for fish/meat/milk/frozen; 生鮮果実・野菜's 10℃前後 is a range (quality, not safety) and 穀類加工品's 室温 is a separate ambient category, both correctly kept at exactly one validZone (ambient) in the FOODS data, which never claimed otherwise. Also asserts route_zero_winner_rate has zero UNsolvable archetypes, not just zero ambiguous ones (r3 LOW fix). v3 (design review r2 FAIL 62 repair, BLOCKER CORE_DISTORTED_BY_GAME): the 厚生労働省 storage thresholds for fish/meat/milk/frozen are upper bounds ('◯C以下'), so v2's model -- treating cold5/cold10 as mutually exclusive categories and scoring meat/milk placed in cold5 (colder, still within their 10C limit) as WRONG -- contradicted the source table it claimed to implement. v3 gives each food a `validZones` list (every zone that satisfies its real limit): raw_fish -> [cold5] only (5C is strictly tighter than meat/milk's 10C), raw_meat/milk -> [cold5, cold10] (either satisfies 10C or below). The exploit-relevance check is redefined to what actually violates a real threshold: 'treats_all_cold_items_as_cold10' (ignoring fish's stricter limit) now fails whenever a session draws raw_fish; the mirror-image 'treats_all_cold_items_as_cold5' (always picking the colder, safer option) is verified to be a LEGITIMATE strategy (100% win rate), not a penalized guess. route_zero_winner_rate is computed by enumerating all 3 archetypes x 2 mirror states and asserting exactly one winner each (design review r2 LOW fix -- was previously a hand-typed literal 0)."
+}
