@@ -1,0 +1,195 @@
+{
+  "game_id": "legacy-layer-and-compare",
+  "profession": "都市の暑さを分析し、街づくりを考える仕事",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "layer_and_compare",
+  "creator": "claude-code",
+  "state": "AE_READY",
+  "current_stage": "GAME_TRANSLATION",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-layer-and-compare:fact_sheet:v1",
+      "artifact_type": "fact_sheet",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/fact_sheet.json",
+      "payload": {
+        "profession": "都市の暑さを分析し、街づくりを考える仕事",
+        "sources": [
+          {
+            "url": "factory/state/audits/q1-audit.json",
+            "type": "internal_audit"
+          }
+        ],
+        "who_or_what_they_serve": "(from current implementation — verify)",
+        "representative_duties": [
+          "3地点から2地点を比較し、日射・風・建物・樹木レイヤーで原因を調べ、1地点へ暑さ対策を置いて再シミュレーションする分析パズル"
+        ],
+        "expertise": [
+          "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+        ],
+        "tools": [
+          "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+        ],
+        "information_used": [
+          "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+        ],
+        "decisions": [
+          "レイヤーを重ね、比較地点を選び、暑さの原因から対策地点を判断してシミュレーションする"
+        ],
+        "outputs_or_value": "失敗後に対策地点を解除して選び直すか、選択肢から別地点を直接指定して再シミュレーションする",
+        "adjacent_profession_boundaries": "(verify)",
+        "uncertainties": [
+          "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+        ],
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/layer_and_compare.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:39:21.661Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/fact_sheet.json",
+          "created_at": "2026-09-10T03:39:21.662Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-layer-and-compare:scope_core:v1",
+      "artifact_type": "scope_core",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/scope_core.json",
+      "payload": {
+        "core": "地点を選んでデータレイヤーを比較し、原因に合う場所へ対策を置き、再シミュレーションの温度変化を確認する。",
+        "scope": "街（猛暑）／暑い市街地",
+        "scope_is_representative_because": "(current implementation; verify)",
+        "profession_name_hidden_test": "(re-run)",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/layer_and_compare.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:39:21.699Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/scope_core.json",
+          "created_at": "2026-09-10T03:39:21.700Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-layer-and-compare:ae:v1",
+      "artifact_type": "ae",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/ae.json",
+      "payload": {
+        "A": "街（猛暑）／暑い市街地",
+        "B": "3地点から2地点を比較し、日射・風・建物・樹木レイヤーで原因を調べ、1地点へ暑さ対策を置いて再シミュレーションする分析パズル",
+        "C": "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After",
+        "D": "レイヤーを重ね、比較地点を選び、暑さの原因から対策地点を判断してシミュレーションする",
+        "E": "失敗後に対策地点を解除して選び直すか、選択肢から別地点を直接指定して再シミュレーションする",
+        "derived_from": "reverse_audit",
+        "reverse_audit": "factory/state/legacy/reverse-audits/layer_and_compare.json"
+      },
+      "creator": "reverse-audit",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T03:39:21.736Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-layer-and-compare/backfill/ae.json",
+          "created_at": "2026-09-10T03:39:21.737Z",
+          "creator": "reverse-audit"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-layer-and-compare",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-10T03:39:21.551Z",
+  "updated_at": "2026-09-10T03:39:21.774Z",
+  "history": [
+    {
+      "at": "2026-09-10T03:39:21.552Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "layer_and_compare"
+    },
+    {
+      "at": "2026-09-10T03:39:21.623Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-layer-and-compare"
+    },
+    {
+      "at": "2026-09-10T03:39:21.662Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-10T03:39:21.662Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T03:39:21.700Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-10T03:39:21.700Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T03:39:21.737Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-10T03:39:21.737Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T03:39:21.773Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    }
+  ]
+}
