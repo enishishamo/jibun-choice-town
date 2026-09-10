@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sort-out-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 90,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "BATCHING_STATE_CLOSURE: selectTool and apply use functional setters but still read related state from render-scope closures. selectTool reads appliedTool[id], while apply reads selectedTool[id]. Thus the implementation and QA claim that all transition decisions are derived from updater prev is false; a same-batch select→apply sequence can observe stale selectedTool and discard the application."
+    ],
+    "medium": [
+      "QA_REGRESSION_VACUOUS: The harness's batching-safety assertion explicitly accepts `!selectedTool[id]` inside the appliedTool updater, so it passes the precise stale render-scope dependency it claims to prevent.",
+      "QA_REGRESSION_VACUOUS: The neutral-identity check only requires two occurrences of `📦 異物` across both playing and reflection branches and forbids three exact legacy names. A new fixed identity such as `🥄 金属片` in the playable card could pass while the reflection copy supplies the two neutral-label matches.",
+      "IMPLEMENTATION_QA_EVIDENCE_INACCURATE: The claimed card open/close interaction is not implemented: openItem only adds to the Set, the clickable target is the 38px `dx-more` button rather than the full header/card, and applied cards remove the control.",
+      "MOBILE_UNIFORMITY_UNSUPPORTED: The implementation QA claims closed and opened cards retain identical heights, but `dx-card` has no fixed/minimum height and opening a card adds variable-length observation text, three tool buttons, and an apply button. The reused responsive classes support width containment but not the claimed height equality."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "BATCHING_STATE_CLOSURE",
+        "severity": "HIGH",
+        "finding": "Functional setters still depend on render-scope sibling state: selectTool consults appliedTool and apply consults selectedTool. This contradicts the required batching-safe prev-derived transition pattern and can lose a same-batch select→apply operation.",
+        "file": "src/q1/RecycleGame.tsx"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The purported batching regression check passes when apply contains the stale closure read `selectedTool[id]`, so its name overstates what it verifies.",
+        "file": "factory/harness/gameplay-qa-sort-out.mjs"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The identity regression check counts neutral labels across separate outcome branches and only rejects three exact old names, allowing other fixed material identities in the playable branch.",
+        "file": "factory/harness/gameplay-qa-sort-out.mjs"
+      },
+      {
+        "code": "IMPLEMENTATION_QA_EVIDENCE_INACCURATE",
+        "severity": "MEDIUM",
+        "finding": "QA claims card/header open-close behavior and uniform closed/open heights that the JSX and shared CSS do not implement.",
+        "file": "factory/projects/legacy-sort-out/design/implementation_qa_v1.json"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "25/25 passing, but two important source-level checks are non-vacuous only superficially and do not establish their stated guarantees",
+      "design_sim_ran": true,
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "batching_bug_absent": false,
+      "item_identity_neutral_and_coherent": true,
+      "no_exclusivity_overclaim": true,
+      "no_mismatch_partial_effect_overclaim": true,
+      "label_leak_closed": true,
+      "gate_g_correct": true,
+      "gate_h_correct": true,
+      "disclosure_gating_correct": true,
+      "content_regression_check_non_vacuous": false,
+      "content_accurately_updated": true,
+      "ready_for_release": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sort-out/design/design-sim.mjs — executed successfully: 7 passed, 0 failed; legitimate reasoning 1.0, blind strategies approximately 0.04, elimination 0.3281",
+      "factory/harness/gameplay-qa-sort-out.mjs:156 — executed successfully: 25 passed, 0 failed",
+      "src/q1/sortOutLogic.ts:20 — property set matches design-sim",
+      "src/q1/sortOutLogic.ts:25 — correct-tool mapping matches design-sim",
+      "src/q1/sortOutLogic.ts:38 — each item is sampled independently with replacement",
+      "src/q1/sortOutLogic.ts:44 — sessionWin requires every item/tool match",
+      "src/q1/RecycleGame.tsx:48 — openItem correctly derives its Set from prev",
+      "src/q1/RecycleGame.tsx:55 — selectTool derives selectedTool from prev but reads render-scope appliedTool",
+      "src/q1/RecycleGame.tsx:58 — apply derives appliedTool from prev but reads render-scope selectedTool",
+      "src/q1/RecycleGame.tsx:192 — playable cards use the neutral `📦 異物` identity",
+      "src/q1/RecycleGame.tsx:201 — applied cards no longer render controls, preventing ordinary retry/reopening",
+      "src/q1/RecycleGame.tsx:208 — mismatch copy is scoped to this scene and makes no real-world zero-effect claim",
+      "src/q1/RecycleGame.tsx:94 — success copy only claims all three scene items were correctly sorted",
+      "src/q1/RecycleGame.tsx:118 — reflection completion requires a pick for every item",
+      "src/q1/RecycleGame.tsx:128 — reflection re-presents every session observation through PROPERTY_OBSERVATION",
+      "src/q1/RecycleGame.tsx:159 — reflection explicitly states that its choices do not change the result",
+      "src/q1/RecycleGame.tsx:162 — continuation remains disabled until reflection is complete",
+      "src/q1/RecycleGame.tsx:163 — partial path calls onPartialComplete with onComplete fallback",
+      "src/q1/RecycleGame.tsx:212 — tool and apply controls are hidden until that specific item is opened",
+      "src/q1/RecycleGame.tsx:228 — apply is disabled until that item's selectedTool exists",
+      "factory/harness/gameplay-qa-sort-out.mjs:91 — batching check accepts the stale selectedTool closure dependency",
+      "factory/harness/gameplay-qa-sort-out.mjs:106 — identity check uses cross-branch occurrence counting and a narrow legacy-name blacklist",
+      "src/index.css:4236 — dx-card has content-driven height with no uniform-height constraint",
+      "src/data/content/schoolLunch.ts:417 — mission accurately describes observe-then-match behavior",
+      "src/data/content/schoolLunch.ts:419 — recycle-lunch tools is empty",
+      "src/data/content/schoolLunch.ts:424 — discoveryEcho uses magnetic, wind, and hand sorting with no stale net reference",
+      "src/q1/registry.ts:78 — registry comment accurately describes observation followed by property-matched tool selection"
+    ],
+    "recommended_actions": [
+      "Co-locate each item's opened, selected, and applied fields in one state object and make select/apply transitions depend exclusively on that setter's prev value, following HotelReceiveGame's groupUI pattern.",
+      "Rewrite the batching harness assertion to fail on render-scope `selectedTool`/`appliedTool` dependencies inside transition updaters; preferably exercise extracted pure transition functions with sequential same-batch-style inputs.",
+      "Scope the neutral-identity assertion separately to the playable and reflection card blocks, require the exact neutral label in each mapped card, and reject any item-specific label/icon source rather than only three historical literals.",
+      "Either implement the specified full-card/open-close affordance and uniform card sizing or correct the implementation QA evidence and approved-spec deviation explicitly."
+    ]
+  },
+  "elapsed_sec": 72.359
+}

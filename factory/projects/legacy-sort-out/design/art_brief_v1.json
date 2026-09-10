@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "legacy-hotel-receive/legacy-delay-recover/legacy-allocate-and-forecast等の先例と同様、このゲームはカード・ボタン・絵文字・CSSのみで構成でき、新規シーン画像を必要としない。既存のリサイクル工場の背景画像（schoolLunch.tsのK(\"recycle_sorting\")、リサイクル工場の受入インシデントのplace.image）は場面の導入イメージとしてそのまま流用でき、旧仕組み（金属のスプーン／大きなビニール袋／プラスチックのスプーンという固有の異物の見た目、網／ふるいという旧道具）を視覚的に示す内容が焼き込まれていないことを実装時に確認する（legacy-load-and-routeのdelivery_center.jpgで発覚した『再利用アセットに旧設計のラベルが焼き込まれていた』教訓を踏まえる）。3枚の異物カードは同じ中立の絵文字・アイコン（例: 📦や❓）で表現し、道具は磁選機🧲・風力選別💨・手選別🫲の絵文字で表現する（schoolLunch.tsのtools配列が既に用意している絵文字と一致させる）。"
+}

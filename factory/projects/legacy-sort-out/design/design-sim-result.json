@@ -1,0 +1,11 @@
+{
+  "legitimate_full_reasoning": 1,
+  "random_pick": 0.0382,
+  "always_assume_fixed_mapping": 0.0377,
+  "always_magnet_everywhere": 0.0363,
+  "always_wind_everywhere": 0.0379,
+  "always_hand_everywhere": 0.0351,
+  "two_observed_plus_elimination_guess_third": 0.3281,
+  "all_checks_passed": true,
+  "n_per_check": 20000
+}

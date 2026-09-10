@@ -1,0 +1,32 @@
+{
+  "profession": "食品残渣を選別し肥料化するリサイクル工場作業員",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "ライン上の異物を観察し、磁選機、ふるい、手選別の性質を使い分けて食品だけの状態にする"
+  ],
+  "expertise": [
+    "工場の受入規則、異物の材質と大きさ、磁選機・ふるい・手選別の機能、誤った道具を使った際の結果"
+  ],
+  "tools": [
+    "工場の受入規則、異物の材質と大きさ、磁選機・ふるい・手選別の機能、誤った道具を使った際の結果"
+  ],
+  "information_used": [
+    "工場の受入規則、異物の材質と大きさ、磁選機・ふるい・手選別の機能、誤った道具を使った際の結果"
+  ],
+  "decisions": [
+    "道具を持ち替え、各異物の材質や大きさを観察して適切な道具を適用する"
+  ],
+  "outputs_or_value": "道具を持ち替えて同じ異物を何度でも再選別でき、正しく除去した異物は消える",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/sort_out.json"
+}

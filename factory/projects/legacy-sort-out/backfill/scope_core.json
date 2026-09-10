@@ -1,0 +1,8 @@
+{
+  "core": "道具を選び、異物へ適用し、取れたかまたは取れない理由を確認して次の道具や対象へ切り替える",
+  "scope": "給食編",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/sort_out.json"
+}

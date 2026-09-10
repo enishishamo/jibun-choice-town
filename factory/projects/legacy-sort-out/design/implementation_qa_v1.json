@@ -1,0 +1,18 @@
+{
+  "first_5_seconds": "PASS. Matches first_5_seconds_v2.json:导入テキスト表示後、3枚の同じ中立の見た目の異物カード（すべてdisabled）が並ぶ。browser-verified: 最初のカードをタップすると開き、観察内容が表示され、その異物の道具選択ボタンだけが有効化される（他はdisabledのまま）。",
+  "touch_targets": "PASS. 異物カードのヘッダー行全体・？/－ボタン・3つの道具選択ボタン・使うボタンはいずれも既存のdx-card/dx-more/dx-commit/btn choice CSSクラスを再利用しており、他のQ1ゲーム（DelayRecoverGame等）と同じタップ領域サイズ。",
+  "mobile_375": "PASS. resize_window(preset: mobile, 375x812)でbrowser-verified: 閉じた3枚のカード一覧、開いたカードの観察文＋3つの道具ボタン＋使うボタンのいずれも横スクロール・はみ出しなし。3枚のカードは閉じた状態・開いた状態とも同じ高さ・見た目を維持（観察文の文章量差による見た目の違いなし）。",
+  "direct_manipulation": "PASS. カードのタップで開閉、道具ボタンのタップで選択（ハイライト表示）、使うボタンのタップで確定、という一連の操作がすべて子ども自身の明示的なタップで表現される。システムが先に正解を教えることはない。",
+  "reaction_timing": "PASS. カードを開く・道具を選ぶ・使うを押す、のいずれも即座に視覚的な変化（観察文の表示、道具ボタンのハイライト、結果テキストとカード枠線の色変化）を伴う。",
+  "c_to_d": "PASS. 各異物の観察結果（近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い）を実際に読まなければ、どの道具を選ぶべきか判断できない構造（gameplay-qa-sort-out.mjsのlegitimate_full_reasoning=1、固定マッピング・単一道具・ランダムはいずれも約4%で検証済み）。",
+  "consequence": "PASS. 一致した異物はカード枠線が緑（selected）になり『（道具）で正しく仕分けられた！』と表示。不一致の異物は『この場面では、（道具）の原理はこの異物の性質に合わず、コンベアの上に残ったまま。』という正直な結果になる。3つとも一致すればonComplete（発酵→肥料→畑の演出）、1つでも不一致があればGate G振り返りを経てonPartialComplete（Gate H正直な結果）。",
+  "retry": "PASS. 異物ごとに1回の適用で結果が確定し、取り消し・再適用はできない（selectTool/applyのfunctional updaterがappliedTool[id]が既に設定済みの場合は状態を変更しない）。旧実装のdock-btn/holdingベースの無制限な道具持ち替えは完全に削除。",
+  "answer_leak": "PASS. 3枚の異物カードはすべて同じ中立の見た目（📦 異物）で、開いて観察結果を読むまでどの性質かは一切分からない。観察文言は道具名の漢字（磁選機／風力選別／手選別）を反復しない言い回し（近づけると引き寄せられる、等）。性質の割り当ては異物ごとに独立ランダムなので、他の異物の情報からの消去法でも判断できない（gameplay-qa-sort-out.mjsのelimination≈0.33、ランダムと同水準）。",
+  "brute_force": "PASS. gameplay-qa-sort-out.mjs: 25/25 checks（design-sim.mjsとの整合性、7種のexploit戦略シミュレーション、ソースレベルの回帰チェック18件）。旧実装のdock-btn/holdingベースの無制限な道具試行は構造的に排除。",
+  "visual_affordance": "PASS. 異物カード・道具選択ボタンはすべて同じ見た目・情報量で提示し、色や強調度で正解を示唆しない。カードのdisabled/有効状態がCSSクラスで明示される。",
+  "no_manual": "PASS. 説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる。no_manual_exploit_check_v2.jsonのlabel_leak/position_leak/visual_hierarchy_leak/reference_table系チェックはこのゲームには対応する常時参照テーブルが存在しないため非該当（対応表を画面に出す設計はcrowd-flowのt6のみで、sort_outのt1は不採用）。",
+  "job_reveal": "PASS. Browser-verified: 成功パス・部分失敗パスいずれも、job-reveal画面（食べ残しを資源に変える工場の仕事／📖しごと図鑑に追加された！）へ正しく到達。discoveryEchoは『さっき、異物の性質を観察してから、磁選機・風力選別・手選別を使い分けたよね。工場では、こうやって道具の物理的な原理をいかして、食べ残しを安全な肥料に変えています。』と表示され、旧実装由来の『網』という古いツール名への言及は残っていないことを確認した。",
+  "content_regression_check_verified_non_vacuous": "gameplay-qa-sort-out.mjsの『all 3 item cards render the SAME neutral label/icon』チェックについて、RecycleGame.tsx内の📦異物ラベルを一時的に『金属のスプーン』へ書き換えてから再実行し、チェックが正しくFAILすることを確認、その後元に戻して25/25 PASSへ復帰することを確認した（意図した回帰を実際に検出できることの検証）。",
+  "pass": true,
+  "evidence": "factory/harness/gameplay-qa-sort-out.mjs (25/25 PASS, 主要チェックの非空洞性をrevert testで検証); npx tsc --noEmit (clean); npm run lint (clean, 新規warningなし); npm run build (成功)。Browser pane playthrough (desktop 1280x720): 全問正解の成功パス→job-reveal画面まで到達、意図的に1問誤答させた部分失敗パス→Gate G振り返り画面（3項目すべての観察結果＋実際に選んだ道具を読み取り専用で再掲、全項目選択until 先へ進むが有効化）→onPartialCompleteの正直な結果チップ（けっかを送ったけど、まだ全部はつながっていないかも）→job-reveal画面、のいずれもconsoleエラーなしで確認。375px幅（mobile preset）でのレイアウト崩れなしも確認。"
+}

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-observe-and-apply-once（game_translations_v2.json、design_iteration 1のREPAIRで内容改訂）は、scope_core_v2.jsonのcoreが定義する『観察した性質に、実際に合う道具を選べたか』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。design review r1のBLOCKER是正: (1)(2) EXCLUSIVITY_OVERCLAIM/MISMATCH_PARTIAL_EFFECT_OVERCLAIM——C_interactionに実際とは逆の意味になっていた記述バグ（『選ばなかった道具は実際に無効だと断定するが』）と、system_reactionの断定的な『取りのぞけず、そのまま残ってしまった』という文言を、『この場面では原理が合わなかった』という検証可能な範囲の表現へ改めることで解消。(3) CORE_CAUSAL_MODEL_DISTORTED——異物の見た目を3枚とも同じ中立のアイコンにし、観察結果（性質）と矛盾する固有の物理的アイデンティティ（金属のスプーン等が独立ランダムな性質を受け取ってしまう構造）を排除することで解消——が、ae_v3.json/game_translations_v2.json/play_seeds_v2.json/first_5_seconds_v2.json/no_manual_exploit_check_v2.jsonのすべてに一貫して反映されていることを確認した。MEDIUM×2（LABEL_LEAK_TRIVIAL_MATCH: 観察文言を道具名の漢字をそのまま反復しない表現へ改訂。WORLD_FEEDBACK_QUALITY: コンベアから機械へ移る／残り続けるという具体的な視覚的変化を追加）も解消済み。design-sim.mjsの検証結果（legitimate_full_reasoning=1.0、固定マッピング・単一道具・ランダムはいずれも約4%、消去法戦略も約33%）は変更なく、D（子ども自身の判断）が実質的に必要とされていることを確認した。旧実装のreverse-audit指摘（brute force）は異物ごとの単発適用化で維持解消されている。",
+  "pass": true
+}

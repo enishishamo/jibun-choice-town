@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v3.jsonのD/Eは、『観察した性質に、実際に合う道具を選べたか』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、random_pick≈0.04、固定マッピング依存≈0.04、単一道具固定≈0.04、消去法戦略≈0.33[ランダムと同水準]）とも整合する。design review r1のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED——異物の見た目に固有の物理的アイデンティティ（金属のスプーン等）を持たせたまま性質を独立ランダムにしたため、観察結果と矛盾する組み合わせが生じうる設計上の不整合があったこと——を、ae_v3.jsonで異物の見た目を3枚とも同じ中立のアイコンへ改めることで解消）を確認した。legacy-crowd-flowで6ラウンドにわたり再発したEXCLUSIVITY_OVERCLAIM系統の教訓を踏まえ、成功・失敗いずれの結果表示も『現場全体の完全解決』『専門的判断の正しさ』『資料の直接引用としての権威』のいずれも主張しない、観察と道具の物理的原理の一致という検証可能な範囲だけに限定する方針も維持している。profession_name_hidden_testは、C（異物の観察データ、3種類の道具）とD（性質と道具のマッチング判断）が他の既存Q1ゲームと重複しないことを確認済み。",
+  "pass": true
+}

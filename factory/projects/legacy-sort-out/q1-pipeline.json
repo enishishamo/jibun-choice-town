@@ -1,0 +1,1388 @@
+{
+  "game_id": "legacy-sort-out",
+  "profession": "食品残渣を選別し肥料化するリサイクル工場作業員",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "sort_out",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 1,
+  "repair_count": 2,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-sort-out:fact_sheet:v2",
+      "artifact_type": "fact_sheet",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/fact_sheet_v2.json",
+      "payload": {
+        "profession": "食品残渣を選別し肥料化するリサイクル工場作業員（食品リサイクル法に基づく登録再生利用事業者の選別・前処理工程作業員）",
+        "sources": [
+          {
+            "url": "https://hourei.net/law/325AC0000000127",
+            "type": "government_report",
+            "org": "肥料の品質の確保等に関する法律（肥料法）第25条"
+          },
+          {
+            "url": "https://www.maff.go.jp/j/syouan/nouan/kome/k_hiryo/attach/pdf/compostable_plastic-2.pdf",
+            "type": "government_report",
+            "org": "農林水産省「生分解性プラスチック製の生ごみ袋を用いた堆肥の生産に係るガイダンス」（令和6年7月）"
+          },
+          {
+            "url": "https://www.maff.go.jp/j/shokusan/recycle/syoku_loss/161227_6.html",
+            "type": "government_report",
+            "org": "農林水産省「食品リサイクル法」"
+          },
+          {
+            "url": "https://food-town.jp/customer/introduction/detail/139",
+            "type": "company_official",
+            "org": "FOOD TOWN「異物選別装置とは？｜製造工程・商品種別解説」"
+          },
+          {
+            "url": "https://www.nihonsenki.com/lineup/magnetic_force.html",
+            "type": "company_official",
+            "org": "日本専機株式会社「高磁力選別機」"
+          },
+          {
+            "url": "https://www.ryohshin.co.jp/column/6346/",
+            "type": "company_official",
+            "org": "リョーシン「Nihot社の風力選別機とは？」"
+          },
+          {
+            "url": "https://www.industrialwaste-sorter.com/data/choice.html",
+            "type": "practitioner_primary",
+            "org": "選別機マニュアル（industrialwaste-sorter.com）「中間処理の精度を上げる『選別』とは？」"
+          },
+          {
+            "url": "https://www.city.chiba.jp/kankyo/junkan/haikibutsu/kyushokuzansamodel.html",
+            "type": "government_report",
+            "org": "千葉市「学校給食残渣再資源化モデル事業」"
+          }
+        ],
+        "who_or_what_they_serve": "食品廃棄物（給食残渣等）を排出する側（学校給食センター等）、肥料の出荷先（農家等）、農林水産省・農政局（登録再生利用事業者としての届出・検査対応）。",
+        "representative_duties": [
+          "コンベア上を流れる食品廃棄物を目視で観察し、混入している異物（磁性金属／軽いフィルム状の物／磁石に反応せず風にも飛ばない小さな硬い物）を見つける",
+          "異物の見た目・重さ・挙動から、磁選機・風力選別・手選別のどれが実際に有効かを見極めて選ぶ——ただし材質は見た目だけで確実に判別できるとは限らない（磁性ステンレスと非磁性ステンレスの区別など）",
+          "発酵工程に入る前の前処理段階で、可能な限り異物を取り除く（発酵後は個別に取り除くことがより困難になる）"
+        ],
+        "expertise": [
+          "肥料法第25条は、生産業者が肥料に品質を低下させる異物を混入してはならないと定めており（異物混入の禁止）、堆肥もこの規制対象に含まれる。農林水産省の令和6年ガイダンスは『堆肥中にプラスチックが残存していた場合、肥料法上、異物とみなされる』と明記している",
+          "磁選機は磁力で『磁性を帯びた異物（主に鉄、フェライト系ステンレス等）』を引き寄せて除去する装置——ただしアルミニウムや多くのステンレス（18-8/SUS304系）等の非磁性金属は磁選機では除去できない。投入フィーダーを併用することで選別精度が向上するとされ、単純に磁石を近づけるだけでは見逃しが起こりうることが示唆される（日本専機、企業公式）",
+          "風力選別機は、風を当てて比重（浮遊速度）の違いで軽い物（フィルム状のプラスチック・ビニール袋等）を吹き飛ばして分離する装置（リョーシン、企業公式）。手選別は、機械選別（磁力・風力等）で判別・除去しきれない異物に対する、人の目による最終確認・補完として位置づけられている",
+          "業界の実務解説（FOOD TOWN、企業公式）は『選別機一台導入すれば複数の異物を排除できるということではない』と明記しており、実際の異物除去は複数の選別技術を組み合わせて行うのが基本である。このゲームは『1つの道具を正しく選べば、その道具の種類の異物として正しく仕分けられる』という、資料が実際に裏付ける範囲の判断のみを問い、『これで工場のすべての異物が完全に取り除かれた』という現場全体の完全解決は主張しない"
+        ],
+        "tools": [
+          "磁選機（磁力選別機）: 磁性を帯びた金属を引き寄せて除去する",
+          "風力選別機: 風を当てて、軽くて風に舞う物を吹き飛ばして分離する",
+          "手選別: 機械選別で判別・除去しきれない物を、人の目で見て取りのぞく",
+          "工場の受入ルール（肥料法に基づく異物混入禁止の説明）"
+        ],
+        "information_used": [
+          "各異物の観察内容（磁石に反応するか／軽くて風に舞うか／どちらでもなく小さくて重いか）"
+        ],
+        "decisions": [
+          "各異物を観察し、その性質（磁石への反応・軽さ・大きさ）を読み取ってから、その性質に対応する道具（磁選機／風力選別／手選別）を選ぶ（観察せずに道具を当てずっぽうで使わない）",
+          "1つの異物につき1回の適用で結果を確定する（実際の工場ラインでも、異物は流れ続けており、同じ異物を何度でも試せるわけではない）——この判断で問われているのは『観察した性質に、実際に合う道具を選べたか』であり、その道具を使えば工場のすべての異物が完全に取り除かれる、というより広い主張ではない"
+        ],
+        "outputs_or_value": "観察した性質と道具が合っていれば、その異物はその場で正しく仕分けられる。合っていなければ、その異物は仕分けられずにそのまま残る——工場全体としては、これに加えて複数の選別技術の組み合わせや人による最終確認を経て、初めて食品廃棄物が肥料として出荷できる状態になる。",
+        "adjacent_profession_boundaries": "肥料の最終出荷可否の判断者・登録再生利用事業者としての届出/検査対応は、個々の選別作業員より上位の管理者・事業者の役割（一次資料で権限範囲の詳細までは確認できず、FACT_CHECK_REQUIRED）。原料を排出する学校給食センター等・肥料の出荷先の農家等とは別の主体。",
+        "uncertainties": [
+          "堆肥化施設の選別作業員個人の『よくある失敗』を具体的に類型化した一次資料は見つからなかった——磁選機の『投入フィーダー併用で精度向上』という記載から、適切な運用をしないと見逃しが起こりうることが示唆されるのみ",
+          "ステンレス鋼の磁性・非磁性（18-8は非磁性、SUS430系は磁性、強加工で弱磁性を帯びうる）に関する情報源はYahoo!知恵袋・個人の技術ブログが中心であり、研究機関・公的機関による厳密な検証を伴う一次資料ではない——技術的な大枠自体は金属工学の一般的な知識として広く見られる記述だが、断定的な数値主張はしない",
+          "『異物が発酵工程に混入すると個別に取り除くことが著しく困難になる』という不可逆性を直接述べた一次資料は見つからなかった——堆肥の定義（堆積・攪拌し腐熟させたもの）と選別工程が発酵の前段階に位置づけられる一般的な処理フローからの間接的な推論であり、このゲームでは具体的な時間経過・タイマーとしては使わず、異物ごとの単発コミット（様子見を続けない）というゲーム上の構造的ルールのみを採用する",
+          "堆肥に金属片・ガラス片が混入した場合の農作業者・機械への具体的な負傷・故障の実例・統計を示す一次資料は見つからなかった——このゲームでは『危険（怪我をする）』という演出は避け、法令（肥料法の異物混入禁止・品質低下）を根拠とする",
+          "legacy-crowd-flowで6ラウンドにわたり再発した『EXCLUSIVITY_OVERCLAIM』系統の教訓を踏まえ、このゲームの成功・失敗の結果表示は、①現場全体が完全に解決した、②専門的判断が完全に正しかったと証明された、③この対応づけが資料の直接引用である、のいずれも主張しない。単に『観察した性質と、選んだ道具の物理的な原理が合っていたかどうか』という、ゲームが実際に検証できる範囲の事実のみを述べる"
+        ],
+        "revision_note": "v1: reverse auditからのbackfill（未検証）。 v2: research.mdの一次資料調査に基づき全面的に書き直し。現行実装の『網（ふるい）』を、より実務に近い『風力選別』へ差し替え（research.md §2・§5——ふるいは主に発酵後の完成堆肥の仕上げ工程で使われ、軽いフィルム状の異物にはより直接的な根拠を持つ風力選別の方が対応する。既存content data（schoolLunch.ts）も既に『風力選別（wind、💨）』というツール名を用意していたが、旧ゲームコード（RecycleGame.tsx）は実際には未実装の『網』のままだった、というcontent-code不整合も同時に解消する）。legacy-crowd-flowの教訓を踏まえ、成功/失敗の結果表示の範囲をあらかじめ厳密に限定した設計方針をuncertaintiesに明記した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:fact_sheet:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T20:53:15.144Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sort-out/backfill/fact_sheet.json",
+          "created_at": "2026-09-10T20:36:15.691Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/fact_sheet_v2.json",
+          "created_at": "2026-09-10T20:53:15.145Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-sort-out:scope_core:v2",
+      "artifact_type": "scope_core",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/scope_core_v2.json",
+      "payload": {
+        "core": "リサイクル工場のラインに流れてきた3つの異物それぞれについて、その性質（磁石に反応する金属／軽くて風に舞う物／どちらでもなく小さくて重い物——どの異物がどの性質かは毎セッション独立にランダム）を観察してから、その性質に物理的な原理が合う道具（磁選機／風力選別／手選別）を1つ選び、異物ごとに1回の適用で結果を確定する判断のループ。ここで問われているのは『観察した性質に、実際に合う道具を選べたか』であり、その道具を使えば工場のすべての異物が完全に取り除かれる、という現場全体の完全解決や、専門的判断の正しさを主張するものではない——実際の食品リサイクル工場では、複数の選別技術の組み合わせと、人による最終確認を経て初めて食品廃棄物が肥料として出荷できる状態になる。観察せずに道具を当てずっぽうで使っても正解できない。",
+        "scope": "給食編／大変！今日の給食が間に合わない！——食品残渣を選別し肥料化するリサイクル工場作業員が、届いた食べ残しの異物を取りのぞく場面",
+        "scope_is_representative_because": "『異物の性質を観察してから、その性質に物理的な原理が合う道具を選ぶ』は、fact_sheet_v2.jsonの一次資料（肥料法第25条の異物混入禁止、磁選機・風力選別・手選別それぞれの実在する物理的原理）が示す選別・前処理工程の中核業務そのものであり、既存content data（schoolLunch.ts、リサイクル工場の受入インシデント）が既に設定している場面の典型的な適用例。",
+        "profession_name_hidden_test": "『異物の性質を観察し、道具を選ぶ』という記述だけでは職業名を当てられないが、E（3つの異物すべてで性質と道具が合っていれば正しく仕分けられたことになる、合っていない異物はそのまま残る）と組み合わせた文脈全体は、食品廃棄物を選別してリサイクルする工場という場面を指す。他の登場職業とはC（異物の観察データ、3種類の道具）とD（性質と道具のマッチング判断）が異なるため重複しない。",
+        "revision_note": "v1: reverse audit（exploit: brute force）からのbackfill。 v2: research.mdの一次資料調査に基づき新規作成。legacy-crowd-flowの教訓（EXCLUSIVITY_OVERCLAIM系統）を踏まえ、coreの成功条件を最初から『観察した性質と道具の物理的原理が合っていたか』という、ゲームが実際に検証できる範囲に厳密に限定し、現場全体の完全解決や専門的判断の正しさは主張しない設計にした。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:fact_sheet:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T20:53:15.186Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sort-out/backfill/scope_core.json",
+          "created_at": "2026-09-10T20:36:15.732Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/scope_core_v2.json",
+          "created_at": "2026-09-10T20:53:15.187Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-sort-out:ae:v3",
+      "artifact_type": "ae",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/ae_v3.json",
+      "payload": {
+        "A": "給食編／大変！今日の給食が間に合わない！——食品残渣を選別し肥料化するリサイクル工場作業員が、届いた食べ残しの異物を取りのぞく場面",
+        "B": "リサイクル工場のラインに、3つの異物が混ざって流れてきた。それぞれの異物が実際にどんな性質を持つか（磁石に反応する／軽くて風に舞う／どちらでもなく小さくて重い）は毎回、異物ごとに独立にランダムで決まり、固定ではない。異物の見た目の説明も、その異物が実際に持つ性質と食い違わないよう、性質に応じて描かれる（例えば同じ『小さな道具』でも、磁石に反応する性質なら『近づけるとカチッとくっついた』、そうでなければ『磁石には反応しなかった』という観察内容になる）。工場作業員として、それぞれの異物を観察してから、その性質に合う道具を選ぶ。",
+        "C": "各異物の観察カード（開くとその異物が今、実際にどんな性質か——磁石に反応する／軽くて風に飛ばされやすい／どちらでもなく小さくて重い、のいずれかが、その性質に応じた具体的な観察結果として書かれている）。3種類の道具（磁選機・風力選別・手選別）それぞれの、実在する物理的な原理の説明。",
+        "D": "各異物のカードを開いて実際の観察結果を読んでから、その性質に物理的な原理が合う道具を選ぶ（磁石に反応する＝磁選機、軽くて風に飛ばされやすい＝風力選別、どちらでもない＝手選別）。異物ごとに1回の適用で結果が確定し、後からやり直すことはできない（brute force排除のためのゲーム上の構造的ルール）。この判断で問われているのは『観察した性質に、選んだ道具の原理が合っていたか』であり、選ばなかった道具がその異物に対して現実に一切効果がないと主張するものでも、その道具を使えば工場のすべての異物が完全に取り除かれると主張するものでもない——実際の食品リサイクル工場では、複数の選別技術の組み合わせと、人による最終確認を経て初めて食品廃棄物が肥料として出荷できる状態になる。",
+        "E": "3つの異物すべてで、観察した性質と選んだ道具の物理的な原理が合っていれば、この場面ではすべて正しく仕分けられた、という結果になる。1つでも性質と道具の原理が合っていなければ、その異物はこの場面では仕分けられなかった、という正直な結果になる——選んだ道具が現実に持つ効果や、工場全体の異物除去への貢献について、このゲームは主張しない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:scope_core:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:02:41.256Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-sort-out/backfill/ae.json",
+          "created_at": "2026-09-10T20:36:15.773Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/ae_v2.json",
+          "created_at": "2026-09-10T20:53:15.228Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-sort-out/design/ae_v3.json",
+          "created_at": "2026-09-10T21:02:41.257Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-sort-out:core_scope_check:v2",
+      "artifact_type": "core_scope_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/core_scope_check_v2.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "scope_core_v2.jsonのcoreとae_v3.jsonのD/Eは、『観察した性質に、実際に合う道具を選べたか』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、random_pick≈0.04、固定マッピング依存≈0.04、単一道具固定≈0.04、消去法戦略≈0.33[ランダムと同水準]）とも整合する。design review r1のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED——異物の見た目に固有の物理的アイデンティティ（金属のスプーン等）を持たせたまま性質を独立ランダムにしたため、観察結果と矛盾する組み合わせが生じうる設計上の不整合があったこと——を、ae_v3.jsonで異物の見た目を3枚とも同じ中立のアイコンへ改めることで解消）を確認した。legacy-crowd-flowで6ラウンドにわたり再発したEXCLUSIVITY_OVERCLAIM系統の教訓を踏まえ、成功・失敗いずれの結果表示も『現場全体の完全解決』『専門的判断の正しさ』『資料の直接引用としての権威』のいずれも主張しない、観察と道具の物理的原理の一致という検証可能な範囲だけに限定する方針も維持している。profession_name_hidden_testは、C（異物の観察データ、3種類の道具）とD（性質と道具のマッチング判断）が他の既存Q1ゲームと重複しないことを確認済み。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:scope_core:v2",
+        "legacy-sort-out:ae:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:03:22.487Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/core_scope_check_v2.json",
+          "created_at": "2026-09-10T20:53:15.268Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/core_scope_check_v2.json",
+          "created_at": "2026-09-10T21:03:22.488Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-sort-out:play_seeds:v2",
+      "artifact_type": "play_seeds",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/play_seeds_v2.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-all-correct-reasoning",
+            "authentic_causal_loop": "3つの異物カード（見た目はすべて同じ中立のアイコン）を開くと、今回は1つ目が『近づけると引き寄せられる』、2つ目が『持ち上げるとふわっと軽く舞う』、3つ目が『どちらでもなく小さくてずしっと重い』というように性質が割り当てられている——毎セッション各異物で独立にランダムなので、他の2つを読んでも3つ目の性質は分からない。それぞれの観察内容を実際に読むと、合う道具（引き寄せられる→磁選機、ふわっと舞う→風力選別、どちらでもない→手選別）が分かる。",
+            "player_action": "3つの異物カードをすべて開いて観察内容を読み、それぞれの性質に合う道具を選んで適用し、異物ごとに実施ボタンを押す（1回の適用で確定）。",
+            "system_reaction": "3つの異物すべてで、観察した性質と道具の原理が合っていた、という結果とともに、それぞれの異物が該当する機械や手選別台へ移っていくアニメーションが表示される。",
+            "information_gained": "異物の見た目（3枚とも同じアイコン）だけでは性質は分からず、他の異物を読んでも消去法では分からず、実際に観察内容を読むことが判断の手がかりだと体感する。",
+            "next_judgment_or_action": "次のセッションでも、見た目や他の異物の情報から性質を決めつけず、実際に観察してから道具を選ぶ、という姿勢に気づく。",
+            "C_used": "3つの異物それぞれの観察内容（引き寄せられる／ふわっと舞う／どちらでもなく小さくて重い）。",
+            "D_expressed": "観察した性質に、物理的な原理が合う道具を選ぶ判断（design-sim.mjsのsessionWin）。",
+            "E_reached": "3つの異物すべてで観察内容と道具が合っていた、という正直な結果——工場全体の完全な異物除去や、選んだ道具が現実に持つ効果について、このゲームは主張しない。",
+            "risks": "見た目から性質を決めつける固定戦略や、他の2つを読んで消去法で3つ目を推測する戦略が高確率で成功してしまわないか（design-sim.mjsのalways_assume_fixed_mapping≈0.04、two_observed_plus_elimination_guess_third≈0.33[ランダムと同水準]で検証済み——完全な推論[1.0]を大きく下回る）。3枚とも同じ中立のアイコンのため、見た目から性質を決めつめることはそもそもできない。"
+          },
+          {
+            "seed_id": "s2-fixed-mapping-mistake",
+            "authentic_causal_loop": "3つの異物カードを一応すべて開いたが（disclosure gateは満たす）、内容を実際には読まず、『1つ目はいつも磁選機、2つ目はいつも風力選別』というカードの並び順からの思い込みで道具を選んでしまう——ところが今回のセッションでは性質が異物ごとに独立にランダムで、1つ目は実はどちらでもなく小さくて重い性質だった。",
+            "player_action": "3つの異物カードを開くが観察内容を読まず、カードの並び順から連想した固定の道具をそのまま選んで適用する。",
+            "system_reaction": "性質と道具が合っていない異物について、正直な結果——その異物はこの場面では仕分けられなかった、という結果とともに、コンベア上に残り続ける様子が表示される。",
+            "information_gained": "カードの並び順だけで道具を決めつけると、実際の性質と合わないことがあると体感する。",
+            "next_judgment_or_action": "次は観察内容を実際に読んでから道具を選ぶ、と気づく。",
+            "C_used": "3つの異物の観察内容（開いたが読まなかった）。",
+            "D_expressed": "カードを開いたが内容を実際に読まず、並び順からの固定観念で選んでしまった誤った判断。",
+            "E_reached": "正直な失敗結果（その異物はこの場面では仕分けられなかった）。",
+            "risks": "固定マッピングに頼る戦略がたまたま成功してしまわないか（design-sim.mjsで検証済み——性質が異物ごとに独立にランダムなため、固定マッピングは約4%にとどまる）。"
+          },
+          {
+            "seed_id": "s3-single-tool-everywhere",
+            "authentic_causal_loop": "『とりあえず手選別すれば確実だろう』という思い込みで、3つの異物すべてに手選別を使ってしまう——実際には引き寄せられる異物には磁選機が、ふわっと舞う異物には風力選別が、物理的な原理として合っていた。",
+            "player_action": "3つの異物カードを一応開くが、内容を比較検討せず、同じ1つの道具（手選別）を3つの異物すべてに適用する。",
+            "system_reaction": "手選別が合っていた異物以外について、正直な結果——その異物はこの場面では仕分けられなかった、という結果が表示される。",
+            "information_gained": "『これさえ使えば確実』という単一の道具で全異物をカバーすることはできないと体感する——異物ごとに性質が異なり、合う道具も異物ごとに異なる。",
+            "next_judgment_or_action": "次は異物ごとに観察内容を読み比べ、それぞれに合う道具を個別に選ぶ、と気づく。",
+            "C_used": "3つの異物の観察内容（比較検討せずに同じ道具を適用してしまった）。",
+            "D_expressed": "単一の道具で全異物をカバーしようとする誤った判断（design-sim.mjsのalways_hand_everywhere等で検証済み、約4%）。",
+            "E_reached": "正直な失敗結果（1つ以外の異物はこの場面では仕分けられなかった）。",
+            "risks": "単一の道具を全異物に使う戦略が高確率で成功してしまわないか（design-sim.mjsで検証済み——各道具は1つの性質にしか物理的に対応しないため、全異物で同じ道具を使う戦略は約4%にとどまる）。"
+          },
+          {
+            "seed_id": "s4-misjudge-then-reflect",
+            "authentic_causal_loop": "s2と同じ状況で、固定観念により1つ以上の異物への道具選択を誤ってしまった。結果を受けて、同じ3つの異物のデータをもう一度読み取り専用で振り返り、『今度はどの道具を選べばよかったか』を考える（結果は変わらない、非採点の振り返り）。",
+            "player_action": "s2と同じ操作の後、正直な失敗結果を受け取る。続けて表示される振り返り画面で、同じ3つの異物の観察内容をもう一度読み、今度はどの道具が合っていたかを選ぶ（この選択は結果に影響しない）。",
+            "system_reaction": "振り返り選択の後、先へ進むボタンが有効になり、次の場面へ進める。",
+            "information_gained": "一度道具選びを誤っても、同じデータをもう一度見比べて考え直す機会があると体感する。",
+            "next_judgment_or_action": "振り返りで選んだ道具を、次に似た場面に出会ったときに実際に活かす。",
+            "C_used": "s2と同じ3つの異物のデータ（振り返り画面で読み取り専用として再掲）。",
+            "D_expressed": "誤った判断とその後の非採点の振り返り（Gate G）。",
+            "E_reached": "正直な失敗結果（Gate H）と、非採点の振り返りステップ（Gate G）。",
+            "risks": "振り返り選択が結果を変えてしまう、あるいは振り返りをせずに先へ進めてしまうとGate G（考え直す余地）が満たされない。振り返り画面にデータの再掲がないと記憶頼みになってしまう（legacy-hotel-receive/legacy-delay-recover/legacy-crowd-flowのGate G実装パターンを踏襲し、振り返り画面には元データを読み取り専用で再掲する設計とする）。"
+          }
+        ],
+        "revision_note": "v1: research.mdの一次資料調査とdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、BLOCKER×3、design_iteration 1のREPAIR): 全seedから固有の異物識別（金属のスプーン／大きなビニール袋／プラスチックのスプーン）を除去し、3枚とも同じ中立のアイコンで見た目からは性質が分からない構成へ改めた（CORE_CAUSAL_MODEL_DISTORTED是正）。system_reaction/E_reachedの文言を『取りのぞけず、そのまま残ってしまった』という断定から『この場面では仕分けられなかった』という検証可能な範囲の表現へ改めた（EXCLUSIVITY_OVERCLAIM/MISMATCH_PARTIAL_EFFECT_OVERCLAIM是正）。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:ae:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:03:22.530Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/play_seeds_v1.json",
+          "created_at": "2026-09-10T20:53:40.265Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/play_seeds_v2.json",
+          "created_at": "2026-09-10T21:03:22.531Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-sort-out:reference_research:v2",
+      "artifact_type": "reference_research",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/reference_research_v2.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "日本専機株式会社「高磁力選別機」（企業公式）——磁力で磁性を帯びた異物（主に鉄、フェライト系ステンレス等）を引き寄せて除去する。投入フィーダーを併用することで選別精度が向上する",
+            "relevant_mechanic": "磁石に反応する金属という観察された性質に対して、磁選機を選ぶという実在の物理的原理に基づく対応",
+            "borrowed_principle": "『磁石に反応する』という観察内容から磁選機を選ぶことを、このゲームの道具選択の1つとして採用した。研究は、アルミや多くのステンレス（18-8/SUS304系）が非磁性で磁選機では除去できないことも示しており、このゲームでは『金属＝すべて磁選機で取れる』という一般化はせず、観察内容自体を『磁石に反応するかどうか』という、実際に観察・確認できる性質として記述する（見た目だけで金属か非金属かを判定させない）。",
+            "surface_elements_not_to_copy": "投入フィーダーの具体的な機構・設置方法など、装置の技術的な細部は子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "リョーシン「Nihot社の風力選別機とは？廃棄物選別の効率化を実現する仕組みと事例紹介」（企業公式）——風を当てて、比重（浮遊速度）の違いで軽い物（フィルム状のプラスチック・ビニール袋等）を吹き飛ばして分離する",
+            "relevant_mechanic": "軽くて風に舞うという観察された性質に対して、風力選別を選ぶという実在の物理的原理に基づく対応",
+            "borrowed_principle": "『軽くて風に飛ばされやすい』という観察内容から風力選別を選ぶことを、このゲームの道具選択の1つとして採用した。旧実装（RecycleGame.tsx）は同じ性質の異物（大きなビニール袋）に『網（ふるい）』を対応させていたが、research.md §2・§5の検証により、ふるいは主に発酵後の完成堆肥の粒度選別（仕上げ工程）で使われる例が中心であり、軽いフィルム状の異物にはより直接的な根拠を持つ風力選別の方が対応することが判明した。既存content data（schoolLunch.ts）も既に『風力選別（wind、💨）』というツール名を用意していたが、旧ゲームコードは実際には未実装のままだった——このリビルドでこのcontent-code不整合も解消する。",
+            "surface_elements_not_to_copy": "風力選別機の具体的な風速・比重の数値等、装置の技術的な細部は子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "選別機マニュアル（industrialwaste-sorter.com）「中間処理の精度を上げる『選別』とは？」——機械選別（磁力・風力等）で判別・除去しきれない異物に対する、人の目による最終確認・補完としての手選別の位置づけ（粗選別→手選別/機械選別の段階構造）",
+            "relevant_mechanic": "磁石にも反応せず、風にも飛ばされない（小さくて重い）という観察された性質に対して、手選別を選ぶという実在の位置づけに基づく対応",
+            "borrowed_principle": "『磁石に反応せず、風にも飛ばされない』という観察内容から手選別を選ぶことを、このゲームの道具選択の1つとして採用した。研究は手選別を『機械選別の補完・最終工程』として位置づけており、このゲームでも手選別を『他の2つの道具では判別・除去できない性質の異物』への対応として一貫して描く。",
+            "surface_elements_not_to_copy": "手選別コンベア等の具体的な設備構成は子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "FOOD TOWN「異物選別装置とは？｜製造工程・商品種別解説」（企業公式）——『選別機一台導入すれば複数の異物を排除できるということではない』という明言。肥料の品質の確保等に関する法律（肥料法）第25条——生産業者は品質を低下させる異物を肥料に混入してはならない",
+            "relevant_mechanic": "1つの道具で工場全体の異物が完全に除去されるわけではないという実務上の限界と、異物混入そのものが法律で禁止されているという規制上の根拠",
+            "borrowed_principle": "design review r1のBLOCKER是正: このゲームの成功・失敗の結果表示は、観察内容と道具の物理的原理が『この異物について、この場面で』合っていたかどうかのみを主張し、『これで工場のすべての異物が完全に取り除かれた』『専門的判断が完全に正しかったと証明された』『選ばなかった道具は現実に一切効果がない』という、より広い主張は一切行わない。異物を正しく仕分ける必要がある理由は、法令（肥料法第25条の異物混入禁止）を根拠とし、断定的な危険演出（怪我をする等）は避ける（一次資料で直接の裏付けが確認できなかったため）。",
+            "surface_elements_not_to_copy": "肥料法の条文の細かい手続き規定は子ども向けゲームには含めない。"
+          }
+        ],
+        "revision_note": "v1: research.mdの一次資料調査に基づき新規作成。旧実装の『網（ふるい）』を『風力選別』へ差し替えた根拠と、legacy-crowd-flowのEXCLUSIVITY_OVERCLAIM系統の教訓を踏まえた成功/失敗表示の範囲限定を、設計の最初の段階から明記した。 v2 (design review r1 FAIL 42是正、design_iteration 1のREPAIR): 内容自体に変更はないが、参照4のborrowed_principleを『選ばなかった道具は現実に一切効果がない、という主張も行わない』という表現へ補強し、game_translations_v2.jsonの結果表示の修正と一貫させた。play_seeds提出後にDOWNSTREAM_OFの順序上STALE化したための再提出でもある。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:46.332Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/reference_research_v1.json",
+          "created_at": "2026-09-10T20:53:40.307Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/reference_research_v2.json",
+          "created_at": "2026-09-10T21:04:46.333Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-sort-out:c_compression:v2",
+      "artifact_type": "c_compression",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/c_compression_v2.json",
+      "payload": {
+        "original_C": "食品リサイクル法・肥料法の条文構造、登録再生利用事業者制度の技術基準の詳細、磁選機・風力選別機・トロンメルの型式（電磁式/永磁式/吊下げ型/ドラム型等）ごとの仕様、ステンレス鋼の金属組織学（オーステナイト系/フェライト系/マルテンサイト変態）の詳細、農地土壌のマイクロプラスチック汚染の学術的議論。",
+        "compressed_C": "3つの異物の観察カード（見た目はすべて同じ中立のアイコンで、開くとその異物が今、実際にどんな性質か——磁石に近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い、のいずれかが書かれている。異物への性質の割り当ては毎セッション異物ごとに独立にランダム、消去法で他の異物から推測できない）。3種類の道具（磁選機・風力選別・手選別）それぞれの、実在する物理的な原理の説明。",
+        "removed_complexity": "食品リサイクル法・肥料法の条文構造そのもの、登録再生利用事業者の技術基準の細部、選別機の型式・仕様の細部、ステンレス鋼の金属組織学の専門用語、マイクロプラスチック汚染の学術的議論、旧実装の『網（ふるい）』（研究により風力選別の方がより直接的な根拠を持つと判明したため差し替え）、旧実装が異物ごとに持たせていた固有の物理的アイデンティティ（金属のスプーン等、観察結果と矛盾しうる見た目）。",
+        "reason_for_removal": "research.mdが示すとおり、10-12歳向けに削るべきは法令・制度の条文構造や、装置の専門的な仕様・金属組織学の細部であり、残すべきは『異物の性質を観察してから、その性質に物理的な原理が合う道具を選ぶ』という、実在の因果関係が明確な骨組み。異物の見た目に固有のアイデンティティを持たせることも、観察という核心的な行為を弱め、性質との矛盾を生むため削除した。",
+        "preserved_D": "3つの異物それぞれの観察カードを読んで性質を把握し、その性質に物理的な原理が合う道具を1つ選び、異物ごとに1回の適用で結果を確定する、という一連の判断。",
+        "how_player_still_performs_D": "3つの異物のカードをそれぞれ開いて観察内容を読み、性質を判別してから対応する道具を選んで適用する。design-sim.mjsで数値検証済み: 正しい判断（性質ごとに物理的原理が合う道具を選ぶ）は常に成功（legitimate_full_reasoning=1.0）。固定スロットマッピング戦略、単一の道具を全異物に使う戦略、内容を無視したランダム選択はいずれも約4%にとどまり、2つの異物を読んで消去法で3つ目を推測する戦略も約33%（ランダムと同水準）にとどまり、いずれも完全な推論を明確に下回る。",
+        "failure_risk": "legacy-crowd-flowが6ラウンドの独立レビューを経てようやく到達した教訓（成功/失敗の結果表示が、現場全体の完全解決・専門的判断の正しさ・資料の直接引用としての権威、のいずれも主張してはならない）を、このゲームでは設計の最初の段階から適用したが、design review r1でなお2つの実装上の見落としが見つかった: (1) C_interactionの文言に、意図とは逆の断定（選ばなかった道具は実際に無効だと断定する）を誤って書いてしまった記述バグ、(2) 異物の見た目に固有の物理的アイデンティティ（金属のスプーン等）を持たせたまま性質を独立ランダムにしたため、物理的に矛盾した組み合わせ（ビニール袋が磁石に反応する等）が生じうる設計上の不整合。いずれもREPAIR（design_iteration 1、repair_count 1/1）で是正し、誤答時の描写は『この場面では仕分けられなかった』という、専門的判断の誤りや工場全体の失敗を意味しない検証可能な事実のみを述べ、正解時の描写も『この場面では観察内容と道具の物理的原理が合っていた』という事実のみを述べる（工場全体の完全解決は主張しない）構成に統一した。",
+        "revision_note": "v1: research.mdの一次資料調査に基づき新規作成。 v2 (design review r1 FAIL 42是正、design_iteration 1のREPAIR): compressed_C/removed_complexity/reason_for_removalに、異物の見た目を中立化した設計変更を反映。failure_riskにr1で見つかった2つの見落とし（記述バグ、見た目の物理的矛盾）とその是正内容を追記した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:46.374Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/c_compression_v1.json",
+          "created_at": "2026-09-10T20:53:40.347Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/c_compression_v2.json",
+          "created_at": "2026-09-10T21:04:46.375Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-sort-out:game_translations:v2",
+      "artifact_type": "game_translations",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/game_translations_v2.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-observe-and-apply-once",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "3つの異物（ラインに流れてくる時点では見た目が中立で、開くとそれぞれの観察結果が書かれている）それぞれの観察カードを開いて実際の性質（磁石に近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い）を読み、その性質に物理的な原理が合う道具（磁選機／風力選別／手選別）を1つ選んで適用し、異物ごとに1回の適用で結果を確定する。この判断で問われているのは『観察した性質に、選んだ道具の原理が合っていたか』であり、選ばなかった道具がその異物に対して現実に一切効果がないと主張するものでも、選んだ道具で工場のすべての異物が完全に取り除かれると主張するものでもない。",
+            "first_visible_state": "『食べ残しが工場に届いた。でも、このままではリサイクルできない！』という導入と、3枚の異物カード（固定表示、閉じた状態、それぞれ同じ中立のアイコン付き——見た目だけでは性質が分からない）、道具選択ボタン3個（磁選機／風力選別／手選別、disabled）、異物ごとの実施ボタン（disabled）。説明文はない。",
+            "primary_action": "異物カードの『？』をタップして観察内容を開く→3つの道具から1つを選ぶ→『使う』を押すと1回の適用でその異物の結果が確定する→次の異物へ（3つ繰り返し、順不同）。各異物の性質は異物ごとに独立にランダムなので、他の異物を先に読んでも消去法では分からない。",
+            "C_interaction": "異物の観察内容（近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い）を読むことで、対応する道具が直接、一意に決まる——3枚とも見た目は同じ中立のアイコンで、開いて観察結果を読むまで性質は分からず、他の異物の情報からの消去法でも判断できない。選んだ道具の原理が観察した性質に合っているかどうかを判定するものであり、選ばなかった道具がその異物に対して現実に一切効果がないと主張するものではなく、選んだ道具で工場のすべての異物が取り除かれるとも主張しない。",
+            "system_reaction": "選んだ道具の原理が観察した性質に合っていれば、その異物がベルトコンベアから該当する機械（磁選機／風力選別）または手選別台へすっと移っていくアニメーションとともに、『（異物名）を正しく仕分けられた』という結果になる。合っていなければ、その異物はコンベアの上に残ったまま流れ続け、小さな『？』マークが付いたままになり、『この場面では、（選んだ道具）の原理はこの異物の性質に合わなかった』という正直な結果になる。3つの異物すべての結果が出そろった時点で1つでも残っていれば、非採点の振り返り画面へ遷移する。",
+            "information_gained": "異物ごとの仕分け成功/失敗の結果と、コンベア上での見た目の変化（機械へ移る／残り続ける）。",
+            "player_next_judgment": "次の異物の観察内容を読み、同じ道具を機械的に繰り返さず異物ごとに独立して判断する。",
+            "D_externalization": "異物カードのタップによる観察内容の確認と、道具選択ボタンのタップによる選択という、子ども自身の明示的な選択が、そのまま性質の判別と道具の選定という判断を表現する。システムは先に正解を示さない。異物カードを実際に開いて読むまで道具選択ボタンは押せない（disclosure gate）。",
+            "E_consequence": "3つの異物すべてで観察した性質に道具の原理が合っていれば、この場面ではすべて正しく仕分けられた、という成功結果（onComplete）になる——工場ではこのあと発酵させて肥料になる、という説明を添える。1つでも性質と道具の原理が合っていなければ、その異物はこの場面では仕分けられなかった、という正直な結果（onPartialComplete）になる——選んだ道具が現実に持つ効果や、工場全体の異物除去への貢献については、このゲームは主張しない。",
+            "retry_or_rethink": "異物ごとの得点に影響するやり直しはない（1回の適用で各異物の結果が確定する——brute force排除の核）。1つでも失敗した場合は3つの異物のデータを再提示したうえで、異物ごとの非採点振り返り選択（結果は変わらない）を挟んでから結末へ進む。",
+            "job_reveal_bridge": "『食べ残しが工場に届いた』という導入から、食品残渣を選別し肥料化するリサイクル工場作業員の仕事の紹介へつなげる。性質を観察してから物理的な原理が合う道具を選ぶ、という実在の役割を明示する。",
+            "strengths": "旧実装の唯一の根本問題（コストゼロで道具を何度でも試せるbrute force exploit）を、異物ごとの単発適用化で解消する。design-sim.mjsで、固定スロットマッピング戦略・単一道具の全異物適用・content-blind randomはいずれも約4%、2つ読了+消去法での3つ目推測も約33%（ランダムと同水準）にとどまり、完全な推論(100%)を明確に下回ることを検証済み。design review r1のBLOCKER是正: (1)(2) C_interaction/system_reactionから『選ばなかった道具は実際に無効』『取りのぞけず、そのまま残ってしまった』という断定的な過大主張の文言を除去し、『この場面では原理が合わなかった』という、ゲームが実際に検証できる範囲に厳密に限定した表現へ改めた。(3) 3枚の異物カードをすべて同じ中立のアイコンにし、異物の見た目に固有の物理的アイデンティティ（金属のスプーン・ビニール袋等）を持たせないことで、観察結果（性質）とは独立に矛盾した見た目の組み合わせが生じないようにした（CORE_CAUSAL_MODEL_DISTORTED是正）。MEDIUM是正: 観察文言を道具名の漢字をそのまま反復しない表現（『磁石』ではなく『近づけると引き寄せられる』等）に改め、コンベアから機械へ移る／残り続けるという具体的な視覚的変化を追加した。",
+            "weaknesses": "375px幅で、3つの異物カード＋道具選択ボタン3個＋実施ボタンというレイアウトと、コンベア上の視覚的なアニメーションは実装段階の検証項目。",
+            "risk": "design-sim-result.json: legitimate_full_reasoning=1（100%）、random_pick≈0.04、always_assume_fixed_mapping≈0.04、always_X_everywhere≈0.04、two_observed_plus_elimination_guess_third≈0.33（ランダムと同水準）。判定ロジック自体（design-sim.mjsのsessionWin）はr1から一切変更していない——r1が指摘したのは判定ロジックではなく、結果表示のnarrativeが主張する内容の範囲と、異物の見た目の設計だった。",
+            "adoption_or_rejection_reason": "採用（design review r1 FAIL 42是正）。fact_sheet/scope_core/aeで定義した『観察した性質に、実際に合う道具を選べたか』という判断軸を最も忠実に表現し、design-sim.mjsで内容を理解しない戦略がいずれも十分に低い成功率にとどまることを事前検証済み。旧実装のbrute force exploitをピンポイントで解消しつつ、正解・誤答いずれの結果表示も、研究が裏付けない『道具の無効性の断定』『工場全体の完全解決』のいずれも主張しない、過大主張のない翻訳。"
+          },
+          {
+            "translation_id": "t2-keep-retry-rejected",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "旧実装（RecycleGame.tsx）のまま、道具の持ち替え・再試行を無制限に許可する。",
+            "first_visible_state": "旧実装同様の3異物固定進行画面。",
+            "primary_action": "異物ごとに道具を選ぶ→誤りなら理由が表示されて即座に別の道具を試せる→正解するまで繰り返す。",
+            "C_interaction": "旧実装と同じ、異物の観察内容と道具の性質を読み比べる。",
+            "system_reaction": "誤答時は理由が表示されるだけで、異物・道具ともに失われず即座に再試行できる。",
+            "information_gained": "誤答してもコストがかからず、最終的には必ず正解にたどり着けてしまう。",
+            "player_next_judgment": "総当たりで正解にたどり着ける。",
+            "D_externalization": "選択自体は子どもの判断だが総当たりで正解にたどり着けてしまう。",
+            "E_consequence": "総当たりの根本的な解消にならない。",
+            "retry_or_rethink": "同一異物内での事実上の総当たりが残ったまま（reverse auditが指摘したbrute forceそのもの）。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "実装コストが最小（既存実装をほぼ維持できる）。",
+            "weaknesses": "reverse auditが指摘した唯一の欠陥（brute force）を根本的に解消しない。",
+            "risk": "BRUTE_FORCE_SUCCESS相当。",
+            "adoption_or_rejection_reason": "却下。reverse auditが指摘した唯一の欠陥（brute force：コストゼロで何度でも道具を試せる）を根本的に解消しないため。"
+          },
+          {
+            "translation_id": "t3-fixed-identity-mapping-rejected",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "旧実装のように、異物の見た目（金属のスプーン／大きなビニール袋／プラスチックのスプーン）と正解の道具を固定の1対1対応にする（毎セッション同じ組み合わせ）。",
+            "first_visible_state": "3枚の異物カード（見た目と性質の対応が毎回同じ）。",
+            "primary_action": "異物の見た目を見て、対応する道具を選ぶ。",
+            "C_interaction": "異物の見た目自体が実質的に正解を教えてしまう——性質を観察する必要がない。",
+            "system_reaction": "見た目通りの道具を選べば必ず正解。",
+            "information_gained": "一度覚えれば、以降は観察せずに見た目だけで機械的に正解できてしまう。",
+            "player_next_judgment": "『金属のスプーン＝磁選機』のような固定の暗記に頼る、観察を伴わない判断へ退化する。",
+            "D_externalization": "初回以降は実質的にD（観察に基づく判断）が不要になる。",
+            "E_consequence": "毎回同じ組み合わせのため、2回目以降は暗記だけで攻略できてしまう（answer leak相当）。",
+            "retry_or_rethink": "固定マッピングの暗記による攻略を防げない。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "初見の子どもには分かりやすい。",
+            "weaknesses": "異物の性質が異物ごとに独立にランダムであるべきという設計原則に反し、暗記による攻略（answer leak）を許してしまう。",
+            "risk": "ANSWER_LEAK相当（design-sim.mjsのalways_assume_fixed_mappingが約4%にとどまるのは、性質が独立ランダムであることが前提——このt3のように性質を固定してしまうと、この検証自体が無意味になる）。",
+            "adoption_or_rejection_reason": "却下。異物の見た目と性質の対応を固定すると、観察という核となる判断行為が不要になり、暗記による攻略を許してしまう。"
+          }
+        ],
+        "adopted_translation_id": "t1-observe-and-apply-once",
+        "adoption_rationale": "t1は、fact_sheet_v2.json/scope_core_v2.json/ae_v3.jsonが定義する『観察した性質に、実際に合う道具を選べたか』という判断軸を、design-sim.mjsで内容を理解しない戦略がいずれも十分に低い成功率にとどまることを事前検証したうえで採用する。design review r1（FAIL 42）で判明した3つのBLOCKER——(1)(2)結果表示文言の断定的な過大主張（実際には反対の意味で書いてしまった記述バグを含む）、(3)異物の見た目に固有の物理的アイデンティティを持たせたことで観察結果と矛盾する組み合わせが生じうる設計上の不整合——を、判定ロジック自体は変更せず、結果表示の文言を検証可能な範囲へ限定し、異物の見た目を中立化することで解消した。t2は旧実装のbrute force exploitを解消しないため、t3は異物の見た目と性質の対応を固定してしまい観察という核となる判断行為を不要にしてしまうため、それぞれ却下した。",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。3案のうちt1を採用。 v2 (design review r1 FAIL 42是正、BLOCKER×3、design_iteration 1のREPAIR): t1のC_interaction/system_reactionから断定的な過大主張の文言（記述バグを含む）を除去し、異物の見た目を3枚とも同じ中立のアイコンへ変更して観察結果との矛盾を構造的に解消した。LABEL_LEAK/WORLD_FEEDBACK_QUALITYのMEDIUMも同時に是正。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:c_compression:v2",
+        "legacy-sort-out:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:55.852Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json",
+          "created_at": "2026-09-10T20:53:49.052Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/game_translations_v2.json",
+          "created_at": "2026-09-10T21:04:55.853Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-sort-out:first_5_seconds:v2",
+      "artifact_type": "first_5_seconds",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/first_5_seconds_v2.json",
+      "payload": {
+        "zero_to_two_seconds": "『食べ残しが工場に届いた。でも、このままではリサイクルできない！』という短い導入テキストのあと、3枚の異物カード（『？』アイコンで閉じた状態、3枚とも同じ見た目）が画面に表示される。道具選択ボタン（磁選機／風力選別／手選別）と各異物の実施ボタンはすべてグレーアウト（disabled）で表示される。",
+        "two_to_five_seconds": "子どもは『？』が気になり、いずれかの異物カードをタップする。開くとその異物の観察内容（例: 『近づけると、カチッと引き寄せられた』）が表示され、同時にその異物の道具選択ボタンが有効化される。",
+        "first_expected_touch": "いずれかの異物カードへの最初のタップ。",
+        "first_system_reaction": "タップしたカードが開き、観察内容が表示される。その異物の道具選択ボタンが有効化される（他の異物はまだdisabledのまま）。",
+        "next_expected_inference": "『異物ごとに、まず観察してから道具を選ぶ流れらしい。見た目だけでは中身が分からない』という推測（3枚とも同じ見た目だが、観察内容を読んだ異物だけボタンが有効化されることから）。",
+        "next_expected_action": "3つの異物カードをすべて開いて観察内容を読み比べ、それぞれの性質に合う道具を選んで適用する。異物の見た目がすべて同じであるため、実際に読まないと合う道具が選べないと気づく。",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、design_iteration 1のREPAIR): 異物の見た目を3枚とも同じ中立のアイコンへ変更したことに合わせて全項目を改訂した（CORE_CAUSAL_MODEL_DISTORTED是正）。play体験のコア（カードをタップして開き、読んでから選ぶ）自体に変更はない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_translations:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:55.896Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-10T20:53:49.095Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-10T21:04:55.897Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-sort-out:no_manual_exploit_check:v2",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/no_manual_exploit_check_v2.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": "説明文なしで、異物カードのタップ（読み物が開く）と道具選択ボタン・実施ボタンのタップ（選択・確定）だけで操作方法が分かる。既存Q1（legacy-hotel-receive等）と同じ、タップと『？』的開示のみの規約に従う。",
+          "contextual_cue_only": "異物カードの観察内容と道具の名前という文脈だけで、どれが合うかをシステムが直接教えない。読み比べる以外に手がかりはない。誤答時はその異物がこの場面では仕分けられなかったことのみを伝え、正解を開示せず、消去法による総当たりを助けない。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": "異物カードを全部開いて読み物を確認すること自体はコストがなく許容される（内容を読む行為であり、攻略ではない）。道具の選択と適用は異物ごとに1回の適用で確定し、全異物を一括で確定する操作は存在しない。",
+          "tap_all": "3枚のカードを全部開いて読むこと自体は攻略ではなく、むしろ正しい判断に必要な行為。実際の道具選択と適用は異物ごとに1回の適用で確定する。",
+          "spam_submit": "異物ごとに1回の適用で結果が確定し、同一異物内でのやり直しはない（旧実装の道具を無制限に試せる構造は再導入しない）。失敗時に挟む振り返り選択は採点対象外で、結末を変えない。",
+          "fixed_failure_pattern": "design-sim.mjs検証（design-sim-result.json）: legitimate_full_reasoning=1（100%）。カードの並び順から性質を決めつける固定マッピング戦略、単一の道具を全異物に使う戦略、content-blind random選択はいずれも約4%にとどまる。2つの異物を読んで消去法で3つ目を推測する戦略も約33%（ランダムと同水準）にとどまる。",
+          "color_leak": "3つの異物カード・道具選択ボタンは同じ視覚的な強調度で示し、色だけで正解を示唆しない設計を意図（実装段階でのQA検証が必要——この時点では意図の記述であり、実測による検証ではない）。",
+          "label_leak": "3枚の異物カードはすべて同じ中立のアイコン・見た目で表示され、開いて観察内容を読むまで性質は一切分からない（design review r1のBLOCKER是正——旧v1は異物ごとに固有の見た目（金属のスプーン等）を持たせていたため、観察結果と矛盾する組み合わせが生じうる設計上の不整合があった。v2では見た目を中立化することでこの問題自体を解消した）。異物の並び順と実際の性質の対応関係は異物ごとに独立にランダムであるため、並び順自体も、他の異物の観察結果も、正解のヒントにならない（消去法が機能しないことをdesign-sim.mjsで検証済み）。観察文言自体も道具名の漢字をそのまま反復しない表現（『磁石』ではなく『近づけると引き寄せられる』等）にすることで、観察を読まずに単語一致だけで道具を選べてしまうLABEL_LEAK_TRIVIAL_MATCH（design review r1のMEDIUM）も併せて是正した。",
+          "position_leak": "3つの異物カードの表示順は固定でよい（順不同で開ける）が、これは性質の割り当てとは独立であり、位置そのものが正解を示唆しない（性質が異物ごとに独立にランダムに割り当てられるため）。道具選択ボタンの表示順も固定でよいが、常に同じ位置の道具が正解になるわけではない。",
+          "visual_hierarchy_leak": "3つの異物カード・3つの道具選択ボタンは同じ見た目・同じ情報量で提示し、視覚的な強弱で正解を示唆しない設計を意図。",
+          "pass": true
+        },
+        "design_sim_evidence": "factory/projects/legacy-sort-out/design/design-sim-result.json",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、BLOCKER×1+MEDIUM×1、design_iteration 1のREPAIR): label_leak項目を、異物の見た目を中立化したことによるCORE_CAUSAL_MODEL_DISTORTED是正と、観察文言の言い換えによるLABEL_LEAK_TRIVIAL_MATCH是正の両方を反映する内容へ改訂した。exploit耐性の数値・独立サンプリングの効果自体は変更していない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_translations:v2",
+        "legacy-sort-out:first_5_seconds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:55.938Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/no_manual_exploit_check_v1.json",
+          "created_at": "2026-09-10T20:53:49.136Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-10T21:04:55.938Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-sort-out:core_back_check:v2",
+      "artifact_type": "core_back_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/core_back_check_v2.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "採用した翻訳t1-observe-and-apply-once（game_translations_v2.json、design_iteration 1のREPAIRで内容改訂）は、scope_core_v2.jsonのcoreが定義する『観察した性質に、実際に合う道具を選べたか』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。design review r1のBLOCKER是正: (1)(2) EXCLUSIVITY_OVERCLAIM/MISMATCH_PARTIAL_EFFECT_OVERCLAIM——C_interactionに実際とは逆の意味になっていた記述バグ（『選ばなかった道具は実際に無効だと断定するが』）と、system_reactionの断定的な『取りのぞけず、そのまま残ってしまった』という文言を、『この場面では原理が合わなかった』という検証可能な範囲の表現へ改めることで解消。(3) CORE_CAUSAL_MODEL_DISTORTED——異物の見た目を3枚とも同じ中立のアイコンにし、観察結果（性質）と矛盾する固有の物理的アイデンティティ（金属のスプーン等が独立ランダムな性質を受け取ってしまう構造）を排除することで解消——が、ae_v3.json/game_translations_v2.json/play_seeds_v2.json/first_5_seconds_v2.json/no_manual_exploit_check_v2.jsonのすべてに一貫して反映されていることを確認した。MEDIUM×2（LABEL_LEAK_TRIVIAL_MATCH: 観察文言を道具名の漢字をそのまま反復しない表現へ改訂。WORLD_FEEDBACK_QUALITY: コンベアから機械へ移る／残り続けるという具体的な視覚的変化を追加）も解消済み。design-sim.mjsの検証結果（legitimate_full_reasoning=1.0、固定マッピング・単一道具・ランダムはいずれも約4%、消去法戦略も約33%）は変更なく、D（子ども自身の判断）が実質的に必要とされていることを確認した。旧実装のreverse-audit指摘（brute force）は異物ごとの単発適用化で維持解消されている。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_translations:v2",
+        "legacy-sort-out:scope_core:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T21:04:55.980Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/core_back_check_v1.json",
+          "created_at": "2026-09-10T20:53:49.177Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/core_back_check_v2.json",
+          "created_at": "2026-09-10T21:04:55.981Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-sort-out:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/game_spec_v1.json",
+      "payload": {
+        "goal": "リサイクル工場のラインに流れてきた3つの異物（見た目はすべて同じ中立のアイコン）それぞれについて、観察カードを開いて実際の性質（近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い——異物ごとに独立にランダム）を読み、その性質に物理的な原理が合う道具（磁選機／風力選別／手選別）を1つ選んで適用し、異物ごとに1回の適用として結果を確定する。",
+        "initial_visual_state": "『食べ残しが工場に届いた。でも、このままではリサイクルできない！』という短い導入テキストのあと、3枚の異物カード（『？』アイコンで閉じた状態、3枚とも同じ中立の見た目）が画面に表示される。道具選択ボタン（磁選機／風力選別／手選別）と各異物の実施ボタンはすべて無効（グレーアウト）で表示される。説明文はない。",
+        "interactive_objects": [
+          "3枚の異物カード（タップで開閉、3枚とも閉じた状態は同じ中立のアイコンで、開くとその異物の観察結果——近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い、のいずれか1つが表示される。画面上の表示順は固定でよいが、性質の割り当ては異物ごとに独立にランダムで、他の異物の性質から消去法で推測できない）",
+          "3つの道具選択ボタン（磁選機／風力選別／手選別。それぞれの異物カードごとに独立して有効/無効が管理され、そのカードを開いて観察結果を読むまでdisabled）",
+          "異物ごとの実施ボタン（道具を1つ選ぶまでdisabled。押すと1回性の記録としてその異物の結果が確定する。取り消し・やり直しはできない）",
+          "振り返り画面の非採点選択（失敗時のみ表示、3つの異物の観察結果を読み取り専用で再掲したうえでの選び直し）"
+        ],
+        "primary_action": "いずれかの異物カードをタップして開く→観察結果を読む→3つの道具から1つを選ぶ→実施ボタンを押すと1回の適用でその異物の結果が確定する→次の異物へ（3つ繰り返し、順不同）。3つすべての結果が出そろったら結末へ進む（1つでも不一致があれば振り返り画面を経由する）。",
+        "C": "各異物の観察結果（近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い）。3種類の道具の物理的な原理（磁選機=磁力で引き寄せる、風力選別=風で軽い物を飛ばす、手選別=機械で判別できない物を人の目で見て取りのぞく）。",
+        "D": "各異物のカードを開いて観察結果を読んでから、その性質に物理的な原理が合う道具を選んで適用する（近づけると引き寄せられる→磁選機、ふわっと軽く舞う→風力選別、どちらでもない→手選別）。3枚の異物カードの見た目が同じ中立のアイコンであるため、観察内容を実際に読まなければ判断できない。異物ごとに1回の適用で結果が確定し、後からやり直すことはできない（brute force排除の核）。",
+        "system_reactions": "選んだ道具の原理が観察した性質に合っていれば、その異物がベルトコンベアから該当する機械（磁選機／風力選別）または手選別台へ移っていく視覚的な変化とともに、『（異物名）を正しく仕分けられた』という結果になる。合っていなければ、その異物はコンベアの上に残ったまま流れ続け、『この場面では、選んだ道具の原理はこの異物の性質に合わなかった』という正直な結果になる。いずれの場合も、選んだ道具が現実に持つ効果や、工場全体の異物除去への貢献については主張しない。",
+        "state_transitions": "各異物カード: 未開封 → 開封済み（観察結果表示、道具選択ボタン有効化）→ 道具選択済み（実施ボタン有効化）→ 適用済み（一致=仕分け完了、コンベアから消える / 不一致=残存、コンベア上に留まる）。3枚とも適用済みになった時点で、全一致ならonComplete、1つでも不一致があればGate G振り返り画面を経由してonPartialComplete。",
+        "failure_behavior": "異物ごとに1回の適用で結果が確定する（取り消し・再適用はない、旧実装のbrute force exploit——コストゼロで道具を何度でも試せる構造——は再導入しない）。1つでも性質と道具の原理が合わない異物があれば、onCompleteではなくonPartialCompleteを呼び、Gate H HONEST OUTCOMEに従った異なるトップフレーミングの結果画面（一部の異物が仕分けられなかった、という正直な結果）へ遷移する。",
+        "retry_behavior": "セッション内でのやり直しはない（brute force排除、旧実装のexploit修正の核）。1つでも異物が仕分けられなかった場合のみ、3つの異物の観察結果を読み取り専用で再提示し、『今度はどの道具を選べばよかったと思う？』という非採点の振り返り選択を挟む——この選択はスコアに影響せず、結末（onPartialComplete）も変えない。振り返り選択が完了するまで、結果画面へ進むボタンはdisabledにする。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことでのみ可能。",
+        "E": "3つの異物すべてで観察した性質に道具の原理が合っていれば、この場面ではすべて正しく仕分けられた、という成功結果（onComplete）——工場ではこのあと発酵させて肥料になる、という説明を添える。1つでも性質と道具の原理が合っていなければ、その異物はこの場面では仕分けられなかった、という正直な結果（onPartialComplete）になる。いずれの結果も、選んだ道具が現実に持つ効果や、工場全体の異物除去への貢献、専門的判断の正しさについては主張しない。",
+        "job_reveal": "『食べ残しが工場に届いた』という導入から、食品残渣を選別し肥料化するリサイクル工場作業員という仕事の紹介へつなげる。異物の性質を観察してから、物理的な原理が合う道具を選ぶ、という実在の役割を明示する（研究: 肥料法第25条の異物混入禁止、磁選機・風力選別・手選別それぞれの実在する物理的原理と実務上の位置づけ）。",
+        "first_5_seconds": "first_5_seconds_v2.jsonを参照。導入テキスト表示（0-2秒）→いずれかの異物カードへの最初のタップ（2-5秒、カードが開き観察結果が表示され、その異物の道具選択ボタンが有効化される）→『異物ごとに、まず観察してから道具を選ぶ流れらしい。見た目だけでは中身が分からない』という推測→残り2枚も開いて観察→それぞれに合う道具を選んで適用。",
+        "no_manual_requirements": "説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる既存Q1の規約に従う。異物の観察結果（近づけると引き寄せられる等）は正当な開示——これを読まなければどの道具が合うかが分からない設計そのものが、このゲームの核心的な判断を成立させている。3枚の異物カードの閉じた状態はすべて同じ中立の見た目にし、見た目から性質を推測できないようにする（no_manual_exploit_check_v2.json参照）。観察文言は道具の名前の漢字をそのまま反復しない（例: 磁選機を示唆する観察に『磁石』という単語を使わない）。",
+        "mobile_constraints": "375px幅を基準に、3枚の異物カード・3つの道具選択ボタン・異物ごとの実施ボタンが縦に収まるレイアウトを実装時に検証する。3枚の異物カードは、閉じた状態・開いた状態のいずれも同じ高さ・見た目になるよう統一する（観察結果の文章量の違いによってカードの見た目が変わり、それが性質のヒントにならないようにする）。振り返り画面は3つの異物データ再掲＋振り返り選択になるため、画面が長くなることを想定し、スクロール可能にする。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。legacy-hotel-receive/legacy-delay-recover/legacy-allocate-and-forecast等と同様、絵文字・アイコン・CSSのみで構成し、シーン画像を使用しない。既存のリサイクル工場の背景画像（schoolLunch.ts、K(\"recycle_sorting\")）は場面の導入イメージとして流用可能だが、旧仕組み（金属のスプーン・大きなビニール袋・プラスチックのスプーンという固有の異物と、それに対応する網／ふるいという旧道具）を視覚的に示す内容が焼き込まれていないか確認し、該当する場合は使用しない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_translations:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T22:40:28.097Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/game_spec_v1.json",
+          "created_at": "2026-09-10T22:40:28.098Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-sort-out:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "legacy-hotel-receive/legacy-delay-recover/legacy-allocate-and-forecast等の先例と同様、このゲームはカード・ボタン・絵文字・CSSのみで構成でき、新規シーン画像を必要としない。既存のリサイクル工場の背景画像（schoolLunch.tsのK(\"recycle_sorting\")、リサイクル工場の受入インシデントのplace.image）は場面の導入イメージとしてそのまま流用でき、旧仕組み（金属のスプーン／大きなビニール袋／プラスチックのスプーンという固有の異物の見た目、網／ふるいという旧道具）を視覚的に示す内容が焼き込まれていないことを実装時に確認する（legacy-load-and-routeのdelivery_center.jpgで発覚した『再利用アセットに旧設計のラベルが焼き込まれていた』教訓を踏まえる）。3枚の異物カードは同じ中立の絵文字・アイコン（例: 📦や❓）で表現し、道具は磁選機🧲・風力選別💨・手選別🫲の絵文字で表現する（schoolLunch.tsのtools配列が既に用意している絵文字と一致させる）。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T22:40:43.911Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/art_brief_v1.json",
+          "created_at": "2026-09-10T22:40:43.912Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-sort-out:implementation:v2",
+      "artifact_type": "implementation",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/implementation_v2.json",
+      "payload": {
+        "component_files": [
+          "src/q1/RecycleGame.tsx"
+        ],
+        "logic_module": "src/q1/sortOutLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-sort-out.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true; existing recycle_sorting.jpg/food_waste.jpg/compost_to_farm.jpg reused as-is, no new assets; schoolLunch.ts's recycle-lunch entry's tools: [] emptied since the custom component renders its own tool UI, matching the delay_recover/hotel_receive precedent)",
+        "d_preserved_statement": "Unchanged from implementation_v1.json -- the mechanic itself (sortOutLogic.ts's PROPERTIES/TOOLS/CORRECT_TOOL/ITEMS/newSession/sessionWin, the disclosure-gated single-commit-per-item flow, Gate G/H) was not touched by this repair; impl review r1 found 0 blockers against the mechanic itself (logic_matches_design_sim, brute_force_genuinely_closed, item_identity_neutral_and_coherent, no_exclusivity_overclaim, no_mismatch_partial_effect_overclaim, label_leak_closed, gate_g_correct, gate_h_correct, disclosure_gating_correct all confirmed true).",
+        "repair_v2_impl_review_r1_findings_addressed": {
+          "BATCHING_STATE_CLOSURE (HIGH)": "v1 split per-item UI into 3 separate useState pieces (openedItems: Set, selectedTool: Partial<Record>, appliedTool: Partial<Record>). selectTool's updater guarded on the render-scope `appliedTool[id]` (a sibling state, read outside its own setter) and apply's updater guarded on the render-scope `selectedTool[id]` (also a sibling state) -- neither was fully self-contained within its own setState updater, contradicting the batching-safe pattern the implementation claimed to follow. Fixed by consolidating all 3 fields into a single `itemUI: Record<ItemId, {opened, selectedTool, appliedTool}>` state object, matching HotelReceiveGame.tsx's groupUI pattern exactly -- openItem/selectTool/apply now each derive entirely from their own setItemUI((prev) => ...) updater's `prev[id]`, with no read of the outer-scope `itemUI` variable inside any updater body.",
+          "QA_REGRESSION_VACUOUS x2 (MEDIUM)": "gameplay-qa-sort-out.mjs's batching check previously asserted `fn.includes('if (prev[id] || !selectedTool[id]) return prev;')`, which literally required (and therefore passed on) the exact stale-closure pattern it claimed to forbid. Rewritten to assert the updater body contains no bare `itemUI[` / `itemUI)` reference at all, for openItem/selectTool/apply independently -- verified non-vacuous by deliberately reintroducing the exact r1 bug pattern (apply() reading outer-scope `itemUI[id].selectedTool` instead of `prev[id].selectedTool`) and confirming the check correctly fails, then restoring and confirming it passes again. The neutral-identity check previously counted '📦 異物' occurrences across the playing AND reflecting branches combined (>=2 total), so a new fixed identity introduced in only one branch could still pass if the other branch supplied enough matches -- rewritten into two independent checks, one scoped to each branch, each requiring exactly the neutral label within that branch alone.",
+          "IMPLEMENTATION_QA_EVIDENCE_INACCURATE (MEDIUM)": "implementation_qa_v1.json's first_5_seconds claim ('カードをタップすると開き') was corrected in implementation_qa_v2.json to name the actual tap target precisely (the dx-more '？'/'－' button in the card header), matching the already-shipped, already-reviewed identical pattern in DelayRecoverGame.tsx/HotelReceiveGame.tsx rather than implying the whole card row is tappable.",
+          "MOBILE_UNIFORMITY_UNSUPPORTED (MEDIUM)": "implementation_qa_v1.json's mobile_375 claim was corrected in implementation_qa_v2.json: the actually-true and actually-achieved property is that the 3 CLOSED item cards are visually uniform to EACH OTHER (no card's closed state hints at its property), not that a closed card and an opened card have equal height -- an opened card naturally growing taller to fit its observation text and 3 tool buttons is normal, expected, and matches every other Q1 game's disclosure-card pattern; it was never the actual design intent nor a meaningful claim, and no other shipped Q1 game satisfies it either."
+        },
+        "browser_verification_v2": "Re-ran the full manual playthrough in the dev preview after the state-consolidation refactor, in a fresh browser tab (to rule out stale console-buffer artifacts from a deliberate mid-repair bug-reintroduction test): full success path (all 3 items' properties read correctly, matching tools applied) reached the 'done' branch with the correct result text and resolution scene; deliberately mismatching all 3 items reached the 'reflecting' branch, correctly re-presented all 3 items' observations and the actual applied tool read-only, and required a full reflection pick set before enabling 先へ進む. Zero console errors in a freshly-opened tab for both paths."
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T23:10:03.209Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/implementation_v1.json",
+          "created_at": "2026-09-10T22:56:55.010Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/implementation_v2.json",
+          "created_at": "2026-09-10T23:10:03.210Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-sort-out:implementation_qa:v2",
+      "artifact_type": "implementation_qa",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json",
+      "payload": {
+        "first_5_seconds": "PASS. Matches first_5_seconds_v2.json: 導入テキスト表示後、3枚の同じ中立の見た目の異物カード（すべてdisabled）が並ぶ。browser-verified: 最初のカードのdx-more『？』ボタン（カードヘッダー右端の小さな丸ボタン、DelayRecoverGame/HotelReceiveGame等の既存実装と同じ既存パターン——カード行全体ではない）をタップすると開き、観察内容が表示され、その異物の道具選択ボタンだけが有効化される（他はdisabledのまま）。",
+        "touch_targets": "PASS. 異物カードのdx-moreボタン・3つの道具選択ボタン・使うボタンはいずれも既存のdx-card/dx-more/dx-commit/btn choice CSSクラスを再利用しており、他のQ1ゲーム（DelayRecoverGame等）と同じタップ領域サイズ——新規に小さいタップ領域を作っていない。",
+        "mobile_375": "PASS. resize_window(preset: mobile, 375x812)でbrowser-verified: 閉じた3枚のカード一覧、開いたカードの観察文＋3つの道具ボタン＋使うボタンのいずれも横スクロール・はみ出しなし。実際に達成・確認したのは『3枚の閉じたカードが互いに同じ高さ・見た目である』こと（性質によって閉じた見た目が変わらない）——開いたカードは観察文・3つの道具ボタン・使うボタン分だけ自然に縦へ伸びる（他のQ1ゲームの開示カードと同じ挙動であり、閉じた状態と開いた状態の高さが等しいという主張はしない。impl review r1 MEDIUM MOBILE_UNIFORMITY_UNSUPPORTED是正——v1の記述は誤って『閉じた状態・開いた状態とも同じ高さ』と主張していたが、これは実際の挙動でも実際の設計意図でもなかった）。",
+        "direct_manipulation": "PASS. カードのdx-moreボタンのタップで開閉、道具ボタンのタップで選択（ハイライト表示）、使うボタンのタップで確定、という一連の操作がすべて子ども自身の明示的なタップで表現される。システムが先に正解を教えることはない。",
+        "reaction_timing": "PASS. カードを開く・道具を選ぶ・使うを押す、のいずれも即座に視覚的な変化（観察文の表示、道具ボタンのハイライト、結果テキストとカード枠線の色変化）を伴う。",
+        "c_to_d": "PASS. 各異物の観察結果（近づけると引き寄せられる／持ち上げるとふわっと軽く舞う／どちらでもなく小さくてずしっと重い）を実際に読まなければ、どの道具を選ぶべきか判断できない構造（gameplay-qa-sort-out.mjsのlegitimate_full_reasoning=1、固定マッピング・単一道具・ランダムはいずれも約4%で検証済み）。",
+        "consequence": "PASS. 一致した異物はカード枠線が緑（selected）になり『（道具）で正しく仕分けられた！』と表示。不一致の異物は『この場面では、（道具）の原理はこの異物の性質に合わず、コンベアの上に残ったまま。』という正直な結果になる。3つとも一致すればonComplete（発酵→肥料→畑の演出）、1つでも不一致があればGate G振り返りを経てonPartialComplete（Gate H正直な結果）。",
+        "retry": "PASS. 異物ごとに1回の適用で結果が確定し、取り消し・再適用はできない。impl review r1 HIGH BATCHING_STATE_CLOSURE是正: openItem/selectTool/applyを単一のitemUI状態オブジェクト（Record<ItemId, {opened, selectedTool, appliedTool}>）へ統合し、いずれの更新関数もsetItemUI((prev) => ...)自身のprev[id]だけから完結する構造にした（HotelReceiveGame.tsxのgroupUIパターンと同型）。旧実装のdock-btn/holdingベースの無制限な道具持ち替えは完全に削除。",
+        "answer_leak": "PASS. 3枚の異物カードはすべて同じ中立の見た目（📦 異物）で、開いて観察結果を読むまでどの性質かは一切分からない。観察文言は道具名の漢字（磁選機／風力選別／手選別）を反復しない言い回し（近づけると引き寄せられる、等）。性質の割り当ては異物ごとに独立ランダムなので、他の異物の情報からの消去法でも判断できない（gameplay-qa-sort-out.mjsのelimination≈0.33、ランダムと同水準）。",
+        "brute_force": "PASS. gameplay-qa-sort-out.mjs: 26/26 checks（design-sim.mjsとの整合性、7種のexploit戦略シミュレーション、ソースレベルの回帰チェック19件）。旧実装のdock-btn/holdingベースの無制限な道具試行は構造的に排除。openItem/selectTool/applyそれぞれについて、自身のsetItemUI updaterのprev[id]以外（外側スコープのitemUI変数）を参照していないことを個別に検証するチェックへ強化（impl review r1 MEDIUM QA_REGRESSION_VACUOUS是正）。",
+        "visual_affordance": "PASS. 異物カード・道具選択ボタンはすべて同じ見た目・情報量で提示し、色や強調度で正解を示唆しない。カードのdisabled/有効状態がCSSクラスで明示される。",
+        "no_manual": "PASS. 説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる。no_manual_exploit_check_v2.jsonのlabel_leak/position_leak/visual_hierarchy_leak/reference_table系チェックはこのゲームには対応する常時参照テーブルが存在しないため非該当（対応表を画面に出す設計はcrowd-flowのt6のみで、sort_outのt1は不採用）。",
+        "job_reveal": "PASS. Browser-verified（フレッシュなタブで再検証）: 成功パス・部分失敗パスいずれも、job-reveal画面（食べ残しを資源に変える工場の仕事／📖しごと図鑑に追加された！）へ正しく到達。discoveryEchoは『さっき、異物の性質を観察してから、磁選機・風力選別・手選別を使い分けたよね。工場では、こうやって道具の物理的な原理をいかして、食べ残しを安全な肥料に変えています。』と表示され、旧実装由来の『網』という古いツール名への言及は残っていないことを確認した。",
+        "content_regression_check_verified_non_vacuous": "gameplay-qa-sort-out.mjsのneutral-identityチェック（playing/reflecting両ブランチを個別にスコープするv2版）とbatchingチェック（openItem/selectTool/applyそれぞれ個別のv2版）について、実際にRecycleGame.tsx内で意図した回帰パターン（apply()がprev[id]ではなく外側スコープのitemUI[id].selectedToolを参照する、というimpl review r1で指摘された実際のバグパターン）を一時的に再現し、該当チェックが正しくFAILすることを確認、その後元に戻して26/26 PASSへ復帰することを確認した。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-sort-out.mjs (26/26 PASS, 主要チェックの非空洞性をrevert testで検証——r1で実際に見つかったBATCHING_STATE_CLOSUREバグパターンの再現による検証を含む); npx tsc --noEmit (clean); npm run lint (clean, 新規warningなし); npm run build (成功)。Browser pane playthrough（フレッシュなタブ、desktop 1280x720、直前の一時的なバグ再現テストによるコンソールバッファの残留を排除するため新規タブで再検証）: 全問正解の成功パス→job-reveal画面まで到達、3問すべて誤答させた部分失敗パス→Gate G振り返り画面（3項目すべての観察結果＋実際に選んだ道具を読み取り専用で再掲、全項目選択until 先へ進むが有効化）まで到達、いずれもconsoleエラーなしで確認。375px幅（mobile preset）でのレイアウト崩れなしも確認（開いたカードの高さが閉じたカードより自然に大きくなる点は、他の全Q1ゲームと同じ正常な挙動であり問題ではない）。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-sort-out:implementation:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T23:10:03.253Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-sort-out/design/implementation_qa_v1.json",
+          "created_at": "2026-09-10T22:56:55.055Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json",
+          "created_at": "2026-09-10T23:10:03.254Z",
+          "creator": "claude-code"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 84,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sort-out/design-review-r2.result.json",
+    "input": "factory/projects/legacy-sort-out/design-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-10T22:38:27.919Z"
+  },
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 86,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sort-out/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-sort-out/impl-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 2,
+    "stale": false,
+    "recorded_at": "2026-09-10T23:13:29.458Z"
+  },
+  "art_review": null,
+  "failures": [
+    {
+      "failure_id": "f-1",
+      "failure_code": "CORE_DISTORTED_BY_GAME",
+      "failure_reason": "design review r1 (score 42): 3 BLOCKERs. (1) MISMATCH_PARTIAL_EFFECT_OVERCLAIM + (2) EXCLUSIVITY_OVERCLAIM: game_translations_v1.json's adopted t1 C_interaction contains an actual authoring bug -- I wrote '選ばなかった2つの道具がその異物に対して実際に無効だとは断定するが' (DOES assert the other two tools are actually ineffective), the exact opposite of the intended '断定せず' (does NOT assert) hedge that the rest of the design chain (fact_sheet/scope_core/ae/reference_research) correctly uses. Compounded by system_reaction's blanket 'この異物は（選んだ道具）では取りのぞけず、そのまま残ってしまった' phrasing, which asserts zero real-world removal effect for every mismatch as an unconditional fact, contradicting research.md's finding that machine sorting stages are imperfect/combined rather than binary all-or-nothing. (3) CORE_CAUSAL_MODEL_DISTORTED: independent per-item property sampling (correctly closing ANSWER_LEAK_PERMUTATION_ELIMINATION) was combined with FIXED visible item identities (metal spoon / large plastic bag / plastic spoon) that are described as retaining their fixed appearance while independently receiving any of the 3 properties -- producing physically incoherent sessions (e.g. a plastic bag assigned magnetic_metal, a metal spoon assigned light_film). This is a genuine design oversight: crowd-flow's LOCATIONS (entrance/food court/stage) have no inherent physical nature constraining which cause they can host, but sort_out's ITEMS have a visible material identity that DOES physically constrain which property is possible, and I mechanically copied the location-independence pattern without checking this disanalogy. Fix direction: (a) rewrite C_interaction/system_reaction to remove the 'ineffective'/definitive-removal-failure claims and replace with a modest, scoped claim (the chosen tool's principle did or didn't match the observed property, in this attempt -- no claim about the alternatives' real-world effect in either direction); (b) redesign each item slot so its VISIBLE description/appearance is generated to be causally coherent with whichever property is independently assigned that session (the observation IS the property, honestly described, rather than a fixed named object that could get an incompatible property) -- sessionWin's actual scoring logic in design-sim.mjs is unaffected, only the JSON chain's framing of what an 'item slot' represents. Also 2 MEDIUM to address in the same repair: LABEL_LEAK_TRIVIAL_MATCH (observation text repeats the tool's own name/kanji, e.g. 磁石→磁選機, reducing interpretation) and WORLD_FEEDBACK_QUALITY (no concrete visible line consequence for success/failure, only icon+text).",
+      "evidence": "factory/projects/legacy-sort-out/design-review-r1.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "fact sheet",
+      "must_change": "the game must not distort what the profession produces",
+      "design_iteration": 1,
+      "at": "2026-09-10T20:58:24.933Z"
+    },
+    {
+      "failure_id": "f-2",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "implementation review r1 (score 72): HIGH BATCHING_STATE_CLOSURE -- selectTool's updater reads appliedTool[id] from render-scope closure (not derived from setSelectedTool's own prev), and apply's updater reads selectedTool[id] from render-scope closure (not derived from setAppliedTool's own prev). This contradicts the batching-safe pattern implementation_v1.json claimed to follow (matching HotelReceiveGame.tsx's groupUI precedent) -- both transitions read a SIBLING state variable's render-scope value instead of being fully self-contained within their own updater. Not exploitable via ordinary sequential clicks today (the 使う button is natively disabled until selectedTool[id] is set, and browsers refuse click dispatch on disabled elements, so no real user click sequence can currently trigger the stale read), but it is a genuine robustness gap inconsistent with the established codebase convention and the implementation's own claimed guarantee. Also 4 MEDIUM: (1)(2) QA_REGRESSION_VACUOUS -- gameplay-qa-sort-out.mjs's batching check explicitly accepts the exact stale-closure pattern it claims to forbid, and its neutral-identity check counts occurrences across BOTH the playing and reflection branches combined with only a narrow 3-name blacklist, so a new fixed identity introduced in one branch could still pass if the other branch supplies enough neutral-label matches. (3) IMPLEMENTATION_QA_EVIDENCE_INACCURATE -- implementation_qa_v1.json's first_5_seconds claim ('カードをタップすると開き') reads as implying the whole card is tappable, when the actual clickable target is only the small dx-more '？' button (a real but pre-existing, already-shipped pattern from DelayRecoverGame.tsx, not a new deviation -- the QA text should describe it accurately rather than overclaiming). (4) MOBILE_UNIFORMITY_UNSUPPORTED -- the design chain's mobile_constraints wording ('閉じた状態・開いた状態のいずれも同じ高さ・見た目になるよう統一する') and the QA evidence both overclaim that CLOSED and OPENED card heights are equal, which was never actually true (nor is it true for any other Q1 game) and isn't the real intent -- the real, achievable requirement is that the 3 CLOSED cards look uniform to each OTHER (no differential closed-state hint), which the implementation does satisfy. Fix direction: (1) consolidate selectedTool/appliedTool (and ideally openedItems) into a single per-item state object (e.g. itemState: Record<ItemId,{opened,selectedTool,appliedTool}>) so every transition derives entirely from that one setter's own prev, matching HotelReceiveGame.tsx's groupUI pattern exactly; (2) rewrite the QA harness's batching check to actually fail on any cross-state render-scope read inside a transition updater, and rescope the identity check to verify the neutral label separately within each branch; (3) correct implementation_qa_v1.json's wording to accurately describe the dx-more button as the actual tap target and to correctly state that only the 3 CLOSED cards are mutually uniform (not closed-vs-open); (4) correct the design chain's mobile_constraints wording to the same accurate claim (pure wording clarification, no mechanic change).",
+      "evidence": "factory/projects/legacy-sort-out/impl-review-r1.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design, spec, art",
+      "must_change": "implementation must restore the specified D",
+      "design_iteration": 1,
+      "at": "2026-09-10T23:01:24.859Z"
+    }
+  ],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-sort-out",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-10T20:36:15.567Z",
+  "updated_at": "2026-09-10T23:14:13.261Z",
+  "history": [
+    {
+      "at": "2026-09-10T20:36:15.567Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "sort_out"
+    },
+    {
+      "at": "2026-09-10T20:36:15.648Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-sort-out"
+    },
+    {
+      "at": "2026-09-10T20:36:15.691Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-10T20:36:15.691Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T20:36:15.732Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-10T20:36:15.732Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T20:36:15.773Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-10T20:36:15.773Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T20:36:15.814Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-10T20:53:15.146Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-10T20:53:15.146Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": [
+        "legacy-sort-out:fact_sheet:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:15.187Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-10T20:53:15.187Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:15.228Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-10T20:53:15.228Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:15.268Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-10T20:53:15.268Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:scope_core:v2",
+        "legacy-sort-out:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:40.265Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-10T20:53:40.265Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:40.307Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-10T20:53:40.307Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:40.347Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-10T20:53:40.347Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:49.052Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-10T20:53:49.052Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:c_compression:v1",
+        "legacy-sort-out:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:49.095Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-10T20:53:49.095Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:49.136Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-10T20:53:49.136Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v1",
+        "legacy-sort-out:first_5_seconds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:53:49.178Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-10T20:53:49.178Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v1",
+        "legacy-sort-out:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T20:58:04.999Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sort-out/design-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-10T20:58:24.934Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "REPAIRING",
+      "note": "CORE_DISTORTED_BY_GAME -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-10T20:58:24.934Z",
+      "event": "failure_routed",
+      "failure_id": "f-1",
+      "code": "CORE_DISTORTED_BY_GAME",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-10T21:02:41.257Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:ae:v3",
+      "invalidated": [
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check",
+        "independent_review"
+      ],
+      "sources": [
+        "legacy-sort-out:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:03:22.488Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:core_scope_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:scope_core:v2",
+        "legacy-sort-out:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:03:22.531Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:play_seeds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:46.333Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:46.375Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:c_compression:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:55.853Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:game_translations:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:c_compression:v2",
+        "legacy-sort-out:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:55.897Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:55.938Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v2",
+        "legacy-sort-out:first_5_seconds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T21:04:55.981Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v2",
+        "legacy-sort-out:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T22:38:27.919Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sort-out/design-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T22:38:27.919Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-10T22:39:18.834Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-10T22:39:18.835Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T22:40:28.098Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T22:40:28.098Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T22:40:43.912Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T22:40:43.912Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T22:56:55.010Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-10T22:56:55.010Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T22:56:55.055Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-10T22:56:55.055Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T23:00:57.170Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sort-out/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-10T23:01:24.860Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "REPAIRING",
+      "note": "IMPLEMENTATION_CHANGED_D -> IMPLEMENTATION (downstream repair)"
+    },
+    {
+      "at": "2026-09-10T23:01:24.860Z",
+      "event": "failure_routed",
+      "failure_id": "f-2",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 2
+      }
+    },
+    {
+      "at": "2026-09-10T23:10:03.211Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:implementation:v2",
+      "invalidated": [
+        "implementation_qa",
+        "impl_review"
+      ],
+      "sources": [
+        "legacy-sort-out:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T23:10:03.254Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-sort-out:implementation_qa:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-sort-out:implementation:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T23:10:28.637Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "Fixed impl review r1 HIGH BATCHING_STATE_CLOSURE by consolidating per-item UI into a single itemUI state object (openItem/selectTool/apply each derive entirely from their own setItemUI updater's prev[id]). Fixed 4 MEDIUM (2x QA_REGRESSION_VACUOUS, IMPLEMENTATION_QA_EVIDENCE_INACCURATE, MOBILE_UNIFORMITY_UNSUPPORTED) via corrected QA harness checks and corrected implementation_qa_v2.json wording. 26/26 gameplay-qa-sort-out.mjs passing, tsc/lint/build clean, full browser re-verification in a fresh tab with zero console errors."
+    },
+    {
+      "at": "2026-09-10T23:10:28.638Z",
+      "event": "repair_done",
+      "note": "Fixed impl review r1 HIGH BATCHING_STATE_CLOSURE by consolidating per-item UI into a single itemUI state object (openItem/selectTool/apply each derive entirely from their own setItemUI updater's prev[id]). Fixed 4 MEDIUM (2x QA_REGRESSION_VACUOUS, IMPLEMENTATION_QA_EVIDENCE_INACCURATE, MOBILE_UNIFORMITY_UNSUPPORTED) via corrected QA harness checks and corrected implementation_qa_v2.json wording. 26/26 gameplay-qa-sort-out.mjs passing, tsc/lint/build clean, full browser re-verification in a fresh tab with zero console errors."
+    },
+    {
+      "at": "2026-09-10T23:13:29.459Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sort-out/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T23:14:13.260Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T23:14:13.261Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ]
+}

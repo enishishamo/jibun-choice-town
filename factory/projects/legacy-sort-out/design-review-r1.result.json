@@ -1,0 +1,115 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sort-out-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 42,
+    "career_authenticity_score": 42,
+    "game_quality_score": 64,
+    "blockers": [
+      {
+        "finding": "The adopted child-facing model universally asserts that every nonmatching tool is actually ineffective and that a mismatch cannot remove the item. The cited research does not establish zero effect for every possible mismatch; it instead emphasizes combined stages, imperfect machine capture, and supplementary hand sorting. This reproduces the MISMATCH_PARTIAL_EFFECT_OVERCLAIM family in negative form.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      },
+      {
+        "finding": "Independently sampling abstract properties onto visible objects creates physically impossible sessions: a large plastic bag or plastic spoon can be assigned magnetic_metal, while a metal spoon can be assigned light_film. The simulation successfully prevents permutation elimination, but does so by severing the observed property from the material identity children see, distorting the real causal model.",
+        "file": "factory/projects/legacy-sort-out/design/design-sim.mjs"
+      },
+      {
+        "finding": "The adopted translation says observation directly and uniquely determines one tool and explicitly declares both alternatives ineffective. That presents the authored 1:1 table as the definitive real-world answer even though the research says sorting technologies are combined, magnetic capture can miss material, and hand sorting supplements machine stages. The disclaimer about facility-wide completion does not cure this item-level exclusivity claim.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      }
+    ],
+    "high": [],
+    "medium": [
+      {
+        "finding": "The first screen exposes only tool names, while observations repeat answer-identifying words such as 磁石 and 風. The specified interaction is parseable, but much of the decision becomes literal label matching rather than interpreting tool principles; the per-item grouping of nine tool controls plus three execution controls is also underspecified for a 375px layout.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      },
+      {
+        "finding": "Success and failure primarily change an item icon and display text. No concrete animation or visible factory-line consequence is specified for removal versus an item remaining, weakening world-feedback quality.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      }
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "MISMATCH_PARTIAL_EFFECT_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Child-facing C_interaction declares both unchosen tools actually ineffective, and system_reaction universally says a mismatched selected tool could not remove the item. The sources do not prove zero removal effect for every cross-tool mismatch.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Independent sampling with replacement closes elimination leakage but permits material-property combinations that contradict the visible object, such as a plastic bag assigned magnetic_metal. Randomize among causally compatible variants instead of independently relabeling physical reality.",
+        "file": "factory/projects/legacy-sort-out/design/design-sim.mjs"
+      },
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "The adopted C says one tool is directly and uniquely determined and the other two are actually ineffective, turning a useful game mapping into the definitive item-level real-world answer despite research documenting combined and imperfect sorting stages.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      },
+      {
+        "code": "LABEL_LEAK_TRIVIAL_MATCH",
+        "severity": "MEDIUM",
+        "finding": "Observations name 磁石 or 風 and the choices are named 磁選機 and 風力選別, allowing near-verbatim keyword matching without meaningful interpretation of the stated principles.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      },
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "MEDIUM",
+        "finding": "The design specifies completion/remaining icons and explanatory text but no concrete visible movement or factory-state reaction caused by applying a tool.",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v1.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "7/7 passed: legitimate_full_reasoning=1; random_pick=0.0382; always_assume_fixed_mapping=0.0377; always_magnet_everywhere=0.0363; always_wind_everywhere=0.0379; always_hand_everywhere=0.0351; two_observed_plus_elimination_guess_third=0.3281. Output matches design-sim-result.json.",
+      "brute_force_closed": true,
+      "old_tool_not_reintroduced": true,
+      "property_tool_pairs_grounded": false,
+      "no_exclusivity_overclaim": false,
+      "no_mismatch_partial_effect_overclaim": false,
+      "no_documented_example_authority_overclaim": true,
+      "elimination_leak_closed": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-sort-out/research.md:44 — Research limits the claim to magnetic material and notes that operating conditions affect magnetic-separator accuracy.",
+      "factory/projects/legacy-sort-out/research.md:59 — Research identifies hand sorting as a supplementary final check after machine sorting.",
+      "factory/projects/legacy-sort-out/research.md:350 — Section 6 warns that a deterministic one-item/one-tool removal claim can overstate real practice.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:9 — Adopted C says the answer is directly and uniquely determined and explicitly declares the other two tools actually ineffective.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:10 — Every mismatch is asserted to be unable to remove the item.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:14 — A single matched application is described as correctly sorting each item, followed by fertilizer production.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:15 — Each item has one scored commitment; failure leads only to non-scored reflection, closing brute force.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:16 — Job reveal describes observation and property-to-tool selection as a real role without claiming that sources literally enumerate the table.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:57 — newSession samples each slot independently with replacement.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:63 — Any of the three properties can be assigned to any visible item slot, including causally incompatible object/property combinations.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:69 — Winning requires exact equality with the authored one-to-one mapping.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v1.json:40 — s4 specifies a misjudgment followed by reflection.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v1.json:46 — Reflection re-presents the original three observations read-only.",
+      "factory/projects/legacy-sort-out/design/game_translations_v1.json:14 — onPartialComplete is distinct from success and states that unmatched items remain.",
+      "factory/projects/legacy-sort-out/design/first_5_seconds_v1.json:2 — The initial screen contains three closed cards and disabled controls.",
+      "factory/projects/legacy-sort-out/design/first_5_seconds_v1.json:3 — Tapping a card reveals its observation and enables controls.",
+      "factory/projects/legacy-sort-out/design/reference_research_v1.json:12 — Wind separation replaces the historical sieve using a more directly relevant light-material principle; the sieve appears only in historical explanation.",
+      "factory/projects/legacy-sort-out/design/reference_research_v1.json:18 — The hand-sort pairing is a designer application of its general supplementary role, not an explicit source example for every dense small nonmagnetic object.",
+      "factory/projects/legacy-sort-out/design/fact_sheet_v2.json:20 — The legal claim accurately states Article 25's quality-lowering-foreign-matter prohibition and applies it to compost without inventing a numeric threshold.",
+      "factory/projects/legacy-sort-out/design/fact_sheet_v2.json:47 — The sieve is mentioned only as the replaced historical implementation, not as a current tool."
+    ],
+    "recommended_actions": [
+      "Replace universal match/mismatch efficacy claims with epistemically bounded feedback: state only that the selected principle was or was not well suited to the observed property, without claiming the alternatives have zero effect or that one pass removed the item with certainty.",
+      "Preserve independent sampling without impossible materials: generate causally compatible item variants inside each property class, or randomize property cards first and render an object whose material and behavior actually match.",
+      "Remove 'directly, uniquely determined' and 'the other two are actually ineffective' from the adopted C. Explain that the game asks for the best-supported first sorting method while real facilities combine stages and final checks.",
+      "Show concise tool-principle cards before commitment and rewrite observations to require interpretation rather than repeating the tool's label.",
+      "Specify visible, honest line reactions for both outcomes, such as the item moving toward the appropriate stage versus continuing visibly marked for later checking, while avoiding claims of complete removal."
+    ]
+  },
+  "elapsed_sec": 96.869
+}

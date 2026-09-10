@@ -75,7 +75,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   inspect_and_measure: CookGame, // 測る→基準→対応→再確認→記録
   sow_and_grow: FarmGame, // 試す→時間経過→結果→やり直す
   load_and_route: LogisticsGame, // 積み分け＋順路計画→検収
-  sort_out: RecycleGame, // 道具の性質で仕分ける
+  sort_out: RecycleGame, // 異物の観察結果→性質に合う道具（磁選機/風力選別/手選別）で仕分ける
   // 猛暑編
   place_and_test: ParkHeatGame, // 配置→シミュレーション→再配置
   forecast_and_balance: PowerGame, // 予測を見て供給を合わせ、時間を進める

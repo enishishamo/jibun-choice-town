@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sort-out-impl-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 86,
+    "career_authenticity_score": 92,
+    "game_quality_score": 86,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "IMPLEMENTATION_QA_EVIDENCE_INACCURATE: implementation_qa_v2.json still describes the dx-more interaction as open/close, but openItem is one-way: once opened it returns prev and cannot close the card. The rendered '－' therefore does not perform the advertised close action.",
+      "MOBILE_UNIFORMITY_DESIGN_MISMATCH: implementation_qa_v2.json accurately describes the current CSS as making only the three closed cards mutually uniform, but it incorrectly dismisses equal closed/open card sizing as never being the design intent. The approved game_spec_v1.json explicitly requires uniform height in both closed and opened states, while dx-card remains content-height-driven."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "IMPLEMENTATION_QA_EVIDENCE_INACCURATE",
+        "severity": "MEDIUM",
+        "finding": "The corrected first-five-seconds claim now identifies the dx-more button accurately, but direct_manipulation still claims that button opens and closes cards. openItem only changes opened from false to true, so pressing the displayed minus button does nothing.",
+        "file": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json"
+      },
+      {
+        "code": "MOBILE_UNIFORMITY_DESIGN_MISMATCH",
+        "severity": "MEDIUM",
+        "finding": "The evidence now truthfully limits its implementation claim to uniform closed cards, but contradicts the approved specification by asserting equal closed/open heights were not an actual design intent. No fixed/minimum card height implements the approved constraint.",
+        "file": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "26 passed, 0 failed",
+      "design_sim_ran": true,
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "batching_bug_absent": true,
+      "item_identity_neutral_and_coherent": true,
+      "no_exclusivity_overclaim": true,
+      "no_mismatch_partial_effect_overclaim": true,
+      "label_leak_closed": true,
+      "gate_g_correct": true,
+      "gate_h_correct": true,
+      "disclosure_gating_correct": true,
+      "content_regression_check_non_vacuous": true,
+      "content_accurately_updated": true,
+      "r1_findings_genuinely_fixed": false,
+      "ready_for_release": true
+    },
+    "evidence": [
+      "src/q1/RecycleGame.tsx:38 — ItemUI co-locates opened, selectedTool, and appliedTool.",
+      "src/q1/RecycleGame.tsx:48 — itemUI is a single Record<ItemId, ItemUI> state.",
+      "src/q1/RecycleGame.tsx:61 — openItem uses setItemUI(prev) and only prev[id] inside its updater.",
+      "src/q1/RecycleGame.tsx:64 — selectTool uses setItemUI(prev) and only prev[id] inside its updater.",
+      "src/q1/RecycleGame.tsx:67 — apply uses setItemUI(prev); both guard and committed tool derive exclusively from prev[id].",
+      "factory/harness/gameplay-qa-sort-out.mjs:93 — three independent batching checks inspect openItem, selectTool, and apply.",
+      "factory/harness/gameplay-qa-sort-out.mjs:96 — static reasoning confirms replacing prev[id].selectedTool with itemUI[id].selectedTool makes the exact r1 pattern match the forbidden bare itemUI[ regex and fail; no temporary edit was performed because the workspace is read-only.",
+      "factory/harness/gameplay-qa-sort-out.mjs:111 — reflection and playing identity blocks are split and checked independently; replacing either branch's neutral literal makes that branch's exact-one-label check fail.",
+      "factory/harness/gameplay-qa-sort-out.mjs:163 — executed successfully: 26 passed, 0 failed.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:69 — scoring property/tool definitions remain unchanged and match sortOutLogic.ts.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:166 — executed successfully: 7 passed, 0 failed; legitimate reasoning 1.0, random 0.0382, fixed mapping 0.0377, elimination 0.3281.",
+      "src/q1/RecycleGame.tsx:69 — an applied item cannot be applied again; the first committed appliedTool is preserved.",
+      "src/q1/RecycleGame.tsx:127 — partial failure enters a distinct reflecting branch.",
+      "src/q1/RecycleGame.tsx:138 — Gate G maps over all three items and re-presents each PROPERTY_OBSERVATION.",
+      "src/q1/RecycleGame.tsx:147 — Gate G re-presents each child's actual applied tool read-only.",
+      "src/q1/RecycleGame.tsx:169 — reflection explicitly states that its choices do not change the result.",
+      "src/q1/RecycleGame.tsx:172 — continuation remains disabled until all reflection picks exist.",
+      "src/q1/RecycleGame.tsx:173 — partial completion calls onPartialComplete with onComplete fallback, not onComplete directly.",
+      "src/q1/RecycleGame.tsx:204 — all playable cards render the same neutral '📦 異物' label.",
+      "src/q1/RecycleGame.tsx:218 — mismatch copy is scoped to this scene and makes no exclusivity or permanent-zero-effect claim.",
+      "src/q1/RecycleGame.tsx:222 — observation and tool controls render only for that item's opened state.",
+      "src/q1/RecycleGame.tsx:238 — the use button is disabled until that item's tool is selected.",
+      "src/q1/sortOutLogic.ts:50 — PROPERTY_OBSERVATION contains none of the tool names 磁選機, 風力選別, or 手選別.",
+      "src/q1/RecycleGame.tsx:206 — dx-more renders '－' after opening, but openItem at line 62 returns prev when already opened, so closing is not implemented.",
+      "factory/projects/legacy-sort-out/design/implementation_qa_v2.json:5 — direct_manipulation inaccurately claims dx-more supports opening and closing.",
+      "factory/projects/legacy-sort-out/design/game_spec_v1.json:21 — approved mobile constraint requires cards to be uniform in both closed and opened states.",
+      "src/index.css:4236 — dx-card has content-driven height and no fixed/minimum height enforcing closed/open uniformity.",
+      "factory/projects/legacy-sort-out/design/implementation_qa_v2.json:4 — v2 accurately describes current closed-card uniformity but improperly redefines the approved design intent.",
+      "git diff HEAD^..HEAD — the repair commit changed RecycleGame and QA artifacts but not schoolLunch.ts, registry.ts, sortOutLogic.ts, or design-sim.mjs.",
+      "src/data/content/schoolLunch.ts:410 — recycle-lunch still uses sort_out with observe-then-match mission text and tools: [].",
+      "src/data/content/schoolLunch.ts:424 — discoveryEcho accurately names magnetic, wind, and hand sorting with no stale net reference.",
+      "src/q1/registry.ts:78 — sort_out comment still accurately describes observation followed by property-matched tool selection."
+    ],
+    "recommended_actions": [
+      "Either implement true close behavior when the dx-more button displays '－', or change implementation_qa_v2.json to describe one-way disclosure and avoid the word 開閉.",
+      "Resolve the approved mobile constraint explicitly: implement uniform opened-card sizing, or revise and reapprove game_spec_v1.json instead of redefining its intent only in implementation evidence.",
+      "Strengthen the batching harness eventually with parsed transition functions or behavioral tests; the current regex is non-vacuous for the exact r1 regression but can be bypassed by aliases, whitespace, optional chaining, or helper closures."
+    ]
+  },
+  "elapsed_sec": 79.619
+}

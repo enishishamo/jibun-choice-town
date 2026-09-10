@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sort-out-design-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 90,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      {
+        "finding": "LABEL_LEAK_TRIVIAL_MATCHの修正が採用t1全体には徹底されていない。C_interactionとplay_seedsでは「近づけると引き寄せられる」に直されたが、goalは依然として観察を「磁石に近づけると引き寄せられる」と記載し、選択肢「磁選機」と同じ「磁」を露出している。また、磁気の手掛かりから「磁石」を完全に除いた文言は、何に近づけたのか不明で、10–12歳にはやや曖昧である。BLOCKER/HIGHではないが、修正完了の主張は不正確。",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v2.json"
+      }
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "LABEL_LEAK_TRIVIAL_MATCH",
+        "severity": "MEDIUM",
+        "finding": "採用t1のgoalだけ旧来の「磁石に近づけると」を残しており、「磁選機」との文字・概念の直接対応を部分的に再導入している。対してC_interaction、play_seeds、first_5_secondsは言い換え済みで、影響は限定的。",
+        "file": "factory/projects/legacy-sort-out/design/game_translations_v2.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "7/7 passed: legitimate_full_reasoning=1; random_pick=0.0382; always_assume_fixed_mapping=0.0377; always_magnet_everywhere=0.0363; always_wind_everywhere=0.0379; always_hand_everywhere=0.0351; two_observed_plus_elimination_guess_third=0.3281. Numbers match design-sim-result.json and r1 exactly; PROPERTIES, TOOLS, independent-with-replacement assignment, equality-based sessionWin, and seven checks remain the same described scoring model.",
+      "brute_force_closed": true,
+      "item_appearance_neutral_and_coherent": true,
+      "property_tool_pairs_grounded": true,
+      "no_exclusivity_overclaim": true,
+      "no_mismatch_partial_effect_overclaim": true,
+      "label_leak_closed": false,
+      "elimination_leak_closed": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "world_feedback_concrete_and_honest": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": true,
+      "r1_blockers_genuinely_fixed": true
+    },
+    "evidence": [
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:6 — adopted goal limits the assessed fact to observed-property/tool-principle agreement and disclaims alternative-tool ineffectiveness and facility-wide completion, but retains 「磁石に近づけると」.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:7 — all three closed cards use the same neutral icon and reveal no fixed material identity.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:9 — C_interaction removes the erroneous assertion about unchosen tools and uses the rephrased observations; it makes no claim about their real-world effects.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:10 — matched items visibly move from the conveyor to the selected machine/table; mismatched items visibly remain on the belt, while copy only says the selected principle did not match in this scene.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:14 — success is scoped to this scene and partial completion remains distinct; no facility-wide complete-remediation or professional-validation claim is made.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:15 — each item has one scored application; failure leads only to a result-preserving, non-scored reflection.",
+      "factory/projects/legacy-sort-out/design/first_5_seconds_v2.json:2 — the initial screen independently confirms three identically presented closed cards.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v2.json:5 — current observations avoid literal tool names and independent sampling permits repeated properties, closing permutation elimination.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v2.json:19 — mismatch feedback is scoped to this scene and paired with the concrete conveyor-remains-visible consequence.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v2.json:40 — s4 specifies misjudgment followed by a result-preserving reflection using the same data.",
+      "factory/projects/legacy-sort-out/design/play_seeds_v2.json:42 — reflection re-presents all three observations and is explicitly non-scored.",
+      "factory/projects/legacy-sort-out/design/ae_v3.json:5 — current mechanics explicitly deny claims that alternatives have no real effect or that one tool completely clears the facility.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:79 — each neutral item slot independently samples one of three grounded properties with replacement.",
+      "factory/projects/legacy-sort-out/design/design-sim.mjs:90 — success still requires exact agreement between every sampled property and the authored tool-principle mapping.",
+      "factory/projects/legacy-sort-out/design/design-sim-result.json:2 — stored results exactly match the executed 7/7 simulation output.",
+      "factory/projects/legacy-sort-out/design/no_manual_exploit_check_v2.json:10 — retrying or changing the scored result for the same item is prohibited.",
+      "factory/projects/legacy-sort-out/design/reference_research_v2.json:12 — mentions of bags and the old sieve occur only as historical/research comparison, not as current randomized game-object identities.",
+      "factory/projects/legacy-sort-out/design/game_translations_v2.json:44 — spoon/bag identities appear only inside explicitly rejected t3 and are not part of the adopted chain."
+    ],
+    "recommended_actions": [
+      "Replace adopted t1 goal’s 「磁石に近づけると引き寄せられる」 with a non-keyword observation consistent with C_interaction, while preserving causal clarity—for example, visually show a neutral test plate approaching and write 「テスト板を近づけると、カチッと引き寄せられた」.",
+      "Ensure implementation displays or visually demonstrates each machine’s principle; 「近づけると引き寄せられる」 alone does not identify what approached the item, especially for children unfamiliar with the term 「磁選機」."
+    ]
+  },
+  "elapsed_sec": 109.559
+}
