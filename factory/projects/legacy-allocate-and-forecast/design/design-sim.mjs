@@ -6,19 +6,26 @@
 // "alt" axis for household caused a CAUSAL INVERSION -- fact_sheet describes 代替水源 (groundwater/
 // desalination) as a way to PROTECT household from cuts (research.md's Okinawa case), but v2's
 // scoring used that same "has an alternative" signal to justify CUTTING household hardest, which
-// no research.md example actually supports. Fix: household's second axis is renamed CAPACITY and
-// re-grounded as "this week's own baseline demand is naturally lower" (a cooler week within the
-// hot season means less AC/water use) -- structurally identical to agriculture's off-season slack
-// and industrial's off-peak slack (a sector's OWN reduced need, not an external backup being
-// weaponized against it). The real fact about 代替水源 protecting households stays true as
-// unconditional background flavor, decoupled from the scoring rule entirely, so there is no more
-// contradiction between narrated fact and scored rule.
-// v3 also lowers NON_TARGET_PATTERNS to a 50/50 (not 45/45/10) 2-pattern split -- r2 correctly
-// called out that 0.65 was set just above the v2 measured value (61.6-61.8%) rather than derived
-// independently, the exact same "author sets threshold to fit the exploit" problem r1 already
-// flagged once at 0.85. The pass bar here is now a fixed 0.60, chosen BEFORE running the
-// simulation, matching (per r2's own read of legacy-layer-and-compare's source) that game's
-// bare single-axis-only checks staying at or below that range.
+// no research.md example actually supports. v3 also lowered NON_TARGET_PATTERNS to a 50/50 (not
+// 45/45/10) 2-pattern split -- r2 correctly called out that 0.65 was set just above the v2 measured
+// value (61.6-61.8%) rather than derived independently, the exact same "author sets threshold to
+// fit the exploit" problem r1 already flagged once at 0.85. The pass bar is a fixed 0.60, chosen
+// BEFORE running the simulation (design review r3 independently verified this against
+// legacy-layer-and-compare's actual source: that game's bare single-axis-only checks cap at 0.7,
+// so 0.60 here is if anything stricter, not looser).
+// v4 (design review r3 FAIL 42, BLOCKER x1 repair): r3 accepted the CAUSAL INVERSION fix's shape
+// but rejected v3's specific replacement grounding for household's CAPACITY axis -- "this week's
+// own baseline demand is naturally lower (a cooler week means less AC use)" -- as not a real,
+// water-specific mechanism (ordinary household AC is not a material municipal-water demand driver,
+// and lower demand alone doesn't establish that cutting there is the RIGHT priority, only that less
+// water would be saved). Fix: household's CAPACITY axis is re-grounded as "today, discretionary /
+// non-essential household water use (庭の水やり・洗車など) can be deferred without a health or
+// safety impact" -- a real, commonly-documented FIRST-STAGE drought response category (municipal
+// water restrictions routinely target outdoor/non-essential use before indoor essential use), which
+// is both genuinely water-specific (unlike AC) and directionally valid (deferring discretionary use
+// both is tolerable AND saves real water, unlike a generic "demand happens to be lower" framing).
+// This is a narrative/grounding-only change -- the math (SECTORS, DEPTH_TABLE, NON_TARGET_PATTERNS,
+// newSession, sessionWin, and every verified exploit number) is byte-identical to v3.
 //
 // CORE (dual decision, mirrors the location+tool pattern proven safe in legacy-layer-and-compare):
 //  Decision 1 -- WHICH of {household, agriculture, industrial} bears this week's deepest cut.
