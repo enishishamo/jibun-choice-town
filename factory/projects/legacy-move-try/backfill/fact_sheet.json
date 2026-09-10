@@ -1,0 +1,32 @@
+{
+  "profession": "理学療法士",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "起き上がり、立ち上がり、歩行を固定順で試し、現れた問題に対応する補助具や環境調整を1つ選ぶ"
+  ],
+  "expertise": [
+    "各動作で生じるぐらつき、筋力不足、息切れと、手すり、杖、高さ調整、休憩、練習の用途説明"
+  ],
+  "tools": [
+    "各動作で生じるぐらつき、筋力不足、息切れと、手すり、杖、高さ調整、休憩、練習の用途説明"
+  ],
+  "information_used": [
+    "各動作で生じるぐらつき、筋力不足、息切れと、手すり、杖、高さ調整、休憩、練習の用途説明"
+  ],
+  "decisions": [
+    "動作上の問題と各工夫の作用を比較し、その動作を直ちに安全にする工夫を選択する"
+  ],
+  "outputs_or_value": "同じ動作で5つの工夫を何度でも選び直せる",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/move_try.json"
+}

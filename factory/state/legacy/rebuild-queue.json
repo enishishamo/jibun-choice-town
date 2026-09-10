@@ -149,7 +149,9 @@
       ],
       "priority_score": 4.58,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "queued"
+      "status": "in_progress",
+      "game_id": "legacy-move-try",
+      "started_at": "2026-09-10T15:01:29.072Z"
     },
     {
       "game_type": "hotel_receive",

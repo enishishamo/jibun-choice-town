@@ -95,6 +95,18 @@
       "redesign_count": 1,
       "updated_at": "2026-09-10T14:57:52.611Z",
       "depends_on": []
+    },
+    "legacy-move-try": {
+      "game_id": "legacy-move-try",
+      "profession": "理学療法士",
+      "state": "AE_READY",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "move_try",
+      "task_id": "q1-rebuild-move-try",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-10T15:01:29.067Z",
+      "depends_on": []
     }
   }
 }

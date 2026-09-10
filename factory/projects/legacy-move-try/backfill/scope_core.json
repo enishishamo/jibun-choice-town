@@ -1,0 +1,8 @@
+{
+  "core": "動作を試して問題を観察し、工夫を1つ選び、成功するまで選び直して次の固定動作へ進む。",
+  "scope": "医療編／退院後に自力でトイレへ行けるか確かめる場面",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/move_try.json"
+}
