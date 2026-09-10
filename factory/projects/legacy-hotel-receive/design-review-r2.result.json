@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-hotel-receive-design-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 88,
+    "career_authenticity_score": 94,
+    "game_quality_score": 88,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "failure_codes": [],
+    "round1_findings_confirmed_closed": {
+      "room_verification_grounded": true,
+      "allergy_per_member_grounded": true,
+      "play_seed_s4_coherent": true,
+      "generator_bug_fixed": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6 passed, 0 failed; legitimate_full_reasoning=1, random_pick=0.0001, room_always_accept=0.1963, room_always_reject=0.0721, meal_ignored_selects_nobody=0.0001, meal_ignored_selects_everyone=0.0013",
+      "select_everyone_loses": true,
+      "no_stale_mechanic_references": true,
+      "ready_for_implementation": true
+    },
+    "evidence": [
+      "factory/projects/legacy-hotel-receive/research.md:83 — 宿泊施設が学校側の人数・希望を実際の客室へ当てはめる役割が記録されており、提示済み客室の定員充足を検証する翻訳は実務を歪めない。",
+      "factory/projects/legacy-hotel-receive/research.md:148 — 実在のアレルギー調査票は児童・生徒氏名と品目別除去要否を持つ個人単位の書式である。",
+      "factory/projects/legacy-hotel-receive/design/fact_sheet_v2.json:65 — 部屋判断は完全一致ではなく定員が足りることを基準としている。",
+      "factory/projects/legacy-hotel-receive/design/fact_sheet_v2.json:66 — 除去要のある本人だけを個別対応食にし、班全体を切り替えない判断として明記されている。",
+      "factory/projects/legacy-hotel-receive/design/play_seeds_v2.json:41 — s4は6名に対する定員3名の提示を思い込みで承認する、部屋判定固有の誤りとして記述されている。",
+      "factory/projects/legacy-hotel-receive/design/play_seeds_v2.json:42 — s4の実際の操作も食事対象者は正しく、部屋判定のみ誤るため、叙述と採点結果が一致する。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:57 — 班人数は3・4・5・6から生成され、部屋定員との完全一致に拘束されていない。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:58 — proposedRoomは人数とは独立に抽選される。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:59 — roomOkはROOM_CAPACITY[proposedRoom] >= sizeという純粋な充足判定である。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:64 — 各メンバーのアレルゲンは単一のfilter呼び出しで生成され、二重独立抽選バグは解消されている。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:79 — 選択メンバー集合と実際の該当者集合を比較している。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:81 — 人数と全要素の一致を要求するため、見落としと過剰選択の双方が失敗になる。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:146 — 正当な完全推論が常に勝つことを検査し、実行値は正確に1だった。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:151 — 全員を念のため選ぶ戦略を独立に検査し、実行値0.0013で明確に敗北した。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v2.json:7 — UIはメンバーごとの複数選択チェックとして定義され、個人単位の実務を小学生向けの直接的な操作へ妥当に翻訳している。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v2.json:9 — 現行メカニクスは提示された一室の充足確認であり、複数部屋からの選択ではない。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v2.json:18 — 5〜6名時の縦長化は実装時の375px表示検証事項として既に明示されている。",
+      "factory/projects/legacy-hotel-receive/design/no_manual_exploit_check_v2.json:8 — 全員選択による過剰対応は攻略にならないことが設計と実測の両方で確認されている。"
+    ],
+    "recommended_actions": []
+  },
+  "elapsed_sec": 128.107
+}
