@@ -107,6 +107,18 @@
       "redesign_count": 1,
       "updated_at": "2026-09-10T19:05:35.125Z",
       "depends_on": []
+    },
+    "legacy-sort-out": {
+      "game_id": "legacy-sort-out",
+      "profession": "食品残渣を選別し肥料化するリサイクル工場作業員",
+      "state": "RELEASE_CANDIDATE",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "sort_out",
+      "task_id": "q1-rebuild-sort-out",
+      "repair_count": 2,
+      "redesign_count": 0,
+      "updated_at": "2026-09-10T23:14:13.261Z",
+      "depends_on": []
     }
   }
 }

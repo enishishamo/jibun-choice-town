@@ -1523,6 +1523,56 @@
           "given": "f8b4cf1ad795fdf92c586124bc83718760d2ce6d"
         }
       ]
+    },
+    "q1-rebuild-sort-out": {
+      "task_id": "q1-rebuild-sort-out",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-sort-out/impl-review-r2.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json",
+      "deploy_status": null,
+      "release_commit": "00f280812cce24d508188796cf95521cf1babfd3",
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-10T20:36:15.524Z",
+      "updated_at": "2026-09-10T23:18:44.442Z",
+      "history": [
+        {
+          "at": "2026-09-10T20:36:15.525Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-10T23:14:06.484Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-sort-out/impl-review-r2.result.json",
+          "score": 86,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-10T23:14:06.523Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-sort-out/design/implementation_qa_v2.json"
+        },
+        {
+          "at": "2026-09-10T23:18:44.443Z",
+          "event": "release_commit_set",
+          "sha": "00f280812cce24d508188796cf95521cf1babfd3",
+          "given": "00f280812cce24d508188796cf95521cf1babfd3"
+        }
+      ]
     }
   }
 }
