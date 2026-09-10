@@ -75,13 +75,13 @@
     "legacy-layer-and-compare": {
       "game_id": "legacy-layer-and-compare",
       "profession": "都市の暑さを分析し、街づくりを考える仕事",
-      "state": "AE_READY",
+      "state": "FIRST_PLAY_READY",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "layer_and_compare",
       "task_id": "q1-rebuild-layer-and-compare",
       "repair_count": 0,
       "redesign_count": 0,
-      "updated_at": "2026-09-10T03:39:21.774Z",
+      "updated_at": "2026-09-10T04:11:30.173Z",
       "depends_on": []
     }
   }

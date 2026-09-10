@@ -1,0 +1,87 @@
+{
+  "n": 20000,
+  "roles": {
+    "SUN": {
+      "sun": "strong",
+      "wind": "strong",
+      "pavement": "retentive"
+    },
+    "PAVEMENT": {
+      "sun": "weak",
+      "wind": "strong",
+      "pavement": "asphalt"
+    },
+    "WIND": {
+      "sun": "weak",
+      "wind": "weak",
+      "pavement": "retentive"
+    },
+    "FINE": {
+      "sun": "weak",
+      "wind": "strong",
+      "pavement": "retentive"
+    }
+  },
+  "tools": [
+    "shade",
+    "water_pavement"
+  ],
+  "archetypes": [
+    {
+      "id": "fix-sun",
+      "roles": [
+        "SUN",
+        "WIND",
+        "FINE"
+      ],
+      "correctRole": "SUN",
+      "correctTool": "shade"
+    },
+    {
+      "id": "fix-pavement",
+      "roles": [
+        "PAVEMENT",
+        "WIND",
+        "FINE"
+      ],
+      "correctRole": "PAVEMENT",
+      "correctTool": "water_pavement"
+    }
+  ],
+  "archetypeDistribution": {
+    "fix-pavement": 9905,
+    "fix-sun": 10095
+  },
+  "correctSlotPositionDistribution": {
+    "0": 6668,
+    "1": 6719,
+    "2": 6613
+  },
+  "results": {
+    "legitimate_full_reasoning": 1,
+    "fixed_slot0_shade": 0.1707,
+    "fixed_slot0_water_pavement": 0.1627,
+    "fixed_slot1_shade": 0.1693,
+    "fixed_slot1_water_pavement": 0.1667,
+    "fixed_slot2_shade": 0.1648,
+    "fixed_slot2_water_pavement": 0.1658,
+    "random_pick": 0.1701,
+    "sun_axis_only_then_random": 0.5894,
+    "pavement_axis_only_then_random": 0.5807,
+    "avoids_wind_then_random": 0.2512,
+    "first_bad_looking_slot": 0.5002
+  },
+  "verdict": {
+    "legitimate_always_wins": true,
+    "fixed_slot_tool_guesses_fail": true,
+    "random_pick_stays_low": true,
+    "single_axis_shortcut_capped": true,
+    "avoids_wind_heuristic_capped": true,
+    "first_bad_looking_heuristic_capped": true,
+    "margin_over_sun_axis_shortcut": 0.4106,
+    "margin_over_pavement_axis_shortcut": 0.4193,
+    "archetype_distribution_balanced": true,
+    "correct_slot_position_balanced": true
+  },
+  "notes": "v1: real causes (日射/舗装/風) and countermeasures (街路樹・日除け/保水性舗装, no point-fix for 風) per research.md. Each session draws ONE of 2 archetypes (fix-sun / fix-pavement, 50/50) so the fixable-by-shade location is NOT guaranteed every session -- this specifically prevents a single-axis 'always check 日射, apply shade' strategy from reaching ~100% by exploiting an always-present SUN role (an earlier draft of this design had both SUN and PAVEMENT present every session and would have allowed exactly that exploit). WIND (unfixable at point scale, per 環境省データシート表3.2 -- wind-corridor measures are city/district-scale only) and FINE (nothing to fix) are always-present distractors. sun_axis_only_then_random / pavement_axis_only_then_random verify a strategy that reads only one cause axis is capped near 58% (wins its own archetype 100%, falls back to a 1-in-6 random guess on the other), well below full reasoning's 100%."
+}
