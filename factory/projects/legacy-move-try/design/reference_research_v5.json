@@ -1,0 +1,22 @@
+{
+  "references": [
+    {
+      "reference": "厚生労働省「介護保険における福祉用具の選定の判断基準 改訂案」資料5（電動車いすの使用が想定しにくい状態像＝歩行×短期記憶のAND条件、歩行補助つえの種類選定、5つの視点）、兵庫県理学療法士会「退院後指導マニュアル」（立ち上がりの3段階観察、日常生活チェック表の高さ条件記録欄）",
+      "relevant_mechanic": "動作の機能面の原因を観察する判断と、住環境・介護力という実行条件を踏まえて工夫を選ぶ判断——単一の症状軸だけでは適切な工夫が決まらないという実在の多軸判断構造",
+      "borrowed_principle": "実在する『福祉用具の適否は複数の視点（利用目的・利用者・介護者・住環境・他の福祉用具）のAND条件で決まる』という因果構造を、動作ごとに異なる2軸判断（立ち上がり: 機能面原因×住環境、歩行: 機能面原因×介護力）に圧縮してゲームに投影する。起き上がりは研究で第2の軸が確認できなかったため、無理に2軸化せず単一軸のまま扱う——実在の複雑さの違いをそのまま反映する（design-sim.mjsで単一軸/2軸それぞれの検証を実施）。立ち上がり・歩行のいずれも、住環境・介護力に余地がある場面では原因診断が直接どちらの工夫が合うかを決めるが、余地がない場面では、研究が『これは用具が要る／これは鍛える／これは休憩で対応する、を分ける明確な単一の判定ルールは見つからなかった』と明言している以上、原因ごとに異なる工夫を発明することはせず、研究が広く裏付ける『訓練』（筋力・耐久性トレーニング、特定の原因に限定されないカテゴリ）に、原因を問わず収束させる（design review r4 BLOCKER是正）。『休憩・ペーシング』は、研究が明示的に持久力・心肺機能と結び付けている歩行の持久力不足×介護者ありのセルにのみ残した。",
+      "surface_elements_not_to_copy": "福祉用具の品目別の詳細な適否基準表・歩行補助つえの5種類の詳細な構造差はそのまま出さない（10-12歳向けに、動作ごとの機能面原因と実行条件という2値の読み物に圧縮）。Barthel Index/FIMの具体的な点数・TUGテストのカットオフ秒数は一次資料未確認のため使わない（fact_sheet_v5.jsonのuncertaintiesに明記）"
+    },
+    {
+      "reference": "既存Q1 legacy-layer-and-compare/legacy-allocate-and-forecast（design review r1-r4を経た前例、CORE_DATA_AXIS_NOT_REQUIRED/C_NOT_NEEDED_FOR_D/CORE_CAUSAL_MODEL_DISTORTEDの是正）",
+      "relevant_mechanic": "単一の軸だけを読む戦略が高確率で成功してしまう穴を防ぐため、判断軸が本当に両方必要になるよう設計し、design-sim.mjsで事前に数値検証する規律。判断軸のグラウンディングは、数値モデルが健全でも独立に、実際にその行動が意味を持つ形で検証する規律。加えて、legacy-allocate-and-forecastのhousehold 2候補構造では、数値的に避けられない構造上の下限（約75-83%、リウェイトでは解消不可能と判明）が発見され、隠さず開示したうえで受け入れる、という前例が確立している。",
+      "borrowed_principle": "立ち上がり・歩行の2軸判断は、design-sim.mjs v2でLatin-square的な対角配置（原因軸だけ・条件軸だけを読む戦略がいずれも約50%にとどまる）に修正し（design review r1のBLOCKER是正: v1は支持点不足/動的バランス不足の分岐が条件軸を無視しても常に同じ工夫で正解してしまい約75%まで許してしまっていた）、design-sim.mjs v3で『休憩・ペーシング』を第4の候補として導入したが対象セルの根拠が薄いと指摘され（design review r2）、design-sim.mjs v4で『代償動作』というさらに別の候補を導入したが、これも研究が裏付けない個別の因果メカニズムの発明だと重ねて指摘された（design review r3・r4、いずれもCORE_CAUSAL_MODEL_DISTORTED）——数学的な対角配置/4候補構造を保つこと自体が、支えが使えない各セルに『研究が裏付けない、その原因専用の技法』を要求してしまう構造的な緊張であると判明した。design-sim.mjs v5では、この緊張を発明ではなく受容で解消した: 支えが使えない場面は原因を問わず『訓練』（研究が広く、特定の原因に限定されずに裏付けるカテゴリ）に統一し、その結果、条件軸単独の当てずっぽう成功率が約75%まで許容されることを、legacy-allocate-and-forecastの前例に倣って隠さず開示した——ただし原因軸の判別力（約50%）は維持し、全体としても原因・条件を組み合わせた判断が実質的に必要であることをsingle_axis_only_combined/single_axis_only_condition_combined（いずれも約25-28%）で検証済み。起き上がりを無理に2軸化しなかったのは、同じ教訓を踏まえ、研究で裏付けのない軸を追加しないという判断——ただしこれは『研究が1軸で十分と確認した』という意味ではなく『研究が第2軸を確認できなかった』という意味であることをfact_sheet_v2.jsonのuncertaintiesに明記した（design review r1で研究結果の誤読として指摘された点の是正）",
+      "surface_elements_not_to_copy": "layer_and_compare/allocate_and_forecastの題材・非対象パターンの重み付け技法はそのまま持ち込まない（move_tryは3つの独立した動作それぞれの単発コミットという別の構造）"
+    },
+    {
+      "reference": "既存Q1 legacy-layer-and-compare（design review r2で採用した、非採点の振り返りステップという前例）、legacy-allocate-and-forecast（振り返りに元データを再掲する実装レベルの教訓、impl review r1 THINK_AGAIN_CONTEXT_MISSING是正）",
+      "relevant_mechanic": "失敗後に同じデータを再提示して選択させるが、その選択自体は採点されず結果を変えない振り返りステップ。振り返り画面には元データも読み取り専用で再掲する必要がある（選択肢だけでは不十分）",
+      "borrowed_principle": "3動作のうち1つでも失敗した場合、3動作すべてのデータを再提示したうえで、動作ごとに『今度はどの工夫が合っていたと思う？』と選ばせる非採点の振り返りステップを挟み、Q1 First-Play Standard Gate G『考え直す余地』を満たす。legacy-allocate-and-forecastの実装レビューr1で『振り返り画面が選択肢だけでデータを再掲していなかった』ことがBLOCKERとして指摘された教訓を踏まえ、design段階（ae_v2.json）から元データの再掲を明記する。同様にlegacy-move-try自身のdesign review r1では、Gate H（onComplete/onPartialCompleteの呼び分け）が明記されていないことがBLOCKERとして指摘されたため、ae_v2.jsonに明記した",
+      "surface_elements_not_to_copy": "layer_and_compare/allocate_and_forecastの具体的な題材・判定構造はそのまま持ち込まない（move_tryは3動作独立の単発コミットという別の二部構成ではなく三部構成）"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r4",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 38,
+    "career_authenticity_score": 38,
+    "game_quality_score": 78,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED: The v4 mapping is mathematically distinct but remains clinically under-grounded. research.md supports compensation, pacing, training, and assistive devices as broad intervention categories; it does not support the asserted caregiver-dependent four-way walk mapping or the specific claim that furniture/wall walking is a safe substitute when no caregiver is available. It likewise does not establish deeper forward lean as the uniquely correct response to standup support deficiency when environmental adjustment is unavailable. Several cells are still selected to complete a 2x2 game matrix rather than derived from documented causal rules."
+    ],
+    "high": [],
+    "medium": [
+      "game_translations_v4.json omits 代償動作 from the candidate list in its goal field even though the adopted interaction later includes it. This is stale/incomplete descriptive residue, although it does not alter the simulator mapping."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The prior-round causal-grounding defect is not closed. The research documents broad intervention categories but not the v4 cell-specific exclusivity. In particular, it does not state that caregiver absence makes pacing inappropriate, makes training the correct alternative, or makes wall/furniture contact a safe independent walking strategy. Nor does it specifically validate deeper forward lean as the solution to a missing support point. The design converts these unsupported assumptions into definitive success/failure rules.",
+        "file": "factory/projects/legacy-move-try/design/ae_v4.json"
+      },
+      {
+        "code": "STALE_CANDIDATE_LIST",
+        "severity": "MEDIUM",
+        "finding": "The adopted translation's goal lists 手すり・杖・高さ調整・休憩・訓練 but omits the active 代償動作 candidate.",
+        "file": "factory/projects/legacy-move-try/design/game_translations_v4.json"
+      }
+    ],
+    "round3_findings_confirmed_closed": {
+      "all_cells_independently_grounded": false,
+      "compensate_candidate_genuinely_distinct_from_rest": true,
+      "play_seeds_s4_plausible": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "8 passed, 0 failed. legitimate_full_reasoning=1; random_pick=0.0301; standup_cause_axis_only=0.5078; standup_env_axis_only=0.4998; walk_cause_axis_only=0.4947; walk_caregiver_axis_only=0.4963; single_axis_only_combined=0.2547.",
+      "no_axis_constant_branch": true,
+      "no_candidate_reused_across_cells": true,
+      "no_stale_prior_mapping_references": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-move-try/research.md:214 — The research explicitly says no single documented decision rule was found for choosing training versus equipment/environment versus rest; the choice remains clinical reasoning.",
+      "factory/projects/legacy-move-try/research.md:204 — The manual supports training and compensatory methods as broad categories, with examples such as handrail use and using the stronger leg, but does not document the two proposed compensate mechanisms or their assigned cells.",
+      "factory/projects/legacy-move-try/design/ae_v4.json:5 — The design asserts that familiar walls/furniture make unsupported walking safe without supervision and that caregiver absence makes training preferable to pacing; neither conditional mechanism is documented in research.md.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:83 — Standup branches are four distinct outputs: legs+adjustable→height, legs+not-adjustable→train, support+adjustable→rail, support+not-adjustable→compensate.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:106 — Walk branches are four distinct outputs: balance+caregiver→cane, balance+no-caregiver→compensate, endurance+caregiver→rest, endurance+no-caregiver→train.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:199 — Executed simulator reported all eight checks passing, including all four single-axis measurements near 50%.",
+      "factory/projects/legacy-move-try/design/play_seeds_v4.json:41 — s4 reads both facts and then confuses a support-oriented rail with treatment for leg weakness; this is a credible mapping error and does not contradict the disclosure gate.",
+      "factory/projects/legacy-move-try/design/game_translations_v4.json:6 — The adopted goal's candidate enumeration omits 代償動作.",
+      "factory/projects/legacy-move-try/design/reference_research_v4.json:12 — Rejected v2/v3 mappings appear only as clearly identified history; no rejected mapping remains operative."
+    ],
+    "recommended_actions": [
+      "REDESIGN the walk decision structure around condition-dependent interventions that research.md specifically documents, or obtain additional authoritative research establishing the safety and caregiver-dependent mechanisms used by the four cells.",
+      "Do not treat four unique labels as sufficient grounding: document a specific causal mechanism and evidence for each cause-condition-output cell, including why the alternative output is inappropriate in that condition.",
+      "Remove or replace wall/furniture walking unless authoritative evidence supports it as a deliberately taught and safe strategy for an unsupervised person with dynamic-balance impairment.",
+      "Either establish evidence that caregiver availability changes pacing versus training and cane versus compensation, or replace caregiver availability with a condition that genuinely determines those interventions.",
+      "Update game_translations_v4.json's goal candidate list to include 代償動作 if that candidate survives redesign."
+    ]
+  },
+  "elapsed_sec": 110.84
+}

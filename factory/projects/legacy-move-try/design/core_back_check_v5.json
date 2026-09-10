@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-diagnose-and-fix-per-movement（v5）は、scope_core_v5.jsonのcoreが定義する『動作ごとの機能面原因×（裏付けのある動作のみ）実行条件の判断』を、game_translations_v5.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（起き上がりの研究解釈の是正、立ち上がり・歩行のマッピングの対角配置化、Gate H明記、視覚フィードバック追加）、design review r2〜r4のBLOCKER是正（対角配置の繰り返しセル、次いで4候補構成『代償動作』のいずれも、支えが使えない場面専用に原因ごと異なる工夫を発明することが研究の裏付けを超えていると繰り返し指摘されたため、design_iteration 3のREDESIGNで、支えが使えない場面を原因を問わず訓練に統一する構成へ転換し、条件軸単独の約75%という結果を隠さず開示する設計に切り替えた。play_seeds のs4も disclosure gate と矛盾しない、現実的な取り違えに修正済み）が、scope_core_v5.json/ae_v5.json/game_translations_v5.json/play_seeds_v5.json/c_compression_v5.json/no_manual_exploit_check_v5.json/reference_research_v5.json/fact_sheet_v5.jsonのすべてに一貫して反映されていることを確認した。first_5_seconds_v5.jsonの初回タップ体験（カードを開いて読む→工夫を選ぶ→実施）も、c_compression_v5.jsonが定義した圧縮後のCとD（2値の読み物を見比べて動作ごとに選択する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v5.jsonのfixed_failure_pattern検証（design-sim-result.json v5）により、原因軸の判断は完全な推論を明確に下回り（約50%）、条件軸単独は意図して開示した約75%の下限にとどまるが、全体としての組み合わせ判断は約25-28%と、完全な推論を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

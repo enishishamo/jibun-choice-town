@@ -1,19 +1,18 @@
 {
   "legitimate_full_reasoning": 1,
-  "random_pick": 0.0301,
+  "random_pick": 0.0563,
   "fixed_situp_rail": 0.5048,
   "fixed_situp_train": 0.4953,
   "fixed_standup_height": 0.2525,
   "fixed_standup_rail": 0.2504,
-  "fixed_standup_train": 0.2488,
-  "fixed_standup_compensate": 0.2482,
+  "fixed_standup_train": 0.497,
   "fixed_walk_cane": 0.2552,
   "fixed_walk_rest": 0.2474,
-  "fixed_walk_train": 0.2486,
-  "fixed_walk_compensate": 0.2487,
+  "fixed_walk_train": 0.4974,
   "standup_cause_axis_only": 0.5078,
-  "standup_env_axis_only": 0.4998,
+  "standup_env_axis_only": 0.7458,
   "walk_cause_axis_only": 0.4947,
-  "walk_caregiver_axis_only": 0.4963,
-  "single_axis_only_combined": 0.2547
+  "walk_caregiver_axis_only": 0.7465,
+  "single_axis_only_combined": 0.2547,
+  "single_axis_only_condition_combined": 0.2765
 }

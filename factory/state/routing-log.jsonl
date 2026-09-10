@@ -349,3 +349,4 @@
 {"ts":"2026-09-10T15:20:08.131Z","tool":"codex-review","label":"legacy-move-try-design-r1","prompt_file":"factory/projects/legacy-move-try/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":171.303}
 {"ts":"2026-09-10T15:34:35.329Z","tool":"codex-review","label":"legacy-move-try-design-r2","prompt_file":"factory/projects/legacy-move-try/design-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":132.2}
 {"ts":"2026-09-10T15:51:27.954Z","tool":"codex-review","label":"legacy-move-try-design-r3","prompt_file":"factory/projects/legacy-move-try/design-review-r3-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":107.594}
+{"ts":"2026-09-10T16:06:51.977Z","tool":"codex-review","label":"legacy-move-try-design-r4","prompt_file":"factory/projects/legacy-move-try/design-review-r4-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":110.84}
