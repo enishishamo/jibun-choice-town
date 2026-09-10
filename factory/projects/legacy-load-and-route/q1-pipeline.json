@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "load_and_route",
   "creator": "claude-code",
-  "state": "RELEASE_CANDIDATE",
+  "state": "RELEASED",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
@@ -1009,10 +1009,10 @@
   "human_decisions": [],
   "limited_exceptions": [],
   "task_id": "q1-rebuild-load-and-route",
-  "version": null,
+  "version": "v1.0",
   "depends_on": [],
   "created_at": "2026-09-10T01:16:42.848Z",
-  "updated_at": "2026-09-10T03:22:17.863Z",
+  "updated_at": "2026-09-10T03:34:47.586Z",
   "history": [
     {
       "at": "2026-09-10T01:16:42.848Z",
@@ -2142,6 +2142,18 @@
       "at": "2026-09-10T03:22:17.863Z",
       "event": "gate_passed",
       "gate": "RELEASE"
+    },
+    {
+      "at": "2026-09-10T03:34:47.586Z",
+      "event": "state_change",
+      "from": "RELEASE_CANDIDATE",
+      "to": "RELEASED",
+      "note": "version v1.0"
+    },
+    {
+      "at": "2026-09-10T03:34:47.586Z",
+      "event": "version_set",
+      "version": "v1.0"
     }
   ]
 }

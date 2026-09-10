@@ -1,6 +1,6 @@
 {
   "note": "Prioritized legacy rebuild queue — regenerate with `node factory/harness/q1-legacy-audit.mjs queue`. Order: release_blocker > serious_first_play_failure > core_distortion > answer_leak > brute_force_exploit > major_factual_problem > severe_c_d_failure > other; ties by lower audit GQ. WIP limit applies at `start`.",
-  "generated_at": "2026-09-10T00:11:52.056Z",
+  "generated_at": "2026-09-10T03:36:06.834Z",
   "wip_limit": 2,
   "items": [
     {
@@ -75,9 +75,7 @@
       ],
       "priority_score": 3.58,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "in_progress",
-      "game_id": "legacy-load-and-route",
-      "started_at": "2026-09-10T01:16:43.094Z"
+      "status": "done"
     },
     {
       "game_type": "line_debug",
