@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v2.jsonのD/Eは、セクター選定（household/agriculture/industrialを完全に対称な3候補として扱い、urgency×altの2軸で判断する）と制限深度選定（貯水率×雨予報の2軸）という同一の2段階判断を一貫して記述しており矛盾はない。design review r1のBLOCKER（CORE_DISTORTED_BY_GAME: 家庭常時除外がresearch.md 4節の実データと矛盾）を受け、scope_core_v2.json/ae_v2.jsonでは家庭を含む3セクターいずれもが正解になり得るモデルに修正済みであることを確認した。scopeの『渇水対策連絡協議会で水の分け方を調整する仕事』はfact_sheet_v2.jsonの一次資料（河川法第53条の協議枠組み、令和5年度全国水系別のセクター別非対称制限率データ）の中心的業務そのものであり、周辺的な作業ではない。profession_name_hidden_testは、C（貯水率・降雨予報・セクター別タイミング事情と代替手段という水資源特有のデータ）とD（制限深度選定→セクター選定という2段階判断）が他の既存Q1ゲーム（配送・農業・ヒートアイランド対策等）と重複しないことを確認済み。"
+}

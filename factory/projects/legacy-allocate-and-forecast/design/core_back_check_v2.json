@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-brief-and-allocate（v2）は、scope_core_v2.jsonのcoreが定義する『貯水率×雨予報による制限深度の先読み』と『家庭・農業・工業を対称な候補としたタイミング事情×代替手段による割り当て先選定』の2つの判断を、game_translations_v2.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（家庭常時除外の撤廃、振り返りの問いの向きの修正、視覚的な世界フィードバックの追加）がscope_core_v2.json/ae_v2.json/game_translations_v2.json/play_seeds_v2.jsonのすべてに一貫して反映されていることを確認した。first_5_seconds_v2.jsonの初回タップ体験（カードを開いて読む→2つの選択→実施）も、c_compression_v2.jsonが定義した圧縮後のCとD（2値の読み物を見比べて2段階の選択をする）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v2.jsonのfixed_failure_pattern検証（design-sim-result.json v2）により、単一軸判断・部分的当てずっぽうのいずれも完全な推論を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

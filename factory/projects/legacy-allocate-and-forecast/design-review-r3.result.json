@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-design-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 42,
+    "career_authenticity_score": 42,
+    "game_quality_score": 72,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED remains open: replacing household backup-water capacity with naturally lower baseline demand removes the previous contradiction but does not establish a valid reason to assign households the deepest restriction. Lower demand can make a restriction save less water, while the cited household-only restriction examples do not establish this proposed rule. The residential-air-conditioning explanation is also ungrounded because ordinary household AC is not a material municipal-water demand mechanism.",
+      "The current fact sheet still defines sector allocation using alternative means and explicitly includes household groundwater/desalination, contradicting the adopted capacity-based scoring model and leaving the authoritative design chain causally inconsistent."
+    ],
+    "high": [],
+    "medium": [
+      "c_compression_v3.json correctly lists rate of reservoir decline under removed_complexity, but reason_for_removal then says that rate was integrated into current reservoir level and rain timing. Those snapshots do not encode a rate, so the disclosure still implies representation after declaring the variable removed.",
+      "reference_research_v3.json repeatedly describes the adopted sector mechanic as timing circumstances × alternative means and says every sector, including households, becomes correct when those conditions align. This is stale relative to the adopted household baseline-demand rule."
+    ],
+    "low": [
+      "The adopted t5 goal begins with a change log from t1 and several fields repeatedly cite prior review fixes. Its operative interaction is understandable on its own, but removing diff-oriented language would make it a cleaner implementation specification."
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Household baseline demand being naturally lower is not a grounded proxy for capacity to bear the deepest cut. It may reduce the water saved by cutting that sector, and neither the cited household-only restriction observations nor the cooler-week/AC assertion establishes the scoring rule.",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs"
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "BLOCKER",
+        "finding": "The current fact sheet continues to specify alternative means—including household groundwater and desalination—as decision-critical allocation information, contradicting the adopted model's claimed separation of those resources from household scoring.",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v3.json"
+      },
+      {
+        "code": "RATE_OF_DECLINE_SCOPE_DISCLOSURE_AMBIGUOUS",
+        "severity": "MEDIUM",
+        "finding": "The compression artifact says decline rate was removed but also says it was integrated into two snapshot axes that do not represent rate.",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/c_compression_v3.json"
+      },
+      {
+        "code": "REFERENCE_RESEARCH_STALE_CAUSAL_MODEL",
+        "severity": "MEDIUM",
+        "finding": "The reference artifact still defines the sector mechanic through alternative means and applies that characterization to households, conflicting with t5 and design-sim v3.",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/reference_research_v3.json"
+      }
+    ],
+    "round2_findings_confirmed_closed": {
+      "core_causal_model_distorted": false,
+      "c_not_needed_for_d": true,
+      "think_again_incomplete": true,
+      "visual_failure_consequence": true,
+      "reservoir_value_consistent": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "12 passed, 0 failed; capacity_only_smart=0.5830, urgency_only_smart=0.5838, reservoir_only_depth=0.4961, rain_only_depth=0.4961.",
+      "layer_and_compare_threshold_claim_verified": "Verified: legacy-layer-and-compare/design/design-sim.mjs lines 189-193 use 0.7 for all relevant heuristic caps, not 0.5 or 0.6. The new 0.60 bar is stricter than that precedent, although the source comment's suggestion that it matches the precedent's range is imprecise.",
+      "threshold_0_60_defensible": true,
+      "floor_derivation_correct": true,
+      "sharper_exploit_found": false,
+      "household_causal_model_sound": false,
+      "reflection_covers_both_axes": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:9 — Household capacity is grounded only as naturally lower baseline demand; no mechanism establishes why that warrants the deepest cut.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:11 — The cooler-week explanation invokes reduced AC/water use without research support or a clear household-water mechanism.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v3.json:38 — Current representative duties still say allocations use each sector's alternative means.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v3.json:59 — Current information_used explicitly includes household groundwater and desalination as allocation inputs.",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v3.json:63 — Current decisions still require timing constraints and alternative means, conflicting with the household capacity rule.",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v3.json:29 — s3 treats backup sources as unrelated background, but its household-selection rationale remains unsupported baseline demand.",
+      "factory/projects/legacy-allocate-and-forecast/design/ae_v3.json:4 — AE consistently adopts baseline household demand and separates backup sources, but consistency does not supply missing causal grounding.",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v3.json:86 — Failure specifies both a continuing meter decline and unchanged chosen-sector icon without disclosing which decision was wrong.",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v3.json:91 — Both sector and depth reflection questions occur before proceeding and are non-scored.",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v3.json:29 — s3 uses reservoir HIGH plus rain FAR for medium restriction, matching DEPTH_TABLE.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:56 — DEPTH_TABLE maps HIGH,FAR to medium.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:51 — SINGLE_AXIS_PASS_BAR is fixed in source at 0.6.",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:70 — Non-target patterns are a symmetric 50/50 two-pattern construction.",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:189 — Actual comparison check uses a 0.7 single-axis cap.",
+      "factory/projects/legacy-allocate-and-forecast/design/c_compression_v3.json:4 — Decline rate is explicitly listed as removed.",
+      "factory/projects/legacy-allocate-and-forecast/design/c_compression_v3.json:5 — The same artifact then claims decline rate was integrated into current level and rain timing.",
+      "factory/projects/legacy-allocate-and-forecast/design/reference_research_v3.json:6 — Borrowed principle still describes timing × alternative means and applies it to every sector."
+    ],
+    "recommended_actions": [
+      "Replace the household capacity rule with a researched, water-specific and directionally valid mechanism that explains both tolerable impact and meaningful reservoir savings; do not rely on generic lower demand or residential AC.",
+      "Update fact_sheet_v3.json representative_duties, tools, information_used, and decisions so the current source-of-truth chain uses the same grounded household mechanism and preserves backup sources only in their protective role.",
+      "Update reference_research_v3.json to describe capacity rather than alternative means, or explicitly separate sector-specific mechanisms instead of asserting one uniform abstraction.",
+      "State plainly that reservoir decline rate is omitted; remove the claim that HIGH/LOW plus SOON/FAR encodes or integrates that rate.",
+      "Preserve the verified simulation construction, HIGH/FAR depth mapping, two-question mandatory reflection, and non-leaking failure reaction in the next redesign."
+    ]
+  },
+  "elapsed_sec": 198.269
+}

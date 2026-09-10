@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 46,
+    "career_authenticity_score": 46,
+    "game_quality_score": 54,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED: 家庭用代替水源を『生活用水への制限を回避する手段』ではなく『家庭を最も深く制限してよい根拠』へ反転している。家庭が正解になり得る対称コード自体は実在するが、その対称性を支える因果規則は調査結果と矛盾する。",
+      "C_NOT_NEEDED_FOR_D: 単一軸だけで61.6–61.8%成功する設計を、実測値の約3ポイント上に置いた0.65閾値で通している。改善はしたが、中心的なもう一方の軸を無視して過半数を大幅に超えて勝てる状態は閉じていない。",
+      "THINK_AGAIN_INCOMPLETE: 失敗原因には制限深度の誤りも含まれるのに、振り返りはセクターだけを再選択させる。セクターが正しく深度だけ誤ったケースでは、実際に誤った判断を考え直せずGate Gを満たさない。"
+    ],
+    "high": [
+      "VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE: 成功時のセクターアイコン変化は具体化されたが、失敗時は貯水率メーターが下がったままという指定しかなく、選択した住宅・水田・工場に生じる視覚的結果が定義されていない。",
+      "ARTIFACT_CHAIN_INCONSISTENT: play seed s3は『貯水率が中程度』を入力条件にするが、実際のシミュレータの貯水率入力はHIGH/LOWしかなく、このseedを現行モデルから生成できない。"
+    ],
+    "medium": [
+      "c_compression_v2.jsonは『貯水率が下がるスピード』を残すべき情報だと明記しながら、compressed_Cと実装モデルは静的HIGH/LOWしか持たず、削除したとも説明していない。さらに結果の『メーター回復』は流入のない取水制限の直接効果として不正確で、少なくとも『低下が緩む／下げ止まる』へ統一すべき。",
+      "research.md末尾のfact_sheet.json/scope_core.jsonという非versioned参照は現在の成果物名と一致しないが、要求内容自体はv2のuncertaintiesへ反映されており、再度ゲートするほどではない。",
+      "no_manual_exploit_check_v2.jsonは色・位置・階層を設計意図および実装QA待ちと正直に限定しており、前回の過剰主張は解消した。"
+    ],
+    "low": [
+      "first_5_seconds_v2.jsonの『実施ボタん』 typoは修正済み。",
+      "t4は複数セクター配分を実質的に比較しておりtoken gestureではないが、『時間内に検証できない』が主な却下理由で、単一セクター化による職務圧縮の損失は残る。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "fact_sheetは地下水・海水淡水化等を家庭への給水制限を最後まで回避する手段と説明する一方、s3と採点規則は同じ代替能力を家庭への最重制限の根拠に反転している。家庭のみ制限された実例は、この反転規則を裏付けない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v2.json"
+      },
+      {
+        "code": "C_NOT_NEEDED_FOR_D",
+        "severity": "BLOCKER",
+        "finding": "alt-only=0.6159、urgency-only=0.6180で、中心的な2軸の片方を完全に無視して約62%成功する。0.65は生成分布から既知の値をわずかに上回る自己設定閾値で、前回の循環性を十分解消していない。なお比較対象legacy-layer-and-compareの現行ソース上の判定閾値は依頼文記載の0.5/0.6ではなく0.7だが、実際の達成値は単一軸約0.33、第三軸欠落約0.50である。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs"
+      },
+      {
+        "code": "THINK_AGAIN_INCOMPLETE",
+        "severity": "BLOCKER",
+        "finding": "失敗判定はsectorまたはdepthの誤りで発生するのに、非採点振り返りはsectorだけを尋ねる。depth-only failureで誤った深度判断を再考できない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/game_translations_v2.json"
+      },
+      {
+        "code": "VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "成功時は選択セクターの節水・番水・融通中アイコンを指定するが、失敗時はメーターが下がったままとしか指定せず、セクター別の視覚的世界変化が欠落する。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/game_translations_v2.json"
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "HIGH",
+        "finding": "s3の入力『貯水率が中程度』はdesign-sim.mjsのHIGH/LOW二値モデルに存在しない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v2.json"
+      },
+      {
+        "code": "C_COMPRESSION_UNDISCLOSED_SCOPE_CUT",
+        "severity": "MEDIUM",
+        "finding": "reason_for_removalは低下速度を残すべきと主張するが、compressed_Cとシミュレータは低下速度を表現せず、削除理由も記録していない。",
+        "file": "factory/projects/legacy-allocate-and-forecast/design/c_compression_v2.json"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "core_distorted_by_game": false,
+      "c_not_needed_for_d": false,
+      "answer_leak_gate_g": false,
+      "no_consequence": false,
+      "clue_join_citation": true
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "12 passed, 0 failed; alt_only_smart=0.6159, urgency_only_smart=0.6180, reservoir_only_depth=0.4961, rain_only_depth=0.4961; values match design-sim-result.json.",
+      "threshold_0_65_defensible": false,
+      "sharper_exploit_found": false,
+      "household_genuinely_symmetric": true,
+      "reflection_no_longer_trivial": true,
+      "visual_feedback_concrete": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:83-89 — archetypeSectorは3セクター均等で、全セクターに同一target/non-target規則を適用している。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim.mjs:214-216 — 解析的に約0.62になる分布へ0.65判定を設定している。",
+      "factory/projects/legacy-allocate-and-forecast/design/design-sim-result.json:15-17 — alt-only 0.6159、urgency-only 0.6180。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:189-193 — 現行先例コードの閾値は各0.7であり、依頼文の0.5/0.6という説明とは一致しない。",
+      "factory/projects/legacy-allocate-and-forecast/design/fact_sheet_v2.json:48 — 家庭用代替水源は給水制限を最後まで回避するため優先活用すると記載。",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v2.json:28-32 — 同じ代替水源を理由に家庭への最重制限を正解としている。",
+      "factory/projects/legacy-allocate-and-forecast/design/game_translations_v2.json:10-15 — failureは深度またはsectorの誤りだが、振り返りはsectorのみ。失敗時の視覚指定もメーターだけ。",
+      "factory/projects/legacy-allocate-and-forecast/design/play_seeds_v2.json:28-30 — s3はモデルに存在しない『中程度』の貯水率を使用。",
+      "factory/projects/legacy-allocate-and-forecast/design/c_compression_v2.json:3-5 — compressed_Cには低下速度がなく、reason_for_removalはそれを残すべきと主張。",
+      "factory/projects/legacy-allocate-and-forecast/research.md:281-283 — 低下速度・雨の時期・現在段階の3情報を残すことを推奨。",
+      "factory/projects/legacy-allocate-and-forecast/design/reference_research_v2.json:28-31 — clue-joinを得点付き『あと2回』として独立分類。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json:7-15 — 実際にあと2回のscored retryであることを確認。"
+    ],
+    "recommended_actions": [
+      "家庭の代替水源と家庭制限の因果を一次資料で裏付けるか、家庭が正解になる条件を、代替水源が生活用水を守るという既存調査と矛盾しない形へ再設計する。",
+      "非対象分布を調整し、最適な単一軸戦略を少なくとも実測60%以下、望ましくは50%付近まで下げ、閾値を達成値から独立した受け入れ基準として定義する。",
+      "失敗後はセクターと制限深度の両方を再選択させる非採点振り返りにし、どちらの誤りでも考え直せるようにする。",
+      "失敗時にも選択したセクター固有の視覚状態と社会的影響を定義する。ただし個別正解を漏らさない表現にする。",
+      "貯水率の低下速度を入力軸として復元するか、明示的なscope cutとして記録する。取水制限の効果は根拠のない即時回復ではなく、低下の鈍化・下げ止まりとして表現する。",
+      "s3の『中程度』をHIGH/LOWモデルに合わせるか、シミュレータ側へ中間状態と対応表を追加する。"
+    ]
+  },
+  "elapsed_sec": 176.85
+}

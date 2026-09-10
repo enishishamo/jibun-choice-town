@@ -1,0 +1,8 @@
+{
+  "component_files": ["src/q1/WaterGame.tsx"],
+  "logic_module": "src/q1/waterAllocationLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-water-allocation.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/heat/place-dam.png — independently visually verified via Read tool to contain no baked-in numbers, labels, or contradicting content, a neutral dam illustration only)",
+  "d_preserved_statement": "waterAllocationLogic.tsのSECTORS/DEPTH_TABLE/NON_TARGET_PATTERNS/newSession/sessionWinはdesign/design-sim.mjs（design review r4 PASS 76時点、v4）と構造的に一致する。貯水率と雨予報を読み比べて今週の制限の強さを先読みする判断、家庭・農業・工業それぞれのタイミング事情と需要側の余地を読み比べて今週最も重い制限を割り当てるべきセクターを1つ選ぶ判断は、WaterGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。5枚のカード（貯水率・雨予報・家庭・農業・工業）すべてを開く（読む）まで、かつセクター1つ・制限の強さ1つが両方決まって初めて『実施する』が活性化し（openedCards状態、CORE_DATA_DISCLOSURE_NOT_REQUIRED対策を最初から実装に織り込み）、1回のコミットで結果が確定する。失敗時は同じ週のデータを再提示する非採点の振り返り選択（セクター・制限の強さの両方を再考させる2問、design review r2 BLOCKER: THINK_AGAIN_INCOMPLETE対応、reflectSector/reflectDepthの両方が選ばれるまで『先へ進む』は非活性）を挟んでから結末へ進む。成功時は貯水率メーターが回復し選んだセクターのアイコンが節水・協力中の表示に変わる、失敗時はメーターの低下がわずかに鈍る程度に留まりセクターの状態は変化しない、という視覚的な世界フィードバックを実装した（design review r2 HIGH: VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE対応）。 実装レビューr1（FAIL 52、BLOCKER×1: THINK_AGAIN_CONTEXT_MISSING、HIGH×1: VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE）是正: (1) THINK_AGAIN_CONTEXT_MISSING — 振り返り画面が結果文＋2問の選択肢だけで、ae_v4.json/game_translations_v4.jsonが規定する『同じ週のデータをもう一度見せる』を実装していなかった。5枚のカードの読み物（readingOf関数で共通化）を振り返り画面に読み取り専用で再掲するようにした。(2) VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE — プレイ画面（コミット前）に貯水率メーターのベースライン表示がなく、失敗画面には選んだセクターの状態表示が一切なかった。プレイ画面にもメーターを追加し、失敗画面に『（選んだセクター）の様子は変わっていない』という視覚的な失敗結果を追加した。カードのラベル表示（アイコン＋名前）もcardLabel関数で共通化し、プレイ画面・振り返り画面で一貫させた。"
+}

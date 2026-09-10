@@ -1,0 +1,8 @@
+{
+  "core": "降雨時期と貯水予測を見て3部門の利用率を調整し、7日進め、貯水率と影響を確認して次週の配分を決める。",
+  "scope": "街（猛暑）／ダム・水の施設",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/allocate_and_forecast.json"
+}

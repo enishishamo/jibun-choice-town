@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 78,
+    "game_quality_score": 52,
+    "blockers": [
+      "THINK_AGAIN_CONTEXT_MISSING: The failure reflection does not re-present any of the five cards or their readings. It tells the child to compare the same week's data again, but the scored UI has been completely replaced and only the result, meter, questions, and answer buttons remain. This violates the adopted Gate G implementation and makes the required two-axis reflection substantially memory-dependent."
+    ],
+    "high": [
+      "VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE: The promised failure visualization is not implemented as designed. The pre-commit screen has no reservoir meter to establish a before-state, and the failure screen does not render the selected sector/icon at all, so neither a visible meter transition nor the specified unchanged sector state can be observed."
+    ],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "THINK_AGAIN_CONTEXT_MISSING",
+        "severity": "BLOCKER",
+        "finding": "The reflecting branch claims to show the same week's data again but renders none of the five disclosed readings. The child must answer both reflection questions from memory, contradicting game_spec_v1.json failure_reflection and the adopted t5 system_reaction. The QA harness only checks that reflectSector, reflectDepth, and canContinueReflection identifiers exist, so its 29/29 result does not cover this defect.",
+        "file": "src/q1/WaterGame.tsx:99"
+      },
+      {
+        "code": "VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "The initial playing branch renders no reservoir meter, while the failure branch first introduces a meter at its post-commit value and omits the selected sector/icon entirely. Therefore the designed 'decline slows but does not stop' transition and 'selected sector remains unchanged' visual consequence are not actually observable.",
+        "file": "src/q1/WaterGame.tsx:109"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "29 passed, 0 failed; however, the harness has no regression assertion that the reflection branch re-renders the five readings or that the failure visualization has an observable before/after state.",
+      "build_or_tsc": "npx tsc --noEmit passed with no errors. npm run build was attempted but could not write node_modules/.tmp/tsconfig.*.tsbuildinfo because the sandbox is read-only (EPERM); no build-source error was observed.",
+      "lint": "npx oxlint src/q1/WaterGame.tsx src/q1/waterAllocationLogic.ts passed with no findings.",
+      "waterAllocationLogic_matches_design_sim_exactly": true,
+      "session_generation_correct": true,
+      "answer_leak_found": false,
+      "gate_h_fix_verified": true,
+      "reflection_step_genuinely_non_scored": true,
+      "reflection_covers_both_axes": true,
+      "no_session_retry_confirmed": true,
+      "household_causal_framing_correct_in_ui": true,
+      "failure_message_avoids_zero_effect_claim": true,
+      "scroll_375_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/waterAllocationLogic.ts:21 — SECTORS matches the design simulation's three symmetric sector IDs.",
+      "src/q1/waterAllocationLogic.ts:26 — DEPTH_TABLE exactly matches HIGH/SOON=light, HIGH/FAR=medium, LOW/SOON=medium, and LOW/FAR=heavy.",
+      "src/q1/waterAllocationLogic.ts:38 — NON_TARGET_PATTERNS contains exactly the design simulation's 50/50 no/no and yes/yes patterns.",
+      "src/q1/waterAllocationLogic.ts:55 — newSession uses the same random-call order, target selection, non-target assignment, reservoir/rain generation, and lookup as design-sim.mjs.",
+      "src/q1/waterAllocationLogic.ts:71 — sessionWin compares choices directly with session.correctSector and session.correctDepth; scoring is ID-based.",
+      "src/q1/waterAllocationLogic.ts:101 — household capacity copy concerns deferring garden watering and car washing; it does not use backup-source availability as the reason for cutting households.",
+      "src/q1/WaterGame.tsx:42 — useState(() => newSession()) generates the session once per mount.",
+      "src/q1/WaterGame.tsx:43 — all five card IDs are shuffled once per mount; depth buttons are independently shuffled at line 44.",
+      "src/q1/WaterGame.tsx:55 — allDataRead requires all five card IDs to have been disclosed.",
+      "src/q1/WaterGame.tsx:56 — commit activation requires allDataRead plus a sector and depth selection.",
+      "src/q1/WaterGame.tsx:64 — commit produces a terminal success or reflecting state; there is no transition back to the scored playing state.",
+      "src/q1/WaterGame.tsx:99 — reflecting branch begins after the scored cards have been removed from the render tree.",
+      "src/q1/WaterGame.tsx:103 — failure copy correctly says the response did not fit this week's situation.",
+      "src/q1/WaterGame.tsx:105 — failure copy expressly says the response was not meaningless and frames the failure as missing the needed place/strength.",
+      "src/q1/WaterGame.tsx:109 — failure screen renders a meter, but no pre-commit meter exists and no selected-sector state is rendered.",
+      "src/q1/WaterGame.tsx:116 — reflection immediately presents the first question without re-rendering reservoir, rain, or sector readings.",
+      "src/q1/WaterGame.tsx:131 — reflection includes the restriction-depth question as well as the sector question.",
+      "src/q1/WaterGame.tsx:144 — UI explicitly labels reflection choices as unable to change the result.",
+      "src/q1/WaterGame.tsx:147 — continue is disabled until canContinueReflection is true; line 57 requires both reflection picks.",
+      "src/q1/WaterGame.tsx:148 — failure calls (onPartialComplete ?? onComplete)(), not onComplete directly.",
+      "src/q1/WaterGame.tsx:163 — all three sector cards share the same dx-card JSX and styling; household receives no dimming or special hierarchy.",
+      "src/q1/WaterGame.tsx:182 — disclosure text is shown only while a card is open, explaining why it is unavailable on the reflection screen.",
+      "src/q1/WaterGame.tsx:216 — scored commit button is disabled by !canCommit.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:114 — harness contains and passes a real Gate H callback regression check.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:118 — reflection coverage check only tests identifier presence, not whether the week's context is re-presented.",
+      "src/screens/Q1Screen.tsx:87 — success and partial callbacks are passed separately to the game.",
+      "src/screens/Q1Screen.tsx:101 — discovery screen renders distinct partial and success framing chips.",
+      "src/index.css:4236 — sector cards use the existing shared dx-card styling.",
+      "src/index.css:4244 — disclosures use the existing dx-more class.",
+      "src/index.css:4254 — sector/reflection buttons use the existing dx-commit class with a 44px minimum height.",
+      "src/index.css:4266 — route-grid forces a single column, making 375px horizontal fit plausible.",
+      "src/index.css:4268 — depth buttons use the existing zone-btn class; no new WaterGame-specific CSS class was introduced.",
+      "src/q1/registry.ts:84 — allocate_and_forecast still maps to WaterGame.",
+      "src/data/content/extremeHeat.ts:428 — water-heat remains the existing ID with allocate_and_forecast and place-dam wiring.",
+      "src/data/content/extremeHeat.ts:433 — mission, tools, resolution, and discoveryEcho remain in the existing water-heat entry.",
+      "public/assets/heat/place-dam.png — visually inspected: neutral dam illustration with no baked-in numbers, labels, sector hints, or contradictory content; git shows no diff and its latest recorded commit predates this rebuild."
+    ],
+    "recommended_actions": [
+      "In the reflecting branch, re-render the same session's reservoir, rain, and all three sector readings before the two questions. Keep them read-only and visually distinct from the scored selection controls.",
+      "Add a harness assertion that the reflection JSX references RESERVOIR_TEXT, RAIN_TEXT, URGENCY_TEXT, CAPACITY_TEXT, and all five session-backed readings, rather than merely checking reflection state-variable names.",
+      "Render the reservoir meter before commit and preserve it into the result so the change is observable; also render the originally selected sector/icon on failure in an explicitly unchanged state.",
+      "Add component-level tests for the full failed transition: readings visible during reflection, both answers required, reflection choices unable to change outcome, partial callback fired, and no path back to scored play."
+    ]
+  },
+  "elapsed_sec": 180.258
+}
