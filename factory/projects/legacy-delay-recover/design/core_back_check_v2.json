@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-priority-checklist-recover（v2）は、scope_core_v2.jsonのcoreが定義する『3つの関係先のうち、宿泊施設への連絡を優先する』という単一の判断軸を、game_translations_v2.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED: 宿泊施設優先の判定基準を、研究が裏付ける以上の断定的な確実性から、研究が確認した実在の傾向をゲームとして単純化した運用上のルールへ明記し直す）とMEDIUM是正（POSITION_LEAK_ANALYSIS_INCOMPLETE: カードの表示順をセッションごとにランダム化、VISUAL_HIERARCHY_LEAK_RISK: カードの閉じた状態の高さを統一する実装要件を追加）が、fact_sheet_v2.json/scope_core_v2.json/ae_v2.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.json/reference_research_v2.jsonのすべてに一貫して反映されていることを確認した。判定ロジック自体（宿を2者より先に連絡したかどうか、design-sim.mjsのcontactOrderWins）は変更していない——これは正当なゲームデザイン上の操作化であり、因果関係の発明ではないことを全設計チェーンで明確化した。旧実装のreverse-audit指摘（select-all／進行コストのない自由な並び替え）は、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消している。first_5_seconds_v2.jsonの初回タップ体験（状況確認カードを開く→報告ボタンが有効化される→ランダムな順で表示される3枚のカードを開いて読む→連絡順序を選ぶ）も、c_compression_v2.jsonが定義した圧縮後のCとD（宿カードの時間的な事情を読み、連絡順序で優先度を判断する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v2.jsonのfixed_failure_pattern検証（design-sim-result.json v2）により、ランダムな順序戦略（約33%）も、カードの表示位置に頼る戦略（表示順ランダム化後は約33%）も、いずれも完全な推論（100%）を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

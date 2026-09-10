@@ -119,6 +119,18 @@
       "redesign_count": 0,
       "updated_at": "2026-09-10T18:01:34.160Z",
       "depends_on": []
+    },
+    "legacy-delay-recover": {
+      "game_id": "legacy-delay-recover",
+      "profession": "添乗員・旅程管理担当",
+      "state": "UNDER_REVIEW",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "delay_recover",
+      "task_id": null,
+      "repair_count": 1,
+      "redesign_count": 0,
+      "updated_at": "2026-09-10T18:32:41.372Z",
+      "depends_on": []
     }
   }
 }
