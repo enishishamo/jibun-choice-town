@@ -1,0 +1,22 @@
+{
+  "references": [
+    {
+      "reference": "厚生労働省「介護保険における福祉用具の選定の判断基準 改訂案」資料5（電動車いすの使用が想定しにくい状態像＝歩行×短期記憶のAND条件、歩行補助つえの種類選定、5つの視点）、兵庫県理学療法士会「退院後指導マニュアル」（立ち上がりの3段階観察、日常生活チェック表の高さ条件記録欄）",
+      "relevant_mechanic": "動作の機能面の原因を観察する判断と、住環境・介護力という実行条件を踏まえて工夫を選ぶ判断——単一の症状軸だけでは適切な工夫が決まらないという実在の多軸判断構造",
+      "borrowed_principle": "実在する『福祉用具の適否は複数の視点（利用目的・利用者・介護者・住環境・他の福祉用具）のAND条件で決まる』という因果構造を、動作ごとに異なる2軸判断（立ち上がり: 機能面原因×住環境、歩行: 機能面原因×介護力）に圧縮してゲームに投影する。起き上がりは研究で第2の軸が確認できなかったため、無理に2軸化せず単一軸のまま扱う——実在の複雑さの違いをそのまま反映する（design-sim.mjsで単一軸/2軸それぞれの検証を実施）",
+      "surface_elements_not_to_copy": "福祉用具の品目別の詳細な適否基準表・歩行補助つえの5種類の詳細な構造差はそのまま出さない（10-12歳向けに、動作ごとの機能面原因と実行条件という2値の読み物に圧縮）。Barthel Index/FIMの具体的な点数・TUGテストのカットオフ秒数は一次資料未確認のため使わない（fact_sheet_v1.jsonのuncertaintiesに明記）"
+    },
+    {
+      "reference": "既存Q1 legacy-layer-and-compare/legacy-allocate-and-forecast（design review r1-r4を経た前例、CORE_DATA_AXIS_NOT_REQUIRED/C_NOT_NEEDED_FOR_D/CORE_CAUSAL_MODEL_DISTORTEDの是正）",
+      "relevant_mechanic": "単一の軸だけを読む戦略が高確率で成功してしまう穴を防ぐため、判断軸が本当に両方必要になるよう設計し、design-sim.mjsで事前に数値検証する規律。判断軸のグラウンディングは、数値モデルが健全でも独立に、実際にその行動が意味を持つ形で検証する規律",
+      "borrowed_principle": "立ち上がり・歩行の2軸判断では、原因軸だけを読み実行条件軸を無視する戦略（standup_cause_axis_only/walk_cause_axis_only）が約75%成功することを事前に数値検証し、完全な推論100%を明確に下回ることを確認したうえで採用した。起き上がりを無理に2軸化しなかったのは、legacy-allocate-and-forecastのr3で『水消費と関係ない軸を後付けした』ことがCORE_CAUSAL_MODEL_DISTORTEDとして指摘された教訓を踏まえ、研究で裏付けのない軸を追加しないという判断",
+      "surface_elements_not_to_copy": "layer_and_compare/allocate_and_forecastの題材・非対象パターンの重み付け技法はそのまま持ち込まない（move_tryは3つの独立した動作それぞれの単発コミットという別の構造）"
+    },
+    {
+      "reference": "既存Q1 legacy-layer-and-compare（design review r2で採用した、非採点の振り返りステップという前例）、legacy-allocate-and-forecast（振り返りに元データを再掲する実装レベルの教訓、impl review r1 THINK_AGAIN_CONTEXT_MISSING是正）",
+      "relevant_mechanic": "失敗後に同じデータを再提示して選択させるが、その選択自体は採点されず結果を変えない振り返りステップ。振り返り画面には元データも読み取り専用で再掲する必要がある（選択肢だけでは不十分）",
+      "borrowed_principle": "3動作のうち1つでも失敗した場合、3動作すべてのデータを再提示したうえで、動作ごとに『今度はどの工夫が合っていたと思う？』と選ばせる非採点の振り返りステップを挟み、Q1 First-Play Standard Gate G『考え直す余地』を満たす。legacy-allocate-and-forecastの実装レビューr1で『振り返り画面が選択肢だけでデータを再掲していなかった』ことがBLOCKERとして指摘された教訓を踏まえ、実装段階から元データの再掲をgame_spec/ae_v1.jsonに明記する",
+      "surface_elements_not_to_copy": "layer_and_compare/allocate_and_forecastの具体的な題材・判定構造はそのまま持ち込まない（move_tryは3動作独立の単発コミットという別の二部構成ではなく三部構成）"
+    }
+  ]
+}

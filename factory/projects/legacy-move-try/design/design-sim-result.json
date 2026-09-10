@@ -1,0 +1,15 @@
+{
+  "legitimate_full_reasoning": 1,
+  "random_pick": 0.0554,
+  "fixed_situp_rail": 0.5048,
+  "fixed_situp_train": 0.4953,
+  "fixed_standup_height": 0.2525,
+  "fixed_standup_rail": 0.4986,
+  "fixed_standup_train": 0.2488,
+  "fixed_walk_cane": 0.504,
+  "fixed_walk_rest": 0.2474,
+  "fixed_walk_train": 0.2486,
+  "standup_cause_axis_only": 0.7506,
+  "walk_cause_axis_only": 0.7497,
+  "single_axis_only_combined": 0.5601
+}

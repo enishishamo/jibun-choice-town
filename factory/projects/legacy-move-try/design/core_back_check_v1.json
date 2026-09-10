@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-diagnose-and-fix-per-movementは、scope_core_v1.jsonのcoreが定義する『動作ごとの機能面原因×（裏付けのある動作のみ）実行条件の判断』を、game_translations_v1.jsonのC_interaction/D_externalizationがそのまま保持している。first_5_seconds_v1.jsonの初回タップ体験（カードを開いて読む→工夫を選ぶ→実施）も、c_compression_v1.jsonが定義した圧縮後のCとD（2値の読み物を見比べて動作ごとに選択する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v1.jsonのfixed_failure_pattern検証（design-sim-result.json）により、単一軸判断・部分的当てずっぽうのいずれも完全な推論を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。旧実装の唯一のreverse audit指摘（brute force）は動作ごとの単発コミット化で解消し、研究で裏付けのない軸を追加していないため、CORE_CAUSAL_MODEL_DISTORTED相当のリスクもない。",
+  "pass": true
+}
