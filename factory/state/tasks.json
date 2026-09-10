@@ -1485,14 +1485,14 @@
       "qa_status": "PASS",
       "qa_evidence": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json",
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "f8b4cf1ad795fdf92c586124bc83718760d2ce6d",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T19:05:15.306Z",
-      "updated_at": "2026-09-10T19:05:29.668Z",
+      "updated_at": "2026-09-10T19:11:06.250Z",
       "history": [
         {
           "at": "2026-09-10T19:05:15.307Z",
@@ -1515,6 +1515,12 @@
           "event": "qa_recorded",
           "verdict": "PASS",
           "evidence": "factory/projects/legacy-delay-recover/design/implementation_qa_v2.json"
+        },
+        {
+          "at": "2026-09-10T19:11:06.251Z",
+          "event": "release_commit_set",
+          "sha": "f8b4cf1ad795fdf92c586124bc83718760d2ce6d",
+          "given": "f8b4cf1ad795fdf92c586124bc83718760d2ce6d"
         }
       ]
     }
