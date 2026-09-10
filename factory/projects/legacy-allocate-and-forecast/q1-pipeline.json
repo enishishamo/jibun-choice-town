@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "allocate_and_forecast",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "IMPL_QA_PASSED",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
   "repair_count": 1,
   "redesign_count": 1,
@@ -796,6 +796,196 @@
           "creator": "sonnet"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-allocate-and-forecast:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-allocate-and-forecast/design/game_spec_v1.json",
+      "payload": {
+        "goal": "貯水率・雨予報・家庭/農業/工業の3セクター（合計5枚のカード、毎セッション独立にシャッフルされる表示順）の読み物をすべて確認したうえで、今週の制限の強さ（軽い/中程度/重い）を1つ、割り当て先のセクター（家庭/農業/工業）を1つ選び、実施ボタンで1回のコミットとして確定する。",
+        "initial_visual_state": "『雨が少なく貯水率が下がっている。今週の対応を決めよう』という導入テキストと、貯水率メーター付きの貯水率カード、雨予報カード、家庭・農業・工業の3枚のセクターカード（それぞれ住宅・水田・工場のアイコン付き、タップで『？』が開き読み物が表示される）、制限の強さボタン3つ（軽い/中程度/重い）、実施ボタン（disabled）。カード・ボタンの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          {
+            "id": "reservoir_card",
+            "count": 1,
+            "behavior": "タップして開くと貯水率の読み物（高い/低い）が表示される。選択はできない、読むだけのカード。"
+          },
+          {
+            "id": "rain_forecast_card",
+            "count": 1,
+            "behavior": "タップして開くと雨予報の読み物（もうすぐ/まだ先）が表示される。選択はできない、読むだけのカード。"
+          },
+          {
+            "id": "sector_card",
+            "count": 3,
+            "behavior": "家庭・農業・工業の3枚。タップして開くとタイミング事情（心配な理由の有無）と需要側の余地（あり/なし）の読み物が表示される。カード自体をタップすることで、割り当て先として選択できる（自由に変更可、コストなし）。"
+          },
+          {
+            "id": "depth_button",
+            "count": 3,
+            "label": "軽い/中程度/重い",
+            "behavior": "制限の強さを1つ選ぶ（自由に変更可）。"
+          },
+          {
+            "id": "commit_button",
+            "label": "実施する",
+            "behavior": "5枚のカード（貯水率・雨予報・家庭・農業・工業）がすべて一度は開かれ、かつ制限の強さ・割り当て先セクターの両方が選択されて初めて活性化。押すと1回のコミットで結果が確定する（同一セッション内のやり直しはない）。"
+          }
+        ],
+        "primary_action": "5枚のカードをすべてタップして開いて読み物を確認する→制限の強さボタンを1つ選ぶ→セクターカードを1つ選ぶ→『実施する』を押して1回のコミットで結果を確定する。",
+        "C": "貯水率（高い/低い）・雨予報（もうすぐ/まだ先）の読み物（design/design-sim.mjsのDEPTH_TABLE: HIGH+SOON=light, HIGH+FAR=medium, LOW+SOON=medium, LOW+FAR=heavy）。家庭・農業・工業それぞれのタイミング事情（urgency: no=心配な理由なし/yes=あり）と需要側の余地（capacity: yes=あり/no=なし——農業は番水・反復利用の余地、工業は応援給水協定、家庭は庭の水やり・洗車等の不要不急な使い方を後回しにできるか）の読み物（design-sim.mjsのnewSession: archetypeSectorがurgency=no,capacity=yesの正解シグネチャ、他の2セクターはNON_TARGET_PATTERNSの50/50から独立抽選）。",
+        "D": "貯水率と雨予報を読み比べて、今週必要な制限の強さを先読みで判断する。家庭・農業・工業それぞれのタイミング事情と需要側の余地の両方を読み比べて、今週最も重い制限を割り当てるべき1つのセクターを判断する（design-sim.mjsのsessionWin: sectorChoice===correctSector && depthChoice===correctDepth）。",
+        "system_reactions": [
+          {
+            "trigger": "貯水率・雨予報カードをタップして開く",
+            "reaction": "読み物が展開表示される。正誤フィードバックはまだ出さない。"
+          },
+          {
+            "trigger": "セクターカードをタップして開く",
+            "reaction": "タイミング事情・需要側の余地の読み物が展開表示される。"
+          },
+          {
+            "trigger": "セクターカードをタップして選択（割り当て先に指定）",
+            "reaction": "カードが選択状態（視覚的に強調）になる。"
+          },
+          {
+            "trigger": "制限の強さボタンをタップして選択",
+            "reaction": "ボタンが選択状態になる。"
+          },
+          {
+            "trigger": "『実施する』を押す（コミット）",
+            "reaction": "選択したセクター（correctSector）と制限の強さ（correctDepth）を照合し、design-sim.mjsのsessionWinと同じロジックで成功/失敗を判定する。両方一致すれば成功、どちらかでも不一致なら失敗。個別にどちらが誤っていたかは一切示さない。"
+          }
+        ],
+        "state_transitions": {
+          "browsing_and_selecting": "5枚のカードを読み、制限の強さ・割り当て先セクターの選択を自由に変更できる状態。実施ボタンは全カード開封＋両方選択が揃うまで非活性。",
+          "committed": "『実施する』を押した瞬間に成功/失敗が確定。以後この状態には戻れない。",
+          "failure_reflection": "失敗時のみ、同じ週のデータ（5枚のカード）を再提示し、①『今週、本当はどこに一番重い制限を割り当てるべきだったと思う？』②『制限の強さはどれくらいが正しかったと思う？』という2つの非採点振り返り選択を挟む。両方選ぶまで『先へ進む』ボタンは非活性。この選択はどれをタップしても結果・結末を変えず、正誤も示さない。",
+          "outcome": "成功（onComplete）または失敗（onPartialComplete、2問の振り返り選択を経由）のいずれかに遷移。"
+        },
+        "failure_behavior": "選んだセクターと制限の強さの一方または両方が今週の正解と一致しない場合、フラットな『対応が今週の状況に合っていなかった』という結果になる。制限自体に意味がなかったという意味ではなく、限られた対応の機会を本当に必要な場所・強さで使えなかった、という資源配分・優先順位づけの失敗として描く（研究の新潟県実例——対応してもなお被害が出た——に基づく）。貯水率メーターの低下がわずかに鈍る程度で下げ止まらず、選んだセクターのアイコンは変化しない見た目になる（個別の正誤は示さない）。失敗結果の直前に、同じ週のデータを再提示し、セクター・制限の強さの両方を再考させる非採点の振り返り選択（2問）を挟む（Q1 First-Play Standard Gate G対応）。onPartialComplete（onCompleteではない）を呼び、Job Revealチップがsuccessと異なる正直な枠組みで表示されることを実装QAで確認する（Gate H HONEST OUTCOME）。",
+        "retry_behavior": "この場でのやり直しはない（1回のコミット、振り返り選択も採点されない）。章に入り直せば、貯水率・雨予報・3セクターの事情が新しくランダム化された、本当の意味でのやり直しができる。",
+        "E": "セクター選定と制限の強さ選定の両方が正しければ、貯水率メーターが回復し、選んだセクターのアイコンが節水/番水/融通中の見た目に変わる成功結果。どちらか一方でも誤っていれば、正直な失敗結果になり、実務同様協議会へ持ち帰って考え直すことになる、という形で話は先に進む（進行はブロックしない）。",
+        "job_reveal": "既存のdiscoveryEcho（extremeHeat.tsのwater-heatエントリ、『さっき、雨の予測を見ながら、限られた水をどう分けるか調整したよね。実際には、こうした調整をひとりで決めるのではなく、関係する人たちが集まって、影響を見ながら話し合って決めていきます。』）がそのまま使える——河川法第53条の多者協議という実在の制約と一致する。実装は成功・失敗いずれの結果からもjob revealへ接続する。",
+        "first_5_seconds": "design/first_5_seconds_v4.jsonの内容をそのまま採用: 5枚のカード（貯水率・雨予報・家庭・農業・工業、いずれも『？』アイコンで閉じた状態）と制限の強さボタン3つ、実施ボタン（disabled）が見える。最初に期待されるタップは、気になるカードのどれか1枚をタップして読み物を開くこと。残り4枚も同様に開き、5枚すべて確認してから制限の強さ・セクターを選んで実施する。",
+        "no_manual_requirements": "説明文なし。design/no_manual_exploit_check_v4.jsonの要件をすべて満たす: (1) タップと『？』的開示のみの操作規約。(2) 5枚のカードの読み物と選択肢の名前という文脈だけで、どれが正解かをシステムが直接教えない。(3) 5枚のカード・制限の強さボタン・セクターカードは同じ視覚的な強調度で示し、色だけで正解を示唆しない（家庭・農業・工業はいずれも状況次第で正解になり得る対称な候補のため、3セクターのカードは同じ見た目で提示する）。(4) 家庭・農業・工業という表示名自体は正当な開示だが、読み物の中身は毎セッション独立に変動する。(5) 5枚のカード・制限の強さボタンの表示順を毎セッション独立にシャッフルする。(6) 単発コミットで、同一セッション内の総当たり再挑戦は成立しない。(7) 失敗後の振り返り選択（セクター・強さの2問）は非採点で、結末・正誤を一切変えない。",
+        "mobile_constraints": "375px幅を基準に、5枚のカード（貯水率・雨予報・家庭・農業・工業）＋3つの強さボタン＋実施ボタンが横スクロールなしで収まるレイアウトにする。既存のlegacy-layer-and-compare等の`.dx-card`/`.dx-head`/`.dx-name`/`.dx-more`/`.dx-pattern`/`.dx-commit`パターンを再利用する。失敗時の振り返り選択画面（2問）も同じカードレイアウトを流用し、新規のUIパターンを増やさない。振り返りの2問目は1問目の回答後に表示するか、同一画面に縦積みで両方表示するかは実装時に375px高さの収まりを見て決める。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存のextremeHeat.tsのwater-heatエントリが使う場面画像（H(\"place-dam\")、public/assets/heat/place-dam.png）をそのまま流用する——数値・ラベルの baked-in がないことを確認済み（中立的なダムのイラストのみ）。セクターのアイコン（住宅・水田・工場）は絵文字またはテキストのみで構成し、画像アセットを新規に必要としない。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-allocate-and-forecast:game_translations:v4"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T14:15:34.827Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-allocate-and-forecast/design/game_spec_v1.json",
+          "created_at": "2026-09-10T14:15:34.827Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-allocate-and-forecast:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-allocate-and-forecast/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "既存のextremeHeat.tsのwater-heatエントリが使う場面画像（H(\"place-dam\")、public/assets/heat/place-dam.png）をそのまま流用する。画像を直接確認済み（Readツール）: 中立的なダムのイラストのみで、数値・ラベル・特定のセクター配分を示唆する内容は一切baked-inされていない（legacy-load-and-routeの実装レビューr1で見つかった『既存資産に古いラベルが焼き込まれている』問題の再発がないことを確認済み）。ゲーム内のセクターアイコン（住宅🏠・水田🌾・工場🏭）はテキスト/絵文字のみで表現し、新規画像アセットは不要。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-allocate-and-forecast:game_spec:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T14:15:34.870Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-allocate-and-forecast/design/art_brief_v1.json",
+          "created_at": "2026-09-10T14:15:34.871Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-allocate-and-forecast:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-allocate-and-forecast/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/WaterGame.tsx"
+        ],
+        "logic_module": "src/q1/waterAllocationLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-water-allocation.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/heat/place-dam.png — independently visually verified via Read tool to contain no baked-in numbers, labels, or contradicting content, a neutral dam illustration only)",
+        "d_preserved_statement": "waterAllocationLogic.tsのSECTORS/DEPTH_TABLE/NON_TARGET_PATTERNS/newSession/sessionWinはdesign/design-sim.mjs（design review r4 PASS 76時点、v4）と構造的に一致する。貯水率と雨予報を読み比べて今週の制限の強さを先読みする判断、家庭・農業・工業それぞれのタイミング事情と需要側の余地を読み比べて今週最も重い制限を割り当てるべきセクターを1つ選ぶ判断は、WaterGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。5枚のカード（貯水率・雨予報・家庭・農業・工業）すべてを開く（読む）まで、かつセクター1つ・制限の強さ1つが両方決まって初めて『実施する』が活性化し（openedCards状態、CORE_DATA_DISCLOSURE_NOT_REQUIRED対策を最初から実装に織り込み）、1回のコミットで結果が確定する。失敗時は同じ週のデータを再提示する非採点の振り返り選択（セクター・制限の強さの両方を再考させる2問、design review r2 BLOCKER: THINK_AGAIN_INCOMPLETE対応、reflectSector/reflectDepthの両方が選ばれるまで『先へ進む』は非活性）を挟んでから結末へ進む。成功時は貯水率メーターが回復し選んだセクターのアイコンが節水・協力中の表示に変わる、失敗時はメーターの低下がわずかに鈍る程度に留まりセクターの状態は変化しない、という視覚的な世界フィードバックを実装した（design review r2 HIGH: VISUAL_FAILURE_CONSEQUENCE_INCOMPLETE対応）。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-allocate-and-forecast:art_brief:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T14:30:25.745Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-allocate-and-forecast/design/implementation_v1.json",
+          "created_at": "2026-09-10T14:30:25.746Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-allocate-and-forecast:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-allocate-and-forecast/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "実機確認済み（Browser pane）: 起動直後に導入文と5枚のカード（雨予報・貯水率・家庭・農業・工業、表示順は毎セッション独立にシャッフル）、制限の強さボタン3つ、『実施する』ボタン（非活性）が見える。説明文なし。design/first_5_seconds_v4.json通り。",
+        "touch_targets": "カードの「？」ボタン・セクター/強さの選択ボタン・実施ボタン・振り返り選択ボタンはいずれも既存の.dx-more/.dx-commit/.zone-btn/.btnクラス（既存ゲームで検証済みの最小タップ領域）を再利用しており、新規に小さすぎるタップ領域を追加していない。",
+        "mobile_375": "375x812のビューポートで実機確認済み: document.documentElement.scrollWidth===clientWidth===375（横スクロールなし）。5枚のカード・3つの強さボタン・実施ボタンがすべて縦積みで画面内に収まる（スクリーンショットで視覚確認済み）。",
+        "direct_manipulation": "カードをタップ→読み物が開く/閉じる、セクターカード・強さボタンをタップ→即座に選択状態（オレンジ強調）に変わる、を実機ブラウザで確認済み。",
+        "reaction_timing": "各タップの視覚反応（選択色の変化、詳細テキストの開閉、disabled状態の切り替え）は即時（Reactの状態更新、アニメーション遅延なし）。",
+        "c_to_d": "実機確認済み: 5枚のカードの「？」を開くと実際の読み物（例:『貯水率は高め』『まとまった雨はまだ先という予報』『工場の生産は閑散期／近隣地域からの応援給水協定がある』）が表示され、その情報を読んでからセクター・強さを選ぶという一連の流れが機能する。CORE_DATA_DISCLOSURE_NOT_REQUIRED対策: 5枚すべての「？」を開くまで『実施する』が非活性のままであることを実機確認済み（セクター・強さを選んでも、データを読んでいなければ活性化しない）。",
+        "consequence": "実機確認済み: 正しい組み合わせ（このセッションでは工業=urgency:no/capacity:yes + 中程度の制限〔貯水率HIGH+雨FAR〕）で実施すると『限られた水を、必要な場所に届けられた』の成功結果・貯水率メーターの回復・選択セクターアイコンの状態変化・Job Reveal（🎉、discoveryEcho、しごと図鑑追加）へ正しく接続することを確認。別セッションで誤った組み合わせ（工業が正解のところ家庭+軽い制限）で実施すると、非採点の振り返り選択（2問）を経てから『今週の状況に合った対応ではなかった』というフラットな失敗結果になり、個別の誤り箇所（セクターか強さかどちらが誤っていたか）は一切示されないことを確認。",
+        "retry": "実機確認済み: 失敗後も振り返り選択（セクター・強さの2問、採点なし、結果は変わらない）を経て『先へ進む』でJob Revealまで正直に進行し、ブロックしない。同一セッション内のその場でのやり直しはなく（gameplay-qa-water-allocation.mjsで旧実装の同一試行内反復リテラル〔STEPS/hitCritical/今日からやり直す〕が存在しないことを機械的に確認済み）、章に入り直せば新しいランダム条件で再挑戦できる。THINK_AGAIN_INCOMPLETE対策: 振り返り選択2問のうちどちらか一方でも未選択なら『先へ進む』を押せないよう非活性化し、実機で個別に確認済み（セクターのみ選択時はdisabled、両方選択後にdisabled解除）。",
+        "answer_leak": "gameplay-qa-water-allocation.mjsで機械的に確認: 家庭・農業・工業のいずれも状況次第で正解になり得る対称な候補であり、カードの視覚的な強調度・色は同一（実機目視確認）。単一軸だけを読む一面判断はいずれも約58-60%キャップで、完全な推論100%を大きく下回ることを検証済み。",
+        "brute_force": "gameplay-qa-water-allocation.mjsで機械的に確認: 固定(セクター,強さ)戦略はいずれも約8-17%、content-blind random pickは約11%、片方の判断だけ正しくもう片方を当てずっぽうにする戦略は約33%、単一軸だけを読む一面判断（capacity-only/urgency-only）は約58-60%——いずれも完全な推論100%を大きく下回る。1回のコミットで結果が確定し、個別フィードバックが一切ないため総当たり攻略が成立しない。振り返り選択は非採点で結果を変えないため、これによる総当たりも成立しない。",
+        "visual_affordance": "選択済みのセクターカード・強さボタンはオレンジ色に変化する（既存の.dx-card.selected/.dx-commit.on/.zone-btn.onパターンを再利用）。実施ボタン・振り返りの『先へ進む』ボタンは条件が揃うまで視覚的に非活性になることを実機確認済み。カード・強さボタンの表示順は毎セッション独立にシャッフルされることを実機で複数回確認済み。",
+        "no_manual": "実機確認済み: ゲーム画面に説明文はなく、カードの「？」を開いて読む以外に手がかりはない。design/no_manual_exploit_check_v4.jsonの要件（色/位置/階層leak対策、振り返り選択の非採点性）はgameplay-qa-water-allocation.mjsおよび実機確認で満たされていることを確認。",
+        "job_reveal": "実機確認済み: 成功時・失敗時いずれも既存のdiscoveryEcho（extremeHeat.tsのwater-heatエントリ、『さっき、雨の予測を見ながら、限られた水をどう分けるか調整したよね。実際には、こうした調整をひとりで決めるのではなく、関係する人たちが集まって、影響を見ながら話し合って決めていきます。』）としごと図鑑追加画面へ正しく接続することを確認。成功時は🎉、失敗時は🤔の異なるトップフレーミングチップが表示され、Gate H HONEST OUTCOMEが機能していることを実機で確認済み。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-water-allocation.mjs（29/29 PASS）、npx tsc --noEmit（エラーなし）、npx oxlint src/q1/WaterGame.tsx src/q1/waterAllocationLogic.ts（エラーなし）、npx vite build（成功）、Browser paneでの実機確認（成功パス〔工業+中程度の制限〕・失敗＋振り返りパス〔2問とも回答するまで先へ進むが非活性であることを個別確認〕・375x812モバイルビューポートでの横スクロールなしレイアウト・5枚のカードの開閉と disclosure-gated commit・Job Reveal接続〔成功🎉/失敗🤔の異なるフレーミング〕をすべて確認）。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-allocate-and-forecast:implementation:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T14:30:25.790Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-allocate-and-forecast/design/implementation_qa_v1.json",
+          "created_at": "2026-09-10T14:30:25.790Z",
+          "creator": "sonnet"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -858,7 +1048,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T07:30:35.493Z",
-  "updated_at": "2026-09-10T14:14:07.469Z",
+  "updated_at": "2026-09-10T14:30:25.791Z",
   "history": [
     {
       "at": "2026-09-10T07:30:35.494Z",
@@ -1565,6 +1755,70 @@
       "at": "2026-09-10T14:14:07.469Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T14:15:34.828Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T14:15:34.828Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-allocate-and-forecast:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-allocate-and-forecast:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T14:15:34.871Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T14:15:34.871Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-allocate-and-forecast:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-allocate-and-forecast:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T14:30:25.746Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-10T14:30:25.746Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-allocate-and-forecast:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-allocate-and-forecast:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T14:30:25.791Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-10T14:30:25.791Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-allocate-and-forecast:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-allocate-and-forecast:implementation:v1"
+      ]
     }
   ],
   "redesign": [

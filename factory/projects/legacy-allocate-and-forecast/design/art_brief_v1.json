@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "reason": "既存のextremeHeat.tsのwater-heatエントリが使う場面画像（H(\"place-dam\")、public/assets/heat/place-dam.png）をそのまま流用する。画像を直接確認済み（Readツール）: 中立的なダムのイラストのみで、数値・ラベル・特定のセクター配分を示唆する内容は一切baked-inされていない（legacy-load-and-routeの実装レビューr1で見つかった『既存資産に古いラベルが焼き込まれている』問題の再発がないことを確認済み）。ゲーム内のセクターアイコン（住宅🏠・水田🌾・工場🏭）はテキスト/絵文字のみで表現し、新規画像アセットは不要。"
+}

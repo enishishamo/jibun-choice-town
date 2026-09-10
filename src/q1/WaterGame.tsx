@@ -1,105 +1,93 @@
-// Q1: 水資源の管理・調整に関わる仕事 (gameType: allocate_and_forecast)
-// B: 猛暑と少雨でダムの貯水率が下がっている。
-// C: 現在の貯水率／今後の雨予測／このまま使った場合の予測。
-//    雨予測を見ないと「あと何日もつか」が判断できない。
-// D: 家庭・農業・工業の利用量スライダーを調整 →「7日進める」。
-//    100%のまま進めると危険水準に落ちる（失敗が結果で返る）。
-//    絞りすぎると各分野に影響が出る＝単一正解にしない。
+// Q1: 渇水時に水を分け合う仕事 (gameType: allocate_and_forecast)
+// B: 雨が少なく、ダムの貯水率が下がり続けている。貯水率と雨の予報（毎セッションランダムな組み合わせ）
+//    を見て、今週どのくらい強い制限が必要かを決め、家庭・農業・工業のうちどこに一番重い制限を
+//    割り当てるべきかを決めなければならない。
+// C: 貯水率・雨予報の読み物と、家庭・農業・工業それぞれのタイミング事情・需要側の余地の読み物
+//    （詳細はwaterAllocationLogic.ts）。
+// D: 制限の強さ（軽い/中程度/重い）を1つ、割り当て先のセクター（家庭/農業/工業）を1つ選んで、
+//    「実施する」を1回だけ押して結果を確定する（同一セッション内のやり直しはない）。
 //
-// ※ゲーム上は「調整案をシミュレーションする」位置づけ。実際の取水制限は
-//   一人の担当者が決めるものではなく、関係機関の協議で決まる。
+// 2026-09-10 (Q1 Autonomous Factory, legacy-allocate-and-forecast rebuild, t5-brief-and-allocate-
+// corrected): 旧実装は家庭・農業・工業の利用率スライダーを10%刻みで調整するだけで、3部門を均等に
+// 絞っても貯水率さえ保てば成功する（部門ごとの結果の違いがない）記憶ゲームだった上、危険水準に
+// 落ちても「今日からやり直す」で同一試行内の総当たりを許していた（reverse audit: C_required=false,
+// exploit=select-all）。新実装では家庭を含む3セクターを完全に対称な候補とし（design review r1
+// CORE_DISTORTED_BY_GAME是正）、単一軸判断が約58%キャップになるよう非対象パターンを調整し
+// （design review r2/r3 C_NOT_NEEDED_FOR_D/CORE_CAUSAL_MODEL_DISTORTED是正）、フラットな失敗結果の
+// みを返す1回のコミット判断にした（design-sim.mjs参照、design review r4 PASS 76）。失敗時は同じ
+// データを再提示する非採点の振り返り選択（セクター・強さの両方）を挟み、Q1 First-Play Standard
+// Gate G「考え直す余地」に対応する（この振り返りは結果を一切変えない）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
+import {
+  CAPACITY_TEXT,
+  DEPTHS,
+  DEPTH_LABELS,
+  RAIN_TEXT,
+  RESERVOIR_TEXT,
+  SECTORS,
+  SECTOR_LABELS,
+  URGENCY_TEXT,
+  newSession,
+  sessionWin,
+  shuffledIds,
+  type Depth,
+  type Sector,
+} from "./waterAllocationLogic";
 
-interface Sector {
-  id: "home" | "farm" | "factory";
-  name: string;
-  emoji: string;
-  base: number; // %/week of storage consumed at 100%
-  impactAt: { level: number; text: string }[];
-}
+type CardId = "reservoir" | "rain" | Sector;
+const ALL_CARD_IDS: CardId[] = ["reservoir", "rain", ...SECTORS];
 
-const SECTORS: Sector[] = [
-  {
-    id: "home",
-    name: "家庭・水道",
-    emoji: "🏠",
-    base: 8,
-    impactAt: [
-      { level: 60, text: "水の出が弱くなって、生活が苦しい…" },
-      { level: 80, text: "少し節水のおねがいが出ている" },
-    ],
-  },
-  {
-    id: "farm",
-    name: "農業用水",
-    emoji: "🌾",
-    base: 9,
-    impactAt: [
-      { level: 50, text: "田んぼの水が足りず、稲が弱ってきた…" },
-      { level: 75, text: "作物にすこし影響が出はじめた" },
-    ],
-  },
-  {
-    id: "factory",
-    name: "工業用水",
-    emoji: "🏭",
-    base: 5,
-    impactAt: [
-      { level: 50, text: "工場の生産を止める日が出てきた…" },
-      { level: 75, text: "生産を少しへらしている" },
-    ],
-  },
-];
+export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps) {
+  const [session] = useState(() => newSession());
+  const [cardOrder] = useState<CardId[]>(() => shuffledIds(ALL_CARD_IDS));
+  const [depthOrder] = useState<Depth[]>(() => shuffledIds(DEPTHS));
+  const [openCard, setOpenCard] = useState<CardId | null>(null);
+  const [openedCards, setOpenedCards] = useState<Set<CardId>>(new Set());
+  const [selectedSector, setSelectedSector] = useState<Sector | null>(null);
+  const [selectedDepth, setSelectedDepth] = useState<Depth | null>(null);
+  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "success">("playing");
+  const [reflectSector, setReflectSector] = useState<Sector | null>(null);
+  const [reflectDepth, setReflectDepth] = useState<Depth | null>(null);
+  const [meter] = useState(() => (session.reservoir === "HIGH" ? 65 : 35));
+  const [resultMeter, setResultMeter] = useState<number | null>(null);
 
-const STEPS = ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"];
+  const allDataRead = openedCards.size === ALL_CARD_IDS.length;
+  const canCommit = allDataRead && selectedSector !== null && selectedDepth !== null;
+  const canContinueReflection = reflectSector !== null && reflectDepth !== null;
 
-export default function WaterGame({ onComplete }: Q1GameProps) {
-  const [level, setLevel] = useState<Record<string, number>>({ home: 100, farm: 100, factory: 100 });
-  const [storage, setStorage] = useState(63);
-  const [week, setWeek] = useState(0);
-  const [openRain, setOpenRain] = useState(false);
-  const [history, setHistory] = useState<number[]>([63]);
-  // 一度でも危険水準に落ちたら「もたせた」ことにはしない
-  const [hitCritical, setHitCritical] = useState(false);
-
-  // 3週間後に大雨が来る（雨予測カードに書いてある）
-  const RAIN_WEEK = 3;
-  const rainArrived = week >= RAIN_WEEK;
-
-  const weeklyUse = SECTORS.reduce((a, s) => a + (s.base * level[s.id]) / 100, 0);
-  const projected = Math.max(0, Math.round(storage - weeklyUse));
-
-  const advance = () => {
-    const next = week + 1;
-    const rain = next >= RAIN_WEEK ? 22 : 0; // 大雨で回復
-    const v = Math.max(0, Math.min(100, Math.round(storage - weeklyUse + rain)));
-    setStorage(v);
-    setHistory((h) => [...h, v]);
-    setWeek(next);
-    if (v <= 20) setHitCritical(true);
+  const toggleOpen = (id: CardId) => {
+    setOpenCard((cur) => (cur === id ? null : id));
+    setOpenedCards((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   };
 
-  const critical = storage <= 20;
-  const survived = rainArrived && storage > 25 && !hitCritical;
-
-  const impactOf = (s: Sector) => {
-    const l = level[s.id];
-    const hit = s.impactAt.find((i) => l <= i.level);
-    return hit?.text;
+  const commit = () => {
+    if (selectedSector === null || selectedDepth === null) return;
+    const win = sessionWin(session, selectedSector, selectedDepth);
+    if (win) {
+      setResultMeter(Math.min(100, meter + 20));
+      setOutcome("success");
+    } else {
+      setResultMeter(Math.max(0, meter - 8));
+      setOutcome("reflecting");
+    }
   };
 
-  if (survived) {
+  if (outcome === "success") {
     return (
       <div className="game board-game">
-        <div className="dam-visual">
-          <div className="dam-water" style={{ height: `${storage}%` }} />
-          <span className="dam-label">貯水率 {storage}%</span>
-          <span className="rain-emoji">🌧</span>
+        <div className="result-card good">
+          <span className="result-title">限られた水を、必要な場所に届けられた</span>
+          <p className="join-conclusion">→ 割り当て先も、制限の強さも、どちらも今週の状況に合っていた</p>
         </div>
-        <p className="game-line center-line">
-          大きな雨がきた！<br />
-          限られた水を、いろいろな人が使えるように分けあってつないだ。
+        <div className="meter">
+          <span>貯水率</span>
+          <div className="meter-bar">
+            <div className="meter-fill" style={{ width: `${resultMeter ?? meter}%` }} />
+          </div>
+        </div>
+        <p className="game-line soft center-line">
+          {SECTOR_LABELS[session.correctSector].icon} {SECTOR_LABELS[session.correctSector].name}が節水・協力中
         </p>
         <button className="btn primary big" onClick={onComplete}>
           調整の記録をまとめる
@@ -108,89 +96,128 @@ export default function WaterGame({ onComplete }: Q1GameProps) {
     );
   }
 
+  if (outcome === "reflecting") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">今週の状況に合った対応ではなかった</span>
+          <p className="game-line soft">
+            対応そのものが無駄だったわけではないが、本当に必要だった場所・強さに届いていなかった
+            みたい。同じ週のデータをもう一度見比べて、次はどうするか考えてみよう。
+          </p>
+        </div>
+        <div className="meter">
+          <span>貯水率</span>
+          <div className="meter-bar">
+            <div className="meter-fill" style={{ width: `${resultMeter ?? meter}%` }} />
+          </div>
+        </div>
+
+        <p className="game-line soft center-line farm-disclaimer">
+          ①今週、本当はどこに一番重い制限を割り当てるべきだったと思う？
+        </p>
+        <div className="dx-grid route-grid">
+          {SECTORS.map((sector) => (
+            <button
+              key={sector}
+              className={`dx-commit ${reflectSector === sector ? "on" : ""}`}
+              onClick={() => setReflectSector(sector)}
+            >
+              {SECTOR_LABELS[sector].icon} {SECTOR_LABELS[sector].name}
+            </button>
+          ))}
+        </div>
+
+        <p className="game-line soft center-line farm-disclaimer">②制限の強さはどれくらいが正しかったと思う？</p>
+        <div className="zone-row">
+          {DEPTHS.map((depth) => (
+            <button
+              key={depth}
+              className={`zone-btn ${reflectDepth === depth ? "on" : ""}`}
+              onClick={() => setReflectDepth(depth)}
+            >
+              {DEPTH_LABELS[depth]}
+            </button>
+          ))}
+        </div>
+
+        <p className="game-line soft center-line farm-disclaimer">※この選択で結果は変わりません</p>
+        <button
+          className="btn primary big"
+          disabled={!canContinueReflection}
+          onClick={() => (onPartialComplete ?? onComplete)()}
+        >
+          先へ進む
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="game board-game">
-      <div className="mission-bar">
-        <span className="mission-bar-title">
-          {week === 0 ? "今日" : `${week * 7}日後`}　ダムの貯水率 {storage}%
-        </span>
-        <div className="mission-chips">
-          <span className={`mchip ${critical ? "bad" : storage < 40 ? "soft" : "ok"}`}>
-            {critical ? "🔴 危険な水準" : storage < 40 ? "🟡 少なくなってきた" : "🟢 まだ余裕"}
-          </span>
-          <span className="mchip">このまま7日後：約{projected}%</span>
-        </div>
+      <div className="task-bar">
+        <span className="task-now">雨が少なく、貯水率が下がっている。今週の対応を決めよう</span>
+        <span className="task-sub">データを読んで、割り当て先と制限の強さを決めよう</span>
       </div>
 
-      <div className="dam-visual">
-        <div className={`dam-water ${critical ? "low" : ""}`} style={{ height: `${storage}%` }} />
-        <span className="dam-label">{storage}%</span>
-        {history.length > 1 && (
-          <span className="dam-history">{history.join("% → ")}%</span>
-        )}
-      </div>
-
-      {critical && (
-        <div className="sched-issues">
-          <p>🔴 ダムの水が危険な水準に…！このままでは街全体で水が足りなくなる。</p>
-        </div>
-      )}
-
-      <button className={`layer-btn wide ${openRain ? "active" : ""}`} onClick={() => setOpenRain(!openRain)}>
-        🌦 今後の雨予測を見る
-      </button>
-      {openRain && (
-        <div className="tool-panel">
-          <p>1週間後：まとまった雨の予報なし</p>
-          <p>2週間後：まとまった雨の予報なし</p>
-          <p className="good">3週間後：大きな雨が来そう</p>
-          <p className="soft-note">＝ 大雨までの約3週間を、どうやってもたせるか。</p>
-        </div>
-      )}
-
-      {/* sliders */}
-      <div className="slider-stack">
-        {SECTORS.map((s) => {
-          const impact = impactOf(s);
+      <div className="dx-grid route-grid">
+        {cardOrder.map((id) => {
+          const isSector = id !== "reservoir" && id !== "rain";
+          const label = id === "reservoir" ? "貯水率" : id === "rain" ? "雨予報" : SECTOR_LABELS[id as Sector].name;
+          const icon = id === "reservoir" ? "💧" : id === "rain" ? "🌦" : SECTOR_LABELS[id as Sector].icon;
           return (
-            <div key={s.id} className="slider-row">
-              <span className="slider-label">
-                {s.emoji} {s.name}　<strong>{level[s.id]}%</strong>
-              </span>
-              <div className="slider-steps">
-                {STEPS.map((st) => {
-                  const v = parseInt(st);
-                  return (
-                    <button
-                      key={st}
-                      className={`slider-step ${level[s.id] >= v ? "on" : ""}`}
-                      onClick={() => setLevel((l) => ({ ...l, [s.id]: v }))}
-                      aria-label={`${s.name} ${st}`}
-                    />
-                  );
-                })}
+            <div key={id} className={`dx-card ${isSector && selectedSector === id ? "selected" : ""}`}>
+              <div className="dx-head">
+                <span className="dx-name">
+                  {icon} {label}
+                </span>
+                <button
+                  className="dx-more"
+                  aria-label={openCard === id ? "とじる" : "データを見る"}
+                  onClick={() => toggleOpen(id)}
+                >
+                  {openCard === id ? "－" : "？"}
+                </button>
               </div>
-              {impact && <span className="slider-impact">{impact}</span>}
+              {openCard === id && (
+                <p className="dx-pattern">
+                  {id === "reservoir" && RESERVOIR_TEXT[session.reservoir]}
+                  {id === "rain" && RAIN_TEXT[session.rain]}
+                  {isSector && (
+                    <>
+                      {URGENCY_TEXT[id as Sector][session.sectors[id as Sector].urgency]} ／{" "}
+                      {CAPACITY_TEXT[id as Sector][session.sectors[id as Sector].capacity]}
+                    </>
+                  )}
+                </p>
+              )}
+              {isSector && (
+                <button className={`dx-commit ${selectedSector === id ? "on" : ""}`} onClick={() => setSelectedSector(id as Sector)}>
+                  ここに割り当てる
+                </button>
+              )}
             </div>
           );
         })}
       </div>
 
-      <button className="btn primary big" onClick={advance}>
-        ⏩ 7日進める
+      <div className="zone-row">
+        {depthOrder.map((depth) => (
+          <button
+            key={depth}
+            className={`zone-btn ${selectedDepth === depth ? "on" : ""}`}
+            onClick={() => setSelectedDepth(depth)}
+          >
+            {DEPTH_LABELS[depth]}
+          </button>
+        ))}
+      </div>
+
+      <button className="btn primary big" disabled={!canCommit} onClick={commit}>
+        実施する
       </button>
-      {(critical || hitCritical) && (
-        <button
-          className="btn ghost"
-          onClick={() => {
-            setStorage(63);
-            setWeek(0);
-            setHistory([63]);
-            setHitCritical(false);
-          }}
-        >
-          今日からやり直す
-        </button>
+      {!allDataRead && (
+        <p className="game-line soft center-line farm-disclaimer">※5枚すべての「？」を見てから実施しよう</p>
       )}
     </div>
   );
