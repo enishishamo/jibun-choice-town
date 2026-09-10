@@ -347,3 +347,4 @@
 {"ts":"2026-09-10T14:34:27.401Z","tool":"codex-review","label":"legacy-allocate-and-forecast-impl-r1","prompt_file":"factory/projects/legacy-allocate-and-forecast/impl-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":180.258}
 {"ts":"2026-09-10T14:48:38.511Z","tool":"codex-review","label":"legacy-allocate-and-forecast-impl-r2","prompt_file":"factory/projects/legacy-allocate-and-forecast/impl-review-r2-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":146.799}
 {"ts":"2026-09-10T15:20:08.131Z","tool":"codex-review","label":"legacy-move-try-design-r1","prompt_file":"factory/projects/legacy-move-try/design-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":171.303}
+{"ts":"2026-09-10T15:34:35.329Z","tool":"codex-review","label":"legacy-move-try-design-r2","prompt_file":"factory/projects/legacy-move-try/design-review-r2-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":132.2}

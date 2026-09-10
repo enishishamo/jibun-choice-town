@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 45,
+    "career_authenticity_score": 45,
+    "game_quality_score": 62,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED: The diagonal mapping satisfies the statistical test by assigning interventions that contradict or are not supported by the stated conditions. In standup, envAdjustable=false still maps support-point deficiency to height adjustment, even though that axis means the home cannot be adjusted. In walk, caregiver absence uniquely changes endurance treatment from rest to cane, but the research does not establish that resting requires a caregiver or that a cane is the correct universal energy-saving substitute. These cells read as math-driven retrofits rather than authentic PT judgments."
+    ],
+    "high": [
+      "TEXT_ONLY_CONSEQUENCE remains open for failure: the specification says a failed movement's icon remains unchanged. An unchanged icon is not a visual state change or visible world reaction; only the accompanying text communicates the failure.",
+      "The misjudgment play seed requires choosing without opening the environment data, while the authoritative AE requires every relevant data card to be opened before choices activate. The documented failure path is therefore impossible under the specified interaction rules."
+    ],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The exploit-resistant diagonal mapping is causally invalid as written. The standup cell (support, not_adjustable)->height prescribes an environmental height adjustment precisely when the environment axis says adjustment is unavailable. The walk cell (endurance, caregiver_no)->cane is unsupported by research.md and makes caregiver presence arbitrarily determine rest versus cane.",
+        "file": "factory/projects/legacy-move-try/design/design-sim.mjs"
+      },
+      {
+        "code": "TEXT_ONLY_CONSEQUENCE",
+        "severity": "HIGH",
+        "finding": "Failure leaves the movement icon unchanged, so the failed action produces no visual state transition. Text remains the only newly presented consequence for failure.",
+        "file": "factory/projects/legacy-move-try/design/game_translations_v2.json"
+      },
+      {
+        "code": "INTERACTION_SPEC_CONTRADICTION",
+        "severity": "HIGH",
+        "finding": "The failure seed says the player can commit after ignoring the environment card, but AE disables choices until all relevant data cards have been opened. This makes the specified illustrative failure path unimplementable.",
+        "file": "factory/projects/legacy-move-try/design/play_seeds_v2.json"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "gate_h_specified": true,
+      "mapping_jointly_necessary": true,
+      "situp_claim_accurate": true,
+      "threshold_precedent_matched": true,
+      "visual_feedback_added": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "8 passed, 0 failed. Measured rates: standup_cause_axis_only=0.5078, standup_env_axis_only=0.4998, walk_cause_axis_only=0.4947, walk_caregiver_axis_only=0.4963, single_axis_only_combined=0.2547. Independent table inspection confirms every row and column contains two different answers, so the mathematical single-axis ceiling is exactly 50%.",
+      "no_axis_constant_branch": true,
+      "off_diagonal_cells_defensible": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-move-try/design/design-sim.mjs:48 — envAdjustable is defined as whether the home has room for adjustment or modification.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:60 — legs maps to height/train according to environment availability.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:61 — support plus envAdjustable=false nevertheless maps to height, contradicting the availability axis.",
+      "factory/projects/legacy-move-try/design/ae_v2.json:5 — the narrative likewise says that when the environment has no adjustment room, height should be raised.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:65 — the walk condition axis is caregiver availability.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:68 — the cane-energy-cost assertion is introduced as justification, but research.md does not establish it.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:76 — balance maps to cane/train solely according to caregiver presence.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:77 — endurance maps to rest when a caregiver is present but cane when absent, although rest feasibility is not shown to depend on accompaniment.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:172 — the single-axis threshold is explicitly capped at 0.6.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:137 — cause-only standup strategy is explicitly simulated.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:144 — environment-only standup strategy is explicitly simulated.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:148 — cause-only walk strategy is explicitly simulated.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:152 — caregiver-only walk strategy is explicitly simulated.",
+      "factory/projects/legacy-move-try/design/fact_sheet_v2.json:71 — situp is expressly framed as a difficulty-ramping simplification, not a clinically confirmed single-factor rule.",
+      "factory/projects/legacy-move-try/design/game_translations_v2.json:10 — failure is specified to leave the icon unchanged, so it supplies no visual state transition.",
+      "factory/projects/legacy-move-try/design/play_seeds_v2.json:42 — the failure example commits without opening the environment data.",
+      "factory/projects/legacy-move-try/design/ae_v2.json:6 — choices must remain disabled until all applicable observation/environment/caregiver data have been opened."
+    ],
+    "recommended_actions": [
+      "Replace the diagonal mappings with clinically grounded combinations whose intervention remains feasible under the named condition. If no defensible 2x2/three-answer table exists, change the second-axis wording or candidate interventions rather than preserving the Latin-square shape.",
+      "For every failed movement, add an explicit visual state such as an amber unsafe marker, wobble/blocked-path state, or distinct 'not yet safe' icon; do not represent failure solely by absence of the success change.",
+      "Reconcile s4 with the disclosure gate: either model a genuine misinterpretation after both cards are opened, or revise the gate so the documented omission path is intentionally possible without making C optional."
+    ]
+  },
+  "elapsed_sec": 132.2
+}

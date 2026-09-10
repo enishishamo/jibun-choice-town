@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-diagnose-and-fix-per-movement（v3）は、scope_core_v3.jsonのcoreが定義する『動作ごとの機能面原因×（裏付けのある動作のみ）実行条件の判断』を、game_translations_v3.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（起き上がりの研究解釈の是正、立ち上がり・歩行のマッピングの対角配置化、Gate H明記、視覚フィードバック追加）と、design review r2のBLOCKER/HIGH是正（対角配置の繰り返しセルを研究裏付けのある独立した第4候補『休憩・ペーシング』へ置き換え、失敗時アイコンを開始状態・成功状態のいずれとも異なる第3の視覚状態へ遷移させる修正、および play_seeds のs4を disclosure gate と矛盾しない誤り方に修正）が、scope_core_v3.json/ae_v3.json/game_translations_v3.json/play_seeds_v3.json/c_compression_v3.json/no_manual_exploit_check_v3.json/reference_research_v3.jsonのすべてに一貫して反映されていることを確認した。first_5_seconds_v3.jsonの初回タップ体験（カードを開いて読む→工夫を選ぶ→実施）も、c_compression_v3.jsonが定義した圧縮後のCとD（2値の読み物を見比べて動作ごとに選択する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v3.jsonのfixed_failure_pattern検証（design-sim-result.json v3）により、単一軸判断・部分的当てずっぽうのいずれも完全な推論を明確に下回ることを確認しており（原因軸/条件軸のいずれか一方のみでも約50%、v1の約75%から是正済み）、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}
