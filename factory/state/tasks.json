@@ -1335,14 +1335,14 @@
       "qa_status": "PASS",
       "qa_evidence": "factory/projects/legacy-load-and-route/design/implementation_qa_v2.json",
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "e20416c413e0dbda85506ab8a08edfac0f9495cd",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T01:16:42.806Z",
-      "updated_at": "2026-09-10T03:22:04.503Z",
+      "updated_at": "2026-09-10T03:28:21.140Z",
       "history": [
         {
           "at": "2026-09-10T01:16:42.807Z",
@@ -1365,6 +1365,12 @@
           "score": 90,
           "high_count": 0,
           "override_note": null
+        },
+        {
+          "at": "2026-09-10T03:28:21.141Z",
+          "event": "release_commit_set",
+          "sha": "e20416c413e0dbda85506ab8a08edfac0f9495cd",
+          "given": "e20416c413e0dbda85506ab8a08edfac0f9495cd"
         }
       ]
     }
