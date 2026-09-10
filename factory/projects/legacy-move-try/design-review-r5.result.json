@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r5",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 38,
+    "career_authenticity_score": 38,
+    "game_quality_score": 67,
+    "blockers": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "finding": "v5 still makes caregiver availability determine rest-versus-training and cane-versus-training for walking. research.md supports training, pacing, and devices as broad intervention categories, but explicitly does not establish this decision rule. It also does not establish that training is self-directed or supervision-independent, that pacing alone is unsafe, or that a cane cannot be introduced without an available caregiver. The universal fallback therefore preserves the unsupported conditional mechanism from prior rounds instead of closing it."
+      }
+    ],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The current walk mapping asserts unsupported caregiver-dependent intervention availability and universally selects training when no caregiver is available. This is not entailed by training being a broad category and conflicts with research.md's express limit on the evidence.",
+        "file": "factory/projects/legacy-move-try/design/design-sim.mjs"
+      }
+    ],
+    "round4_findings_confirmed_closed": {
+      "train_universal_fallback_honestly_grounded": false,
+      "no_invented_per_cell_mechanism_remains": false,
+      "disclosed_floor_is_appropriate_response": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "9 passed, 0 failed; legitimate_full_reasoning=1, random_pick=0.0563, standup_cause_axis_only=0.5078, walk_cause_axis_only=0.4947, standup_env_axis_only=0.7458, walk_caregiver_axis_only=0.7465, single_axis_only_combined=0.2547, single_axis_only_condition_combined=0.2765",
+      "cause_axis_still_50pct": true,
+      "condition_axis_floor_in_expected_band": true,
+      "combined_session_level_exploit_low": true,
+      "no_withdrawn_content_presented_as_current": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-move-try/research.md:102 — Research lists devices, pacing, and training as categories whose priority is judged clinically.",
+      "factory/projects/legacy-move-try/research.md:144 — Treating inability simply with training while delaying immediate safety measures is identified as a common failure.",
+      "factory/projects/legacy-move-try/research.md:229 — No documented single rule separating equipment, training, and pacing was found.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:108 — The current design makes caregiver presence a prerequisite for the cane branch.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:111 — The current design claims caregiver presence makes rest stops safer without research support.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:112 — It characterizes an unsupervised cane or paced walk as the highest-risk combination, a claim absent from research.md.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:114 — Both no-caregiver cells are forced to training.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:116 — It newly asserts that training is self-directed and does not require supervision; research.md does not establish either property.",
+      "factory/projects/legacy-move-try/design/play_seeds_v5.json:29 — s3 repeats the unsupported caregiver-present→cane, caregiver-absent→training mechanism, although it is internally consistent with the simulator.",
+      "factory/projects/legacy-move-try/design/play_seeds_v5.json:33 — The withdrawn caregiver-dependent rest-versus-training switch remains current for endurance limitation.",
+      "factory/projects/legacy-move-try/design/play_seeds_v5.json:17 — s2 is internally consistent with legs+adjustable→height.",
+      "factory/projects/legacy-move-try/design/play_seeds_v5.json:41 — s4 is internally consistent with legs+not-adjustable→training and remains a plausible disclosed-data error.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:246 — Executed condition-only checks produce 0.7458 and 0.7465 in the disclosed band, but simulation validates the encoded table, not its clinical truth."
+    ],
+    "recommended_actions": [
+      "Escalate for human decision because closing the blocker requires replacing or removing the unsupported caregiver/environment gating model, which is a redesign after REDESIGN_MAX.",
+      "Do not treat disclosure of the approximately 75% floor as curing the causal defect: the floor is only unavoidable after adopting an unsupported mapping.",
+      "If another design is authorized, ground each condition in documented intervention feasibility or simplify the mechanic so it does not claim caregiver absence uniquely makes training correct."
+    ]
+  },
+  "elapsed_sec": 108.505
+}
