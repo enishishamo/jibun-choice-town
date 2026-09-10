@@ -1,0 +1,8 @@
+{
+  "component_files": ["src/q1/UrbanHeatGame.tsx"],
+  "logic_module": "src/q1/heatDiagnosisLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-heat-diagnosis.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/heat/place-city.png — independently visually verified to contain no baked-in temperature labels or contradicting content)",
+  "d_preserved_statement": "heatDiagnosisLogic.tsのROLES/ARCHETYPES/TOOLS/sessionWinはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。3地点の日射・風・舗装データを読み比べて、対策で直せる原因を持つ地点を診断し、原因に合う対策を選んで実施する判断は、UrbanHeatGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。地点1つ・対策1つが両方決まって初めて『実施する』が活性化し、1回のコミットで結果が確定する。失敗時は同じ3地点のデータを再提示する非採点の振り返り選択（Gate G対応、結果を一切変えない）を挟んでから結末へ進む。"
+}

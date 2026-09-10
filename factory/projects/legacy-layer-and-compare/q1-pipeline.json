@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "layer_and_compare",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "EXISTING_GAME_RESEARCH",
+  "state": "IMPL_QA_PASSED",
+  "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
   "redesign_count": 0,
@@ -877,6 +877,182 @@
           "creator": "claude"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-layer-and-compare:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-layer-and-compare/design/game_spec_v1.json",
+      "payload": {
+        "goal": "3つの地点（毎セッションランダムな組み合わせ、2種類のシナリオ「日射が原因」「舗装が原因」から均等抽選）の日射・風・舗装の読み物を見比べて、暑さの本当の原因を診断し、原因に合う対策（街路樹・日除け、または保水性・遮熱性舗装）を1つ選んで、1つの地点に実施する。",
+        "initial_visual_state": "『同じ猛暑日なのに、場所によって暑さがちがう』という導入文と、3枚の地点カード（中立的な名前——原因を連想させない、タップで日射・風・舗装の読み物が開く）、2つの対策カード（街路樹・日除け／保水性・遮熱性舗装、タップで選択）、『実施する』ボタン（地点1つ・対策1つの両方が選ばれるまで非活性）。地点カード・対策カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
+        "interactive_objects": [
+          {
+            "id": "location_card",
+            "count": 3,
+            "behavior": "タップして開くと日射・風・舗装の読み物（強い/弱い、アスファルト/保水性、といった中立的な表現）が表示される。地点自体をタップすることで対策の実施先として選択できる（自由に変更可、コストなし）。"
+          },
+          {
+            "id": "countermeasure_card",
+            "count": 2,
+            "behavior": "街路樹・日除け／保水性・遮熱性舗装の2種類。タップして選択する（自由に変更可）。"
+          },
+          {
+            "id": "commit_button",
+            "label": "実施する",
+            "behavior": "地点1つ・対策1つの両方が選択されて初めて活性化。押すと1回のコミットで結果が確定する（同一セッション内のやり直しはない）。"
+          }
+        ],
+        "primary_action": "各地点カードをタップして日射・風・舗装の読み物を読み、対策を実施する地点を1つ選ぶ。対策カードを1つタップして選ぶ。『実施する』を押して1回のコミットで結果を確定する。",
+        "C": "地点ごとの日射（強い/弱い）・風（強い/弱い）・舗装（アスファルト/保水性）の読み物（design/design-sim.mjsのROLES: SUN_TARGET/PAVEMENT_TARGET/WIND_CONFOUND_SUN/WIND_CONFOUND_PAVEMENT/FINE）。対策の種類と、それぞれがどの原因に効くか（街路樹・日除け→日射、保水性・遮熱性舗装→舗装）。風が弱い（建物密集で通らない）地点は、日射や舗装の症状が似ていても対策のしようがない、という制約（環境省データシート表3.2、都市/地区スケール専用）。",
+        "D": "3地点の日射・風・舗装データを読み比べて、対策で直せる原因を持つ地点を診断し、原因に合う対策を選んで実施する。同じ症状（日射が強い/舗装がアスファルト）を示していても、風が弱い（建物密集）地点では対策のしようがない、という判断が毎セッション求められる（wind-confoundモデル、design-sim.mjs参照）。",
+        "system_reactions": [
+          {
+            "trigger": "地点カードをタップして開く",
+            "reaction": "日射・風・舗装の読み物が展開表示される。正誤フィードバックはまだ出さない。"
+          },
+          {
+            "trigger": "地点カードを選択（実施先に指定）",
+            "reaction": "カードが選択状態（視覚的に強調）になる。"
+          },
+          {
+            "trigger": "対策カードをタップして選択",
+            "reaction": "カードが選択状態になる。"
+          },
+          {
+            "trigger": "『実施する』を押す（コミット）",
+            "reaction": "選択した地点の役割（roleId）と選択した対策（tool）を照合し、design-sim.mjsのsessionWinと同じロジックで成功/失敗を判定する。両方一致すれば成功、どちらかでも不一致なら失敗。個別にどこが誤っていたかは一切示さない。"
+          }
+        ],
+        "state_transitions": {
+          "browsing_and_selecting": "地点・対策カードを読み、選択を自由に変更できる状態。実施ボタンは両方選ばれるまで非活性。",
+          "committed": "『実施する』を押した瞬間に成功/失敗が確定。以後この状態には戻れない。",
+          "failure_reflection": "失敗時のみ、同じ3地点のデータを再提示し『次はどの地点が本当の原因だったと思う？』という非採点の振り返り選択を挟む。この選択はどの地点をタップしても結果・結末を変えず、正誤も示さない。振り返り選択の後、失敗の結末へ進む。",
+          "outcome": "成功（onComplete）または失敗（onPartialComplete、振り返り選択を経由）のいずれかに遷移。"
+        },
+        "failure_behavior": "選んだ地点の役割と選んだ対策が一致しない場合、フラットな『思ったほど暑さがやわらがなかった』という結果になる。対策自体の物理的効果がゼロだったという意味ではなく、その地点で最も支配的な原因（例: 建物密集による風通しの阻害）を放置したままでは目立った改善にならなかった、という資源配分・優先順位づけの失敗として描く。どの地点・どちらの選択が誤っていたかは一切示さない（個別フィードバックはBRUTE_FORCE_SUCCESSの温床になるため意図的に排除）。失敗結果の直前に、同じ3地点のデータを再提示し『次はどの地点が本当の原因だったと思う？』という非採点の振り返り選択を挟む（Q1 First-Play Standard Gate G対応、design review r2/r3で追加）。onPartialComplete（onCompleteではない）を呼び、Job Revealチップがsuccessと異なる正直な枠組みで表示されることを実装QAで確認する（Gate H HONEST OUTCOME）。",
+        "retry_behavior": "この場でのやり直しはない（1回のコミット、振り返り選択も採点されない）。章に入り直せば、地点の組み合わせ・シナリオが新しくランダム化された、本当の意味でのやり直しができる。",
+        "E": "診断・対策選びの両方が正しければ『その地点の暑さがやわらいだ』という成功結果（schoolLunch.ts型のresolutionと同様の枠組み）。どちらか一方でも誤っていれば、正直な失敗結果になり、実務同様センター（環境部局）へ持ち帰って考え直すことになる、という形で話は先に進む（進行はブロックしない）。",
+        "job_reveal": "既存のdiscoveryEcho（extremeHeat.tsのurban-heatエントリ、『さっき、日射と風と建物のデータを重ねて、暑い理由を探したよね。実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。』）がそのまま使える。実装は成功・失敗いずれの結果からもjob revealへ接続する。",
+        "first_5_seconds": "design/first_5_seconds_v5.jsonの内容をそのまま採用: 3枚の地点カード（中立的な名前、タップで日射・風・舗装の読み物が読める）と2つの対策カード（街路樹・日除け／保水性・遮熱性舗装）、『実施する』ボタンが見える。最初に期待されるタップは、気になる地点カードをタップして読み物を開く、または対策カードをタップして選ぶこと。",
+        "no_manual_requirements": "説明文なし。design/no_manual_exploit_check_v6.jsonの要件をすべて満たす: (1) タップと『？』的開示のみの操作規約。(2) 地点カードの日射・風・舗装の読み物という文脈だけで、どれが正解かをシステムが直接教えない。(3) 対策で直せる異常（日射が強い/舗装がアスファルト）と対策のしようがない異常（風が弱い）を同じ視覚的な強調度で示し、色だけで『対策が効く地点』と『効かない地点』を見分けられないようにする。(4) 地点の表示名は中立的なもの（原因を連想させない地名パターン）に限定する。(5) 地点カード・対策カードの色・強調表示は正解を示唆しない。(6) 地点カード・対策カードの表示順は毎セッション独立にシャッフルする。(7) 単発コミットで、同一セッション内の総当たり再挑戦は成立しない。(8) 失敗後の振り返り選択は非採点で、結末・正誤を一切変えない（総当たり成功を再導入しない）。",
+        "mobile_constraints": "375px幅を基準に、3枚の地点カード＋2つの対策カード＋実施ボタンが横スクロールなしで収まるレイアウトにする。既存のclue_join/sow_and_grow/load_and_routeの`.dx-card`/`.dx-head`/`.dx-name`/`.dx-more`/`.dx-pattern`/`.dx-commit`パターンを再利用する。失敗時の振り返り選択画面も同じカードレイアウトを流用し、新規のUIパターンを増やさない。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存のextremeHeat.tsのurban-heatエントリが使う場面画像（H(\"place-city\")）をそのまま流用する。地点・対策のアイコンは絵文字またはテキストのみで構成し、画像アセットを新規に必要としない。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-layer-and-compare:game_translations:v7"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T06:11:49.935Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-layer-and-compare/design/game_spec_v1.json",
+          "created_at": "2026-09-10T06:11:49.936Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-layer-and-compare:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-layer-and-compare/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "既存の`public/assets/heat/place-city.png`（暑い市街地の場面画像、extremeHeat.tsのurban-heatエントリで既に使用中）をそのまま流用する。画像を独立して確認したところ、温度ラベルや特定地点の仕分け済み表示など、新しい因果モデル（日射/風/舗装の3原因、wind-confound）と矛盾しうる焼き込みテキストは一切ない、一般的な街並みの俯瞰イラストであることを確認済み（legacy-load-and-routeの実装レビューr1で見つかった『再利用アートに矛盾する温度表示が焼き込まれていた』という教訓を踏まえた確認）。ゲーム画面自体は地点カード・対策カードで構成され、アイコンは絵文字・テキストのみで表現するため、新規イラスト生成は不要。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-layer-and-compare:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T06:11:49.975Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-layer-and-compare/design/art_brief_v1.json",
+          "created_at": "2026-09-10T06:11:49.976Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-layer-and-compare:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-layer-and-compare/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/UrbanHeatGame.tsx"
+        ],
+        "logic_module": "src/q1/heatDiagnosisLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-heat-diagnosis.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/heat/place-city.png — independently visually verified to contain no baked-in temperature labels or contradicting content)",
+        "d_preserved_statement": "heatDiagnosisLogic.tsのROLES/ARCHETYPES/TOOLS/sessionWinはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。3地点の日射・風・舗装データを読み比べて、対策で直せる原因を持つ地点を診断し、原因に合う対策を選んで実施する判断は、UrbanHeatGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。地点1つ・対策1つが両方決まって初めて『実施する』が活性化し、1回のコミットで結果が確定する。失敗時は同じ3地点のデータを再提示する非採点の振り返り選択（Gate G対応、結果を一切変えない）を挟んでから結末へ進む。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-layer-and-compare:game_spec:v1",
+        "legacy-layer-and-compare:art_brief:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T06:23:47.670Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-layer-and-compare/design/implementation_v1.json",
+          "created_at": "2026-09-10T06:23:47.671Z",
+          "creator": "claude"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-layer-and-compare:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-layer-and-compare/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "実機確認済み: 起動直後に導入文と3枚の地点カード（中立的な名前）、2つの対策カード（🌳街路樹・日除け／💧保水性・遮熱性舗装）、『実施する』ボタンが見える。説明文なし。design/first_5_seconds_v5.json通り。",
+        "touch_targets": "地点カードの「？」ボタン・地点/対策の選択ボタン・実施ボタン・振り返り選択ボタンはいずれも既存の.dx-more/.dx-commit/.zone-btn/.btnクラス（既存ゲームで検証済みの最小タップ領域）を再利用しており、新規に小さすぎるタップ領域を追加していない。",
+        "mobile_375": "375x812のビューポートで実機確認済み: document.documentElement.scrollWidth===clientWidth===375（横スクロールなし）。3地点カード・2対策カード・実施ボタンがすべて画面内に収まる。",
+        "direct_manipulation": "地点カードをタップ→保存の目安が開く/選択状態に変わる、対策カードをタップ→即座に選択状態に変わる、を実機ブラウザで確認済み。",
+        "reaction_timing": "各タップの視覚反応（選択色の変化、詳細テキストの開閉）は即時（Reactの状態更新、アニメーション遅延なし）。",
+        "c_to_d": "実機確認済み: 地点カードの「？」を開くと実際の日射・風・舗装の読み物（例:『日射は弱い（日かげが多い）／風があまり通らない（まわりに高い建物が多い）／地面はアスファルト（蓄熱しやすい）』）が表示され、その情報を読んでから地点・対策を選ぶという一連の流れが機能する。",
+        "consequence": "実機確認済み: 正しい組み合わせ（公園そばの道=PAVEMENT_TARGET + 保水性・遮熱性舗装）で実施すると『その地点の暑さがやわらいだ！』の成功結果とJob Revealへ正しく接続することを確認。誤った組み合わせ（住宅地のせまい道=FINE + 街路樹・日除け）で実施すると、非採点の振り返り選択を経てから『思ったほど暑さがやわらがなかった』というフラットな失敗結果になり、個別の誤り箇所は一切示されないことを確認。",
+        "retry": "実機確認済み: 失敗後も振り返り選択（採点なし、結果は変わらない）を経て『先へ進む』でJob Revealまで正直に進行し、ブロックしない。同一セッション内のその場でのやり直しはなく（gameplay-qa-heat-diagnosis.mjsで積み直しリテラルが存在しないことを機械的に確認済み）、章に入り直せば新しいランダム条件で再挑戦できる。",
+        "answer_leak": "gameplay-qa-heat-diagnosis.mjsで機械的に確認: 地点表示名（駅前の広場/住宅地のせまい道/公園そばの道）が原因を連想させる語を含まないこと、対策で直せる異常（日射/舗装）と対策のしようがない異常（風）が同じ視覚的強調度で表示されること（実機目視確認）を検証済み。",
+        "brute_force": "gameplay-qa-heat-diagnosis.mjsで機械的に確認: 固定(地点,対策)戦略は6通りいずれも約17%、ランダム推測も約17%、単一原因軸のみ読む戦略は約33〜34%、『日射→舗装の順に読むが風は無視する』戦略（design review r1が指摘した実際の欠陥）は約50%——いずれも完全な推論100%を大きく下回る。1回のコミットで結果が確定し、個別フィードバックが一切ないため総当たり攻略が成立しない。振り返り選択は非採点で結果を変えないため、これによる総当たりも成立しない。",
+        "visual_affordance": "選択済みの地点カード・対策カードはオレンジ色に変化する（既存の.dx-card.selected/.dx-commit.on/.zone-btn.onパターンを再利用）。実施ボタンは条件が揃うまで視覚的に非活性になることを実機確認済み。",
+        "no_manual": "実機確認済み: ゲーム画面に説明文はなく、地点カードの「？」を開いて読む以外に手がかりはない。design/no_manual_exploit_check_v6.jsonの要件（icon/label/position leak対策、振り返り選択の非採点性）はgameplay-qa-heat-diagnosis.mjsおよび実機確認で満たされていることを確認。",
+        "job_reveal": "実機確認済み: 成功時・失敗時いずれも既存のdiscoveryEcho（『さっき、日射と風と建物のデータを重ねて、暑い理由を探したよね。実際にも、こうしたデータを使って街の暑さを分析し、暑さ対策や街づくりを考える仕事があります。』）としごと図鑑追加画面へ正しく接続することを確認。成功時は🎉、失敗時は🤔の異なるトップフレーミングチップが表示され、Gate H HONEST OUTCOMEが機能していることを実機で確認済み。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-heat-diagnosis.mjs（24/24 PASS）、npx tsc --noEmit（エラーなし）、npx oxlint src/q1/UrbanHeatGame.tsx src/q1/heatDiagnosisLogic.ts（エラーなし）、npx vite build（成功）、Browser paneでの実機確認（成功パス・失敗＋振り返りパス・375pxモバイルビューポート・保存目安の読み物開閉・Job Reveal接続をすべて確認）。"
+      },
+      "creator": "claude",
+      "source_artifacts": [
+        "legacy-layer-and-compare:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T06:23:47.710Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-layer-and-compare/design/implementation_qa_v1.json",
+          "created_at": "2026-09-10T06:23:47.711Z",
+          "creator": "claude"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -905,7 +1081,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T03:39:21.551Z",
-  "updated_at": "2026-09-10T06:09:50.101Z",
+  "updated_at": "2026-09-10T06:23:47.711Z",
   "history": [
     {
       "at": "2026-09-10T03:39:21.552Z",
@@ -2163,6 +2339,71 @@
       "at": "2026-09-10T06:09:50.101Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T06:11:49.936Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T06:11:49.936Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v7"
+      ]
+    },
+    {
+      "at": "2026-09-10T06:11:49.976Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T06:11:49.976Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T06:23:47.671Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-10T06:23:47.671Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_spec:v1",
+        "legacy-layer-and-compare:art_brief:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T06:23:47.711Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-10T06:23:47.711Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:implementation:v1"
+      ]
     }
   ]
 }
