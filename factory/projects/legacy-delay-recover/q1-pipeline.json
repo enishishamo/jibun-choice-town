@@ -886,20 +886,20 @@
   },
   "impl_review": {
     "kind": "implementation",
-    "verdict": "FAIL",
-    "score": 82,
+    "verdict": "PASS",
+    "score": 94,
     "blockers": 0,
-    "high": 1,
-    "evidence": "factory/projects/legacy-delay-recover/impl-review-r1.result.json",
-    "input": "factory/projects/legacy-delay-recover/impl-review-r1-prompt.md",
+    "high": 0,
+    "evidence": "factory/projects/legacy-delay-recover/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-delay-recover/impl-review-r2-prompt.md",
     "reviewer": "codex-review",
     "creator": "claude-code",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 2,
-    "repair_count_at_review": 0,
-    "stale": true,
-    "recorded_at": "2026-09-10T19:00:43.207Z"
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-10T19:03:48.677Z"
   },
   "art_review": null,
   "failures": [
@@ -932,7 +932,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T19:01:33.109Z",
+  "updated_at": "2026-09-10T19:03:48.678Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1512,6 +1512,14 @@
       "at": "2026-09-10T19:01:33.109Z",
       "event": "repair_done",
       "note": "v2: HIGH CONTENT_MECHANIC_MISMATCH repair -- fixed schoolTrip.ts's trip-conductor profession what-body and delay-trip experience seeds, which claimed an unperformed change-proposal action. MEDIUM QA_REGRESSION_VACUOUS repair -- broadened content checks to scan full entries with bounded string boundaries, tightened JSX checks to bind to the actual rendering block, verified non-vacuous via git-stash revert test. LOW disclosure-symbol finding left as-is (matches established HotelReceiveGame.tsx precedent). Mechanic itself unchanged, 0 blockers/high against it in r1."
+    },
+    {
+      "at": "2026-09-10T19:03:48.678Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-delay-recover/impl-review-r2.result.json"
     }
   ],
   "redesign": [
