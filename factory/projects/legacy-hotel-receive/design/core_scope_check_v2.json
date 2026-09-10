@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v2.jsonのD/Eは、3班それぞれの『提示された部屋の定員充足確認』と『メンバー個人単位のアレルギー該当者の特定』という2つの独立した判断（design-sim.mjs v2——研究が直接裏付ける検証課題に変更済み）と、班ごとの単発コミット、Gate H（onComplete/onPartialComplete）、視覚フィードバック（失敗時アイコンの第3状態への遷移）、非採点振り返り（データ再掲込み）、disclosure gate（すべてのデータを開くまで選択ボタンを活性化しない）を一貫して記述しており矛盾はない。design review r1のBLOCKER（部屋判断が研究の裏付けない『完全一致のみ正解』ルールを暗黙に含んでいた点、アレルギー判断が個人単位の実務を班単位に圧縮していた点）を受け、scope_core_v2.json/ae_v2.jsonでは是正済みであることを確認した。scopeの『修学旅行の団体受入場面』はfact_sheet_v2.jsonの一次資料（複数施設の教育旅行受入案内、業界団体の食物アレルギー対応資料）が示す団体受入担当の中核業務そのものであり、周辺的な作業ではない。profession_name_hidden_testは、C（部屋タイプの定員データ、メンバー個人単位のアレルギー事前調査票）とD（定員充足の確認、アレルギー該当者の特定）が他の既存Q1ゲームと重複しないことを確認済み。"
+}

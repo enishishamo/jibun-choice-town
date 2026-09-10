@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-check-in-per-group（v2）は、scope_core_v2.jsonのcoreが定義する『提示された部屋の定員充足確認×メンバー個人単位のアレルギー該当者特定』を、game_translations_v2.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（(1) 部屋の判断を、研究が裏付けない『完全一致のみ正解』ルールを暗黙に含んでいた『定員一致する部屋タイプを選ぶ』形式から、提示された部屋の定員充足を確認する検証課題へ変更、(2) 食事の判断を、実在する個人単位の調査票・対応と粒度が合わなかった『班全体の二択』から、メンバー個人単位でアレルギー該当者を特定する判断へ変更）が、scope_core_v2.json/ae_v2.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.json/reference_research_v2.json/fact_sheet_v2.jsonのすべてに一貫して反映されていることを確認した。旧実装のreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）のうち、brute forceは班ごとの単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係をresearch.mdが裏付けていないことを確認したうえで、この因果関係をゲームの判断要素に一切含めないことで解消している。first_5_seconds_v2.jsonの初回タップ体験（カードを開いて読む→判定する→実施）も、c_compression_v2.jsonが定義した圧縮後のCとD（複数の読み物を見比べて班ごとに判定・選択する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v2.jsonのfixed_failure_pattern検証（design-sim-result.json v2）により、部屋の判定を無視した戦略も、アレルギー調査票を無視した戦略（誰も選ばない、または過剰に全員選ぶ）も、いずれも完全な推論を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-hotel-receive-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 58,
+    "game_quality_score": 78,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED: 3人・4人の班について、より定員の大きい部屋も収容可能なのに不正解とする根拠がない。research.mdが裏付けるのは部屋タイプごとの定員と、人数・希望・空室へ割り当てる実務であり、『定員と人数が完全一致する部屋だけが正解』という規則ではない。グループ人数を3/4/6に限定しても、6名室が3名を収容できる事実は消えず、設計は実質的に未根拠の最小定員優先ルールを導入している。",
+      "CORE_CAUSAL_MODEL_DISTORTED: 実在する食物アレルギー事前調査票は児童・生徒氏名を持つ個人単位の資料で、research.mdも『その生徒』の食事を分ける手配を示している。一方、ゲームは班単位の単一アレルギーカードから班全体について通常メニューか個別対応食かを一つ選ばせるため、誰の別膳を手配するのかを失い、班全員の食事区分を切り替えるように読める。個人別膳を含む班の手配だと明示・モデル化しない限り、実務の情報粒度と判断対象を歪める。"
+    ],
+    "high": [],
+    "medium": [
+      "PLAY_SEED_INCOHERENT: s4は6名班に特別室を選んでおり部屋選択自体は正解で、実際の失敗はアレルギーを食事へ反映しなかった点だけである。それにもかかわらず『データと判断の対応関係の取り違え』を体感するシードとして説明しており、想定した誤りと採点される誤りが一致しない。3名または4名に変更し、アレルギーを理由に6名室を選ぶ誤りも実際に発生させる必要がある。",
+      "SIMULATOR_GENERATOR_BUG: newGroupはアレルゲン配列を二度独立にfilterしているため、最初の試行で1件以上あっても二度目が空になり得る。したがってhasAllergy=trueなら最低1件を保証するというコメント・設計意図を満たさない。最初のfilter結果を保存して空の場合だけ1件追加すべきである。"
+    ],
+    "low": [
+      "s3の『カードを開いたが落花生を見落とす』は児童に起こり得る誤りだが、設計自身が見落としにくい明示表示を要求しているため、実装後のユーザーテストで本当に自然に生じるか確認が必要。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "定員一致だけを唯一の正解とし、定員内に収まる他の部屋を不正解にする規則は研究で裏付けられていない。人数を容量値に一致させる生成方法はこの問題を解消しない。",
+        "file": "factory/projects/legacy-hotel-receive/design/design-sim.mjs"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "個人単位のアレルギー調査票と個人別の対応食手配を、班単位の一枚の票と一つの食事選択へ圧縮し、誰に別膳が必要かという実務上重要な対応関係を失っている。",
+        "file": "factory/projects/legacy-hotel-receive/design/ae_v1.json"
+      },
+      {
+        "code": "PLAY_SEED_INCOHERENT",
+        "severity": "MEDIUM",
+        "finding": "s4では6名に特別室を選ぶため部屋判断は正解のままであり、記載された『アレルギーで部屋を決めた取り違え』は結果に反映されない。",
+        "file": "factory/projects/legacy-hotel-receive/design/play_seeds_v1.json"
+      },
+      {
+        "code": "SIMULATOR_GENERATOR_BUG",
+        "severity": "MEDIUM",
+        "finding": "hasAllergy判定後にアレルゲンを二度別々に抽選するため、hasAllergy=trueでもflaggedAllergensが空になり得る。",
+        "file": "factory/projects/legacy-hotel-receive/design/design-sim.mjs"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6 passed, 0 failed; legitimate_full_reasoning=1, random_pick=0.0053, fixed_room=0.0360–0.0393, fixed_meal=0.1112–0.1431. ただしシミュレーターは設計された正解関数を前提に攻略確率を測るだけで、正解関数自体の実務妥当性は検証しない。",
+      "brute_force_closed": true,
+      "rest_need_datum_not_reintroduced": true,
+      "room_and_meal_mappings_grounded": false,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-hotel-receive/research.md:68 — 実務は人数・部屋タイプの希望等をもとに実在客室へ割り当てるとされ、完全一致のみを正解とする規則はない。",
+      "factory/projects/legacy-hotel-receive/research.md:78 — 資料が直接示すのは各部屋タイプの定員・室数であり、定員未満利用を誤りとする規則ではない。",
+      "factory/projects/legacy-hotel-receive/research.md:85 — 宿泊施設は学校指定の部屋数・人数・希望を実際に空いている客室へ当てはめる。空室・希望を捨てた一対一対応は実務を過度に単純化する。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:30 — コメント自身は『sufficient capacity』と表現しているが、実装は完全一致以外をすべて不正解にする。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:57 — newGroupは人数値ではなく部屋タイプIDを選び、それをそのままcorrectRoomにするため、容量比較を一切行っていない。",
+      "factory/projects/legacy-hotel-receive/research.md:156 — 実在調査票には児童・生徒氏名があり、個人単位の申告である。",
+      "factory/projects/legacy-hotel-receive/research.md:183 — アレルギー情報から『その生徒／班の食事を通常メニューと分けて手配』するとされ、個別対象との対応保持が必要である。",
+      "factory/projects/legacy-hotel-receive/design/ae_v1.json:4 — 班ごとの一枚の調査票と班ごとの二択へ圧縮しており、どの児童に別膳を割り当てるかが表現されない。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v1.json:7 — 部屋・食事ボタンの順序を毎セッション独立にシャッフルすると明記され、位置漏洩は設計上防止されている。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v1.json:10 — 失敗時はonPartialCompleteと第3の視覚状態を使い、3班の元データを読み取り専用で再提示して非採点振り返りを行う。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v1.json:15 — 班ごとに一回のコミットで、採点対象となる同一班内の再試行を認めない。",
+      "factory/projects/legacy-hotel-receive/design/game_translations_v1.json:42 — t3は休養ニーズ位置ルールを明確に不採用案として分離し、研究上の却下理由を正しく記録している。",
+      "factory/projects/legacy-hotel-receive/design/play_seeds_v1.json:41 — s4は6名なので特別室が正解であり、説明された部屋判断の取り違えが採点上発生しない。",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:61 — 存在確認用filterと返却用filterが別抽選になっており、最低1件保証が破れる。"
+    ],
+    "recommended_actions": [
+      "部屋判断を、空室・予約上の部屋タイプ希望など研究で確認された追加情報を含む割当問題へ変更する。完全一致を唯一の正解にするなら、その運用規則を直接裏付ける資料を追加する。",
+      "アレルギーカードに対象児童を明示し、選択を『この班に個別対応食を用意する』ではなく『該当児童の別膳を手配する』と定義する。通常食を食べる他の児童まで切り替える意味にならないようUI・結果文も明記する。",
+      "s4の班人数を3名または4名に変え、誤って特別室を選ぶ部屋判断と通常メニューを選ぶ食事判断の両方が実際に不正解となるシナリオへ修正する。",
+      "newGroupでアレルゲン抽選を一度だけ行い、その配列が空ならランダムな1品目を追加する。",
+      "因果モデル修正後にシミュレーターの正解関数と固定戦略検査を更新し、再実行する。"
+    ]
+  },
+  "elapsed_sec": 161.199
+}
