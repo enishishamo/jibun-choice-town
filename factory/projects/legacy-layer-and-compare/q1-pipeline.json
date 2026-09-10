@@ -343,12 +343,12 @@
       ]
     },
     "game_translations": {
-      "artifact_id": "legacy-layer-and-compare:game_translations:v1",
+      "artifact_id": "legacy-layer-and-compare:game_translations:v2",
       "artifact_type": "game_translations",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v1.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json",
       "payload": {
         "translations": [
           {
@@ -367,7 +367,7 @@
             "job_reveal_bridge": "既存のdiscoveryEcho（日射と風と建物のデータを重ねて、暑い理由を探したよね、という体験）がそのまま使える",
             "strengths": "旧実装の根本問題（3地点・原因・対策が完全に固定で、fixable=trueの地点に対策を置けば必ず成功し、外れても同一セッション内で総当たり再挑戦できた）を、地点の組み合わせのランダム化＋1回のコミット＋フラットな失敗結果で解消する。design-sim.mjs v1で検証済み: 固定戦略（いつも同じ場所に同じ対策）は17%前後にとどまり完全な推論(100%)を大きく下回る。単一原因軸だけを読む戦略（例えば日射だけ見て舗装を無視する）も58%前後にとどまり、完全な推論に対し41pt以上劣る。",
             "weaknesses": "375px×3地点カード+2対策カード+実施ボタンのレイアウトは実装段階の検証項目。",
-            "risk": "design-sim-result.json (v1): legitimate_full_reasoning=100%、6種類の固定(地点,対策)戦略はいずれも17%前後、content-blind random pickも17%、単一原因軸のみ読む戦略（sun_axis_only_then_random/pavement_axis_only_then_random）は58%前後（41pt以上の差）、風を避けるだけの部分推論（avoids_wind_then_random）は25%、『最初に見つけた悪そうな地点にとりあえず対策する』戦略（first_bad_looking_slot）は50%——いずれも完全な推論100%を明確に下回ることを検証済み。",
+            "risk": "design-sim-result.json (v1): legitimate_full_reasoning=100%、6種類の固定(地点,対策)戦略はいずれも17%前後、content-blind random pickも17%、単一原因軸のみ読む戦略（sun_axis_only_then_random/pavement_axis_only_then_random）は58%前後（41pt以上の差）、風を避けるだけの部分推論（avoids_wind_then_random）は25%、『最初に見つけた悪そうな地点にとりあえず対策する』戦略（first_bad_looking_slot）は50%、『風だけ避けて残りに固定の対策を試す』戦略（avoid_wind_then_fixed_shade/water_pavement）は25%前後——いずれも完全な推論100%を明確に下回ることを検証済み。（v2: avoid_wind_then_fixed_*チェックを追加し、風だけ避けて固定の対策を試す戦略も検証済みであることを反映）",
             "adoption_or_rejection_reason": "採用。CORE/AEで定義した『地点データを原因と照合して診断し、原因に合う対策を選んで実施する』という判断を最も忠実に表現する。s2（同一セッション内の反復再挑戦）は旧実装そのもので総当たり攻略のリスクが高いため却下。s3（暑さレベルの数値だけを見て判断）はCOREの原因診断という判断が実質使われなくなるため却下。"
           },
           {
@@ -418,23 +418,29 @@
         "legacy-layer-and-compare:c_compression:v1"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:11:18.753Z",
+      "created_at": "2026-09-10T04:16:17.119Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v1.json",
           "created_at": "2026-09-10T04:11:18.754Z",
           "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v2.json",
+          "created_at": "2026-09-10T04:16:17.120Z",
+          "creator": "claude"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v1",
+      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v2",
       "artifact_type": "first_5_seconds",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v1.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v2.json",
       "payload": {
         "zero_to_two_seconds": "『同じ猛暑日なのに、場所によって暑さがちがう』という一文と、3枚の地点カード（中立的な名前、タップで日射・風・舗装の読み物が読める）、下に2つの対策カード（街路樹・日除け／保水性・遮熱性舗装、タップで選べる）、『実施する』ボタンが見える。説明文はない。",
         "two_to_five_seconds": "地点カードの下に対策を選ぶ行があり、対策カードをタップすると選択され、続けて地点カードをタップすると実施先として選べる。子どもは地点と対策の情報を見比べ始める。",
@@ -445,26 +451,32 @@
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v1"
+        "legacy-layer-and-compare:game_translations:v2"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:11:30.091Z",
+      "created_at": "2026-09-10T04:16:48.891Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v1.json",
           "created_at": "2026-09-10T04:11:30.092Z",
           "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-10T04:16:48.892Z",
+          "creator": "claude"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v1",
+      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v2",
       "artifact_type": "no_manual_exploit_check",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v1.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v2.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": "説明文なしで、地点カードのタップ（日射・風・舗装の読み物が開く）と対策カード・地点カードのタップ（選択）だけで操作方法が分かる。既存Q1（clue_join/sow_and_grow/load_and_route等）と同じ、タップと『？』的開示のみの規約に従う。",
@@ -475,7 +487,7 @@
           "select_all": "地点は1つしか実施先に選べず、対策も1つしか選べないため、select-allに相当する攻略は存在しない",
           "tap_all": "地点カード・対策カードを全部開いて読み物を確認すること自体はコストがなく許容される（内容を読む行為であり、攻略ではない）が、実際の実施先選択・対策選択と『実施する』は1回のコミットで確定する",
           "spam_submit": "1回のコミットで結果が確定し、同一セッション内でのやり直しはない（labCheckLogic.tsの前例に倣う）ため、連打による総当たりは成立しない",
-          "fixed_failure_pattern": "design-sim.mjs v1検証: 3地点は2種類のシナリオ（日射が原因/舗装が原因）から毎セッション均等抽選し、風通しの悪い地点・特に問題のない地点を常に同席させ、地点の表示順も毎セッション独立にシャッフルした結果、固定(地点,対策)戦略は6通りいずれも17%前後、単一原因軸のみを読む戦略も58%前後にとどまり、完全な推論（100%）に対し41pt以上劣ることを設計により保証",
+          "fixed_failure_pattern": "design-sim.mjs v1検証: 3地点は2種類のシナリオ（日射が原因/舗装が原因）から毎セッション均等抽選し、風通しの悪い地点・特に問題のない地点を常に同席させ、地点の表示順も毎セッション独立にシャッフルした結果、固定(地点,対策)戦略は6通りいずれも17%前後、単一原因軸のみを読む戦略も58%前後にとどまり、完全な推論（100%）に対し41pt以上劣ることを設計により保証。『風だけ避けて残りに固定の対策を試す』戦略（avoid_wind_then_fixed_shade/water_pavement）も25%前後にとどまることを追加検証済み",
           "color_leak": "地点カードの色・強調表示は正解を示唆しない設計を意図（実装段階で検証が必要）。特に、対策で直せる原因（日射/舗装の異常値）と対策で直せない原因（風の異常値）を同じ視覚的な強調度で示し、色だけで『対策が効く地点』と『効かない地点』を見分けられないようにする——design-sim.mjsのfirst_bad_looking_slot検証（50%）はこの視覚的な区別がない前提で成立しており、もし『対策が効く異常値』だけを特別な色で強調してしまうと、この検証結果は無効になる（実装QAで確認必須）",
           "label_leak": "地点の表示名は中立的なもの（原因を連想させない地名パターン、例: 駅前の広場／住宅地の道／公園そばの道など）に限定し、『日当たりのいい広場』のように原因を示唆する名前を使わない。対策の名前（街路樹・日除け／保水性・遮熱性舗装）はそれ自体がC情報（どの原因に効くか）の一部であり、これは正当な開示——ただし地点名と対策名の組み合わせ・配置が固定のヒントにならないよう、地点名と原因の対応も毎セッション独立にシャッフルする",
           "position_leak": "実装段階でclue_join/sow_and_grow/load_and_routeの前例（per-session Fisher-Yatesシャッフル）に倣い、地点カード・対策カードの表示順をセッションごとにシャッフルする必要がある（design_specの明示的な受け入れ条件とし、実装QAでも検証する）",
@@ -483,31 +495,37 @@
           "pass": true
         },
         "design_sim_evidence": "factory/projects/legacy-layer-and-compare/design/design-sim-result.json",
-        "revision_note": "v1: design review前の初版。"
+        "revision_note": "v2: game_translations v2への追随（avoid_wind_then_fixed_*チェック追加の数値反映）。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v1",
-        "legacy-layer-and-compare:first_5_seconds:v1"
+        "legacy-layer-and-compare:game_translations:v2",
+        "legacy-layer-and-compare:first_5_seconds:v2"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:11:30.131Z",
+      "created_at": "2026-09-10T04:16:48.930Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v1.json",
           "created_at": "2026-09-10T04:11:30.132Z",
           "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-10T04:16:48.930Z",
+          "creator": "claude"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "legacy-layer-and-compare:core_back_check:v1",
+      "artifact_id": "legacy-layer-and-compare:core_back_check:v2",
       "artifact_type": "core_back_check",
-      "version": 1,
+      "version": 2,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v1.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v2.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
@@ -517,15 +535,21 @@
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v1"
+        "legacy-layer-and-compare:game_translations:v2"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:11:30.172Z",
+      "created_at": "2026-09-10T04:16:48.968Z",
       "versions": [
         {
           "version": 1,
           "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v1.json",
           "created_at": "2026-09-10T04:11:30.173Z",
+          "creator": "claude"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v2.json",
+          "created_at": "2026-09-10T04:16:48.969Z",
           "creator": "claude"
         }
       ]
@@ -541,7 +565,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T03:39:21.551Z",
-  "updated_at": "2026-09-10T04:11:30.173Z",
+  "updated_at": "2026-09-10T04:16:48.969Z",
   "history": [
     {
       "at": "2026-09-10T03:39:21.552Z",
@@ -779,6 +803,76 @@
       "invalidated": [],
       "sources": [
         "legacy-layer-and-compare:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T04:16:17.120Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v2"
+    },
+    {
+      "at": "2026-09-10T04:16:17.120Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:game_translations:v2",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v1",
+        "legacy-layer-and-compare:c_compression:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T04:16:48.892Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v2"
+    },
+    {
+      "at": "2026-09-10T04:16:48.892Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T04:16:48.931Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v2"
+    },
+    {
+      "at": "2026-09-10T04:16:48.931Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v2",
+        "legacy-layer-and-compare:first_5_seconds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T04:16:48.969Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v2"
+    },
+    {
+      "at": "2026-09-10T04:16:48.969Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v2"
       ]
     }
   ]

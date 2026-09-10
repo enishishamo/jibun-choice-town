@@ -107,6 +107,15 @@ results.pavement_axis_only_then_random = rate((s, rand) => {
   if (idx >= 0) return sessionWin(s, idx, "water_pavement");
   return sessionWin(s, Math.floor(rand() * 3), pick(TOOLS, rand));
 });
+// reads ONLY the 風 axis to identify and AVOID the wind-blocked slot (genuine partial reasoning),
+// then applies a FIXED tool to the first remaining (display-order) non-wind slot -- never actually
+// distinguishes SUN/PAVEMENT/FINE from each other. Two variants (fixed tool = shade / water_pavement).
+for (const fixedTool of TOOLS) {
+  results[`avoid_wind_then_fixed_${fixedTool}`] = rate((s) => {
+    const idx = s.slots.findIndex((sl) => sl.roleId !== "WIND");
+    return sessionWin(s, idx, fixedTool);
+  });
+}
 // correctly avoids the wind-blocked slot (knows wind isn't point-fixable) but otherwise guesses
 // randomly between the remaining 2 slots and 2 tools -- partial reasoning, still well below full.
 results.avoids_wind_then_random = rate((s, rand) => {
@@ -143,6 +152,7 @@ const verdict = {
   random_pick_stays_low: results.random_pick < 0.3,
   single_axis_shortcut_capped: results.sun_axis_only_then_random <= 0.7 && results.pavement_axis_only_then_random <= 0.7,
   avoids_wind_heuristic_capped: results.avoids_wind_then_random <= 0.7,
+  avoid_wind_then_fixed_tool_capped: TOOLS.every((t) => results[`avoid_wind_then_fixed_${t}`] <= 0.7),
   first_bad_looking_heuristic_capped: results.first_bad_looking_slot <= 0.7,
   margin_over_sun_axis_shortcut: Number((results.legitimate_full_reasoning - results.sun_axis_only_then_random).toFixed(4)),
   margin_over_pavement_axis_shortcut: Number((results.legitimate_full_reasoning - results.pavement_axis_only_then_random).toFixed(4)),
@@ -159,7 +169,7 @@ const out = {
   correctSlotPositionDistribution: slotCounts,
   results,
   verdict,
-  notes: "v1: real causes (日射/舗装/風) and countermeasures (街路樹・日除け/保水性舗装, no point-fix for 風) per research.md. Each session draws ONE of 2 archetypes (fix-sun / fix-pavement, 50/50) so the fixable-by-shade location is NOT guaranteed every session -- this specifically prevents a single-axis 'always check 日射, apply shade' strategy from reaching ~100% by exploiting an always-present SUN role (an earlier draft of this design had both SUN and PAVEMENT present every session and would have allowed exactly that exploit). WIND (unfixable at point scale, per 環境省データシート表3.2 -- wind-corridor measures are city/district-scale only) and FINE (nothing to fix) are always-present distractors. sun_axis_only_then_random / pavement_axis_only_then_random verify a strategy that reads only one cause axis is capped near 58% (wins its own archetype 100%, falls back to a 1-in-6 random guess on the other), well below full reasoning's 100%.",
+  notes: "v1: real causes (日射/舗装/風) and countermeasures (街路樹・日除け/保水性舗装, no point-fix for 風) per research.md. Each session draws ONE of 2 archetypes (fix-sun / fix-pavement, 50/50) so the fixable-by-shade location is NOT guaranteed every session -- this specifically prevents a single-axis 'always check 日射, apply shade' strategy from reaching ~100% by exploiting an always-present SUN role (an earlier draft of this design had both SUN and PAVEMENT present every session and would have allowed exactly that exploit). WIND (unfixable at point scale, per 環境省データシート表3.2 -- wind-corridor measures are city/district-scale only) and FINE (nothing to fix) are always-present distractors. sun_axis_only_then_random / pavement_axis_only_then_random verify a strategy that reads only one cause axis is capped near 58% (wins its own archetype 100%, falls back to a 1-in-6 random guess on the other), well below full reasoning's 100%. avoid_wind_then_fixed_shade / avoid_wind_then_fixed_water_pavement additionally verify a strategy that correctly reads ONLY the 風 axis to avoid the unfixable location, then applies a fixed tool to whichever other slot comes first in display order without ever distinguishing SUN/PAVEMENT/FINE -- capped near 25%, since it never actually reads 日射/舗装.",
 };
 try {
   writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");
