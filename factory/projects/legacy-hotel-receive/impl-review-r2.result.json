@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "hotel-receive-impl-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "career_authenticity_score": 84,
+    "game_quality_score": 78,
+    "blockers": [],
+    "high": [
+      "STALE_OLD_MECHANIC_CONTENT: Although hotel-trip.place.image was removed, the trip-hotel profession entry still references T(\"school-trip-hotel\"). This is the same old-mechanic asset that the approved specification prohibits because it depicts room-grid placement and bath scheduling. The repair evidence's claim that the asset is not referenced anywhere is false, and the image can remain child-visible through the profession/job-reveal content."
+    ],
+    "medium": [
+      "QA_REGRESSIONS_OVERCLAIM_COVERAGE: The harness only rejects school-trip-hotel within 400 characters after the hotel-trip experience ID, so it misses the remaining trip-hotel profession image reference and incorrectly passes its stale-image check. Additionally, only one combined assertion actually detects the stale-closure implementation; the separate add-only check would not have caught the reported v1 closure bug."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "STALE_OLD_MECHANIC_CONTENT",
+        "severity": "HIGH",
+        "finding": "The prohibited old-mechanic school-trip-hotel asset remains referenced by the trip-hotel profession entry, contradicting the approved no-image decision and the repair evidence's claim that it is no longer referenced anywhere.",
+        "file": "src/data/content/schoolTrip.ts"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The stale-image regression regex is scoped only to the hotel-trip experience and therefore passes despite the same prohibited asset remaining in the trip-hotel profession entry. The claimed two batching-bug checks also overstate coverage: only the combined prev[id] assertion would catch the v1 closure read.",
+        "file": "factory/harness/gameplay-qa-hotel-receive.mjs"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "36 passed, 0 failed; strategy results: legitimate=1, random=0.0001, always-accept=0.1993, always-reject=0.069, select-none=0, select-everyone=0.0016. The stale-image assertion passed for the wrong scope because it did not scan the profession entry.",
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "disclosure_gate_genuinely_enforced": true,
+      "gate_h_correct": true,
+      "gate_g_correct": true,
+      "rest_need_absent": true,
+      "content_copy_accurate": false,
+      "ready_for_release": false,
+      "round1_flow_divergence_fixed": true,
+      "round1_stale_content_fixed": false,
+      "round1_group_id_drift_fixed": true,
+      "round1_qa_coverage_fixed": false,
+      "batching_bug_genuinely_fixed": true
+    },
+    "evidence": [
+      "src/q1/HotelReceiveGame.tsx:67 — Per-group UI state is keyed by GroupId and initialized for every GROUP_IDS entry.",
+      "src/q1/HotelReceiveGame.tsx:79 — toggleCard constructs its Set from functional-updater prev[id], fixing the batching state-loss bug.",
+      "src/q1/HotelReceiveGame.tsx:86 — toggleMember constructs its Set from functional-updater prev[id], fixing the batching state-loss bug.",
+      "src/q1/HotelReceiveGame.tsx:94 — Commit computes one immutable group result and provides no rendered recommit path after committed becomes true.",
+      "src/q1/HotelReceiveGame.tsx:102 — Completion is detected across all three independently keyed group states.",
+      "src/q1/HotelReceiveGame.tsx:105 — finalPicks are built from the real committed per-group selections.",
+      "src/q1/HotelReceiveGame.tsx:121 — The done branch defensively recomputes finalWin through sessionWin.",
+      "src/q1/HotelReceiveGame.tsx:146 — Failed sessions enter the non-scored reflection branch.",
+      "src/q1/HotelReceiveGame.tsx:167 — Reflection maps all three groups and re-presents their original data.",
+      "src/q1/HotelReceiveGame.tsx:227 — Reflection explicitly states that its selections do not change the result.",
+      "src/q1/HotelReceiveGame.tsx:246 — The playing view maps all three group IDs without an index or sequential unlock.",
+      "src/q1/HotelReceiveGame.tsx:252 — A committed group renders only its locked result summary.",
+      "src/q1/HotelReceiveGame.tsx:249 — Each group's disclosure gate requires both its size and allergy cards.",
+      "src/q1/HotelReceiveGame.tsx:311 — Room judgments remain disabled until both cards are opened.",
+      "src/q1/HotelReceiveGame.tsx:326 — Member judgments remain disabled until both cards are opened.",
+      "src/q1/hotelReceiveLogic.ts:14 — GroupId is hana, tsuki, or hoshi, matching the approved design.",
+      "src/q1/hotelReceiveLogic.ts:31 — Session generation matches the design simulator's 3–6 member, independent-room and per-allergen model.",
+      "src/q1/hotelReceiveLogic.ts:61 — groupWin requires the room verdict and exact member set.",
+      "src/q1/hotelReceiveLogic.ts:68 — sessionWin requires every group to win.",
+      "factory/projects/legacy-hotel-receive/design/design-sim.mjs:48 — Approved GROUP_NAMES are hana, tsuki, and hoshi.",
+      "src/data/content/schoolTrip.ts:57 — Lens summary now accurately says 部屋の確認とアレルギー対応.",
+      "src/data/content/schoolTrip.ts:151 — The trip-hotel profession still references the prohibited T(\"school-trip-hotel\") asset.",
+      "src/data/content/schoolTrip.ts:203 — The hotel-trip experience place is now image-less.",
+      "src/data/types.ts:130 — Q1Experience.place.image is optional.",
+      "src/data/content/shopOpening.ts:290 — A shipped image-less place entry establishes precedent.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:138 — The stale-image regex starts at hotel-trip and cannot detect the earlier trip-hotel profession image.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:145 — The explicit-block order.map predicate uniquely targets the current playing branch.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:151 — The committed-branch assertion substantively excludes commit and disclosure controls.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:178 — The add-only assertion does not itself test whether state is read from prev rather than a render closure.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:182 — The combined prev[id] assertion would have caught the v1 toggleCard/toggleMember closure reads.",
+      "src/q1/registry.ts:113 — The hotel_receive registry comment now describes capacity and allergy judgments without the obsolete bath stage."
+    ],
+    "recommended_actions": [
+      "Remove or replace the trip-hotel profession image reference at src/data/content/schoolTrip.ts:151 so the prohibited old-mechanic asset is absent from all hotel-role presentation paths.",
+      "Change the harness to reject T(\"school-trip-hotel\") across the complete hotel-related content—or across schoolTrip.ts entirely if the asset must no longer be used.",
+      "Split the batching regression into explicit toggleCard and toggleMember assertions, each requiring functional-updater prev[id] reads and rejecting groupUI[id] closure reads."
+    ]
+  },
+  "elapsed_sec": 87.399
+}

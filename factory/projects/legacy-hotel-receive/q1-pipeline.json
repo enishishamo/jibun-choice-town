@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "hotel_receive",
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
-  "current_stage": "IMPLEMENTATION_QA",
+  "state": "ESCALATED",
+  "current_stage": "IMPLEMENTATION",
   "design_iteration": 1,
   "repair_count": 2,
   "redesign_count": 0,
@@ -801,19 +801,19 @@
   "impl_review": {
     "kind": "implementation",
     "verdict": "FAIL",
-    "score": 72,
+    "score": 78,
     "blockers": 0,
-    "high": 2,
-    "evidence": "factory/projects/legacy-hotel-receive/impl-review-r1.result.json",
-    "input": "factory/projects/legacy-hotel-receive/impl-review-r1-prompt.md",
+    "high": 1,
+    "evidence": "factory/projects/legacy-hotel-receive/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-hotel-receive/impl-review-r2-prompt.md",
     "reviewer": "codex-review",
     "creator": "claude-code",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 1,
-    "repair_count_at_review": 1,
-    "stale": true,
-    "recorded_at": "2026-09-10T17:54:00.670Z"
+    "repair_count_at_review": 2,
+    "stale": false,
+    "recorded_at": "2026-09-10T18:01:21.075Z"
   },
   "art_review": null,
   "failures": [
@@ -838,6 +838,17 @@
       "must_change": "implementation must restore the specified D",
       "design_iteration": 1,
       "at": "2026-09-10T17:54:07.512Z"
+    },
+    {
+      "failure_id": "f-3",
+      "failure_code": "IMPLEMENTATION_CHANGED_D",
+      "failure_reason": "impl review r2 (score 78): HIGH STALE_OLD_MECHANIC_CONTENT persists -- trip-hotel profession entry at schoolTrip.ts:151 still references T(\"school-trip-hotel\") (the r1 repair only removed hotel-trip experience's place.image, missed the profession entry's own image field, and the repair evidence's claim that the asset was no longer referenced anywhere was false). MEDIUM QA_REGRESSION_VACUOUS: the harness's stale-image regex was scoped only near the hotel-trip experience so it passed vacuously without scanning the profession entry; the batching-bug regression is one combined assertion rather than two explicit per-function assertions.",
+      "evidence": "factory/projects/legacy-hotel-receive/impl-review-r2.result.json",
+      "return_to": "IMPLEMENTATION",
+      "preserve": "design, spec, art",
+      "must_change": "implementation must restore the specified D",
+      "design_iteration": 1,
+      "at": "2026-09-10T18:01:34.159Z"
     }
   ],
   "human_decisions": [],
@@ -846,7 +857,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T16:38:25.488Z",
-  "updated_at": "2026-09-10T17:58:08.294Z",
+  "updated_at": "2026-09-10T18:01:34.160Z",
   "history": [
     {
       "at": "2026-09-10T16:38:25.489Z",
@@ -1382,6 +1393,37 @@
       "at": "2026-09-10T17:58:08.294Z",
       "event": "repair_done",
       "note": "implementation v2: 3-cards-simultaneous rewrite (IMPLEMENTATION_FLOW_DIVERGENCE fix), schoolTrip.ts round-2 content fixes (STALE_OLD_MECHANIC_CONTENT), group-id revert to hoshi/星組 (DESIGN_GROUP_ID_DRIFT), QA harness rewrite to 36/36 (QA_REGRESSIONS_OVERCLAIM_COVERAGE) + found/fixed an unrelated batching state-loss bug in toggleCard/toggleMember during verification. Browser re-verified end-to-end incl. mobile 375. Ready for implementation review r2."
+    },
+    {
+      "at": "2026-09-10T18:01:21.076Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-hotel-receive/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T18:01:34.160Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "ESCALATED",
+      "note": "IMPLEMENTATION_CHANGED_D persists after repair_count=2, redesign_count=0"
+    },
+    {
+      "at": "2026-09-10T18:01:34.160Z",
+      "event": "failure_routed",
+      "failure_id": "f-3",
+      "code": "IMPLEMENTATION_CHANGED_D",
+      "return_to": "IMPLEMENTATION",
+      "decision": {
+        "action": "ESCALATED",
+        "reason": "same fundamental failure persists after finite repair+redesign budget"
+      }
     }
-  ]
+  ],
+  "escalation": {
+    "reason": "same fundamental failure persists after finite repair+redesign budget",
+    "failure_code": "IMPLEMENTATION_CHANGED_D",
+    "at": "2026-09-10T18:01:34.160Z"
+  }
 }

@@ -2401,7 +2401,7 @@
     "q1-rebuild-hotel-receive": {
       "task_id": "q1-rebuild-hotel-receive",
       "task_type": "game-content",
-      "status": "READY",
+      "status": "HUMAN_DECISION_REQUIRED",
       "repair_count": 0,
       "review_status": null,
       "review_evidence": null,
@@ -2410,19 +2410,25 @@
       "qa_evidence": null,
       "deploy_status": null,
       "release_commit": null,
-      "blocked_reason": null,
-      "human_decision_required": false,
+      "blocked_reason": "legacy-hotel-receive implementation review ESCALATED after 2/2 downstream repair rounds — same STALE_OLD_MECHANIC_CONTENT failure class recurred in round 2 (trip-hotel profession entry at schoolTrip.ts still references the old-mechanic school-trip-hotel image; the r1 repair only fixed the hotel-trip experience's place.image, missing the profession entry). Fix itself is mechanical (remove one more image reference, broaden a QA regex) but implementation/implementation_qa are excluded from the no-budget mechanical-consistency-repair mechanism, so it requires a human decision to grant a 3rd repair round (limited exception) or accept the residual HIGH finding. See factory/state/blocked-queue.md.",
+      "human_decision_required": true,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-10T16:38:25.447Z",
-      "updated_at": "2026-09-10T16:38:25.447Z",
+      "updated_at": "2026-09-10T18:02:29.076Z",
       "history": [
         {
           "at": "2026-09-10T16:38:25.447Z",
           "event": "created",
           "type": "game-content",
           "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-10T18:02:29.077Z",
+          "event": "blocked",
+          "reason": "legacy-hotel-receive implementation review ESCALATED after 2/2 downstream repair rounds — same STALE_OLD_MECHANIC_CONTENT failure class recurred in round 2 (trip-hotel profession entry at schoolTrip.ts still references the old-mechanic school-trip-hotel image; the r1 repair only fixed the hotel-trip experience's place.image, missing the profession entry). Fix itself is mechanical (remove one more image reference, broaden a QA regex) but implementation/implementation_qa are excluded from the no-budget mechanical-consistency-repair mechanism, so it requires a human decision to grant a 3rd repair round (limited exception) or accept the residual HIGH finding. See factory/state/blocked-queue.md.",
+          "human_decision": true
         }
       ]
     }
