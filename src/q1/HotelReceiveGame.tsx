@@ -1,214 +1,223 @@
 // Q1: ホテル・旅館の団体受入担当 (gameType: hotel_receive)
-// B: 学校から届いた班の情報を、宿の部屋・食事・入浴へ受け入れる。
-// C: 学校から届いた班情報。開かないと、どの班に配慮が必要かが
-//    分からない。班そのものは、宿がゼロから決めるものではない。
-// D: 部屋 → 食事 → 入浴の3段階で、学校からの班情報を宿の設備へ
-//    組み合わせる。
+// B: 修学旅行の団体が到着する日。花組・月組・雪組の3つの班それぞれについて、提示された部屋の定員が
+//    班の人数に足りているかを確認し、アレルギー事前調査票を見てメンバーのうち実際に個別対応食が
+//    必要な人だけを選び、1班ずつチェックインさせる。
+// C: 班ごとの人数データ、提示された部屋タイプ（定員入り）、メンバーごとのアレルギー事前調査票
+//    （7大アレルギー品目ごとの除去要否）。詳細はhotelReceiveLogic.ts。
+// D: 部屋の判定（この部屋でよい／別の部屋が必要）と、個別対応食が必要なメンバーの選択を、班ごとに
+//    1回のコミットで確定する（同一班内のやり直しはない）。
+//
+// 2026-09-10 (Q1 Autonomous Factory, legacy-hotel-receive rebuild, t1-check-in-per-group): 旧実装は
+// 部屋グリッドへのドラッグ配置に無コストの何度でもやり直しがあり（reverse audit: brute_force）、
+// 月組の「バス酔いしやすく到着後すぐ休ませたい」というデータが勝利条件で一切使われない装飾データ
+// だった。research.md（jc-researcher調査）で「休養ニーズ→部屋の位置」という因果関係が宿泊業界で
+// 確認できなかったため、この因果関係を発明せず、判断要素から除外した（旧実装のBANDS.noteに残る
+// 「乗り物酔いしやすい」という記述はflavor textとして他ゲーム（安全計画・バス運行）との継続性の
+// ために残るが、この宿ゲームの勝利条件では一切使わない）。新実装は、提示された部屋の定員充足を
+// 確認する検証課題（design review r1 BLOCKER是正: 「定員完全一致のみ正解」という研究が裏付けない
+// 規則を排除）と、メンバー個人単位でアレルギー該当者を特定する判断（design review r1 BLOCKER是正:
+// 実在する個人単位の調査票の粒度に合わせた）の2つを、班ごとに1回のコミットで確定する
+// （design-sim.mjs参照、design review r2 PASS 88）。失敗時は同じデータを再提示する非採点の振り返り
+// 選択を挟み、Q1 First-Play Standard Gate G「考え直す余地」に対応する（この振り返りは結果を一切
+// 変えない）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoCards from "./InfoCards";
-import { useDragDrop } from "./useDragDrop";
-import { BANDS } from "./tripBands";
+import {
+  ALLERGEN_LABELS,
+  GROUP_IDS,
+  GROUP_LABELS,
+  MEMBER_LABELS,
+  ROOM_LABELS,
+  groupWin,
+  newSession,
+  sessionWin,
+  type GroupId,
+  type GroupPick,
+  type GroupSession,
+  type Session,
+} from "./hotelReceiveLogic";
 
-const ROOM_CELLS = [
-  { id: "r0", row: 0, col: 0 }, { id: "r1", row: 0, col: 1 }, { id: "r2", row: 0, col: 2 },
-  { id: "r3", row: 1, col: 0 }, { id: "r4", row: 1, col: 1 }, { id: "r5", row: 1, col: 2 },
-  { id: "r6", row: 2, col: 0 }, { id: "r7", row: 2, col: 1 }, { id: "r8", row: 2, col: 2 },
-];
-const STAFF_ID = "staff"; // 引率者部屋
-const SLOTS = [
-  { id: "s1", label: "1回目（17:00〜）" },
-  { id: "s2", label: "2回目（17:40〜）" },
-  { id: "s3", label: "3回目（18:20〜）" },
-];
-const BATH_CAP = 2;
+type CardId = "size" | "allergy";
 
-type Stage = "room" | "meal" | "bath";
+function emptyPick(): GroupPick {
+  return { acceptRoom: null as unknown as boolean, specialMealMembers: [] };
+}
 
-export default function HotelReceiveGame({ onComplete }: Q1GameProps) {
-  const [stage, setStage] = useState<Stage>("room");
-  const [roomOf, setRoomOf] = useState<Record<string, string>>({}); // itemId -> cellId
-  const [selected, setSelected] = useState<string | null>(null);
-  const [roomChecked, setRoomChecked] = useState(false);
-  const [openedDocs, setOpenedDocs] = useState<string[]>([]);
-  const [meal, setMeal] = useState<Record<string, "normal" | "allergy">>({});
-  const [mealChecked, setMealChecked] = useState(false);
-  const [bathOf, setBathOf] = useState<Record<string, string>>({});
-  const [bathChecked, setBathChecked] = useState(false);
-  const [note, setNote] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
+export default function HotelReceiveGame({ onComplete, onPartialComplete }: Q1GameProps) {
+  const [session] = useState<Session>(() => newSession());
+  const [index, setIndex] = useState(0);
+  const [results, setResults] = useState<Partial<Record<GroupId, { pick: GroupPick; win: boolean }>>>({});
+  const [openCards, setOpenCards] = useState<Set<CardId>>(new Set());
+  const [acceptRoom, setAcceptRoom] = useState<boolean | null>(null);
+  const [selectedMembers, setSelectedMembers] = useState<Set<number>>(new Set());
+  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "done">("playing");
+  const [reflectPicks, setReflectPicks] = useState<Partial<Record<GroupId, GroupPick>>>({});
 
-  const items = [...BANDS.map((b) => b.id), STAFF_ID];
-  const put = (itemId: string, cellId: string) => {
-    setRoomOf((p) => {
-      const n: Record<string, string> = {};
-      for (const [c, i] of Object.entries(p)) if (i !== itemId && c !== cellId) n[c] = i;
-      n[cellId] = itemId;
-      return n;
+  // Arrival order is fixed (real progression, not shuffled) -- only per-card/button display order
+  // is randomized elsewhere. groupOrder is intentionally the natural GROUP_IDS order.
+  const order = GROUP_IDS;
+  const currentId = order[index];
+  const current: GroupSession = session.groups[currentId];
+  const allRead = openCards.has("size") && openCards.has("allergy");
+  const canCommit = allRead && acceptRoom !== null;
+
+  const toggleCard = (id: CardId) => setOpenCards((prev) => new Set(prev).add(id));
+
+  const toggleMember = (i: number) => {
+    setSelectedMembers((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
     });
-    setSelected(null);
-    setRoomChecked(false);
-    setNote(null);
   };
-  const { drag, startDrag, surfaceProps } = useDragDrop(put, (id) =>
-    setSelected(selected === id ? null : id),
-  );
-  const cellOf = (itemId: string) => Object.entries(roomOf).find(([, i]) => i === itemId)?.[0];
-  const cell = (id?: string) => ROOM_CELLS.find((c) => c.id === id);
 
-  const allRoomed = items.every((i) => cellOf(i));
-  const hanaCell = cell(cellOf("hana"));
-  const staffCell = cell(cellOf(STAFF_ID));
-  const staffNear =
-    !!hanaCell && !!staffCell &&
-    Math.abs(hanaCell.row - staffCell.row) <= 1 && Math.abs(hanaCell.col - staffCell.col) <= 1;
+  const commit = () => {
+    if (acceptRoom === null) return;
+    const pick: GroupPick = { acceptRoom, specialMealMembers: [...selectedMembers] };
+    const win = groupWin(current, pick);
+    const nextResults = { ...results, [currentId]: { pick, win } };
+    setResults(nextResults);
 
-  const roomIssues: string[] = [];
-  if (!allRoomed) roomIssues.push("まだ部屋が決まっていない班があるよ。");
-  if (allRoomed && !staffNear) roomIssues.push("引率者の部屋が、花組の部屋から離れすぎているよ。近くにしよう。");
-  if (!openedDocs.includes("info")) roomIssues.push("学校から届いた班の情報を、まだ確認していないよ。");
-  const roomOk = roomIssues.length === 0;
+    if (index + 1 < order.length) {
+      setIndex(index + 1);
+      setOpenCards(new Set());
+      setAcceptRoom(null);
+      setSelectedMembers(new Set());
+      return;
+    }
 
-  const mealOk = meal["hana"] === "allergy" && BANDS.filter((b) => b.id !== "hana").every((b) => meal[b.id] !== "allergy");
+    // all 3 groups committed
+    const allWin = order.every((id) => nextResults[id]?.win);
+    if (allWin) {
+      setOutcome("done");
+    } else {
+      setOutcome("reflecting");
+    }
+  };
 
-  const bathCountOf = (slotId: string) => Object.values(bathOf).filter((s) => s === slotId).length;
-  const allBathed = BANDS.every((b) => bathOf[b.id]);
-  const overBath = SLOTS.some((s) => bathCountOf(s.id) > BATH_CAP);
-  const bathOk = allBathed && !overBath;
+  const canFinishReflection = order.every((id) => {
+    const p = reflectPicks[id];
+    return p && p.acceptRoom !== null;
+  });
 
-  const infoDocs = [
-    { id: "info", icon: "📋", title: "学校から届いた班の情報",
-      body: (<>
-        <p>花組：卵・乳製品のアレルギーがある子が1人。食事は<strong>別トレー</strong>で。</p>
-        <p>月組：バスに酔いやすい子が1人。到着後、少し休ませたい。</p>
-      </>) },
-    { id: "rooms", icon: "🚪", title: "この宿の部屋",
-      body: <p>9部屋のうち、6部屋を使う。引率者の部屋は、班の部屋のそばに置く。</p> },
-  ];
-
-  if (done) {
+  if (outcome === "done") {
+    const finalWin = sessionWin(
+      session,
+      Object.fromEntries(order.map((id) => [id, results[id]!.pick])) as Record<GroupId, GroupPick>,
+    );
     return (
       <div className="game board-game">
         <div className="result-card good">
-          <span className="result-title">100人を、受け入れる準備ができた！</span>
+          <span className="result-title">3つの班、無事にチェックインできた！</span>
           <div className="result-rows">
-            <span className="rrow"><b>🚪 部屋</b><span className="good">花組の近くに引率者の部屋</span></span>
-            <span className="rrow"><b>🍱 食事</b><span className="good">花組はアレルギー対応食</span></span>
-            <span className="rrow"><b>🛁 入浴</b><span className="good">3回に分けて、混みすぎない</span></span>
+            {order.map((id) => (
+              <span key={id} className="rrow">
+                <b>{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}</b>
+                <span className="good">完了</span>
+              </span>
+            ))}
           </div>
         </div>
         <p className="game-line soft center-line">
-          班は学校が作ったもの。宿の仕事は、その班を部屋・食事・入浴へ、うまく受け止めること。
+          班は学校が作ったもの。宿の仕事は、その班を実際の部屋・個人単位のアレルギー対応へ、うまく収めること。
         </p>
-        <button className="btn primary big" onClick={onComplete}>
+        <button className="btn primary big" onClick={finalWin ? onComplete : (onPartialComplete ?? onComplete)}>
           お出むかえする！
         </button>
       </div>
     );
   }
 
-  if (stage === "room") {
-    return (
-      <div className="game board-game" {...surfaceProps}>
-        <div className="task-bar">
-          <span className="task-now">班と引率者の部屋を決めよう</span>
-          <span className="task-sub">置いたものは、もう一度タップすると持ち上げられる</span>
-        </div>
-        <div className="trip-board">
-          <div className="venue-grid">
-            {ROOM_CELLS.map((c) => {
-              const itemId = roomOf[c.id];
-              const band = BANDS.find((b) => b.id === itemId);
-              return (
-                <button
-                  key={c.id}
-                  className={`venue-cell ${itemId ? "filled" : ""} ${drag || selected ? "ready" : ""}`}
-                  data-drop={c.id}
-                  onClick={() => {
-                    if (selected) { put(selected, c.id); return; }
-                    if (itemId) {
-                      setRoomOf((p) => { const n = { ...p }; delete n[c.id]; return n; });
-                      setSelected(itemId);
-                      setRoomChecked(false);
-                    }
-                  }}
-                >
-                  <span>{band ? band.icon : itemId === STAFF_ID ? "🧑‍🏫" : "🚪"}</span>
-                  <small>{band ? band.name : itemId === STAFF_ID ? "引率者" : ""}</small>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        <div className="choice-row wrap">
-          {BANDS.filter((b) => !cellOf(b.id)).map((b) => (
-            <button key={b.id} className={`venue-item drag-item ${selected === b.id ? "selected" : ""}`} onPointerDown={startDrag(b.id)}>
-              <span className="choice-emoji">{b.icon}</span>
-              <span className="choice-name">{b.name}</span>
-            </button>
-          ))}
-          {!cellOf(STAFF_ID) && (
-            <button className={`venue-item drag-item ${selected === STAFF_ID ? "selected" : ""}`} onPointerDown={startDrag(STAFF_ID)}>
-              <span className="choice-emoji">🧑‍🏫</span>
-              <span className="choice-name">引率者</span>
-            </button>
-          )}
-        </div>
-        {roomChecked && roomIssues.length > 0 && (
-          <div className="sched-issues">{roomIssues.map((i) => <p key={i}>{i}</p>)}</div>
-        )}
-        <InfoCards cards={infoDocs} label="こまったら見る資料" onOpen={(id) => setOpenedDocs((o) => (o.includes(id) ? o : [...o, id]))} />
-        {!roomOk ? (
-          <button className="btn primary big" onClick={() => setRoomChecked(true)}>▶ 部屋割りをたしかめる</button>
-        ) : (
-          <button className="btn primary big" onClick={() => setStage("meal")}>つぎへ：食事を準備する</button>
-        )}
-        {drag && (
-          <div className="drag-ghost" style={{ left: drag.x, top: drag.y }}>
-            {BANDS.find((b) => b.id === drag.id)?.icon ?? "🧑‍🏫"}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (stage === "meal") {
+  if (outcome === "reflecting") {
     return (
       <div className="game board-game">
-        <div className="task-bar">
-          <span className="task-now">それぞれの班に、正しい食事を用意しよう</span>
-          <span className="task-sub">花組には、別トレーの対応食が必要</span>
+        <div className="result-card">
+          <span className="result-title">まだチェックインできていない班がある</span>
+          <p className="game-line soft">
+            手配そのものが無駄だったわけではないが、本当に必要だった部屋・食事の対応に届いて
+            いなかったみたい。同じ3班のデータをもう一度見比べて、次はどうするか考えてみよう。
+          </p>
         </div>
-        <div className="stack">
-          {BANDS.map((b) => (
-            <div key={b.id} className="trip-role-row">
-              <span className="trip-role-label">{b.icon} {b.name}</span>
-              <div className="choice-row wrap">
-                {(["normal", "allergy"] as const).map((t) => (
-                  <button
-                    key={t}
-                    className={`btn choice ${meal[b.id] === t ? "on" : ""}`}
-                    onClick={() => { setMeal((p) => ({ ...p, [b.id]: t })); setMealChecked(false); }}
-                  >
-                    <span className="tweak-check">{meal[b.id] === t ? "✓" : "＋"}</span>
-                    <span className="tweak-body"><b>{t === "normal" ? "🍚 通常食" : "🥚🥛 アレルギー対応食（別トレー）"}</b></span>
-                  </button>
-                ))}
+        <div className="result-rows">
+          {order.map((id) => (
+            <span key={id} className="rrow">
+              <b>{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}</b>
+              <span className={results[id]?.win ? "good" : "bad"}>{results[id]?.win ? "完了" : "まだできない"}</span>
+            </span>
+          ))}
+        </div>
+
+        <p className="game-line soft center-line farm-disclaimer">3班のデータをもう一度見比べよう</p>
+        <div className="dx-grid route-grid">
+          {order.map((id) => (
+            <div key={id} className="dx-card">
+              <div className="dx-head">
+                <span className="dx-name">{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}</span>
               </div>
+              <p className="dx-pattern">
+                人数: {session.groups[id].size}名 ／ 提示された部屋: {ROOM_LABELS[session.groups[id].proposedRoom]}
+              </p>
+              <p className="dx-pattern">
+                {session.groups[id].memberAllergens.map((allergens, i) => (
+                  <span key={i} style={{ display: "block" }}>
+                    {MEMBER_LABELS[i]}:{" "}
+                    {allergens.length > 0 ? allergens.map((a) => ALLERGEN_LABELS[a]).join("・") + "が除去要" : "除去要の品目なし"}
+                  </span>
+                ))}
+              </p>
             </div>
           ))}
         </div>
-        {mealChecked && !mealOk && (
-          <div className="sched-issues">
-            <p>花組には、アレルギー対応食を用意しよう。ほかの班は通常食でいいよ。</p>
+
+        {order.map((id) => (
+          <div key={id} className="dx-card">
+            <p className="game-line soft center-line farm-disclaimer">
+              {GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}：今度はどう判断すればよかったと思う？
+            </p>
+            <div className="choice-row wrap">
+              {[true, false].map((v) => (
+                <button
+                  key={String(v)}
+                  className={`dx-commit ${(reflectPicks[id] ?? emptyPick()).acceptRoom === v ? "on" : ""}`}
+                  onClick={() =>
+                    setReflectPicks((prev) => ({ ...prev, [id]: { ...(prev[id] ?? emptyPick()), acceptRoom: v } }))
+                  }
+                >
+                  {v ? "この部屋でよい" : "別の部屋が必要"}
+                </button>
+              ))}
+            </div>
+            <div className="choice-row wrap">
+              {Array.from({ length: session.groups[id].size }, (_, i) => i).map((i) => (
+                <button
+                  key={i}
+                  className={`dx-commit ${(reflectPicks[id] ?? emptyPick()).specialMealMembers.includes(i) ? "on" : ""}`}
+                  onClick={() =>
+                    setReflectPicks((prev) => {
+                      const base = prev[id] ?? emptyPick();
+                      const set = new Set(base.specialMealMembers);
+                      if (set.has(i)) set.delete(i);
+                      else set.add(i);
+                      return { ...prev, [id]: { ...base, specialMealMembers: [...set] } };
+                    })
+                  }
+                >
+                  {MEMBER_LABELS[i]}に個別対応食
+                </button>
+              ))}
+            </div>
           </div>
-        )}
-        <InfoCards cards={infoDocs} label="こまったら見る資料" />
-        {!mealOk ? (
-          <button className="btn primary big" onClick={() => setMealChecked(true)}>▶ 食事をたしかめる</button>
-        ) : (
-          <button className="btn primary big" onClick={() => setStage("bath")}>つぎへ：入浴の時間を決める</button>
-        )}
+        ))}
+
+        <p className="game-line soft center-line farm-disclaimer">※この選択で結果は変わりません</p>
+        <button
+          className="btn primary big"
+          disabled={!canFinishReflection}
+          onClick={() => (onPartialComplete ?? onComplete)()}
+        >
+          先へ進む
+        </button>
       </div>
     );
   }
@@ -216,39 +225,81 @@ export default function HotelReceiveGame({ onComplete }: Q1GameProps) {
   return (
     <div className="game board-game">
       <div className="task-bar">
-        <span className="task-now">お風呂の時間を、班ごとに分けよう</span>
-        <span className="task-sub">1回につき、2つの班まで</span>
+        <span className="task-now">
+          {GROUP_LABELS[currentId].icon} {GROUP_LABELS[currentId].name}をチェックインさせよう
+        </span>
+        <span className="task-sub">部屋の判定と、個別対応食が必要な人を確認しよう</span>
       </div>
-      <div className="stack">
-        {BANDS.map((b) => (
-          <div key={b.id} className="trip-role-row">
-            <span className="trip-role-label">{b.icon} {b.name}</span>
-            <div className="choice-row wrap">
-              {SLOTS.map((s) => (
-                <button
-                  key={s.id}
-                  className={`btn choice ${bathOf[b.id] === s.id ? "on" : ""}`}
-                  onClick={() => { setBathOf((p) => ({ ...p, [b.id]: s.id })); setBathChecked(false); }}
-                >
-                  <span className="tweak-check">{bathOf[b.id] === s.id ? "✓" : "＋"}</span>
-                  <span className="tweak-body"><b>🛁 {s.label}</b></span>
-                </button>
-              ))}
-            </div>
+
+      <div className="dx-grid route-grid">
+        <div className="dx-card">
+          <div className="dx-head">
+            <span className="dx-name">👥 人数・提示された部屋</span>
+            <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard("size")}>
+              {openCards.has("size") ? "－" : "？"}
+            </button>
           </div>
+          {openCards.has("size") && (
+            <p className="dx-pattern">
+              {GROUP_LABELS[currentId].name}は{current.size}名です。提示された部屋: {ROOM_LABELS[current.proposedRoom]}
+            </p>
+          )}
+        </div>
+        <div className="dx-card">
+          <div className="dx-head">
+            <span className="dx-name">📋 アレルギー事前調査票</span>
+            <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard("allergy")}>
+              {openCards.has("allergy") ? "－" : "？"}
+            </button>
+          </div>
+          {openCards.has("allergy") && (
+            <p className="dx-pattern">
+              {current.memberAllergens.map((allergens, i) => (
+                <span key={i} style={{ display: "block" }}>
+                  {MEMBER_LABELS[i]}:{" "}
+                  {allergens.length > 0 ? allergens.map((a) => ALLERGEN_LABELS[a]).join("・") + "が除去要" : "除去要の品目なし"}
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <p className="game-line soft center-line">部屋の判定</p>
+      <div className="choice-row wrap">
+        {[true, false].map((v) => (
+          <button
+            key={String(v)}
+            className={`btn choice ${acceptRoom === v ? "on" : ""}`}
+            disabled={!allRead}
+            onClick={() => setAcceptRoom(v)}
+          >
+            <span className="tweak-check">{acceptRoom === v ? "✓" : "＋"}</span>
+            <span className="tweak-body"><b>{v ? "この部屋でよい" : "別の部屋が必要"}</b></span>
+          </button>
         ))}
       </div>
-      {bathChecked && !bathOk && (
-        <div className="sched-issues">
-          {!allBathed && <p>まだ時間が決まっていない班があるよ。</p>}
-          {overBath && <p>1回に2つの班をこえて入れているよ。すこし分けよう。</p>}
-        </div>
-      )}
-      {note && <p className="game-note">{note}</p>}
-      {!bathOk ? (
-        <button className="btn primary big" onClick={() => setBathChecked(true)}>▶ 入浴の時間をたしかめる</button>
-      ) : (
-        <button className="btn primary big" onClick={() => setDone(true)}>受け入れ計画をまとめる</button>
+
+      <p className="game-line soft center-line">個別対応食が必要な人（0人以上）</p>
+      <div className="choice-row wrap">
+        {Array.from({ length: current.size }, (_, i) => i).map((i) => (
+          <button
+            key={i}
+            className={`btn choice ${selectedMembers.has(i) ? "on" : ""}`}
+            disabled={!allRead}
+            onClick={() => toggleMember(i)}
+          >
+            <span className="tweak-check">{selectedMembers.has(i) ? "✓" : "＋"}</span>
+            <span className="tweak-body"><b>{MEMBER_LABELS[i]}</b></span>
+          </button>
+        ))}
+      </div>
+
+      <button className="btn primary big" disabled={!canCommit} onClick={commit}>
+        チェックインする
+      </button>
+      {!allRead && (
+        <p className="game-line soft center-line farm-disclaimer">※両方の「？」を見てから判定しよう</p>
       )}
     </div>
   );
