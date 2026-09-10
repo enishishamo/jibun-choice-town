@@ -1,0 +1,10 @@
+{
+  "component_files": [
+    "src/q1/UrbanHeatGame.tsx"
+  ],
+  "logic_module": "src/q1/heatDiagnosisLogic.ts",
+  "qa_harness": "factory/harness/gameplay-qa-heat-diagnosis.mjs",
+  "spec_version": 1,
+  "art_version_or_none": "none (art_brief v1: no_art_required=true, reuses existing public/assets/heat/place-city.png — independently visually verified to contain no baked-in temperature labels or contradicting content)",
+  "d_preserved_statement": "heatDiagnosisLogic.tsのROLES/ARCHETYPES/TOOLS/sessionWinはdesign/design-sim.mjs（design review r4 PASS 88時点）と構造的に一致する。3地点の日射・風・舗装データを読み比べて、対策で直せる原因を持つ地点を診断し、原因に合う対策を選んで実施する判断は、UrbanHeatGame.tsxのUIでも子ども自身のタップ操作としてそのまま表現されている（システムは先に正解を示さない）。地点1つ・対策1つが両方決まって初めて『実施する』が活性化し、1回のコミットで結果が確定する。失敗時は同じ3地点のデータを再提示する非採点の振り返り選択（Gate G対応、結果を一切変えない）を挟んでから結末へ進む。 実装レビューr1のBLOCKER×2/MEDIUM×1是正: (1) CORE_DATA_DISCLOSURE_NOT_REQUIRED — 3地点すべての「？」を開く（読む）まで『実施する』を活性化しないようにした（openedSlots状態を追加）。(2) THINK_AGAIN_SKIPPABLE — 振り返り選択（reflectionPick）をせずに『先へ進む』を押せてしまっていたため、選択するまで非活性にした。(3) TOOL_ORDER_NOT_SHUFFLED — 対策カードの表示順を毎セッション独立にシャッフルするようにした（IDベースの判定は変更なし）。未使用だった'partial'状態も削除した。"
+}

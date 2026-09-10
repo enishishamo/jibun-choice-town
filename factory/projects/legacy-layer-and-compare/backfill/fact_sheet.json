@@ -1,0 +1,32 @@
+{
+  "profession": "都市の暑さを分析し、街づくりを考える仕事",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "3地点から2地点を比較し、日射・風・建物・樹木レイヤーで原因を調べ、1地点へ暑さ対策を置いて再シミュレーションする分析パズル"
+  ],
+  "expertise": [
+    "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+  ],
+  "tools": [
+    "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+  ],
+  "information_used": [
+    "地点別ヒート表示、日射・風・建物・樹木の4レイヤー、2地点比較表、対策後の変化とBefore／After"
+  ],
+  "decisions": [
+    "レイヤーを重ね、比較地点を選び、暑さの原因から対策地点を判断してシミュレーションする"
+  ],
+  "outputs_or_value": "失敗後に対策地点を解除して選び直すか、選択肢から別地点を直接指定して再シミュレーションする",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/layer_and_compare.json"
+}

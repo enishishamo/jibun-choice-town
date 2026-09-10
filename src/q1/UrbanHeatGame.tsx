@@ -1,133 +1,70 @@
 // Q1: 都市の暑さを分析し、街づくりを考える仕事 (gameType: layer_and_compare)
-// B: 同じ39℃の日なのに、場所によって暑さがちがう。なぜ？
-// C: 日射／風／建物／樹木のデータレイヤー。重ねないと理由が見えない。
-// D: ①レイヤーをON/OFF ②2地点をタップして比較 ③対策を1つ置いて
-//    再シミュレーション。効かない場所に置いてもヒートマップは変わらない。
+// B: 同じ猛暑日なのに、場所によって暑さがちがう。3地点（毎セッションランダムな組み合わせ）の
+//    日射・風・舗装のデータを見比べて、本当の原因を診断し、対策を1つ選んで実施する。
+// C: 地点ごとの日射・風・舗装の読み物。対策の種類とそれぞれが対応する原因。風が弱い（建物密集）
+//    地点は個人の一手では直せないという制約。
+// D: 各地点の読み物を原因と照合して診断する判断と、診断した原因に合う対策を選んで実施する判断
+//    （詳細はheatDiagnosisLogic.ts）。診断・対策を決めたら「実施する」を1回だけ押して結果を
+//    確定する（同一セッション内のやり直しはない）。
+//
+// 2026-09-10 (Q1 Autonomous Factory, legacy-layer-and-compare rebuild, t1-diagnose-and-fix):
+// 旧実装は3地点・原因・対策が完全に固定（2地点はfixable=true固定、1地点はfixable=false・
+// heat=0固定）で、内容を読まずに対策を置けば必ず成功する地点が決まっていた記憶ゲームだった上、
+// 「別の場所に置きなおす」ボタンで同一セッション内の総当たり再挑戦を許していた（reverse audit:
+// C_required=false, brute_force=true）。新実装では地点の組み合わせを毎セッションランダム化し、
+// 風が支配的原因の地点は対策のしようがない（wind-confoundモデル）というひねりを加えたうえで、
+// フラットな失敗結果のみを返す1回のコミット判断にした（design-sim.mjs参照、design review r4
+// PASS 88）。失敗時は同じデータを再提示する非採点の振り返り選択を挟み、Q1 First-Play Standard
+// Gate G「考え直す余地」に対応する（この振り返りは結果を一切変えない）。
+//
+// 実装レビューr1（FAIL 48、BLOCKER×2、MEDIUM×1）是正: (1) CORE_DATA_DISCLOSURE_NOT_REQUIRED —
+// 3地点すべての「？」を開く（読む）まで「実施する」を活性化しないようにした（openedSlots）。
+// (2) THINK_AGAIN_SKIPPABLE — 振り返り選択（reflectionPick）をしないまま「先へ進む」を押せて
+// しまっていたため、選択するまで非活性にした。(3) TOOL_ORDER_NOT_SHUFFLED — 対策カードの表示順を
+// 毎セッション独立にシャッフルするようにした（toolOrder、IDベースの判定は変更なし）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
+import {
+  AXIS_TEXT,
+  TOOLS,
+  TOOL_LABELS,
+  newSession,
+  sessionWin,
+  shuffledIds,
+  type Tool,
+} from "./heatDiagnosisLogic";
 
-type LayerId = "sun" | "wind" | "building" | "tree";
-const LAYERS: { id: LayerId; name: string; emoji: string }[] = [
-  { id: "sun", name: "日射", emoji: "☀️" },
-  { id: "wind", name: "風", emoji: "🍃" },
-  { id: "building", name: "建物", emoji: "🏢" },
-  { id: "tree", name: "樹木", emoji: "🌳" },
-];
+export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameProps) {
+  const [session] = useState(() => newSession());
+  const [toolOrder] = useState<Tool[]>(() => shuffledIds(TOOLS) as Tool[]);
+  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  const [openSlot, setOpenSlot] = useState<number | null>(null);
+  const [openedSlots, setOpenedSlots] = useState<Set<number>>(new Set());
+  const [outcome, setOutcome] = useState<"playing" | "reflecting" | "success">("playing");
+  const [reflectionPick, setReflectionPick] = useState<number | null>(null);
 
-interface Point {
-  id: string;
-  name: string;
-  pos: { left: string; top: string };
-  heat: number; // 0=涼しい 1=やや暑い 2=暑い
-  sun: string;
-  wind: string;
-  building: string;
-  tree: string;
-  /** 対策が効く場所か（理由：日射が強く風が弱い＝熱がこもる） */
-  fixable: boolean;
-  afterFix?: number;
-  fixNote: string;
-}
+  const allDataRead = openedSlots.size === session.slots.length;
+  const canCommit = allDataRead && selectedSlot !== null && selectedTool !== null;
 
-const POINTS: Point[] = [
-  {
-    id: "a",
-    name: "A：駅前の道",
-    pos: { left: "30%", top: "28%" },
-    heat: 2,
-    sun: "強い（さえぎるものなし）",
-    wind: "弱い（ビルにはさまれている）",
-    building: "高いビルが両側に",
-    tree: "なし",
-    fixable: true,
-    afterFix: 1,
-    fixNote: "日射がやわらぎ、少し熱が抜けるようになった",
-  },
-  {
-    id: "b",
-    name: "B：川ぞいの道",
-    pos: { left: "72%", top: "40%" },
-    heat: 0,
-    sun: "弱い（並木の陰）",
-    wind: "強い（川から風がとおる）",
-    building: "低い建物がまばら",
-    tree: "並木あり",
-    fixable: false,
-    fixNote: "もともと涼しい場所。あまり変化はなかった",
-  },
-  {
-    id: "c",
-    name: "C：広い駐車場",
-    pos: { left: "46%", top: "70%" },
-    heat: 2,
-    sun: "強い（一日中日なた）",
-    wind: "ふつう",
-    building: "まわりに建物なし",
-    tree: "なし",
-    fixable: true,
-    afterFix: 1,
-    fixNote: "地面の熱がやわらいだ",
-  },
-];
-
-const HEAT_MARK = ["🟡", "🟠", "🔴"];
-
-export default function UrbanHeatGame({ onComplete }: Q1GameProps) {
-  const [layers, setLayers] = useState<LayerId[]>([]);
-  const [compare, setCompare] = useState<string[]>([]);
-  const [fixAt, setFixAt] = useState<string | null>(null);
-  const [simmed, setSimmed] = useState(false);
-  const [heats, setHeats] = useState<Record<string, number>>(
-    Object.fromEntries(POINTS.map((p) => [p.id, p.heat])),
-  );
-  const [note, setNote] = useState<string | null>(null);
-
-  const toggleLayer = (id: LayerId) =>
-    setLayers((l) => (l.includes(id) ? l.filter((x) => x !== id) : [...l, id]));
-
-  const comparedPoints = POINTS.filter((p) => compare.includes(p.id));
-  const improved = simmed && POINTS.some((p) => heats[p.id] < p.heat);
-
-  const simulate = () => {
-    if (!fixAt) return;
-    const target = POINTS.find((p) => p.id === fixAt)!;
-    if (target.fixable) {
-      setHeats((h) => ({ ...h, [target.id]: target.afterFix! }));
-      setNote(`${target.name}：${target.fixNote}`);
-    } else {
-      setNote(`${target.name}：${target.fixNote}。ほかの場所はどうだろう？レイヤーを見比べてみよう。`);
-    }
-    setSimmed(true);
+  const toggleOpen = (i: number) => {
+    setOpenSlot(openSlot === i ? null : i);
+    setOpenedSlots((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
   };
 
-  if (improved) {
+  const commit = () => {
+    if (selectedSlot === null || !selectedTool) return;
+    const win = sessionWin(session, selectedSlot, selectedTool);
+    setOutcome(win ? "success" : "reflecting");
+  };
+
+  if (outcome === "success") {
     return (
       <div className="game board-game">
-        <div className="beforeafter">
-          <div className="ba-col">
-            <span className="ba-title">Before</span>
-            {POINTS.map((p) => (
-              <span key={p.id} className="ba-row">
-                {HEAT_MARK[p.heat]} {p.name}
-              </span>
-            ))}
-          </div>
-          <span className="flow-arrow">→</span>
-          <div className="ba-col">
-            <span className="ba-title">After</span>
-            {POINTS.map((p) => (
-              <span key={p.id} className="ba-row">
-                {HEAT_MARK[heats[p.id]]} {p.name}
-              </span>
-            ))}
-          </div>
+        <div className="result-card good">
+          <span className="result-title">その地点の暑さがやわらいだ！</span>
+          <p className="join-conclusion">→ 原因の診断も、対策選びも、どちらも合っていた</p>
         </div>
-        <p className="game-line center-line">
-          暑い理由が見えると、どこを変えればいいかも見えてくる。
-        </p>
-        <p className="game-line soft center-line">
-          このデータは、新しい街づくりや暑さ対策を考えるときにも使われる。
-        </p>
         <button className="btn primary big" onClick={onComplete}>
           分析をまとめる
         </button>
@@ -135,107 +72,93 @@ export default function UrbanHeatGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  return (
-    <div className="game board-game">
-      <div className="mission-bar">
-        <span className="mission-bar-title">同じ39℃の日。なぜ、ここだけ暑い？</span>
-        <div className="mission-chips">
-          <span className={`mchip ${layers.length > 0 ? "ok" : ""}`}>
-            {layers.length > 0 ? "✓" : "・"} データを重ねる
-          </span>
-          <span className={`mchip ${compare.length === 2 ? "ok" : ""}`}>
-            {compare.length === 2 ? "✓" : "・"} 2地点をくらべる
-          </span>
-          <span className={`mchip ${fixAt ? "ok" : ""}`}>{fixAt ? "✓" : "・"} 対策を置く</span>
+  if (outcome === "reflecting") {
+    return (
+      <div className="game board-game">
+        <div className="result-card">
+          <span className="result-title">思ったほど暑さがやわらがなかった</span>
+          <p className="game-line soft">
+            対策そのものは無駄ではなかったかもしれないが、その地点で一番効いている原因は解消でき
+            なかったみたい。次はどの地点が本当の原因だったと思う？
+          </p>
         </div>
-      </div>
-
-      <div className="layer-row">
-        {LAYERS.map((l) => (
-          <button
-            key={l.id}
-            className={`layer-btn ${layers.includes(l.id) ? "active" : ""}`}
-            onClick={() => toggleLayer(l.id)}
-          >
-            {l.emoji} {l.name}
-          </button>
-        ))}
-      </div>
-
-      <div className={`city-map ${layers.map((l) => `on-${l}`).join(" ")}`}>
-        {POINTS.map((p) => (
-          <button
-            key={p.id}
-            className={`city-point heat${heats[p.id]} ${compare.includes(p.id) ? "picked" : ""} ${fixAt === p.id ? "fixed" : ""}`}
-            style={p.pos}
-            onClick={() => {
-              setCompare((c) =>
-                c.includes(p.id) ? c.filter((x) => x !== p.id) : [...c.slice(-1), p.id],
-              );
-              setNote(null);
-            }}
-          >
-            <span className="cp-heat">{HEAT_MARK[heats[p.id]]}</span>
-            <small>{p.name}</small>
-            {fixAt === p.id && <small className="layer-info">🌳 対策ずみ</small>}
-          </button>
-        ))}
-      </div>
-
-      {/* comparison panel: only shows layers the child turned on */}
-      {comparedPoints.length > 0 && (
-        <div className="compare-grid">
-          {comparedPoints.map((p) => (
-            <div key={p.id} className="compare-col">
-              <span className="compare-name">{p.name}</span>
-              {layers.length === 0 && (
-                <small className="soft-note">上のデータをONにすると、中身が見えるよ</small>
-              )}
-              {layers.includes("sun") && <small>☀️ 日射：{p.sun}</small>}
-              {layers.includes("wind") && <small>🍃 風：{p.wind}</small>}
-              {layers.includes("building") && <small>🏢 建物：{p.building}</small>}
-              {layers.includes("tree") && <small>🌳 樹木：{p.tree}</small>}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {note && <p className="game-note">{note}</p>}
-
-      {/* place one countermeasure */}
-      <div className="fix-zone">
-        <span className="doc-label">🌳 暑さ対策（街路樹＋日よけ）をどこに置く？</span>
-        <div className="choice-row">
-          {POINTS.map((p) => (
+        <div className="dx-grid route-grid">
+          {session.slots.map((slot, i) => (
             <button
-              key={p.id}
-              className={`choice-card ${fixAt === p.id ? "selected" : ""}`}
-              onClick={() => {
-                setFixAt(p.id);
-                setSimmed(false);
-                setNote(null);
-              }}
+              key={slot.roleId}
+              className={`dx-commit ${reflectionPick === i ? "on" : ""}`}
+              onClick={() => setReflectionPick(i)}
             >
-              <span className="choice-name">{p.name}</span>
+              {slot.name}
             </button>
           ))}
         </div>
+        <p className="game-line soft center-line farm-disclaimer">
+          ※この選択で結果は変わりません。もう一度3つの地点を見比べてみよう
+        </p>
+        <button
+          className="btn primary big"
+          disabled={reflectionPick === null}
+          onClick={() => (onPartialComplete ?? onComplete)()}
+        >
+          先へ進む
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="game board-game">
+      <div className="task-bar">
+        <span className="task-now">同じ猛暑日なのに、場所によって暑さがちがう。なぜ？</span>
+        <span className="task-sub">原因を診断して、対策を1つ選んで実施しよう</span>
       </div>
 
-      <button className="btn primary big" disabled={!fixAt} onClick={simulate}>
-        {fixAt ? "▶ もう一度シミュレーション" : "対策を置く場所をえらぼう"}
+      <div className="dx-grid route-grid">
+        {session.slots.map((slot, i) => (
+          <div key={slot.roleId} className={`dx-card ${selectedSlot === i ? "selected" : ""}`}>
+            <div className="dx-head">
+              <span className="dx-name">{slot.name}</span>
+              <button
+                className="dx-more"
+                aria-label={openSlot === i ? "とじる" : "データを見る"}
+                onClick={() => toggleOpen(i)}
+              >
+                {openSlot === i ? "－" : "？"}
+              </button>
+            </div>
+            {openSlot === i && (
+              <p className="dx-pattern">
+                {AXIS_TEXT.sun[slot.reading.sun]} ／ {AXIS_TEXT.wind[slot.reading.wind]} ／{" "}
+                {AXIS_TEXT.pavement[slot.reading.pavement]}
+              </p>
+            )}
+            <button className={`dx-commit ${selectedSlot === i ? "on" : ""}`} onClick={() => setSelectedSlot(i)}>
+              この地点に対策する
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="zone-row">
+        {toolOrder.map((tool) => (
+          <button
+            key={tool}
+            className={`zone-btn ${selectedTool === tool ? "on" : ""}`}
+            onClick={() => setSelectedTool(tool)}
+          >
+            {TOOL_LABELS[tool]}
+          </button>
+        ))}
+      </div>
+
+      <button className="btn primary big" disabled={!canCommit} onClick={commit}>
+        実施する
       </button>
-      {simmed && !improved && (
-        <button
-          className="btn ghost"
-          onClick={() => {
-            setFixAt(null);
-            setSimmed(false);
-            setNote(null);
-          }}
-        >
-          別の場所に置きなおす
-        </button>
+      {!allDataRead && (
+        <p className="game-line soft center-line farm-disclaimer">
+          ※3つの地点すべての「？」を見てから実施しよう
+        </p>
       )}
     </div>
   );

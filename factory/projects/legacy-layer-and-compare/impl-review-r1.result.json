@@ -1,0 +1,92 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-layer-and-compare-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 48,
+    "career_authenticity_score": 86,
+    "game_quality_score": 48,
+    "blockers": [
+      "CORE_DATA_DISCLOSURE_NOT_REQUIRED: A child can select a location and tool and activate 「実施する」 without opening any 「？」 disclosure. canCommit tracks only selectedSlot and selectedTool, so reading all three locations’ 日射/風/舗装 data is not required.",
+      "THINK_AGAIN_SKIPPABLE: On the failure screen, 「先へ進む」 is enabled before reflectionPick is set. The child can bypass the reflection selection entirely, so Gate G’s required act of reconsideration is not guaranteed."
+    ],
+    "high": [],
+    "medium": [
+      "TOOL_ORDER_NOT_SHUFFLED: The adopted design requires location-card and countermeasure-card display order to be independently shuffled each session, but the component renders the fixed TOOLS order directly."
+    ],
+    "low": [
+      "The outcome state union includes an unused \"partial\" state, which obscures the actual transition model but does not affect runtime behavior."
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_DATA_DISCLOSURE_NOT_REQUIRED",
+        "severity": "BLOCKER",
+        "finding": "The commit gate requires only a selected location and tool; it does not require opening all three disclosures. The entire 日射/風/舗装 evidence set can therefore be skipped before committing.",
+        "file": "src/q1/UrbanHeatGame.tsx"
+      },
+      {
+        "code": "THINK_AGAIN_SKIPPABLE",
+        "severity": "BLOCKER",
+        "finding": "The failure path provides reflection buttons but does not disable or gate 「先へ進む」 on reflectionPick. A player can immediately continue without making the required non-scored reconsideration. The harness only checks for reflection-related strings and does not regress this transition requirement.",
+        "file": "src/q1/UrbanHeatGame.tsx"
+      },
+      {
+        "code": "TOOL_ORDER_NOT_SHUFFLED",
+        "severity": "MEDIUM",
+        "finding": "TOOLS is mapped in its constant order rather than shuffled once per session, contrary to the current game_spec and no_manual_exploit_check. This does not currently correlate with the correct answer, so it is specification drift rather than an answer leak.",
+        "file": "src/q1/UrbanHeatGame.tsx"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "24 passed, 0 failed; however, its reflection check only verifies that reflectionPick and the disclaimer text exist and does not test that a reflection selection is required before continuing.",
+      "build_or_tsc": "npx tsc --noEmit passed with no errors; build not run because the filesystem sandbox is read-only.",
+      "lint": "npx oxlint src/q1/UrbanHeatGame.tsx src/q1/heatDiagnosisLogic.ts passed with no findings.",
+      "heatDiagnosisLogic_matches_design_sim_exactly": true,
+      "session_generation_correct": true,
+      "answer_leak_found": false,
+      "gate_h_fix_verified": true,
+      "reflection_step_genuinely_non_scored": false,
+      "no_session_retry_confirmed": true,
+      "failure_message_avoids_zero_effect_claim": true,
+      "scroll_812_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/UrbanHeatGame.tsx:31 — useState(() => newSession()) generates the session once per mount.",
+      "src/q1/UrbanHeatGame.tsx:38 — canCommit depends only on selectedSlot and selectedTool; disclosure state is absent.",
+      "src/q1/UrbanHeatGame.tsx:103 — the 「？」 control only changes openSlot and records no per-location inspection state.",
+      "src/q1/UrbanHeatGame.tsx:117 — a location can be selected whether or not its data was disclosed.",
+      "src/q1/UrbanHeatGame.tsx:136 — 「実施する」 is disabled only by !canCommit, allowing a completely unopened-data commit.",
+      "src/q1/UrbanHeatGame.tsx:64 — failure copy says the countermeasure may not have been wasted and frames failure around the dominant cause remaining unresolved, avoiding a zero-effect claim.",
+      "src/q1/UrbanHeatGame.tsx:71 — reflection re-presents all three session location names and uses no correctness styling.",
+      "src/q1/UrbanHeatGame.tsx:74 — reflection selection changes only reflectionPick and does not affect scoring, rendered copy, or callback choice.",
+      "src/q1/UrbanHeatGame.tsx:84 — 「先へ進む」 has no disabled condition and can call the partial callback while reflectionPick is null.",
+      "src/q1/UrbanHeatGame.tsx:84 — the failure path calls (onPartialComplete ?? onComplete)(), preserving Gate H.",
+      "src/q1/UrbanHeatGame.tsx:125 — tool cards render TOOLS directly in fixed order instead of a mount-once shuffle.",
+      "src/q1/heatDiagnosisLogic.ts:28 — ROLES readings match design-sim.mjs, including both WIND_CONFOUND mimic axes.",
+      "src/q1/heatDiagnosisLogic.ts:35 — TOOLS data matches design-sim.mjs.",
+      "src/q1/heatDiagnosisLogic.ts:62 — ARCHETYPES data and correct role/tool mappings match design-sim.mjs.",
+      "src/q1/heatDiagnosisLogic.ts:92 — newSession performs archetype selection, role shuffling, and independent name shuffling.",
+      "src/q1/heatDiagnosisLogic.ts:104 — sessionWin reads session.slots[slotIndex].roleId and is not position-based.",
+      "factory/harness/gameplay-qa-heat-diagnosis.mjs:120 — the harness contains and passes a real source-level Gate H callback regression check.",
+      "factory/harness/gameplay-qa-heat-diagnosis.mjs:124 — the reflection regression check tests only string/state presence, not mandatory selection or callback gating.",
+      "src/index.css:4236 — all location cards share the same dx-card styling; anomaly types receive no differentiated color or emphasis.",
+      "src/index.css:4250 — all disclosed axis text shares one dx-pattern presentation, giving wind confounds and fixable anomalies equal visual weight.",
+      "src/index.css:4244 — dx-more is the shared existing disclosure class.",
+      "src/index.css:4254 — dx-commit is the shared existing 44px-minimum selection class.",
+      "src/index.css:4268 — zone-btn is the shared existing tool-selection class.",
+      "src/q1/registry.ts:85 — layer_and_compare remains mapped to UrbanHeatGame.",
+      "src/data/content/extremeHeat.ts:448 — the urban-heat experience retains its id, gameType, place, mission, resolution, and discoveryEcho wiring.",
+      "src/screens/Q1Screen.tsx:88 — onPartialComplete records a distinct partial outcome.",
+      "src/screens/Q1Screen.tsx:101 — partial and success Job Reveal chips use distinct 🤔 and 🎉 framing."
+    ],
+    "recommended_actions": [
+      "Track disclosure state for all three slots and include an all-three-opened condition in canCommit; add a harness regression that proves commit remains disabled until every location has been inspected.",
+      "Disable 「先へ進む」 while reflectionPick is null, and add a behavioral/source regression verifying the partial callback cannot fire before a reflection choice.",
+      "Shuffle the two tool IDs once per mount/session and render that shuffled order without changing id-based scoring.",
+      "Extend the harness beyond string-presence assertions to cover the full failure transition: commit failure → callback unavailable → reflection selection → partial callback."
+    ]
+  },
+  "elapsed_sec": 169.504
+}

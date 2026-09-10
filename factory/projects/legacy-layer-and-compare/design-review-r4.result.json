@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-layer-and-compare-design-r4",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 88,
+    "career_authenticity_score": 90,
+    "game_quality_score": 88,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "failure_codes": [],
+    "round3_finding_confirmed_closed": true,
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "no_bare_zero_effect_claims_in_live_fields": true,
+      "citation_sweep_clean": true,
+      "ready_for_game_spec": true
+    },
+    "evidence": [
+      "design/scope_core_v4.json:2 — coreは、多少の局所効果を認めつつ、支配的原因を残すため優先配分上失敗するという限定を明記。",
+      "design/ae_v4.json:5 — Dにも同じ資源配分・優先順位づけの限定が入り、旧来の物理的ゼロ効果主張は解消。",
+      "design/ae_v4.json:6 — Eは局所効果とミッション達成を区別し、失敗後の非採点振り返りも維持。",
+      "design/play_seeds_v5.json:7 — 採用s1のsystem_reactionは『思ったほど』『目立って』やわらがないとし、物理効果ゼロではないことを明記。",
+      "design/game_translations_v6.json:14 — 採用t1のE_consequenceにも同一の限定が反映済み。",
+      "design/play_seeds_v5.json:16 — 残る『変化なし』は明確に却下対象のs2内だけに存在し、改変・破損はない。",
+      "design/game_translations_v6.json:23 — 残る『効果が出なかった』は却下対象t2の記述内だけに存在する。",
+      "design/reference_research_v7.json:18 — 参照先は現行play_seeds_v5.jsonへ更新済み。",
+      "q1-pipeline.json:19 — fact_sheetの正本はfact_sheet_v3.jsonとして登録。",
+      "q1-pipeline.json:127 — scope_coreの正本はscope_core_v4.jsonとして登録。",
+      "q1-pipeline.json:192 — aeの正本はae_v4.jsonとして登録。",
+      "q1-pipeline.json:316 — play_seedsの正本はplay_seeds_v5.jsonとして登録。",
+      "q1-pipeline.json:408 — reference_researchの正本はreference_research_v7.jsonとして登録。",
+      "q1-pipeline.json:555 — game_translationsの正本はgame_translations_v6.jsonとして登録。",
+      "design/design-sim.mjs:80 — 日射・舗装の排他的シナリオと各wind-confoundを維持。",
+      "design/design-sim.mjs:98 — 成功条件は正しい地点役割と対策の双方を要求。",
+      "design/design-sim-result.json:66 — 完全推論100%、固定戦略約16〜17%、単一軸約33〜34%、風無視二軸50.02%という再実行結果が一致。",
+      "design/game_translations_v6.json:10 — 失敗後に同じデータを再提示する非採点の振り返りがあり、Gate Gを満たしつつ総当たり成功を再導入しない。",
+      "design/no_manual_exploit_check_v6.json:12 — 正解候補だけを視覚強調しない実装条件が明記され、回答漏洩対策を保持。",
+      "design/core_back_check_v6.json:5 — 子ども自身による三軸比較、原因診断、対策選定というCOREと代表的SCOPEが維持されている。"
+    ],
+    "recommended_actions": [
+      "GAME_DESIGN_READYへ進め、game_specでは地点・原因対応の独立シャッフル、同一視覚階層、1回コミット、非採点振り返りを明示的な受け入れ条件として保持する。"
+    ]
+  },
+  "elapsed_sec": 125.202
+}

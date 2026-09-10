@@ -1,0 +1,8 @@
+{
+  "core": "地点を選んでデータレイヤーを比較し、原因に合う場所へ対策を置き、再シミュレーションの温度変化を確認する。",
+  "scope": "街（猛暑）／暑い市街地",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/layer_and_compare.json"
+}

@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-layer-and-compare-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "career_authenticity_score": 64,
+    "game_quality_score": 58,
+    "blockers": [
+      "WIND_CONFOUND_CAUSAL_MODEL_UNGROUNDED: wind-confoundは日射または舗装という実際に対策可能な異常を持つのに、風が「支配的」であるだけで日除け・保水性舗装の効果を完全にゼロ扱いする。research.mdは原因・スケールの診断を支持するが、併存する対策可能な症状への局所対策が無効になることまでは支持せず、むしろ日除け・舗装対策の実測効果を示している。今回の修正は風軸を必要にする代わりに、正解判定の核心を未裏付けの因果へ依存させた。",
+      "THINK_AGAIN_MISSING: 失敗文への『次は見比べよう』追加は振り返りを促す点では改善だが、同じデータを再検討して別判断を実行する機会がなく、章リプレイでは条件自体が変わるため、Gate Gの判断ループを体験として完結させない。引用されたclue_join precedentも実際には同じ所見で2回の提出と再挑戦を備えており、ゼロ再試行の前例にはなっていない。",
+      "ARTIFACT_CHAIN_INCONSISTENT: pipelineの現行counterはfact_sheet=3、scope_core/ae=4なのに、revision_noteとcore_scope_checkは現在も『pipeline上のバージョン番号2』として説明している。またplay_seeds/c_compressionに旧モデルの単一軸約58%が現行検証結果として残り、失敗メッセージも同一ファイル内・reference_research間で『フラットな結果のみ』と再考文付きの仕様が競合する。"
+    ],
+    "high": [],
+    "medium": [],
+    "low": [
+      "375px幅で3地点カード、2対策カード、詳細3軸、実施ボタンを初見で扱えるかは実装時の可読性・操作性検証が必要。"
+    ],
+    "failure_codes": [
+      {
+        "code": "WIND_CONFOUND_CAUSAL_MODEL_UNGROUNDED",
+        "severity": "BLOCKER",
+        "finding": "SUN confoundはsun=strong、PAVEMENT confoundはpavement=asphaltという対策可能な症状を明示的に持つが、sessionWinはroleIdがtargetでなければ対応対策を常に無効にする。研究は風が別の重要原因になり得ることを支持する一方、日除けや保水性舗装の局所効果が風の弱さによってゼロになるとは示していない。この未裏付けの全-or-無判定が新しいCORE distortionである。",
+        "file": "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:50"
+      },
+      {
+        "code": "THINK_AGAIN_MISSING",
+        "severity": "BLOCKER",
+        "finding": "失敗メッセージは再比較を促すため以前より良いが、同じ症例について選び直す操作がなく、次の章リプレイは新条件になる。引用されたclue_joinは実際には同じ所見について2回提出でき、その後も同じ所見で再挑戦できるため、ゼロ再試行を正当化するprecedentではない。ブルートフォースを避けつつ閉じるには、同一データを保持した非採点の再診断・理由選択・比較ハイライト、または2回目を成功判定に使わない振り返りコミットが必要。",
+        "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v3.json:15"
+      },
+      {
+        "code": "ARTIFACT_CHAIN_INCONSISTENT",
+        "severity": "BLOCKER",
+        "finding": "Round 1のcounter/content説明は現在のpipeline counterと一致せず、旧58%値と失敗メッセージ旧仕様も現行チェーンに残っているため、MEDIUM修正は閉じていない。",
+        "file": "factory/projects/legacy-layer-and-compare/q1-pipeline.json:13"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "core_data_axis_not_required": true,
+      "think_again_missing": false,
+      "artifact_chain_inconsistent": false
+    },
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_matches_committed_result": true,
+      "wind_confound_model_verified": false,
+      "citation_sweep_clean": false,
+      "ready_for_game_spec": false
+    },
+    "evidence": [
+      "factory/rules/q1-first-play-standard.md:37 — Gate Gは失敗後に少なくとも一度『違った。じゃあどうしよう？』と考え直せる余地を要求する。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:50 — SUN_TARGETとWIND_CONFOUND_SUNは風以外が完全一致し、PAVEMENT_TARGETとWIND_CONFOUND_PAVEMENTも風以外が完全一致する。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:83 — 成功は対応する症状ではなくcorrectRoleとのroleId完全一致で決まり、confoundへの日除け・舗装対策は常にゼロ効果になる。",
+      "factory/projects/legacy-layer-and-compare/research.md:291 — 街路樹・日陰には路面温度差15℃、SET* 6.0℃低減という局所効果が記録されている。",
+      "factory/projects/legacy-layer-and-compare/research.md:297 — 保水性舗装・散水には表面温度約10℃、SET* 1.3℃低減という局所効果が記録されている。",
+      "factory/projects/legacy-layer-and-compare/research.md:107 — 根拠となる失敗例は原因未診断で単一対策をどこにでも適用することだが、併存する対応症状への対策が完全無効になるとは述べていない。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:65 — fix-sunはtargetとsun-confoundの2候補、fix-pavementはtargetとpavement-confoundの2候補を持つ。したがってsun_then_pavement_never_windは各archetypeで1/2、全体でも1/2。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim.mjs:108 — sun_axis_only_then_randomはfix-sun側で1/2×1/2=1/4、fix-pavement側でランダム成功1/6×1/2=1/12、合計1/3。対称な舗装戦略も1/3。",
+      "factory/projects/legacy-layer-and-compare/design/design-sim-result.json:74 — 再実行値はsun-only 0.3408、pavement-only 0.3295、日射→舗装・風なし0.5002で、stdoutはコミット結果と完全一致した。",
+      "factory/projects/legacy-layer-and-compare/design/game_translations_v3.json:10 — 失敗文に3軸再比較の促しが追加され、文面単体では意味のある改善がある。",
+      "factory/projects/legacy-layer-and-compare/design/game_translations_v3.json:12 — ただし同一セッション内の次判断はなく、結果を受け止めるだけである。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json:46 — cited precedentは提出予算を2回持つ。",
+      "factory/projects/legacy-clue-join/design/game_translations_v12.json:53 — 2回失敗後も同じ所見のまま再挑戦でき、今回主張されたゼロ再試行パターンと異なる。",
+      "factory/projects/legacy-layer-and-compare/q1-pipeline.json:16 — fact_sheetの現在のpipeline versionは3。",
+      "factory/projects/legacy-layer-and-compare/q1-pipeline.json:118 — scope_coreの現在のpipeline versionは4。",
+      "factory/projects/legacy-layer-and-compare/q1-pipeline.json:165 — aeの現在のpipeline versionは4。",
+      "factory/projects/legacy-layer-and-compare/design/fact_sheet_v2.json:69 — revision_noteは現在もpipeline番号2の説明になっている。",
+      "factory/projects/legacy-layer-and-compare/design/ae_v2.json:7 — aeも現在のversion 4ではなくpipeline番号2として説明している。",
+      "factory/projects/legacy-layer-and-compare/design/play_seeds_v2.json:13 — superseded v1の単一軸約58%を現行検証結果として記載している。",
+      "factory/projects/legacy-layer-and-compare/design/c_compression_v2.json:8 — 同じフィールド内で旧58%と新33%相当の説明が競合している。",
+      "factory/projects/legacy-layer-and-compare/design/play_seeds_v2.json:7 — system_reactionは失敗時にフラットな結果だけと規定する一方、同ファイル9行目は再比較文を要求する。",
+      "factory/projects/legacy-layer-and-compare/design/reference_research_v2.json:18 — 借用仕様も『フラットな結果のみ』の旧記述で、現行game_translationsの追加文がcascadeされていない。",
+      "factory/projects/legacy-layer-and-compare/research.md:22 — 主人格を自治体の環境・都市計画部局職員とする職業 framing はfact_sheet_v2.json:2と整合する。",
+      "factory/projects/legacy-layer-and-compare/research.md:98 — 風の道確保は都市計画レベルの長期的誘導で、個人・単一地点の一手では解決しないという制約自体は維持されている。"
+    ],
+    "recommended_actions": [
+      "wind-confoundを『対応対策が完全無効』ではなく正直なpartial outcomeにするか、日射・舗装の見かけを対策可能な実値ではない別の紛らわしさへ置き換え、風を読む必要性を一次資料に沿って再設計する。",
+      "同じ条件を保持したまま、成功判定や答え開示を増やさない振り返り操作を1回追加する。例えば失敗後に3軸を再表示し、『次に疑う原因と理由』を非採点で再コミットしてから結末へ進めれば、総当たり成功を再導入せずGate Gを満たせる。",
+      "fact_sheet/scope_core/aeのrevision_noteを現在のpipeline counter 3/4まで説明する形に更新し、core_scope_checkも同期する。",
+      "play_seeds_v2.json:13とc_compression_v2.json:8の旧58%を現行の約33%へ更新し、全current artifactの失敗system_reactionを再比較文付き仕様へ統一する。"
+    ]
+  },
+  "elapsed_sec": 238.627
+}
