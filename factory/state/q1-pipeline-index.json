@@ -87,13 +87,13 @@
     "legacy-allocate-and-forecast": {
       "game_id": "legacy-allocate-and-forecast",
       "profession": "水資源の管理・調整に関わる仕事",
-      "state": "UNDER_REVIEW",
+      "state": "RELEASE_CANDIDATE",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "allocate_and_forecast",
       "task_id": "q1-rebuild-allocate-and-forecast",
       "repair_count": 2,
       "redesign_count": 1,
-      "updated_at": "2026-09-10T14:45:19.466Z",
+      "updated_at": "2026-09-10T14:50:14.714Z",
       "depends_on": []
     }
   }

@@ -143,9 +143,9 @@ check("rain-only depth heuristic caps near 50%", results.rain_only_depth <= 0.55
     const reflectBlock = body.split('outcome === "reflecting"')[1]?.split("return (")[1]?.split('outcome === "playing"')[0] ?? "";
     return reflectBlock.includes("selectedSector") && reflectBlock.includes("様子は変わっていない");
   })());
-  check("the playing (pre-commit) screen shows a reservoir meter baseline before any commit (impl review r1 HIGH)", (() => {
-    const playingBlock = body.split('outcome === "reflecting"')[0] ?? body;
-    return (playingBlock.match(/className="meter"/g) || []).length >= 1;
+  check("the playing (pre-commit) screen shows a reservoir meter baseline before any commit (impl review r1 HIGH; impl review r2 MEDIUM: isolate the playing branch specifically, not success+playing combined)", (() => {
+    const playingBlock = body.split("task-bar")[1] ?? "";
+    return playingBlock.includes('className="meter"') && playingBlock.includes("{meter}%");
   })());
 }
 

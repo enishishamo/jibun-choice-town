@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "allocate_and_forecast",
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "RELEASE_CANDIDATE",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
   "repair_count": 2,
@@ -1019,20 +1019,20 @@
   },
   "impl_review": {
     "kind": "implementation",
-    "verdict": "FAIL",
-    "score": 52,
-    "blockers": 1,
-    "high": 1,
-    "evidence": "factory/projects/legacy-allocate-and-forecast/impl-review-r1.result.json",
-    "input": "factory/projects/legacy-allocate-and-forecast/impl-review-r1-prompt.md",
+    "verdict": "PASS",
+    "score": 76,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-allocate-and-forecast/impl-review-r2.result.json",
+    "input": "factory/projects/legacy-allocate-and-forecast/impl-review-r2-prompt.md",
     "reviewer": "codex-review",
     "creator": "sonnet",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 2,
-    "repair_count_at_review": 1,
-    "stale": true,
-    "recorded_at": "2026-09-10T14:44:42.101Z"
+    "repair_count_at_review": 2,
+    "stale": false,
+    "recorded_at": "2026-09-10T14:49:30.679Z"
   },
   "art_review": null,
   "failures": [
@@ -1087,7 +1087,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T07:30:35.493Z",
-  "updated_at": "2026-09-10T14:45:19.466Z",
+  "updated_at": "2026-09-10T14:50:14.714Z",
   "history": [
     {
       "at": "2026-09-10T07:30:35.494Z",
@@ -1917,6 +1917,35 @@
       "at": "2026-09-10T14:45:19.466Z",
       "event": "repair_done",
       "note": "impl review r1 BLOCKER/HIGH是正: 振り返り画面に5枚のデータ再掲・選んだセクターの状態表示を追加、プレイ画面にメーターベースラインを追加"
+    },
+    {
+      "at": "2026-09-10T14:49:30.680Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-allocate-and-forecast/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T14:49:36.097Z",
+      "event": "gate_refused",
+      "gate": "RELEASE",
+      "reasons": [
+        "task-state can-deploy: qa_status is null, must be PASS",
+        "task-state can-deploy: review_required=true but review_status is null, must be PASS with valid canonical evidence (see set-review)"
+      ]
+    },
+    {
+      "at": "2026-09-10T14:50:14.713Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T14:50:14.714Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
     }
   ],
   "redesign": [

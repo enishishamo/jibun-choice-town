@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-allocate-and-forecast-impl-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 76,
+    "career_authenticity_score": 78,
+    "game_quality_score": 76,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "QA_REGRESSION_CHECK_VACUOUS: The new pre-commit-meter regression check does not isolate the playing render. Its split takes everything before the reflecting branch, including the success branch's meter, so it could pass even if the playing-state meter were removed. The current implementation itself is correct, so this does not gate release."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "QA_REGRESSION_CHECK_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The playing-screen meter regression check examines a block that also contains the success-screen meter and can therefore pass vacuously.",
+        "file": "factory/harness/gameplay-qa-water-allocation.mjs:146"
+      }
+    ],
+    "round1_findings_confirmed_closed": {
+      "think_again_context_missing": true,
+      "visual_failure_consequence_incomplete": true
+    },
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "32 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit passed; npx vite build could not run because the read-only sandbox denied Vite's write to node_modules/.vite-temp (EPERM), not because of a source/build error",
+      "lint": "npx oxlint src/q1/WaterGame.tsx src/q1/waterAllocationLogic.ts passed with no findings",
+      "reflection_data_genuinely_reshown": true,
+      "reflection_gate_still_enforced": true,
+      "meter_no_new_leak": true,
+      "ready_for_release": true
+    },
+    "evidence": [
+      "src/q1/WaterGame.tsx:135 — The reflecting branch introduces the explicit heading 今週のデータをもう一度見比べよう.",
+      "src/q1/WaterGame.tsx:137 — The reflection screen iterates the session's cardOrder, which was initialized from all five IDs at lines 39 and 43.",
+      "src/q1/WaterGame.tsx:138 — Each reflected datum is rendered as a plain div rather than an interactive control.",
+      "src/q1/WaterGame.tsx:142 — Every reflected card renders readingOf(id), providing actual session-specific content rather than labels alone.",
+      "src/q1/WaterGame.tsx:64 — readingOf resolves reservoir, rain, and sector readings from the current immutable session; the same helper is used by the playing screen at line 216, preventing display drift.",
+      "src/q1/WaterGame.tsx:137 — Reflection preserves the session's already-randomized cardOrder; no correct-sector-first reordering is introduced.",
+      "src/q1/WaterGame.tsx:138 — Reflected data cards receive only the neutral dx-card class, with no selected/correct highlighting or answer-revealing styling.",
+      "src/q1/WaterGame.tsx:175 — Reflection explicitly states that its selections do not change the result.",
+      "src/q1/WaterGame.tsx:178 — The continuation remains disabled until canContinueReflection is true; lines 50-57 require both reflection axes.",
+      "src/q1/WaterGame.tsx:52 — The baseline meter is a stable session-derived mapping of HIGH to 65 and LOW to 35, adding no distinction beyond the reservoir reading itself.",
+      "src/q1/WaterGame.tsx:194 — The playing branch now renders the reservoir meter before commitment.",
+      "src/q1/WaterGame.tsx:123 — The failure/reflection branch renders the result meter after the failed commitment.",
+      "src/q1/WaterGame.tsx:129 — The unchanged-sector statement exists only inside the reflecting branch and uses the actually selected sector.",
+      "src/q1/WaterGame.tsx:131 — Failure accurately states that the selected sector's state has not changed; success instead renders the separate 節水・協力中 state at line 104.",
+      "src/q1/WaterGame.tsx:85 — Failure lowers the meter by 8 and transitions directly to reflecting; it never applies the success sector state.",
+      "src/index.css:1070 — The shared meter uses flex sizing and an overflow-hidden flexible bar, presenting no evident 375px horizontal-overflow risk.",
+      "src/index.css:4266 — route-grid forces reflected and playing cards to one column, protecting the 375px layout despite the five-card reflection expansion.",
+      "src/q1/waterAllocationLogic.ts:21 — SECTORS exactly matches design-sim.mjs:53.",
+      "src/q1/waterAllocationLogic.ts:26 — DEPTH_TABLE exactly matches design-sim.mjs:63.",
+      "src/q1/waterAllocationLogic.ts:38 — NON_TARGET_PATTERNS exactly matches design-sim.mjs:77.",
+      "src/q1/waterAllocationLogic.ts:55 — newSession matches the simulator's generation algorithm at design-sim.mjs:85, including target signature, independent non-target draws, reservoir/rain draws, and depth lookup.",
+      "src/q1/waterAllocationLogic.ts:71 — sessionWin exactly matches design-sim.mjs:108 and requires both sector and depth IDs.",
+      "src/q1/waterAllocationLogic.ts:101 — Household capacity remains framed around deferring discretionary water use; no backup-source causal inversion appears in the new UI text.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:138 — The reflection regression check is meaningfully scoped to the reflecting branch and requires both cardOrder.map and readingOf(id), although it remains a static-source heuristic rather than a rendered-DOM assertion.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:142 — The unchanged-sector regression check is scoped to the reflecting branch and requires both selectedSector and the unchanged-state text.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:147 — The pre-commit-meter check incorrectly examines source before the reflecting branch, which includes the success meter and can pass without a playing meter.",
+      "factory/harness/gameplay-qa-water-allocation.mjs:152 — Executed harness reported 32 passed and 0 failed."
+    ],
+    "recommended_actions": [
+      "Strengthen the pre-commit-meter regression test by isolating the final playing return or, preferably, render the component and assert that a meter exists before commitment.",
+      "For stronger long-term protection, convert the three new static-source checks into component-level rendered-state assertions covering playing, failed reflection, and all five reflected readings."
+    ]
+  },
+  "elapsed_sec": 146.799
+}
