@@ -59,6 +59,18 @@
       "redesign_count": 0,
       "updated_at": "2026-09-10T00:11:39.939Z",
       "depends_on": []
+    },
+    "legacy-load-and-route": {
+      "game_id": "legacy-load-and-route",
+      "profession": "給食食材の配送員",
+      "state": "FIRST_PLAY_READY",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "load_and_route",
+      "task_id": "q1-rebuild-load-and-route",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-10T01:55:22.425Z",
+      "depends_on": []
     }
   }
 }

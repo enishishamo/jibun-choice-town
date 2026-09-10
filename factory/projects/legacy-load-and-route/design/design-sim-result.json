@@ -1,0 +1,85 @@
+{
+  "n": 20000,
+  "zone": {
+    "foods": [
+      {
+        "id": "raw_fish",
+        "zone": "cold"
+      },
+      {
+        "id": "raw_meat",
+        "zone": "cold"
+      },
+      {
+        "id": "milk",
+        "zone": "cold"
+      },
+      {
+        "id": "frozen_croquette",
+        "zone": "frozen"
+      },
+      {
+        "id": "frozen_vegetable",
+        "zone": "frozen"
+      },
+      {
+        "id": "potato",
+        "zone": "ambient"
+      },
+      {
+        "id": "bread",
+        "zone": "ambient"
+      },
+      {
+        "id": "retort",
+        "zone": "ambient"
+      }
+    ],
+    "zones": [
+      "frozen",
+      "cold",
+      "ambient"
+    ],
+    "drawSize": 4,
+    "results": {
+      "legitimate_all_correct": 1,
+      "always_place_all_in_frozen": 0,
+      "always_place_all_in_cold": 0,
+      "always_place_all_in_ambient": 0,
+      "random_zone_per_item": 0.0144
+    }
+  },
+  "route": {
+    "travelChoices": [
+      10,
+      40
+    ],
+    "betweenChoices": [
+      30,
+      50
+    ],
+    "deadlineChoices": [
+      35,
+      55
+    ],
+    "results": {
+      "legitimate_full_reasoning": 1,
+      "tighter_deadline_first": 0.8576,
+      "nearer_first": 0.8548,
+      "random_order": 0.5689
+    }
+  },
+  "verdict": {
+    "zone_legitimate_always_wins": true,
+    "zone_fixed_zone_guess_fails": true,
+    "zone_random_guess_stays_low": true,
+    "route_zero_winner_rate": 0,
+    "route_exhaustion_count": 0,
+    "route_legitimate_always_wins": true,
+    "route_tighter_deadline_heuristic_not_dominant": true,
+    "route_nearer_heuristic_not_dominant": true,
+    "route_legitimate_margin_over_tighter_heuristic": 0.1424,
+    "route_legitimate_margin_over_nearer_heuristic": 0.1452
+  },
+  "notes": "v1: part 1 (zone matching) draws 4 of 8 real food-category facts per session (shuffled), requiring all 4 placed correctly -- a fixed 'always guess zone Z' or fully-random-per-item strategy both fail near 0% since the pool spans all 3 zones and only exact matches win. part 2 (route sequencing) rejection-samples (travelA, travelB, between, dlA, dlB) from discrete choice sets tuned via factory/projects/legacy-load-and-route/design/route-tuning-notes.md so neither 'visit whichever has the nearer travel time first' nor 'visit whichever has the tighter deadline first' is a dominant heuristic (both stay meaningfully below legitimate full reasoning's 100%) -- this directly avoids the exact BLOCKER legacy-sow-and-grow's design review r2 found in an earlier draft (a variety/order that dominated regardless of the session's actual numbers)."
+}

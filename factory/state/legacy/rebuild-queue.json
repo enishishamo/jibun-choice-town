@@ -75,7 +75,9 @@
       ],
       "priority_score": 3.58,
       "evidence": "factory/state/audits/q1-audit.json",
-      "status": "queued"
+      "status": "in_progress",
+      "game_id": "legacy-load-and-route",
+      "started_at": "2026-09-10T01:16:43.094Z"
     },
     {
       "game_type": "line_debug",
