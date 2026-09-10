@@ -4,8 +4,8 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "delay_recover",
   "creator": "claude-code",
-  "state": "GAME_DESIGN_READY",
-  "current_stage": "CORE_BACK_CHECK",
+  "state": "ART_BRIEF_READY",
+  "current_stage": "ART_BRIEF",
   "design_iteration": 2,
   "repair_count": 0,
   "redesign_count": 1,
@@ -702,6 +702,80 @@
           "creator": "claude-code"
         }
       ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-delay-recover:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-delay-recover/design/game_spec_v1.json",
+      "payload": {
+        "goal": "新幹線30分遅延という場面で、状況確認→学校への報告→3つの関係先（見学先・バス・宿）への連絡→学校の承認→共有、という流れを前提条件ゲートで進めながら、宿泊施設への連絡を他の2者より先に行うという判断を、連絡ボタンをタップする順序で表現し、1回のセッションコミットとして確定する。",
+        "initial_visual_state": "『新幹線が30分遅延』という短い導入テキストのあと、状況確認カード（『？』アイコンで閉じた状態）が画面に表示される。学校への報告ボタン、3つの関係先カード（見学先・バス・宿、画面上の表示順はセッションごとにランダム）、承認ボタン、共有ボタンはすべて無効（グレーアウト）で表示される。説明文はない。",
+        "interactive_objects": [
+          "状況確認カード（タップで開閉、開くと遅延の状況——30分・運送機関の事情——が表示される）",
+          "学校への報告ボタン（状況確認カードを開くまでdisabled、押すと3つの関係先カードが開示可能になる）",
+          "3つの関係先カード（見学先・バス・宿、報告ボタンを押すまでdisabled。画面上の表示順はセッションごとにランダムに決定し、宿だけに固定でない特別な位置を与えない。それぞれタップで開閉、開くとその関係先への影響内容が表示される。宿カードだけに夕食提供締切に関する説明を含む）",
+          "各関係先カードの連絡ボタン（そのカード自身を開いて読むまでdisabled。押すと1回性の記録としてタップ順序が確定し、そのカードは連絡済み状態になる。取り消し・再連絡はできない）",
+          "学校の承認ボタン（3つの連絡ボタンすべてが押されるまでdisabled）",
+          "共有ボタン（承認ボタンを押すまでdisabled）",
+          "振り返り画面の非採点選択（失敗時のみ表示、3つの関係先の元データを読み取り専用で再掲したうえでの選び直し）"
+        ],
+        "primary_action": "状況確認カードを開く→学校への報告ボタンを押す→3つの関係先カードを開いて読む→開いたカードから連絡ボタンを1つずつ押す（宿カードの説明を読んで、宿を他の2者より先に連絡するのが正しい判断）→3件連絡完了で承認ボタンが有効になり、承認する→共有ボタンが有効になり、共有して結果を見る。",
+        "C": "遅延の状況（30分、運送機関の事情）。3つの関係先（見学先・バス・宿）それぞれの影響内容——宿泊施設のカードだけに『夕食提供の締切があり、早く連絡するほど調整の余地が残る』という実在の傾向の説明を含む（研究がこの状況に具体的に結びつけて確認できたのは宿だけであり、見学先・バスに時間的な制約が一切ないという意味ではない）。学校が旅程の変更を承認する立場にあるという権限構造。",
+        "D": "宿カードの説明を読んで、宿への連絡を見学先・バスより先に行う（連絡ボタンを押す順序というタップの並びそのものが判断を表現する）。これは研究が確認した実在の傾向を、ゲームとして扱いやすい形（3者のうちどれを最初に連絡したか）に単純化した運用上のルールであり、修学旅行における具体的な分数の公式基準を引用したものではない。状況確認→学校報告→3者への連絡→学校承認→共有、という大枠の流れ自体は前提条件ゲートで強制される構造であり、子ども自身の判断が問われるのは『宿を優先するかどうか』という1点に絞られる。",
+        "system_reactions": "宿が他の2者より先に連絡されていれば『宿の夕食提供に間に合った』という成功結果、後回しになっていれば『宿の夕食提供に間に合わなかった』という正直な失敗結果。承認・共有ボタンは前提条件（3件連絡完了、承認完了）を満たさない限り押せないため、順序を誤って承認や共有を先に行うことはできない。",
+        "state_transitions": "状況確認: 未読 → 読了（報告ボタン有効化）。学校報告: 未報告 → 報告済み（3つの関係先カード開示可能）。各関係先カード: 未読 → 読了（連絡ボタン有効化） → 連絡済み（タップ順序が記録され、そのカードは以後変更不可）。3件連絡完了 → 承認ボタン有効化 → 承認済み → 共有ボタン有効化 → 共有済み → 結果画面（宿が先か後かでonComplete/onPartialCompleteに分岐）。",
+        "failure_behavior": "セッション全体で1回のコミット（連絡ボタンは押した時点で1回性の記録として確定し、取り消し・再連絡はない。承認・共有も1回ずつ）。宿への連絡が他の2者より後だった場合、onCompleteではなくonPartialCompleteを呼び、Gate H HONEST OUTCOMEに従った異なるトップフレーミングの結果画面（宿の夕食に間に合わなかった、という正直な結果）へ遷移する。",
+        "retry_behavior": "セッション内でのやり直しはない（brute force排除、旧実装のexploit: select-all修正の核——旧実装の自由な並び替え・再提出は廃止）。宿への連絡が後回しになった場合のみ、3つの関係先の元データ（遅延の状況、各関係先への影響内容）を読み取り専用で再提示し、『今度はどの順で連絡すればよかったと思う？』という非採点の振り返り選択を挟む——この選択はスコアに影響せず、結末（onPartialComplete）も変えない。振り返り選択が完了するまで、結果画面へ進むボタンはdisabledにする。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことでのみ可能。",
+        "E": "宿への連絡が他の2者より先だった場合、遅延という予期しない事態にもかかわらず旅程が立て直される、という成功結果（onComplete）。宿への連絡が後回しになった場合、夕食提供に間に合わなかった、という正直な結果（onPartialComplete）。この判定基準は、研究が確認した実在の傾向をゲームのルールとして単純化したものであり、実際に分刻みの公式基準が存在することや、見学先・バスに時間的な余地が全くないことを示すものではない。",
+        "job_reveal": "『新幹線が30分遅延』という導入から、添乗員・旅程管理担当という仕事の紹介へつなげる。運送機関の遅延という計画外の事態に、学校の承認を得ながら関係先への対応を組み立てる、という実在の役割を明示する（研究: 旅行業法第12条の10の旅程管理義務、修学旅行実施規則の管理職への報告・指示義務、学校が旅程の重要な変更について最終判断権を持つという権限構造）。",
+        "first_5_seconds": "first_5_seconds_v3.jsonを参照。導入テキスト表示（0-2秒）→状況確認カードへの最初のタップ（2-5秒、カードが開き遅延の状況が表示され、学校への報告ボタンが有効化される）→『何かを確認する→次のボタンが押せるようになる』という推測→報告→3つの関係先カードを開いて読む→宿への連絡を優先→承認→共有。",
+        "no_manual_requirements": "説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる既存Q1の規約に従う。関係先の名前（見学先・バス・宿）・宿カードに含まれる時間的な事情の説明文は正当な開示。3つの関係先カードの画面上の表示順はセッションごとにランダムに決定し、位置が正解を示唆しないようにする（no_manual_exploit_check_v3.json参照）。",
+        "mobile_constraints": "375px幅を基準に、状況確認カード・学校報告ボタン・3つの関係先カード・連絡ボタン・承認ボタン・共有ボタンが縦に収まるレイアウトを実装時に検証する。3つの関係先カードは、閉じた状態の高さ・見た目を統一する（宿カードの説明文だけが他の2枚より長くなる可能性があるため、開いたときの文章量の違いによってカードの見た目や閉じた状態の高さが変わらないようにする——design review r1のMEDIUM指摘VISUAL_HIERARCHY_LEAK_RISK是正）。振り返り画面は3つの関係先データ再掲＋振り返り選択になるため、画面が長くなることを想定し、スクロール可能にする。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。legacy-hotel-receive/legacy-move-try/legacy-allocate-and-forecast（water-heat）と同様、絵文字・アイコン・CSSのみで構成し、シーン画像を使用しない。旧実装（src/q1/DelayRecoverGame.tsx）で使われていた既存アセットがある場合、旧仕組み（自由な並び替え・再提出）を視覚的に示す内容が焼き込まれていないか確認し、該当する場合は使用しない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-delay-recover:game_translations:v4"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:46:18.212Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-delay-recover/design/game_spec_v1.json",
+          "created_at": "2026-09-10T18:46:18.213Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-delay-recover:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-delay-recover/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "このゲーム画面自体はシーン画像を使用せず、絵文字・アイコン・CSSのみで構成する——legacy-hotel-receive/legacy-move-try/legacy-allocate-and-forecastと同じ、既存Q1の非画像UIパターンに従う。既存の public/assets/schooltrip/school-trip-tour-conductor.jpg（trip-conductorプロフェッション・delay-trip体験のplace画像として既に使用中）をReadツールで直接視覚的に確認したところ、新幹線の駅で添乗員が電話をかけ、時計アイコン（時間の切迫感）とともに、城（見学先）・バス・建物（学校または宿）の3方向へ電話の吹き出しが伸びる構図——このリビルドの新しい仕組み（状況確認後、3つの関係先へ連絡する、宿が時間的に優先度の高い対象）と視覚的に整合しており、旧実装（自由な並び替え・再提出UI）に固有の操作画面は一切描かれていない。ART_ANSWER_LEAK/視覚的ミスリードのおそれがないため、この既存画像はそのまま再利用してよい（新規制作不要）。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-delay-recover:game_spec:v1"
+      ],
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:46:18.255Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-delay-recover/design/art_brief_v1.json",
+          "created_at": "2026-09-10T18:46:18.256Z",
+          "creator": "claude-code"
+        }
+      ]
     }
   },
   "independent_review": {
@@ -742,7 +816,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T18:44:12.258Z",
+  "updated_at": "2026-09-10T18:46:18.256Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1199,6 +1273,38 @@
       "at": "2026-09-10T18:44:12.258Z",
       "event": "gate_passed",
       "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-10T18:46:18.213Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-10T18:46:18.213Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:46:18.256Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-10T18:46:18.256Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:game_spec:v1"
+      ]
     }
   ],
   "redesign": [
