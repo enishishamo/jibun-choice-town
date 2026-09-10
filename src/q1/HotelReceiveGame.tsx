@@ -1,5 +1,5 @@
 // Q1: ホテル・旅館の団体受入担当 (gameType: hotel_receive)
-// B: 修学旅行の団体が到着する日。花組・月組・雪組の3つの班それぞれについて、提示された部屋の定員が
+// B: 修学旅行の団体が到着する日。花組・月組・星組の3つの班それぞれについて、提示された部屋の定員が
 //    班の人数に足りているかを確認し、アレルギー事前調査票を見てメンバーのうち実際に個別対応食が
 //    必要な人だけを選び、1班ずつチェックインさせる。
 // C: 班ごとの人数データ、提示された部屋タイプ（定員入り）、メンバーごとのアレルギー事前調査票
@@ -20,6 +20,14 @@
 // （design-sim.mjs参照、design review r2 PASS 88）。失敗時は同じデータを再提示する非採点の振り返り
 // 選択を挟み、Q1 First-Play Standard Gate G「考え直す余地」に対応する（この振り返りは結果を一切
 // 変えない）。
+//
+// impl review r1 HIGH是正 (IMPLEMENTATION_FLOW_DIVERGENCE): game_spec_v1.jsonのinitial_visual_state
+// は「3枚の班カード（固定表示、それぞれ現在の状態を示すアイコン付き）」を要求しており、班を1つずつ
+// 順番に切り替える一問一答式のウィザードではなく、3班のカードが常に画面に並び、班ごとのコミットで
+// その班のアイコンが即座に結果へ変わる構成を意図していた。旧実装（このファイルのv1）は1班ずつしか
+// 表示せず、コミット後に結果を示さずに次の班へ無言で切り替えていたため、この仕様と乖離していた。
+// v2で3班同時表示（各班が自分の開示ゲート・判定・選択・コミットボタンを独立して持つ）に修正し、
+// コミット直後にその班のアイコンが完了／まだできない状態へ即座に変わることを確認した。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import {
@@ -33,11 +41,22 @@ import {
   sessionWin,
   type GroupId,
   type GroupPick,
-  type GroupSession,
   type Session,
 } from "./hotelReceiveLogic";
 
 type CardId = "size" | "allergy";
+
+interface GroupUI {
+  openCards: Set<CardId>;
+  acceptRoom: boolean | null;
+  specialMealMembers: Set<number>;
+  committed: boolean;
+  win: boolean | null;
+}
+
+function initialGroupUI(): GroupUI {
+  return { openCards: new Set(), acceptRoom: null, specialMealMembers: new Set(), committed: false, win: null };
+}
 
 function emptyPick(): GroupPick {
   return { acceptRoom: null as unknown as boolean, specialMealMembers: [] };
@@ -45,55 +64,53 @@ function emptyPick(): GroupPick {
 
 export default function HotelReceiveGame({ onComplete, onPartialComplete }: Q1GameProps) {
   const [session] = useState<Session>(() => newSession());
-  const [index, setIndex] = useState(0);
-  const [results, setResults] = useState<Partial<Record<GroupId, { pick: GroupPick; win: boolean }>>>({});
-  const [openCards, setOpenCards] = useState<Set<CardId>>(new Set());
-  const [acceptRoom, setAcceptRoom] = useState<boolean | null>(null);
-  const [selectedMembers, setSelectedMembers] = useState<Set<number>>(new Set());
+  const [groupUI, setGroupUI] = useState<Record<GroupId, GroupUI>>(
+    () => Object.fromEntries(GROUP_IDS.map((id) => [id, initialGroupUI()])) as Record<GroupId, GroupUI>,
+  );
   const [outcome, setOutcome] = useState<"playing" | "reflecting" | "done">("playing");
+  const [finalPicks, setFinalPicks] = useState<Record<GroupId, GroupPick> | null>(null);
   const [reflectPicks, setReflectPicks] = useState<Partial<Record<GroupId, GroupPick>>>({});
 
-  // Arrival order is fixed (real progression, not shuffled) -- only per-card/button display order
-  // is randomized elsewhere. groupOrder is intentionally the natural GROUP_IDS order.
   const order = GROUP_IDS;
-  const currentId = order[index];
-  const current: GroupSession = session.groups[currentId];
-  const allRead = openCards.has("size") && openCards.has("allergy");
-  const canCommit = allRead && acceptRoom !== null;
 
-  const toggleCard = (id: CardId) => setOpenCards((prev) => new Set(prev).add(id));
+  const updateGroup = (id: GroupId, patch: Partial<GroupUI>) =>
+    setGroupUI((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }));
 
-  const toggleMember = (i: number) => {
-    setSelectedMembers((prev) => {
-      const next = new Set(prev);
+  const toggleCard = (id: GroupId, card: CardId) =>
+    setGroupUI((prev) => {
+      const next = new Set(prev[id].openCards);
+      next.add(card);
+      return { ...prev, [id]: { ...prev[id], openCards: next } };
+    });
+
+  const toggleMember = (id: GroupId, i: number) =>
+    setGroupUI((prev) => {
+      const next = new Set(prev[id].specialMealMembers);
       if (next.has(i)) next.delete(i);
       else next.add(i);
-      return next;
+      return { ...prev, [id]: { ...prev[id], specialMealMembers: next } };
     });
-  };
 
-  const commit = () => {
-    if (acceptRoom === null) return;
-    const pick: GroupPick = { acceptRoom, specialMealMembers: [...selectedMembers] };
-    const win = groupWin(current, pick);
-    const nextResults = { ...results, [currentId]: { pick, win } };
-    setResults(nextResults);
+  const commit = (id: GroupId) => {
+    const ui = groupUI[id];
+    if (ui.acceptRoom === null) return;
+    const pick: GroupPick = { acceptRoom: ui.acceptRoom, specialMealMembers: [...ui.specialMealMembers] };
+    const win = groupWin(session.groups[id], pick);
+    const nextUI = { ...groupUI, [id]: { ...ui, committed: true, win } };
+    setGroupUI(nextUI);
 
-    if (index + 1 < order.length) {
-      setIndex(index + 1);
-      setOpenCards(new Set());
-      setAcceptRoom(null);
-      setSelectedMembers(new Set());
-      return;
-    }
+    const allCommitted = order.every((g) => nextUI[g].committed);
+    if (!allCommitted) return;
 
-    // all 3 groups committed
-    const allWin = order.every((id) => nextResults[id]?.win);
-    if (allWin) {
-      setOutcome("done");
-    } else {
-      setOutcome("reflecting");
-    }
+    const picks = Object.fromEntries(
+      order.map((g) => [
+        g,
+        g === id ? pick : { acceptRoom: nextUI[g].acceptRoom as boolean, specialMealMembers: [...nextUI[g].specialMealMembers] },
+      ]),
+    ) as Record<GroupId, GroupPick>;
+    setFinalPicks(picks);
+    const allWin = order.every((g) => nextUI[g].win);
+    setOutcome(allWin ? "done" : "reflecting");
   };
 
   const canFinishReflection = order.every((id) => {
@@ -101,11 +118,8 @@ export default function HotelReceiveGame({ onComplete, onPartialComplete }: Q1Ga
     return p && p.acceptRoom !== null;
   });
 
-  if (outcome === "done") {
-    const finalWin = sessionWin(
-      session,
-      Object.fromEntries(order.map((id) => [id, results[id]!.pick])) as Record<GroupId, GroupPick>,
-    );
+  if (outcome === "done" && finalPicks) {
+    const finalWin = sessionWin(session, finalPicks);
     return (
       <div className="game board-game">
         <div className="result-card good">
@@ -143,7 +157,7 @@ export default function HotelReceiveGame({ onComplete, onPartialComplete }: Q1Ga
           {order.map((id) => (
             <span key={id} className="rrow">
               <b>{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}</b>
-              <span className={results[id]?.win ? "good" : "bad"}>{results[id]?.win ? "完了" : "まだできない"}</span>
+              <span className={groupUI[id].win ? "good" : "bad"}>{groupUI[id].win ? "完了" : "まだできない"}</span>
             </span>
           ))}
         </div>
@@ -225,82 +239,108 @@ export default function HotelReceiveGame({ onComplete, onPartialComplete }: Q1Ga
   return (
     <div className="game board-game">
       <div className="task-bar">
-        <span className="task-now">
-          {GROUP_LABELS[currentId].icon} {GROUP_LABELS[currentId].name}をチェックインさせよう
-        </span>
-        <span className="task-sub">部屋の判定と、個別対応食が必要な人を確認しよう</span>
+        <span className="task-now">3つの班をチェックインさせよう</span>
+        <span className="task-sub">班ごとに、部屋の判定と個別対応食が必要な人を確認しよう</span>
       </div>
 
-      <div className="dx-grid route-grid">
-        <div className="dx-card">
-          <div className="dx-head">
-            <span className="dx-name">👥 人数・提示された部屋</span>
-            <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard("size")}>
-              {openCards.has("size") ? "－" : "？"}
-            </button>
-          </div>
-          {openCards.has("size") && (
-            <p className="dx-pattern">
-              {GROUP_LABELS[currentId].name}は{current.size}名です。提示された部屋: {ROOM_LABELS[current.proposedRoom]}
-            </p>
-          )}
-        </div>
-        <div className="dx-card">
-          <div className="dx-head">
-            <span className="dx-name">📋 アレルギー事前調査票</span>
-            <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard("allergy")}>
-              {openCards.has("allergy") ? "－" : "？"}
-            </button>
-          </div>
-          {openCards.has("allergy") && (
-            <p className="dx-pattern">
-              {current.memberAllergens.map((allergens, i) => (
-                <span key={i} style={{ display: "block" }}>
-                  {MEMBER_LABELS[i]}:{" "}
-                  {allergens.length > 0 ? allergens.map((a) => ALLERGEN_LABELS[a]).join("・") + "が除去要" : "除去要の品目なし"}
-                </span>
+      {order.map((id) => {
+        const ui = groupUI[id];
+        const group = session.groups[id];
+        const allRead = ui.openCards.has("size") && ui.openCards.has("allergy");
+        const canCommit = allRead && ui.acceptRoom !== null;
+
+        if (ui.committed) {
+          return (
+            <div key={id} className={`dx-card ${ui.win ? "selected" : ""}`}>
+              <div className="dx-head">
+                <span className="dx-name">{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}</span>
+              </div>
+              <p className={`dx-pattern ${ui.win ? "good" : "bad"}`}>
+                {ui.win ? "チェックインが完了した" : "まだチェックインできない"}
+              </p>
+            </div>
+          );
+        }
+
+        return (
+          <div key={id} className="dx-card">
+            <div className="dx-head">
+              <span className="dx-name">{GROUP_LABELS[id].icon} {GROUP_LABELS[id].name}をチェックインさせよう</span>
+            </div>
+
+            <div className="dx-grid route-grid">
+              <div className="dx-card">
+                <div className="dx-head">
+                  <span className="dx-name">👥 人数・提示された部屋</span>
+                  <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard(id, "size")}>
+                    {ui.openCards.has("size") ? "－" : "？"}
+                  </button>
+                </div>
+                {ui.openCards.has("size") && (
+                  <p className="dx-pattern">
+                    {GROUP_LABELS[id].name}は{group.size}名です。提示された部屋: {ROOM_LABELS[group.proposedRoom]}
+                  </p>
+                )}
+              </div>
+              <div className="dx-card">
+                <div className="dx-head">
+                  <span className="dx-name">📋 アレルギー事前調査票</span>
+                  <button className="dx-more" aria-label="データを見る" onClick={() => toggleCard(id, "allergy")}>
+                    {ui.openCards.has("allergy") ? "－" : "？"}
+                  </button>
+                </div>
+                {ui.openCards.has("allergy") && (
+                  <p className="dx-pattern">
+                    {group.memberAllergens.map((allergens, i) => (
+                      <span key={i} style={{ display: "block" }}>
+                        {MEMBER_LABELS[i]}:{" "}
+                        {allergens.length > 0 ? allergens.map((a) => ALLERGEN_LABELS[a]).join("・") + "が除去要" : "除去要の品目なし"}
+                      </span>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <p className="game-line soft center-line">部屋の判定</p>
+            <div className="choice-row wrap">
+              {[true, false].map((v) => (
+                <button
+                  key={String(v)}
+                  className={`btn choice ${ui.acceptRoom === v ? "on" : ""}`}
+                  disabled={!allRead}
+                  onClick={() => updateGroup(id, { acceptRoom: v })}
+                >
+                  <span className="tweak-check">{ui.acceptRoom === v ? "✓" : "＋"}</span>
+                  <span className="tweak-body"><b>{v ? "この部屋でよい" : "別の部屋が必要"}</b></span>
+                </button>
               ))}
-            </p>
-          )}
-        </div>
-      </div>
+            </div>
 
-      <p className="game-line soft center-line">部屋の判定</p>
-      <div className="choice-row wrap">
-        {[true, false].map((v) => (
-          <button
-            key={String(v)}
-            className={`btn choice ${acceptRoom === v ? "on" : ""}`}
-            disabled={!allRead}
-            onClick={() => setAcceptRoom(v)}
-          >
-            <span className="tweak-check">{acceptRoom === v ? "✓" : "＋"}</span>
-            <span className="tweak-body"><b>{v ? "この部屋でよい" : "別の部屋が必要"}</b></span>
-          </button>
-        ))}
-      </div>
+            <p className="game-line soft center-line">個別対応食が必要な人（0人以上）</p>
+            <div className="choice-row wrap">
+              {Array.from({ length: group.size }, (_, i) => i).map((i) => (
+                <button
+                  key={i}
+                  className={`btn choice ${ui.specialMealMembers.has(i) ? "on" : ""}`}
+                  disabled={!allRead}
+                  onClick={() => toggleMember(id, i)}
+                >
+                  <span className="tweak-check">{ui.specialMealMembers.has(i) ? "✓" : "＋"}</span>
+                  <span className="tweak-body"><b>{MEMBER_LABELS[i]}</b></span>
+                </button>
+              ))}
+            </div>
 
-      <p className="game-line soft center-line">個別対応食が必要な人（0人以上）</p>
-      <div className="choice-row wrap">
-        {Array.from({ length: current.size }, (_, i) => i).map((i) => (
-          <button
-            key={i}
-            className={`btn choice ${selectedMembers.has(i) ? "on" : ""}`}
-            disabled={!allRead}
-            onClick={() => toggleMember(i)}
-          >
-            <span className="tweak-check">{selectedMembers.has(i) ? "✓" : "＋"}</span>
-            <span className="tweak-body"><b>{MEMBER_LABELS[i]}</b></span>
-          </button>
-        ))}
-      </div>
-
-      <button className="btn primary big" disabled={!canCommit} onClick={commit}>
-        チェックインする
-      </button>
-      {!allRead && (
-        <p className="game-line soft center-line farm-disclaimer">※両方の「？」を見てから判定しよう</p>
-      )}
+            <button className="btn primary big" disabled={!canCommit} onClick={() => commit(id)}>
+              チェックインする
+            </button>
+            {!allRead && (
+              <p className="game-line soft center-line farm-disclaimer">※両方の「？」を見てから判定しよう</p>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

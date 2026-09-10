@@ -4,15 +4,18 @@
 // exactly -- GROUP_IDS/ROOM_TYPES/ROOM_CAPACITY/ALLERGENS/newSession/sessionWin are structurally
 // identical. Keep the two in sync.
 //
-// Group ids/names are drawn from the shared tripBands.ts roster (used by the safety-plan and
-// bus-ops school-trip games too, for narrative continuity across the 修学旅行編 world) rather than
-// inventing new ones -- design-sim.mjs's generic "hana/tsuki/hoshi" placeholders are renamed here to
-// real band ids "hana"/"tsuki"/"yuki" (花組/月組/雪組).
-export type GroupId = "hana" | "tsuki" | "yuki";
+// Group ids/names match design-sim.mjs's GROUP_NAMES exactly (花組/月組/星組) and the reviewed
+// design chain's play_seeds/game_translations text. tripBands.ts (shared by the safety-plan and
+// bus-ops school-trip games) uses a different 5-band roster that doesn't include 星組 -- an earlier
+// draft of this file substituted 雪組 for cross-game continuity, but that substitution was never
+// run through design review (impl review r1 MEDIUM: DESIGN_GROUP_ID_DRIFT), so it was reverted to
+// match the approved design chain exactly rather than requesting a design-doc update for a purely
+// cosmetic rename.
+export type GroupId = "hana" | "tsuki" | "hoshi";
 export type RoomType = "triple" | "basic" | "special";
 export type Allergen = "egg" | "milk" | "wheat" | "buckwheat" | "peanut" | "shrimp" | "crab";
 
-export const GROUP_IDS: GroupId[] = ["hana", "tsuki", "yuki"];
+export const GROUP_IDS: GroupId[] = ["hana", "tsuki", "hoshi"];
 export const ROOM_TYPES: RoomType[] = ["triple", "basic", "special"];
 export const ROOM_CAPACITY: Record<RoomType, number> = { triple: 3, basic: 4, special: 6 };
 export const ALLERGENS: Allergen[] = ["egg", "milk", "wheat", "buckwheat", "peanut", "shrimp", "crab"];
@@ -70,7 +73,7 @@ export function sessionWin(session: Session, picks: Record<GroupId, GroupPick>):
 export const GROUP_LABELS: Record<GroupId, { name: string; icon: string }> = {
   hana: { name: "花組", icon: "🌸" },
   tsuki: { name: "月組", icon: "🌙" },
-  yuki: { name: "雪組", icon: "❄️" },
+  hoshi: { name: "星組", icon: "🌟" },
 };
 export const ROOM_LABELS: Record<RoomType, string> = {
   triple: "トリプルルーム（定員3名）",

@@ -54,7 +54,7 @@ export const schoolTrip: ContentModule = {
           { icon: "🧑‍🏫", label: "引率", view: "100人の安全体制" },
           { icon: "🚌", label: "バス運行", view: "定員・運転士・経路" },
           { icon: "📱", label: "添乗", view: "遅れをつなぎ直す" },
-          { icon: "🏮", label: "宿", view: "部屋・食事・入浴の受け入れ" },
+          { icon: "🏮", label: "宿", view: "部屋の確認とアレルギー対応" },
         ],
       },
       incidents: [
@@ -200,7 +200,7 @@ export const schoolTrip: ContentModule = {
     },
     {
       id: "hotel-trip", professionId: "trip-hotel", eventId: "school-trip", gameType: "hotel_receive",
-      place: { name: "旅館のフロント", image: T("school-trip-hotel"), fit: "contain" },
+      place: { name: "旅館のフロント" },
       mission: { title: "100人を、\n宿で受け入れよう", lines: ["班ごとに、部屋の確認とアレルギー対応を組み立てよう。"] },
       tools: [], resolution: { title: "100人を、受け入れる準備ができた", lines: [] },
       discoveryEcho: "さっき、届いた班の情報をもとに、部屋の定員確認とアレルギー対応を組み立てたよね。それが、この仕事の中心です。",

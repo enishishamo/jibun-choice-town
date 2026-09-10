@@ -1,0 +1,105 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-hotel-receive-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "career_authenticity_score": 84,
+    "game_quality_score": 72,
+    "blockers": [],
+    "high": [
+      "IMPLEMENTATION_FLOW_DIVERGENCE: The approved design requires all three group cards and status icons to remain visible and each commit to immediately show that group's success/failure before advancing. The implementation renders only the current group's two data cards and advances immediately without displaying the committed group's result. The QA check named 'committing resolves the current group immediately' is vacuous for this requirement: it only searches for setResults and groupWin.",
+      "STALE_OLD_MECHANIC_CONTENT: Child-visible content still references the removed bath stage, and the hotel experience still supplies school-trip-hotel.jpg even though the approved design explicitly prohibits that old-mechanic image because it depicts room-grid placement and bath-time scheduling."
+    ],
+    "medium": [
+      "DESIGN_GROUP_ID_DRIFT: The approved design specifies 花組・月組・星組 (hana/tsuki/hoshi), while the implementation substitutes 雪組 (yuki) without an approved design revision. This does not change scoring or the profession model, but contradicts the claim of exact structural parity.",
+      "QA_REGRESSIONS_OVERCLAIM_COVERAGE: Several source-text checks do not establish what their names claim. In particular, the retry check merely detects setResults and groupWin, the rest-need check ignores schoolTrip.ts and registry content, and the reflection-context check only checks for three tokens rather than proving all member records render. Manual review confirms the core gates despite these weak checks."
+    ],
+    "low": [
+      "STALE_REGISTRY_COMMENT: The hotel_receive registry comment still describes the removed room→meal→bath three-stage mechanic."
+    ],
+    "failure_codes": [
+      {
+        "code": "IMPLEMENTATION_FLOW_DIVERGENCE",
+        "severity": "HIGH",
+        "finding": "The playing view omits the approved persistent three-group cards/status icons and does not present the required immediate per-group success or failure reaction after commit; it silently advances to the next group.",
+        "file": "src/q1/HotelReceiveGame.tsx"
+      },
+      {
+        "code": "STALE_OLD_MECHANIC_CONTENT",
+        "severity": "HIGH",
+        "finding": "Child-visible lens copy still says 部屋・食事・入浴, and hotel-trip still references the expressly prohibited old-mechanic school-trip-hotel image.",
+        "file": "src/data/content/schoolTrip.ts"
+      },
+      {
+        "code": "DESIGN_GROUP_ID_DRIFT",
+        "severity": "MEDIUM",
+        "finding": "Implementation changes the approved third group from 星組/hoshi to 雪組/yuki while claiming exact parity.",
+        "file": "src/q1/hotelReceiveLogic.ts"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The harness's single-shot/immediate-resolution assertion only verifies that the commit function contains setResults and groupWin, so it would pass even if an actual same-group retry path or missing immediate visual reaction existed.",
+        "file": "factory/harness/gameplay-qa-hotel-receive.mjs"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "29 passed, 0 failed; pure-logic strategy results observed: legitimate=1, random=0.0001, always-accept=0.1993, always-reject=0.069, select-none=0, select-everyone=0.0016. Some source-level checks are materially weaker than their names claim.",
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "disclosure_gate_genuinely_enforced": true,
+      "gate_h_correct": true,
+      "gate_g_correct": true,
+      "rest_need_absent": true,
+      "content_copy_accurate": false,
+      "ready_for_release": false
+    },
+    "evidence": [
+      "src/q1/hotelReceiveLogic.ts:28 — Group size is generated as 3–6 exactly as in design-sim.",
+      "src/q1/hotelReceiveLogic.ts:30 — Proposed room is uniformly selected from triple/basic/special.",
+      "src/q1/hotelReceiveLogic.ts:31 — roomOk uses capacity >= size, matching design-sim.",
+      "src/q1/hotelReceiveLogic.ts:36 — Each allergen is independently flagged with probability 0.12 per member.",
+      "src/q1/hotelReceiveLogic.ts:58 — groupWin requires both the room verdict and exact flagged-member set.",
+      "src/q1/hotelReceiveLogic.ts:65 — sessionWin requires groupWin for all three groups.",
+      "src/q1/hotelReceiveLogic.ts:15 — Third group is yuki, whereas approved design-sim defines hoshi.",
+      "src/q1/HotelReceiveGame.tsx:61 — allRead requires both size and allergy cards.",
+      "src/q1/HotelReceiveGame.tsx:82 — Commit advances directly to the next group without rendering the just-computed win result.",
+      "src/q1/HotelReceiveGame.tsx:91 — allWin is derived from all three stored groupWin results.",
+      "src/q1/HotelReceiveGame.tsx:105 — finalWin defensively recomputes sessionWin from immutable session data and committed picks; under normal state transitions it is consistent with allWin.",
+      "src/q1/HotelReceiveGame.tsx:125 — onComplete is selected only when recomputed finalWin is true.",
+      "src/q1/HotelReceiveGame.tsx:152 — Reflection re-presents all three groups.",
+      "src/q1/HotelReceiveGame.tsx:159 — Reflection includes each group's size and full proposed-room label.",
+      "src/q1/HotelReceiveGame.tsx:162 — Reflection maps every memberAllergens record and displays its complete allergen list.",
+      "src/q1/HotelReceiveGame.tsx:213 — Reflection explicitly states that its selections do not change the result.",
+      "src/q1/HotelReceiveGame.tsx:217 — Reflection proceeds through onPartialComplete in the shipped shell path.",
+      "src/q1/HotelReceiveGame.tsx:274 — Both room-verdict buttons are disabled until allRead.",
+      "src/q1/HotelReceiveGame.tsx:289 — Every member-selection button is disabled until allRead.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:133 — Claimed immediate single-shot verification only searches the commit source for setResults and groupWin.",
+      "factory/harness/gameplay-qa-hotel-receive.mjs:132 — Rest-need regression scans only uncommented HotelReceiveGame source, not schoolTrip.ts or registry.ts.",
+      "src/data/content/schoolTrip.ts:57 — Child-visible lens summary still describes the hotel role as 部屋・食事・入浴の受け入れ.",
+      "src/data/content/schoolTrip.ts:203 — hotel-trip still supplies school-trip-hotel.jpg, which the approved specification says depicts the obsolete grid/bath mechanic and must not be used.",
+      "src/data/content/schoolTrip.ts:204 — Mission itself correctly names room checking and allergy handling.",
+      "src/data/content/schoolTrip.ts:206 — discoveryEcho correctly names capacity checking and allergy handling.",
+      "src/data/content/schoolTrip.ts:207 — Seeds contain no stale bath, spatial-grid, or rest-need action.",
+      "src/data/content/schoolTrip.ts:155 — Profession Q2 body accurately describes capacity sufficiency and per-person allergy handling.",
+      "src/q1/registry.ts:113 — Registry comment still says 部屋→食事→入浴の3段階.",
+      "src/index.css:4235 — dx-grid/dx-card are existing shared styles.",
+      "src/index.css:4266 — route-grid is an existing shared one-column layout.",
+      "src/q1/WaterGame.tsx:136 — Previously shipped WaterGame reuses dx-grid, route-grid, and dx-card.",
+      "src/q1/WaterGame.tsx:154 — Previously shipped WaterGame also reuses dx-commit.",
+      "src/index.css:2690 — choice-row/wrap is an existing shared wrapping layout."
+    ],
+    "recommended_actions": [
+      "Restore the approved three-group persistent status presentation and show each committed group's success/failure reaction before advancing, or obtain a reviewed design revision for the altered flow.",
+      "Remove the hotel experience's school-trip-hotel image reference or replace it with a mechanic-neutral approved presentation as required by game_spec_v1.json.",
+      "Change the lens summary from 部屋・食事・入浴 to copy matching room-capacity verification and individual allergy handling.",
+      "Align the third group with 星組/hoshi or document and approve the roster substitution in the design chain.",
+      "Replace the harness's source-token retry test with an interaction/state-machine test covering double activation, post-commit controls, and advancement; add assertions for the required per-group visual reaction and scan child-visible content for stale mechanics.",
+      "Update the stale registry comment."
+    ]
+  },
+  "elapsed_sec": 161.237
+}
