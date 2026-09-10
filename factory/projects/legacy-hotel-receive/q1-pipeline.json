@@ -1,0 +1,806 @@
+{
+  "game_id": "legacy-hotel-receive",
+  "profession": "ホテル・旅館の団体受入担当",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "hotel_receive",
+  "creator": "claude-code",
+  "state": "FIRST_PLAY_READY",
+  "current_stage": "CORE_BACK_CHECK",
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-hotel-receive:fact_sheet:v2",
+      "artifact_type": "fact_sheet",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/fact_sheet_v1.json",
+      "payload": {
+        "profession": "ホテル・旅館の団体受入担当（宿泊予約・フロント／厨房・レストラン担当が連携する、修学旅行等の団体宿泊を受け入れる仕事。施設規模により担当部署の名称・体制は異なる）",
+        "sources": [
+          {
+            "url": "https://www.gardenhotels.co.jp/brochure/kyoto-shijo/mgh-kyoto-shijo-school_6.pdf",
+            "type": "company_official",
+            "org": "三井ガーデンホテル京都四条「教育旅行用 施設受入のご案内」"
+          },
+          {
+            "url": "https://www.mikazuki.co.jp/ryugujo/group/pdf/educational_trip_guidance.pdf",
+            "type": "company_official",
+            "org": "Mikazuki（龍宮亭）「修学旅行ご案内」2026年6月改訂"
+          },
+          {
+            "url": "https://www.caa.go.jp/policies/policy/food_labeling/other/review_meeting_004/pdf/syokuhin1297.pdf",
+            "type": "industry_association",
+            "org": "全国旅館ホテル生活衛生同業組合連合会「旅館ホテルにおける食物アレルギーへの対応」（2014.8.7、消費者庁 食品表示に関する検討会 提出資料）"
+          },
+          {
+            "url": "https://www.pref.gifu.lg.jp/uploaded/attachment/257692.pdf",
+            "type": "government_report",
+            "org": "岐阜県教育委員会「修学旅行マニュアルについて（資料2）」"
+          },
+          {
+            "url": "https://www.alivila.co.jp/information/news/14920/",
+            "type": "company_official",
+            "org": "ホテル日航アリビラ「当ホテルにおける食物アレルギー対応ポリシーについて」"
+          },
+          {
+            "url": "https://jstb.or.jp/pages/51/",
+            "type": "industry_association",
+            "org": "公益財団法人日本修学旅行協会「修学旅行実施基準」"
+          },
+          {
+            "url": "https://www.bureauveritas.jp/magazine/191010/001",
+            "type": "government_report",
+            "org": "国土交通省「ホテル又は旅館における高齢者、障害者等の円滑な移動等に配慮した建築設計標準（追補版）」概要"
+          }
+        ],
+        "who_or_what_they_serve": "修学旅行等で団体宿泊する児童・生徒、引率教員、旅行会社の添乗員・営業担当。施設内では厨房・配膳・客室係とも連携する。",
+        "representative_duties": [
+          "学校（旅行会社経由）から届いた人数・部屋タイプの希望をもとに、実在する客室（号室・部屋タイプ）へ団体を過不足なく割り当てる——誰と誰を同室にするかは学校側の教育的判断であり、宿泊施設はその組み合わせをどの部屋タイプ（定員）に収めるかを決める",
+          "事前に届いた食物アレルギー情報（7大アレルギー品目ごとの除去要否を記載した事前調査票）を確認し、フロント・厨房・配膳で共有したうえで、該当する生徒・班の食事を個別対応食（別膳）として手配する",
+          "混雑状況・団体の人数を踏まえて、大浴場等の入浴時間帯の希望を確認・調整する"
+        ],
+        "expertise": [
+          "福祉用具的な「複数の視点のAND条件」とは異なり、宿泊業の団体受入では『学校が班編成を決め、宿泊施設が部屋タイプへ収める』という役割分担が明確——宿泊施設側がゼロから班を作ることはない",
+          "客室は部屋タイプごとに定員・部屋数が決まっている実在の運用（例: みかづき龍宮亭の例では、トリプルルーム定員3名48部屋、基準室定員4名29部屋、特別室定員6名40部屋、カラフルルーム定員4名30部屋、と定員の異なる複数タイプが並存する）",
+          "宿泊業に付随する飲食には、容器包装された加工食品のような法的なアレルゲン表示義務はなく、統一的な業界ガイドラインも存在しない（2014年時点の全国旅館ホテル生活衛生同業組合連合会の認識）。ただし実務としては、予約段階での事前申告（電話・メール・FAX等）→施設側が情報収集・成分表提示等で対応、という流れが確立している",
+          "食物アレルギー情報は、学校が旅行会社経由で依頼した「食物アレルギー事前調査票」（保護者記入、7大アレルギー品目＝卵・牛乳・小麦・そば・落花生・えび・かにごとの除去要否を記載）として届き、施設内ではフロント・厨房・配膳の3者で共有される、という具体的な情報の流れが業界団体資料に確認できる",
+          "大浴場の入浴時間帯は、混雑状況・団体の人数を踏まえて希望から調整される、という実務慣行が確認できるが、「1回あたり何班まで」という具体的な収容上限の全国共通基準は確認できなかった"
+        ],
+        "tools": [
+          "団体予約確認書（部屋数・部屋タイプ・人数・到着時刻等の一覧。統一フォーマットの官公庁様式はなく、施設・旅行会社ごとの独自書式）",
+          "実在する客室リスト（部屋タイプ別の定員・室数）",
+          "食物アレルギー事前調査票（7大アレルギー品目ごとの除去要否、保護者記入）",
+          "大浴場の定員・混雑状況の把握"
+        ],
+        "information_used": [
+          "班ごとの人数（学校側が決めた班編成の人数）",
+          "班ごとの食物アレルギー情報（事前調査票、7大アレルギー品目ごとの除去要否）",
+          "大浴場の混雑状況・他団体との重複"
+        ],
+        "decisions": [
+          "班の人数に対して、定員が足りる部屋タイプを割り当てる",
+          "事前調査票でアレルギー品目が1つでも除去要と記載されていれば、その班の食事を個別対応食（別膳）として手配する。除去要の品目がなければ通常メニューとする",
+          "混雑状況を踏まえ、入浴時間帯の希望を確認・調整する"
+        ],
+        "outputs_or_value": "団体が実在する客室・食事・入浴の枠に過不足なく収まり、当日チェックインから滞在までが不備なく進む。食物アレルギー情報が正しく手配に反映されれば、該当する生徒は安全に食事ができる。反映が漏れると、うっかりミス・連絡ミスにつながる（全国旅館ホテル生活衛生同業組合連合会2014年調査: 食物アレルギー対応経験のある37施設中6施設が「問題があった」と回答、ただしいずれも大事には至らなかった）。",
+        "adjacent_profession_boundaries": "誰と誰を同室にするか（部屋割りの原案）、引率教員の人数、旅程全体、体調不良者が出た場合の一次対応は学校（引率教員）側が決める。アレルギー品目の除去要否そのものの医学的判断は医師の診断に基づき保護者が行う——宿泊施設側は「申告された情報をどう調理・提供に反映するか」を判断するのであり、除去が必要かどうか自体を判断する立場にはない。感染症流行時の中止・延期判断は学校の設置者・教育委員会側の判断。",
+        "uncertainties": [
+          "宿泊施設側で団体受入・部屋割りを担当する部署の正式名称・役職名（宿泊予約課／フロント／女将・番頭兼務など）は施設規模により異なり、全国共通の統一名称は確認できなかった",
+          "「団体予約確認書」「部屋割り表」の統一フォーマット・様式名は、官公庁・全国団体が定めた統一書式としては確認できず、旅行会社・施設ごとの独自書式である可能性が高い",
+          "大浴場の「1回あたり何班まで」といった具体的な収容上限の数値は、施設ごとの浴場の広さ・ロッカー数に依存する内部運用であり、全国共通の基準数値としては確認できなかった——このゲームでは入浴時間帯調整を判断要素として扱わない（下記の理由を参照）",
+          "修学旅行の夕食で「別トレー（別膳）」対応と「バイキングでのアレルギー表示・自己確認」対応のどちらがより一般的かは、施設の提供形式（会席かバイキングか）と規模による可能性が高く、一次資料から比率等の定量的な裏付けは確認できなかった——このゲームでは、より明確に文書化されている「別膳（個別対応食）」を正解として扱う",
+          "旧実装（src/q1/HotelReceiveGame.tsx）にあった『月組はバス酔いしやすく、到着後すぐ休ませたい』という班の申告データについて、これが宿泊施設側の部屋の物理的な配置（引率者との近さ等）の判断根拠になる、という宿泊業界で文書化されたルール・慣行は確認できなかった（見つかった唯一の『配慮対象者の部屋の位置』に関する公式基準は、対象・性質が異なるバリアフリー法の車椅子使用者用客室規定のみ）。確認できたのは、体調不良への実際の対応が『滞在中に実際に体調を崩してから』教員が個別対応する事後対応が中心であり、事前に効くのは『施設全体として休養用の予備個室を確保しておく』という予約段階の契約であって、特定の班をどこに配置するかという位置の判断ではない、という実態。このため、このゲームでは『休養ニーズ→部屋の位置』という因果関係をゲームの判断要素として扱わない（旧実装の decorative data 問題は、この因果関係を発明して『使う』のではなく、この因果関係をそもそも判断要素に含めないことで解消する）"
+        ],
+        "revision_note": "v1: q1-legacy-audit.mjs --backfillのプレースホルダーを、jc-researcherによる一次資料調査（research.md、業界団体・複数施設の公開資料、岐阜県教育委員会マニュアル）に基づく内容に置き換えた。旧実装（src/q1/HotelReceiveGame.tsx）の2つのreverse-audit指摘（brute force／月組の休養ニーズデータが装飾的で勝利条件に使われない）のうち、brute forceは単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係を研究が裏付けていないと確認したうえで、この因果関係自体をゲームの判断要素に含めないことで解消する設計方針を反映した（legacy-move-tryの教訓——研究が裏付けない因果関係をゲームの都合で発明してはならない——を踏まえ、同じ轍を踏まないよう最初から設計に織り込んだ）。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:35.384Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-hotel-receive/backfill/fact_sheet.json",
+          "created_at": "2026-09-10T16:38:25.610Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-hotel-receive/design/fact_sheet_v1.json",
+          "created_at": "2026-09-10T16:54:35.385Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-hotel-receive:scope_core:v2",
+      "artifact_type": "scope_core",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/scope_core_v1.json",
+      "payload": {
+        "core": "修学旅行等で到着する複数の班（花組・月組・星組）を、宿泊施設の団体受入担当として1班ずつチェックインさせる判断のループ。班ごとに、人数データ（部屋タイプの定員に収まるか）と食物アレルギー事前調査票（7大アレルギー品目ごとの除去要否）の両方を読み、部屋タイプ（トリプルルーム定員3／基準室定員4／特別室定員6のうち、その班の人数に定員が一致するもの）と食事（除去要の品目が1つでもあれば個別対応食、なければ通常メニュー）を1回のコミットで確定する。班ごとに独立した判断で、ある班で正しかった組み合わせが別の班でも正しいとは限らない。",
+        "scope": "学校編／修学旅行の団体受入場面——ホテル・旅館の団体受入担当が、到着した班をチェックインさせる場面",
+        "scope_is_representative_because": "『班の人数に応じた部屋タイプの割り当て』と『食物アレルギー情報に応じた食事の手配』は、fact_sheet_v1.jsonの一次資料（複数施設の教育旅行受入案内、全国旅館ホテル生活衛生同業組合連合会の食物アレルギー対応資料）が示す団体受入担当の中核業務そのものであり、『修学旅行の班をチェックインさせる』という場面はその典型的な適用例。",
+        "profession_name_hidden_test": "『班ごとに人数とアレルギー情報を読み比べて部屋と食事を決める』という記述だけでは職業名を当てられないが、E（正しく手配すれば団体が問題なく滞在できる、誤ると食物アレルギーへの対応漏れや部屋の定員超過が起きる）と組み合わせた文脈全体は、宿泊施設の団体受入という場面を指す。他の登場職業（理学療法士・水資源調整担当等）とはC（部屋タイプの定員表、食物アレルギー事前調査票）とD（人数×定員の照合、アレルギー品目の有無による食事の振り分け）が異なるため重複しない。",
+        "revision_note": "v1: reverse-audit backfillの記述を、fact_sheet_v1.jsonの一次資料とdesign-sim.mjsで数値検証済みの判断構造（3班×各班の部屋タイプ/食事の2判断）に基づいて具体化した。旧実装の月組休養ニーズという装飾データは、research.mdが因果関係を確認できなかったため、coreの判断要素に含めていない。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:fact_sheet:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:40.041Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-hotel-receive/backfill/scope_core.json",
+          "created_at": "2026-09-10T16:38:25.651Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-hotel-receive/design/scope_core_v1.json",
+          "created_at": "2026-09-10T16:54:40.041Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-hotel-receive:ae:v2",
+      "artifact_type": "ae",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/ae_v1.json",
+      "payload": {
+        "A": "学校編／修学旅行の宿泊施設——ホテル・旅館の団体受入担当が、到着した班をチェックインさせる場面",
+        "B": "今日は修学旅行の団体が到着する日。花組・月組・星組の3つの班が、それぞれ違う人数・違うアレルギー事情でやってくる——班ごとの情報をちゃんと読んで、人数に合う部屋と、アレルギーに合う食事を、1班ずつ間違えずに手配しなければならない。",
+        "C": "班ごとの人数データ（3人／4人／6人のいずれか）と、食物アレルギー事前調査票（7大アレルギー品目——卵・牛乳・小麦・そば・落花生・えび・かに——ごとに除去要否が記載されている）。部屋タイプは3種類（トリプルルーム定員3名、基準室定員4名、特別室定員6名、実在するホテルの部屋タイプ・定員をそのまま使用）。食事は2種類（通常メニュー、個別対応食＝別膳）。班の人数と部屋タイプの定員は必ずどれか1つに一致する（実在する定員表からそのまま採用しており、定員に満たない・超える部屋を選ぶ判断は発生しない）。アレルギー調査票に除去要の品目が1つでもあれば個別対応食、なければ通常メニューが正しい（研究: 事前調査票がフロント・厨房・配膳で共有され、該当する生徒の食事を個別対応食として手配する、という実在の情報の流れに基づく）。",
+        "D": "3つの班それぞれについて、人数データとアレルギー調査票の両方の『？』を開いて読み比べたうえで、部屋タイプを1つ、食事を1つ選び、その班につき1回のコミットで確定する（design-sim.mjs参照）。人数データを読まないと部屋タイプは決まらず、アレルギー調査票を読まないと食事は決まらない——どちらか一方だけを読んでも、もう一方は正しく決まらない。班ごとに独立した判断で、前の班で正しかった組み合わせをそのまま次の班に当てはめても正解にならない（design-sim.mjsのfixed_room_*/fixed_meal_*検証、いずれのfixed戦略も完全な推論100%を大きく下回る）。",
+        "E": "3つの班すべてで部屋タイプ・食事の両方が正しければ、団体は問題なくチェックインを終え、滞在を始められる、という成功結果になる（onComplete）。班のどれか1つでも部屋タイプまたは食事のいずれかが誤っていれば、その班はまだチェックインが完了しない、という正直な結果になる（onPartialComplete——Q1 First-Play Standard Gate H HONEST OUTCOMEに従い、successと同じonCompleteを呼ばず、異なるトップフレーミングで結果を示す。研究: 全国旅館ホテル生活衛生同業組合連合会の2014年調査でも、食物アレルギー対応の『問題があった』事例が報告されており、対応漏れが実在するリスクであることに基づく、誇張のない失敗結果）。成功時は3班すべてのアイコンが『チェックイン完了』状態（緑色・チェックマーク等）に変わり、失敗時は失敗した班のアイコンが、開始時の中立な状態とも成功時の状態とも異なる第3の『まだチェックインできない』状態（例: オレンジ色・注意マーク等、視覚的に明確に区別できる状態）に変わる、という視覚的な世界フィードバックを両方の結果で伴わせる（文章メッセージのみに頼らず、失敗時も必ず何らかの状態遷移が起きる——legacy-move-try design review r2で確立したTEXT_ONLY_CONSEQUENCE是正の教訓を最初から設計に織り込む）。班ごとに1回のコミットで確定し、同一セッション内でのやり直しはない（旧実装のbrute force——誤配置を無コストで何度でもやり直せる——を根本的に解消する）。失敗した班があった場合、結果画面は『まだできない』で終わらせず、同じ3班のデータ（人数・アレルギー調査票）をもう一度、読み取り専用で提示したうえで『今度はどの部屋・食事が合っていたと思う？』という非採点の振り返り選択（班ごと、結果は変わらない）を挟むことで、Q1 First-Play Standard Gate G「考え直す余地」に対応する（legacy-allocate-and-forecast実装レビューr1のTHINK_AGAIN_CONTEXT_MISSING是正の教訓を踏まえ、データの再掲を設計段階で明記する）。実装では、各班の人数・アレルギー調査票の『？』データを両方開いて読むまで、その班の部屋・食事選択ボタンを活性化させない（legacy-layer-and-compare実装レビューr1のCORE_DATA_DISCLOSURE_NOT_REQUIRED是正を最初から設計に織り込む）。旧実装にあった『月組の休養ニーズ』というデータは、research.mdが『休養ニーズ→部屋の位置』という因果関係を裏付けていないと確認したため、このゲームの判断要素には一切含めない（装飾データとして残す＝再び同じ問題を生むため、含めないことで根本的に解消する）。",
+        "revision_note": "v1: fact_sheet_v1.json/scope_core_v1.jsonの一次資料と、design/design-sim.mjsで数値検証済みの判断構造に基づき、A-Eを具体化した。旧実装（src/q1/HotelReceiveGame.tsx）の2つのreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）に的を絞った設計を行った——legacy-move-tryが6回の設計レビューを要した教訓（研究が裏付けない因果関係を発明してはならない）を踏まえ、装飾データの『使い道』を発明するのではなく、そもそも判断要素に含めないという、最初から保守的な設計を選択した。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:scope_core:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:43.982Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-hotel-receive/backfill/ae.json",
+          "created_at": "2026-09-10T16:38:25.692Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-hotel-receive/design/ae_v1.json",
+          "created_at": "2026-09-10T16:54:43.983Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-hotel-receive:core_scope_check:v1",
+      "artifact_type": "core_scope_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/core_scope_check_v1.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "scope_core_v1.jsonのcoreとae_v1.jsonのD/Eは、3班それぞれの人数×アレルギーという2つの独立した判断（design-sim.mjs——部屋タイプは定員が班の人数に一致するもの、食事はアレルギー調査票の除去要否で決まる、いずれも直接・具体的に根拠づけられた判断）と、班ごとの単発コミット、Gate H（onComplete/onPartialComplete）、視覚フィードバック（失敗時アイコンの第3状態への遷移）、非採点振り返り（データ再掲込み）、disclosure gate（両方のデータを開くまで選択ボタンを活性化しない）を一貫して記述しており矛盾はない。旧実装のreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）のうち、brute forceは単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係をresearch.mdが裏付けていないことを確認したうえで、この因果関係をそもそも判断要素に含めないことで解消している——ae_v1.jsonのEフィールドに明記済み。scopeの『修学旅行の団体受入場面』はfact_sheet_v1.jsonの一次資料（複数施設の教育旅行受入案内、業界団体の食物アレルギー対応資料）が示す団体受入担当の中核業務そのものであり、周辺的な作業ではない。profession_name_hidden_testは、C（部屋タイプの定員表、食物アレルギー事前調査票）とD（人数×定員の照合、アレルギー品目の有無による食事の振り分け）が他の既存Q1ゲームと重複しないことを確認済み。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:ae:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:48.379Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/core_scope_check_v1.json",
+          "created_at": "2026-09-10T16:54:48.379Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-hotel-receive:play_seeds:v1",
+      "artifact_type": "play_seeds",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/play_seeds_v1.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-hana-basic-normal",
+            "authentic_causal_loop": "花組は4名、食物アレルギー事前調査票には除去要の品目が1つもない週。人数データを読むと4名なので、定員4名の基準室が正しい部屋タイプになる。アレルギー調査票を読むと除去要の品目がないので、通常メニューが正しい食事になる。",
+            "player_action": "花組の人数データとアレルギー調査票の両方の『？』を開いて読み、部屋タイプとして『基準室』、食事として『通常メニュー』を選んで実施ボタンを押す。",
+            "system_reaction": "『花組のチェックインが完了した』という結果が表示され、花組のアイコンが『完了』状態に変わる。",
+            "information_gained": "人数データが部屋タイプを、アレルギー調査票が食事を、それぞれ独立に決めることを体感する。",
+            "next_judgment_or_action": "次の班（月組）では、人数もアレルギーの有無も花組と違うかもしれないと気づき、同じ組み合わせをそのまま当てはめない。",
+            "C_used": "花組の人数データ（4名）とアレルギー調査票（除去要の品目なし）の読み物。",
+            "D_expressed": "人数×アレルギーの2つの独立した判断（design-sim.mjs——部屋タイプは定員一致、食事はアレルギー有無で直接決まる）。",
+            "E_reached": "花組のチェックインが完了する、という正直な成功結果（視覚的なアイコン変化つき）。",
+            "risks": "『いつも基準室・通常メニューを選べば当たる』という固定パターンが生まれないか（design-sim.mjsのfixed_room_basic/fixed_meal_normalで検証済み、いずれも10%前後にとどまる——人数もアレルギーの有無も班ごとにランダムなため）。"
+          },
+          {
+            "seed_id": "s2-tsuki-triple-allergy-special",
+            "authentic_causal_loop": "月組は3名、食物アレルギー事前調査票には卵が除去要と記載されている週。人数データを読むと3名なので、定員3名のトリプルルームが正しい部屋タイプになる。アレルギー調査票を読むと卵が除去要なので、個別対応食（別膳）が正しい食事になる。",
+            "player_action": "月組の人数データとアレルギー調査票の両方の『？』を開いて読み、部屋タイプとして『トリプルルーム』、食事として『個別対応食』を選んで実施ボタンを押す。",
+            "system_reaction": "『月組のチェックインが完了した』という結果が表示され、月組のアイコンが『完了』状態に変わる。",
+            "information_gained": "アレルギー調査票に除去要の品目が1つでもあれば、通常メニューではなく個別対応食が正しいことを体感する。",
+            "next_judgment_or_action": "次の班でアレルギーがない場合は通常メニューに戻る、と気づく——『いつも個別対応食』にはならない。",
+            "C_used": "月組の人数データ（3名）とアレルギー調査票（卵が除去要）の読み物。",
+            "D_expressed": "人数×アレルギーの2つの独立した判断。アレルギー調査票を読まずに通常メニューを選ぶと誤りになる。",
+            "E_reached": "月組のチェックインが完了する、という正直な成功結果（視覚的なアイコン変化つき）。",
+            "risks": "アレルギー調査票を開かずに『いつも通常メニュー』を選ぶ固定パターンが生まれないか（design-sim.mjsのfixed_meal_normalで検証済み、約14%にとどまる——アレルギーの有無は班ごとに約50%の確率でランダムなため）。"
+          },
+          {
+            "seed_id": "s3-hoshi-special-skim-allergy-trap",
+            "authentic_causal_loop": "星組は6名、食物アレルギー事前調査票には落花生が除去要と記載されている週。人数データとアレルギー調査票の両方を開いて読んだ（disclosure gateは満たす）が、アレルギー調査票の中身をよく確認せずに『特に書いてなさそう』と思い込み、通常メニューを選んでしまう誤り——カードを開くこと自体と、書かれている内容を正しく読み取ることは別だと体感させるシナリオ（正しくは、落花生が除去要なので個別対応食が正解）。",
+            "player_action": "星組の人数データとアレルギー調査票の両方の『？』を開く（disclosure gateは満たす）。アレルギー調査票の内容を十分確認せずに、部屋タイプとして『特別室』（人数は正しく読めている）、食事として『通常メニュー』を選んで実施ボタンを押す（誤り）。",
+            "system_reaction": "『星組はまだチェックインが完了しない』という正直な結果が表示され、星組のアイコンが第3の『まだできない』状態に変わる。",
+            "information_gained": "カードを開くこと自体では正解にならず、書かれている内容（除去要の品目があるかどうか）を実際に読み取って使う必要があることを体感する。",
+            "next_judgment_or_action": "次からはアレルギー調査票の品目欄を1つずつ確認してから食事を選ぶ、と気づく。",
+            "C_used": "星組の人数データ（正しく読んだ）とアレルギー調査票（開いたが内容を見落とした）。",
+            "D_expressed": "データを開いたが内容を軽視した誤った判断——部屋タイプ（人数由来）は正しいが、食事（アレルギー由来）が誤り。",
+            "E_reached": "正直な失敗結果（星組のアイコンが第3の状態に変わる）。",
+            "risks": "『カードを開けば読んだことになる』という誤解を防ぐため、アレルギー調査票のUIは7品目それぞれの除去要否を個別に視覚的に明示し（一覧をざっと見ただけでは見落としやすい表示にしない）、実装レビューで確認する。"
+          },
+          {
+            "seed_id": "s4-misjudge-then-reflect",
+            "authentic_causal_loop": "花組は6名、食物アレルギー事前調査票にはそばが除去要と記載されている週。両方のデータを正しく開いて読んだが、『アレルギーがあるから、念のため広い部屋（特別室）にしておこう』と考えて、人数とは無関係にアレルギーの有無で部屋タイプを選んでしまう誤り——部屋タイプは人数（定員）だけで決まり、アレルギーの有無とは無関係、という『どのデータがどの判断に対応するか』の取り違えによる誤り（正しくは、6名なので特別室は結果的に合っているが、この班がもし3名だった場合はトリプルルームが正解で、アレルギーの有無で部屋タイプを変えるのは誤った理屈である）。",
+            "player_action": "花組の人数データとアレルギー調査票の両方の『？』を開いて読む（disclosure gateは満たす）。アレルギーがあることを理由に部屋タイプを『特別室』にしようと考え、食事は『通常メニュー』のままにして実施ボタンを押す（そばが除去要なのに通常メニューを選んでしまう誤り）。",
+            "system_reaction": "『花組はまだチェックインが完了しない』という正直な結果が表示され（なぜ誤りだったかは個別に示さない）、花組のアイコンが第3の『まだできない』状態に変わる。月組・星組を含む3班すべての結果が出そろった後、1つでも失敗があれば、onComplete（全成功）ではなくonPartialComplete（Gate H HONEST OUTCOME）を呼び、同じ3班のデータをもう一度、読み取り専用で提示したうえで『今度はどの部屋・食事が合っていたと思う？』という非採点の振り返り選択（3班それぞれについて、結果は変わらない）を挟む。",
+            "information_gained": "両方のデータを正しく開いて読んでいても、どのデータがどの判断（部屋タイプ＝人数、食事＝アレルギー）に対応するのかを取り違えると誤ることがあると体感する——2つの判断は互いに独立しており、一方の情報でもう一方を決めてはいけない、という理解が必要だと気づく。",
+            "next_judgment_or_action": "振り返り選択のあと先へ進み、次のセッションでは班ごとに、人数はあくまで部屋タイプ、アレルギーはあくまで食事、という対応関係を守って選ぶ。",
+            "C_used": "花組の人数データとアレルギー調査票（両方開いて読んだが、アレルギー情報を誤って部屋タイプの判断に使い、食事の判断には使わなかった）。",
+            "D_expressed": "両方のデータを正しく理解したうえでの、データと判断の対応関係の取り違えという判断の失敗と、その後の振り返り（非採点）。",
+            "E_reached": "正直な失敗結果（班ごとに示され、アイコンが第3の状態に変わる）と、Gate Gの非採点振り返りステップ、Gate Hの誠実な結果フレーミング。",
+            "risks": "振り返り選択が結果を変えてしまう、あるいは振り返りをせずに先へ進めてしまうと、Gate G（考え直す余地）が満たされない。振り返り画面にデータの再掲がないと、Gate Gが記憶頼みになってしまう（legacy-allocate-and-forecastの実装レビューr1 THINK_AGAIN_CONTEXT_MISSING是正の教訓を踏まえ、振り返り画面には3班の元データも読み取り専用で再掲する設計をae_v1.jsonに明記済み）。振り返り後も個別の正誤は一切開示しない（実装時にreflection未選択の間は先へ進むボタンをdisabledにする）。"
+          }
+        ]
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:ae:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:48.419Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/play_seeds_v1.json",
+          "created_at": "2026-09-10T16:54:48.420Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-hotel-receive:reference_research:v1",
+      "artifact_type": "reference_research",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/reference_research_v1.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "全国旅館ホテル生活衛生同業組合連合会「旅館ホテルにおける食物アレルギーへの対応」（2014.8.7、消費者庁 食品表示に関する検討会 提出資料）——食物アレルギー事前調査票（京都府版）、7大アレルギー品目ごとの除去要否記載、学校→保護者→学校→宿泊施設・旅行会社という情報の流れ、フロント・厨房・配膳での情報共有",
+            "relevant_mechanic": "事前に届いた情報（除去要否）を確認し、その生徒・班の食事を通常メニューと分けて手配する、という実在の直接的なC⇄D",
+            "borrowed_principle": "7大アレルギー品目ごとの除去要否という実在のデータ構造をそのままゲームのC（アレルギー調査票）として採用し、除去要の品目が1つでもあれば個別対応食（別膳）、なければ通常メニュー、という研究が直接裏付ける単純なルールをDとして採用する。数値や閾値（『3品目以上なら〜』等）は一切発明せず、『除去要が1つでもあるか』という二値の判断のみを使う——legacy-move-tryのCORE_CAUSAL_MODEL_DISTORTED（研究が裏付けない閾値・条件を発明した）の教訓を踏まえ、研究が明確に裏付ける範囲を超えない。",
+            "surface_elements_not_to_copy": "京都府版の調査票の具体的な書式・記入欄デザインはそのまま再現しない（10-12歳向けに、7品目ごとの除去要否という核だけを抽出する）。「別トレー」vs「バイキング表示確認」のどちらが一般的かという定量的な比率は一次資料から確認できなかったため、ゲーム内では『別トレー（別膳）』という、より明確に文書化されている方の対応のみを扱う。"
+          },
+          {
+            "reference": "三井ガーデンホテル京都四条「教育旅行用 施設受入のご案内」／Mikazuki（龍宮亭）「修学旅行ご案内」——実在する部屋タイプと定員（トリプルルーム定員3名48部屋、基準室定員4名29部屋、特別室定員6名40部屋、カラフルルーム定員4名30部屋）、学校が班編成を決め宿泊施設がその人数を部屋タイプへ収めるという役割分担",
+            "relevant_mechanic": "班の人数に対して、定員が一致する部屋タイプを割り当てる、という実在の直接的なC⇄D",
+            "borrowed_principle": "実在する部屋タイプの定員（3・4・6名）をそのまま採用し、班の人数がいずれかの定員に必ず一致するよう設計することで、『定員が足りる部屋のうち、どれが一番適切か』という発明された優先順位ルール（例: 常に最小の部屋を選ぶべき、等）を一切必要としない——人数と定員が一致するかどうかという、最も単純で最も裏付けの強い基準だけで正解が一意に決まる構成にした（重複する定員のカラフルルーム＝定員4名は、基準室と定員が重複するため今回のゲームでは採用しない）。",
+            "surface_elements_not_to_copy": "実在する部屋数（29室・40室・48室等）や号室の具体的な配置図は再現しない（10-12歳向けに、部屋タイプと定員という核だけを抽出する）。"
+          },
+          {
+            "reference": "岐阜県教育委員会「修学旅行マニュアルについて（資料2）」5(2)⑦・2(7)——体調不良者のための予備個室の事前確保（予約段階の契約）と、滞在中に実際に体調を崩した場合の事後対応（引率教員が中心）",
+            "relevant_mechanic": "『休養ニーズ』が実在の宿泊業でどこに効くのかを確認し、旧実装の装飾データ問題（月組の休養ニーズが勝利条件で使われない）を、因果関係の発明ではなく除去によって解消する",
+            "borrowed_principle": "『休養ニーズ→部屋の位置』という因果関係は宿泊業界で文書化されたルールとして確認できなかった（research.md §4）。確認できたのは、休養室の確保が施設全体としての予約段階の取り決めであり、個々の班をどこに配置するかという話ではないこと、また体調不良への実際の対応は事後的（滞在中に実際に体調を崩してから）で引率教員が中心であること。この2点はいずれも今回のゲームのスコープ（チェックイン時点での部屋・食事の手配）の外側にある実務であるため、月組の休養ニーズというデータ自体をこのゲームの判断要素に含めない、という設計判断の根拠にした——legacy-move-tryが6ラウンドの設計レビューを要した教訓（研究が裏付けない因果関係を発明してはならない）を、この段階で先取りして適用した。",
+            "surface_elements_not_to_copy": "岐阜県教育委員会マニュアルの感染症対策文脈の記述をそのまま持ち込まない（今回のゲームは感染症対策ではなく、通常の団体受入業務を扱う）。"
+          }
+        ]
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:play_seeds:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:52.899Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/reference_research_v1.json",
+          "created_at": "2026-09-10T16:54:52.900Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-hotel-receive:c_compression:v1",
+      "artifact_type": "c_compression",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/c_compression_v1.json",
+      "payload": {
+        "original_C": "団体予約確認書（部屋数・部屋タイプ・人数・到着時刻等の一覧、施設ごとの独自書式）、実在する客室リスト（部屋タイプ別の定員・室数・フロア配置図）、先生用カードキー・生徒部屋スペアキーの運用ルール、食物アレルギー事前調査票（京都府版の実在書式、7大アレルギー品目ごとの除去要否・医師の診断有無・治療薬の有無等）、大浴場の定員・混雑状況、バリアフリー法に基づく車椅子使用者用客室のエレベーター近接配置基準、体調不良者用の予備個室確保（予約段階の契約）。",
+        "compressed_C": "班ごとの人数データ（3名／4名／6名のいずれか、実在する部屋タイプの定員と一致する数値をそのまま使用）と、食物アレルギー事前調査票（7大アレルギー品目ごとの除去要否、実在の品目名をそのまま使用）の2種類の読み物に単純化する。",
+        "removed_complexity": "団体予約確認書・客室リストの詳細な書式、先生用カードキー・スペアキーの運用ルール、大浴場の定員・混雑管理、バリアフリー法の車椅子使用者用客室規定、体調不良者用の予備個室確保、京都府版調査票の医師の診断有無・治療薬の有無等の詳細項目、部屋数（29室・40室・48室等）や号室の配置。",
+        "reason_for_removal": "research.mdが示すとおり、10-12歳向けに削るべきは施設運用の詳細な書式・数値そのものであり、残すべきは『班の人数に定員が合う部屋を選ぶ』『アレルギー情報に応じて食事を分ける』という、実在の因果関係が明確な2つの判断の骨組み。大浴場の入浴時間帯調整は、混雑状況に応じて調整するという実務自体は実在するが、具体的な収容人数の全国共通基準が確認できなかった（research.md FACT_CHECK_REQUIRED）ため、このゲームでは扱わない。バリアフリー法の車椅子使用者用客室規定は対象・性質が異なるため転用しない。月組の休養ニーズ（旧実装の装飾データ）は、『部屋の位置』への因果関係が確認できなかったため、このゲームの判断要素に一切含めない。",
+        "preserved_D": "班ごとに人数データとアレルギー調査票の両方を見比べて、部屋タイプと食事をそれぞれ1つ選び、班ごとに1回のコミットで確定する行為。",
+        "how_player_still_performs_D": "各班の人数・アレルギー調査票の読み物をすべて『？』で開いて確認したうえで、部屋タイプ・食事のボタンをそれぞれ1つ選び、実施ボタンを押す。単純化された読み物であっても、人数データを読まないと部屋タイプは決まらず、アレルギー調査票を読まないと食事は決まらないことをdesign-sim.mjsで数値検証済み（room_ignored_always_basic≈0.038、meal_ignored_always_normal≈0.143、いずれも完全な推論100%を明確に下回る）ため、D（両方を見比べる判断）はCの単純化後も保たれている。",
+        "failure_risk": "2種類の読み物への単純化によって、片方を見なくても運よく正解できてしまう『部分的な当てずっぽう』が生まれないか——design-sim.mjsのfixed_room_*/fixed_meal_*/room_ignored_always_basic/meal_ignored_always_normal/random_pick等のチェックで、全ての当てずっぽう戦略が正しい判断（100%）を大きく下回ること（固定の部屋タイプ戦略は約4%、固定の食事戦略は約11-14%、完全content-blind random pickは約0.5%）を検証済み。班の人数（3種類）とアレルギーの有無（約50%）がいずれも班ごとに独立してランダムなため、一方のデータを読まずに固定の答えを出す戦略は高い確率で外れる設計にした。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:play_seeds:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:52.941Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/c_compression_v1.json",
+          "created_at": "2026-09-10T16:54:52.942Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-hotel-receive:game_translations:v1",
+      "artifact_type": "game_translations",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/game_translations_v1.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-check-in-per-group",
+            "play_seed": "s1-hana-basic-normal",
+            "goal": "花組・月組・星組の3班それぞれについて、人数データとアレルギー調査票の読み物をすべて確認したうえで、部屋タイプ（トリプルルーム／基準室／特別室）と食事（通常メニュー／個別対応食）をそれぞれ1つ選んで、班ごとに1回のコミットとして確定する。",
+            "first_visible_state": "『修学旅行の団体が到着する日』という導入と、花組・月組・星組の3枚の班カード（固定表示、タップで『？』が開き人数データ・アレルギー調査票が表示される、それぞれ現在の状態を示すアイコン付き）、部屋タイプボタン3個・食事ボタン2個（表示順は毎セッション独立にシャッフル）、班ごとの実施ボタン。説明文はない。",
+            "primary_action": "班カードの『？』をすべてタップして読み物を開く→部屋タイプボタンを1つ、食事ボタンを1つ選ぶ→『チェックインする』を押すと1回のコミットでその班の結果が確定する→次の班へ進む（3班繰り返し）。",
+            "C_interaction": "班ごとの人数データ（3名／4名／6名のいずれか）は、その班に定員が一致する部屋タイプ（トリプルルーム3名／基準室4名／特別室6名）を直接、一意に決める。アレルギー調査票（7大アレルギー品目ごとの除去要否）は、除去要の品目が1つでもあれば個別対応食、なければ通常メニューという食事を直接、一意に決める。この2つの判断は互いに独立しており、一方のデータでもう一方を決めることはできない（design-sim.mjs検証、人数だけ読んでも食事は決まらず、アレルギー調査票だけ読んでも部屋タイプは決まらない）。班ごとに独立した判断で、前の班の組み合わせをそのまま次の班に当てはめても正解にならない。",
+            "system_reaction": "選んだ部屋タイプ・食事の両方がその班の人数・アレルギー情報に合っていれば『（班名）のチェックインが完了した』という成功——その班のアイコンが『完了』状態（色・チェックマーク等）に変わる。どちらか一方でも合っていなければ、フラットな『（班名）はまだチェックインできない』という結果になり、どこが誤っていたかは示さないが、アイコンは開始時の中立な状態とも成功時の状態とも異なる第3の『まだできない』状態（例: オレンジ色・注意マーク等、視覚的に明確に区別できる状態）に変わる。3班すべての結果が出そろった時点で、1つでも失敗があれば（onComplete=全成功ではなくonPartialCompleteを呼び、Gate H HONEST OUTCOMEに従う）、3班のデータをもう一度、読み取り専用で提示したうえで、班ごとに『今度はどの部屋・食事が合っていたと思う？』という非採点の振り返り選択を挟む——この選択は採点されず、結末も変わらない。",
+            "information_gained": "班ごとの成功/失敗の結果のみ（視覚的なアイコン変化つき）。失敗した班について、部屋タイプ・食事のどちらが誤っていたかは個別に示されない。",
+            "player_next_judgment": "次の班の人数・アレルギーデータを読み、同じ組み合わせを機械的に繰り返さず班ごとに独立して判断する。",
+            "D_externalization": "班カードのタップによる読み物の確認と、部屋タイプ・食事ボタンのタップによる選択という、子ども自身の明示的な選択が、そのまま人数の照合・アレルギー情報の確認・手配の判断を表現する。システムは先に正解を示さない。",
+            "E_consequence": "3班すべてで部屋タイプ・食事の両方が正しければ、団体は問題なくチェックインを終え、滞在を始められる、という成功結果（onComplete）になる。1つでも合っていなければ、その班はまだチェックインが完了しない、という正直な結果（onPartialComplete）になる（手配に意味がなかったという意味ではなく、その班に本当に必要だった部屋・食事の条件を満たせなかった、という判断の失敗を表す）。",
+            "retry_or_rethink": "班ごとの得点に影響するやり直しはない（1回のコミットで各班の成功/失敗が確定する）。1つでも失敗した場合は3班のデータを再提示したうえで、班ごとの非採点振り返り選択（結果は変わらない）を挟んでから結末へ進む。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことで行う。",
+            "job_reveal_bridge": "『修学旅行の団体が到着する日』という導入から、ホテル・旅館の団体受入担当という仕事の紹介へつなげる。学校側が決めた班編成を、宿泊施設側が実在する部屋・食事の枠に収める、という実在の役割分担を明示する。",
+            "strengths": "旧実装の唯一の根本問題（誤配置してもコストゼロで何度でもやり直せるbrute force）を、班ごとの単発コミット化で解消する。design-sim.mjsで、固定の部屋タイプ戦略は約4%、固定の食事戦略は約11-14%、content-blind random pickは約0.5%、人数データを無視した戦略は約4%、アレルギー調査票を無視した戦略は約14%と、いずれも完全な推論(100%)を明確に下回ることを検証済み。研究で確認された実在の2つの独立した因果関係（人数→部屋タイプ、アレルギー→食事）だけを使い、研究が裏付けない因果関係（月組の休養ニーズ→部屋の位置）は一切発明せず、判断要素から除外している。",
+            "weaknesses": "375px×3班カード＋部屋タイプボタン3個＋食事ボタン2個＋実施ボタンというレイアウトは実装段階の検証項目。振り返り画面が3班ぶんのデータ再掲＋3つの振り返り選択になるため、画面が長くなる可能性があり、実装時に375px高さでの収まりを確認する。",
+            "risk": "design-sim-result.json: legitimate_full_reasoning=1（100%）、random_pick≈0.005、fixed_room_*はいずれも約3.6-3.9%、fixed_meal_*は約11-14%、meal_ignored_always_normal≈0.143、room_ignored_always_basic≈0.038。いずれも完全な推論100%を明確に下回ることを検証済み。",
+            "adoption_or_rejection_reason": "採用。CORE/AEで定義した『班ごとの人数×アレルギーの独立した判断』を最も忠実に表現し、design-sim.mjsで両方のデータを読まない戦略がいずれも十分に低い成功率にとどまることを事前検証済み。旧実装のbrute force exploitをピンポイントで解消しつつ、研究で裏付けの取れた2つの因果関係だけを使うという、過剰設計を避けた翻訳。Gate H（onComplete/onPartialComplete）と視覚的な世界フィードバック（班アイコンの3状態変化）も明記済み。"
+          },
+          {
+            "translation_id": "t2-keep-retry-add-penalty-rejected",
+            "play_seed": "s4-misjudge-then-reflect",
+            "goal": "旧実装のまま、班内でのやり直しは残しつつ、誤った配置のたびに何らかのペナルティ（時間経過等の抽象的なコスト）を追加する。",
+            "first_visible_state": "旧実装同様の3班固定進行画面に、ペナルティを示す抽象的なゲージを追加。",
+            "primary_action": "班ごとに部屋・食事を選ぶ→誤りならペナルティを受けて同じ班で再選択できる→正解するまで繰り返す。",
+            "C_interaction": "旧実装と同じ、班の人数・アレルギー情報を読み比べる。",
+            "system_reaction": "誤答時はペナルティ（ゲージ減少等）を受けつつ、同じ班に留まり再選択できる。",
+            "information_gained": "誤答してもコストが引かれるだけで、最終的には必ず正解にたどり着けてしまう。",
+            "player_next_judgment": "ペナルティが尽きるまで総当たりを続けられる。",
+            "D_externalization": "部屋・食事の選択自体は子どもの判断だが、ペナルティが尽きるまでは総当たりで正解にたどり着けてしまう。",
+            "E_consequence": "ペナルティの量に関わらず、最終的には正解にたどり着けてしまう（総当たりの根本的な解消にならない）。",
+            "retry_or_rethink": "同一班内での事実上の総当たりが残ったまま。",
+            "job_reveal_bridge": "旧実装のまま。",
+            "strengths": "実装コストが最小（既存コードへの小さな追加で済む）。",
+            "weaknesses": "brute_forceという唯一のreverse audit指摘を根本的に解消しない——部屋タイプ3択×食事2択＝6通りという小さな解空間では『ペナルティを払ってでも総当たりする』という攻略が成立する。",
+            "risk": "BRUTE_FORCE_SUCCESS相当（ペナルティの大きさに関わらず、有限の総当たりで必ず正解にたどり着ける構造は解消されない）。",
+            "adoption_or_rejection_reason": "却下。reverse auditが指摘した唯一の欠陥（brute force）を根本的に解消しないため、legacy rebuildの目的を達成できない。"
+          },
+          {
+            "translation_id": "t3-invent-rest-need-position-rejected",
+            "play_seed": "s2-tsuki-triple-allergy-special",
+            "goal": "旧実装の『月組の休養ニーズ』データを活かすため、休養ニーズがある班の部屋を、引率者の部屋に隣接させることを正解とする第3の判断軸を追加する。",
+            "first_visible_state": "班カードに『休養ニーズ』の読み物を追加し、部屋タイプに加えて『引率者の部屋との近さ』を選ぶ画面。",
+            "primary_action": "班ごとに部屋タイプ・食事に加えて、部屋の位置（引率者の近く／通常の位置）も選ぶ。",
+            "C_interaction": "休養ニーズがある班は引率者の部屋に近づけるべき、という新設のルールを読み比べる。",
+            "system_reaction": "休養ニーズがある班を引率者の近くに配置すると成功、しないと失敗。",
+            "information_gained": "休養ニーズ→部屋の位置、という因果関係が『正解』として学習されてしまう。",
+            "player_next_judgment": "同上のルールを次のセッションでも適用する。",
+            "D_externalization": "位置の選択自体は子どもの判断だが、その判断基準（休養ニーズ→近さ）自体が実在しない因果関係。",
+            "E_consequence": "休養ニーズがある班を引率者の近くに配置すれば『正解』という結果になるが、これは実在の宿泊業の判断ルールではない。",
+            "retry_or_rethink": "t1と同様の非採点振り返りは追加できるが、根本的な因果の裏付け不足は解消されない。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "旧実装の装飾データ（月組の休養ニーズ）を『使われるデータ』に変えられる。",
+            "weaknesses": "research.md §4が明確に指摘する通り、『休養ニーズ→部屋の位置』という因果関係は宿泊業界の文書化されたルールとして確認できなかった。これをゲームの正解として採用することは、legacy-move-tryのdesign review r2-r6で繰り返し指摘されたCORE_CAUSAL_MODEL_DISTORTED（研究が裏付けない因果関係の発明）と同種の欠陥を、最初から作り込むことになる。",
+            "risk": "CORE_CAUSAL_MODEL_DISTORTED相当（休養ニーズと部屋の位置を結びつける実在の根拠がない）。",
+            "adoption_or_rejection_reason": "却下。research.mdが確認した実在の情報（休養ニーズは予約段階の施設全体の休養室確保、または滞在中の事後対応にのみ効く）を無視し、裏付けのない位置判断ルールを追加することは、このセッションで繰り返し指摘されてきたCORE_CAUSAL_MODEL_DISTORTEDの再発になる。装飾データ問題は、因果関係を発明するのではなく、このデータをゲームの判断要素に含めないことで解消する（t1採用）。"
+          }
+        ],
+        "adopted_translation_id": "t1-check-in-per-group",
+        "adoption_rationale": "t1は、fact_sheet_v1.json/scope_core_v1.json/ae_v1.jsonが定義する『班ごとの人数×アレルギー情報の独立した判断』を、design-sim.mjsで両方のデータを読まない戦略がいずれも十分に低い成功率にとどまることを事前検証したうえで採用する。t2（ペナルティ付き総当たり）はreverse auditが指摘したbrute force exploitを根本的に解消しないため却下、t3（休養ニーズ→部屋の位置という新設ルール）はresearch.mdが裏付けを確認できていない因果関係を追加するCORE_CAUSAL_MODEL_DISTORTED相当のリスクがあるため却下。legacy-move-tryが6ラウンドの設計レビューを経て確立した教訓（研究が裏付けない因果関係を発明してはならない、装飾データは使い道を発明するのではなく判断要素から除外してもよい）を、この設計の最初の段階から適用した。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:play_seeds:v1",
+        "legacy-hotel-receive:c_compression:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:54:57.096Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/game_translations_v1.json",
+          "created_at": "2026-09-10T16:54:57.097Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-hotel-receive:first_5_seconds:v1",
+      "artifact_type": "first_5_seconds",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/first_5_seconds_v1.json",
+      "payload": {
+        "zero_to_two_seconds": "『修学旅行の団体が到着する日』という短い導入テキストのあと、花組の班カード（『？』アイコンで閉じた状態）と、部屋タイプボタン3個・食事ボタン2個（表示順は毎セッションシャッフル）、実施ボタン（disabled状態）が画面に表示される。",
+        "two_to_five_seconds": "子どもは『？』が気になり、班カードをタップする。開くと人数データ（例: 『花組は4名です』）とアレルギー調査票（7大アレルギー品目ごとの除去要否）が表示される。",
+        "first_expected_touch": "花組の班カードへの最初のタップ。",
+        "first_system_reaction": "タップしたカードが開き、人数データとアレルギー調査票が表示される。まだ実施ボタンはdisabledのまま。",
+        "next_expected_inference": "『部屋タイプと食事を両方選ばないと、実施ボタンが押せそうにない』という推測（実施ボタンがdisabledのままであることから）。",
+        "next_expected_action": "人数データに合う部屋タイプと、アレルギー調査票に合う食事をそれぞれ選び、実施ボタンを押す。成功すれば次の班（月組）に進み、そこでも同じように両方のデータを読む必要があることに気づく。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:game_translations:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:55:01.219Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-10T16:55:01.220Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-hotel-receive:no_manual_exploit_check:v1",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/no_manual_exploit_check_v1.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": "説明文なしで、班カードのタップ（読み物が開く）と部屋タイプ・食事ボタンのタップ（選択）だけで操作方法が分かる。既存Q1（legacy-layer-and-compare等）と同じ、タップと『？』的開示のみの規約に従う。",
+          "contextual_cue_only": "班カードの読み物とボタンの名前という文脈だけで、どれが正解かをシステムが直接教えない。読み比べる以外に手がかりはない。旧実装にあった誤答時の個別説明があれば、消去法による総当たりを助けるため廃止し、フラットな結果のみを返す。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": "各班で選べる部屋タイプ・食事はそれぞれ1つだけのため、select-allに相当する攻略は存在しない。",
+          "tap_all": "班カードを全部開いて読み物を確認すること自体はコストがなく許容される（内容を読む行為であり、攻略ではない）が、実際の部屋タイプ・食事の選択と『チェックインする』は班ごとに1回のコミットで確定する。",
+          "spam_submit": "班ごとに1回のコミットで結果が確定し、同一班内でのやり直しはない（旧実装の誤配置してもコストゼロで何度でもやり直せる構造は再導入しない）。失敗時に挟む振り返り選択は採点対象外で、結末を変えない——連打・選び直しによる総当たり成功の再導入にはならない。",
+          "fixed_failure_pattern": "design-sim.mjs検証: 班の人数（3種類、いずれかの部屋タイプの定員に一致）とアレルギーの有無（約50%）は班ごとに独立してランダムなため、固定の部屋タイプ戦略（他は正しく読める前提）はいずれも約3.6-3.9%、固定の食事戦略は約11-14%、content-blind random pickは約0.5%、人数データを完全に無視した戦略（常に基準室）は約3.8%、アレルギー調査票を完全に無視した戦略（常に通常メニュー）は約14.3%にとどまり、完全な推論(100%)を明確に下回ることを設計により保証（design-sim-result.json）。",
+          "color_leak": "班カード・部屋タイプ/食事ボタンは同じ視覚的な強調度で示し、色だけで正解を示唆しない設計を意図（実装段階でのQA検証が必要——この時点では意図の記述であり、実測による検証ではない）。",
+          "label_leak": "班の名前（花組・月組・星組）は正当な開示（実在の慣行的な班命名をそのまま使うのは職業の実態を正しく伝えるために必要）。部屋タイプの名前（トリプルルーム・基準室・特別室）と食事の名前（通常メニュー・個別対応食）も正当な開示——ただし各班でどの部屋タイプ・食事が正解かは、班自身のデータを読まないと分からない。部屋タイプのボタンに定員数を明記する場合でも（例: 『トリプルルーム（定員3名）』）、班の人数自体を知らなければ意味を持たないため、答え漏れには当たらない。",
+          "position_leak": "班カードの表示順は固定（花組→月組→星組）とするが、これは正解を示唆するものではなく単なる進行順序。部屋タイプ・食事ボタンの表示順は毎セッション独立にシャッフルすることを実装段階の受け入れ条件とする。",
+          "visual_hierarchy_leak": "班カード・部屋タイプ/食事ボタンは同じ見た目・同じ情報量で提示し、視覚的な強弱で正解を示唆しない設計を意図。",
+          "pass": true
+        },
+        "design_sim_evidence": "factory/projects/legacy-hotel-receive/design/design-sim-result.json",
+        "revision_note": "v1: 初版。design-sim.mjsの実測値に基づきfixed_failure_patternを記載した。"
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:game_translations:v1",
+        "legacy-hotel-receive:first_5_seconds:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:55:05.796Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/no_manual_exploit_check_v1.json",
+          "created_at": "2026-09-10T16:55:05.797Z",
+          "creator": "sonnet"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-hotel-receive:core_back_check:v1",
+      "artifact_type": "core_back_check",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-hotel-receive/design/core_back_check_v1.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "採用した翻訳t1-check-in-per-group（v1）は、scope_core_v1.jsonのcoreが定義する『班ごとの人数×アレルギー情報の独立した判断』を、game_translations_v1.jsonのC_interaction/D_externalizationがそのまま保持している。旧実装のreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）のうち、brute forceは班ごとの単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係をresearch.mdが裏付けていないことを確認したうえで、この因果関係をゲームの判断要素に一切含めないことで解消している（ae_v1.json/reference_research_v1.json/game_translations_v1.jsonのt3却下理由に一貫して反映）。first_5_seconds_v1.jsonの初回タップ体験（カードを開いて読む→部屋タイプ・食事を選ぶ→実施）も、c_compression_v1.jsonが定義した圧縮後のCとD（2種類の読み物を見比べて班ごとに2つの選択をする）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v1.jsonのfixed_failure_pattern検証（design-sim-result.json）により、人数データ・アレルギー調査票のいずれかを無視した戦略も、固定の部屋タイプ・食事戦略も、いずれも完全な推論を明確に下回ることを確認しており（人数無視約3.8%、アレルギー無視約14.3%）、D（子ども自身の判断）が実質的に必要とされている。",
+        "pass": true
+      },
+      "creator": "sonnet",
+      "source_artifacts": [
+        "legacy-hotel-receive:game_translations:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-10T16:55:05.840Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-hotel-receive/design/core_back_check_v1.json",
+          "created_at": "2026-09-10T16:55:05.841Z",
+          "creator": "sonnet"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-hotel-receive",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-10T16:38:25.488Z",
+  "updated_at": "2026-09-10T16:55:05.841Z",
+  "history": [
+    {
+      "at": "2026-09-10T16:38:25.489Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "hotel_receive"
+    },
+    {
+      "at": "2026-09-10T16:38:25.568Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-hotel-receive"
+    },
+    {
+      "at": "2026-09-10T16:38:25.610Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-10T16:38:25.610Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T16:38:25.651Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-10T16:38:25.651Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T16:38:25.692Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-10T16:38:25.692Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T16:38:25.732Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-10T16:54:35.386Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-10T16:54:35.386Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T16:54:40.041Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-10T16:54:40.041Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:43.983Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-10T16:54:43.983Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:48.379Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-10T16:54:48.379Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:48.420Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-10T16:54:48.420Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:52.900Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-10T16:54:52.900Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:52.942Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-10T16:54:52.942Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:54:57.097Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-10T16:54:57.097Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:play_seeds:v1",
+        "legacy-hotel-receive:c_compression:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:55:01.220Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-10T16:55:01.220Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:55:05.797Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-10T16:55:05.797Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:game_translations:v1",
+        "legacy-hotel-receive:first_5_seconds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-10T16:55:05.841Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-10T16:55:05.841Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-hotel-receive:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-hotel-receive:game_translations:v1"
+      ]
+    }
+  ]
+}

@@ -107,6 +107,18 @@
       "redesign_count": 2,
       "updated_at": "2026-09-10T16:35:43.046Z",
       "depends_on": []
+    },
+    "legacy-hotel-receive": {
+      "game_id": "legacy-hotel-receive",
+      "profession": "ホテル・旅館の団体受入担当",
+      "state": "FIRST_PLAY_READY",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "hotel_receive",
+      "task_id": "q1-rebuild-hotel-receive",
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-10T16:55:05.841Z",
+      "depends_on": []
     }
   }
 }

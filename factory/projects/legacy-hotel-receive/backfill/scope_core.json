@@ -1,0 +1,8 @@
+{
+  "core": "団体情報を確認し、設備へ班を割り振り、段階ごとの安全・容量検査を受けて配置を直す",
+  "scope": "修学旅行編（5つの役割を自由な順番で体験する）",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/hotel_receive.json"
+}

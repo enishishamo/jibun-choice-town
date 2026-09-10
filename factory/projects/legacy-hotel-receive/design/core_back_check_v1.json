@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-check-in-per-group（v1）は、scope_core_v1.jsonのcoreが定義する『班ごとの人数×アレルギー情報の独立した判断』を、game_translations_v1.jsonのC_interaction/D_externalizationがそのまま保持している。旧実装のreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）のうち、brute forceは班ごとの単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係をresearch.mdが裏付けていないことを確認したうえで、この因果関係をゲームの判断要素に一切含めないことで解消している（ae_v1.json/reference_research_v1.json/game_translations_v1.jsonのt3却下理由に一貫して反映）。first_5_seconds_v1.jsonの初回タップ体験（カードを開いて読む→部屋タイプ・食事を選ぶ→実施）も、c_compression_v1.jsonが定義した圧縮後のCとD（2種類の読み物を見比べて班ごとに2つの選択をする）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v1.jsonのfixed_failure_pattern検証（design-sim-result.json）により、人数データ・アレルギー調査票のいずれかを無視した戦略も、固定の部屋タイプ・食事戦略も、いずれも完全な推論を明確に下回ることを確認しており（人数無視約3.8%、アレルギー無視約14.3%）、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}

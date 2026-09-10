@@ -1,0 +1,12 @@
+{
+  "legitimate_full_reasoning": 1,
+  "random_pick": 0.0053,
+  "fixed_room_triple": 0.0393,
+  "fixed_room_basic": 0.0376,
+  "fixed_room_special": 0.036,
+  "fixed_meal_normal": 0.1431,
+  "fixed_meal_special": 0.1112,
+  "meal_ignored_always_normal": 0.1431,
+  "room_ignored_always_basic": 0.0376,
+  "reads_nothing": 0.0053
+}

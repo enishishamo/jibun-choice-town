@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v1.jsonのcoreとae_v1.jsonのD/Eは、3班それぞれの人数×アレルギーという2つの独立した判断（design-sim.mjs——部屋タイプは定員が班の人数に一致するもの、食事はアレルギー調査票の除去要否で決まる、いずれも直接・具体的に根拠づけられた判断）と、班ごとの単発コミット、Gate H（onComplete/onPartialComplete）、視覚フィードバック（失敗時アイコンの第3状態への遷移）、非採点振り返り（データ再掲込み）、disclosure gate（両方のデータを開くまで選択ボタンを活性化しない）を一貫して記述しており矛盾はない。旧実装のreverse-audit指摘（brute force／月組の休養ニーズが装飾データ）のうち、brute forceは単発コミット化で解消し、装飾データ問題は『休養ニーズ→部屋の位置』という因果関係をresearch.mdが裏付けていないことを確認したうえで、この因果関係をそもそも判断要素に含めないことで解消している——ae_v1.jsonのEフィールドに明記済み。scopeの『修学旅行の団体受入場面』はfact_sheet_v1.jsonの一次資料（複数施設の教育旅行受入案内、業界団体の食物アレルギー対応資料）が示す団体受入担当の中核業務そのものであり、周辺的な作業ではない。profession_name_hidden_testは、C（部屋タイプの定員表、食物アレルギー事前調査票）とD（人数×定員の照合、アレルギー品目の有無による食事の振り分け）が他の既存Q1ゲームと重複しないことを確認済み。"
+}
