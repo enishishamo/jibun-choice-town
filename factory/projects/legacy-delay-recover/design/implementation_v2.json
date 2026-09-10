@@ -1,8 +1,10 @@
 {
-  "component_files": ["src/q1/DelayRecoverGame.tsx"],
+  "component_files": [
+    "src/q1/DelayRecoverGame.tsx"
+  ],
   "logic_module": "src/q1/delayRecoverLogic.ts",
   "qa_harness": "factory/harness/gameplay-qa-delay-recover.mjs",
-  "spec_version": "game_spec_v1.json",
+  "spec_version": 1,
   "art_version_or_none": "none (art_brief v1: no_art_required=true; existing school-trip-tour-conductor.jpg reused as-is, unchanged from v1)",
   "d_preserved_statement": "Unchanged from implementation_v1.json -- the mechanic itself (contactOrderWins, prerequisite-gated 5-stage flow, one-shot contact taps, randomized display order) was not touched by this repair; impl review r1 found 0 blockers/high against the mechanic itself (batching_bug_absent, position_leak_closed, brute_force_genuinely_closed, gate_h_correct, gate_g_correct, logic_matches_design_sim all confirmed true).",
   "repair_v2_impl_review_r1_findings_addressed": {

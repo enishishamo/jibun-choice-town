@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "delay_recover",
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "RELEASE_CANDIDATE",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 2,
   "repair_count": 1,
@@ -790,7 +790,7 @@
         ],
         "logic_module": "src/q1/delayRecoverLogic.ts",
         "qa_harness": "factory/harness/gameplay-qa-delay-recover.mjs",
-        "spec_version": "game_spec_v1.json",
+        "spec_version": 1,
         "art_version_or_none": "none (art_brief v1: no_art_required=true; existing school-trip-tour-conductor.jpg reused as-is, unchanged from v1)",
         "d_preserved_statement": "Unchanged from implementation_v1.json -- the mechanic itself (contactOrderWins, prerequisite-gated 5-stage flow, one-shot contact taps, randomized display order) was not touched by this repair; impl review r1 found 0 blockers/high against the mechanic itself (batching_bug_absent, position_leak_closed, brute_force_genuinely_closed, gate_h_correct, gate_g_correct, logic_matches_design_sim all confirmed true).",
         "repair_v2_impl_review_r1_findings_addressed": {
@@ -928,11 +928,11 @@
   ],
   "human_decisions": [],
   "limited_exceptions": [],
-  "task_id": null,
+  "task_id": "q1-rebuild-delay-recover",
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T19:03:48.678Z",
+  "updated_at": "2026-09-10T19:05:35.125Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1520,6 +1520,49 @@
       "verdict": "PASS",
       "independent": true,
       "evidence": "factory/projects/legacy-delay-recover/impl-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-10T19:04:00.895Z",
+      "event": "gate_refused",
+      "gate": "RELEASE",
+      "reasons": [
+        "implementation.spec_version=game_spec_v1.json but game_spec is v1 — implementation is behind the spec",
+        "no linked task-state task (link-task) — deploy policy is enforced there"
+      ]
+    },
+    {
+      "at": "2026-09-10T19:04:52.783926Z",
+      "event": "metadata_correction",
+      "artifact_id": "legacy-delay-recover:implementation:v2",
+      "field": "payload.spec_version",
+      "from": "game_spec_v1.json",
+      "to": 1,
+      "reason": "release-ready checks impl.payload.spec_version !== spec.version (a NUMBER) strictly; every actually-released game (legacy-clue-join, legacy-sow-and-grow, legacy-layer-and-compare, legacy-load-and-route, legacy-allocate-and-forecast, leak-detective) uses the plain number format. This game (like legacy-hotel-receive before it) had mistakenly followed a string format (\"game_spec_v1.json\") that never actually passed release-ready before (hotel-receive never reached this check, having ESCALATED earlier). Pure bookkeeping/format correction -- no semantic content change, does not require re-review."
+    },
+    {
+      "at": "2026-09-10T19:04:57.812Z",
+      "event": "gate_refused",
+      "gate": "RELEASE",
+      "reasons": [
+        "no linked task-state task (link-task) — deploy policy is enforced there"
+      ]
+    },
+    {
+      "at": "2026-09-10T19:05:35.043Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-delay-recover"
+    },
+    {
+      "at": "2026-09-10T19:05:35.124Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T19:05:35.125Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
     }
   ],
   "redesign": [
