@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "sow_and_grow",
   "creator": "claude-code",
-  "state": "RELEASE_CANDIDATE",
+  "state": "RELEASED",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
@@ -1035,10 +1035,10 @@
   "human_decisions": [],
   "limited_exceptions": [],
   "task_id": "q1-rebuild-sow-and-grow",
-  "version": null,
+  "version": "v1.0",
   "depends_on": [],
   "created_at": "2026-09-09T04:36:02.222Z",
-  "updated_at": "2026-09-10T00:00:18.390Z",
+  "updated_at": "2026-09-10T00:11:39.939Z",
   "history": [
     {
       "at": "2026-09-09T04:36:02.222Z",
@@ -2308,6 +2308,18 @@
       "at": "2026-09-10T00:00:18.390Z",
       "event": "gate_passed",
       "gate": "RELEASE"
+    },
+    {
+      "at": "2026-09-10T00:11:39.936Z",
+      "event": "state_change",
+      "from": "RELEASE_CANDIDATE",
+      "to": "RELEASED",
+      "note": "version v1.0"
+    },
+    {
+      "at": "2026-09-10T00:11:39.939Z",
+      "event": "version_set",
+      "version": "v1.0"
     }
   ]
 }

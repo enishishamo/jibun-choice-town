@@ -156,6 +156,19 @@
       "github_actions_run": "34323177174",
       "production_verified": "2026-09-09, live browser navigation to https://enishishamo.github.io/jibun-choice-town/ — seeded med-lab/med-radio completion, played ch4 end to end: new commit-and-defend UI rendered, correct diagnosis+evidence produced the success screen with the reworded non-absolute alternative-comparison text, Job Reveal fired",
       "note": "Also shipped the Factory tooling this release needed: MECHANICAL_CONSISTENCY_REPAIR and FACTUAL_EVIDENCE_CORRECTION (two new rules-as-code mechanisms in q1-factory-schema.mjs/q1-pipeline.mjs, distinct from design repair/redesign and budget-neutral, hardened over several adversarial review rounds), plus q1-legacy-audit.mjs/q1-trigger.mjs (the reverse-audit/trigger machinery this rebuild was processed through) — none of these existed on main before this release."
+    },
+    {
+      "date": "2026-09-10",
+      "policy": "factory/rules/deploy-release-policy.md (routine content repair/rebuild, product_identity_impact NONE) via factory/rules/q1-autonomous-factory.md legacy LEGACY_AUDIT_REQUIRED path",
+      "content": "legacy-sow-and-grow (給食編、gameType sow_and_grow): replaced the old memorize-exploit implementation with t1-season-deadline-match — the child reads a randomized status line (today's month, the order's deadline, this year's forecast) and 3 variety cards (season-neutral names, tendency-worded sowing-window/harvest-days/heat-tolerance) and commits to whichever variety satisfies all three conditions. Before: the month/deadline/forecast were fixed every playthrough, so tapping the same named variety every time always won regardless of reasoning. After: the correct variety varies session to session, every session is provably solvable, and no fixed variety or month-only lookup wins reliably (79.2% vs 100% for real reasoning).",
+      "commit": "99089d1d8dfe3a5990a5c39c6dae96f91bd31a19",
+      "bookkeeping_commit": "8160ef4af3aa144dfc97d1deb67974e29d1dd0a9",
+      "task": "q1-rebuild-sow-and-grow",
+      "pipeline": "factory/projects/legacy-sow-and-grow/q1-pipeline.json",
+      "qa": "design reviews r1-r6 (r6 PASS 70, CA84/GQ70, 0 blockers/high); implementation review r1 PASS 74 (CA84/GQ74, 0 blockers/high/medium); gameplay-qa-sow-grow.mjs 18/18; design-sim.mjs v4 byte-reproducible (seeded RNG throughout); tsc/build/lint clean; 375x812 live verification of both the success and honest-partial paths; release-gate-check PASS locally and in CI",
+      "github_actions_run": "34419806784",
+      "production_verified": "2026-09-10, live browser navigation to https://enishishamo.github.io/jibun-choice-town/ — played the farmer-lunch experience end to end: the new season/deadline/heat-tolerance UI rendered with a live-randomized status line, a matching variety commit produced the success screen naming the chosen variety, Job Reveal fired with the unchanged discoveryEcho",
+      "note": "Six design review rounds were needed, closing ANSWER_LEAK (season-revealing variety names), C_NOT_NEEDED_FOR_D/CORE_DISTORTED_BY_GAME/BRUTE_FORCE_SUCCESS (a variety dominated its competitor every month, then a fixed month-only mapping did), FAILURE_DISGUISED_AS_SUCCESS (39% of sessions were unwinnable regardless of skill), FACTUAL_PROFESSION_ERROR, SIMULATION_REPRODUCIBILITY_FAILURE, and five rounds of ARTIFACT_CHAIN_INCONSISTENT (stale cross-references accumulated across the repair chain). Live implementation testing also found and fixed a real Gate H defect: the honest-failure path called onComplete instead of onPartialComplete, rendering a wrong answer's Job Reveal identically to a correct one."
     }
   ]
 }

@@ -2133,7 +2133,7 @@
     "q1-rebuild-sow-and-grow": {
       "task_id": "q1-rebuild-sow-and-grow",
       "task_type": "game-content",
-      "status": "READY",
+      "status": "RELEASED",
       "repair_count": 0,
       "review_status": "PASS",
       "review_evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json",
@@ -2141,14 +2141,14 @@
       "qa_status": "PASS",
       "qa_evidence": "factory/projects/legacy-sow-and-grow/design/implementation_qa_v1.json",
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "99089d1d8dfe3a5990a5c39c6dae96f91bd31a19",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-09T04:36:02.184Z",
-      "updated_at": "2026-09-10T00:00:18.311Z",
+      "updated_at": "2026-09-10T00:11:40.123Z",
       "history": [
         {
           "at": "2026-09-09T04:36:02.185Z",
@@ -2171,6 +2171,19 @@
           "score": 74,
           "high_count": 0,
           "override_note": null
+        },
+        {
+          "at": "2026-09-10T00:11:40.046Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "RELEASED",
+          "note": "legacy-sow-and-grow released to main, deployed via CI (run 34419806784), live-verified at https://enishishamo.github.io/jibun-choice-town/"
+        },
+        {
+          "at": "2026-09-10T00:11:40.124Z",
+          "event": "release_commit_set",
+          "sha": "99089d1d8dfe3a5990a5c39c6dae96f91bd31a19",
+          "given": "99089d1"
         }
       ]
     }
