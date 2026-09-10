@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-sow-and-grow-impl-r1",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 74,
+    "career_authenticity_score": 84,
+    "game_quality_score": 74,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [
+      "farmLogic.ts:1 inaccurately labels this as the doctor Q1; this is a non-user-facing maintenance comment only."
+    ],
+    "failure_codes": [],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_result": "18 passed, 0 failed",
+      "build_or_tsc": "npx tsc --noEmit -p . completed successfully with no diagnostics; build not run because tsc was sufficient in the read-only sandbox",
+      "lint": "npm run lint exited successfully; unrelated existing warnings were reported, with none in the reviewed sow-and-grow files",
+      "farmLogic_matches_design_sim_exactly": true,
+      "session_generation_correct": true,
+      "answer_leak_found": false,
+      "gate_h_fix_verified": true,
+      "no_session_retry_confirmed": true,
+      "scroll_812_claim_plausible": true
+    },
+    "evidence": [
+      "src/q1/farmLogic.ts:28 — VARIETIES contains the same three ids, names, windows, harvest-day values, and heat-tolerance flags as design-sim.mjs.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:34 — Design simulation data matches shipped VARIETIES at farmLogic.ts:28-32; only property naming convention differs (harvest_days/heat_ok versus harvestDays/heatOk).",
+      "src/q1/farmLogic.ts:67 — STATE_SPACE is exhaustively pre-enumerated from MONTHS, OFFSETS, both forecasts, and winnersFor.",
+      "src/q1/farmLogic.ts:84 — newSession draws sowMonth once, rejection-samples deadline and forecast for 200 attempts, then uses the deterministic accepted-state fallback without throwing.",
+      "factory/projects/legacy-sow-and-grow/design/design-sim.mjs:92 — The design-stage generator uses the same draw, rejection-sampling, and fallback sequence.",
+      "src/q1/FarmGame.tsx:23 — Session generation uses a lazy useState initializer and therefore runs once per mount.",
+      "src/q1/FarmGame.tsx:24 — Card IDs are shuffled once per mount and retained independently of scoring.",
+      "src/q1/FarmGame.tsx:31 — Commit scoring resolves the selected variety by id and evaluates it against the mounted session.",
+      "src/q1/FarmGame.tsx:38 — A successful commit replaces the picking UI with the success outcome.",
+      "src/q1/FarmGame.tsx:58 — A losing commit replaces the picking UI with a distinct partial outcome, with no route back to selection.",
+      "src/q1/FarmGame.tsx:67 — The partial continuation invokes (onPartialComplete ?? onComplete)(), preserving honest partial completion.",
+      "factory/harness/gameplay-qa-sow-grow.mjs:115 — The harness contains a source-level Gate H regression assertion and it passed in the current run.",
+      "src/q1/FarmGame.tsx:76 — Before commitment, the JSX exposes only randomized task facts, neutral variety names, legitimate property disclosures, commit controls, and the informational learning-setting disclaimer.",
+      "src/q1/FarmGame.tsx:99 — Variety attributes are disclosed only through the neutral question-mark control; no correctness marker or suggested variety is rendered.",
+      "src/q1/FarmGame.tsx:105 — Each card requires an explicit これでまく action; there is no preselection or separate implicit submission.",
+      "src/q1/FarmGame.tsx:116 — The fictional-data disclaimer does not identify or favor an answer.",
+      "src/index.css:4235 — Farm cards reuse the shared dx card system used by DiagnoseGame.tsx rather than introducing separate controls.",
+      "src/index.css:4244 — Shared dx-more is a 38-by-38-pixel circular control matching the accepted DiagnoseGame precedent.",
+      "src/index.css:4254 — Shared dx-commit has a minimum height of 44 pixels.",
+      "src/index.css:4262 — farm-grid forces a single column, making the claimed 375-pixel layout plausible.",
+      "src/q1/DiagnoseGame.tsx:119 — DiagnoseGame uses the same dx-card, dx-more, and dx-commit classes.",
+      "src/q1/registry.ts:76 — sow_and_grow remains mapped to the FarmGame export.",
+      "src/data/content/schoolLunch.ts:356 — farmer-lunch retains its existing id, profession, event, sow_and_grow mapping, place, mission, tools, resolution, discoveryEcho, and seeds.",
+      "src/q1/farmLogic.ts:21 — The source accurately limits real-world grounding and identifies exact day counts and unsupported tolerance values as fictional teaching data.",
+      "factory/harness/gameplay-qa-sow-grow.mjs:121 — Executed result was 18 passed, 0 failed."
+    ],
+    "recommended_actions": [
+      "Correct the non-functional farmLogic.ts:1 comment from doctor Q1 to farmer/producer Q1 during routine maintenance."
+    ]
+  },
+  "elapsed_sec": 132.644
+}

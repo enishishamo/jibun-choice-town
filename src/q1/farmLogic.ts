@@ -1,4 +1,4 @@
-// Pure rules for the doctor Q1 (gameType: sow_and_grow), redesigned per
+// Pure rules for the farmer/producer Q1 (gameType: sow_and_grow), redesigned per
 // factory/projects/legacy-sow-and-grow (GAME_TRANSLATION_REBUILD,
 // t1-season-deadline-match). Same pattern as clueJoinLogic.ts/labCheckLogic.ts:
 // no React here.

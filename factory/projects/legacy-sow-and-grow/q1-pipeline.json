@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "sow_and_grow",
   "creator": "claude-code",
-  "state": "IMPL_QA_PASSED",
+  "state": "RELEASE_CANDIDATE",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 1,
   "repair_count": 0,
@@ -1013,7 +1013,23 @@
     "stale": false,
     "recorded_at": "2026-09-09T23:37:08.293Z"
   },
-  "impl_review": null,
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 74,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json",
+    "input": "factory/projects/legacy-sow-and-grow/impl-review-r1-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": false,
+    "recorded_at": "2026-09-10T00:00:05.277Z"
+  },
   "art_review": null,
   "failures": [],
   "human_decisions": [],
@@ -1022,7 +1038,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-09T04:36:02.222Z",
-  "updated_at": "2026-09-09T23:54:26.739Z",
+  "updated_at": "2026-09-10T00:00:18.390Z",
   "history": [
     {
       "at": "2026-09-09T04:36:02.222Z",
@@ -2272,6 +2288,26 @@
       "sources": [
         "legacy-sow-and-grow:implementation:v1"
       ]
+    },
+    {
+      "at": "2026-09-10T00:00:05.278Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-sow-and-grow/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-10T00:00:18.389Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-10T00:00:18.390Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
     }
   ]
 }
