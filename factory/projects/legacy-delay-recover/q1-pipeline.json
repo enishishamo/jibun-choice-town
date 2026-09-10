@@ -4,11 +4,11 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "delay_recover",
   "creator": "claude-code",
-  "state": "UNDER_REVIEW",
+  "state": "REDESIGNING",
   "current_stage": "CORE_BACK_CHECK",
-  "design_iteration": 1,
-  "repair_count": 1,
-  "redesign_count": 0,
+  "design_iteration": 2,
+  "repair_count": 0,
+  "redesign_count": 1,
   "artifacts": {
     "fact_sheet": {
       "artifact_id": "legacy-delay-recover:fact_sheet:v2",
@@ -236,12 +236,12 @@
       ]
     },
     "play_seeds": {
-      "artifact_id": "legacy-delay-recover:play_seeds:v2",
+      "artifact_id": "legacy-delay-recover:play_seeds:v3",
       "artifact_type": "play_seeds",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/play_seeds_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/play_seeds_v3.json",
       "payload": {
         "seeds": [
           {
@@ -249,12 +249,12 @@
             "authentic_causal_loop": "新幹線が30分遅延。状況を確認すると、見学先・バス・宿の3つすべてに影響が及ぶことが分かる。3枚のカードはランダムな順で並んでいるが、内容を1枚ずつ読むと、宿泊施設のカードだけに『夕食提供に締切があり早めの連絡が必要』という説明があると分かる——このため、宿への連絡を見学先・バスより先に行うのが正しい判断になる（画面上の並び順とは無関係に、カードの内容を読んで判断する）。",
             "player_action": "状況確認を開いてから学校へ報告し、3つの関係先カード（ランダムな順で表示）をすべて開いて読み、宿を最初に連絡し、続けて見学先・バスへ連絡する（順不同）。3件すべての連絡が終わったら学校の承認を得て、最後に共有する。",
             "system_reaction": "宿の夕食提供に間に合った、という結果が表示され、旅程が立て直されたことが分かる。",
-            "information_gained": "3つの関係先のうち、時間的な余地が失われやすいのは宿だけであり、そこを優先することで実際に取り返しのつかない結果を避けられることを体感する。カードの並び順ではなく、内容を読むことが判断の手がかりだと気づく。",
-            "next_judgment_or_action": "次に似た場面に出会ったときも、どの関係先が時間的に厳しいかをまず見極めてから動く、という姿勢に気づく。",
+            "information_gained": "3つの関係先のうち、この状況で具体的な時間的影響が確認できたのは宿だけであり、そこを優先することで実際に取り返しのつかない結果を避けられることを体感する（見学先・バスに時間的な制約が一切ないという意味ではなく、この場面ではっきり読み取れるのが宿の事情だという理解）。カードの並び順ではなく、内容を読むことが判断の手がかりだと気づく。",
+            "next_judgment_or_action": "次に似た場面に出会ったときも、実際に読める情報の中で何がはっきり分かっているかをまず見極めてから動く、という姿勢に気づく。",
             "C_used": "遅延の状況（30分）、3つの関係先それぞれの影響内容、宿泊施設の夕食提供締切に関する説明。",
             "D_expressed": "宿泊施設への連絡優先度の判断（design-sim.mjsのcontactOrderWins：hotelを最初に連絡）。",
             "E_reached": "宿の夕食に間に合い、旅程が立て直される、という正直な成功結果。",
-            "risks": "『とりあえず全部連絡すればよい』という総当たり戦略が高確率で成功してしまわないか（design-sim.mjsのrandom_order≈0.33で検証済み——完全な推論[1.0]を大きく下回る）。カードの表示位置で判断する戦略（画面の並び順のまま、または逆順）が成功してしまわないか（design-sim.mjs v2のalways_tap_display_slot_1_first/always_tap_display_slot_3_first≈0.33で検証済み——表示順をセッションごとにランダム化したことで、位置だけに頼る戦略もランダム推測と同程度の成功率にとどまる）。"
+            "risks": "『とりあえず全部連絡すればよい』という総当たり戦略が高確率で成功してしまわないか（design-sim.mjsのrandom_order≈0.33で検証済み——完全な推論[1.0]を大きく下回る）。カードの表示位置で判断する戦略（画面の並び順のまま、または逆順）が成功してしまわないか（design-sim.mjs v2のalways_tap_display_slot_1_first/always_tap_display_slot_3_first≈0.33で検証済み——表示順をセッションごとにランダム化したことで、位置だけに頼る戦略もランダム推測と同程度の成功率にとどまる）。『宿以外に時間的制約は一切ない』という誤った学習結果を招かないか（information_gainedで明示的に留保することで対応、design review r2のBLOCKER是正）。"
           },
           {
             "seed_id": "s2-hotel-first-bus-venue",
@@ -262,7 +262,7 @@
             "player_action": "状況確認→学校報告の後、3枚のカードを開いて読み、宿を最初に連絡し、続けてバス→見学先の順で連絡する。3件すべて終えたら学校の承認を得て共有する。",
             "system_reaction": "宿の夕食提供に間に合った、という結果が表示される（s1と同じ成功結果）。",
             "information_gained": "『宿を最初に』という判断が核心であり、残り2者（見学先・バス）の順序はどちらでもよいと分かる——判断の焦点がどこにあるかを正しく理解する。",
-            "next_judgment_or_action": "3つの選択肢すべてに優劣をつけようとせず、本当に時間的な余地が失われやすい1つだけを見極めればよい、と気づく。",
+            "next_judgment_or_action": "3つの選択肢すべてに優劣をつけようとせず、この場面で具体的に分かっている事情（宿の締切）を見極めればよい、と気づく。",
             "C_used": "s1と同じC。",
             "D_expressed": "宿泊施設への連絡優先度の判断（残り2者の順序は判断に影響しないことの確認）。",
             "E_reached": "宿の夕食に間に合い、旅程が立て直される、という正直な成功結果。",
@@ -273,7 +273,7 @@
             "authentic_causal_loop": "新幹線が30分遅延。3つの関係先カードを一応すべて開いたが（disclosure gateは満たす）、宿カードの『夕食提供締切』の説明を読み飛ばし、なんとなく見学先から連絡してしまう——結果として宿への連絡が最後になり、夕食提供の締切に間に合わなくなる。カードの表示順はランダムなため、これは画面の並び順に従った結果ではなく、内容を読まなかった結果である。",
             "player_action": "状況確認・学校報告は正しく行い、3つの関係先カードもすべて開く（disclosure gateは満たす）が、宿カードの説明を実際には読まずに、見学先→バス→宿の順で連絡してしまう。",
             "system_reaction": "宿の夕食提供に間に合わなかった、という正直な結果が表示され、旅程がうまく立て直せなかったことが分かる。",
-            "information_gained": "カードを開いていても、実際に内容を読んで見比べないと、どれが時間的に厳しいかを見落としてしまうことがあると体感する。",
+            "information_gained": "カードを開いていても、実際に内容を読んで見比べないと、この場面で何がはっきり分かっているかを見落としてしまうことがあると体感する。",
             "next_judgment_or_action": "次はカードの内容を実際に読んでから、どれを優先すべきかを判断する、と気づく。",
             "C_used": "3つの関係先の影響内容（宿泊施設の夕食提供締切の説明を含むが、読まずに進めてしまった）。",
             "D_expressed": "カードを開いたが内容を実際に読まず、なんとなくの順で進めてしまった誤った判断。",
@@ -293,14 +293,14 @@
             "risks": "振り返り選択が結果を変えてしまう、あるいは振り返りをせずに先へ進めてしまうとGate G（考え直す余地）が満たされない。振り返り画面にデータの再掲がないと記憶頼みになってしまう（legacy-hotel-receiveのGate G実装パターンを踏襲し、振り返り画面には元データを読み取り専用で再掲する設計とする）。"
           }
         ],
-        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED関連): s3を『画面に並んでいる順（見学先→バス→宿）のまま機械的に進める』という固定表示順への依存から、『カードの内容を読み飛ばす』という内容理解の欠如そのものを描く失敗パターンへ書き換えた——no_manual_exploit_check_v2.jsonで表示順をセッションごとにランダム化したため、固定された画面の並び順という設定自体が成立しなくなったことへの対応。s1/s2のriskフィールドに、表示位置に頼る戦略がランダム化後は成功しないことを追記した。"
+        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED関連): s3を『画面に並んでいる順（見学先→バス→宿）のまま機械的に進める』という固定表示順への依存から、『カードの内容を読み飛ばす』という内容理解の欠如そのものを描く失敗パターンへ書き換えた。 v3 (design review r2 FAIL 68是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED再発): s1のinformation_gainedとs2のnext_judgment_or_actionにあった『時間的な余地が失われやすいのは宿だけ』という表現が、『宿以外に時間的制約は一切ない』という研究が裏付けない排他的な学習結果を招きうると指摘されたため、『この状況で具体的に確認できたのは宿だけ』という証拠限定的な表現へ改めた。s3のinformation_gainedも同様の趣旨で『どれが時間的に厳しいか』から『何がはっきり分かっているか』という表現へ調整した。"
       },
       "creator": "claude-code",
       "source_artifacts": [
         "legacy-delay-recover:ae:v2"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:26.844Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:40:55.975Z",
       "versions": [
         {
           "version": 1,
@@ -313,22 +313,28 @@
           "file": "factory/projects/legacy-delay-recover/design/play_seeds_v2.json",
           "created_at": "2026-09-10T18:32:26.845Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/play_seeds_v3.json",
+          "created_at": "2026-09-10T18:40:55.976Z",
+          "creator": "claude-code"
         }
       ]
     },
     "reference_research": {
-      "artifact_id": "legacy-delay-recover:reference_research:v2",
+      "artifact_id": "legacy-delay-recover:reference_research:v3",
       "artifact_type": "reference_research",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/reference_research_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/reference_research_v3.json",
       "payload": {
         "references": [
           {
             "reference": "おもてなしHR「ホテルのチェックインは何時まで？遅れる場合は何分前に連絡するべき？」／相鉄ホテルズ公式コラム「ホテルのチェックインが遅れる場合どうする？」——夕食付きプランには食事提供の締切時刻があり、連絡なしの大幅な遅れは食事提供不可・キャンセル扱いのリスクにつながる。到着が遅れると分かった時点で早めに連絡することが調整の可否を左右する、という実務",
-            "relevant_mechanic": "3つの影響先（見学先・バス・宿）のうち、宿泊施設だけが実在の傾向（早く連絡するほど調整の余地が残る）を持つという非対称性",
-            "borrowed_principle": "『連絡が早いほど宿側の調整の余地が残り、遅いほど選択肢が失われて取り返しがつかなくなる』という因果構造を、ゲームとして扱いやすい形に単純化して採用する。3つの関係先への連絡のうち、宿泊施設への連絡を他の2者より先に行うことが正しい判断になる、という設計にした。この情報源は個人客向け宿泊予約についての一般的な業界慣行の記述であり、修学旅行・団体旅行に特化した一次資料ではなく、具体的な分数の閾値（『何分以内に連絡すれば間に合う』）も確認できていない——このため、design-sim.mjsでは具体的な時間ではなく『3者のうちどれを先に連絡したか』という相対的な順序のみで判定し、design chain全体（fact_sheet_v2.json/ae_v2.json等）でも、この判定基準を『研究が確認した実在の傾向を、ゲームとして扱いやすい形に単純化した運用上のルール』として明記する（design review r1のBLOCKER是正: v1はこの一般化を断定的な確実性として表現していたため、修正した）。",
+            "relevant_mechanic": "3つの影響先（見学先・バス・宿）のうち、この状況に具体的に結びつけて実在の傾向（早く連絡するほど調整の余地が残る）が確認できたのは宿泊施設だけ——見学先・バスに時間的な制約が一切ないと確認されたわけではなく、貸切バスには運転時間の法律上の上限が実在するが、この30分遅延への定量的な影響は裏付けられなかった（research.md §3参照）",
+            "borrowed_principle": "『連絡が早いほど宿側の調整の余地が残り、遅いほど選択肢が失われて取り返しがつかなくなる』という因果構造を、ゲームとして扱いやすい形に単純化して採用する。3つの関係先への連絡のうち、宿泊施設への連絡を他の2者より先に行うことが正しい判断になる、という設計にした。この情報源は個人客向け宿泊予約についての一般的な業界慣行の記述であり、修学旅行・団体旅行に特化した一次資料ではなく、具体的な分数の閾値（『何分以内に連絡すれば間に合う』）も確認できていない——このため、design-sim.mjsでは具体的な時間ではなく『3者のうちどれを先に連絡したか』という相対的な順序のみで判定し、design chain全体でも、この判定基準を『研究がこの状況に具体的に結びつけて確認できた宿の事情を、ゲームとして扱いやすい形に単純化した運用上のルール』として明記する。『研究が確認できなかった』ことを『見学先・バスに時間的制約が一切ない』という意味に取り違えないよう、design chain全体で明示的に留保する（design review r1のBLOCKER是正: v1はこの一般化を断定的な確実性として表現していたため修正。design review r2のBLOCKER是正: 『確認できたのは宿だけ』という表現がなお排他的に読めたため、見学先・バス側の実在する制約[貸切バスの運転時間規制]をこの参照自体にも明記し、証拠が限定的であることと実在しないことを混同しない表現へ改めた）。",
             "surface_elements_not_to_copy": "情報源は個人客向け宿泊予約についての一般的な業界慣行の記述であり、修学旅行・団体旅行に特化した一次資料ではない。『到着◯分前までに連絡』のような具体的な分数の基準は、実際の公式基準として断定的に演出しない。"
           },
           {
@@ -344,14 +350,14 @@
             "surface_elements_not_to_copy": "資格試験対策サイトの要約表現（旅程管理業務の4分類等）をそのまま転用しない——法令原文そのものを直接確認できていない箇所（FACT_CHECK_REQUIRED #1）があるため、断定的な条文引用は避ける。"
           }
         ],
-        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED): 参照1のborrowed_principleを、宿泊施設優先の判断が研究の一般化から導かれたゲーム側の単純化であることを明記する表現へ改めた。"
+        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED): 参照1のborrowed_principleを、宿泊施設優先の判断が研究の一般化から導かれたゲーム側の単純化であることを明記する表現へ改めた。 v3 (design review r2 FAIL 68是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED再発): 参照1のrelevant_mechanic/borrowed_principleにあった『宿泊施設だけが実在の傾向を持つという非対称性』という表現が、見学先・バスに時間的制約が一切ないという排他的な意味に読めると指摘されたため、貸切バスの運転時間規制という実在する制約（研究が確認済み）に明示的に触れ、『研究がこの状況に具体的に結びつけて確認できたのは宿だけ』という証拠限定的な表現へ改めた。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:play_seeds:v2"
+        "legacy-delay-recover:play_seeds:v3"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:26.886Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:40:56.019Z",
       "versions": [
         {
           "version": 1,
@@ -364,31 +370,38 @@
           "file": "factory/projects/legacy-delay-recover/design/reference_research_v2.json",
           "created_at": "2026-09-10T18:32:26.887Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/reference_research_v3.json",
+          "created_at": "2026-09-10T18:40:56.020Z",
+          "creator": "claude-code"
         }
       ]
     },
     "c_compression": {
-      "artifact_id": "legacy-delay-recover:c_compression:v2",
+      "artifact_id": "legacy-delay-recover:c_compression:v3",
       "artifact_type": "c_compression",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/c_compression_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/c_compression_v3.json",
       "payload": {
         "original_C": "旅行業法第12条の10・第12条の11の具体的な条文構造、標準旅行業約款の契約責任者・旅程保証・免責事由の詳細、修学旅行実施規則・実施基準（自治体ごとに異なる条例）、添乗員の事故対応マニュアルに記載される医師・警察・運輸機関との連携の詳細、貸切バスの改善基準告示（拘束時間・運転時間の上限）、確定行程表の実在する書式（見学先の入場予約時間・バスの配車時刻・宿の夕食提供時間等）。",
-        "compressed_C": "遅延の状況（30分、運送機関の事情）と、影響を受ける3つの関係先（見学先・バス・宿）それぞれの説明カード（画面上の表示順はセッションごとにランダム化する——特定の並び順が正解を示唆しないようにするため）——宿泊施設のカードだけに『夕食提供の締切があり、早く連絡するほど調整の余地が残る』という実在の傾向の説明を含める（この傾向は個人客向け予約の一般的な業界慣行から一般化したものであり、修学旅行特化の一次資料ではないことを踏まえ、ゲームでは具体的な分数ではなく相対的な連絡順序でのみ判定する）。学校が旅程の変更を承認する立場にある、という権限構造の説明。",
+        "compressed_C": "遅延の状況（30分、運送機関の事情）と、影響を受ける3つの関係先（見学先・バス・宿）それぞれの説明カード（画面上の表示順はセッションごとにランダム化する——特定の並び順が正解を示唆しないようにするため）——宿泊施設のカードだけに『夕食提供の締切があり、早く連絡するほど調整の余地が残る』という実在の傾向の説明を含める（この傾向は個人客向け予約の一般的な業界慣行から一般化したものであり、修学旅行特化の一次資料ではないことを踏まえ、ゲームでは具体的な分数ではなく相対的な連絡順序でのみ判定する）。見学先・バスのカードには、この状況に具体的に結びつく時間的な説明を持たせない——これは両者に時間的制約が一切ないという意味ではなく、研究がこの状況に具体的に結びつけて確認できなかったことによる範囲の限定である。学校が旅程の変更を承認する立場にある、という権限構造の説明。",
         "removed_complexity": "旅行業法・標準旅行業約款の条文構造そのもの、自治体ごとに異なる修学旅行実施規則の細部、添乗員の資格制度（旅程管理主任者）の詳細、貸切バスの改善基準告示（運転時間規制）、確定行程表の実在する書式や具体的な時刻表。",
-        "reason_for_removal": "research.mdが示すとおり、10-12歳向けに削るべきは法令・約款の条文構造や資格制度の詳細であり、残すべきは『状況を確認してから動く』『影響を受ける関係先へ連絡する』『時間的な余地が失われやすい宿泊施設を優先する』『学校の承認を得てから確定する』という、実在の因果関係が明確な骨組み。貸切バスの改善基準告示は実在するが、30分の単発遅延との定量的な因果関係を裏付ける一次資料がなかった（research.md §4-2、FACT_CHECK_REQUIRED#5）ため、ゲームの進行コストとしては使わず、見学先・バスへの連絡順序についても判断要素に含めない（両者の間に優先順位の差を設けない）。",
-        "preserved_D": "遅延の状況を確認してから学校へ報告し、影響を受ける3つの関係先すべてに連絡する際、宿泊施設を他の2者より先に連絡し、学校の承認を得てから確定した内容を共有する、という一連の判断。",
+        "reason_for_removal": "research.mdが示すとおり、10-12歳向けに削るべきは法令・約款の条文構造や資格制度の詳細であり、残すべきは『状況を確認してから動く』『影響を受ける関係先へ連絡する』『研究がこの状況に具体的に結びつけて確認できた宿泊施設の事情を優先する』『学校の承認を得てから確定する』という、実在の因果関係が明確な骨組み。貸切バスの改善基準告示は実在するが、30分の単発遅延との定量的な因果関係を裏付ける一次資料がなかった（research.md §4-2、FACT_CHECK_REQUIRED#5）ため、ゲームの進行コストとしては使わず、見学先・バスへの連絡順序についても判断要素に含めない（両者の間に優先順位の差を設けない——ただし、これは両者に実在の時間的制約が一切ないと確認されたことを意味しない）。",
+        "preserved_D": "遅延の状況を確認してから学校へ報告し、影響を受ける3つの関係先すべてに連絡する際、研究がこの状況に具体的に結びつけて確認できた宿泊施設の事情を踏まえ、宿泊施設を他の2者より先に連絡し、学校の承認を得てから確定した内容を共有する、という一連の判断。",
         "how_player_still_performs_D": "状況確認・学校報告を済ませた後、3つの関係先カード（ランダムな順で表示）のうち宿泊施設のカードを読んで時間的な事情を理解し、宿泊施設を最初に連絡してから残り2者へ連絡する。3件すべての連絡が終わったら学校の承認を得て、最後に共有する。design-sim.mjs v2で数値検証済み: 正しい判断（宿を最優先）は常に成功（legitimate_full_reasoning=1.0）。3者をランダムな順で連絡する戦略は約33%（random_order≈0.33）、カードの表示位置だけに頼る戦略（画面の並び順のまま、または逆順）もランダム化された表示順のもとでは約33%（always_tap_display_slot_1_first/always_tap_display_slot_3_first≈0.33）にとどまり、いずれも完全な推論を明確に下回る。",
-        "failure_risk": "単純化によって、宿泊施設を優先すべき理由（内容を読まなくても『なんとなく宿が大事そう』という直感）だけで、実際には内容を理解せずに正解してしまわないか——design-sim.mjsではこの点を『内容を理解した正しい理由での優先』と『理由を伴わない当てずっぽうの順序』を区別してシミュレートすることはできないため、実装段階でのdisclosure gate（宿泊施設のカードを実際に開いて読むまで、連絡ボタン自体を押せないようにする）が必須になる。この設計要件はgame_translations_v2.jsonのD_externalizationで明記する。加えて、design review r1のMEDIUM指摘（表示位置に頼る固定戦略、特に画面表示順の逆順が常に成功していた点）を受け、カードの表示順をセッションごとにランダム化することで、位置に頼る戦略が内容理解を伴う戦略と区別なく成功してしまう問題を解消した（displayOrder関数、design-sim.mjs v2）。"
+        "failure_risk": "単純化によって、宿泊施設を優先すべき理由（内容を読まなくても『なんとなく宿が大事そう』という直感）だけで、実際には内容を理解せずに正解してしまわないか——design-sim.mjsではこの点を『内容を理解した正しい理由での優先』と『理由を伴わない当てずっぽうの順序』を区別してシミュレートすることはできないため、実装段階でのdisclosure gate（宿泊施設のカードを実際に開いて読むまで、連絡ボタン自体を押せないようにする）が必須になる。加えて、design review r1のMEDIUM指摘（表示位置に頼る固定戦略、特に画面表示順の逆順が常に成功していた点）を受け、カードの表示順をセッションごとにランダム化することで、位置に頼る戦略が内容理解を伴う戦略と区別なく成功してしまう問題を解消した（displayOrder関数、design-sim.mjs v2）。design review r2のBLOCKER是正: 『宿だけを優先する』という判断の学習結果が『宿以外に時間的制約は一切ない』という誤った一般化を招かないよう、preserved_D/compressed_C/reason_for_removalで証拠限定的な表現へ改めた。",
+        "revision_note": "v1/v2: 変更なし。 v3 (design review r2 FAIL 68是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED再発の連鎖是正): compressed_C/reason_for_removal/preserved_Dの『宿泊施設だけを優先する』という表現が、見学先・バスに時間的制約が一切ないという排他的な学習結果を招きうると指摘されたため、『研究がこの状況に具体的に結びつけて確認できた宿泊施設の事情』という証拠限定的な表現へ改めた。内容・判定ロジックは変更していない。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:reference_research:v2"
+        "legacy-delay-recover:reference_research:v3"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:26.929Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:40:56.061Z",
       "versions": [
         {
           "version": 1,
@@ -401,16 +414,22 @@
           "file": "factory/projects/legacy-delay-recover/design/c_compression_v2.json",
           "created_at": "2026-09-10T18:32:26.930Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/c_compression_v3.json",
+          "created_at": "2026-09-10T18:40:56.061Z",
+          "creator": "claude-code"
         }
       ]
     },
     "game_translations": {
-      "artifact_id": "legacy-delay-recover:game_translations:v2",
+      "artifact_id": "legacy-delay-recover:game_translations:v4",
       "artifact_type": "game_translations",
-      "version": 2,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/game_translations_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/game_translations_v4.json",
       "payload": {
         "translations": [
           {
@@ -488,18 +507,37 @@
             "weaknesses": "research.md §5が明確に指摘する通り、『共有は配列の最後尾でなければならない』という制約単体を直接裏付ける一次資料は見つからなかった（根拠が最も薄い制約と明記）。厳密な配列位置での判定を維持することは、研究が裏付けない厳密さを実在のルールであるかのように断定することになる。",
             "risk": "CORE_CAUSAL_MODEL_DISTORTED相当に近い（共有の厳密な最後尾位置という制約の根拠が薄い）。",
             "adoption_or_rejection_reason": "却下。t1採用案では、共有を『学校の承認を得た後』という、より根拠のある緩やかな前提条件ゲートとして実装し（承認前のUI操作自体ができないため、結果として共有は常に承認より後になる）、厳密な配列位置の判定という研究が裏付けない厳密さを持ち込まない。"
+          },
+          {
+            "translation_id": "t5-hedged-evidence-scope",
+            "play_seed": "s1-hotel-first-venue-bus",
+            "goal": "状況確認→学校への報告→3つの関係先（見学先・バス・宿）への連絡→学校の承認→共有、という流れを、前提条件を満たすまで次のアクションが選べないゲートで進めながら、研究がこの状況に具体的に結びつけて確認できた時間的な影響（宿泊施設の夕食提供締切）に基づいて宿泊施設への連絡を優先するという判断を、子ども自身の連絡ボタンをタップする順序で表現する。",
+            "first_visible_state": "『新幹線が30分遅延』という導入と、状況確認カード（未読、『？』のみ表示）。学校への報告ボタン、3つの関係先カード、承認ボタン、共有ボタンはすべて無効（グレーアウト）で、状況確認を読むまで操作できない。",
+            "primary_action": "状況確認カードを開く→学校への報告ボタンが有効化され、報告する→3つの関係先カード（見学先・バス・宿、固定表示・同時に見える。ただし3枚の画面上の並び順はセッションごとにランダムに決まり、宿が常に同じ位置に表示されるわけではない）がそれぞれ『？』で開示可能になる→各カードを開いて読むと、そのカードの連絡ボタンが個別に有効化される（宿カードだけに夕食提供締切の説明がある）→開いたカードから1つずつ連絡ボタンを押す（押した順序がそのまま記録される。3件連絡し終えるまで承認ボタンは無効）→3件連絡完了で承認ボタンが有効化され、承認する→共有ボタンが有効化され、共有して結果を見る。",
+            "C_interaction": "宿カードの説明（夕食提供に締切があり、早く連絡するほど調整の余地が残る）を読むことで、宿を他の2者より先に連絡するのが正しい判断になる。この判定は、研究が確認した実在の傾向（個人客向け宿泊予約の一般的な業界慣行から一般化したもの）を、ゲームとして扱いやすい形（3者のうちどれを最初に連絡したか）に単純化した運用上のルールであり、修学旅行における具体的な分数の公式基準を引用したものではない。研究がこの状況（30分の遅延）に具体的に結びつけて確認できた時間的な影響は宿だけである。見学先・バスにも実際には何らかの時間的な制約がありうる（例えば貸切バスの運転者には運転時間の法律上の上限があるが、30分程度の遅延がその日の運行にどう影響するかを定量的に裏付ける資料までは見つからなかった）——これは『宿以外に時間的制約が存在しない』という意味ではなく、『このゲームが扱う判断材料として、研究が具体的に結びつけて確認できたのは宿だけ』という意味である。連絡ボタンを押す順序という、子ども自身のタップの並びそのものが判断を表現する——旧実装のような自由な並び替えUI（カードを何度でも移動できる）ではなく、押した瞬間に確定する1回性のタップで順序を記録する。3枚のカードの画面上の表示順はセッションごとにランダムに決まり、どの位置に表示されるかは正解のヒントにならない。",
+            "system_reaction": "宿が他の2者より先に連絡されていれば『宿の夕食提供に間に合った』という成功結果、後回しになっていれば『宿の夕食提供に間に合わなかった』という、ゲームのルールとしての正直な失敗結果（実際の分刻みの基準を示すものではなく、早く動くほど良いという実在の傾向を分かりやすく表現したルール）。承認・共有は3件連絡完了・承認完了という前提条件を満たさない限りボタン自体が押せないため、順序を誤って承認や共有を先に行うことはできない。",
+            "information_gained": "3つの関係先のうち、この状況で具体的な時間的影響が確認できたのは宿だけであり、それを見極めて優先することが結果を左右すると体感する。見学先・バスに時間的な制約が『一切ない』と学ぶのではなく、『この場面ではっきり分かっているのは宿の事情』と理解する——カードの表示位置ではなく、内容を読むことが手がかりだと気づく。",
+            "player_next_judgment": "次に似た場面（複数の対応が必要な場面）に出会ったときも、『どれか1つだけが特別なはず』と決めつけず、実際に読める情報の中で何が具体的に分かっているかをまず見極めてから動く。",
+            "D_externalization": "3つの関係先カードを開く（Cを読む）行為と、開いたカードのうちどれから連絡ボタンを押すか（宿を優先するかどうか）というタップの順序そのものが、子どもの判断を表現する。システムは先にどれが正解かを示さない。宿カードを実際に開いて読むまで宿の連絡ボタンは押せない（disclosure gate）ため、内容を読まずに『なんとなく』宿を選んでも、そもそも押せる状態になっていない。カードの画面上の表示位置はセッションごとにランダムであるため、位置を覚えて選ぶという攻略は成立しない。",
+            "E_consequence": "宿の夕食提供に間に合えば、遅延という予期しない事態にもかかわらず旅程が立て直される、という成功結果（onComplete）になる。宿への連絡が後回しになれば、夕食提供に間に合わなかった、という正直な結果（onPartialComplete、Gate H HONEST OUTCOME）になる。この判定基準は、研究がこの状況に具体的に結びつけて確認できた宿の事情をゲームのルールとして単純化したものであり、実際に分刻みの公式基準が存在することや、見学先・バスに時間的な余地が全くないことを示すものではない。",
+            "retry_or_rethink": "セッション内でのやり直しはない（連絡ボタンは押した時点で1回性の記録として確定し、承認・共有も1回ずつ）。失敗した場合は同じ3つの関係先データをもう一度読み取り専用で提示したうえで、『今度はどの順で連絡すればよかったと思う？』という非採点の振り返り選択（Gate G、結果は変わらない）を挟む。",
+            "job_reveal_bridge": "『新幹線が30分遅延』という導入から、添乗員・旅程管理担当という仕事の紹介へつなげる。運送機関の遅延という計画外の事態に、学校の承認を得ながら関係先への対応を組み立てる、という実在の役割を明示する。",
+            "strengths": "旧実装の唯一の根本問題（コストゼロで自由に並び替え・再提出できるbrute force、exploit: select-all）を、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消する。design-sim.mjs v2で、ランダムな順序戦略は約33%（random_order≈0.33）、カードの表示位置だけに頼る戦略（表示順のまま、または逆順）もランダム化後は約33%にとどまり、完全な推論（100%）を明確に下回ることを検証済み。研究がこの状況に具体的に結びつけて確認した宿泊施設の夕食提供締切を判断の核心とし、研究が裏付けない因果関係（見学先・バスへの優先順位、共有の厳密な最後尾位置、2/3の閾値、具体的な分数の公式基準、および『宿以外に時間的制約が一切ない』という exclusivity claim）は発明せず、それぞれ除外・緩和・単純化・明示的な留保として明記している。",
+            "weaknesses": "375px幅で、3つの関係先カード＋開示ボタン＋連絡ボタンというレイアウトは実装段階の検証項目。カードの表示順をランダム化する実装が正しくシャッフルされているか（特定の並びに偏らないか）は実装段階でのQA検証が必要。宿カードの説明文だけが他の2枚より長くなる可能性があり、閉じた状態のカードの高さ・見た目を統一する実装上の配慮が必要（design review r1のMEDIUM指摘）。",
+            "risk": "design-sim-result.json v2: legitimate_full_reasoning=1（100%）、random_order≈0.33、always_tap_display_slot_1_first≈0.33、always_tap_display_slot_3_first≈0.33。宿泊施設優先の判定基準そのものは、design review r1のBLOCKER是正により、研究が確認した実在の傾向をゲームとして単純化した運用上のルールであることを明記した。design review r2のBLOCKER是正: 『研究が確認できたのは宿だけ』という表現が、なお『宿以外に時間的制約は存在しない』という exclusivity（排他性）の誤った学習結果を招きうると指摘されたため、t5では学習到達点（information_gained/player_next_judgment）を含む全フィールドで、『このゲームで具体的に確認できたのは宿だけ』と『他に時間的制約が存在しないと決まったわけではない』を明確に区別する表現へ改めた。",
+            "adoption_or_rejection_reason": "採用。t1-priority-checklist-recoverの判定ロジック（design-sim.mjsのcontactOrderWins、宿を2者より先に連絡したかどうか）はそのまま維持しつつ、design review r2のBLOCKER（学習到達点が『宿以外に時間的制約は存在しない』という研究が裏付けない exclusivity claim を暗黙に教えてしまう）を是正するため、全フィールドの文言を『このゲームで具体的に確認できたのは宿だけ』という証拠限定的な表現へ改めた翻訳。t2/t3/t4の却下理由はt1のときと変わらず有効（select-all exploitを解消しない／具体的な分数の閾値を断定する／共有の厳密な配列位置を維持する、のいずれも根拠不足）。"
           }
         ],
-        "adopted_translation_id": "t1-priority-checklist-recover",
-        "adoption_rationale": "t1は、fact_sheet_v2.json/scope_core_v2.json/ae_v2.jsonが定義する『3つの関係先のうち、宿泊施設への連絡を優先する』という単一の判断軸を、design-sim.mjs v2で内容を理解しない戦略（ランダム順序・表示位置依存）がいずれも完全な推論を明確に下回ることを事前検証したうえで採用する。t2（並び替え自由＋ペナルティ）はreverse auditが指摘したselect-all exploitを根本的に解消しないため却下、t3（具体的な分数のタイマーを実在の基準として提示）とt4（共有の厳密な配列最後尾位置を維持）はいずれもresearch.mdが裏付けを確認できていない具体性・厳密さを断定的に持ち込むCORE_CAUSAL_MODEL_DISTORTED相当のリスクがあるため却下。design review r1のBLOCKER是正（宿泊施設優先の判定基準を、断定的な確実性ではなく研究が確認した実在の傾向のゲーム的単純化として全設計チェーンに明記）とMEDIUM是正（カードの表示順をセッションごとにランダム化し、位置リークを解消）を、すべてt1に反映した。",
-        "revision_note": "v1: 初版採用。 v2 (design review r1 FAIL 58是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED、MEDIUM POSITION_LEAK_ANALYSIS_INCOMPLETE/VISUAL_HIERARCHY_LEAK_RISK): t1のC_interaction/system_reaction/D_externalization/E_consequence/risk/weaknessesを、宿泊施設優先の判定基準が研究の確認した傾向をゲームとして単純化した運用上のルールであることを明記する表現へ改め、カードの画面表示順をセッションごとにランダム化することを明記し、閉じた状態のカード高さを統一する実装上の配慮が必要であることをweaknessesに追記した。t3のweaknesses/riskも、この是正を踏まえて却下理由を強化した。"
+        "adopted_translation_id": "t5-hedged-evidence-scope",
+        "adoption_rationale": "t5-hedged-evidence-scopeを採用する。t1-priority-checklist-recoverの判定ロジック（design-sim.mjsのcontactOrderWins：宿を2者より先に連絡したかどうか）は完全に維持しつつ、design review r2のBLOCKER（学習到達点のフィールド[information_gained/player_next_judgment]が『宿以外に時間的制約は一切存在しない』という研究が裏付けない排他的な結論を暗黙に教えてしまう）を是正するため、全フィールドの文言を『このゲームで、研究がこの状況に具体的に結びつけて確認できたのは宿だけ』という証拠限定的な表現へ改めた。research.mdが実際に確認した貸切バスの運転時間規制（実在するが定量的な波及は未確認）という事実も踏まえ、『確認できなかった』ことと『実在しない』ことを混同しない表現をt5の全フィールドで徹底した。t2/t3/t4の却下理由は変わらず有効（select-all exploitを解消しない／具体的な分数の閾値を断定する／共有の厳密な配列位置を維持する）。t1は判定ロジックの初出版として履歴に残すが、学習到達点の文言に排他性の懸念があるため採用しない。",
+        "revision_note": "v1: 初版採用（t1）。 v2: design review r1のBLOCKER/MEDIUM是正をt1に反映。 v3: redesignコマンドの要件を満たすためt5-hedged-evidence-scopeを新規追加（この時点ではadoptedはt1のまま）。 v4 (design review r2 FAIL 68是正、BLOCKER CORE_CAUSAL_MODEL_DISTORTED再発、REDESIGN #1): adopted_translation_idをt1からt5へ切り替えた。t5は判定ロジック・UI構造（一回性タップ、表示順ランダム化、disclosure gate）をt1から完全に維持しつつ、学習到達点の文言のみを証拠限定的な表現へ改めている——これはCORE/AE/design-sim.mjsで定義された判断軸を変更しない、文言レベルの是正である。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:c_compression:v2"
+        "legacy-delay-recover:c_compression:v3"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:33.095Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:41:02.306Z",
       "versions": [
         {
           "version": 1,
@@ -512,16 +550,28 @@
           "file": "factory/projects/legacy-delay-recover/design/game_translations_v2.json",
           "created_at": "2026-09-10T18:32:33.096Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/game_translations_v3.json",
+          "created_at": "2026-09-10T18:37:42.030Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-delay-recover/design/game_translations_v4.json",
+          "created_at": "2026-09-10T18:41:02.306Z",
+          "creator": "claude-code"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "legacy-delay-recover:first_5_seconds:v2",
+      "artifact_id": "legacy-delay-recover:first_5_seconds:v3",
       "artifact_type": "first_5_seconds",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/first_5_seconds_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/first_5_seconds_v3.json",
       "payload": {
         "zero_to_two_seconds": "『新幹線が30分遅延』という短い導入テキストのあと、状況確認カード（『？』アイコンで閉じた状態）が画面に表示される。学校への報告ボタン、3つの関係先カード（見学先・バス・宿、表示順はセッションごとにランダム）、承認ボタン、共有ボタンはすべてグレーアウト（disabled）で表示される。",
         "two_to_five_seconds": "子どもは『？』が気になり、状況確認カードをタップする。開くと遅延の状況（例: 『新幹線が30分遅延しています』）が表示され、同時に学校への報告ボタンがdisabledから有効な見た目に変わる。",
@@ -529,14 +579,14 @@
         "first_system_reaction": "タップしたカードが開き、遅延の状況が表示される。学校への報告ボタンが有効化される（他のボタンはまだdisabledのまま）。",
         "next_expected_inference": "『状況を確認しないと次に進めなさそうだ』『何かを確認する→次のボタンが押せるようになる、という順番で進むゲームらしい』という推測（報告ボタンだけが有効化され、他はまだdisabledのままであることから）。",
         "next_expected_action": "学校への報告ボタンを押す→3つの関係先カード（見学先・バス・宿、ランダムな順で表示）が開けるようになる→カードを開いて読み比べ、宿カードに書かれた時間的な事情に気づき、宿への連絡を優先する（画面上のどの位置に表示されているかではなく、内容を読んで判断する）→3件連絡し終えると承認ボタンが有効になり、承認する→共有ボタンが有効になり、共有して結果を見る。",
-        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、no_manual_exploit_check_v2.jsonのカード表示順ランダム化に合わせて更新): 3つの関係先カードの表示順がセッションごとにランダムであることを明記し、next_expected_actionに『画面上のどの位置に表示されているかではなく、内容を読んで判断する』ことを追記した。"
+        "revision_note": "v1: 初版。 v2 (design review r1 FAIL 58是正、no_manual_exploit_check_v2.jsonのカード表示順ランダム化に合わせて更新): 3つの関係先カードの表示順がセッションごとにランダムであることを明記し、next_expected_actionに『画面上のどの位置に表示されているかではなく、内容を読んで判断する』ことを追記した。 v3 (design review r2 FAIL 68是正、REDESIGN #1後の再提出): 内容の変更なし。上流のgame_translations_v4.json（adopted_translation_idをt5-hedged-evidence-scopeへ切り替え）に伴うstaleness解消のための再提出。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:game_translations:v2"
+        "legacy-delay-recover:game_translations:v4"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:33.137Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:41:02.352Z",
       "versions": [
         {
           "version": 1,
@@ -549,16 +599,22 @@
           "file": "factory/projects/legacy-delay-recover/design/first_5_seconds_v2.json",
           "created_at": "2026-09-10T18:32:33.138Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/first_5_seconds_v3.json",
+          "created_at": "2026-09-10T18:41:02.352Z",
+          "creator": "claude-code"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "legacy-delay-recover:no_manual_exploit_check:v2",
+      "artifact_id": "legacy-delay-recover:no_manual_exploit_check:v3",
       "artifact_type": "no_manual_exploit_check",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v3.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": "説明文なしで、カードのタップ（読み物が開く）とボタンのタップ（報告・連絡・承認・共有）だけで操作方法が分かる。既存Q1（legacy-hotel-receive等）と同じ、タップと『？』的開示のみの規約に従う。無効（disabled）なボタンは見た目でグレーアウトされ、押せない状態が視覚的に明確。",
@@ -577,14 +633,14 @@
           "pass": true
         },
         "design_sim_evidence": "factory/projects/legacy-delay-recover/design/design-sim-result.json",
-        "revision_note": "v1: 初版。design-sim.mjsの実測値に基づきfixed_failure_patternを記載した。 v2 (design review r1 FAIL 58是正、MEDIUM POSITION_LEAK_ANALYSIS_INCOMPLETE/VISUAL_HIERARCHY_LEAK_RISK): position_leakを、v1が見落としていたreverse_ui_list_order_always=1（表示順を逆に辿ると常に成功する）という実測結果を正しく反映し、カードの表示順をセッションごとにランダム化することでこの位置リークを構造的に解消した内容へ書き換えた。visual_hierarchy_leakに、宿カードだけが長い説明を含むことによる高さ・見た目の差が正解を示唆しないよう、閉じた状態のカード高さを統一する実装要件を追加した。fixed_failure_patternをdesign-sim.mjs v2（表示順ランダム化後）の実測値に更新した。"
+        "revision_note": "v1: 初版。design-sim.mjsの実測値に基づきfixed_failure_patternを記載した。 v2 (design review r1 FAIL 58是正、MEDIUM POSITION_LEAK_ANALYSIS_INCOMPLETE/VISUAL_HIERARCHY_LEAK_RISK): position_leakを、v1が見落としていたreverse_ui_list_order_always=1（表示順を逆に辿ると常に成功する）という実測結果を正しく反映し、カードの表示順をセッションごとにランダム化することでこの位置リークを構造的に解消した内容へ書き換えた。visual_hierarchy_leakに、宿カードだけが長い説明を含むことによる高さ・見た目の差が正解を示唆しないよう、閉じた状態のカード高さを統一する実装要件を追加した。fixed_failure_patternをdesign-sim.mjs v2（表示順ランダム化後）の実測値に更新した。 v3 (design review r2 FAIL 68是正、REDESIGN #1後の再提出): 内容の変更なし。上流のgame_translations_v4.json（adopted_translation_idをt5-hedged-evidence-scopeへ切り替え）に伴うstaleness解消のための再提出。"
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:first_5_seconds:v2"
+        "legacy-delay-recover:first_5_seconds:v3"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:33.179Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:41:02.393Z",
       "versions": [
         {
           "version": 1,
@@ -597,29 +653,35 @@
           "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v2.json",
           "created_at": "2026-09-10T18:32:33.179Z",
           "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v3.json",
+          "created_at": "2026-09-10T18:41:02.394Z",
+          "creator": "claude-code"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "legacy-delay-recover:core_back_check:v2",
+      "artifact_id": "legacy-delay-recover:core_back_check:v3",
       "artifact_type": "core_back_check",
-      "version": 2,
+      "version": 3,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-delay-recover/design/core_back_check_v2.json",
+      "file": "factory/projects/legacy-delay-recover/design/core_back_check_v3.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "採用した翻訳t1-priority-checklist-recover（v2）は、scope_core_v2.jsonのcoreが定義する『3つの関係先のうち、宿泊施設への連絡を優先する』という単一の判断軸を、game_translations_v2.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED: 宿泊施設優先の判定基準を、研究が裏付ける以上の断定的な確実性から、研究が確認した実在の傾向をゲームとして単純化した運用上のルールへ明記し直す）とMEDIUM是正（POSITION_LEAK_ANALYSIS_INCOMPLETE: カードの表示順をセッションごとにランダム化、VISUAL_HIERARCHY_LEAK_RISK: カードの閉じた状態の高さを統一する実装要件を追加）が、fact_sheet_v2.json/scope_core_v2.json/ae_v2.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.json/reference_research_v2.jsonのすべてに一貫して反映されていることを確認した。判定ロジック自体（宿を2者より先に連絡したかどうか、design-sim.mjsのcontactOrderWins）は変更していない——これは正当なゲームデザイン上の操作化であり、因果関係の発明ではないことを全設計チェーンで明確化した。旧実装のreverse-audit指摘（select-all／進行コストのない自由な並び替え）は、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消している。first_5_seconds_v2.jsonの初回タップ体験（状況確認カードを開く→報告ボタンが有効化される→ランダムな順で表示される3枚のカードを開いて読む→連絡順序を選ぶ）も、c_compression_v2.jsonが定義した圧縮後のCとD（宿カードの時間的な事情を読み、連絡順序で優先度を判断する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v2.jsonのfixed_failure_pattern検証（design-sim-result.json v2）により、ランダムな順序戦略（約33%）も、カードの表示位置に頼る戦略（表示順ランダム化後は約33%）も、いずれも完全な推論（100%）を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+        "notes": "採用した翻訳t5-hedged-evidence-scope（game_translations_v4.json、REDESIGN #1）は、scope_core_v2.json/ae_v2.jsonが定義する『3つの関係先のうち、宿泊施設への連絡を優先する』という単一の判断軸と、design-sim.mjs v2のcontactOrderWins（宿を2者より先に連絡したかどうか）を、t1-priority-checklist-recoverから完全に維持している——判定ロジック・UI構造（1回性タップ、表示順ランダム化、disclosure gate）は一切変更していない。design review r2のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED再発: game_translations_v2.json/play_seeds_v2.jsonの学習到達点フィールドが『宿以外に時間的制約は一切存在しない』という研究が裏付けない排他的な結論を暗黙に教えていた）を受け、game_translations_v4.json（t5）/play_seeds_v3.json/reference_research_v3.json/c_compression_v3.jsonのすべてで、『このゲームで研究がこの状況に具体的に結びつけて確認できたのは宿だけ』という証拠限定的な表現へ統一し、貸切バスの運転時間規制という実在する制約（定量的な波及は未確認）にも触れることで、『確認できなかった』ことと『実在しない』ことを混同しない表現を徹底したことを確認した。ae_v2.json/fact_sheet_v2.json/c_compression（の判定ロジック部分）は、design review r2で既に適切な留保表現になっていることが確認済みであり、変更していない。旧実装のreverse-audit指摘（select-all／進行コストのない自由な並び替え）は、連絡ボタンの1回性タップ（並び替え不可）とセッション単発コミットで解消している。no_manual_exploit_check_v3.json/first_5_seconds_v3.jsonは内容の変更なく、staleness解消のための再提出であることを確認した。design-sim.mjs v2の検証結果（legitimate_full_reasoning=1.0、random_order≈0.33、表示位置ヒューリスティックも≈0.33）は変更されていない——D（子ども自身の判断）が実質的に必要とされている。",
         "pass": true
       },
       "creator": "claude-code",
       "source_artifacts": [
-        "legacy-delay-recover:no_manual_exploit_check:v2"
+        "legacy-delay-recover:no_manual_exploit_check:v3"
       ],
-      "design_iteration": 1,
-      "created_at": "2026-09-10T18:32:33.220Z",
+      "design_iteration": 2,
+      "created_at": "2026-09-10T18:41:02.435Z",
       "versions": [
         {
           "version": 1,
@@ -631,6 +693,12 @@
           "version": 2,
           "file": "factory/projects/legacy-delay-recover/design/core_back_check_v2.json",
           "created_at": "2026-09-10T18:32:33.221Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-delay-recover/design/core_back_check_v3.json",
+          "created_at": "2026-09-10T18:41:02.436Z",
           "creator": "claude-code"
         }
       ]
@@ -652,7 +720,7 @@
     "repair_count_at_review": 0,
     "stale": true,
     "recorded_at": "2026-09-10T18:25:49.248Z",
-    "stale_because": "fact_sheet changed v1->v2"
+    "stale_because": "redesign"
   },
   "impl_review": null,
   "art_review": null,
@@ -675,7 +743,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T18:32:41.372Z",
+  "updated_at": "2026-09-10T18:41:02.436Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1004,6 +1072,117 @@
       "at": "2026-09-10T18:32:41.372Z",
       "event": "repair_done",
       "note": "v2: BLOCKER CORE_CAUSAL_MODEL_DISTORTED repair -- reframed the hotel-priority rule across the full design chain as an explicitly disclosed game-design operationalization of a qualified real pattern, not an asserted deterministic real-world threshold. MEDIUM POSITION_LEAK_ANALYSIS_INCOMPLETE fix -- randomized the 3 contact cards' display order per session (design-sim.mjs verified: display-position heuristics now converge to ~1/3, same as random chance, vs v1's reverse-order-always=1.0). MEDIUM VISUAL_HIERARCHY_LEAK_RISK -- added explicit equal-card-geometry requirement. Underlying win condition (contactOrderWins) unchanged."
+    },
+    {
+      "at": "2026-09-10T18:37:42.030Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v3"
+    },
+    {
+      "at": "2026-09-10T18:37:42.030Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:game_translations:v3",
+      "invalidated": [
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds"
+      ],
+      "sources": [
+        "legacy-delay-recover:c_compression:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:37:50.990Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "REDESIGNING",
+      "note": "iteration 2: translation t5-hedged-evidence-scope"
+    },
+    {
+      "at": "2026-09-10T18:37:50.990Z",
+      "event": "redesign_started",
+      "seed": null,
+      "translation": "t5-hedged-evidence-scope",
+      "reason": "design review r2 (score 68): BLOCKER CORE_CAUSAL_MODEL_DISTORTED recurred -- v2's repair fixed the invented numeric-threshold overclaim but the design chain's learner-facing information_gained/player_next_judgment fields (game_translations_v2.json, play_seeds_v2.json) still taught 'only the hotel has time-sensitive consequences' as if that were a confirmed real-world fact. research.md documents REAL bus driving-time regulations (改善基準告示) that exist -- just not quantitatively tied to this specific 30-minute delay -- so 'no comparable evidence found for venue/bus' is not the same as 'venue/bus have no real time constraints'. Design-stage repair budget (1/1) for this design_iteration is exhausted, so this second design-stage failure requires REDESIGN per pipeline rules. t5-hedged-evidence-scope keeps t1's underlying mechanic (contactOrderWins, hotel-priority tap order) completely unchanged -- only the exclusivity framing in learner-facing text is corrected throughout the chain to distinguish 'this game's evidence scope' from 'a claim about real-world absence of constraints elsewhere'.",
+      "redesign_count": 1
+    },
+    {
+      "at": "2026-09-10T18:40:55.976Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:play_seeds:v3",
+      "invalidated": [
+        "c_compression",
+        "reference_research"
+      ],
+      "sources": [
+        "legacy-delay-recover:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:40:56.020Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:reference_research:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:40:56.062Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:c_compression:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:reference_research:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:41:02.307Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:game_translations:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:c_compression:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:41:02.352Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:first_5_seconds:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:game_translations:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:41:02.394Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:no_manual_exploit_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:first_5_seconds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T18:41:02.436Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-delay-recover:core_back_check:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-delay-recover:no_manual_exploit_check:v3"
+      ]
+    }
+  ],
+  "redesign": [
+    {
+      "from_iteration": 1,
+      "to_iteration": 2,
+      "seed": null,
+      "translation": "t5-hedged-evidence-scope",
+      "reason": "design review r2 (score 68): BLOCKER CORE_CAUSAL_MODEL_DISTORTED recurred -- v2's repair fixed the invented numeric-threshold overclaim but the design chain's learner-facing information_gained/player_next_judgment fields (game_translations_v2.json, play_seeds_v2.json) still taught 'only the hotel has time-sensitive consequences' as if that were a confirmed real-world fact. research.md documents REAL bus driving-time regulations (改善基準告示) that exist -- just not quantitatively tied to this specific 30-minute delay -- so 'no comparable evidence found for venue/bus' is not the same as 'venue/bus have no real time constraints'. Design-stage repair budget (1/1) for this design_iteration is exhausted, so this second design-stage failure requires REDESIGN per pipeline rules. t5-hedged-evidence-scope keeps t1's underlying mechanic (contactOrderWins, hotel-priority tap order) completely unchanged -- only the exclusivity framing in learner-facing text is corrected throughout the chain to distinguish 'this game's evidence scope' from 'a claim about real-world absence of constraints elsewhere'.",
+      "at": "2026-09-10T18:37:50.989Z"
     }
   ]
 }

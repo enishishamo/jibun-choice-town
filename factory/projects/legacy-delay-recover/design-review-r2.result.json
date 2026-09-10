@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-delay-recover-design-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 86,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED remains in the learner-facing design chain. Although the binary hotel-first win condition is now repeatedly disclosed as a game-design operationalization, game_translations_v2.json and play_seeds_v2.json still teach that only the hotel has time-sensitive consequences. Research establishes only that this review found specific hospitality evidence for the hotel; it expressly documents real bus constraints and lacks comparable case-specific data for the other parties. Absence of confirmed comparable data is not proof that those parties have no time sensitivity."
+    ],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The repair appropriately labels hotel-first as a simplified binary game rule and avoids an invented numeric threshold, but the intended takeaway still says the hotel alone is time-sensitive. This repeats the round-1 exclusivity overclaim in another part of the current design chain and would teach an unsupported real-world conclusion to the player.",
+        "file": "factory/projects/legacy-delay-recover/design/game_translations_v2.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6 passed, 0 failed; legitimate_full_reasoning=1, random_order=0.3296, always_tap_display_slot_1_first=0.3296, always_tap_display_slot_3_first=0.3306, fraction_of_all_orderings_that_win=0.3333.",
+      "brute_force_closed": true,
+      "hotel_priority_claim_appropriately_hedged": false,
+      "no_invented_numeric_threshold": true,
+      "position_leak_closed": true,
+      "visual_hierarchy_requirement_specified": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": false,
+      "round1_blocker_genuinely_fixed": false
+    },
+    "evidence": [
+      "factory/projects/legacy-delay-recover/research.md:69 — The research says the progress-cost/time-constraint evidence is only partially supported, not exclusive to the hotel.",
+      "factory/projects/legacy-delay-recover/research.md:79 — Bus driving-time constraints are real; only a direct quantitative connection to this 30-minute delay was not confirmed.",
+      "factory/projects/legacy-delay-recover/research.md:233 — The research distinguishes facts confirmed for each party and does not establish that venue or bus lack time sensitivity.",
+      "factory/projects/legacy-delay-recover/design/ae_v2.json:4 — C accurately qualifies the hotel evidence as individual-guest practice and notes the absence of an official school-trip threshold.",
+      "factory/projects/legacy-delay-recover/design/ae_v2.json:5 — D explicitly identifies hotel-first as a simplified operational game rule, making the binary mechanic itself acceptable.",
+      "factory/projects/legacy-delay-recover/design/ae_v2.json:6 — E discloses that the first-versus-later cutoff is a game rule rather than a real minute-by-minute standard.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v2.json:8 — Display order is explicitly randomized per session, independently of tap order.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v2.json:11 — The intended learning outcome still states that only the hotel loses time-related adjustment room, an exclusivity claim the research does not support.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v2.json:15 — Failure re-presents all three cards read-only for a mandatory, non-scored reflection, satisfying Gate G without changing the result.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v2.json:14 — Success and failure route to distinct onComplete and onPartialComplete outcomes, satisfying Gate H.",
+      "factory/projects/legacy-delay-recover/design/game_translations_v2.json:17 — One-shot taps, no rearrangement, and a single commit close the original brute-force exploit.",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v2.json:14 — Per-session random display ordering is a concrete implementation requirement, not merely an analytical observation.",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v2.json:15 — Equal closed-card height and appearance are stated as mandatory implementation requirements and are sufficiently enforceable at game-spec time.",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v2.json:8 — The seed repeats that the hotel is the only party whose time-related room is lost, independently confirming the residual distortion.",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:76 — Success depends only on hotel being first in tap order.",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:137 — The simulator measures both first-slot and last-slot positional strategies after display randomization.",
+      "factory/projects/legacy-delay-recover/design/design-sim-result.json:2 — Saved numerical results match the independently executed simulation.",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:43 — All three affected parties are now required, correcting the unsupported old two-of-three threshold.",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:45 — School approval remains required before the change is finalized.",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:46 — Sharing is constrained to approved information rather than an unsupported strict array-last rule."
+    ],
+    "recommended_actions": [
+      "Replace every remaining learner-outcome formulation equivalent to 「時間的な余地が失われやすいのは宿だけ」 with 「このゲームで、研究から具体的な時間影響を確認できたのは宿」 or similarly explicit evidence-limited wording.",
+      "Update at minimum game_translations_v2.json:information_gained/player_next_judgment and play_seeds_v2.json:information_gained so they do not turn missing evidence about venue and bus into evidence of absence.",
+      "Search the complete current chain, including comments in design-sim.mjs, for 「だけ」「唯一」「one genuinely time-critical」「one real judgment」 and distinguish game scope from claims about real operations before implementation."
+    ]
+  },
+  "elapsed_sec": 58.943
+}
