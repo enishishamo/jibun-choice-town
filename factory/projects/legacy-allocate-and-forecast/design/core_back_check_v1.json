@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-brief-and-allocateは、scope_core_v1.jsonのcoreが定義する『貯水率×雨予報による制限深度の先読み』と『セクター別タイミング制約×代替手段による割り当て先選定』の2つの判断を、game_translations_v1.jsonのC_interaction/D_externalizationがそのまま保持している。first_5_seconds_v1.jsonの初回タップ体験（カードを開いて読む→2つの選択→実施）も、C_compression_v1.jsonが定義した圧縮後のCとD（2値の読み物を見比べて2段階の選択をする）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v1.jsonのfixed_failure_pattern検証（design-sim-result.json）により、単一軸判断・部分的当てずっぽうのいずれも完全な推論を明確に下回ることを確認しており、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}
