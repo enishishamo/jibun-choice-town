@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-delay-recover-design-r3",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 86,
+    "career_authenticity_score": 88,
+    "game_quality_score": 86,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "現行の実行可能な判定ロジック自体には影響しないが、design-sim.mjsのコメントに「ONE genuinely time-critical relationship」「the only time-critical relationship」など、研究範囲の限定ではなく現実の排他性を断定する旧表現が残っている。core_scope_check_v2.jsonにも「宿泊施設だけが持つ時間的な傾向」という同種の表現がある。採用翻訳t5とplay_seeds_v3の学習到達点は適切に修正されているため実装を止める欠陥ではないが、設計根拠の再利用時に旧過剰主張を復活させるリスクがある。"
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "STALE_EXCLUSIVITY_WORDING",
+        "severity": "MEDIUM",
+        "finding": "非採用翻訳ではなく、現行チェーンに含まれるシミュレーターコメントと整合性確認文に、宿だけが現実に時間制約を持つと読める旧表現が残っている。『この研究が当該30分遅延へ具体的に結びつけられた唯一の関係』へ修正すべき。",
+        "file": "factory/projects/legacy-delay-recover/design/design-sim.mjs"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6 passed, 0 failed; legitimate_full_reasoning=1, random_order=0.3296, always_tap_display_slot_1_first=0.3296, always_tap_display_slot_3_first=0.3306, fraction_of_all_orderings_that_win=0.3333.",
+      "brute_force_closed": true,
+      "hotel_priority_claim_appropriately_hedged": true,
+      "exclusivity_overclaim_present": false,
+      "player_facing_copy_still_clear": true,
+      "position_leak_closed": true,
+      "visual_hierarchy_requirement_specified": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": true
+    },
+    "evidence": [
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:85 — 採用t5は、宿の根拠を当該30分遅延への研究上の具体的結びつきに限定し、バスの法定運転時間制約と定量的波及の未確認を明示している。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:87 — information_gainedは、宿以外に制約が一切ないという理解を明示的に否定し、証拠範囲と現実の不存在を区別している。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:88 — player_next_judgmentは『1つだけが特別』という一般化を避け、利用可能な情報を確認する判断へ接続している。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:90 — Eは先後判定をゲーム上の単純化と明記し、公式な分刻み基準や他者の制約不存在を主張していない。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:83 — 最初の画面は30分遅延と状況確認カードに絞られ、子ども向け導線は簡潔である。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:84 — 実操作は状況確認、学校報告、3者への連絡、学校承認、共有として明瞭で、留保説明が操作手順を妨げていない。",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v3.json:8 — s1は具体的に確認できた対象と、他者に制約がないという主張を明確に区別している。",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v3.json:20 — s2は宿先行をこのゲームの核心として述べるに留まり、他者の現実の制約を否定していない。",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v3.json:32 — s3の失敗学習は証拠の読み落としに置かれ、宿だけが現実に特別だという一般化を避けている。",
+      "factory/projects/legacy-delay-recover/design/reference_research_v3.json:5 — バスの法定運転時間上限が実在し、今回の30分遅延への定量的影響だけが未確認だと正確に記録している。",
+      "factory/projects/legacy-delay-recover/design/c_compression_v3.json:3 — 圧縮後Cも、見学先・バスの時間情報を省く理由を証拠範囲の限定として説明している。",
+      "factory/projects/legacy-delay-recover/design/ae_v2.json:4 — 宿の根拠が個人客向け慣行の一般化で、修学旅行特化資料や公式分数基準ではないと留保している。",
+      "factory/projects/legacy-delay-recover/design/ae_v2.json:5 — hotel-firstを実在傾向のゲーム上の操作化として開示し、学校承認後の確定・共有も保持している。",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:43 — 影響を受ける見学先・バス・宿の3者すべてへの対応が必須であり、旧2/3閾値は残っていない。",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:45 — 学校側の承認後に変更を確定する権限構造が保持されている。",
+      "factory/projects/legacy-delay-recover/design/fact_sheet_v2.json:46 — 共有条件は承認済み情報に限定され、根拠のない厳密な配列末尾判定ではない。",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v3.json:10 — 連絡は一回性で取消・再提出がなく、総当たりによる成功を閉じている。",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v3.json:14 — 表示順のセッション単位ランダム化が必須要件として明記されている。",
+      "factory/projects/legacy-delay-recover/design/no_manual_exploit_check_v3.json:15 — 閉じたカードの高さ・外観統一と、色・太字・アイコンによる正解示唆の禁止が実装要件になっている。",
+      "factory/projects/legacy-delay-recover/design/play_seeds_v3.json:41 — 失敗後に同じデータを読み取り専用で再提示する非採点の再考ステップがGate Gを満たす。",
+      "factory/projects/legacy-delay-recover/design/game_translations_v4.json:90 — 成功はonComplete、失敗は夕食に間に合わないonPartialCompleteへ分岐し、Gate Hを満たす。",
+      "factory/projects/legacy-delay-recover/design/design-sim-result.json:2 — 保存結果のlegitimate_full_reasoningは1で、実行結果と一致した。",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:18 — 『ONE genuinely time-critical relationship』という旧排他表現が残り、採用t5の証拠限定表現と不整合である。",
+      "factory/projects/legacy-delay-recover/design/design-sim.mjs:78 — 『the only time-critical relationship research.md actually supports』は、研究がバスの実在制約も記録していることを正確に表現していない。",
+      "factory/projects/legacy-delay-recover/design/core_scope_check_v2.json:5 — 『宿泊施設だけが持つ時間的な傾向』という旧表現が残るが、自己評価文であり採用された学習到達点や判定仕様を支配していない。"
+    ],
+    "recommended_actions": [
+      "design-sim.mjsの18、51-52、78、123行付近に残る排他的表現を、『この研究が当該30分遅延への具体的影響を確認できた対象』という証拠限定表現へ統一する。",
+      "core_scope_check_v2.jsonの『宿泊施設だけが持つ時間的な傾向』を、『この状況に具体的に結びつけて確認できた宿泊施設の傾向』へ修正する。",
+      "実装時は、ランダム表示順、閉じたカードの同一寸法・同一強調度、一回性連絡、失敗後の読み取り専用振り返り、成功・部分完了の分岐を受入条件として検証する。"
+    ]
+  },
+  "elapsed_sec": 93.914
+}

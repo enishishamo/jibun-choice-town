@@ -15,12 +15,16 @@
 //   strict index-position checks ("承認は最後の変更案カードより後", "共有は配列の最後尾"), and the
 //   "2 of 3 relevant parties" threshold (the IMPACTS data itself says all 3 -- 見学先/バス/宿 -- are
 //   affected, so requiring all 3 is more faithful to the confirmed facts than requiring only 2).
-// - research.md §4 found ONE genuinely time-critical relationship among the 3 affected parties: the
-//   宿 (hotel)'s dinner service has a real cutoff, and contacting it late risks an irreversible result
-//   (食事提供不可・キャンセル扱い) -- documented across multiple hospitality-industry sources (but
-//   those sources are about INDIVIDUAL-GUEST bookings, not school-trip/group bookings specifically --
-//   research.md §4-1 flags this generalization explicitly). No comparable urgency data was found for
-//   見学先 (venue) or バス (bus).
+// - research.md §4 found that the 宿 (hotel)'s dinner service has a real cutoff, and contacting it
+//   late risks an irreversible result (食事提供不可・キャンセル扱い) -- documented across multiple
+//   hospitality-industry sources (but those sources are about INDIVIDUAL-GUEST bookings, not
+//   school-trip/group bookings specifically -- research.md §4-1 flags this generalization explicitly).
+//   This is the only relationship research.md tied QUANTITATIVELY/SPECIFICALLY to this 30-minute
+//   delay -- it is NOT a claim that 見学先 (venue) or バス (bus) have no real time constraints at all
+//   (research.md §3 documents real, legally-mandated bus driving-time limits [改善基準告示]; it only
+//   found no confirmed link between those limits and this specific delay). "No comparable
+//   case-specific evidence found" =/= "confirmed absent" (design review r2 FAIL 68, BLOCKER
+//   CORE_CAUSAL_MODEL_DISTORTED repair -- see the v2/REDESIGN note below).
 //
 // v2 (design review r1 FAIL 58, BLOCKER CORE_CAUSAL_MODEL_DISTORTED repair):
 //
@@ -48,12 +52,22 @@
 // from card identity -- verified below (any_fixed_display_position_heuristic converges to the same
 // ~1/3 base rate as content-blind random guessing, not the 100%/0% v1 had for a static display order).
 //
+// v3 (design review r2 FAIL 68, BLOCKER CORE_CAUSAL_MODEL_DISTORTED repair, REDESIGN #1 ->
+// t5-hedged-evidence-scope): v2's fix corrected the invented-numeric-threshold overclaim, but the
+// design chain's learner-facing text (game_translations_v2.json/play_seeds_v2.json) still taught an
+// EXCLUSIVITY claim ("only the hotel has time-sensitive consequences") that research.md does not
+// support -- see the corrected comment above. The underlying win condition (contactOrderWins) is
+// STILL unchanged; only prose (here and throughout the JSON design chain) was corrected to
+// distinguish "this game's evidence scope" from "a claim about real-world absence of constraints
+// elsewhere."
+//
 // D (the one real judgment this game asks for): given 3 affected parties to contact, recognize which
-// one is time-critical (the hotel, per its dinner cutoff) and contact it BEFORE the other two --
-// via the CONTENT of the hotel card, not its on-screen position (which is randomized). Everything else
-// in the 5-stage flow (check first, report to school, get school approval before finalizing, share
-// only after approval) is enforced as a fixed structural sequence in the implementation -- not a
-// judgment with multiple legitimate answers, so it is not modeled as a probabilistic axis here.
+// one this game's research specifically ties to a concrete time cutoff (the hotel, per its dinner
+// cutoff) and contact it BEFORE the other two -- via the CONTENT of the hotel card, not its on-screen
+// position (which is randomized). Everything else in the 5-stage flow (check first, report to school,
+// get school approval before finalizing, share only after approval) is enforced as a fixed structural
+// sequence in the implementation -- not a judgment with multiple legitimate answers, so it is not
+// modeled as a probabilistic axis here.
 
 function mulberry32(a) {
   return function () {
@@ -75,9 +89,10 @@ export const CONTACTS = ["venue", "bus", "hotel"]; // 見学先・バス・宿 (
 // STRATEGY sampling and visual display order for verification, not the scenario's facts.)
 export function contactOrderWins(order) {
   // order: a permutation of CONTACTS by TAP sequence, e.g. ["hotel","venue","bus"].
-  // Win iff hotel is contacted before both venue and bus (the only time-critical relationship
-  // research.md actually supports -- see the v2 revision note above: this is a disclosed game-design
-  // operationalization of a qualified real pattern, not an assertion of a confirmed real threshold).
+  // Win iff hotel is contacted before both venue and bus (the one relationship research.md ties
+  // specifically to this delay -- see the v3 note above: this is a disclosed game-design
+  // operationalization of a qualified real pattern, not an assertion of a confirmed real threshold,
+  // and not a claim that venue/bus have no real time constraints of their own).
   return order[0] === "hotel";
 }
 

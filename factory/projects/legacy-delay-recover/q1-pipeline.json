@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "delay_recover",
   "creator": "claude-code",
-  "state": "REDESIGNING",
+  "state": "GAME_DESIGN_READY",
   "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 2,
   "repair_count": 0,
@@ -706,21 +706,20 @@
   },
   "independent_review": {
     "kind": "design",
-    "verdict": "FAIL",
-    "score": 58,
-    "blockers": 1,
+    "verdict": "PASS",
+    "score": 86,
+    "blockers": 0,
     "high": 0,
-    "evidence": "factory/projects/legacy-delay-recover/design-review-r1.result.json",
-    "input": "factory/projects/legacy-delay-recover/design-review-r1-prompt.md",
+    "evidence": "factory/projects/legacy-delay-recover/design-review-r3.result.json",
+    "input": "factory/projects/legacy-delay-recover/design-review-r3-prompt.md",
     "reviewer": "codex-review",
     "creator": "claude-code",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
-    "iteration": 1,
+    "iteration": 2,
     "repair_count_at_review": 0,
-    "stale": true,
-    "recorded_at": "2026-09-10T18:25:49.248Z",
-    "stale_because": "redesign"
+    "stale": false,
+    "recorded_at": "2026-09-10T18:44:07.166Z"
   },
   "impl_review": null,
   "art_review": null,
@@ -743,7 +742,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T18:03:44.157Z",
-  "updated_at": "2026-09-10T18:41:02.436Z",
+  "updated_at": "2026-09-10T18:44:12.258Z",
   "history": [
     {
       "at": "2026-09-10T18:03:44.158Z",
@@ -1173,6 +1172,33 @@
       "sources": [
         "legacy-delay-recover:no_manual_exploit_check:v3"
       ]
+    },
+    {
+      "at": "2026-09-10T18:44:07.167Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-delay-recover/design-review-r3.result.json"
+    },
+    {
+      "at": "2026-09-10T18:44:07.167Z",
+      "event": "state_change",
+      "from": "REDESIGNING",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-10T18:44:12.257Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-10T18:44:12.258Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
     }
   ],
   "redesign": [
