@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "t1-diagnose-and-fix（design review r2是正版）は、CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）をそのまま表現している。子どもは地点カード・対策カードの情報を自分で見比べて診断・対策選びを決め、システムは先に正解を示さない。SCOPE（街・猛暑/暑い市街地）も変わらず代表的。design-sim.mjs v2で、風データが実際に必要であること（wind-confoundの導入により、日射・舗装の2軸だけを読み風を無視する戦略が100%から50%まで押し下げられたことを確認）、単純な発見的手法がいずれも完全な推論に明確に劣ることを確認済み。design review r2のBLOCKER是正: wind-confoundの因果的説明を資源配分・優先順位づけの構造に修正し、失敗結果への非採点振り返り選択でGate Gに対応したことも、CORE/SCOPEの整合性を損なわないことを確認済み。",
+  "pass": true
+}

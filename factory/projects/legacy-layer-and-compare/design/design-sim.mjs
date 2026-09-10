@@ -14,16 +14,31 @@
 // back from one to the other, never touching 風 at all) could uniquely identify the correct target
 // every single session -- the target was always the ONE slot with a sun/pavement anomaly, since
 // WIND's anomaly never appeared on those two axes and FINE had no anomaly anywhere. 風 data was
-// completely decorative. Fixed: each archetype's "unfixable" distractor is now a WIND-CONFOUND --
-// a location that is ACTUALLY wind-dominated (unfixable) but ALSO happens to show the SAME
-// surface symptom as that archetype's real target (sun=strong in the fix-sun archetype, pavement=
-// asphalt in fix-pavement), differing from the true target ONLY on the 風 axis. This mirrors a real
-// documented failure mode in research.md's "よくある失敗" (原因を診断せずに単一の対策をどこにでも
-// 当てはめる) -- a location can show a symptom matching an available tool while its DOMINANT,
-// actual-actionable cause is something the tool can't touch. A strategy that reads only the target
-// axis (sun or pavement) now faces TWO matching candidates per relevant archetype and must also
-// check 風 to tell them apart -- see sun_axis_only_then_random / pavement_axis_only_then_random
-// below, now capped near 33% instead of the old (broken) ~100%.
+// completely decorative. Fixed: each archetype's "budget-shouldn't-go-here" distractor is now a
+// WIND-CONFOUND -- a location where wind-blockage is the DOMINANT cause but that ALSO happens to
+// show the SAME surface symptom as that archetype's real target (sun=strong in the fix-sun
+// archetype, pavement=asphalt in fix-pavement), differing from the true target ONLY on the 風 axis.
+// This mirrors a real documented failure mode in research.md's "よくある失敗" (原因を診断せずに
+// 単一の対策をどこにでも当てはめる) -- a location can show a symptom matching an available tool
+// while its DOMINANT, actionable cause is something the tool can't touch. A strategy that reads
+// only the target axis (sun or pavement) now faces TWO matching candidates per relevant archetype
+// and must also check 風 to tell them apart -- see sun_axis_only_then_random /
+// pavement_axis_only_then_random below, now capped near 33% instead of the old (broken) ~100%.
+//
+// IMPORTANT (design review r2 BLOCKER fix, WIND_CONFOUND_CAUSAL_MODEL_UNGROUNDED): sessionWin's
+// binary roleId match is a scoring/mission-success rule, NOT a physics claim that shade/water_
+// pavement has literally zero effect at a wind-confound location. research.md documents these
+// countermeasures' local effects (e.g. street trees: 15C pavement gap; water-retentive pavement:
+// -10C after sprinkling) as real and location-local -- applying one at a wind-confound location
+// plausibly still does SOMETHING. What sessionWin actually models is a resource-allocation
+// question, grounded in research.md's own documentation that real heat-island measures compete for
+// limited budget alongside other policy goals (環境省 全国170自治体アンケート): given only ONE
+// countermeasure deployment this session, did the child spend it on the location where the
+// DOMINANT, addressable cause actually is? Spending it at a wind-confound location is scored as
+// not achieving the mission (the location will NOT cool down enough to matter, because its
+// governing problem was left untreated) even though the treatment itself isn't asserted to be
+// physically inert. Every downstream design doc (ae/game_translations/no_manual_exploit_check) was
+// reworded to state this framing explicitly and never claim a zero-effect outcome.
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -192,7 +207,7 @@ const out = {
   correctSlotPositionDistribution: slotCounts,
   results,
   verdict,
-  notes: "v2 (design review r1 FAIL 55 repair, HIGH CORE_DATA_AXIS_NOT_REQUIRED): v1's WIND distractor had an anomaly ONLY on the 風 axis, so a strategy reading just 日射+舗装 (never 風) could uniquely identify the target every session -- 風 was decorative. v2 replaces the plain WIND distractor in each archetype with a WIND-CONFOUND that mimics that archetype's target symptom on the target's own axis (sun=strong for fix-sun's confound, pavement=asphalt for fix-pavement's confound) while differing only on 風 (its real, unfixable dominant cause) -- grounded in research.md's documented failure mode of diagnosing from a single surface symptom without checking the dominant cause. sun_then_pavement_never_wind (the EXACT strategy r1's reviewer identified winning ~100% under v1) is now capped near 50% (each archetype presents exactly two symptom-matching candidates -- the target and its wind-confound -- so this strategy degenerates to a 50/50 guess between them every session, with 風 the only axis that would break the tie). sun_axis_only_then_random / pavement_axis_only_then_random are capped near 33% (that 50/50-within-its-own-archetype plus a 1-in-6 random fallback in the archetype where its axis shows no anomaly at all -- previously ~58% under v1, which was itself far short of v1's true ~100% flaw once sun+pavement were combined). avoid_wind_then_fixed_* / avoids_wind_then_random (reads 風 only, ignores the target axis) remain capped near 25%, since knowing to exclude the confound still leaves target vs FINE undecided.",
+  notes: "v2 (design review r1 FAIL 55 repair, HIGH CORE_DATA_AXIS_NOT_REQUIRED; design review r2 BLOCKER WIND_CONFOUND_CAUSAL_MODEL_UNGROUNDED repair -- framing only, no logic change below this line): v1's WIND distractor had an anomaly ONLY on the 風 axis, so a strategy reading just 日射+舗装 (never 風) could uniquely identify the target every session -- 風 was decorative. v2 replaces the plain WIND distractor in each archetype with a WIND-CONFOUND that mimics that archetype's target symptom on the target's own axis (sun=strong for fix-sun's confound, pavement=asphalt for fix-pavement's confound) while differing only on 風 (its dominant, addressable-only-at-city/district-scale cause) -- grounded in research.md's documented failure mode of diagnosing from a single surface symptom without checking the dominant cause. sessionWin's binary match is a resource-allocation/mission-success rule (did the child spend this session's one countermeasure where the dominant cause actually is), not a claim that the countermeasure has zero physical effect at a wind-confound location -- see the file header for the full r2 framing fix. sun_then_pavement_never_wind (the EXACT strategy r1's reviewer identified winning ~100% under v1) is now capped near 50% (each archetype presents exactly two symptom-matching candidates -- the target and its wind-confound -- so this strategy degenerates to a 50/50 guess between them every session, with 風 the only axis that would break the tie). sun_axis_only_then_random / pavement_axis_only_then_random are capped near 33% (that 50/50-within-its-own-archetype plus a 1-in-6 random fallback in the archetype where its axis shows no anomaly at all -- previously ~58% under v1, which was itself far short of v1's true ~100% flaw once sun+pavement were combined). avoid_wind_then_fixed_* / avoids_wind_then_random (reads 風 only, ignores the target axis) remain capped near 25%, since knowing to exclude the confound still leaves target vs FINE undecided.",
 };
 try {
   writeFileSync(join(HERE, "design-sim-result.json"), JSON.stringify(out, null, 2) + "\n");

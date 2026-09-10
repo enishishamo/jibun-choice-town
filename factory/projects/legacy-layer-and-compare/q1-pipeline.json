@@ -4,19 +4,19 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "layer_and_compare",
   "creator": "claude-code",
-  "state": "PLAY_SEEDS_READY",
-  "current_stage": "EXISTING_GAME_RESEARCH",
+  "state": "FIRST_PLAY_READY",
+  "current_stage": "CORE_BACK_CHECK",
   "design_iteration": 1,
   "repair_count": 0,
   "redesign_count": 0,
   "artifacts": {
     "fact_sheet": {
-      "artifact_id": "legacy-layer-and-compare:fact_sheet:v3",
+      "artifact_id": "legacy-layer-and-compare:fact_sheet:v4",
       "artifact_type": "fact_sheet",
-      "version": 3,
+      "version": 4,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/fact_sheet_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/fact_sheet_v3.json",
       "payload": {
         "profession": "地方公共団体（環境部局・都市計画部局）でヒートアイランド対策の企画・推進を担当する職員（データを作る環境コンサルタント・研究機関の技術者と連携する）",
         "sources": [
@@ -85,12 +85,12 @@
           "ゲーム内で使う架空の3地点（駅前の道・住宅地の道・公園そばの道など）の具体的な温度・対策後の変化は、実在の特定都市・特定地点の公開データではなく、本リサーチで確認した実在の効果レンジを参考にしたゲーム内の仮設定である",
           "千代田区の用途別マトリクス（表4）は千代田区独自の計画内容であり、環境省の全国共通基準ではない"
         ],
-        "revision_note": "v1: reverse-audit backfillのプレースホルダーを、実在の一次資料（千代田区ヒートアイランド対策計画、環境省ヒートアイランド対策ガイドライン・マニュアル、東京都環境局）に基づく内容に置き換えた。旧実装（3地点固定・1地点だけ対策が効く・その他はfixable=false固定）が持っていたC_required=falseの構造的欠陥を、実在する「原因ごとに有効な対策・スケールが異なる」という一次資料の構造で是正する設計方針を反映。 v1.1 (design review r1 MEDIUM是正、ARTIFACT_CHAIN_INCONSISTENT): pipeline上のバージョン番号2は、q1-legacy-audit.mjs startのbackfillが自動生成したプレースホルダー版（バージョン1）をこの内容が置き換えたことによるカウンタの繰り上がりであり、内容自体は最初の実質的な版（v1）のままである。以後のバージョン番号と内容表記のずれを避けるため、本ファイルはfact_sheet_v2.jsonとして再登録する。"
+        "revision_note": "v1: reverse-audit backfillのプレースホルダーを、実在の一次資料（千代田区ヒートアイランド対策計画、環境省ヒートアイランド対策ガイドライン・マニュアル、東京都環境局）に基づく内容に置き換えた。旧実装（3地点固定・1地点だけ対策が効く・その他はfixable=false固定）が持っていたC_required=falseの構造的欠陥を、実在する「原因ごとに有効な対策・スケールが異なる」という一次資料の構造で是正する設計方針を反映。 （design review r2 BLOCKER是正、ARTIFACT_CHAIN_INCONSISTENT）: pipeline上のバージョン番号は、backfillが消費したプレースホルダーや、その後の複数回の追加是正のたびに実際の内容変更を伴わない再登録が発生するため、ファイル名の『vN』（内容としての通し番号）とは一致しない。特定の数値を本文に記載すると次の再登録で必ず陳腐化するため、以後この種の注記では数値を挙げず、『q1-pipeline.jsonのartifacts.<type>.fileフィールドを常に正とする』とだけ明記する。"
       },
       "creator": "claude",
       "source_artifacts": [],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:29:42.734Z",
+      "created_at": "2026-09-10T05:52:17.994Z",
       "versions": [
         {
           "version": 1,
@@ -109,29 +109,35 @@
           "file": "factory/projects/legacy-layer-and-compare/design/fact_sheet_v2.json",
           "created_at": "2026-09-10T04:29:42.739Z",
           "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-layer-and-compare/design/fact_sheet_v3.json",
+          "created_at": "2026-09-10T05:52:17.994Z",
+          "creator": "claude"
         }
       ]
     },
     "scope_core": {
-      "artifact_id": "legacy-layer-and-compare:scope_core:v4",
+      "artifact_id": "legacy-layer-and-compare:scope_core:v6",
       "artifact_type": "scope_core",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/scope_core_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/scope_core_v3.json",
       "payload": {
         "core": "地点ごとの日射・風・地表面（舗装）のデータを見比べて、その地点で本当に効いている暑さの原因を診断し、原因に合った対策を選んで実施する判断のループ。原因と無関係な対策や、個人の一手では直せない原因（建物密集による風通し阻害）を選ぶと効果が出ない。",
         "scope": "街（猛暑）／暑い市街地——地方公共団体でヒートアイランド対策の企画・推進を担当する職員の場面",
-        "scope_is_representative_because": "『地点ごとのデータを比較し、原因を診断して、原因に合う対策を選ぶ』という判断は、fact_sheet_v2.jsonの一次資料（環境省ヒートアイランド対策ガイドライン3章の対策技術等データシート、千代田区ヒートアイランド対策計画の用途別マトリクス）が示す実際の業務の核であり、市街地の暑さ対策という場面はその典型的な適用例。",
+        "scope_is_representative_because": "『地点ごとのデータを比較し、原因を診断して、原因に合う対策を選ぶ』という判断は、fact_sheet_v3.jsonの一次資料（環境省ヒートアイランド対策ガイドライン3章の対策技術等データシート、千代田区ヒートアイランド対策計画の用途別マトリクス）が示す実際の業務の核であり、市街地の暑さ対策という場面はその典型的な適用例。",
         "profession_name_hidden_test": "『地点ごとの日射・風・舗装のデータを見比べて、暑さの本当の原因を診断し、原因に合った対策を選ぶ』という記述だけでは職業名を当てられないが、E（対策後に地点の温度が実際に下がる）と組み合わせた文脈全体は、まちの暑さの原因を分析し対策を考える都市計画・環境政策の判断を指す。他の登場職業（配送員・農家など）とはC（日射・風・舗装という都市環境データ）とD（原因診断→対策選定という2段階判断）が異なるため重複しない。",
-        "revision_note": "v1: reverse-audit backfillの記述を、fact_sheet_v1.jsonの一次資料に基づいて具体化した。 v1.1: 同上（fact_sheet_v2.json参照）、backfillプレースホルダーの置き換えによるカウンタ繰り上がり。CORE/SCOPEの記述自体に変更はない。"
+        "revision_note": "v1: reverse-audit backfillの記述を、fact_sheet_v1.jsonの一次資料に基づいて具体化した。 （design review r2 BLOCKER是正、ARTIFACT_CHAIN_INCONSISTENT）: pipeline上のバージョン番号は、backfillが消費したプレースホルダーや、その後の複数回の追加是正のたびに実際の内容変更を伴わない再登録が発生するため、ファイル名の『vN』（内容としての通し番号）とは一致しない。特定の数値を本文に記載すると次の再登録で必ず陳腐化するため、以後この種の注記では数値を挙げず、『q1-pipeline.jsonのartifacts.<type>.fileフィールドを常に正とする』とだけ明記する。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:fact_sheet:v3"
+        "legacy-layer-and-compare:fact_sheet:v4"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:47:27.302Z",
+      "created_at": "2026-09-10T05:54:39.273Z",
       "versions": [
         {
           "version": 1,
@@ -156,30 +162,42 @@
           "file": "factory/projects/legacy-layer-and-compare/design/scope_core_v2.json",
           "created_at": "2026-09-10T04:47:27.303Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/scope_core_v3.json",
+          "created_at": "2026-09-10T05:52:39.592Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/scope_core_v3.json",
+          "created_at": "2026-09-10T05:54:39.273Z",
+          "creator": "claude"
         }
       ]
     },
     "ae": {
-      "artifact_id": "legacy-layer-and-compare:ae:v4",
+      "artifact_id": "legacy-layer-and-compare:ae:v6",
       "artifact_type": "ae",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/ae_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/ae_v3.json",
       "payload": {
         "A": "街（猛暑）／暑い市街地——地方公共団体でヒートアイランド対策の企画・推進を担当する職員の場面",
         "B": "同じ猛暑日なのに、場所によって暑さがちがう。3つの地点のデータ（毎セッションランダムに組み合わせが決まる）を見比べて、本当に効いている原因を診断し、対策を1つ選んで実施しなければならない。",
         "C": "地点ごとの日射（強い/弱い）・風（強い/弱い、建物による風通しの良し悪し）・舗装（アスファルト/保水性）の読み物。対策の種類（街路樹・日除け／保水性・遮熱性舗装）と、それぞれがどの原因に効くか。風通しの悪さ（建物密集）は個人の一手では直せない、という制約。",
         "D": "3地点の日射・風・舗装データを読み比べて、どの地点が対策で直せる原因を持っているかを診断し、原因に合う対策を選んで1つの地点に実施する。原因と無関係な対策や、対策のしようがない地点（風通しの悪さが原因）を選ぶと効果が出ない。",
-        "E": "診断と対策選びの両方が正しければ、その地点の暑さがやわらぐ。どちらか一方でも誤っていれば、正直に『効果が出なかった』という結果になり、実際の仕事と同様にセンター（環境部局）へ持ち帰って考え直すことになる。その際、結果メッセージは『うまくいかなかった』で終わらせず、『3つの地点の日射・風・舗装をもう一度見比べてから、次はどう考えるか』という一言を添えることで、同一セッション内でのやり直しはなくても、子どもが『違った。じゃあどうしよう？』と考え直す余地を残す（既存Q1 legacy-clue-joinの設計結論——フラットな失敗フィードバックでもQ1 First-Play Standard Gate Gの『考え直す余地』を満たす——を踏襲しつつ、失敗メッセージ自体に軽い振り返りの一言を加えることでその余地をより明確にする）。",
-        "revision_note": "v1: fact_sheet_v1.json/scope_core_v1.jsonの一次資料に基づき、A-Eを具体化。旧実装にあった『別の場所に置きなおす』という同一セッション内の反復ループは、design-sim.mjsの検証でブルートフォースの温床になりうるため、1回のコミット判断に統一する方針とした（既存のlegacy-clue-join/legacy-sow-and-grow/legacy-load-and-routeの前例に倣う）。 v1.1 (design review r1 HIGH是正、THINK_AGAIN_MISSING): Eの失敗結果の記述に、Gate G『考え直す余地』を明確にする一言（次に何を見直すべきか）を追加した。また、pipeline上のバージョン番号2はbackfillプレースホルダー置き換えによるカウンタ繰り上がりであることを明記（fact_sheet_v2.json参照）。"
+        "E": "対策は1セッションにつき1箇所にしか実施できない、という限られた資源配分の判断を表現する（研究: 対策は多くの場合、地球温暖化対策・緑化推進・熱中症対策など他の政策目的と併存する限られた予算の中で行われる——環境省全国調査170自治体アンケート）。診断と対策選びの両方が正しければ、その地点で本当に効いている原因が解消され、暑さが目立ってやわらぐ。診断か対策選びのどちらかが誤っていた場合——例えば対策自体には多少の効果があっても、その地点で本当に支配的な原因（建物密集による風通しの阻害など）が対策の対象ではなかった場合——限られた対策の機会を本当に必要な場所で使えなかった、という正直な結果になる。これは『対策の物理的効果がゼロだった』という主張ではなく、『実際に効いている支配的な原因を放置したままでは、その地点は目立って涼しくならない』という、実務における資源配分・優先順位づけの失敗を表現する。実際の仕事と同様にセンター（環境部局）へ持ち帰って考え直すことになる。その際、結果メッセージは『うまくいかなかった』で終わらせず、同じ3地点のデータをもう一度見せたうえで『次はどの地点が本当の原因だったと思う？』という振り返り選択（採点はされない、結末は変わらない）を挟むことで、同一セッション内でのやり直し＝総当たり成功の再導入は避けつつ、子どもが『違った。じゃあどうしよう？』と実際に考え直す行為そのものを体験できるようにする（Q1 First-Play Standard Gate G）。",
+        "revision_note": "v1: fact_sheet_v1.json/scope_core_v1.jsonの一次資料に基づき、A-Eを具体化。旧実装にあった『別の場所に置きなおす』という同一セッション内の反復ループは、design-sim.mjsの検証でブルートフォースの温床になりうるため、1回のコミット判断に統一する方針とした（既存のlegacy-clue-join/legacy-sow-and-grow/legacy-load-and-routeの前例に倣う）。 v2 (design review r2 FAIL 58是正、BLOCKER×3): (1) CORE_DATA_AXIS_NOT_REQUIREDの再指摘に対し、Eの記述を『対策の物理効果がゼロになる』という含意を避け、限られた資源配分・優先順位づけの失敗として説明するモデルに修正（研究の予算制約の記述に基づく）。(2) THINK_AGAIN_MISSINGに対し、失敗結果に非採点の振り返り選択（同じデータを再提示し、次に疑う原因を選ばせるが結末は変えない）を追加し、総当たりを再導入せずにGate Gを満たすようにした。(3) ARTIFACT_CHAIN_INCONSISTENTに対し、以後の版番号注記から具体的な数値を排除。 （design review r2 BLOCKER是正、ARTIFACT_CHAIN_INCONSISTENT）: pipeline上のバージョン番号は、backfillが消費したプレースホルダーや、その後の複数回の追加是正のたびに実際の内容変更を伴わない再登録が発生するため、ファイル名の『vN』（内容としての通し番号）とは一致しない。特定の数値を本文に記載すると次の再登録で必ず陳腐化するため、以後この種の注記では数値を挙げず、『q1-pipeline.jsonのartifacts.<type>.fileフィールドを常に正とする』とだけ明記する。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:scope_core:v4"
+        "legacy-layer-and-compare:scope_core:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:47:53.346Z",
+      "created_at": "2026-09-10T05:54:52.236Z",
       "versions": [
         {
           "version": 1,
@@ -204,28 +222,40 @@
           "file": "factory/projects/legacy-layer-and-compare/design/ae_v2.json",
           "created_at": "2026-09-10T04:47:53.347Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/ae_v3.json",
+          "created_at": "2026-09-10T05:52:39.630Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/ae_v3.json",
+          "created_at": "2026-09-10T05:54:52.237Z",
+          "creator": "claude"
         }
       ]
     },
     "core_scope_check": {
-      "artifact_id": "legacy-layer-and-compare:core_scope_check:v3",
+      "artifact_id": "legacy-layer-and-compare:core_scope_check:v5",
       "artifact_type": "core_scope_check",
-      "version": 3,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/core_scope_check_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/core_scope_check_v4.json",
       "payload": {
         "core_consistent": true,
         "scope_representative": true,
         "profession_name_hidden_test_pass": true,
-        "notes": "CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）はfact_sheet_v2.jsonの一次資料（環境省ヒートアイランド対策ガイドライン3章、千代田区ヒートアイランド対策計画）と整合する。SCOPE（街・猛暑/暑い市街地）は実際のヒートアイランド対策業務の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『対策後に地点の暑さが実際にやわらぐ』を含む文脈全体はまちの暑さ対策・都市計画の判断を指し、他の登場職業とは重複しない。 design review r1是正のcascade: fact_sheet/scope_core/aeのバージョン番号2はbackfillプレースホルダー置き換えによるカウンタ繰り上がりであり、CORE/SCOPEの整合性・代表性は変わらない。"
+        "notes": "CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）はfact_sheet_v3.jsonの一次資料（環境省ヒートアイランド対策ガイドライン3章、千代田区ヒートアイランド対策計画）と整合する。SCOPE（街・猛暑/暑い市街地）は実際のヒートアイランド対策業務の代表的な適用例。Profession Name Hidden Test: CORE単体の記述だけでは職業名を当てられないが、Eの『対策後に地点の暑さが実際にやわらぐ』を含む文脈全体はまちの暑さ対策・都市計画の判断を指し、他の登場職業とは重複しない。 design review r1/r2是正のcascade: fact_sheet/scope_core/aeの内容自体は変更なし（r1: バックフィルカウンタ由来の版番号ずれを注記で説明。r2: 版番号注記から陳腐化する具体的数値を排除）。CORE/SCOPEの整合性・代表性は変わらない。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:ae:v4"
+        "legacy-layer-and-compare:ae:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:04.255Z",
+      "created_at": "2026-09-10T05:55:03.667Z",
       "versions": [
         {
           "version": 1,
@@ -244,16 +274,28 @@
           "file": "factory/projects/legacy-layer-and-compare/design/core_scope_check_v2.json",
           "created_at": "2026-09-10T04:48:04.256Z",
           "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-layer-and-compare/design/core_scope_check_v4.json",
+          "created_at": "2026-09-10T05:52:51.230Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/core_scope_check_v4.json",
+          "created_at": "2026-09-10T05:55:03.668Z",
+          "creator": "claude"
         }
       ]
     },
     "play_seeds": {
-      "artifact_id": "legacy-layer-and-compare:play_seeds:v3",
+      "artifact_id": "legacy-layer-and-compare:play_seeds:v5",
       "artifact_type": "play_seeds",
-      "version": 3,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/play_seeds_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/play_seeds_v4.json",
       "payload": {
         "seeds": [
           {
@@ -262,11 +304,11 @@
             "player_action": "3枚の地点カードをタップして、それぞれの日射・風・舗装の読み物を開く→対策（街路樹・日除け／保水性・遮熱性舗装）を1つ選ぶ→対策を実施する地点を1つ選ぶ→『実施する』を1回だけ押す（1回のコミット、同一セッション内でのやり直しはない）",
             "system_reaction": "選んだ地点の原因と選んだ対策が一致していれば『その地点の暑さがやわらいだ』という成功。一致していなければ、フラットな『効果が出なかった』という結果になり、どこがどう違うかは示さない",
             "information_gained": "結果によって異なる。成功時: 選んだ地点・対策の組み合わせが実際に原因に合っていたと分かる。失敗時: 診断・対策選びのどちらか（または両方）が誤っていたという結果のみで、どの地点のどこが違ったかは一切示されない",
-            "next_judgment_or_action": "結果を受け止め、正直な成功/失敗の結末へ進む（同一セッション内の再挑戦はない——本当のやり直しは章に入り直して新しい条件で挑戦すること）（design review r1是正: 失敗結果には『次は3つの地点の日射・風・舗装をもう一度見比べよう』という一言を添え、Gate Gの考え直す余地を明確にする）",
+            "next_judgment_or_action": "結果を受け止め、正直な成功/失敗の結末へ進む（同一セッション内の再挑戦はない——本当のやり直しは章に入り直して新しい条件で挑戦すること）（design review r1是正: 失敗結果には『次は3つの地点の日射・風・舗装をもう一度見比べよう』という一言を添え、Gate Gの考え直す余地を明確にする）（design review r2是正: 失敗結果には非採点の振り返り選択——同じ3地点を再提示し次に疑う原因を選ばせるが結末は変えない——を挟み、Gate Gの考え直す余地を、実際に考え直す行為として体験させる）",
             "C_used": "地点ごとの日射・風・舗装の読み物（3つの原因のうちどれが効いているか）、対策の種類とそれぞれが対応する原因、個人の一手では直せない原因（風通しの悪さ）があるという制約",
             "D_expressed": "地点のデータを原因と照合して診断する判断と、診断した原因に合う対策を選んで実施する判断という、実際のヒートアイランド対策業務の中核",
             "E_reached": "診断・対策選びの両方が正しければ地点の暑さがやわらぐ。どちらか一方でも誤っていれば正直な失敗結果になる",
-            "risks": "3地点の日射・風・舗装データが毎回同じ固定内容だと、正解の組み合わせを覚えるだけの当てずっぽうになる（旧実装で発生していた問題そのもの——旧実装は3地点・原因・対策が完全に固定で、fixable=trueの地点に対策を置けば必ず成功した）。地点は2種類のシナリオ（日射が原因／舗装が原因）から均等に抽選し、風通しの悪い地点と特に問題のない地点を毎回同時に混ぜることで、単純な『いつも同じ場所に同じ対策を置く』『日射だけ見て他を無視する』という一次元の判断だけでは正解が決まらないよう設計する必要がある（design-sim.mjsで検証: 固定戦略は17%前後、単一原因のみ読む戦略も58%前後にとどまり、完全な推論100%を大きく下回る）。"
+            "risks": "3地点の日射・風・舗装データが毎回同じ固定内容だと、正解の組み合わせを覚えるだけの当てずっぽうになる（旧実装で発生していた問題そのもの——旧実装は3地点・原因・対策が完全に固定で、fixable=trueの地点に対策を置けば必ず成功した）。地点は2種類のシナリオ（日射が原因／舗装が原因）から均等に抽選し、風通しの悪い地点（対象シナリオの症状を模倣するwind-confound）と特に問題のない地点を毎回同時に混ぜることで、単純な『いつも同じ場所に同じ対策を置く』『日射だけ見て他を無視する』『日射と舗装だけ見て風を無視する』という判断だけでは正解が決まらないよう設計する必要がある（design-sim.mjs v2で検証: 固定戦略は17%前後、単一原因軸のみ読む戦略は33%前後、日射と舗装だけを見て風を無視する戦略は50%にとどまり、完全な推論100%を大きく下回る。design review r1のCORE_DATA_AXIS_NOT_REQUIRED是正）。"
           },
           {
             "seed_id": "s2-any-location-works",
@@ -296,10 +338,10 @@
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:ae:v4"
+        "legacy-layer-and-compare:ae:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:04.294Z",
+      "created_at": "2026-09-10T05:55:03.706Z",
       "versions": [
         {
           "version": 1,
@@ -318,23 +360,35 @@
           "file": "factory/projects/legacy-layer-and-compare/design/play_seeds_v2.json",
           "created_at": "2026-09-10T04:48:04.294Z",
           "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-layer-and-compare/design/play_seeds_v4.json",
+          "created_at": "2026-09-10T05:52:51.269Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/play_seeds_v4.json",
+          "created_at": "2026-09-10T05:55:03.707Z",
+          "creator": "claude"
         }
       ]
     },
     "reference_research": {
-      "artifact_id": "legacy-layer-and-compare:reference_research:v4",
+      "artifact_id": "legacy-layer-and-compare:reference_research:v6",
       "artifact_type": "reference_research",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/reference_research_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/reference_research_v5.json",
       "payload": {
         "references": [
           {
             "reference": "環境省『ヒートアイランド対策ガイドライン』3章 対策技術等データシート、千代田区『千代田区ヒートアイランド対策計画』資料編4（用途別マトリクス）・資料編6（8地域の現状）",
             "relevant_mechanic": "地点ごとの日射・風・舗装という3つの原因データと、原因ごとに有効な対策・スケールが異なるという実在の因果構造",
             "borrowed_principle": "実在する『対策は原因・用途・スケールを選ぶ』という因果構造を、3地点（毎セッションランダムな組み合わせ）×3つの原因（日射/舗装/風）×2つの対策（街路樹・日除け/保水性舗装）という圧縮された形でゲームに投影する。風（建物密集による風通し阻害）は都市/地区スケール専用で個人の一手では直せないという実在の制約（環境省データシート表3.2）を、ゲーム内の『対策のない原因』としてそのまま反映する",
-            "surface_elements_not_to_copy": "20対策技術・6分類すべてはそのまま出さない（10-12歳向けに2種類の対策に圧縮）。千代田区の8地域区分・具体的な緑被率数値はそのまま持ち込まず、実在の効果レンジ（街路樹の路面温度差15℃、保水性舗装の散水後10℃低下等）を参考にした架空の3地点として扱う（fact_sheet_v2.jsonのuncertaintiesに明記）"
+            "surface_elements_not_to_copy": "20対策技術・6分類すべてはそのまま出さない（10-12歳向けに2種類の対策に圧縮）。千代田区の8地域区分・具体的な緑被率数値はそのまま持ち込まず、実在の効果レンジ（街路樹の路面温度差15℃、保水性舗装の散水後10℃低下等）を参考にした架空の3地点として扱う（fact_sheet_v3.jsonのuncertaintiesに明記）"
           },
           {
             "reference": "既存Q1 legacy-load-and-route（t1-zone-and-route、design review r1-r4を経た前例）",
@@ -345,17 +399,17 @@
           {
             "reference": "既存Q1 clue_join/sow_and_grow/load_and_route（1回のコミット判断、同一セッション内での再挑戦なしという前例）",
             "relevant_mechanic": "フラットな失敗フィードバック（どこが違うか個別に示さない）と、1回のコミットで結果が確定する設計により、個別フィードバックを使った総当たり攻略を防ぐ",
-            "borrowed_principle": "地点診断・対策選びの両方を1回のコミットで確定し、失敗時は『効果が出なかった』というフラットな結果のみを返す（旧実装が『別の場所に置きなおす』という同一セッション内の反復ループを持っていたことがBRUTE_FORCE_SUCCESSの温床だったため、play_seeds_v2.jsonのs2却下理由を参照）",
+            "borrowed_principle": "地点診断・対策選びの両方を1回のコミットで確定し、失敗時は個別の正誤を示さないフラットな結果を返す（旧実装が『別の場所に置きなおす』という同一セッション内の反復ループを持っていたことがBRUTE_FORCE_SUCCESSの温床だったため、play_seeds_v4.jsonのs2却下理由を参照）。ただし失敗結果には、同じデータを再提示し次に疑う原因を選ばせる非採点の振り返り選択を挟み、Q1 First-Play Standard Gate G『考え直す余地』を、総当たりを再導入せずに満たす（design review r2 BLOCKER: THINK_AGAIN_MISSING是正）。",
             "surface_elements_not_to_copy": "clue_joinの複数所見選択、sow_and_grow/load_and_routeの積み分け・訪問順という判定構造はそのまま持ち込まない（layer_and_compareは原因診断+対策選定という別の二部構成）"
           }
         ]
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:play_seeds:v3"
+        "legacy-layer-and-compare:play_seeds:v5"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T05:04:47.589Z",
+      "created_at": "2026-09-10T05:55:17.167Z",
       "versions": [
         {
           "version": 1,
@@ -380,16 +434,28 @@
           "file": "factory/projects/legacy-layer-and-compare/design/reference_research_v2.json",
           "created_at": "2026-09-10T05:04:47.590Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/reference_research_v5.json",
+          "created_at": "2026-09-10T05:53:04.304Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/reference_research_v5.json",
+          "created_at": "2026-09-10T05:55:17.167Z",
+          "creator": "claude"
         }
       ]
     },
     "c_compression": {
-      "artifact_id": "legacy-layer-and-compare:c_compression:v3",
+      "artifact_id": "legacy-layer-and-compare:c_compression:v5",
       "artifact_type": "c_compression",
-      "version": 3,
+      "version": 5,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/c_compression_v2.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/c_compression_v4.json",
       "payload": {
         "original_C": "実際のヒートアイランド対策業務では、地表面熱分布画像（航空機観測サーモグラフィ、10段階の表面温度ランク）、緑被率・容積率・建ぺい率・建物階数・道路幅員・昼夜間人口などの地域比較データ、20種類の対策技術（風/緑/水/日射反射遮蔽/人工排熱対策/普及啓発の6分類）とそれぞれの5つの効果（日中/夜間の現象緩和・暑熱緩和・エネルギー消費削減）、用途別マトリクス（建物/公園等/道路/水域）、対策の有効スケール（都市/地区/街区）など、非常に多くの運用情報が関わる（環境省ヒートアイランド対策ガイドライン3章、千代田区ヒートアイランド対策計画）。",
         "compressed_C": "3地点（毎セッションランダムな組み合わせ、2種類のシナリオから均等抽選）それぞれの日射（強い/弱い）・風（強い/弱い）・舗装（アスファルト/保水性）という3つの読み物と、2種類の対策（街路樹・日除け／保水性・遮熱性舗装）——風通しの悪さは対策のしようがないという制約付き——に圧縮。",
@@ -397,14 +463,14 @@
         "reason_for_removal": "10-12歳が1画面・数十秒で扱える情報量を超える。これらは実務でも専門知識や経験を要する領域であり、Q1のCORE（地点データを原因と照合し、原因に合う対策を選ぶ）にとって本質的ではない（C_NOT_NEEDED_FOR_Dを避けつつ圧縮）。",
         "preserved_D": "地点の性質（日射・風・舗装のデータ）を原因と照合して診断する判断と、診断した原因に合う対策を選んで実施する判断という、実際のヒートアイランド対策業務の本質的な判断構造",
         "how_player_still_performs_D": "3地点の日射/風/舗装という圧縮された情報でも、原因ごとに異なる読み物（日射が強い/舗装がアスファルト/風が通らない）を正しく読み取る判断と、単純な『いつも同じ場所に同じ対策を置く』『1つの原因軸だけ見る』では正解が決まらない診断・対策選びの判断が、本物の判断として成立する（design-sim.mjsで検証）。（design review r1是正: 各シナリオの『対策のしようがない地点』は、対象シナリオの症状（日射が強い/舗装がアスファルト）を一見共有しつつ実際は風が支配的原因という『紛らわしい候補（wind-confound）』とし、1つの原因軸だけを読む・風だけ避けて残りに固定対策を試す、といった単純な戦略がいずれも33〜50%前後にとどまることをdesign-sim.mjs v2で検証済み）",
-        "failure_risk": "圧縮しすぎると『とりあえず対策を置けば勝てる』という記憶ゲームに戻ってしまうリスクがある（旧実装がまさにそうだった）。design-sim.mjsで、2種類のシナリオ（日射が原因/舗装が原因）を均等抽選し、風通しの悪い地点・特に問題のない地点を毎回同時に混ぜることで、固定戦略（17%前後）・単一原因のみ読む戦略（58%前後）がいずれも完全な推論（100%）に対し明確に劣ることを検証済み。 design review r1（FAIL 55、HIGH: CORE_DATA_AXIS_NOT_REQUIRED）是正: v1は『対策のしようがない地点』の異常が風軸だけに出ており、日射・舗装の2軸だけを読み風を一切無視する戦略が実質100%成功してしまっていた（風データが完全に飾りになっていた）。v2では紛らわしい候補（wind-confound）が対象シナリオの症状を模倣しつつ風軸だけで見分けがつく設計にし、この戦略を50%まで押し下げた。"
+        "failure_risk": "圧縮しすぎると『とりあえず対策を置けば勝てる』という記憶ゲームに戻ってしまうリスクがある（旧実装がまさにそうだった）。design-sim.mjs v2で、2種類のシナリオ（日射が原因/舗装が原因）を均等抽選し、各シナリオの『対策の機会をそこで使うべきではない地点（風が支配的原因）』を対象シナリオの症状を模倣するwind-confoundとすることで、固定戦略（17%前後）・単一原因軸のみ読む戦略（33%前後）・日射と舗装だけを見て風を無視する戦略（50%）がいずれも完全な推論（100%）に対し明確に劣ることを検証済み（design review r1のCORE_DATA_AXIS_NOT_REQUIRED是正）。design review r2のBLOCKER是正: wind-confoundを『対策の物理効果が完全にゼロになる』という未裏付けの主張ではなく、『対策自体に多少の効果があっても、支配的な原因（風通しの阻害）を放置したままでは十分な効果が出ない』という、研究が示す予算制約・優先順位づけの構造（環境省全国調査170自治体アンケート）に基づく説明に修正した。数値モデル自体（design-sim.mjsのスコアリングロジック）は変更していない。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:play_seeds:v3"
+        "legacy-layer-and-compare:play_seeds:v5"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:16.044Z",
+      "created_at": "2026-09-10T05:55:17.205Z",
       "versions": [
         {
           "version": 1,
@@ -423,16 +489,28 @@
           "file": "factory/projects/legacy-layer-and-compare/design/c_compression_v2.json",
           "created_at": "2026-09-10T04:48:16.045Z",
           "creator": "claude"
+        },
+        {
+          "version": 4,
+          "file": "factory/projects/legacy-layer-and-compare/design/c_compression_v4.json",
+          "created_at": "2026-09-10T05:53:04.344Z",
+          "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/c_compression_v4.json",
+          "created_at": "2026-09-10T05:55:17.206Z",
+          "creator": "claude"
         }
       ]
     },
     "game_translations": {
-      "artifact_id": "legacy-layer-and-compare:game_translations:v4",
+      "artifact_id": "legacy-layer-and-compare:game_translations:v6",
       "artifact_type": "game_translations",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v3.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v5.json",
       "payload": {
         "translations": [
           {
@@ -441,18 +519,18 @@
             "goal": "今日の3地点（毎セッションランダムな組み合わせ、中立的な名前）の日射・風・舗装の読み物を見比べて、暑さの本当の原因を診断し、原因に合う対策を1つ選んで、1つの地点に実施する。",
             "first_visible_state": "『同じ猛暑日なのに、場所によって暑さがちがう』という導入と、3枚の地点カード（中立的な名前——原因を連想させない、タップで日射・風・舗装の読み物が開く）、2つの対策カード（街路樹・日除け／保水性・遮熱性舗装、タップで選択）、『実施する』ボタン。地点カード・対策カードの表示順は毎セッション独立にシャッフルされる。説明文はない。",
             "primary_action": "3枚の地点カードをタップして日射・風・舗装の読み物を読む→対策カードを1つタップして選ぶ→対策を実施する地点カードを1つタップして選ぶ→『実施する』を押すと結果が確定する1回のコミット。",
-            "C_interaction": "地点ごとの日射・風・舗装の読み物（読み物、名前からは断定できない）を、対策の効く原因と照らし合わせて判断する。日射が強い地点には街路樹・日除けが効くが、舗装がアスファルトの地点には効かない——原因と対策の対応を正しく読み取る必要がある。ただし『日射が強い』『舗装がアスファルト』という症状だけで即断すると誤ることがある——同じ症状を示していても、実際には建物が密集して風が通らないことが支配的な原因で、対策を置いても効果が出ない地点が毎セッション1つ混ざっている（design-sim.mjs v2のwind-confound）。風の読み物も必ず確認し、症状が似ていても風が通っているか（対策が効く）・通っていないか（対策のしようがない）を見分ける必要がある。3地点のうち、実際に対策が効く原因を持つのは1地点だけで、毎セッションどちらのシナリオ（日射が原因/舗装が原因）かが均等に入れ替わる。単純に『いつも同じ場所に同じ対策を置く』『1つの原因軸だけ見る』『日射と舗装だけ見て風を無視する』だけでは正解が理論上大きく損をする（design-sim.mjs v2検証）。",
-            "system_reaction": "選んだ地点の原因と選んだ対策が一致していれば『その地点の暑さがやわらいだ』という成功。1つでも誤っていれば、フラットな『効果が出なかった』という結果になり、どこがどう違うかは示さない——ただし『次は3つの地点の日射・風・舗装をもう一度見比べてから、対策を考えよう』という一言を添え、考え直す余地を示す（Q1 First-Play Standard Gate G）。",
+            "C_interaction": "地点ごとの日射・風・舗装の読み物（読み物、名前からは断定できない）を、対策の効く原因と照らし合わせて判断する。日射が強い地点には街路樹・日除けが効くが、舗装がアスファルトの地点には効かない——原因と対策の対応を正しく読み取る必要がある。ただし『日射が強い』『舗装がアスファルト』という症状だけで即断すると誤ることがある——同じ症状を示していても、実際には建物が密集して風が通らないことがその地点で最も支配的な原因で、対策を置いても地点の暑さは目立ってやわらがない場所が毎セッション1つ混ざっている（design-sim.mjs v2のwind-confound。対策自体に多少の効果がないとまでは言えないが、支配的な原因を放置したままでは十分な効果が出ない、という実務の資源配分・優先順位づけの構造を反映）。風の読み物も必ず確認し、症状が似ていても風が通っているか（対策が効く）・通っていないか（限られた対策の機会をそこで使うべきではない）を見分ける必要がある。3地点のうち、対策の機会を使うべき地点は1地点だけで、毎セッションどちらのシナリオ（日射が原因/舗装が原因）かが均等に入れ替わる。単純に『いつも同じ場所に同じ対策を置く』『1つの原因軸だけ見る』『日射と舗装だけ見て風を無視する』だけでは正解が理論上大きく損をする（design-sim.mjs v2検証）。",
+            "system_reaction": "選んだ地点の原因と選んだ対策が一致していれば『その地点の暑さがやわらいだ』という成功。1つでも誤っていれば、フラットな『思ったほど暑さがやわらがなかった』という結果になり、どこがどう違うかは示さない。続けて、同じ3地点のデータをもう一度見せたうえで『次はどの地点が本当の原因だったと思う？』という振り返り選択を挟む——この選択は採点されず、結末（partial outcome）も変わらない。総当たり成功を再導入せずに、Q1 First-Play Standard Gate Gの『考え直す余地』を、実際に考え直す行為として体験させる。",
             "information_gained": "結果によって異なる。成功時: 選んだ地点・対策の組み合わせが実際に原因に合っていたと分かる。失敗時: 診断・対策選びのどちらか（または両方）が誤っていたという結果のみで、どの地点のどこが違ったかは一切示されない",
             "player_next_judgment": "結果を受け止める。同一セッション内の再挑戦はない——src/q1/labCheckLogic.tsの前例（1回の挑戦で判断を固定し、外れたら別の結末へ進む）に倣う",
             "D_externalization": "地点カードのタップによる読み物の確認と、対策カード・地点カードのタップによる選択という、子ども自身の明示的な選択が、そのまま原因診断・対策選定の判断を表現する。システムは先に正解を示さない",
             "E_consequence": "診断・対策選びの両方が正しければ地点の暑さがやわらぐ。どちらか一方でも誤っていれば、正直に『効果が出なかった』という結果になり、実務同様センター（環境部局）へ持ち帰って考え直すことになる、という形で話は先に進む（進行はブロックしない）",
-            "retry_or_rethink": "この場でのやり直しはない（1回のコミット）。章に入り直せば、地点の組み合わせ・原因のシナリオが新しくランダム化された、本当の意味でのやり直しができる。同一セッション内の個別フィードバック付き再挑戦（旧実装の『別の場所に置きなおす』設計）は、総当たり攻略の温床になるため採用しない（play_seeds_v2.jsonのs2却下理由を参照）。失敗結果メッセージ自体に次に見直すべき視点（風も含めた3軸の比較）を一言添えることで、機械的な再挑戦を与えずにGate G『考え直す余地』を満たす——既存Q1 legacy-clue-joinの設計結論（game_translations_v12.json: フラットな失敗フィードバックでもGate Gの考え直す余地を満たす）を踏襲。",
+            "retry_or_rethink": "この場での得点に影響するやり直しはない（1回のコミットで成功/失敗が確定する）。ただし失敗時は、同じ3地点のデータを再提示したうえで『次はどの地点が本当の原因だったと思う？』という非採点の振り返り選択を挟んでから結末へ進む——選び直しても結果は変わらず、個別の正誤も示さない。これにより同一セッション内の個別フィードバック付き再挑戦（旧実装の『別の場所に置きなおす』設計、BRUTE_FORCE_SUCCESSの温床）を再導入せずに、Q1 First-Play Standard Gate Gが求める『違った。じゃあどうしよう？』と実際に考え直す機会を作る（design review r2 BLOCKER: THINK_AGAIN_MISSING是正）。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことで行う。",
             "job_reveal_bridge": "既存のdiscoveryEcho（日射と風と建物のデータを重ねて、暑い理由を探したよね、という体験）がそのまま使える",
-            "strengths": "旧実装の根本問題（3地点・原因・対策が完全に固定で、fixable=trueの地点に対策を置けば必ず成功し、外れても同一セッション内で総当たり再挑戦できた）を、地点の組み合わせのランダム化＋1回のコミット＋フラットな失敗結果で解消する。design review r1（FAIL 55、HIGH: CORE_DATA_AXIS_NOT_REQUIRED）是正: v1は『対策のしようがない地点』の異常が風軸だけに出ており、日射・舗装の2軸だけを読み風を無視する戦略が実質100%成功してしまっていた。v2では、対象シナリオの症状を模倣しつつ実際は風が支配的原因という『紛らわしい候補（wind-confound）』を各シナリオに配置し、この戦略を50%まで押し下げた（design-sim.mjs v2検証）。固定戦略（いつも同じ場所に同じ対策）は17%前後、単一原因軸だけを読む戦略は33%前後、風だけ読んで残りに固定対策を試す戦略は25%前後にとどまり、完全な推論(100%)を大きく下回る。design review r1（HIGH: THINK_AGAIN_MISSING）是正: 失敗結果メッセージに次に見直すべき視点を一言添え、Gate G『考え直す余地』を明確にした。",
+            "strengths": "旧実装の根本問題（3地点・原因・対策が完全に固定で、fixable=trueの地点に対策を置けば必ず成功し、外れても同一セッション内で総当たり再挑戦できた）を、地点の組み合わせのランダム化＋1回のコミット＋フラットな失敗結果で解消する。design review r1（HIGH: CORE_DATA_AXIS_NOT_REQUIRED）是正: 各シナリオの『対策のしようがない地点』に対象シナリオの症状を模倣するwind-confoundを配置し、日射・舗装の2軸だけを読み風を無視する戦略を100%から50%まで押し下げた（design-sim.mjs v2）。design review r2（BLOCKER×3）是正: (1) wind-confoundの因果的な裏付けを、対策の物理効果がゼロになるという未裏付けの主張から、限られた対策の機会を支配的な原因のある場所で使うべきという資源配分・優先順位づけの構造（研究の予算制約の記述に基づく）に修正。(2) 失敗結果に非採点の振り返り選択を追加し、総当たりを再導入せずにGate Gを満たした。(3) 版番号注記から陳腐化する具体的数値を排除した。固定戦略（いつも同じ場所に同じ対策）は17%前後、単一原因軸だけを読む戦略は33%前後、風だけ読んで残りに固定対策を試す戦略は25%前後にとどまり、完全な推論(100%)を大きく下回る。",
             "weaknesses": "375px×3地点カード+2対策カード+実施ボタンのレイアウトは実装段階の検証項目。",
-            "risk": "design-sim-result.json (v2): legitimate_full_reasoning=100%、6種類の固定(地点,対策)戦略はいずれも17%前後、content-blind random pickも17%、単一原因軸のみ読む戦略（sun_axis_only_then_random/pavement_axis_only_then_random）は33%前後（67pt以上の差）、『日射→舗装の順に読むが風は一切見ない』戦略（sun_then_pavement_never_wind、design review r1が指摘した実際の欠陥そのもの）は50%（50pt差）、風を避けるだけの部分推論（avoids_wind_then_random/avoid_wind_then_fixed_*）は25%前後、『最初に見つけた悪そうな地点にとりあえず対策する』戦略（first_bad_looking_slot）は50%——いずれも完全な推論100%を明確に下回ることを検証済み。",
-            "adoption_or_rejection_reason": "採用。CORE/AEで定義した『地点データを原因と照合して診断し、原因に合う対策を選んで実施する』という判断を最も忠実に表現する。s2（同一セッション内の反復再挑戦）は旧実装そのもので総当たり攻略のリスクが高いため却下。s3（暑さレベルの数値だけを見て判断）はCOREの原因診断という判断が実質使われなくなるため却下。 design review r1のHIGH是正（風データを本当に必要にするwind-confoundモデルへの変更、失敗結果メッセージへのGate G対応）により、モデルの健全性が向上した。"
+            "risk": "design-sim-result.json (v2、design review r1是正版、r2でも数値ロジックは変更なしと確認予定): legitimate_full_reasoning=100%、6種類の固定(地点,対策)戦略はいずれも17%前後、content-blind random pickも17%、単一原因軸のみ読む戦略（sun_axis_only_then_random/pavement_axis_only_then_random）は33%前後（67pt以上の差）、『日射→舗装の順に読むが風は一切見ない』戦略（sun_then_pavement_never_wind、design review r1が指摘した実際の欠陥そのもの）は50%（50pt差）、風を避けるだけの部分推論（avoids_wind_then_random/avoid_wind_then_fixed_*）は25%前後、『最初に見つけた悪そうな地点にとりあえず対策する』戦略（first_bad_looking_slot）は50%——いずれも完全な推論100%を明確に下回ることを検証済み。design review r2のBLOCKER是正は、この数値モデル自体は変更せず、モデルの因果的な説明（なぜwind-confoundの地点で対策の効果が不十分と扱われるか）と、失敗結果の見せ方（Gate G対応）のみを修正したものである。",
+            "adoption_or_rejection_reason": "採用。CORE/AEで定義した『地点データを原因と照合して診断し、原因に合う対策を選んで実施する』という判断を最も忠実に表現する。s2（同一セッション内の反復再挑戦）は旧実装そのもので総当たり攻略のリスクが高いため却下。s3（暑さレベルの数値だけを見て判断）はCOREの原因診断という判断が実質使われなくなるため却下。 design review r1のHIGH是正（風データを本当に必要にするwind-confoundモデルへの変更、失敗結果メッセージへのGate G対応）により、モデルの健全性が向上した。 design review r2の3件のBLOCKER是正（wind-confoundの因果的裏付けの修正、失敗結果への非採点振り返り選択の追加、版番号注記の陳腐化防止）により、モデルの健全性がさらに向上した。"
           },
           {
             "translation_id": "t2-any-location-works",
@@ -494,15 +572,15 @@
           }
         ],
         "adopted_translation_id": "t1-diagnose-and-fix",
-        "adoption_rationale": "t1は、CORE/AEで定義した『地点データを原因と照合して診断し、原因に合う対策を選んで実施する』という判断を、2種類の均等抽選シナリオ（日射が原因/舗装が原因）と、風通しの悪い地点・特に問題のない地点という常時同席の紛らわしい候補によって表現する。design-sim.mjs v2で、記憶による攻略・単一原因軸のみの判断・風を無視した2軸判断がいずれも完全な推論に明確に劣ることを検証済み（design review r1のHIGH是正を反映）。t2は旧実装そのものでBRUTE_FORCE_SUCCESSのリスクが高く、t3はCOREを歪めるため却下した。"
+        "adoption_rationale": "t1は、CORE/AEで定義した『地点データを原因と照合して診断し、原因に合う対策を選んで実施する』という判断を、2種類の均等抽選シナリオ（日射が原因/舗装が原因）と、風通しの悪い地点・特に問題のない地点という常時同席の紛らわしい候補によって表現する。design-sim.mjs v2で、記憶による攻略・単一原因軸のみの判断・風を無視した2軸判断がいずれも完全な推論に明確に劣ることを検証済み（design review r1のHIGH是正を反映）。t2は旧実装そのものでBRUTE_FORCE_SUCCESSのリスクが高く、t3はCOREを歪めるため却下した。 design review r2で指摘された、wind-confoundの因果的な未裏付け（対策効果ゼロという主張）は、資源配分・優先順位づけの失敗として説明する形に修正し、Gate G『考え直す余地』は失敗後の非採点振り返り選択で満たすようにした。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:play_seeds:v3",
-        "legacy-layer-and-compare:c_compression:v3"
+        "legacy-layer-and-compare:play_seeds:v5",
+        "legacy-layer-and-compare:c_compression:v5"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:31.513Z",
+      "created_at": "2026-09-10T05:55:29.882Z",
       "versions": [
         {
           "version": 1,
@@ -527,16 +605,28 @@
           "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v3.json",
           "created_at": "2026-09-10T04:48:31.514Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v5.json",
+          "created_at": "2026-09-10T05:53:21.860Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/game_translations_v5.json",
+          "created_at": "2026-09-10T05:55:29.883Z",
+          "creator": "claude"
         }
       ]
     },
     "first_5_seconds": {
-      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v4",
+      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v6",
       "artifact_type": "first_5_seconds",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v3.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v4.json",
       "payload": {
         "zero_to_two_seconds": "『同じ猛暑日なのに、場所によって暑さがちがう』という一文と、3枚の地点カード（中立的な名前、タップで日射・風・舗装の読み物が読める）、下に2つの対策カード（街路樹・日除け／保水性・遮熱性舗装、タップで選べる）、『実施する』ボタンが見える。説明文はない。",
         "two_to_five_seconds": "地点カードの下に対策を選ぶ行があり、対策カードをタップすると選択され、続けて地点カードをタップすると実施先として選べる。子どもは地点と対策の情報を見比べ始める。",
@@ -547,10 +637,10 @@
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v4"
+        "legacy-layer-and-compare:game_translations:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:42.753Z",
+      "created_at": "2026-09-10T05:55:41.443Z",
       "versions": [
         {
           "version": 1,
@@ -575,16 +665,28 @@
           "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v3.json",
           "created_at": "2026-09-10T04:48:42.754Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v4.json",
+          "created_at": "2026-09-10T05:53:36.100Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/first_5_seconds_v4.json",
+          "created_at": "2026-09-10T05:55:41.444Z",
+          "creator": "claude"
         }
       ]
     },
     "no_manual_exploit_check": {
-      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v4",
+      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v6",
       "artifact_type": "no_manual_exploit_check",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v3.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v5.json",
       "payload": {
         "no_manual_check": {
           "operation_before_rules": "説明文なしで、地点カードのタップ（日射・風・舗装の読み物が開く）と対策カード・地点カードのタップ（選択）だけで操作方法が分かる。既存Q1（clue_join/sow_and_grow/load_and_route等）と同じ、タップと『？』的開示のみの規約に従う。",
@@ -594,8 +696,8 @@
         "exploit_check": {
           "select_all": "地点は1つしか実施先に選べず、対策も1つしか選べないため、select-allに相当する攻略は存在しない",
           "tap_all": "地点カード・対策カードを全部開いて読み物を確認すること自体はコストがなく許容される（内容を読む行為であり、攻略ではない）が、実際の実施先選択・対策選択と『実施する』は1回のコミットで確定する",
-          "spam_submit": "1回のコミットで結果が確定し、同一セッション内でのやり直しはない（labCheckLogic.tsの前例に倣う）ため、連打による総当たりは成立しない",
-          "fixed_failure_pattern": "design-sim.mjs v2検証（design review r1 HIGH是正: CORE_DATA_AXIS_NOT_REQUIRED）: 3地点は2種類のシナリオ（日射が原因/舗装が原因）から毎セッション均等抽選し、各シナリオの『対策のしようがない地点（風が支配的原因）』は対象シナリオの症状（日射が強い/舗装がアスファルト）を模倣する紛らわしい候補（wind-confound）とし、地点の表示順も毎セッション独立にシャッフルした結果、固定(地点,対策)戦略は6通りいずれも17%前後、単一原因軸のみを読む戦略は33%前後、『日射→舗装の順に読むが風は一切見ない』戦略（design review r1が実際に指摘した欠陥）は50%、風だけ読んで残りに固定対策を試す戦略は25%前後にとどまり、完全な推論（100%）に対し50pt以上劣ることを設計により保証。",
+          "spam_submit": "1回のコミットで結果が確定し、同一セッション内でのやり直しはない（labCheckLogic.tsの前例に倣う）ため、連打による総当たりは成立しない。失敗時に挟む振り返り選択（design review r2 BLOCKER: THINK_AGAIN_MISSING是正）は採点対象外で、結末（partial outcome）を変えない——連打・選び直しによる総当たり成功の再導入にはならない。",
+          "fixed_failure_pattern": "design-sim.mjs v2検証（design review r1 HIGH是正: CORE_DATA_AXIS_NOT_REQUIRED）: 3地点は2種類のシナリオ（日射が原因/舗装が原因）から毎セッション均等抽選し、各シナリオの『対策の機会をそこで使うべきではない地点（風が支配的原因）』は対象シナリオの症状（日射が強い/舗装がアスファルト）を模倣する紛らわしい候補（wind-confound）とし、地点の表示順も毎セッション独立にシャッフルした結果、固定(地点,対策)戦略は6通りいずれも17%前後、単一原因軸のみを読む戦略は33%前後、『日射→舗装の順に読むが風は一切見ない』戦略（design review r1が実際に指摘した欠陥）は50%、風だけ読んで残りに固定対策を試す戦略は25%前後にとどまり、完全な推論（100%）に対し50pt以上劣ることを設計により保証。",
           "color_leak": "地点カードの色・強調表示は正解を示唆しない設計を意図（実装段階で検証が必要）。特に、対策で直せる原因（日射/舗装の異常値）と対策で直せない原因（風の異常値）を同じ視覚的な強調度で示し、色だけで『対策が効く地点』と『効かない地点』を見分けられないようにする——design-sim.mjsのfirst_bad_looking_slot検証（50%）はこの視覚的な区別がない前提で成立しており、もし『対策が効く異常値』だけを特別な色で強調してしまうと、この検証結果は無効になる（実装QAで確認必須）",
           "label_leak": "地点の表示名は中立的なもの（原因を連想させない地名パターン、例: 駅前の広場／住宅地の道／公園そばの道など）に限定し、『日当たりのいい広場』のように原因を示唆する名前を使わない。対策の名前（街路樹・日除け／保水性・遮熱性舗装）はそれ自体がC情報（どの原因に効くか）の一部であり、これは正当な開示——ただし地点名と対策名の組み合わせ・配置が固定のヒントにならないよう、地点名と原因の対応も毎セッション独立にシャッフルする",
           "position_leak": "実装段階でclue_join/sow_and_grow/load_and_routeの前例（per-session Fisher-Yatesシャッフル）に倣い、地点カード・対策カードの表示順をセッションごとにシャッフルする必要がある（design_specの明示的な受け入れ条件とし、実装QAでも検証する）",
@@ -603,15 +705,15 @@
           "pass": true
         },
         "design_sim_evidence": "factory/projects/legacy-layer-and-compare/design/design-sim-result.json",
-        "revision_note": "v2: game_translations v2への追随（avoid_wind_then_fixed_*チェック追加の数値反映）。 v3: design review r1（FAIL 55、HIGH: CORE_DATA_AXIS_NOT_REQUIRED/THINK_AGAIN_MISSING、MEDIUM: ARTIFACT_CHAIN_INCONSISTENT）是正版。fixed_failure_patternの数値をdesign-sim.mjs v2（wind-confoundモデル）の実測値に更新。"
+        "revision_note": "v2: game_translations v2への追随（avoid_wind_then_fixed_*チェック追加の数値反映）。 v3: design review r1（FAIL 55、HIGH: CORE_DATA_AXIS_NOT_REQUIRED/THINK_AGAIN_MISSING、MEDIUM: ARTIFACT_CHAIN_INCONSISTENT）是正版。fixed_failure_patternの数値をdesign-sim.mjs v2（wind-confoundモデル）の実測値に更新。 v4: design review r2（FAIL 58、BLOCKER×3）是正版。fixed_failure_patternの説明を維持しつつ、spam_submitに非採点振り返り選択が総当たりを再導入しないことを明記。"
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v4",
-        "legacy-layer-and-compare:first_5_seconds:v4"
+        "legacy-layer-and-compare:game_translations:v6",
+        "legacy-layer-and-compare:first_5_seconds:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:42.792Z",
+      "created_at": "2026-09-10T05:55:41.482Z",
       "versions": [
         {
           "version": 1,
@@ -636,29 +738,41 @@
           "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v3.json",
           "created_at": "2026-09-10T04:48:42.792Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-10T05:53:36.139Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/no_manual_exploit_check_v5.json",
+          "created_at": "2026-09-10T05:55:41.483Z",
+          "creator": "claude"
         }
       ]
     },
     "core_back_check": {
-      "artifact_id": "legacy-layer-and-compare:core_back_check:v4",
+      "artifact_id": "legacy-layer-and-compare:core_back_check:v6",
       "artifact_type": "core_back_check",
-      "version": 4,
+      "version": 6,
       "status": "CURRENT",
       "stale_because": null,
-      "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v3.json",
+      "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v5.json",
       "payload": {
         "core_still_intact": true,
         "scope_still_representative": true,
         "d_still_performed_by_child": true,
-        "notes": "t1-diagnose-and-fix（design review r1是正版）は、CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）をそのまま表現している。子どもは地点カード・対策カードの情報を自分で見比べて診断・対策選びを決め、システムは先に正解を示さない。SCOPE（街・猛暑/暑い市街地）も変わらず代表的。design-sim.mjs v2で、風データが実際に必要であること（対象シナリオの症状を模倣する紛らわしい候補=wind-confoundの導入により、日射・舗装の2軸だけを読み風を無視する戦略が100%から50%まで押し下げられたことを確認）、単純な発見的手法がいずれも完全な推論に明確に劣ることを確認済み。失敗結果メッセージへのGate G対応（考え直す余地の明示）も確認済み。",
+        "notes": "t1-diagnose-and-fix（design review r2是正版）は、CORE（地点ごとの日射・風・舗装のデータを見比べて暑さの原因を診断し、原因に合う対策を選んで実施する）をそのまま表現している。子どもは地点カード・対策カードの情報を自分で見比べて診断・対策選びを決め、システムは先に正解を示さない。SCOPE（街・猛暑/暑い市街地）も変わらず代表的。design-sim.mjs v2で、風データが実際に必要であること（wind-confoundの導入により、日射・舗装の2軸だけを読み風を無視する戦略が100%から50%まで押し下げられたことを確認）、単純な発見的手法がいずれも完全な推論に明確に劣ることを確認済み。design review r2のBLOCKER是正: wind-confoundの因果的説明を資源配分・優先順位づけの構造に修正し、失敗結果への非採点振り返り選択でGate Gに対応したことも、CORE/SCOPEの整合性を損なわないことを確認済み。",
         "pass": true
       },
       "creator": "claude",
       "source_artifacts": [
-        "legacy-layer-and-compare:game_translations:v4"
+        "legacy-layer-and-compare:game_translations:v6"
       ],
       "design_iteration": 1,
-      "created_at": "2026-09-10T04:48:42.830Z",
+      "created_at": "2026-09-10T05:55:41.520Z",
       "versions": [
         {
           "version": 1,
@@ -683,6 +797,18 @@
           "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v3.json",
           "created_at": "2026-09-10T04:48:42.831Z",
           "creator": "claude"
+        },
+        {
+          "version": 5,
+          "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v5.json",
+          "created_at": "2026-09-10T05:53:36.177Z",
+          "creator": "claude"
+        },
+        {
+          "version": 6,
+          "file": "factory/projects/legacy-layer-and-compare/design/core_back_check_v5.json",
+          "created_at": "2026-09-10T05:55:41.521Z",
+          "creator": "claude"
         }
       ]
     }
@@ -697,7 +823,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-10T03:39:21.551Z",
-  "updated_at": "2026-09-10T05:04:47.590Z",
+  "updated_at": "2026-09-10T05:55:41.521Z",
   "history": [
     {
       "at": "2026-09-10T03:39:21.552Z",
@@ -1380,6 +1506,365 @@
       "invalidated": [],
       "sources": [
         "legacy-layer-and-compare:play_seeds:v3"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:52:17.994Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v4"
+    },
+    {
+      "at": "2026-09-10T05:52:17.994Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:fact_sheet:v4",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T05:52:39.592Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v5"
+    },
+    {
+      "at": "2026-09-10T05:52:39.592Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:scope_core:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:52:39.630Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v5"
+    },
+    {
+      "at": "2026-09-10T05:52:39.630Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:ae:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:scope_core:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:52:51.230Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v4"
+    },
+    {
+      "at": "2026-09-10T05:52:51.230Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:core_scope_check:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:52:51.269Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v4"
+    },
+    {
+      "at": "2026-09-10T05:52:51.269Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:play_seeds:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:ae:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:04.304Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v5"
+    },
+    {
+      "at": "2026-09-10T05:53:04.304Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:reference_research:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:04.344Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v4"
+    },
+    {
+      "at": "2026-09-10T05:53:04.344Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:c_compression:v4",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:21.860Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v5"
+    },
+    {
+      "at": "2026-09-10T05:53:21.860Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:game_translations:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v4",
+        "legacy-layer-and-compare:c_compression:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:36.100Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v5"
+    },
+    {
+      "at": "2026-09-10T05:53:36.100Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:36.140Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v5"
+    },
+    {
+      "at": "2026-09-10T05:53:36.140Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v5",
+        "legacy-layer-and-compare:first_5_seconds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:53:36.177Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v5"
+    },
+    {
+      "at": "2026-09-10T05:53:36.177Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:core_back_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:54:39.274Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v6"
+    },
+    {
+      "at": "2026-09-10T05:54:39.274Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:scope_core:v6",
+      "invalidated": [
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check"
+      ],
+      "sources": [
+        "legacy-layer-and-compare:fact_sheet:v4"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:54:52.237Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v6"
+    },
+    {
+      "at": "2026-09-10T05:54:52.237Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:ae:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:scope_core:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:03.668Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v5"
+    },
+    {
+      "at": "2026-09-10T05:55:03.669Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:core_scope_check:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:03.707Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v5"
+    },
+    {
+      "at": "2026-09-10T05:55:03.707Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:play_seeds:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:ae:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:17.167Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v6"
+    },
+    {
+      "at": "2026-09-10T05:55:17.167Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:reference_research:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:17.206Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v5"
+    },
+    {
+      "at": "2026-09-10T05:55:17.206Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:c_compression:v5",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:29.883Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v6"
+    },
+    {
+      "at": "2026-09-10T05:55:29.883Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:game_translations:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:play_seeds:v5",
+        "legacy-layer-and-compare:c_compression:v5"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:41.444Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v6"
+    },
+    {
+      "at": "2026-09-10T05:55:41.444Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:first_5_seconds:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:41.483Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v6"
+    },
+    {
+      "at": "2026-09-10T05:55:41.483Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:no_manual_exploit_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v6",
+        "legacy-layer-and-compare:first_5_seconds:v6"
+      ]
+    },
+    {
+      "at": "2026-09-10T05:55:41.521Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v6"
+    },
+    {
+      "at": "2026-09-10T05:55:41.521Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-layer-and-compare:core_back_check:v6",
+      "invalidated": [],
+      "sources": [
+        "legacy-layer-and-compare:game_translations:v6"
       ]
     }
   ]
