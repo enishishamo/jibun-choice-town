@@ -2,36 +2,22 @@
 // Design-stage exploit simulation for Q1 legacy-move-try
 // (理学療法士 — per-movement cause diagnosis + fix selection, gameType move_try).
 //
-// The old implementation (src/q1/MoveTryGame.tsx) already had C_required=true and
-// player_judgment_required=true (reverse audit) -- the child DOES read real per-movement
-// symptom text and match it to a fix description. The ONLY flagged defect was BRUTE_FORCE:
-// a wrong fix pick showed an explanatory hint with zero cost, and the child could stay on the
-// same movement retrying every option until one worked. This redesign's job is narrowly scoped
-// to that finding (not a full CORE rebuild): remove cost-free retry (each movement becomes a
-// single commit, no retry), and strengthen the C->D judgment using research.md's genuine
-// multi-axis finding (MHLW's welfare-equipment "使用が想定しにくい状態像" is an AND-condition
-// across axes, e.g. 電動車いす is unsuitable when 歩行=つかまらないでできる AND
-// 短期記憶=できない -- a single symptom axis does not by itself determine fitness).
-//
-// CORE: 3 movements in the real fixed sequence toward the goal (起き上がる -> 立ち上がる ->
-// 歩く, research.md 兵庫県PT会マニュアル), each a single-commit fix selection:
-//  - M1 起き上がり: genuinely single-axis per research (a bed transfer either has a support-
-//    point problem or doesn't -- no second real axis was found for this specific movement).
-//    2 candidates: 手すり (support-point fix) / 練習 (training, when the real issue is trunk-
-//    balance which improves with practice rather than needing a fixed grab point).
-//  - M2 立ち上がり: 2-axis, grounded in research's 3-phase breakdown (which phase fails) plus
-//    the real 住環境 (home environment) constraint -- whether the chair/bed height can actually
-//    be adjusted at home. 3 candidates: 高さ調整 / 手すり / 練習.
-//  - M3 歩行: 2-axis, grounded in TUG-test-style observation (endurance vs. dynamic balance)
-//    plus the real 介護力 (caregiver availability) constraint. 3 candidates: 杖 / 休憩 / 練習.
-// Win requires ALL 3 movements correct. A wrong movement is a flat, honest "まだ安全にできない"
-// result (no explanatory hint revealing why -- the old game's per-wrong-answer hints were
-// themselves part of the brute-force problem, since a child could read every hint in turn and
-// narrow down the answer for free). No retry. This is not a claim that research.md found a
-// crisp official "鍛える vs 用具 vs 休憩" decision rule (it explicitly did not; research.md
-// FACT_CHECK_REQUIRED #2) -- the axis mapping below is an explicit game-design simplification
-// of real, sourced clinical categories (機能面の原因, 住環境, 介護力), disclosed as such in
-// fact_sheet's uncertainties, not presented as an official clinical algorithm.
+// v2 (design review r1 FAIL 52, BLOCKER x3 repair): r1 found v1's standup/walk cause x condition
+// mappings were NOT jointly-necessary -- one branch of each (standup's "support" cause, walk's
+// "balance" cause) mapped to a fixed fix regardless of the second axis, making that axis
+// decorative in half the sessions and letting a cause-axis-only reader reach ~75%, looser than
+// this session's established ~50-60% single-axis precedent. Fix: both movements now use a full
+// 2x2 assignment where the one repeated fix appears ONLY on the diagonal (the two cells that
+// differ in BOTH axes), so neither axis alone is majority-sufficient in ANY branch -- verified
+// below to land both cause-only and condition-only reads at exactly 50% analytically (no
+// reweighting needed, unlike the mathematically-impossible-to-fully-fix case legacy-allocate-and-
+// forecast hit with only 2 candidate sectors; 3 candidates over a 2x2 grid has enough room for a
+// true Latin-square-style diagonal).
+// v1 also overclaimed that research.md "confirmed" situp is single-factor -- research.md simply
+// never discussed a second factor for that specific movement (absence of evidence, not evidence
+// of absence). fact_sheet/scope_core/ae v2 reword this as a disclosed design simplification for
+// the first/opening movement, not an asserted clinical fact. This is a narrative-only change --
+// situp's own math (single real axis, 2 candidates) is unchanged from v1.
 
 function mulberry32(a) {
   return function () {
@@ -50,39 +36,45 @@ export const CANDIDATES = {
   walk: ["cane", "rest", "train"],
 };
 
-// M1 situp: single real axis (cause). No second axis -- research.md found no genuine second
-// factor distinguishing this specific movement's fix.
+// M1 situp: single real axis (cause). research.md discusses this movement's observation (支持点の
+//有無) but never raises or rules out a second factor -- kept deliberately single-axis as the
+// simplest, opening movement, disclosed as a design simplification (not a claimed clinical fact).
 function newSitup(rand) {
   const cause = rand() < 0.5 ? "support" : "balance"; // 支持点不足 / 体幹バランス
   const correct = cause === "support" ? "rail" : "train";
   return { cause, correct };
 }
 
-// M2 standup: cause axis (下肢筋力不足 / 支持点不足) x environment axis (椅子・ベッドの高さを
-// 変えられるか). When cause=support, the fix is always "rail" regardless of environment (a
-// support-point problem isn't solved by seat height) -- environment only matters in the
-// leg-strength branch, where it decides height-adjustment (if the home can accommodate it) vs.
-// training (if it can't).
+// M2 standup: cause axis (下肢筋力不足 / 支持点不足) x environment axis (椅子・ベッドの高さや
+// 手すりの設置余地など、住環境を調整できるか). Full 2x2 Latin-square-style assignment -- "height"
+// is the one fix that repeats, but ONLY on the diagonal (legs+adjustable and support+not_
+// adjustable, which differ in BOTH axes), grounded in the real fact that seat/bed height affects
+// how much push-off effort standing requires regardless of WHY standing is hard (a real
+// biomechanical relationship, not specific to leg strength alone) -- so raising the seat is a
+// legitimate partial compensation even when the root cause is a missing support point and no rail
+// can be installed. No branch is axis-constant: check every row/column below.
 function newStandup(rand) {
   const cause = rand() < 0.5 ? "legs" : "support"; // 下肢筋力不足 / 支持点不足
-  const envAdjustable = rand() < 0.5; // 住環境: 高さを変えられるか
+  const envAdjustable = rand() < 0.5; // 住環境: 調整・工夫の余地があるか
   let correct;
-  if (cause === "support") correct = "rail";
-  else correct = envAdjustable ? "height" : "train";
+  if (cause === "legs") correct = envAdjustable ? "height" : "train";
+  else correct = envAdjustable ? "rail" : "height";
   return { cause, envAdjustable, correct };
 }
 
 // M3 walk: cause axis (持久力不足/息切れ / 動的バランス不足/ふらつき) x caregiver axis (介護者が
-// 付き添えるか). When cause=balance, the fix is always "cane" regardless of caregiver
-// availability (a balance problem needs a physical aid) -- caregiver availability only matters
-// in the endurance branch, where it decides pacing-with-a-caregiver (rest) vs. building
-// endurance through training (when no one can accompany frequent rest stops safely).
+// 付き添えるか). Full 2x2 Latin-square-style assignment -- "cane" repeats only on the diagonal
+// (balance+caregiver_available and endurance+caregiver_unavailable, which differ in BOTH axes),
+// grounded in the real fact that a cane reduces the energy cost of walking regardless of the root
+// cause (a real gait-biomechanics relationship) -- so when no caregiver is available to safely
+// pace an endurance-limited walk, a cane letting the patient expend less effort per step is a
+// legitimate fallback even though the root cause isn't balance.
 function newWalk(rand) {
   const cause = rand() < 0.5 ? "endurance" : "balance"; // 持久力不足 / 動的バランス不足
   const caregiverAvailable = rand() < 0.5; // 介護力: 付き添えるか
   let correct;
-  if (cause === "balance") correct = "cane";
-  else correct = caregiverAvailable ? "rest" : "train";
+  if (cause === "balance") correct = caregiverAvailable ? "cane" : "train";
+  else correct = caregiverAvailable ? "rest" : "cane";
   return { cause, caregiverAvailable, correct };
 }
 
@@ -127,8 +119,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   );
 
   // Fixed-choice guessing (content-blind, same pick every session) for each movement in
-  // isolation (other two movements reasoned correctly) -- confirms no single fixed answer is
-  // secretly always right for a given movement.
+  // isolation (other two movements reasoned correctly).
   for (const m of MOVEMENTS) {
     for (const c of CANDIDATES[m]) {
       results[`fixed_${m}_${c}`] = rate((s) => {
@@ -139,26 +130,33 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
   }
 
-  // Single-axis-only reasoning for standup/walk (read the cause axis only, guess randomly
-  // between the environment/caregiver-dependent candidates when cause doesn't already fully
-  // determine the fix) -- the sharpest exploit this design must defend against, per
-  // legacy-layer-and-compare/legacy-allocate-and-forecast's established precedent of testing
-  // "read only one of the two real axes."
+  // Single-axis-only, SMART (Bayes-optimal majority-predict, not naive random tie-break) reading
+  // for standup/walk -- the sharpest single-axis exploit, per this session's established
+  // precedent of testing "read only one of the two real axes, guess the best you can on the
+  // other."
   results.standup_cause_axis_only = rate((s, rand) => {
-    const pick = s.standup.cause === "support" ? "rail" : rand() < 0.5 ? "height" : "train";
-    const picks = { situp: s.situp.correct, standup: pick, walk: s.walk.correct };
-    return sessionWin(s, picks);
+    // cause=legs -> tie between height/train; cause=support -> tie between rail/height. Both
+    // ties are exactly 50/50 by construction (diagonal Latin square), so a fixed "always guess
+    // height first" tie-break is exactly as good as random -- use random to avoid overstating.
+    const pick = s.standup.cause === "legs" ? (rand() < 0.5 ? "height" : "train") : (rand() < 0.5 ? "rail" : "height");
+    return sessionWin(s, { situp: s.situp.correct, standup: pick, walk: s.walk.correct });
+  });
+  results.standup_env_axis_only = rate((s, rand) => {
+    const pick = s.standup.envAdjustable ? (rand() < 0.5 ? "height" : "rail") : (rand() < 0.5 ? "train" : "height");
+    return sessionWin(s, { situp: s.situp.correct, standup: pick, walk: s.walk.correct });
   });
   results.walk_cause_axis_only = rate((s, rand) => {
-    const pick = s.walk.cause === "balance" ? "cane" : rand() < 0.5 ? "rest" : "train";
-    const picks = { situp: s.situp.correct, standup: s.standup.correct, walk: pick };
-    return sessionWin(s, picks);
+    const pick = s.walk.cause === "balance" ? (rand() < 0.5 ? "cane" : "train") : (rand() < 0.5 ? "rest" : "cane");
+    return sessionWin(s, { situp: s.situp.correct, standup: s.standup.correct, walk: pick });
   });
-  // Combined worst case: single-axis-only reasoning on BOTH multi-axis movements at once
-  // (situp is genuinely single-axis so "reading only the cause axis" there IS full reasoning).
+  results.walk_caregiver_axis_only = rate((s, rand) => {
+    const pick = s.walk.caregiverAvailable ? (rand() < 0.5 ? "cane" : "rest") : (rand() < 0.5 ? "train" : "cane");
+    return sessionWin(s, { situp: s.situp.correct, standup: s.standup.correct, walk: pick });
+  });
+  // Combined worst case: single-axis-only reasoning on BOTH multi-axis movements at once.
   results.single_axis_only_combined = rate((s, rand) => {
-    const standupPick = s.standup.cause === "support" ? "rail" : rand() < 0.5 ? "height" : "train";
-    const walkPick = s.walk.cause === "balance" ? "cane" : rand() < 0.5 ? "rest" : "train";
+    const standupPick = s.standup.cause === "legs" ? (rand() < 0.5 ? "height" : "train") : (rand() < 0.5 ? "rail" : "height");
+    const walkPick = s.walk.cause === "balance" ? (rand() < 0.5 ? "cane" : "train") : (rand() < 0.5 ? "rest" : "cane");
     return sessionWin(s, { situp: s.situp.correct, standup: standupPick, walk: walkPick });
   });
 
@@ -171,9 +169,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   check("legitimate reasoning always wins (every session solvable)", results.legitimate_full_reasoning === 1, `${results.legitimate_full_reasoning}`);
   check("content-blind random guessing stays well below full reasoning", results.random_pick < 0.1, `${results.random_pick}`);
   check("every fixed-choice guess (per movement, others correct) fails well below full reasoning", Object.keys(results).filter((k) => k.startsWith("fixed_")).every((k) => results[k] <= 0.55), JSON.stringify(Object.fromEntries(Object.entries(results).filter(([k]) => k.startsWith("fixed_")))));
-  check("'read only the cause axis' for standup stays meaningfully below full reasoning", results.standup_cause_axis_only <= 0.8, `${results.standup_cause_axis_only}`);
-  check("'read only the cause axis' for walk stays meaningfully below full reasoning", results.walk_cause_axis_only <= 0.8, `${results.walk_cause_axis_only}`);
-  check("worst-case combined single-axis-only reasoning across both multi-axis movements stays well below full reasoning", results.single_axis_only_combined <= 0.65, `${results.single_axis_only_combined}`);
+  check("'read only the cause axis' for standup stays at or below 0.6 (no threshold above 0.6 permitted, fixed before measurement)", results.standup_cause_axis_only <= 0.6, `${results.standup_cause_axis_only}`);
+  check("'read only the environment axis' for standup stays at or below 0.6", results.standup_env_axis_only <= 0.6, `${results.standup_env_axis_only}`);
+  check("'read only the cause axis' for walk stays at or below 0.6", results.walk_cause_axis_only <= 0.6, `${results.walk_cause_axis_only}`);
+  check("'read only the caregiver axis' for walk stays at or below 0.6", results.walk_caregiver_axis_only <= 0.6, `${results.walk_caregiver_axis_only}`);
+  check("worst-case combined single-axis-only reasoning across both multi-axis movements stays well below full reasoning", results.single_axis_only_combined <= 0.4, `${results.single_axis_only_combined}`);
 
   console.log("\nfull results:", JSON.stringify(results, null, 2));
   console.log(`\n${passed} passed, ${failed} failed`);

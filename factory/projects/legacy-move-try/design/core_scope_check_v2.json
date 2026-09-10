@@ -1,0 +1,6 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v2.jsonのD/Eは、3動作それぞれの機能面原因×（立ち上がり・歩行では）実行条件の判断（design-sim.mjs v2の対角配置マッピング）と、動作ごとの単発コミット、Gate H（onComplete/onPartialComplete）、視覚フィードバック、非採点振り返り（データ再掲込み）、多職種協働へつなぐJob Reveal枠組みを一貫して記述しており矛盾はない。design review r1のBLOCKER（起き上がりの単一軸設計の理由の誤記、原因軸/条件軸の一方だけで工夫が決まってしまう配置）を受け、scope_core_v2.json/ae_v2.jsonでは是正済みであることを確認した。scopeの『自力でトイレへ行けるか確かめる場面』はfact_sheet_v2.jsonの一次資料（厚労省の福祉用具選定の判断基準、兵庫県PT会マニュアル）が示す理学療法士の退院支援業務の中核そのものであり、周辺的な作業ではない。profession_name_hidden_testは、C（動作局面別の観察、住環境・介護力という実行条件）とD（機能面原因×実行条件の2軸判断、動作ごとに独立）が他の既存Q1ゲームと重複しないことを確認済み。"
+}

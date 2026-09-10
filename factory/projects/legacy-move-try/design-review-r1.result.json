@@ -1,0 +1,103 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-move-try-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 52,
+    "career_authenticity_score": 52,
+    "game_quality_score": 58,
+    "blockers": [
+      "Gate H is not specified: the design distinguishes successful and failed narrative outcomes, but nowhere requires successful completion to call onComplete and partial/failed completion to call onPartialComplete. This leaves implementation free to report a failed session as ordinary completion.",
+      "The adopted causal table contains clinically consequential mappings not supported by research.md: standup support deficits always resolve with a rail regardless of whether that intervention is feasible, and walk endurance deficits map to rest only when a caregiver is available but to training otherwise. The research supports considering function, environment, and caregiving jointly; it does not support these deterministic branch rules.",
+      "The claim that situp is genuinely single-factor is not established by research.md. The research mentions situp observation but never concludes that environment, caregiving, or another factor is irrelevant. Absence of a researched second factor was converted into a positive clinical claim."
+    ],
+    "high": [
+      "A cause-axis-only strategy succeeds approximately 75% for either nominally two-axis movement. Because the secondary axis is irrelevant in half of each movement's branches, mandatory disclosure does not make that axis materially necessary often enough; the simulator's self-selected 80% threshold is substantially weaker than the cited 50–60% precedent.",
+      "The specified primary consequence is only a success/failure text message. No visible movement, patient reaction, safety-state transition, or other world feedback is required, making the current translation a TEXT_ONLY_CONSEQUENCE design."
+    ],
+    "medium": [],
+    "low": [
+      "no_manual_exploit_check_v1.json calls color and visual-hierarchy leakage checks design intentions and defers actual verification to implementation; those fields should not be described as genuine verification evidence yet."
+    ],
+    "failure_codes": [
+      {
+        "code": "GATE_H_NOT_SPECIFIED",
+        "severity": "BLOCKER",
+        "finding": "No design artifact specifies onPartialComplete for a session with any failed movement versus onComplete only for full success.",
+        "file": "factory/projects/legacy-move-try/design/game_translations_v1.json:14"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The simulator invents deterministic clinical relationships: rail ignores environmental feasibility, and caregiver availability determines rest versus training. research.md supports multi-factor consideration but not these mappings.",
+        "file": "factory/projects/legacy-move-try/design/design-sim.mjs:61"
+      },
+      {
+        "code": "CITATION_CHAIN_UNSUPPORTED",
+        "severity": "BLOCKER",
+        "finding": "The design repeatedly states that situp is genuinely single-axis, but research.md only documents observation of situp instability and provides no evidence that situp is intrinsically single-factor.",
+        "file": "factory/projects/legacy-move-try/design/game_translations_v1.json:9"
+      },
+      {
+        "code": "CORE_DATA_AXIS_WEAKLY_REQUIRED",
+        "severity": "HIGH",
+        "finding": "The environment/caregiver axis affects only one cause branch, allowing cause-only play to succeed about 75% for each two-axis movement; the simulator passes this using an unsubstantiated <=0.8 threshold.",
+        "file": "factory/projects/legacy-move-try/design/design-sim.mjs:142"
+      },
+      {
+        "code": "TEXT_ONLY_CONSEQUENCE",
+        "severity": "HIGH",
+        "finding": "system_reaction specifies only textual safe/not-safe results and no observable world-state change.",
+        "file": "factory/projects/legacy-move-try/design/game_translations_v1.json:10"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Process exited 0 with 6 passed, 0 failed: legitimate_full_reasoning=1, random_pick=0.0554, standup_cause_axis_only=0.7506, walk_cause_axis_only=0.7497, single_axis_only_combined=0.5601. The checks execute as written, but their <=0.8 per-movement threshold does not establish strong two-axis necessity and they do not test irreversible UI state, hint removal, Gate H callbacks, factual grounding, or answer leakage.",
+      "brute_force_genuinely_fixed": true,
+      "asymmetric_axis_design_justified": false,
+      "single_axis_threshold_acceptable": false,
+      "no_fabricated_statistics": true,
+      "pt_not_solo_decider_framing_correct": true,
+      "no_fabricated_framework_claim": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": false,
+      "citation_chain_consistent": false
+    },
+    "evidence": [
+      "src/q1/MoveTryGame.tsx:113 — after an incorrect choice, the old UI remains in the same choice block.",
+      "src/q1/MoveTryGame.tsx:120 — every option remains clickable after an incorrect attempt.",
+      "src/q1/MoveTryGame.tsx:125 — an incorrect option sets its option-specific explanatory hint without changing movement or imposing a cost.",
+      "factory/projects/legacy-move-try/design/ae_v1.json:6 — the rebuild requires one irreversible commit per movement, no same-session retry, flat failure feedback, and a non-scored reflection.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:10 — adopted t1 removes option-specific wrong-answer explanations and returns only a flat failure result.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:15 — adopted t1 expressly forbids scored retry of the same movement and confines a real retry to re-entering the chapter.",
+      "factory/projects/legacy-move-try/research.md:57 — research identifies direct observation of situp instability but does not establish that situp has only one relevant factor.",
+      "factory/projects/legacy-move-try/research.md:88 — home-environment information is generally identified as relevant assessment data, undermining an affirmative claim that situp is inherently single-axis.",
+      "factory/projects/legacy-move-try/research.md:99 — clinical reasoning is described as distinguishing several possible functional deficits, not as the simulator's fixed two-value lookup tables.",
+      "factory/projects/legacy-move-try/research.md:140 — documented failure modes include selecting equipment without checking whether it works in the actual home or caregiving situation.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:18 — the simulator labels situp 'genuinely single-axis' based only on finding no researched second axis.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:61 — the standup environment value is generated but ignored whenever cause=support.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:75 — the walk caregiver value is ignored whenever cause=balance and controls rest-versus-training in the endurance branch without cited support.",
+      "factory/projects/legacy-move-try/design/design-sim.mjs:174 — the simulator accepts cause-only success as high as 80%, explaining why approximately 75% passes.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:14 — consequences avoid fabricated fall percentages and correctly connect PT evaluation to later multidisciplinary reconsideration.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:16 — job reveal explicitly states that evaluation leads to multidisciplinary consideration involving care managers.",
+      "factory/projects/legacy-move-try/design/fact_sheet_v1.json:67 — uncertainties correctly prohibit presenting general fall statistics as consequences of equipment mismatch.",
+      "factory/projects/legacy-move-try/design/fact_sheet_v1.json:68 — uncertainties correctly identify the mapping as a game simplification rather than an official clinical algorithm.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:10 — failed sessions re-present all three movements' data and require a non-scored reflection that cannot change the outcome.",
+      "factory/projects/legacy-move-try/design/game_translations_v1.json:14 — success and partial narrative outcomes differ, but callback routing is absent.",
+      "factory/projects/legacy-move-try/design/no_manual_exploit_check_v1.json:13 — movement and intervention names are treated as legitimate disclosures; no positional answer correspondence is specified.",
+      "factory/projects/legacy-move-try/design/no_manual_exploit_check_v1.json:14 — real-world movement order is fixed while intervention-button order is required to shuffle independently.",
+      "factory/projects/legacy-move-try/design/no_manual_exploit_check_v1.json:12 — color-leak analysis explicitly admits it is only an implementation intention, not verified evidence."
+    ],
+    "recommended_actions": [
+      "Add an explicit Gate H contract: call onComplete only when all three committed choices succeed; after any failed movement and mandatory reflection, call onPartialComplete, with distinct honest wrap-up state.",
+      "Replace the invented standup and walk lookup tables with mappings directly supported by movement-specific evidence, including feasibility of the proposed intervention. If adequate evidence is unavailable, narrow the mechanic instead of asserting deterministic clinical rules.",
+      "Describe situp as single-axis only for this game's scoped model, not as genuinely single-factor in clinical practice, unless movement-specific evidence establishes that claim.",
+      "Rebalance the two-axis cases so ignoring either required axis approaches the cited 50–60% ceiling, and make the simulator fail above the chosen defensible threshold.",
+      "Specify visible world feedback for each committed outcome, such as the patient completing or stopping the movement and an observable safety/readiness state, rather than relying only on result text.",
+      "Retain the irreversible commit, flat wrong-result feedback, mandatory data reopening, and non-scored reflection; these appropriately fix the original brute-force exploit."
+    ]
+  },
+  "elapsed_sec": 171.303
+}

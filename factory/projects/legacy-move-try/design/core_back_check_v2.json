@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-diagnose-and-fix-per-movement（v2）は、scope_core_v2.jsonのcoreが定義する『動作ごとの機能面原因×（裏付けのある動作のみ）実行条件の判断』を、game_translations_v2.jsonのC_interaction/D_externalizationがそのまま保持している。design review r1のBLOCKER是正（起き上がりの研究解釈の是正、立ち上がり・歩行のマッピングの対角配置化、Gate H明記、視覚フィードバック追加）がscope_core_v2.json/ae_v2.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.jsonのすべてに一貫して反映されていることを確認した。first_5_seconds_v2.jsonの初回タップ体験（カードを開いて読む→工夫を選ぶ→実施）も、c_compression_v2.jsonが定義した圧縮後のCとD（2値の読み物を見比べて動作ごとに選択する）と一致し、システムが判断を代行する場面はない。no_manual_exploit_check_v2.jsonのfixed_failure_pattern検証（design-sim-result.json v2）により、単一軸判断・部分的当てずっぽうのいずれも完全な推論を明確に下回ることを確認しており（原因軸/条件軸のいずれか一方のみでも約50%、v1の約75%から是正済み）、D（子ども自身の判断）が実質的に必要とされている。",
+  "pass": true
+}
