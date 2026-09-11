@@ -1573,6 +1573,56 @@
           "given": "00f280812cce24d508188796cf95521cf1babfd3"
         }
       ]
+    },
+    "q1-rebuild-observe-care": {
+      "task_id": "q1-rebuild-observe-care",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/legacy-observe-care/impl-review-r1.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/projects/legacy-observe-care/design/implementation_qa_v1.json",
+      "deploy_status": null,
+      "release_commit": "d9927cc904ead625096ffd7f9f917a3b92b5cce6",
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-10T23:24:27.907Z",
+      "updated_at": "2026-09-11T01:07:54.904Z",
+      "history": [
+        {
+          "at": "2026-09-10T23:24:27.908Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE"
+        },
+        {
+          "at": "2026-09-11T01:05:35.239Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/legacy-observe-care/impl-review-r1.result.json",
+          "score": 80,
+          "high_count": 0,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-11T01:05:35.279Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/projects/legacy-observe-care/design/implementation_qa_v1.json"
+        },
+        {
+          "at": "2026-09-11T01:07:54.905Z",
+          "event": "release_commit_set",
+          "sha": "d9927cc904ead625096ffd7f9f917a3b92b5cce6",
+          "given": "d9927cc"
+        }
+      ]
     }
   }
 }

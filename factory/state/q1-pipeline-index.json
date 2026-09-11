@@ -119,6 +119,18 @@
       "redesign_count": 0,
       "updated_at": "2026-09-10T23:14:13.261Z",
       "depends_on": []
+    },
+    "legacy-observe-care": {
+      "game_id": "legacy-observe-care",
+      "profession": "看護師",
+      "state": "RELEASE_CANDIDATE",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "legacy_game_type": "observe_care",
+      "task_id": "q1-rebuild-observe-care",
+      "repair_count": 1,
+      "redesign_count": 0,
+      "updated_at": "2026-09-11T01:05:35.359Z",
+      "depends_on": []
     }
   }
 }
