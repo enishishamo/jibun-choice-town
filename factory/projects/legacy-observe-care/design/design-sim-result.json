@@ -1,0 +1,10 @@
+{
+  "legitimate_full_reasoning": 1,
+  "random_pick": 0.0633,
+  "always_all_concerning": 0.1274,
+  "always_none_concerning": 0.1216,
+  "correct_marks_never_share": 0,
+  "two_observed_plus_guess_third": 0.4934,
+  "all_checks_passed": true,
+  "n_per_check": 20000
+}

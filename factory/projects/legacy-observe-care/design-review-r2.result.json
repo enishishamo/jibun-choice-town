@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-observe-care-design-r2",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 86,
+    "career_authenticity_score": 92,
+    "game_quality_score": 86,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      {
+        "finding": "The repaired progress affordance exists in first_5_seconds_v2.json, but the adopted translation's first_visible_state omits it while purporting to enumerate the initial UI. This leaves a minor implementation-spec inconsistency that could cause the affordance to be lost during implementation.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v2.json"
+      }
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "FIRST_VISIBLE_STATE_PROGRESS_OMISSION",
+        "severity": "MEDIUM",
+        "finding": "The adopted translation's initial-state specification does not include the required 『観察したカード: 0/7』 indicator documented in first_5_seconds_v2.json.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v2.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6/6 passed: legitimate_full_reasoning=1; random_pick=0.0633; always_all_concerning=0.1274; always_none_concerning=0.1216; correct_marks_never_share=0; two_observed_plus_guess_third=0.4934. Results exactly match design-sim-result.json.",
+      "brute_force_closed": true,
+      "no_named_diagnosis_required": true,
+      "no_certified_action_anywhere": true,
+      "watch_is_a_valid_outcome": true,
+      "share_always_mandatory": true,
+      "no_exclusivity_overclaim": true,
+      "evidence_items_grounded": true,
+      "no_medical_exclusion_overclaim": true,
+      "elimination_leak_closed": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "progress_affordance_present": true,
+      "share_disabled_consistent": true,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "r1_blockers_genuinely_fixed": true,
+      "ready_for_implementation": true
+    },
+    "evidence": [
+      "factory/projects/legacy-observe-care/research.md:35 — A decline in food intake alone is documented as 要連絡, contradicting the former majority threshold.",
+      "factory/projects/legacy-observe-care/research.md:115 — Food intake, fluid intake, and In-Out balance are attributed to the Nurse Senka dehydration-care material.",
+      "factory/projects/legacy-observe-care/research.md:138 — Concerning food/fluid/urine changes lead to sharing or consultation without a numeric combination threshold.",
+      "factory/projects/legacy-observe-care/design/reference_research_v2.json:10 — The meal/fluid/In-Out trio is now attributed to the Nurse Senka source.",
+      "factory/projects/legacy-observe-care/design/reference_research_v2.json:12 — The file expressly states that neither source establishes a combination rule.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v3.json:19 — Expertise explicitly rejects any numeric report-versus-observation rule and limits scoring to per-item observation plus sharing.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v3.json:20 — Normal temperature and SpO₂ are described only as reference clues and not proof excluding recurrence.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v3.json:34 — Decisions explicitly leave subsequent response selection to the physician and team.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v3.json:42 — Uncertainties accurately record that the former threshold and conclusive exclusion claim were unsupported.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:6 — The adopted goal requires only per-item marking and sharing, expressly excluding diagnosis and report-versus-observation certification.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:10 — The team response is framed as acknowledgement and further review, not validation of a derived clinical action.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:14 — Success certifies accurate observation transmission only; subsequent action remains a team decision.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:15 — The scored decision is a single commit, followed only by non-scored reflection on mismatch.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:7 — The adopted first_visible_state enumerates the initial controls but omits the progress indicator specified elsewhere.",
+      "factory/projects/legacy-observe-care/design/first_5_seconds_v2.json:2 — 『観察したカード: 0/7』 is explicitly present in the initial screen specification.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v2.json:31 — The no-share seed keeps confirmation disabled rather than allowing submit-then-fail.",
+      "factory/projects/legacy-observe-care/design/game_translations_v2.json:10 — The adopted translation uses the same fail-closed sharing behavior.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v2.json:46 — Gate G re-presents all seven observation cards read-only.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v2.json:48 — Gate H supplies a distinct honest failure outcome before non-scored reflection.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:59 — Each of the three evidence flags is sampled independently.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:69 — sessionWin checks only mandatory sharing and exact per-item marks; it contains no action threshold.",
+      "factory/projects/legacy-observe-care/design/design-sim-result.json:2 — Stored simulation values exactly match the freshly executed 6/6 result."
+    ],
+    "recommended_actions": [
+      "Add 『観察したカード: 0/7』 to game_translations_v2.json's adopted first_visible_state so the canonical translation and first-five-seconds specification enumerate the same initial UI."
+    ]
+  },
+  "elapsed_sec": 82.586
+}

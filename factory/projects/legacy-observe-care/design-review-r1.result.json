@@ -1,0 +1,137 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-observe-care-design-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 42,
+    "career_authenticity_score": 42,
+    "game_quality_score": 74,
+    "blockers": [
+      {
+        "finding": "The adopted mechanic invents a universal 2-of-3 threshold: one concerning meal/fluid/urine change automatically produces watch rather than report. research.md supplies no such threshold and instead records that declining food intake alone is classified as 要連絡 and that any concerning In-Out change should lead to sharing/consultation. Because the result calls the derived response correct, this is both a causal-model distortion and an exclusivity overclaim.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v1.json"
+      },
+      {
+        "finding": "The design repeatedly attributes the complete meal/fluid/urine trio and its combination rule to the Tokyo Medical Association guide, but research.md attributes the trio primarily to the Nurse Senka source and does not establish the authored 2-of-3 action mapping. The design presents a designer-created rule as source-backed professional practice.",
+        "file": "factory/projects/legacy-observe-care/design/reference_research_v1.json"
+      },
+      {
+        "finding": "Temperature and SpO₂ being normal are repeatedly said to show that pneumonia has not relapsed. The cited material, as documented in research.md, supports these as monitoring clues, not as sufficient evidence to exclude recurrence. This is an exclusionary medical overclaim embedded throughout the current chain.",
+        "file": "factory/projects/legacy-observe-care/design/fact_sheet_v2.json"
+      }
+    ],
+    "high": [],
+    "medium": [
+      {
+        "finding": "The adopted success copy says the response and sharing were 'correctly performed.' Exact agreement with three authored binary flags can establish flag agreement, but cannot certify the professional correctness of the derived clinical response—especially while the response threshold is unsupported.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v1.json"
+      },
+      {
+        "finding": "The first screen presents seven closed cards plus disabled marking, sharing, and confirmation controls with no instruction. Tapping a question-mark card is discoverable, but it is not visually specified how a child learns that all seven—including four unscored/fixed cards—must be opened before confirmation.",
+        "file": "factory/projects/legacy-observe-care/design/first_5_seconds_v1.json"
+      },
+      {
+        "finding": "The no-share path is internally ambiguous: the adopted translation says confirmation is disabled without sharing, while play seed s3 alternatively permits confirmation followed by a failure result. Implementation must choose the fail-closed disabled behavior consistently.",
+        "file": "factory/projects/legacy-observe-care/design/play_seeds_v1.json"
+      }
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The mechanically derived rule '2+ concerning items = report; 0–1 = watch' is not established by research.md and can label watch as correct when a single decline is itself documented as requiring contact.",
+        "file": "factory/projects/legacy-observe-care/design/design-sim.mjs"
+      },
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Exact matching of three binary marks is used to declare the derived response professionally correct, turning an unsupported 2-of-3 rule into the uniquely correct real-world action.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v1.json"
+      },
+      {
+        "code": "DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "The chain credits the Tokyo Medical Association guide with the full meal/fluid/urine trio and combination-based action rule beyond what research.md documents from that source.",
+        "file": "factory/projects/legacy-observe-care/design/reference_research_v1.json"
+      },
+      {
+        "code": "MEDICAL_EXCLUSION_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Normal temperature and SpO₂ are treated as showing that pneumonia has not relapsed, although the documented sources support monitoring relevance rather than conclusive exclusion.",
+        "file": "factory/projects/legacy-observe-care/design/fact_sheet_v2.json"
+      },
+      {
+        "code": "PROFESSIONAL_JUDGMENT_CERTIFICATION",
+        "severity": "MEDIUM",
+        "finding": "Success copy says the response was correctly performed when the game directly verifies only agreement with authored item flags and mandatory sharing.",
+        "file": "factory/projects/legacy-observe-care/design/game_translations_v1.json"
+      },
+      {
+        "code": "FIRST_PLAY_INSTRUCTION_DISCOVERABILITY",
+        "severity": "MEDIUM",
+        "finding": "The instructionless initial state does not specify a clear visual reason that every one of seven cards must be opened, including cards that are not scored.",
+        "file": "factory/projects/legacy-observe-care/design/first_5_seconds_v1.json"
+      },
+      {
+        "code": "SHARE_FAILURE_PATH_AMBIGUOUS",
+        "severity": "MEDIUM",
+        "finding": "The chain alternates between preventing confirmation without sharing and allowing a no-share confirmation to produce failure.",
+        "file": "factory/projects/legacy-observe-care/design/play_seeds_v1.json"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "6/6 passed: legitimate_full_reasoning=1; random_pick=0.0633; always_all_concerning=0.1274; always_none_concerning=0.1216; correct_marks_never_share=0; two_observed_plus_guess_third=0.4934. Output matches design-sim-result.json.",
+      "brute_force_closed": true,
+      "no_named_diagnosis_required": true,
+      "watch_is_a_valid_outcome": true,
+      "share_always_mandatory": true,
+      "no_exclusivity_overclaim": false,
+      "evidence_items_grounded": false,
+      "elimination_leak_closed": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_data_represented": true,
+      "gate_h_specified": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-observe-care/research.md:35 — The Tokyo Medical Association evidence specifically says progressively declining food intake is 要連絡; it does not require two concerning items.",
+      "factory/projects/legacy-observe-care/research.md:51 — Watch is supported only when the vital-sign perspective presents no problem, and still requires team sharing.",
+      "factory/projects/legacy-observe-care/research.md:115 — The meal/fluid/In-Out observation trio is attributed here to the Nurse Senka dehydration-care source, not solely to the Tokyo guide.",
+      "factory/projects/legacy-observe-care/research.md:133 — Abnormal vital-sign findings call for immediate contact without requiring a two-item count.",
+      "factory/projects/legacy-observe-care/research.md:138 — A concerning food/fluid/urine change is described as leading to NST information sharing or consultation; no 2-of-3 threshold is stated.",
+      "factory/projects/legacy-observe-care/research.md:300 — Research says combinations can inform a possible dehydration/malnutrition hypothesis, but does not establish a universal action threshold.",
+      "factory/projects/legacy-observe-care/research.md:352 — Temperature is described only as an exclusionary clue within the old scenario, not proof that recurrence is absent.",
+      "factory/projects/legacy-observe-care/research.md:353 — SpO₂ monitoring is grounded, but the stronger no-relapse conclusion is not independently established.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v2.json:15 — Current duties encode the unsupported '一定数以上' report threshold as professional practice.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v2.json:19 — The complete trio is inaccurately presented as something the Tokyo guide itself shows.",
+      "factory/projects/legacy-observe-care/design/fact_sheet_v2.json:20 — Normal temperature and SpO₂ are said to show that pneumonia has not relapsed.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v1.json:5 — The adopted play loop explicitly derives report from a two-or-more rule.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v1.json:41 — Gate G re-presents the same seven observations after a misjudgment.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v1.json:46 — All seven data cards are explicitly re-presented read-only for reflection.",
+      "factory/projects/legacy-observe-care/design/play_seeds_v1.json:48 — Gate H is a distinct honest failure outcome followed by non-scored reflection.",
+      "factory/projects/legacy-observe-care/design/game_translations_v1.json:6 — No diagnosis is requested, watch is admitted, sharing is mandatory, and one combined commitment is specified.",
+      "factory/projects/legacy-observe-care/design/game_translations_v1.json:10 — Success nevertheless declares the derived response and sharing correct.",
+      "factory/projects/legacy-observe-care/design/game_translations_v1.json:14 — onPartialComplete is distinct and non-flattering, but success again certifies the response as correct.",
+      "factory/projects/legacy-observe-care/design/game_translations_v1.json:15 — The scored decision cannot be retried; failure receives only non-scored reflection.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:59 — newSession independently samples each of the three evidence booleans.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:55 — actionFor hard-codes the unsupported two-or-more report threshold.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:70 — sessionWin requires sharing and exact agreement for all three marks, with no independently guessable action field.",
+      "factory/projects/legacy-observe-care/design/first_5_seconds_v1.json:2 — Seven closed cards and all controls appear disabled without explanatory copy.",
+      "factory/projects/legacy-observe-care/design/no_manual_exploit_check_v1.json:10 — Confirmation is a single commitment with no scored retry.",
+      "factory/projects/legacy-observe-care/design/game_translations_v1.json:42 — The unlimited-retry mechanic appears only in explicitly rejected t3, not the adopted translation."
+    ],
+    "recommended_actions": [
+      "Remove the universal 2-of-3 clinical threshold unless a suitable authoritative source directly establishes it for this scenario. Prefer a mechanic that scores accurate observation and mandatory sharing without certifying an invented report-versus-watch rule.",
+      "Limit success language to verifiable game facts, such as '3項目のマークが観察内容と合っていた。チームに共有した,' without saying the overall response or professional judgment was correct.",
+      "Rewrite temperature/SpO₂ language as non-conclusive context, such as '肺炎の悪化を強く示す変化はこの測定では見つからなかった,' while preserving continued observation and uncertainty.",
+      "Correct source attribution: distinguish what the Tokyo Medical Association guide, Nurse Senka material, JIU text, and nursing-record guideline each actually support.",
+      "Make the no-share behavior unambiguous everywhere: confirmation remains disabled until sharing is selected.",
+      "Add a concise visible affordance such as '7枚を観察しよう 0/7' so first-time players understand why controls remain disabled."
+    ]
+  },
+  "elapsed_sec": 97.314
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-observe-care-impl-r1",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 80,
+    "career_authenticity_score": 90,
+    "game_quality_score": 80,
+    "blockers": [],
+    "high": [],
+    "medium": [
+      "The implementation does not enforce the approved design's stated requirement to open all 7 observation cards before committing. Opening and marking only meal/fluid/urine enables sharing and confirmation while the 4 fixed cards remain unopened and progress remains 3/7.",
+      "Several source-level QA checks are semantically vacuous or materially narrower than their names. The immutable-mark check passes although markEvidence explicitly permits replacing an existing mark before confirmation; the Gate G observation check searches from the reflecting branch through EOF and could be satisfied by the playing branch; diagnosis/action checks cover only three literal phrases."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "DESIGN_FLOW_PREREQUISITE_NOT_ENFORCED",
+        "severity": "MEDIUM",
+        "finding": "The 7/7 observation requirement is informational only. allMarked depends solely on the three scored cards, and both sharing and confirmation can unlock at 3/7.",
+        "file": "src/q1/NurseObserveGame.tsx"
+      },
+      {
+        "code": "QA_REGRESSION_VACUOUS",
+        "severity": "MEDIUM",
+        "finding": "The harness reports that marks cannot be changed once made, but it only rejects resetting to null; markEvidence can overwrite true with false or vice versa. Its Gate G block extraction also extends through the playing branch, allowing a removed reflection observation rendering to pass.",
+        "file": "factory/harness/gameplay-qa-observe-care.mjs"
+      }
+    ],
+    "checks": {
+      "qa_harness_ran": true,
+      "qa_harness_result": "23/23 passing; several source-regression assertions are insufficiently scoped",
+      "design_sim_ran": true,
+      "logic_matches_design_sim": true,
+      "brute_force_genuinely_closed": true,
+      "batching_bug_absent": true,
+      "no_named_diagnosis_anywhere": true,
+      "no_certified_action_anywhere": true,
+      "no_patient_improvement_claim": true,
+      "share_mandatory_fail_closed": true,
+      "gate_g_correct": true,
+      "gate_h_correct": true,
+      "disclosure_gating_correct": true,
+      "content_regression_check_non_vacuous": false,
+      "content_accurately_updated": true,
+      "ready_for_release": true
+    },
+    "evidence": [
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:55 — Defines the same meal/fluid/urine evidence set as the shipped logic.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:57 — Independently samples every evidence item.",
+      "factory/projects/legacy-observe-care/design/design-sim.mjs:69 — Win validation uses only per-item flags and mandatory sharing; run completed 6/6.",
+      "src/q1/nurseObserveLogic.ts:25 — newSession independently samples each evidence item with rand() < 0.5.",
+      "src/q1/nurseObserveLogic.ts:32 — sessionWin has no action or threshold parameter and matches the design behavior.",
+      "src/q1/NurseObserveGame.tsx:54 — openEvidence derives exclusively from its functional updater's prev.",
+      "src/q1/NurseObserveGame.tsx:57 — markEvidence derives exclusively from prev, but permits replacing a previous mark before commit.",
+      "src/q1/NurseObserveGame.tsx:60 — openFixed derives exclusively from its functional updater's prev.",
+      "src/q1/NurseObserveGame.tsx:66 — allMarked considers only the three scored evidence items, not openedCount or the four fixed cards.",
+      "src/q1/NurseObserveGame.tsx:68 — confirm fails closed and commits one snapshot; outcome replacement prevents a post-commit retry.",
+      "src/q1/NurseObserveGame.tsx:82 — Success copy certifies only correct observation and sharing, leaving subsequent action to team consultation.",
+      "src/q1/NurseObserveGame.tsx:100 — Partial result honestly states that the shared content differed from the actual situation.",
+      "src/q1/NurseObserveGame.tsx:106 — Reflection re-renders all three actual session observations.",
+      "src/q1/NurseObserveGame.tsx:115 — Reflection displays the child's actual prior marks read-only.",
+      "src/q1/NurseObserveGame.tsx:137 — Reflection explicitly states that its choices cannot change the result.",
+      "src/q1/NurseObserveGame.tsx:140 — Continue is disabled until all reflection picks exist.",
+      "src/q1/NurseObserveGame.tsx:141 — Partial completion uses onPartialComplete with onComplete only as fallback.",
+      "src/q1/NurseObserveGame.tsx:179 — Scored observation and mark controls render only after that card is opened.",
+      "src/q1/NurseObserveGame.tsx:157 — Fixed cards render observation disclosure only and never render mark controls.",
+      "src/q1/NurseObserveGame.tsx:208 — Sharing is genuinely disabled until all three marks exist.",
+      "src/q1/NurseObserveGame.tsx:215 — Confirmation is genuinely disabled until marks and sharing are complete.",
+      "factory/harness/gameplay-qa-observe-care.mjs:98 — The named immutable-mark regression check does not test overwriting one boolean mark with the other.",
+      "factory/harness/gameplay-qa-observe-care.mjs:123 — Gate G extraction runs to EOF, so playing-branch observation code can satisfy the assertion.",
+      "factory/harness/gameplay-qa-observe-care.mjs:109 — Named-diagnosis/action protection recognizes only three specific phrases.",
+      "src/data/content/medical.ts:208 — Nurse profession copy describes observation, change recognition, care, and team communication without presenting a diagnosis choice or certified action.",
+      "src/data/content/medical.ts:333 — med-nurse resolution, discoveryEcho, and seeds reflect observation, per-item discernment, and sharing with no stale diagnosis-selection, care-selection, or patient-improvement result.",
+      "src/q1/registry.ts:104 — Registry comment accurately describes observe, mark per-item concern, and mandatory sharing.",
+      "src/index.css:4235 — dx-grid/dx-card/dx-commit are established shared Q1 styles.",
+      "src/index.css:4266 — route-grid is an established single-column mobile-compatible layout.",
+      "src/index.css:2690 — choice-row wrap is an established wrapping layout.",
+      "npx tsc --noEmit — completed successfully.",
+      "npm run lint — completed with repository-existing warnings and no errors."
+    ],
+    "recommended_actions": [
+      "Require openedCount === 7 before enabling the share checkbox and confirmation, and add a harness assertion covering the 3/7 shortcut.",
+      "Replace the immutable-mark assertion with an accurately named test of post-commit immutability, or intentionally lock each mark after its first selection if that is the desired behavior.",
+      "Bound every branch-specific harness extraction at the next outcome/playing branch and assert the required expressions inside that exact block.",
+      "Use structural or broader child-facing-text checks for diagnosis, derived-action, and patient-improvement regressions instead of a three-phrase blacklist."
+    ]
+  },
+  "elapsed_sec": 86.339
+}

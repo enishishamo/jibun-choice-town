@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v2.jsonのD/Eは、『気になる変化を項目ごとに正しく見極められたか』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、random_pick≈0.06、全項目を機械的にconcerning/not-concerningにするだけの戦略はいずれも約12-13%、共有を怠ると必ず失敗、2項目読了+1項目推測≈0.49）とも整合する。legacy-sort-out/legacy-crowd-flowで問題になったEXCLUSIVITY_OVERCLAIM系統の教訓を踏まえ、成功・失敗いずれの結果表示も『病名の確定』『患者状態の完全な改善』のいずれも主張しない、項目ごとの見極めの正しさという検証可能な範囲だけに、設計の最初の段階から限定した。profession_name_hidden_testは、C（観察項目の所見データ）とD（気になる変化の見極めと報告・共有の判断）が他の既存Q1ゲーム（医療編の他の職業含む）と重複しないことを確認済み。",
+  "pass": true
+}

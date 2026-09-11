@@ -1,0 +1,1360 @@
+{
+  "game_id": "legacy-observe-care",
+  "profession": "看護師",
+  "trigger": "LEGACY_AUDIT_REQUIRED",
+  "legacy_game_type": "observe_care",
+  "creator": "claude-code",
+  "state": "RELEASE_CANDIDATE",
+  "current_stage": "IMPLEMENTATION_QA",
+  "design_iteration": 1,
+  "repair_count": 1,
+  "redesign_count": 0,
+  "artifacts": {
+    "fact_sheet": {
+      "artifact_id": "legacy-observe-care:fact_sheet:v3",
+      "artifact_type": "fact_sheet",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/fact_sheet_v3.json",
+      "payload": {
+        "profession": "病棟看護師（保健師助産師看護師法に基づく看護師免許を有し、病院の病棟で入院患者の療養上の世話を担う）",
+        "sources": [
+          {
+            "url": "https://www.japaneselawtranslation.go.jp/ja/laws/view/3993",
+            "type": "government_report",
+            "org": "保健師助産師看護師法（日本法令外国語訳データベース）第5条・第37条"
+          },
+          {
+            "url": "https://www.tokyo.med.or.jp/docs/chiiki_care_guidebook/217_236_chapter07.pdf",
+            "type": "professional_body",
+            "org": "東京都医師会「地域包括ケアガイドブック」第7章「状態の観察と緊急時の対応」"
+          },
+          {
+            "url": "https://www.jiu.ac.jp/files/user/pharmacy/research/pdf/rnwl-002.pdf",
+            "type": "academic",
+            "org": "城西国際大学「在宅高齢患者の全身状態をみる」（内科医長執筆の教育テキスト）"
+          },
+          {
+            "url": "https://www.nurse.or.jp/nursing/home/publication/pdf/guideline/nursing_record.pdf",
+            "type": "professional_body",
+            "org": "日本看護協会「看護記録に関する指針」"
+          },
+          {
+            "url": "https://knowledge.nurse-senka.jp/500956",
+            "type": "practitioner_primary",
+            "org": "ナース専科「脱水看護計画」"
+          },
+          {
+            "url": "https://www.jrs.or.jp/file/pulse-oximeter_medical.pdf",
+            "type": "professional_body",
+            "org": "日本呼吸器学会「パルスオキシメータハンドブック」"
+          }
+        ],
+        "who_or_what_they_serve": "入院患者本人、主治医、担当看護師（チーム内の他の看護師）、栄養サポートチーム（管理栄養士等）。",
+        "representative_duties": [
+          "患者の『全体的な印象』（元気・活気の有無、いつもと違う感じ）に気づき、顔色・食事・水分・排尿・体温・SpO₂等を観察する",
+          "観察した所見のうち、気になる変化がある項目とない項目を見極める",
+          "気になる変化に気づいたら、担当看護師・主治医とチームとして情報を必ず共有する——経過観察を選ぶ場合であっても、共有は必須であり『何もしない』ことではない"
+        ],
+        "expertise": [
+          "保健師助産師看護師法第37条により、治療方針の決定・投薬等は医師の指示が前提であり、看護師が単独で治療を決定することはない（緊急の応急手当を除く）。城西国際大学のテキストは『全身状態を悪化させる原因（病名診断）にこだわる必要はありません』と明記しており、看護師の実務上の到達点は『原因を1つに確定すること』ではなく『気づいて、報告・共有すること』である",
+          "ナース専科の脱水看護計画解説は、食事摂取量・水分摂取量・尿量（In-Outバランス）を、脱水・低栄養状態を判断するための代表的な観察データ収集項目として位置づけている。東京都医師会ガイドブックも、食事摂取量の低下を低栄養状態の観察ポイント（要連絡）として、下痢・嘔吐や発熱による脱水を要連絡の状態として、それぞれ個別に挙げている——ただしどちらの資料も『何項目以上気になる変化があれば報告し、それ未満なら経過観察でよい』という具体的な組み合わせ判定のルールまでは示していない。このゲームは、そうした具体的な報告基準を実在のルールとして断定せず、あくまで『各項目を正しく観察できたか、そして必ず共有できたか』のみを判断の対象とする",
+          "体温・SpO₂（経皮的動脈血酸素飽和度）は、呼吸器疾患患者の観察において重要な手がかりとなるバイタルサインであり（日本呼吸器学会）、今回の患者（肺炎からの回復期）の観察でも参考になる情報として提示される。ただし、これらの数値が正常範囲であることだけで『肺炎が再燃していないと証明された』とまでは、参照した資料からは言えない——あくまで参考になる手がかりの一つとして扱う",
+          "日本看護協会『看護記録に関する指針』は『他職種と看護を必要とする人の情報を共有することは、効果的で効率的な看護のために必須』と明記しており、経過観察を選ぶ場合であっても、その判断と観察内容をチームに共有することが実務上必須である——『様子を見るだけで誰にも共有しない』は正しい経過観察ではない"
+        ],
+        "tools": [
+          "全体的な印象の観察（顔色・表情・活気）",
+          "食事摂取量・水分摂取量・尿量の観察記録（In-Outバランス）",
+          "体温計・パルスオキシメーター（バイタルサイン測定）",
+          "看護記録（他職種との情報共有ツール）"
+        ],
+        "information_used": [
+          "各観察項目の所見（気になる変化があるかどうか）"
+        ],
+        "decisions": [
+          "食事・水分・排尿という3つの中核的な観察項目それぞれについて、気になる変化があるかどうかを見極める（体温・SpO₂は今回は変化のない参考情報として提示される。睡眠は今回の判断とは直接関係しない情報として提示される）",
+          "見極めた内容を、必ず担当看護師・主治医とチームに共有する——これはこのゲームが問う『気になる変化を正しく見極め、共有できたか』という判断であり、その先の対応（報告するか経過観察とするか）を1つの正しい基準に沿って決定できたことを主張するものでも、原因（病名）を1つ正しく言い当てることを主張するものでもない。共有した後にどう対応するかは、主治医・チームとの相談を経て決まる"
+        ],
+        "outputs_or_value": "観察した気になる変化の見極めが正しく、必ず共有できていれば、その情報がチームに正しく伝わり、患者の状態変化に早期に気づけたことになる。見極めを誤ったり共有を怠ったりすれば、正直にその旨が伝わる。",
+        "adjacent_profession_boundaries": "治療方針の決定・投薬・検査の指示は主治医の権限（保助看法第37条）。食事調整の具体案は管理栄養士が立てる（栄養サポートチームの職種分担）。看護師は情報の把握と共有が役割の中心であり、原因の確定診断や、共有された情報をもとにした具体的な対応方針の決定そのものは、主治医・チームとの相談を経て行われる。",
+        "uncertainties": [
+          "城西国際大学テキスト表2が引用する学術論文（沖縄県立看護大学紀要、Kitakanto Med. J.）は孫引きであり、原論文への直接アクセスはできていない",
+          "『新人看護師の観察不足によるインシデント』の一般的傾向についての記述は転職・研修サイトの解説記事であり、統計的な裏付けまでは確認できていない",
+          "脱水・低栄養状態が入院中の患者に何日程度・どの段階で悪化として現れるかという具体的な時間軸を示す一次資料は見つからなかった——このゲームでは具体的な日数・回数の閾値を実在の基準として提示しない",
+          "design review r1（FAIL 42）で判明した根本的な問題: v1は『気になる変化が2項目以上あれば報告、1項目以下なら経過観察』という具体的な組み合わせ判定のルールを独自に考案し、それを実在の専門的な基準であるかのように主張していたが、参照した資料（東京都医師会ガイドブック・ナース専科）はこのような数値的な組み合わせルールを一切示していない——むしろ東京都医師会ガイドブックは、食事摂取量の低下という単一の所見だけでも『要連絡』に分類しうることを示しており、v1の多数決ルールとは整合しない。v2では、この報告/経過観察という対応の判定そのものをゲームの成功条件から完全に撤去し、『各項目を正しく観察し、必ず共有できたか』のみを問う設計へ改めた。また、体温・SpO₂が正常であることを『肺炎の再燃ではないと証明する』という断定的な表現も、参照資料が支持する範囲（参考になる手がかりの一つ）を超えていたため、v2では『特に変化のない参考情報』という控えめな表現に改めた",
+          "このFactoryでlegacy-sort-out等が繰り返し発見したEXCLUSIVITY_OVERCLAIM系統の教訓（単一の正解が完全解決を意味するという過大主張）は、今回のように『判定ルールを独自に考案し、それを専門的な正解として認定する』という、より見えにくい形でも再発しうることが判明した——ゲームの成功条件を組み立てる際は、たとえ判定ロジック自体が単純な事実確認（観察内容と実際の状態が合っているか）であっても、その周辺のnarrative（結果表示・fact_sheetの記述）が、ゲーム側で考案した基準を実在の専門的基準であるかのように語っていないか、個別に確認する必要がある"
+        ],
+        "revision_note": "v1: reverse auditからのbackfill（未検証）。 v2: research.mdの一次資料調査に基づき全面的に書き直し。旧実装の『3つの見立てから唯一の正解の病名を選ばせる』という構造を撤去。 v3 (design review r1 FAIL 42是正、BLOCKER×4、design_iteration 1のREPAIR): 独自に考案した『2項目以上で報告』という組み合わせ判定ルールを実在の専門的基準であるかのように語っていた記述（DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM/CORE_CAUSAL_MODEL_DISTORTED）を撤去し、報告/経過観察という対応の判定自体をこのゲームの成功条件から完全に外した。体温・SpO₂正常＝肺炎の再燃ではないと証明する、という断定的な表現（MEDICAL_EXCLUSION_OVERCLAIM）も、控えめな表現へ改めた。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:reference_research:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:17.105Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-observe-care/backfill/fact_sheet.json",
+          "created_at": "2026-09-10T23:24:28.076Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/fact_sheet_v2.json",
+          "created_at": "2026-09-11T00:34:08.720Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-observe-care/design/fact_sheet_v3.json",
+          "created_at": "2026-09-11T00:45:17.106Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "scope_core": {
+      "artifact_id": "legacy-observe-care:scope_core:v3",
+      "artifact_type": "scope_core",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/scope_core_v3.json",
+      "payload": {
+        "core": "入院中の患者の観察カード（顔色・様子／食事／水分／排尿／体温／SpO₂／睡眠）をすべて開いて読んでから、食事・水分・排尿という3つの中核的な観察項目それぞれについて『気になる変化があるかどうか』を見極めてマークし、必ずチームへの情報共有もあわせて行う、という1回のコミットで完結する判断のループ。ここで問われているのは『気になる変化を項目ごとに正しく見極め、必ず共有できたか』であり、患者の状態を引き起こしている原因（病名）を1つ正しく言い当てることを主張するものでも、その先の対応（報告するか経過観察とするか）を1つの正しい基準に沿って決定できたことを主張するものでもない——共有した後にどう対応するかは、主治医・チームとの相談を経て決まることであり、このゲームが認定するものではない。体温・SpO₂は今回は変化のない参考情報、睡眠は今回の判断とは関係しない情報として提示され、これらを見極めの対象と誤認しても正解できない。",
+        "scope": "医療編／「なんか、だるくて……」——病棟看護師が、回復期の患者の変化に気づき、観察して共有する場面",
+        "scope_is_representative_because": "『気になる変化を項目ごとに見極めてから、必ず共有する』は、fact_sheet_v3.jsonの一次資料（城西国際大学テキストの『病名診断にこだわらない』という看護師の実務上の到達点、日本看護協会の情報共有の必須性）が示す病棟看護の中核業務そのものであり、既存content data（medical.ts、med-nurse）が既に設定している場面の典型的な適用例。",
+        "profession_name_hidden_test": "『観察項目の気になる変化を見極め、共有する』という記述だけでは職業名を当てられないが、E（3項目すべての見極めが正しく、共有もできていれば結果が正しく伝わったことになる、1つでも見誤るか共有を怠れば正直な結果になる）と組み合わせた文脈全体は、患者の状態変化に気づき対応する看護師という場面を指す。他の登場職業（医師・薬剤師・管理栄養士・理学療法士等）とはC（観察項目の所見データ）とD（気になる変化の見極めと共有の判断）が異なるため重複しない。",
+        "revision_note": "v1: reverse audit（exploit: brute force）からのbackfill。 v2: research.mdの一次資料調査に基づき新規作成。 v3 (design review r1 FAIL 42是正、BLOCKER×4、design_iteration 1のREPAIR): coreから『気になる変化の項目数に応じて対応（報告／経過観察）が自動的に決まる』という、独自に考案し実在の基準であるかのように語っていた組み合わせ判定ルールを完全に撤去し、『項目ごとの見極めと必ずの共有』のみに成功条件を限定した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:fact_sheet:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:17.147Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-observe-care/backfill/scope_core.json",
+          "created_at": "2026-09-10T23:24:28.116Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/scope_core_v2.json",
+          "created_at": "2026-09-11T00:34:08.762Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-observe-care/design/scope_core_v3.json",
+          "created_at": "2026-09-11T00:45:17.148Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "ae": {
+      "artifact_id": "legacy-observe-care:ae:v3",
+      "artifact_type": "ae",
+      "version": 3,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/ae_v3.json",
+      "payload": {
+        "A": "医療編／「なんか、だるくて……」——病棟看護師が、回復期の患者の変化に気づき、観察して共有する場面",
+        "B": "肺炎で入院し、熱も呼吸も良くなってきたはずの患者が「なんか、だるくて……」と話している。実際に食事・水分・排尿のそれぞれに気になる変化があるかどうかは、毎回セッションごとに独立にランダムで決まり、固定ではない。看護師として、まず全体的な印象をつかんでから、観察項目を1つずつ開いて確認する。",
+        "C": "7枚の観察カード（顔色・様子＝全体的な印象のきっかけ、食事・水分・排尿＝気になる変化の有無を見極める中核的な項目、体温・SpO₂＝今回は変化のない参考情報、睡眠＝今回の判断とは関係しない情報）。それぞれ開くと具体的な観察結果が書かれている。",
+        "D": "7枚の観察カードをすべて開いて読んでから、食事・水分・排尿の3項目それぞれについて『気になる変化がある』か『特に変化なし』かをマークする。マークが終わったら、『チームに共有する』にチェックを入れる（これを入れないと確定ボタンは押せない）。マークと共有を確認したうえで、1回のコミットとして確定する。この判断で問われているのは『気になる変化を項目ごとに正しく見極め、必ず共有できたか』であり、患者の状態を引き起こしている原因（病名）を1つ正しく言い当てることを主張するものでも、その先の対応（報告するか経過観察とするか）を1つの正しい基準に沿って決定できたことを主張するものでもない。",
+        "E": "食事・水分・排尿の3項目すべてで見極めが実際の所見と合っており、共有もできていれば、観察内容が正しくチームに伝わった、という結果になる——主治医やチームから『教えてくれてありがとう、詳しく見てみましょう』というような返事があり、その先の対応は主治医・チームとの相談に委ねられる、という説明を添える。1つでも見誤っていれば、伝わった内容が実際の状況とずれていた、という正直な結果になる。共有のチェックを外したまま確定することはできない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:scope_core:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:17.189Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "/Users/nishimuraemiri/jibun-choice-town/factory/projects/legacy-observe-care/backfill/ae.json",
+          "created_at": "2026-09-10T23:24:28.156Z",
+          "creator": "reverse-audit"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/ae_v2.json",
+          "created_at": "2026-09-11T00:34:08.803Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/legacy-observe-care/design/ae_v3.json",
+          "created_at": "2026-09-11T00:45:17.190Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_scope_check": {
+      "artifact_id": "legacy-observe-care:core_scope_check:v2",
+      "artifact_type": "core_scope_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/core_scope_check_v2.json",
+      "payload": {
+        "core_consistent": true,
+        "scope_representative": true,
+        "profession_name_hidden_test_pass": true,
+        "notes": "scope_core_v3.jsonのcoreとae_v3.jsonのD/Eは、『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、全項目を機械的にマークする戦略はいずれも約12-13%、共有を怠ると必ず失敗、2項目読了+1項目推測≈0.49）とも整合する。design review r1のBLOCKER是正（v1が独自に考案した『2項目以上で報告』という組み合わせ判定ルールを、実在の専門的基準であるかのように主張していたこと——を、報告/経過観察という対応の判定自体をゲームの成功条件から完全に外すことで解消。体温・SpO₂正常＝肺炎の再燃ではないと証明する、という断定的な表現も控えめな表現へ改めた）を確認した。profession_name_hidden_testは、C（観察項目の所見データ）とD（気になる変化の見極めと共有の判断）が他の既存Q1ゲームと重複しないことを確認済み。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:scope_core:v3",
+        "legacy-observe-care:ae:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:17.231Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/core_scope_check_v1.json",
+          "created_at": "2026-09-11T00:34:08.843Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/core_scope_check_v2.json",
+          "created_at": "2026-09-11T00:45:17.232Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "play_seeds": {
+      "artifact_id": "legacy-observe-care:play_seeds:v2",
+      "artifact_type": "play_seeds",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/play_seeds_v2.json",
+      "payload": {
+        "seeds": [
+          {
+            "seed_id": "s1-all-correct-reasoning",
+            "authentic_causal_loop": "7枚の観察カードを開くと、今回は食事と水分に気になる変化があり、排尿には特に変化がない、というように所見が入れ替わっている——毎セッション食事・水分・排尿は独立にランダムなので、2つを読んでも3つ目は分からない。体温・SpO₂は今回は変化のない参考情報、睡眠は今回は関係ない情報として書かれている。すべて読むと、食事・水分の2項目に気になる変化があると分かる。",
+            "player_action": "7枚の観察カードをすべて開いて読み、食事・水分・排尿の3項目それぞれに『気になる』か『特に変化なし』かをマークし、『チームに共有する』にチェックを入れて確定する。",
+            "system_reaction": "3項目すべてで実際の所見どおりにマークできていた、という結果とともに、観察内容が正しくチームに伝わった、という結果が表示される。主治医やチームから『教えてくれてありがとう、詳しく見てみましょう』というような返事があり、その先の対応は相談して決める、という説明が添えられる。",
+            "information_gained": "体温・SpO₂や睡眠だけを見ても気になる変化の有無は分からず、食事・水分・排尿を実際に読むことが判断の手がかりだと体感する。",
+            "next_judgment_or_action": "次のセッションでも、一部の項目だけを見て決めつけず、食事・水分・排尿の3項目すべてを読んでからマークする、という姿勢に気づく。",
+            "C_used": "食事・水分・排尿の観察内容（気になる変化がある／特に変化なし）と、体温・SpO₂（今回は変化のない参考情報）、睡眠（関係ない情報）。",
+            "D_expressed": "各項目を実際の所見どおりにマークし、共有する判断（design-sim.mjsのsessionWin）。",
+            "E_reached": "3項目すべてのマークが正しく、共有も行われた、という正直な結果——病名の確定や、報告か経過観察かという対応を1つの正しい基準に沿って決定できたことについて、このゲームは主張しない。",
+            "risks": "全項目を機械的に『気になる』または『問題なし』にする戦略や、2項目だけ読んで3項目目を推測する戦略が高確率で成功してしまわないか（design-sim.mjsのalways_all_concerning/always_none_concerning≈0.12-0.13、two_observed_plus_guess_third≈0.49で検証済み——完全な推論[1.0]を大きく下回る）。"
+          },
+          {
+            "seed_id": "s2-misjudge-item",
+            "authentic_causal_loop": "食事・水分・排尿のカードを一応すべて開いたが（disclosure gateは満たす）、内容を実際には読まず、『いつも水分が問題になるはず』という思い込みで水分だけを『気になる』にマークしてしまう——ところが今回のセッションでは水分は特に変化がなく、実際には食事と排尿に気になる変化があった。",
+            "player_action": "3項目のカードを開くが観察内容を読まず、思い込みでマークして確定する。",
+            "system_reaction": "実際の所見と異なるマークがあった項目について、正直な結果——伝わった内容が実際の状況とずれていた、という結果が表示される。",
+            "information_gained": "思い込みでマークすると、実際の所見と合わないことがあると体感する。",
+            "next_judgment_or_action": "次は観察内容を実際に読んでからマークする、と気づく。",
+            "C_used": "3項目の観察内容（開いたが読まなかった）。",
+            "D_expressed": "カードを開いたが内容を実際に読まず、思い込みでマークしてしまった誤った判断。",
+            "E_reached": "正直な失敗結果（伝わった内容が実際の状況とずれていた）。",
+            "risks": "思い込みマッピングに頼る戦略がたまたま成功してしまわないか（design-sim.mjsで検証済み——所見が独立にランダムなため、固定的な思い込みは低い成功率にとどまる）。"
+          },
+          {
+            "seed_id": "s3-forget-to-share",
+            "authentic_causal_loop": "食事・水分・排尿のすべてを正しく読み取り、正しくマークできたにもかかわらず、『特に気になる変化もないし、共有は今回はいいか』と考えて『チームに共有する』のチェックを入れないままでいる。",
+            "player_action": "3項目のマークは正しく行うが、共有のチェックボックスにはチェックを入れない。",
+            "system_reaction": "共有チェックが入っていない間、確定ボタンは常に無効（disabled）のまま押せない——マークが正しくても、共有しない限り先に進めない。",
+            "information_gained": "見極めが正しくても、共有しなければ看護の実務としては完結せず、先に進めないと体感する。",
+            "next_judgment_or_action": "次は経過観察でよさそうな場合でも、必ず共有のチェックを入れる、と気づく。",
+            "C_used": "3項目の観察内容（正しく読んだ）。",
+            "D_expressed": "正しい見極めと、共有を後回しにする誤った判断の組み合わせ。",
+            "E_reached": "確定ボタンが無効のままのfail-closed状態（design-sim.mjsのcorrect_marks_never_share=0で検証済み——見極めが完全に正しくても共有なしでは確定自体ができない、または確定しても必ず失敗する）。実装では、共有チェックが入るまで確定ボタンを無効にするfail-closed方式に統一する（一度確定してから失敗を通知する方式にはしない）。",
+            "risks": "共有チェックを外したままでも確定できてしまうと、実務上必須の要素をゲームが軽視することになる——確定ボタンのdisabled条件に共有チェックを含める実装が必須。design review r1のMEDIUM是正: 旧v1のこのseedは『確定してから失敗結果になる』という書き方だったが、採用翻訳の『共有チェックがなければ確定ボタン自体が無効』という仕様と矛盾していたため、fail-closed方式（確定ボタンが最初から押せない）に統一した。"
+          },
+          {
+            "seed_id": "s4-misjudge-then-reflect",
+            "authentic_causal_loop": "s2と同じ状況で、思い込みにより1つ以上の項目のマークを誤ってしまった。結果を受けて、同じ7枚の観察内容をもう一度読み取り専用で振り返り、『今度はどうマークすればよかったか』を考える（結果は変わらない、非採点の振り返り）。",
+            "player_action": "s2と同じ操作の後、正直な失敗結果を受け取る。続けて表示される振り返り画面で、同じ観察内容をもう一度読み、今度はどうマークすべきだったかを選ぶ（この選択は結果に影響しない）。",
+            "system_reaction": "振り返り選択の後、先へ進むボタンが有効になり、次の場面へ進める。",
+            "information_gained": "一度見極めを誤っても、同じデータをもう一度見比べて考え直す機会があると体感する。",
+            "next_judgment_or_action": "振り返りで選んだマークを、次に似た場面に出会ったときに実際に活かす。",
+            "C_used": "s2と同じ7枚のデータ（振り返り画面で読み取り専用として再掲）。",
+            "D_expressed": "誤った判断とその後の非採点の振り返り（Gate G）。",
+            "E_reached": "正直な失敗結果（Gate H）と、非採点の振り返りステップ（Gate G）。",
+            "risks": "振り返り選択が結果を変えてしまう、あるいは振り返りをせずに先へ進めてしまうとGate G（考え直す余地）が満たされない。振り返り画面にデータの再掲がないと記憶頼みになってしまう（legacy-hotel-receive/legacy-delay-recover/legacy-sort-outのGate G実装パターンを踏襲し、振り返り画面には元データを読み取り専用で再掲する設計とする）。"
+          }
+        ],
+        "revision_note": "v1: research.mdの一次資料調査とdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、design_iteration 1のREPAIR): 全seedから『報告/経過観察という対応の自動判定』という概念を撤去し、『気になる変化の見極めと共有』のみに成功条件を限定した。system_reaction/E_reachedの文言も、独自に考案した組み合わせ判定ルールへの言及を除去した。s3を、確定してから失敗する方式から、共有チェックがなければ確定ボタン自体が無効になるfail-closed方式へ改め、採用翻訳の仕様と一致させた（design review r1 MEDIUM SHARE_FAILURE_PATH_AMBIGUOUS是正）。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:ae:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:26.512Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/play_seeds_v1.json",
+          "created_at": "2026-09-11T00:34:17.417Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/play_seeds_v2.json",
+          "created_at": "2026-09-11T00:45:26.513Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "reference_research": {
+      "artifact_id": "legacy-observe-care:reference_research:v2",
+      "artifact_type": "reference_research",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/reference_research_v2.json",
+      "payload": {
+        "references": [
+          {
+            "reference": "城西国際大学「在宅高齢患者の全身状態をみる」（内科医長執筆の教育テキスト）——『全身状態を悪化させる原因（すなわち病名診断）にこだわる必要はありません』『バイタルサインの視点で問題なければ、少し様子をみていいでしょう。しかし印象の異変や違和感を軽視してはいけません。主治医や担当看護師と情報を共有し、チームとして注意して様子をみていくことが大切です』",
+            "relevant_mechanic": "看護師が病名を1つに確定する必要がないこと、経過観察を選ぶ場合でも情報共有が必須であること",
+            "borrowed_principle": "旧実装の『3つの見立てから唯一の正解の病名を選ぶ』という構造をこのゲームでは撤去し、代わりに『気になる変化を項目ごとに正しく見極められたか』という、この一次資料が示す看護師の実際の到達点に合わせた判断軸を採用した。design review r1のBLOCKER是正: v1はここからさらに『気になる変化が2項目以上あれば報告、そうでなければ経過観察』という組み合わせ判定ルールを独自に考案し、これも実在の基準であるかのように扱っていたが、この一次資料はそのような数値的な組み合わせルールを一切示していない。v2では、報告するか経過観察とするかという対応の判定そのものをゲームの成功条件から完全に撤去し、『気になる変化を見極め、必ず共有する』ことのみを問う設計へ改めた。",
+            "surface_elements_not_to_copy": "在宅高齢患者を対象とした具体的な緊急度の数値基準・時間軸は、子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "ナース専科「脱水により体液量が不足している高齢患者さんに関する看護計画」——脱水観察のためのデータ収集項目として食事・飲水摂取状況、In-Outバランス（尿量含む）を挙げている",
+            "relevant_mechanic": "食事・水分・排尿という3つの中核的な観察項目を、それぞれ独立に気になる変化があるかどうか見極める判断",
+            "borrowed_principle": "食事・水分・排尿の3項目を、このゲームの中核的な評価対象として採用した。design review r1のBLOCKER是正（DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM）: v1はこの3項目セットとその組み合わせ判定ルールを東京都医師会ガイドブックに帰属させていたが、実際にこの3項目セット（食事・飲水・In-Outバランス）を明示的に挙げているのはこのナース専科の脱水看護計画解説であり、東京都医師会ガイドブックは食事摂取量の低下（要連絡）と脱水（下痢・嘔吐や発熱→要連絡）をそれぞれ個別に述べているにとどまる。組み合わせ判定ルールはいずれの資料にも存在しない。v2では出典の対応関係を正確に記述し直した。",
+            "surface_elements_not_to_copy": "具体的な尿量・摂取量の数値基準は、子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "東京都医師会「地域包括ケアガイドブック」第7章——食事摂取量の低下→低栄養状態→要連絡、下痢・嘔吐や発熱→脱水→要連絡、という個別の観察ポイントを示している（複数項目の組み合わせ判定ルールは示していない）",
+            "relevant_mechanic": "食事摂取量の低下という単一の所見だけでも『要連絡』に分類されうるという実務の記述",
+            "borrowed_principle": "design review r1のBLOCKER是正: この資料は単一の所見（食事摂取量の低下）だけでも要連絡に分類しうることを示しており、v1の『2項目以上で報告』という多数決ルールとは整合しない。v2では、この資料が示す個別の観察ポイント（食事・脱水それぞれの要連絡基準）は、あくまで『気になる変化に気づいたら共有する』ことの重要性の根拠としてのみ用い、具体的な組み合わせ判定基準としては引用しない。",
+            "surface_elements_not_to_copy": "緊急度4分類の詳細な運用基準は、子ども向けゲームの判断要素には含めない。"
+          },
+          {
+            "reference": "ナース専科「サチュレーション（SpO2）とは？」、日本呼吸器学会「パルスオキシメータハンドブック」——SpO2は呼吸器疾患患者の早期発見に役立つ補助的なバイタルサイン",
+            "relevant_mechanic": "体温・SpO₂が呼吸器疾患患者の観察において参考になる手がかりであるという実務の使い方",
+            "borrowed_principle": "design review r1のBLOCKER是正（MEDICAL_EXCLUSION_OVERCLAIM）: v1は体温・SpO₂が正常範囲であることを『肺炎の再燃ではないと証明する』という断定的な表現で扱っていたが、この一次資料が支持するのはあくまで『参考になる手がかり』としての位置づけであり、正常であることが再燃を完全に除外する証拠であるとまでは述べていない。v2では『今回は変化のない参考情報』という控えめな表現に改めた。",
+            "surface_elements_not_to_copy": "具体的な体温・SpO2の数値基準値は、正常範囲の説明としてのみ使い、断定的な医学的閾値としては提示しない。"
+          },
+          {
+            "reference": "日本看護協会「看護記録に関する指針」——『他職種と看護を必要とする人の情報を共有することは、効果的で効率的な看護のために必須』",
+            "relevant_mechanic": "経過観察・報告いずれの対応を選んでも、チームへの情報共有が必須であるという実務上の要請",
+            "borrowed_principle": "『チームに共有する』というチェックを、対応の種類にかかわらず必須の要素としてゲームに組み込んだ。この一次資料の趣旨は、共有を必須にすることまでであり、共有の後にどう対応するかという判定ルールまでは示していない——v2ではこの範囲を厳密に守り、共有必須という要素のみを採用した。",
+            "surface_elements_not_to_copy": "看護記録の具体的な様式・記載項目の細部は、子ども向けゲームの判断要素には含めない。"
+          }
+        ],
+        "revision_note": "v1: research.mdの一次資料調査に基づき新規作成。 v2 (design review r1 FAIL 42是正、BLOCKER×3、design_iteration 1のREPAIR): 参照1・参照2の出典帰属を訂正し（DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM是正）、独自に考案した組み合わせ判定ルールをすべての参照から撤去した（CORE_CAUSAL_MODEL_DISTORTED/EXCLUSIVITY_OVERCLAIM是正）。参照4の体温・SpO₂の記述を、断定的な除外主張から控えめな参考情報へ改めた（MEDICAL_EXCLUSION_OVERCLAIM是正）。参照3を新規追加し、単一の所見でも要連絡に分類されうるという、v1の多数決ルールと矛盾する事実を明記した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:26.556Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/reference_research_v1.json",
+          "created_at": "2026-09-11T00:34:17.460Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/reference_research_v2.json",
+          "created_at": "2026-09-11T00:45:26.557Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "c_compression": {
+      "artifact_id": "legacy-observe-care:c_compression:v2",
+      "artifact_type": "c_compression",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/c_compression_v2.json",
+      "payload": {
+        "original_C": "保助看法の条文構造全体、看護記録の具体的な様式・記載項目、体温・SpO2の医学的な数値閾値・測定原理の詳細、栄養サポートチームの診療報酬制度、脱水・低栄養の学術的な病態生理、緊急度4分類の詳細な運用基準。",
+        "compressed_C": "7枚の観察カード（顔色・様子＝全体的な印象のきっかけ、食事・水分・排尿＝気になる変化の有無を独立にランダムで見極める中核的な項目、体温・SpO₂＝今回は変化のない参考情報、睡眠＝今回の判断とは関係しない情報）。",
+        "removed_complexity": "保助看法の条文構造そのもの、看護記録の様式・記載項目の細部、体温・SpO2の数値閾値・測定原理、栄養サポートチームの制度的根拠、脱水・低栄養の学術的な病態生理、緊急度4分類の詳細な運用基準、旧実装の『3つの見立てから唯一の病名を選ぶ』という診断ステップ、design review r1で撤去された『気になる変化の項目数に応じて報告/経過観察が自動的に決まる』という独自に考案した組み合わせ判定ルール。",
+        "reason_for_removal": "research.mdが示すとおり、10-12歳向けに削るべきは法令・制度の条文構造や医学的な数値閾値・病態生理の細部であり、残すべきは『気になる変化を項目ごとに見極めてから、必ず共有する』という、実在の因果関係が明確な骨組み。看護師は病名診断にこだわる必要がないという実務の知見に基づき旧実装の診断ステップを削除し、design review r1のBLOCKER是正により、報告/経過観察の組み合わせ判定ルールという、資料が裏付けない独自の考案物も削除対象に加えた。",
+        "preserved_D": "7枚の観察カードを読んで所見を把握し、食事・水分・排尿の3項目それぞれについて気になる変化があるかどうかを見極めてマークし、共有チェックとともに1回のコミットで結果を確定する、という一連の判断。",
+        "how_player_still_performs_D": "7枚のカードをすべて開いて観察内容を読み、食事・水分・排尿の3項目それぞれをマークしてから確定する。design-sim.mjsで数値検証済み: 正しい判断（各項目の実際の所見どおりにマークし、必ず共有する）は常に成功（legitimate_full_reasoning=1.0）。内容を無視して全項目を機械的に『気になる』または『問題なし』にする戦略はいずれも約12-13%にとどまり、共有を怠る戦略は必ず失敗し、2項目だけ読んで3項目目を推測する戦略も約49%にとどまり、完全な推論を明確に下回る。",
+        "failure_risk": "design review r1（FAIL 42、BLOCKER×4）が明らかにした教訓: legacy-sort-out等が発見したEXCLUSIVITY_OVERCLAIM系統は、たとえ『病名を1つに確定させる』という分かりやすい形を避けても、『判定ルールを独自に考案し、それを専門的な正解として認定する』というより見えにくい形で再発しうる。v1は『気になる変化が2項目以上あれば報告』という組み合わせルールを作り、それを実在の基準に帰属させ、さらにそのルールから導かれる対応を『正しい』と認定していた——これは研究が裏付けない基準を専門的な正解であるかのように扱う、二重の過大主張だった。v2では、報告/経過観察という対応の判定そのものをゲームの成功条件・結果表示から完全に外し、『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という、ゲームが実際に検証できる範囲だけを主張する構造に改めた。",
+        "revision_note": "v1: research.mdの一次資料調査に基づき新規作成。 v2 (design review r1 FAIL 42是正、design_iteration 1のREPAIR): removed_complexity/failure_riskに、独自に考案した組み合わせ判定ルールの撤去内容を追記した。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:26.597Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/c_compression_v1.json",
+          "created_at": "2026-09-11T00:34:17.501Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/c_compression_v2.json",
+          "created_at": "2026-09-11T00:45:26.598Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "game_translations": {
+      "artifact_id": "legacy-observe-care:game_translations:v2",
+      "artifact_type": "game_translations",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/game_translations_v2.json",
+      "payload": {
+        "translations": [
+          {
+            "translation_id": "t1-mark-and-share-once",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "7枚の観察カード（顔色・様子／食事／水分／排尿／体温／SpO₂／睡眠）をすべて開いて読み、食事・水分・排尿の3項目それぞれについて『気になる変化がある』か『特に変化なし』かをマークする。マークが終わったら『チームに共有する』にチェックを入れる（入れないと確定ボタンは有効にならない）。マークと共有を確認したうえで、1回のコミットとして確定する。この判断で問われているのは『気になる変化を項目ごとに正しく見極め、必ず共有できたか』であり、患者の状態を引き起こしている原因（病名）を1つ正しく言い当てることを主張するものでも、その先の対応（報告するか経過観察とするか）を1つの正しい基準に沿って決定できたことを主張するものでもない。",
+            "first_visible_state": "『「なんか、だるくて……」』という導入と、7枚の観察カード（固定表示、閉じた状態）、食事・水分・排尿それぞれの『気になる』『特に変化なし』ボタン（disabled）、『チームに共有する』のチェックボックス（disabled）、確定ボタン（disabled）。説明文はない。",
+            "primary_action": "観察カードの『？』をタップして開く→食事・水分・排尿の3項目それぞれで『気になる』または『特に変化なし』を選ぶ→『チームに共有する』にチェックを入れる→確定ボタンを押して1回のコミットで結果を確定する。",
+            "C_interaction": "各項目の観察内容を読むことで、気になる変化があるかどうかが直接分かる——食事・水分・排尿の所見は項目ごとに独立にランダムであり、他の項目の情報からの消去法でも判断できない。体温・SpO₂は今回は変化のない参考情報、睡眠は今回の判断とは関係しない情報として提示され、これらをマークの対象と誤認しても正解できない。",
+            "system_reaction": "食事・水分・排尿の3項目すべてで実際の所見どおりにマークできていれば、『気になる変化を正しく見極め、チームに伝えられた』という結果になる——主治医やチームから『教えてくれてありがとう、詳しく見てみましょう』というような返事があり、その先の対応は相談して決める、という説明が添えられる。1つでもマークが実際の所見と異なっていれば、『伝わった内容が実際の状況とずれていた』という正直な結果になる。共有のチェックが入っていなければ確定ボタンは常に無効のままで、押すこと自体ができない。",
+            "information_gained": "項目ごとのマークの正誤と、共有が正しく行われたかどうかの結果のみ。",
+            "player_next_judgment": "次のセッションでも、一部の項目だけで決めつけず、3項目すべてを読んでからマークする。",
+            "D_externalization": "観察カードのタップによる開示の確認と、『気になる』『特に変化なし』ボタンのタップによるマークという、子ども自身の明示的な選択が、そのまま気になる変化の見極めという判断を表現する。システムは先に正解を示さない。カードを実際に開いて読むまでマークボタンは押せない（disclosure gate）。",
+            "E_consequence": "3項目すべてのマークが実際の所見と合っていれば、気になる変化を正しく見極め、チームに正しく伝えられた、という成功結果（onComplete）になる。1つでもマークが誤っていれば、伝わった内容が実際の状況とずれていた、という正直な結果（onPartialComplete）になる。いずれの結果も、病名の確定や、報告するか経過観察とするかという対応を1つの正しい基準に沿って決定できたことについては主張しない——共有の後にどう対応するかは、主治医・チームとの相談を経て決まることであり、このゲームが認定するものではない。",
+            "retry_or_rethink": "マークと確定に影響するやり直しはない（1回のコミットで結果が確定する——brute force排除の核）。1つでもマークを誤った場合は7枚のデータを再提示したうえで、非採点の振り返り選択（結果は変わらない）を挟んでから結末へ進む。",
+            "job_reveal_bridge": "『「なんか、だるくて……」』という導入から、病棟看護師の仕事の紹介へつなげる。気になる変化を見極めてから、必ず共有する、という実在の役割を明示する。",
+            "strengths": "旧実装の唯一の根本問題（コストゼロで見立てを何度でも試せるbrute force exploit）を単発コミット化で解消しつつ、旧実装が抱えていたより深い問題（病名を1つに確定させる過大な決定論、経過観察を一律に拒否する設計）も、研究に基づき根本から解消した。design review r1のBLOCKER是正: v1が独自に考案していた『気になる変化が2項目以上あれば報告』という組み合わせ判定ルールと、それを専門的な正解として認定する結果表示を完全に撤去し、『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という、ゲームが実際に検証できる範囲だけを主張する構造に改めた。design-sim.mjsのsessionWinはこの変更前後で一切変わっていない——判定ロジック自体は最初から報告/経過観察という対応を採点対象にしていなかった。",
+            "weaknesses": "375px幅で、7枚の観察カード＋3項目のマークボタン＋共有チェック＋確定ボタンというレイアウトは実装段階の検証項目。『主治医やチームから返事がある』という結果演出が、10-12歳にも分かりやすく伝わるか、実装時のQAで確認する必要がある。",
+            "risk": "design-sim-result.json: legitimate_full_reasoning=1（100%）、random_pick≈0.06、always_all/none_concerning≈0.12-0.13、correct_marks_never_share=0、two_observed_plus_guess_third≈0.49。判定ロジック自体（design-sim.mjsのsessionWin）はr1から一切変更していない——r1が指摘したのは判定ロジックではなく、結果表示のnarrativeが独自に考案した判定ルールを専門的な正解として主張していた点だった。",
+            "adoption_or_rejection_reason": "採用（design review r1 FAIL 42是正）。fact_sheet/scope_core/aeで再定義した『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という判断軸を最も忠実に表現し、design-sim.mjsで内容を理解しない戦略がいずれも十分に低い成功率にとどまることを事前検証済み。旧実装のbrute force exploitと、それより深いEXCLUSIVITY_OVERCLAIM系統の問題（病名確定の強制、経過観察の排除、そして今回発見された『独自の判定ルールを専門的正解として認定する』という、より見えにくい形の過大主張）のすべてを、研究に基づき解消した。"
+          },
+          {
+            "translation_id": "t2-single-diagnosis-rejected",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "旧実装のように、観察内容から3つの見立て（病名候補）のうち唯一の正解を選ばせる。",
+            "first_visible_state": "観察カードと、3つの見立て選択肢が並ぶ画面。",
+            "primary_action": "観察カードを読み、3つの見立てから1つを選ぶ。",
+            "C_interaction": "観察内容を読み比べて、どの見立てが正しいかを推測する。",
+            "system_reaction": "正解の見立てを選べば次のケア選択段階へ進み、それ以外を選ぶとやり直しになる。",
+            "information_gained": "唯一の正解の見立てが存在するという前提を学習してしまう。",
+            "player_next_judgment": "次回も『唯一の正解を当てるゲーム』として捉えてしまう。",
+            "D_externalization": "見立ての選択が病名当てクイズになってしまう。",
+            "E_consequence": "看護師の実務にはない『病名を1つに確定する』という過大な決定論を暗黙に教えてしまう。",
+            "retry_or_rethink": "旧実装同様、同じ画面で何度でもやり直せる。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "旧実装からの変更が最小で済む。",
+            "weaknesses": "research.mdが明記する『看護師は病名診断にこだわる必要はない』という実務の知見と矛盾し、EXCLUSIVITY_OVERCLAIMを再導入する。",
+            "risk": "EXCLUSIVITY_OVERCLAIM相当。",
+            "adoption_or_rejection_reason": "却下。看護師の実務にない『病名を1つに確定する』という過大な決定論を要求し、research.mdが明示的に否定する構造を再導入してしまうため。"
+          },
+          {
+            "translation_id": "t3-keep-retry-rejected",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "旧実装（NurseObserveGame.tsx）のまま、見立てとケアの選択を同じ画面で何度でもやり直せるようにする。",
+            "first_visible_state": "旧実装同様の観察・見立て・ケア選択画面。",
+            "primary_action": "見立てやケアの選択を自由に変更し、何度でも試せる。",
+            "C_interaction": "旧実装と同じ、観察内容と見立て・ケアの候補を読み比べる。",
+            "system_reaction": "誤答時は説明が表示されるだけで、即座に別の見立て・ケアを試せる。",
+            "information_gained": "誤答してもコストがかからず、最終的には必ず正解にたどり着けてしまう。",
+            "player_next_judgment": "総当たりで正解にたどり着ける。",
+            "D_externalization": "選択自体は子どもの判断だが総当たりで正解にたどり着けてしまう。",
+            "E_consequence": "総当たりの根本的な解消にならない。",
+            "retry_or_rethink": "同一画面内での事実上の総当たりが残ったまま（reverse auditが指摘したbrute forceそのもの）。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "実装コストが最小。",
+            "weaknesses": "reverse auditが指摘した唯一の欠陥（brute force）を根本的に解消しない。",
+            "risk": "BRUTE_FORCE_SUCCESS相当。",
+            "adoption_or_rejection_reason": "却下。reverse auditが指摘した欠陥（brute force：コストゼロで何度でも試せる）を根本的に解消しないため。"
+          },
+          {
+            "translation_id": "t4-invented-threshold-rejected",
+            "play_seed": "s1-all-correct-reasoning",
+            "goal": "t1の観察・マーク・共有の構造は維持しつつ、マークの結果から『気になる変化が2項目以上あれば主治医に報告、そうでなければ経過観察』という対応を自動的に導き出し、その対応が『正しい』かどうかも結果表示で認定する（design_iteration 1のv1が実際に採用していた案）。",
+            "first_visible_state": "t1と同じ7枚の観察カードに加え、マーク後に『主治医に報告する』または『経過観察を続ける』のいずれかが自動表示される。",
+            "primary_action": "t1と同じ観察・マークに加え、自動表示された対応を確認して確定する。",
+            "C_interaction": "t1と同じ。ただしマークの結果から対応（報告／経過観察）が機械的に導かれる点が異なる。",
+            "system_reaction": "マークが正しく、導かれた対応も併せて『正しい対応だった』と認定される。",
+            "information_gained": "『気になる変化が一定数以上あれば報告する』という具体的な数値基準が、実在の専門的なルールであるかのように学習されてしまう。",
+            "player_next_judgment": "次のセッションでも、この数値基準を実務のルールとして適用してしまう。",
+            "D_externalization": "マークの判断自体はt1と同じだが、そこから導かれる対応の正しさまでゲームが認定してしまう。",
+            "E_consequence": "research.mdはこのような組み合わせ判定ルール（何項目以上で報告か）を一切示しておらず、むしろ単一の所見だけでも要連絡に分類されうる（東京都医師会ガイドブック）ため、このルールは実務と矛盾しうる。",
+            "retry_or_rethink": "t1と同じ、1回のコミットで確定。",
+            "job_reveal_bridge": "t1と同じ。",
+            "strengths": "対応（報告／経過観察）が画面に明示され、プレイ体験としては分かりやすい。",
+            "weaknesses": "研究が裏付けない独自の数値基準を、実在の専門的な正解であるかのように認定してしまう——EXCLUSIVITY_OVERCLAIM/CORE_CAUSAL_MODEL_DISTORTED/DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIMの3つのBLOCKERの直接の原因。",
+            "risk": "design review r1（FAIL 42）で実際に4件のBLOCKERを検出。",
+            "adoption_or_rejection_reason": "却下（design review r1 FAIL 42是正のため、REPAIRでt1へ差し戻し）。研究が裏付けない組み合わせ判定ルールを実在の専門的基準として認定してしまうため、design_iteration 1の当初案（当時のt1、現在はt4として履歴保持）としては採用されていたが、独立レビューでBLOCKERと判定され撤回した。"
+          }
+        ],
+        "adopted_translation_id": "t1-mark-and-share-once",
+        "adoption_rationale": "t1は、fact_sheet_v3.json/scope_core_v3.json/ae_v3.jsonが再定義した『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という判断軸を、design-sim.mjsで内容を理解しない戦略がいずれも十分に低い成功率にとどまることを事前検証したうえで採用する（design_iteration 1のREPAIR）。design review r1（FAIL 42）で判明した根本原因——独自に考案した『気になる変化が2項目以上あれば報告』という組み合わせ判定ルール（t4として履歴保持）を、実在の専門的基準であるかのように主張し、そこから導かれる対応まで『正しい』と認定していたこと——を、報告/経過観察という対応の判定・認定そのものをゲームの成功条件・結果表示から完全に撤去することで解消した。t2は看護師の実務にない病名確定の過大な決定論を要求するため、t3は旧実装のbrute force exploitを解消しないため、t4は研究が裏付けない組み合わせ判定ルールを専門的正解として認定してしまうため、それぞれ却下した。",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。3案（t1〜t3）のうちt1を採用。 v2 (design review r1 FAIL 42是正、BLOCKER×4、design_iteration 1のREPAIR): 旧t1を却下しt4として履歴保持し、報告/経過観察という対応の判定・認定を一切行わない新しいt1-mark-and-share-onceを新規採用した。design-sim.mjsの判定ロジック自体は一切変更していない——変更はすべて結果表示のnarrativeに限定される。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:c_compression:v2",
+        "legacy-observe-care:play_seeds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:37.697Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/game_translations_v1.json",
+          "created_at": "2026-09-11T00:34:28.405Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/game_translations_v2.json",
+          "created_at": "2026-09-11T00:45:37.698Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "first_5_seconds": {
+      "artifact_id": "legacy-observe-care:first_5_seconds:v2",
+      "artifact_type": "first_5_seconds",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/first_5_seconds_v2.json",
+      "payload": {
+        "zero_to_two_seconds": "『「なんか、だるくて……」熱も呼吸も良くなってきたはずなのに…？』という短い導入テキストのあと、7枚の観察カード（『？』アイコンで閉じた状態）と、『観察したカード: 0/7』という小さな進捗表示が画面に表示される。食事・水分・排尿それぞれの『気になる』『特に変化なし』ボタン、『チームに共有する』のチェックボックス、確定ボタンはすべて無効（グレーアウト）で表示される。",
+        "two_to_five_seconds": "子どもは『？』が気になり、いずれかの観察カードをタップする。開くとその項目の観察内容（例: 『食事は、いつもの半分も食べられていない』）が表示され、進捗表示が『1/7』に変わる。食事・水分・排尿のカードを開くと、その項目のマークボタンが有効化される。",
+        "first_expected_touch": "いずれかの観察カードへの最初のタップ。",
+        "first_system_reaction": "タップしたカードが開き、観察内容が表示される。進捗表示が1つ増える。食事・水分・排尿のカードであれば、その項目のマークボタンが有効化される。",
+        "next_expected_inference": "『進捗表示が7になるまでカードを開いていく流れらしい。開いてから食事・水分・排尿についてマークする』という推測（進捗表示と、開いた項目だけボタンが有効化されることから）。",
+        "next_expected_action": "7枚のカードをすべて開いて観察内容を読み比べ、食事・水分・排尿それぞれをマークし、チームへの共有にチェックを入れて確定する。一部の項目だけでは判断できず、実際に読まないとマークが選べないと気づく。",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、MEDIUM FIRST_PLAY_INSTRUCTION_DISCOVERABILITY是正、design_iteration 1のREPAIR): 『観察したカード: 0/7』という進捗表示を追加し、7枚すべてを開く必要があることが視覚的に分かるようにした。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_translations:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:37.739Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/first_5_seconds_v1.json",
+          "created_at": "2026-09-11T00:34:28.447Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/first_5_seconds_v2.json",
+          "created_at": "2026-09-11T00:45:37.740Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "no_manual_exploit_check": {
+      "artifact_id": "legacy-observe-care:no_manual_exploit_check:v2",
+      "artifact_type": "no_manual_exploit_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/no_manual_exploit_check_v2.json",
+      "payload": {
+        "no_manual_check": {
+          "operation_before_rules": "説明文なしで、観察カードのタップ（読み物が開く）とマークボタン・共有チェック・確定ボタンのタップだけで操作方法が分かる。『観察したカード: n/7』という進捗表示（design review r1 MEDIUM是正）が、7枚すべてを開く必要があることを視覚的に示す。既存Q1（legacy-hotel-receive等）と同じ、タップと『？』的開示のみの規約に従う。",
+          "contextual_cue_only": "観察カードの内容という文脈だけで、どの項目が気になる変化かをシステムが直接教えない。読み比べる以外に手がかりはない。誤答時は伝わった内容が実際の状況とずれていたことのみを伝え、正解のマークを開示せず、消去法による総当たりを助けない。",
+          "pass": true
+        },
+        "exploit_check": {
+          "select_all": "観察カードを全部開いて読み物を確認すること自体はコストがなく許容される（内容を読む行為であり、攻略ではない）。マークと共有・確定は1回のコミットで確定し、全体を何度も試せる操作は存在しない。",
+          "tap_all": "7枚のカードを全部開いて読むこと自体は攻略ではなく、むしろ正しい判断に必要な行為。実際のマーク・共有・確定は1回のコミットで確定する。",
+          "spam_submit": "1回のコミットで結果が確定し、確定後のやり直しはない（旧実装の同一画面での無制限な見立て・ケアの再選択は再導入しない）。失敗時に挟む振り返り選択は採点対象外で、結末を変えない。共有チェックが入っていない間は確定ボタンが常に無効（fail-closed）であり、確定してから失敗を通知する方式ではない（design review r1 MEDIUM SHARE_FAILURE_PATH_AMBIGUOUS是正）。",
+          "fixed_failure_pattern": "design-sim.mjs検証（design-sim-result.json）: legitimate_full_reasoning=1（100%）。全項目を機械的に『気になる』または『特に変化なし』にする戦略はいずれも約12-13%にとどまり、共有を怠る戦略は必ず失敗し、2項目読了+1項目推測も約49%にとどまる。",
+          "color_leak": "食事・水分・排尿のカード・マークボタンは同じ視覚的な強調度で示し、色だけで正解を示唆しない設計を意図（実装段階でのQA検証が必要——この時点では意図の記述であり、実測による検証ではない）。",
+          "label_leak": "観察内容（食事はいつもの半分しか食べられていない、等の説明文）は正当な開示——これを読まなければ気になる変化があるかどうかが分からない設計そのものが、このゲームの核心的な判断を成立させている。食事・水分・排尿の所見は項目ごとに独立にランダムであるため、他の項目の観察結果からの消去法では判断できない（design-sim.mjsで検証済み）。体温・SpO₂・睡眠のカードは常に固定の内容（変化のない参考情報・関係ない情報）だが、これらはマークの対象外であるため、固定であること自体が正解を漏らさない。",
+          "position_leak": "7枚の観察カードの表示順は固定でよいが、これは食事・水分・排尿の所見の割り当てとは独立であり、位置そのものが正解を示唆しない（所見が項目ごとに独立にランダムに割り当てられるため）。",
+          "visual_hierarchy_leak": "7枚の観察カード・マークボタンは同じ見た目・同じ情報量で提示し、視覚的な強弱で正解を示唆しない設計を意図。",
+          "pass": true
+        },
+        "design_sim_evidence": "factory/projects/legacy-observe-care/design/design-sim-result.json",
+        "revision_note": "v1: research.mdとdesign-sim.mjs v1に基づき新規作成。 v2 (design review r1 FAIL 42是正、MEDIUM×1、design_iteration 1のREPAIR): operation_before_rulesに進捗表示の追加を反映し、spam_submitに共有チェックのfail-closed方式（確定してから失敗するのではなく、確定ボタン自体が無効になる）を明記した。exploit耐性の数値・独立サンプリングの効果自体は変更していない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_translations:v2",
+        "legacy-observe-care:first_5_seconds:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:37.780Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/no_manual_exploit_check_v1.json",
+          "created_at": "2026-09-11T00:34:28.489Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/no_manual_exploit_check_v2.json",
+          "created_at": "2026-09-11T00:45:37.781Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "core_back_check": {
+      "artifact_id": "legacy-observe-care:core_back_check:v2",
+      "artifact_type": "core_back_check",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/core_back_check_v2.json",
+      "payload": {
+        "core_still_intact": true,
+        "scope_still_representative": true,
+        "d_still_performed_by_child": true,
+        "notes": "採用した翻訳t1-mark-and-share-once（game_translations_v2.json、design_iteration 1のREPAIRで採用差し替え）は、scope_core_v3.jsonのcoreが定義する『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。design review r1のBLOCKER是正: (1)(2) CORE_CAUSAL_MODEL_DISTORTED/EXCLUSIVITY_OVERCLAIM——独自に考案した『気になる変化が2項目以上あれば報告』という組み合わせ判定ルールと、それを専門的な正解として認定していた結果表示を、報告/経過観察という対応の判定・認定自体をゲームの成功条件・結果表示から完全に撤去することで解消。(3) DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM——食事・水分・排尿の3項目セットとその組み合わせルールの出典帰属の誤りを、reference_research_v2.jsonで正確な出典（ナース専科の脱水看護計画）へ訂正することで解消。(4) MEDICAL_EXCLUSION_OVERCLAIM——体温・SpO₂正常＝肺炎の再燃ではないと証明する、という断定的な表現を、控えめな『変化のない参考情報』という表現へ改めることで解消——が、fact_sheet_v3.json/scope_core_v3.json/ae_v3.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.json/reference_research_v2.jsonのすべてに一貫して反映されていることを確認した。MEDIUM×3（PROFESSIONAL_JUDGMENT_CERTIFICATION: 上記(1)(2)の是正と一体で解消。FIRST_PLAY_INSTRUCTION_DISCOVERABILITY: first_5_seconds_v2.jsonに『観察したカード: n/7』の進捗表示を追加。SHARE_FAILURE_PATH_AMBIGUOUS: play_seeds_v2.jsonのs3をfail-closed方式に統一）も解消済み。design-sim.mjsの検証結果（legitimate_full_reasoning=1.0、固定マーク戦略はいずれも約12-13%、2項目読了+推測も約49%）は変更なく、判定ロジック自体（sessionWin）はdesign review r1の前後で一切変わっていない——変更はすべて結果表示のnarrativeに限定される。旧実装のreverse-audit指摘（brute force：同一画面での無制限な見立て・ケアの再選択）は1回のコミット化で維持解消されている。",
+        "pass": true
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_translations:v2",
+        "legacy-observe-care:scope_core:v3"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:45:37.823Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/core_back_check_v1.json",
+          "created_at": "2026-09-11T00:34:28.530Z",
+          "creator": "claude-code"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/legacy-observe-care/design/core_back_check_v2.json",
+          "created_at": "2026-09-11T00:45:37.824Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "game_spec": {
+      "artifact_id": "legacy-observe-care:game_spec:v1",
+      "artifact_type": "game_spec",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/game_spec_v1.json",
+      "payload": {
+        "goal": "『「なんか、だるくて……」』という場面で、7枚の観察カード（顔色・様子／食事／水分／排尿／体温／SpO₂／睡眠）をすべて開いて読み、食事・水分・排尿の3項目それぞれについて『気になる変化がある』か『特に変化なし』かをマークする。マークが終わったら『チームに共有する』にチェックを入れ（入れないと確定できない）、1回のコミットとして確定する。",
+        "initial_visual_state": "『「なんか、だるくて……」熱も呼吸も良くなってきたはずなのに…？』という短い導入テキストのあと、7枚の観察カード（『？』アイコンで閉じた状態）と、『観察したカード: 0/7』という進捗表示が画面に表示される。食事・水分・排尿それぞれの『気になる』『特に変化なし』ボタン、『チームに共有する』のチェックボックス、確定ボタンはすべて無効（グレーアウト）で表示される。説明文はない。",
+        "interactive_objects": [
+          "7枚の観察カード（顔色・様子／食事／水分／排尿／体温／SpO₂／睡眠、タップで開閉。開くたびに『観察したカード: n/7』の進捗表示が1つ増える。食事・水分・排尿の3枚は独立にランダムな所見を持ち、体温・SpO₂・顔色・様子・睡眠の4枚は固定の内容）",
+          "食事・水分・排尿それぞれの『気になる』『特に変化なし』ボタン（そのカードを開くまでdisabled）",
+          "『チームに共有する』のチェックボックス（3項目すべてマークするまでdisabled）",
+          "確定ボタン（チェックボックスがオンになるまで常にdisabled——fail-closed。チェックを入れれば有効化される）",
+          "振り返り画面の非採点選択（失敗時のみ表示、7枚の観察内容を読み取り専用で再掲したうえでの選び直し）"
+        ],
+        "primary_action": "観察カードの『？』をタップして開く（7枚とも開くと進捗表示が7/7になる）→食事・水分・排尿の3項目それぞれで『気になる』または『特に変化なし』を選ぶ→『チームに共有する』にチェックを入れる→確定ボタンを押して1回のコミットで結果を確定する。",
+        "C": "食事・水分・排尿の観察内容（気になる変化がある／特に変化なし、独立にランダム）。顔色・様子（全体的な印象のきっかけ、固定）、体温・SpO₂（変化のない参考情報、固定）、睡眠（今回の判断とは関係しない情報、固定）。",
+        "D": "7枚のカードを開いて観察内容を読んでから、食事・水分・排尿の3項目それぞれをマークし、共有チェックを入れて確定する。3枚のカードの見た目はすべて同じ中立の見た目で、開いて読むまで所見は分からない。マークと共有は1回のコミットで確定し、後からやり直すことはできない（brute force排除の核）。",
+        "system_reactions": "食事・水分・排尿の3項目すべてで実際の所見どおりにマークできていれば、『気になる変化を正しく見極め、チームに伝えられた』という結果になる——主治医やチームから『教えてくれてありがとう、詳しく見てみましょう』というような返事があり、その先の対応は相談して決める、という説明が添えられる。1つでもマークが実際の所見と異なっていれば、『伝わった内容が実際の状況とずれていた』という正直な結果になる。共有のチェックが入っていなければ確定ボタンは常に無効のまま。いずれの場合も、病名の確定や、報告するか経過観察とするかという対応を1つの正しい基準に沿って決定できたことについては主張しない。",
+        "state_transitions": "各観察カード: 未開封 → 開封済み（進捗表示+1、食事・水分・排尿なら該当項目のマークボタン有効化）。食事・水分・排尿の3項目すべてマーク済み → 共有チェックボックス有効化。共有チェックオン → 確定ボタン有効化 → 確定済み（3項目すべて一致=onComplete、1つでも不一致=Gate G振り返り画面を経由してonPartialComplete）。",
+        "failure_behavior": "1回のコミットで結果が確定する（取り消し・再確定はない、旧実装のbrute force exploit——同一画面での無制限な見立て・ケアの再選択——は再導入しない）。1つでもマークが実際の所見と異なれば、onCompleteではなくonPartialCompleteを呼び、Gate H HONEST OUTCOMEに従った異なるトップフレーミングの結果画面（伝わった内容が実際の状況とずれていた、という正直な結果）へ遷移する。",
+        "retry_behavior": "セッション内でのやり直しはない（brute force排除、旧実装のexploit修正の核）。1つでもマークを誤った場合のみ、7枚の観察内容を読み取り専用で再提示し、『今度はどうマークすればよかったと思う？』という非採点の振り返り選択を挟む——この選択はスコアに影響せず、結末（onPartialComplete）も変えない。振り返り選択が完了するまで、結果画面へ進むボタンはdisabledにする。本当の意味でのやり直し（新しい条件での再挑戦）は章に入り直すことでのみ可能。",
+        "E": "3項目すべてのマークが正しく、共有もできていれば、気になる変化を正しく見極めチームに伝えられた、という成功結果（onComplete）になる。1つでもマークが誤っていれば、伝わった内容が実際の状況とずれていた、という正直な結果（onPartialComplete）になる。いずれの結果も、病名の確定や、報告するか経過観察とするかという対応の正しさについては主張しない——共有の後にどう対応するかは主治医・チームとの相談に委ねられる。",
+        "job_reveal": "『「なんか、だるくて……」』という導入から、病棟看護師の仕事の紹介へつなげる。気になる変化を見極めてから、必ず共有する、という実在の役割を明示する（研究: 保助看法第37条、城西国際大学テキストの『病名診断にこだわらない』という看護師の実務上の到達点、日本看護協会の情報共有の必須性）。",
+        "first_5_seconds": "first_5_seconds_v2.jsonを参照。導入テキスト表示（0-2秒）→いずれかの観察カードへの最初のタップ（2-5秒、カードが開き観察内容が表示され、進捗表示が1/7になる）→『進捗表示が7になるまでカードを開く流れらしい』という推測→残り6枚も開いて観察→食事・水分・排尿をマーク→共有チェック→確定。",
+        "no_manual_requirements": "説明文・チュートリアルなし。カードのタップと『？』的開示のみで操作方法が分かる既存Q1の規約に従う。『観察したカード: n/7』という進捗表示（design review r1 MEDIUM是正）で、7枚すべてを開く必要があることを視覚的に示す。共有チェックボックスは3項目すべてマークするまでdisabledにし、確定ボタンは共有チェックが入るまで常にdisabled（fail-closed、design review r1 MEDIUM是正）。",
+        "mobile_constraints": "375px幅を基準に、7枚の観察カード・3項目のマークボタン・共有チェック・確定ボタン・進捗表示が縦に収まるレイアウトを実装時に検証する。7枚のカードは、閉じた状態が互いに同じ高さ・見た目になるよう統一する（開いたときの文章量の違いによって閉じた状態の見た目が変わらないようにする）。振り返り画面は7枚のデータ再掲＋振り返り選択になるため、画面が長くなることを想定し、スクロール可能にする。",
+        "asset_requirements": "新規アート不要（art_brief: no_art_required=true）。既存のmedical.ts『med-nurse』のシーン画像（M(\"ward\")）をそのまま流用する。legacy-hotel-receive/legacy-delay-recover/legacy-sort-out等と同様、絵文字・アイコン・CSSのみで観察カード・マークボタン・確定UIを構成し、新規シーン画像は使用しない。既存アセットに旧仕組み（3つの見立てから唯一の病名を選ばせる画面等）を視覚的に示す内容が焼き込まれていないか確認し、該当する場合は使用しない。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_translations:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:50:09.227Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/game_spec_v1.json",
+          "created_at": "2026-09-11T00:50:09.228Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "art_brief": {
+      "artifact_id": "legacy-observe-care:art_brief:v1",
+      "artifact_type": "art_brief",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/art_brief_v1.json",
+      "payload": {
+        "no_art_required": true,
+        "reason": "legacy-hotel-receive/legacy-delay-recover/legacy-sort-out等の先例と同様、このゲームはカード・ボタン・絵文字・CSSのみで構成でき、新規シーン画像を必要としない。既存のmedical.ts『med-nurse』の病室シーン画像（M(\"ward\")）は場面の導入イメージとしてそのまま流用でき、旧仕組み（3つの見立てから唯一の病名を選ばせる画面）を視覚的に示す内容が焼き込まれていないことを実装時に確認する。7枚の観察カードは同じ中立の絵文字・アイコンで表現し（例: 😊顔色・様子、🍚食事、💧水分、🚻排尿、🌡️体温、📈SpO₂、😴睡眠）、マークボタンは既存のdx-commit系CSSクラスを再利用する。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T00:50:27.235Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/art_brief_v1.json",
+          "created_at": "2026-09-11T00:50:27.236Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation": {
+      "artifact_id": "legacy-observe-care:implementation:v1",
+      "artifact_type": "implementation",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/implementation_v1.json",
+      "payload": {
+        "component_files": [
+          "src/q1/NurseObserveGame.tsx"
+        ],
+        "logic_module": "src/q1/nurseObserveLogic.ts",
+        "qa_harness": "factory/harness/gameplay-qa-observe-care.mjs",
+        "spec_version": 1,
+        "art_version_or_none": "none (art_brief v1: no_art_required=true; existing medical.ts med-nurse scene image M(\"ward\") reused as-is, no new assets)",
+        "d_preserved_statement": "nurseObserveLogic.ts mirrors factory/projects/legacy-observe-care/design/design-sim.mjs exactly (EVIDENCE_ITEMS/newSession/sessionWin structurally identical -- verified by factory/harness/gameplay-qa-observe-care.mjs's pure rule-level and strategy-simulation checks, 23/23 passing with numbers matching design-sim-result.json). NurseObserveGame.tsx implements the exact D from game_spec_v1.json: 7 observation cards (3 independently-random scored evidence items plus 4 fixed unscored cards), a per-item mark that only unlocks after that card is opened, a mandatory share checkbox that only unlocks once all 3 evidence items are marked, a confirm button that stays disabled (fail-closed) until sharing is checked, a single non-retryable commit, and a Gate G non-scored reflection re-presenting all 3 evidence items' actual observations and the child's real prior marks read-only on any mismatch before Gate H's distinct onPartialComplete outcome. All per-item UI state is consolidated into a single itemUI-style state object per evidence item (evidenceUI) from the start, with every transition deriving only from its own setState updater's prev -- proactively applying the batching-safety lesson found in legacy-sort-out's implementation review r1, rather than discovering it the hard way again.",
+        "browser_verification": "Manually played through both outcomes in the dev preview (temporarily marking the 5 preceding medical-chapter experiences complete in localStorage to unlock chapter 6, since this experience sits behind a locked sequential chapter chain -- no game logic was modified for this): (1) full success path (all 3 evidence items' actual states -- this session all 'stable' -- read and marked correctly, share checked) reached the 'done' branch with '気になる変化を正しく見極め、チームに伝えられた！' and the doctor/team's narrated response, with no claim the patient's condition improved or that a specific report/watch action was certified correct; (2) partial-failure path (all 3 evidence items deliberately mismarked against that session's actual 'concerning' evidence) reached the 'reflecting' branch, re-presented all 3 evidence items' real observation text and the child's actual prior marks read-only, required a full reflection pick set before enabling 先へ進む, and on completion showed the shell's honest partial-outcome chip (けっかを送ったけど、まだ全部はつながっていないかも) instead of the resolution.title success framing, then the updated discoveryEcho/seeds/job-reveal copy (看護師) with no stale diagnosis-guessing or care-selection language. No console errors in either path (verified in a fresh browser tab). Verified the mobile (375px) layout for the initial 7-card screen -- no overflow, all controls fit."
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:game_spec:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T01:01:46.561Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/implementation_v1.json",
+          "created_at": "2026-09-11T01:01:46.562Z",
+          "creator": "claude-code"
+        }
+      ]
+    },
+    "implementation_qa": {
+      "artifact_id": "legacy-observe-care:implementation_qa:v1",
+      "artifact_type": "implementation_qa",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/legacy-observe-care/design/implementation_qa_v1.json",
+      "payload": {
+        "first_5_seconds": "PASS. Matches first_5_seconds_v2.json: 導入テキストと『観察したカード: 0/7』の進捗表示、7枚の同じ中立の見た目の観察カード（すべてdisabled）が並ぶ。browser-verified: 最初のカードのdx-more『？』ボタンをタップすると開き、観察内容が表示され、進捗表示が1/7に変わる。食事・水分・排尿のカードであれば、そのカードのマークボタンが有効化される。",
+        "touch_targets": "PASS. 観察カードのdx-moreボタン・マークボタン・共有チェックボックス・確定ボタンはいずれも既存のdx-card/dx-more/dx-commit/btn choice CSSクラスまたは標準のinput[type=checkbox]を再利用しており、他のQ1ゲームと同じタップ領域サイズ。",
+        "mobile_375": "PASS. resize_window(preset: mobile, 375x812)でbrowser-verified: 7枚の観察カード一覧、マークボタン、共有チェックボックス、確定ボタンのいずれも横スクロール・はみ出しなし。",
+        "direct_manipulation": "PASS. カードのdx-moreボタンのタップで開示、マークボタンのタップで選択（ハイライト表示）、共有チェックボックスのタップでチェック、確定ボタンのタップで確定、という一連の操作がすべて子ども自身の明示的なタップで表現される。システムが先に正解を教えることはない。",
+        "reaction_timing": "PASS. カードを開く・マークする・共有チェックを入れる、のいずれも即座に視覚的な変化（観察文の表示、進捗表示の更新、マークボタンのハイライト、チェックボックスの状態変化）を伴う。",
+        "c_to_d": "PASS. 食事・水分・排尿の観察内容を実際に読まなければ、気になる変化があるかどうか判断できない構造（gameplay-qa-observe-care.mjsのlegitimate_full_reasoning=1、固定マーク戦略はいずれも約12-13%で検証済み）。",
+        "consequence": "PASS. 3項目すべて実際の所見どおりにマークし共有できれば『気になる変化を正しく見極め、チームに伝えられた！』と表示、主治医・チームからの返事が添えられる。1つでも誤っていれば『伝わった内容が実際の状況とずれていた』という正直な結果になる。3つとも一致すればonComplete、1つでも不一致があればGate G振り返りを経てonPartialComplete。",
+        "retry": "PASS. マーク・共有・確定は1回のコミットで結果が確定し、取り消し・再確定はできない（markEvidenceのfunctional updaterがすでにopened済みの場合のみマーク変更を許可し、確定後はUIが結果画面に遷移するため後戻りできない）。旧実装の同一画面での無制限な見立て・ケア再選択は完全に削除。",
+        "answer_leak": "PASS. 食事・水分・排尿の観察内容は項目ごとに独立ランダムで、他の項目の情報からの消去法でも判断できない（gameplay-qa-observe-care.mjsのguessThird≈0.49で検証済み）。体温・SpO₂・顔色・様子・睡眠のカードは常に固定の内容（変化のない参考情報・関係ない情報）だが、これらはマークの対象外であるため固定であること自体が正解を漏らさない。",
+        "brute_force": "PASS. gameplay-qa-observe-care.mjs: 23/23 checks（design-sim.mjsとの整合性、6種のexploit戦略シミュレーション、ソースレベルの回帰チェック15件）。旧実装の同一画面での無制限なやり直しは構造的に排除。openEvidence/markEvidence/openFixedそれぞれについて、自身のsetState updaterのprev以外（外側スコープの状態変数）を参照していないことを個別に検証済み。",
+        "visual_affordance": "PASS. 7枚の観察カード・マークボタンはすべて同じ見た目・情報量で提示し、色や強調度で正解を示唆しない。カードのdisabled/有効状態がCSSクラスで明示される。",
+        "no_manual": "PASS. 説明文・チュートリアルなし。カードのタップと『？』的開示、『観察したカード: n/7』の進捗表示のみで操作方法が分かる。",
+        "job_reveal": "PASS. Browser-verified: 成功パス・部分失敗パスいずれも、job-reveal画面（看護師／📖しごと図鑑に追加された！）へ正しく到達。discoveryEchoは『さっき、“なんか違う”に気づいて、患者さんをよく観察して、気になる変化をチームに伝えたよね。それが看護の大事な仕事です。』と表示され、seedsも新しい構造（気になる変化を見極める／チームに共有する）を反映し、旧実装由来の『原因を考える』『ケアする』という言及は残っていないことを確認した。",
+        "content_regression_check_verified_non_vacuous": "gameplay-qa-observe-care.mjsの『openEvidence/markEvidence/openFixedがバッチング安全である』というチェックについて、markEvidence内で意図した回帰パターン（prev[id]ではなく外側スコープのevidenceUI[id]を参照する、legacy-sort-outの実装レビューr1で実際に見つかったバグパターン）を一時的に再現し、該当チェックが正しくFAILすることを確認、その後元に戻して23/23 PASSへ復帰することを確認した。",
+        "pass": true,
+        "evidence": "factory/harness/gameplay-qa-observe-care.mjs (23/23 PASS, 主要チェックの非空洞性をrevert testで検証); npx tsc --noEmit (clean); npm run lint (clean, 新規warningなし); npm run build (成功)。Browser pane playthrough（この経験は9章構成の医療編の6番目に位置し順番にロックされているため、localStorageの進捗データに先行5章の完了フラグを一時的に追加してアンロックした——ゲームロジック自体への変更は行っていない）: 全問一致の成功パス→job-reveal画面まで到達、3問すべて誤答させた部分失敗パス→Gate G振り返り画面（3項目すべての観察結果＋実際に選んだマークを読み取り専用で再掲、全項目選択until 先へ進むが有効化）→onPartialCompleteの正直な結果チップ→job-reveal画面、のいずれもconsoleエラーなしで確認。375px幅（mobile preset）でのレイアウト崩れなしも確認。"
+      },
+      "creator": "claude-code",
+      "source_artifacts": [
+        "legacy-observe-care:implementation:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-11T01:01:46.605Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/legacy-observe-care/design/implementation_qa_v1.json",
+          "created_at": "2026-09-11T01:01:46.606Z",
+          "creator": "claude-code"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "PASS",
+    "score": 86,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-observe-care/design-review-r2.result.json",
+    "input": "factory/projects/legacy-observe-care/design-review-r2-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-11T00:49:01.289Z"
+  },
+  "impl_review": {
+    "kind": "implementation",
+    "verdict": "PASS",
+    "score": 80,
+    "blockers": 0,
+    "high": 0,
+    "evidence": "factory/projects/legacy-observe-care/impl-review-r1.result.json",
+    "input": "factory/projects/legacy-observe-care/impl-review-r1-prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 1,
+    "stale": false,
+    "recorded_at": "2026-09-11T01:05:13.812Z"
+  },
+  "art_review": null,
+  "failures": [
+    {
+      "failure_id": "f-1",
+      "failure_code": "CORE_DISTORTED_BY_GAME",
+      "failure_reason": "design review r1 (score 42): 4 BLOCKERs, all a new, deeper form of the same overclaim family this session already learned from legacy-crowd-flow/legacy-sort-out, recurring at a different layer even though the previously-known traps (named diagnosis, watch-always-wrong) were correctly avoided. (1) CORE_CAUSAL_MODEL_DISTORTED + (2) EXCLUSIVITY_OVERCLAIM: I invented a '2 of 3 concerning items -> report, else -> watch' threshold that research.md does not establish -- research.md actually documents that a SINGLE declining item (e.g. food intake alone) is already classified as requiring contact (要連絡), contradicting my majority rule; and the design then certified this invented derived action as the professionally 'correct' response, which is exactly the exclusivity-overclaim pattern recurring one level deeper (last time it was a single correct diagnosis; this time it's a single correct derived action from a rule I made up). (3) DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM: reference_research_v1.json/fact_sheet_v2.json misattributed the full meal/fluid/urine trio AND the 2-of-3 combination rule to the Tokyo Medical Association guide, when research.md actually attributes the trio primarily to a different source (Nurse Senka's dehydration care material) and never establishes any numeric combination rule at all. (4) MEDICAL_EXCLUSION_OVERCLAIM: fact_sheet_v2.json claimed normal temperature/SpO2 'show that pneumonia has not relapsed' -- research.md's cited sources support these as relevant monitoring clues, not conclusive exclusion. Also 3 MEDIUM: success copy separately over-certifies 'professional correctness' beyond what the game verifies (mark-agreement + sharing); first_5_seconds lacks a visible affordance for why all 7 cards need opening; play_seeds s3 describes a submit-then-fail path for missing share that's inconsistent with the adopted translation's disabled-until-share button. Fix direction: remove the invented report/watch threshold from being asserted as a certified professional response entirely -- design-sim.mjs's actual sessionWin never used it for scoring in the first place (it only checks the 3 marks exactly match the session's evidence plus share=true), so this is purely a narrative-chain fix: reframe the outcome as a doctor/team response to what was shared (a natural narrative consequence the child does not choose and the game does not certify as correct), not a player-selected action the game validates against an invented rule. Also fix the citation misattribution and soften the temp/SpO2 exclusionary language throughout the chain, and make the share-required-disabled behavior consistent everywhere.",
+      "evidence": "factory/projects/legacy-observe-care/design-review-r1.result.json",
+      "return_to": "GAME_TRANSLATION",
+      "preserve": "fact sheet",
+      "must_change": "the game must not distort what the profession produces",
+      "design_iteration": 1,
+      "at": "2026-09-11T00:39:10.733Z"
+    }
+  ],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": "q1-rebuild-observe-care",
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-10T23:24:27.950Z",
+  "updated_at": "2026-09-11T01:05:35.359Z",
+  "history": [
+    {
+      "at": "2026-09-10T23:24:27.950Z",
+      "event": "init",
+      "trigger": "LEGACY_AUDIT_REQUIRED",
+      "entry_stage": "GAME_TRANSLATION",
+      "legacy_game_type": "observe_care"
+    },
+    {
+      "at": "2026-09-10T23:24:28.034Z",
+      "event": "task_linked",
+      "task_id": "q1-rebuild-observe-care"
+    },
+    {
+      "at": "2026-09-10T23:24:28.076Z",
+      "event": "state_change",
+      "from": "RESEARCHING",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v1"
+    },
+    {
+      "at": "2026-09-10T23:24:28.076Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:fact_sheet:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T23:24:28.116Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v1"
+    },
+    {
+      "at": "2026-09-10T23:24:28.116Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:scope_core:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T23:24:28.156Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v1"
+    },
+    {
+      "at": "2026-09-10T23:24:28.156Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:ae:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-10T23:24:28.196Z",
+      "event": "entry_stage_set",
+      "stage": "GAME_TRANSLATION"
+    },
+    {
+      "at": "2026-09-11T00:34:08.720Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "RESEARCHED",
+      "note": "artifact fact_sheet v2"
+    },
+    {
+      "at": "2026-09-11T00:34:08.720Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:fact_sheet:v2",
+      "invalidated": [
+        "scope_core",
+        "ae"
+      ],
+      "sources": [
+        "legacy-observe-care:fact_sheet:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:08.762Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "CORE_READY",
+      "note": "artifact scope_core v2"
+    },
+    {
+      "at": "2026-09-11T00:34:08.762Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:scope_core:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:08.803Z",
+      "event": "state_change",
+      "from": "CORE_READY",
+      "to": "AE_READY",
+      "note": "artifact ae v2"
+    },
+    {
+      "at": "2026-09-11T00:34:08.803Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:ae:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:08.843Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "AE_READY",
+      "note": "artifact core_scope_check v1"
+    },
+    {
+      "at": "2026-09-11T00:34:08.843Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:core_scope_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:scope_core:v2",
+        "legacy-observe-care:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:17.417Z",
+      "event": "state_change",
+      "from": "AE_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact play_seeds v1"
+    },
+    {
+      "at": "2026-09-11T00:34:17.417Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:play_seeds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:ae:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:17.460Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "PLAY_SEEDS_READY",
+      "note": "artifact reference_research v1"
+    },
+    {
+      "at": "2026-09-11T00:34:17.460Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:fact_sheet:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:17.502Z",
+      "event": "state_change",
+      "from": "PLAY_SEEDS_READY",
+      "to": "TRANSLATING",
+      "note": "artifact c_compression v1"
+    },
+    {
+      "at": "2026-09-11T00:34:17.502Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:c_compression:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:28.405Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "TRANSLATING",
+      "note": "artifact game_translations v1"
+    },
+    {
+      "at": "2026-09-11T00:34:28.405Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:game_translations:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:c_compression:v1",
+        "legacy-observe-care:play_seeds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:28.447Z",
+      "event": "state_change",
+      "from": "TRANSLATING",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact first_5_seconds v1"
+    },
+    {
+      "at": "2026-09-11T00:34:28.447Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:first_5_seconds:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:28.489Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact no_manual_exploit_check v1"
+    },
+    {
+      "at": "2026-09-11T00:34:28.489Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:no_manual_exploit_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v1",
+        "legacy-observe-care:first_5_seconds:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:34:28.530Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "FIRST_PLAY_READY",
+      "note": "artifact core_back_check v1"
+    },
+    {
+      "at": "2026-09-11T00:34:28.530Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:core_back_check:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v1",
+        "legacy-observe-care:scope_core:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:38:51.415Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/legacy-observe-care/design-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-11T00:39:10.734Z",
+      "event": "state_change",
+      "from": "FIRST_PLAY_READY",
+      "to": "REPAIRING",
+      "note": "CORE_DISTORTED_BY_GAME -> GAME_TRANSLATION (repair 1/1)"
+    },
+    {
+      "at": "2026-09-11T00:39:10.734Z",
+      "event": "failure_routed",
+      "failure_id": "f-1",
+      "code": "CORE_DISTORTED_BY_GAME",
+      "return_to": "GAME_TRANSLATION",
+      "decision": {
+        "action": "REPAIR",
+        "repair_count": 1
+      }
+    },
+    {
+      "at": "2026-09-11T00:45:17.106Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:fact_sheet:v3",
+      "invalidated": [
+        "scope_core",
+        "ae",
+        "play_seeds",
+        "game_translations",
+        "core_back_check",
+        "no_manual_exploit_check",
+        "first_5_seconds",
+        "c_compression",
+        "reference_research",
+        "core_scope_check",
+        "independent_review"
+      ],
+      "sources": [
+        "legacy-observe-care:reference_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:17.148Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:scope_core:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:fact_sheet:v3"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:17.190Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:ae:v3",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:scope_core:v3"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:17.232Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:core_scope_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:scope_core:v3",
+        "legacy-observe-care:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:26.513Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:play_seeds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:ae:v3"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:26.557Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:26.598Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:c_compression:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:37.698Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:game_translations:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:c_compression:v2",
+        "legacy-observe-care:play_seeds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:37.740Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:first_5_seconds:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:37.781Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:no_manual_exploit_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v2",
+        "legacy-observe-care:first_5_seconds:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:45:37.824Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:core_back_check:v2",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v2",
+        "legacy-observe-care:scope_core:v3"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:46:09.012Z",
+      "event": "state_change",
+      "from": "REPAIRING",
+      "to": "UNDER_REVIEW",
+      "note": "Removed the invented 2-of-3 report/watch threshold entirely from scoring and narrative (design-sim.mjs's sessionWin never actually used it, so this was a pure JSON design-chain fix). Fixed citation misattribution (meal/fluid/urine trio -> Nurse Senka source, not Tokyo Medical Association combination rule that doesn't exist). Softened temperature/SpO2 exclusionary language from 'proves no relapse' to 'unchanged reference information'. Added a visible '観察したカード: n/7' progress affordance. Made the share-required-disabled behavior consistent (fail-closed everywhere, no submit-then-fail path)."
+    },
+    {
+      "at": "2026-09-11T00:46:09.012Z",
+      "event": "repair_done",
+      "note": "Removed the invented 2-of-3 report/watch threshold entirely from scoring and narrative (design-sim.mjs's sessionWin never actually used it, so this was a pure JSON design-chain fix). Fixed citation misattribution (meal/fluid/urine trio -> Nurse Senka source, not Tokyo Medical Association combination rule that doesn't exist). Softened temperature/SpO2 exclusionary language from 'proves no relapse' to 'unchanged reference information'. Added a visible '観察したカード: n/7' progress affordance. Made the share-required-disabled behavior consistent (fail-closed everywhere, no submit-then-fail path)."
+    },
+    {
+      "at": "2026-09-11T00:49:01.290Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-observe-care/design-review-r2.result.json"
+    },
+    {
+      "at": "2026-09-11T00:49:01.290Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "UNDER_REVIEW",
+      "note": "design review PASS — run gate"
+    },
+    {
+      "at": "2026-09-11T00:49:09.886Z",
+      "event": "state_change",
+      "from": "UNDER_REVIEW",
+      "to": "GAME_DESIGN_READY",
+      "note": "all GAME_DESIGN_READY checks satisfied"
+    },
+    {
+      "at": "2026-09-11T00:49:09.887Z",
+      "event": "gate_passed",
+      "gate": "GAME_DESIGN_READY"
+    },
+    {
+      "at": "2026-09-11T00:50:09.228Z",
+      "event": "state_change",
+      "from": "GAME_DESIGN_READY",
+      "to": "SPEC_READY",
+      "note": "artifact game_spec v1"
+    },
+    {
+      "at": "2026-09-11T00:50:09.228Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:game_spec:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_translations:v2"
+      ]
+    },
+    {
+      "at": "2026-09-11T00:50:27.236Z",
+      "event": "state_change",
+      "from": "SPEC_READY",
+      "to": "ART_BRIEF_READY",
+      "note": "artifact art_brief v1"
+    },
+    {
+      "at": "2026-09-11T00:50:27.236Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:art_brief:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T01:01:46.562Z",
+      "event": "state_change",
+      "from": "ART_BRIEF_READY",
+      "to": "IMPLEMENTED",
+      "note": "artifact implementation v1"
+    },
+    {
+      "at": "2026-09-11T01:01:46.562Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:implementation:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:game_spec:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T01:01:46.606Z",
+      "event": "state_change",
+      "from": "IMPLEMENTED",
+      "to": "IMPL_QA_PASSED",
+      "note": "artifact implementation_qa v1"
+    },
+    {
+      "at": "2026-09-11T01:01:46.607Z",
+      "event": "artifact_submitted",
+      "artifact_id": "legacy-observe-care:implementation_qa:v1",
+      "invalidated": [],
+      "sources": [
+        "legacy-observe-care:implementation:v1"
+      ]
+    },
+    {
+      "at": "2026-09-11T01:05:13.813Z",
+      "event": "independent_review_recorded",
+      "kind": "implementation",
+      "verdict": "PASS",
+      "independent": true,
+      "evidence": "factory/projects/legacy-observe-care/impl-review-r1.result.json"
+    },
+    {
+      "at": "2026-09-11T01:05:35.358Z",
+      "event": "state_change",
+      "from": "IMPL_QA_PASSED",
+      "to": "RELEASE_CANDIDATE",
+      "note": "release-ready PASS"
+    },
+    {
+      "at": "2026-09-11T01:05:35.359Z",
+      "event": "gate_passed",
+      "gate": "RELEASE"
+    }
+  ]
+}

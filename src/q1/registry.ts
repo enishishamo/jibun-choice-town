@@ -101,7 +101,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   xray_shoot: XrayGame, // 条件を決めて撮る→写りを見て撮り直す
   clue_join: DiagnoseGame, // 集まった手がかりをつないで見立てる
   rx_check: RxCheckGame, // 薬×患者情報を照らして安全を確かめる
-  observe_care: NurseObserveGame, // 気づく→観察→見立て→ケア
+  observe_care: NurseObserveGame, // 観察→気になる変化を項目ごとに見極め→必ずチームに共有
   meal_fit: MealFitGame, // 必要な栄養と食べられる形を近づける
   move_try: MoveTryGame, // 動作を試す→工夫→再評価
   life_plan: LifePlanGame, // 本人の希望から支援を組み立てる

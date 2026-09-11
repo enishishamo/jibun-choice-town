@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-mark-and-share-once（game_translations_v1.json）は、scope_core_v2.jsonのcoreが定義する『気になる変化を項目ごとに正しく見極められたか、必ず共有できたか』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。legacy-sort-out/legacy-crowd-flowが発見したEXCLUSIVITY_OVERCLAIM系統の教訓（成功/失敗の結果表示は病名の確定・現場の完全解決・専門的判断の完全な正しさのいずれも主張してはならない）を、fact_sheet_v2.json/scope_core_v2.json/ae_v2.json/game_translations_v1.json/play_seeds_v1.json/c_compression_v1.json/no_manual_exploit_check_v1.json/reference_research_v1.jsonのすべてに、設計の最初の段階から一貫して適用していることを確認した。旧実装のreverse-audit指摘（brute force：同一画面での無制限な見立て・ケアの再選択）は1回のコミット化で解消し、旧実装のより深い問題（病名を1つに確定させる過大な決定論、経過観察の一律拒否）も研究に基づき根本から解消した。食事・水分・排尿の所見は項目ごとに独立にランダム、共有チェックは常に必須（design-sim.mjsのcorrect_marks_never_share=0で検証済み）。design-sim.mjsの検証結果（legitimate_full_reasoning=1.0、固定マーク戦略はいずれも約12-13%、2項目読了+推測も約49%）は、D（子ども自身の判断）が実質的に必要とされていることを確認している。",
+  "pass": true
+}

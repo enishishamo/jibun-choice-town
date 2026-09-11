@@ -1,0 +1,8 @@
+{
+  "core": "観察箇所を選んで所見を蓄積し、所見同士を関連づけて見立て、ケアを選んで患者の状態を改善する。",
+  "scope": "医療編／入院患者の回復を支える場面",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/observe_care.json"
+}

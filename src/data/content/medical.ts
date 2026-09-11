@@ -300,7 +300,7 @@ export const medical: ContentModule = {
     {
       id: "med-lab", professionId: "labtech", eventId: "er-patient", gameType: "lab_check",
       place: { name: "検査室", image: M("lab"), fit: "cover", focus: "center 30%" },
-      mission: { title: "この血液から、\n何が分かるだろう？", lines: ["見えないからだの中を、情報にしよう。"] },
+      mission: { title: "この血液から、\n何が分かるだろう？", lines: ["熱・せき・息苦しさがある人の血液。", "見えないからだの中を、情報にしよう。"] },
       tools: [], resolution: { title: "結果を、医師へ報告した", lines: [] },
       discoveryEcho: "さっき、血液を調べて、見えなかったからだの中を数字や情報にしたよね。それが、この仕事の中心です。",
       seeds: ["何を調べるか選ぶ", "数字を見る", "見えないものを調べる", "情報を届ける", "特にない"],
@@ -333,9 +333,9 @@ export const medical: ContentModule = {
       id: "med-nurse", professionId: "nurse", eventId: "er-patient", gameType: "observe_care",
       place: { name: "病室（治療4日目）", image: M("ward"), fit: "cover", focus: "center 42%" },
       mission: { title: "「なんか、だるくて……」", lines: ["熱も呼吸も良くなってきたはずなのに…？"] },
-      tools: [], resolution: { title: "少し楽になった。でも…", lines: [] },
-      discoveryEcho: "さっき、“なんか違う”に気づいて、患者さんをよく見て、今必要なケアを考えたよね。それが看護の大事な仕事です。",
-      seeds: ["変化に気づく", "よく観察する", "原因を考える", "ケアする", "特にない"],
+      tools: [], resolution: { title: "気になることを、ちゃんと伝えられた", lines: [] },
+      discoveryEcho: "さっき、“なんか違う”に気づいて、患者さんをよく観察して、気になる変化をチームに伝えたよね。それが看護の大事な仕事です。",
+      seeds: ["変化に気づく", "よく観察する", "気になる変化を見極める", "チームに共有する", "特にない"],
     },
     {
       id: "med-diet", professionId: "dietitian", eventId: "er-patient", gameType: "meal_fit",

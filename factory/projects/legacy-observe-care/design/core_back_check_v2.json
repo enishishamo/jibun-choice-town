@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-mark-and-share-once（game_translations_v2.json、design_iteration 1のREPAIRで採用差し替え）は、scope_core_v3.jsonのcoreが定義する『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。design review r1のBLOCKER是正: (1)(2) CORE_CAUSAL_MODEL_DISTORTED/EXCLUSIVITY_OVERCLAIM——独自に考案した『気になる変化が2項目以上あれば報告』という組み合わせ判定ルールと、それを専門的な正解として認定していた結果表示を、報告/経過観察という対応の判定・認定自体をゲームの成功条件・結果表示から完全に撤去することで解消。(3) DOCUMENTED_SOURCE_AUTHORITY_OVERCLAIM——食事・水分・排尿の3項目セットとその組み合わせルールの出典帰属の誤りを、reference_research_v2.jsonで正確な出典（ナース専科の脱水看護計画）へ訂正することで解消。(4) MEDICAL_EXCLUSION_OVERCLAIM——体温・SpO₂正常＝肺炎の再燃ではないと証明する、という断定的な表現を、控えめな『変化のない参考情報』という表現へ改めることで解消——が、fact_sheet_v3.json/scope_core_v3.json/ae_v3.json/game_translations_v2.json/play_seeds_v2.json/c_compression_v2.json/no_manual_exploit_check_v2.json/reference_research_v2.jsonのすべてに一貫して反映されていることを確認した。MEDIUM×3（PROFESSIONAL_JUDGMENT_CERTIFICATION: 上記(1)(2)の是正と一体で解消。FIRST_PLAY_INSTRUCTION_DISCOVERABILITY: first_5_seconds_v2.jsonに『観察したカード: n/7』の進捗表示を追加。SHARE_FAILURE_PATH_AMBIGUOUS: play_seeds_v2.jsonのs3をfail-closed方式に統一）も解消済み。design-sim.mjsの検証結果（legitimate_full_reasoning=1.0、固定マーク戦略はいずれも約12-13%、2項目読了+推測も約49%）は変更なく、判定ロジック自体（sessionWin）はdesign review r1の前後で一切変わっていない——変更はすべて結果表示のnarrativeに限定される。旧実装のreverse-audit指摘（brute force：同一画面での無制限な見立て・ケアの再選択）は1回のコミット化で維持解消されている。",
+  "pass": true
+}

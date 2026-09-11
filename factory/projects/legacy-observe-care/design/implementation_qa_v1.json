@@ -1,0 +1,18 @@
+{
+  "first_5_seconds": "PASS. Matches first_5_seconds_v2.json: 導入テキストと『観察したカード: 0/7』の進捗表示、7枚の同じ中立の見た目の観察カード（すべてdisabled）が並ぶ。browser-verified: 最初のカードのdx-more『？』ボタンをタップすると開き、観察内容が表示され、進捗表示が1/7に変わる。食事・水分・排尿のカードであれば、そのカードのマークボタンが有効化される。",
+  "touch_targets": "PASS. 観察カードのdx-moreボタン・マークボタン・共有チェックボックス・確定ボタンはいずれも既存のdx-card/dx-more/dx-commit/btn choice CSSクラスまたは標準のinput[type=checkbox]を再利用しており、他のQ1ゲームと同じタップ領域サイズ。",
+  "mobile_375": "PASS. resize_window(preset: mobile, 375x812)でbrowser-verified: 7枚の観察カード一覧、マークボタン、共有チェックボックス、確定ボタンのいずれも横スクロール・はみ出しなし。",
+  "direct_manipulation": "PASS. カードのdx-moreボタンのタップで開示、マークボタンのタップで選択（ハイライト表示）、共有チェックボックスのタップでチェック、確定ボタンのタップで確定、という一連の操作がすべて子ども自身の明示的なタップで表現される。システムが先に正解を教えることはない。",
+  "reaction_timing": "PASS. カードを開く・マークする・共有チェックを入れる、のいずれも即座に視覚的な変化（観察文の表示、進捗表示の更新、マークボタンのハイライト、チェックボックスの状態変化）を伴う。",
+  "c_to_d": "PASS. 食事・水分・排尿の観察内容を実際に読まなければ、気になる変化があるかどうか判断できない構造（gameplay-qa-observe-care.mjsのlegitimate_full_reasoning=1、固定マーク戦略はいずれも約12-13%で検証済み）。",
+  "consequence": "PASS. 3項目すべて実際の所見どおりにマークし共有できれば『気になる変化を正しく見極め、チームに伝えられた！』と表示、主治医・チームからの返事が添えられる。1つでも誤っていれば『伝わった内容が実際の状況とずれていた』という正直な結果になる。3つとも一致すればonComplete、1つでも不一致があればGate G振り返りを経てonPartialComplete。",
+  "retry": "PASS. マーク・共有・確定は1回のコミットで結果が確定し、取り消し・再確定はできない（markEvidenceのfunctional updaterがすでにopened済みの場合のみマーク変更を許可し、確定後はUIが結果画面に遷移するため後戻りできない）。旧実装の同一画面での無制限な見立て・ケア再選択は完全に削除。",
+  "answer_leak": "PASS. 食事・水分・排尿の観察内容は項目ごとに独立ランダムで、他の項目の情報からの消去法でも判断できない（gameplay-qa-observe-care.mjsのguessThird≈0.49で検証済み）。体温・SpO₂・顔色・様子・睡眠のカードは常に固定の内容（変化のない参考情報・関係ない情報）だが、これらはマークの対象外であるため固定であること自体が正解を漏らさない。",
+  "brute_force": "PASS. gameplay-qa-observe-care.mjs: 23/23 checks（design-sim.mjsとの整合性、6種のexploit戦略シミュレーション、ソースレベルの回帰チェック15件）。旧実装の同一画面での無制限なやり直しは構造的に排除。openEvidence/markEvidence/openFixedそれぞれについて、自身のsetState updaterのprev以外（外側スコープの状態変数）を参照していないことを個別に検証済み。",
+  "visual_affordance": "PASS. 7枚の観察カード・マークボタンはすべて同じ見た目・情報量で提示し、色や強調度で正解を示唆しない。カードのdisabled/有効状態がCSSクラスで明示される。",
+  "no_manual": "PASS. 説明文・チュートリアルなし。カードのタップと『？』的開示、『観察したカード: n/7』の進捗表示のみで操作方法が分かる。",
+  "job_reveal": "PASS. Browser-verified: 成功パス・部分失敗パスいずれも、job-reveal画面（看護師／📖しごと図鑑に追加された！）へ正しく到達。discoveryEchoは『さっき、“なんか違う”に気づいて、患者さんをよく観察して、気になる変化をチームに伝えたよね。それが看護の大事な仕事です。』と表示され、seedsも新しい構造（気になる変化を見極める／チームに共有する）を反映し、旧実装由来の『原因を考える』『ケアする』という言及は残っていないことを確認した。",
+  "content_regression_check_verified_non_vacuous": "gameplay-qa-observe-care.mjsの『openEvidence/markEvidence/openFixedがバッチング安全である』というチェックについて、markEvidence内で意図した回帰パターン（prev[id]ではなく外側スコープのevidenceUI[id]を参照する、legacy-sort-outの実装レビューr1で実際に見つかったバグパターン）を一時的に再現し、該当チェックが正しくFAILすることを確認、その後元に戻して23/23 PASSへ復帰することを確認した。",
+  "pass": true,
+  "evidence": "factory/harness/gameplay-qa-observe-care.mjs (23/23 PASS, 主要チェックの非空洞性をrevert testで検証); npx tsc --noEmit (clean); npm run lint (clean, 新規warningなし); npm run build (成功)。Browser pane playthrough（この経験は9章構成の医療編の6番目に位置し順番にロックされているため、localStorageの進捗データに先行5章の完了フラグを一時的に追加してアンロックした——ゲームロジック自体への変更は行っていない）: 全問一致の成功パス→job-reveal画面まで到達、3問すべて誤答させた部分失敗パス→Gate G振り返り画面（3項目すべての観察結果＋実際に選んだマークを読み取り専用で再掲、全項目選択until 先へ進むが有効化）→onPartialCompleteの正直な結果チップ→job-reveal画面、のいずれもconsoleエラーなしで確認。375px幅（mobile preset）でのレイアウト崩れなしも確認。"
+}

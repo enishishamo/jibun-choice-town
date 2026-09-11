@@ -1,0 +1,32 @@
+{
+  "profession": "看護師",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "患者の観察項目を選んで情報を集め、症状の見立てを選び、複数のケアを組み合わせる"
+  ],
+  "expertise": [
+    "顔色、食事、水分、排尿、睡眠、体温、SpO₂の観察結果と、各ケアが役立つ理由"
+  ],
+  "tools": [
+    "顔色、食事、水分、排尿、睡眠、体温、SpO₂の観察結果と、各ケアが役立つ理由"
+  ],
+  "information_used": [
+    "顔色、食事、水分、排尿、睡眠、体温、SpO₂の観察結果と、各ケアが役立つ理由"
+  ],
+  "decisions": [
+    "重要そうな観察項目を選び、複数の所見を関連づけて原因を見立て、今行うケアを複数選択する"
+  ],
+  "outputs_or_value": "同じ画面で別の見立てを押すか、ケアの選択を外して即座に再試行できる",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/observe_care.json"
+}

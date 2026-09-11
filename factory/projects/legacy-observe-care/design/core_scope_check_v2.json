@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v3.jsonのcoreとae_v3.jsonのD/Eは、『気になる変化を項目ごとに正しく見極め、必ず共有できたか』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（legitimate=1.0、全項目を機械的にマークする戦略はいずれも約12-13%、共有を怠ると必ず失敗、2項目読了+1項目推測≈0.49）とも整合する。design review r1のBLOCKER是正（v1が独自に考案した『2項目以上で報告』という組み合わせ判定ルールを、実在の専門的基準であるかのように主張していたこと——を、報告/経過観察という対応の判定自体をゲームの成功条件から完全に外すことで解消。体温・SpO₂正常＝肺炎の再燃ではないと証明する、という断定的な表現も控えめな表現へ改めた）を確認した。profession_name_hidden_testは、C（観察項目の所見データ）とD（気になる変化の見極めと共有の判断）が他の既存Q1ゲームと重複しないことを確認済み。",
+  "pass": true
+}
