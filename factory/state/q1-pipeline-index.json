@@ -135,13 +135,13 @@
     "legacy-reach-mix": {
       "game_id": "legacy-reach-mix",
       "profession": "広報・PRの仕事",
-      "state": "RELEASE_CANDIDATE",
+      "state": "RELEASED",
       "trigger": "LEGACY_AUDIT_REQUIRED",
       "legacy_game_type": "reach_mix",
       "task_id": "q1-rebuild-reach-mix",
       "repair_count": 1,
       "redesign_count": 2,
-      "updated_at": "2026-09-12T01:28:28.860Z",
+      "updated_at": "2026-09-12T01:40:31.380Z",
       "depends_on": []
     }
   }

@@ -4,7 +4,7 @@
   "trigger": "LEGACY_AUDIT_REQUIRED",
   "legacy_game_type": "reach_mix",
   "creator": "claude-code",
-  "state": "RELEASE_CANDIDATE",
+  "state": "RELEASED",
   "current_stage": "IMPLEMENTATION_QA",
   "design_iteration": 3,
   "repair_count": 1,
@@ -1834,10 +1834,10 @@
   "human_decisions": [],
   "limited_exceptions": [],
   "task_id": "q1-rebuild-reach-mix",
-  "version": null,
+  "version": "v1.0.0",
   "depends_on": [],
   "created_at": "2026-09-11T04:45:20.715Z",
-  "updated_at": "2026-09-12T01:28:28.860Z",
+  "updated_at": "2026-09-12T01:40:31.380Z",
   "history": [
     {
       "at": "2026-09-11T04:45:20.716Z",
@@ -3832,6 +3832,18 @@
       "at": "2026-09-12T01:28:28.860Z",
       "event": "gate_passed",
       "gate": "RELEASE"
+    },
+    {
+      "at": "2026-09-12T01:40:31.379Z",
+      "event": "state_change",
+      "from": "RELEASE_CANDIDATE",
+      "to": "RELEASED",
+      "note": "version v1.0.0"
+    },
+    {
+      "at": "2026-09-12T01:40:31.380Z",
+      "event": "version_set",
+      "version": "v1.0.0"
     }
   ],
   "redesign": [

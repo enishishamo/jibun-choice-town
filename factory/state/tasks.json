@@ -1627,7 +1627,7 @@
     "q1-rebuild-reach-mix": {
       "task_id": "q1-rebuild-reach-mix",
       "task_type": "game-content",
-      "status": "READY",
+      "status": "RELEASED",
       "repair_count": 0,
       "review_status": "PASS",
       "review_evidence": "factory/projects/legacy-reach-mix/impl-review-r2.result.json",
@@ -1642,7 +1642,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-11T04:45:20.674Z",
-      "updated_at": "2026-09-12T01:38:01.878Z",
+      "updated_at": "2026-09-12T01:40:50.440Z",
       "history": [
         {
           "at": "2026-09-11T04:45:20.675Z",
@@ -1671,6 +1671,13 @@
           "event": "release_commit_set",
           "sha": "bab6fe14635504ba5d854b588a4ad239be0ff1f7",
           "given": "bab6fe14635504ba5d854b588a4ad239be0ff1f7"
+        },
+        {
+          "at": "2026-09-12T01:40:50.441Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "RELEASED",
+          "note": "released to main 1e02c91 (GitHub Pages)"
         }
       ]
     }
