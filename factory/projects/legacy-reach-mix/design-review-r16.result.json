@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r16",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 84,
+    "career_authenticity_score": 88,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [
+      "375px幅・高さ約108pxのsticky比較サマリーバーは、実装時に実機相当の表示確認が必要。"
+    ],
+    "failure_codes": [],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20. Metrics exactly matched design-sim-result.json: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, best-plan frequencies=0.3815/0.3841/0.3796.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": true,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": true,
+      "source_traceability_honest": true,
+      "reference_card_description_consistent": true,
+      "no_stale_version_references_remain": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": true
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/research.md:75-82 — Takeuchiの148/116等を情報源回答数の順序に限定し、媒体効果・強さの直接測定ではないと明記している。",
+      "factory/projects/legacy-reach-mix/research.md:423-429 — §7はN=334の自己申告情報源回答数として定量結果を説明し、直接到達測定ではないとの限定を伴う。",
+      "factory/projects/legacy-reach-mix/research.md:483-495 — 結論は回答頻度・利用率統計と到達効果を明確に区別し、直接測定でないことを明記している。",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v10.json:17-19 — チラシ回答カテゴリ、未測定の掲示推論、テレビ116回答、総務省統計、およびゲーム側推論を明確に分離している。",
+      "factory/projects/legacy-reach-mix/design/reference_research_v11.json:16 — テレビ・新聞の対象適性を二資料の組合せによるゲーム側推論と明記し、対象別到達効果の直接測定を否定している。",
+      "factory/projects/legacy-reach-mix/design/ae_v10.json:4 — Cは回答数と年代別利用統計を組み合わせた方向性であること、および直接到達測定ではないことを明記している。",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — bestPlanSetが最大適合度の全プランを返し、sessionWinが集合包含で複数正解を受容する。",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:156-166 — プレイヤー可視情報から独立実装された判定経路が存在し、採点ヘルパーを共有しない。",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:1-27 — 保存結果はall_checks_passed=trueで、今回の20/20実行値と一致した。",
+      "factory/projects/legacy-reach-mix/design/game_translations_v18.json:86-91 — 成否別の作業結果と委員会反応、onPartialComplete、非採点の再考を明示し、対象側の認知・反応を断定していない。",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2-7 — プランカードは初期状態から操作可能で、確定ボタンだけをゲートし、sticky比較UIはレイアウト変更に限定される。",
+      "factory/projects/legacy-reach-mix/design/scope_core_v9.json:5 — profession_name_hidden_testは隣接3ゲームとのC/D・時空間・対象の非重複を確認している。",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json:14-1393 — 登録された11成果物はすべてCURRENTで、各source_artifactsは現行上流artifact_idへ接続している。"
+    ],
+    "recommended_actions": [
+      "実装QAで375px幅のsticky比較サマリーバーについて、文字折返し、実高さ、カード表示領域、スクロール時の固定表示を確認する。"
+    ]
+  },
+  "elapsed_sec": 212.306
+}

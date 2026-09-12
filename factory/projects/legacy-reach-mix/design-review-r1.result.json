@@ -1,0 +1,136 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 31,
+    "career_authenticity_score": 38,
+    "game_quality_score": 31,
+    "blockers": [
+      "OBVIOUS_BINARY_CHOICE remains unresolved: the supposedly multivariate task reduces to three fixed audience-to-combination lookups. Randomizing which audience label appears prevents one universal answer but does not create changing evidence, constraints, or trade-offs within an audience. Once the three mappings are learned—or inferred directly from the highly exclusive card values—the player mechanically selects CERTAIN_SOLUTIONS.family, CERTAIN_SOLUTIONS.young, or OLDER_RECOMMENDED. Three memorizable buckets are quantitatively more than two but not substantively different from the prohibited lookup structure.",
+      "EXCLUSIVITY_OVERCLAIM/CORE_CAUSAL_MODEL_DISTORTED: the scoring matrix converts limited ordinal evidence into categorical zero/nonzero audience effects and invented thresholds. The sources do not establish that flyers have zero young/older reach, SNS has zero family/older reach, posters deterministically provide older reach 2, or successful media relations provides exactly family 2/young 1/older 4. These invented exclusivities are what make the three-answer lookup possible.",
+      "CAUSAL_REALISM_ERROR: the adopted translation visually turns passing reach thresholds into family, young, and older visitors gathering at the venue. research.md explicitly distinguishes dissemination, awareness, and actual attendance and says the causal contribution of media choice cannot be isolated. The game therefore depicts attendance as a deterministic consequence of its invented reach score beyond what the evidence supports."
+    ],
+    "high": [
+      "The claimed disclosed 50/50 framing is absent from the adopted player-facing specification. t1 says only that coverage is not guaranteed; the numerical 0.5 appears in simulation/internal documentation. Consequently an older-primary child can make the prescribed decision and lose half the time without knowing those odds beforehand.",
+      "Older-primary full success is impossible through deterministic channels by construction, so correct reasoning produces only about 50% success in that case and about 57.7% success across the stated three-round pattern. Backup partial credit prevents a wipeout but does not resolve the fairness problem of withholding full success from a correct child solely through an invented random rate.",
+      "The design never specifies the actual player-facing text and values of the six channel cards. It therefore cannot substantiate its claims that invented reach values, costs, thresholds, and evidentiary limitations are honestly disclosed to the child or that labels do not leak the mapping.",
+      "The first-five-seconds design presents seven closed cards and a disabled confirmation button with no instruction. It assumes that a question-mark icon will make a 10–12-year-old open the primary card first, but no specified gating prevents opening media cards first and no visible cue explains why confirmation is disabled."
+    ],
+    "medium": [
+      "play_seeds_v1.json is internally inconsistent: s1's causal-loop prose names flyer plus school board plus website plus poster, which costs 6 and exceeds the budget, while player_action and CERTAIN_SOLUTIONS.family correctly omit school_board and cost 5.",
+      "The simulation's minimum-cost claim is hard-coded as the cost of flyer+sns+media_relations rather than derived by exhaustive subset search. The reported property is true for the current table, but the test can remain green after future matrix changes that invalidate its assumed minimality.",
+      "fact_sheet_v1.json uncertainties explicitly identifies the unsourced taxonomy and probability but does not explicitly list the reach matrix, costs, budget, and thresholds as invented values, despite research.md §0/§7 requiring that disclosure. c_compression_v1.json claims that fact_sheet does so, creating an internal traceability mismatch."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "OBVIOUS_BINARY_CHOICE",
+        "severity": "BLOCKER",
+        "finding": "The complete decision policy is a three-row lookup table with a fixed recommended combination for each primary audience. Session randomization changes only which row is requested; it does not vary channel performance, available budget, event context, or competing goals within that row.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:182"
+      },
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Unsourced point values and categorical zeroes create exclusive audience-channel mappings and thresholds that the cited ordinal evidence does not establish.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:92"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The adopted system reaction deterministically depicts people arriving when invented awareness thresholds pass, although research.md warns that dissemination, awareness, and attendance are different measures and that attendance increases cannot be attributed to media selection alone.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v1.json:10"
+      },
+      {
+        "code": "UNDISCLOSED_GAME_PROBABILITY",
+        "severity": "HIGH",
+        "finding": "The 0.5 pickup probability is disclosed internally but no adopted player-facing text tells the child that the chance is 50/50 before committing.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v1.json:9"
+      },
+      {
+        "code": "CORRECT_REASONING_RANDOM_FAILURE",
+        "severity": "HIGH",
+        "finding": "Older-primary requires an invented coin flip for full success, making a prescribed correct choice fail about half the time; partial credit alone does not make the hidden odds fair.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:178"
+      },
+      {
+        "code": "PLAYER_FACING_SPEC_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "No exact channel-card copy or displayed reach/cost representation is specified, so clarity, honest abstraction disclosure, and answer leakage cannot be verified before implementation.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v1.json:9"
+      },
+      {
+        "code": "FIRST_PLAY_LEGIBILITY",
+        "severity": "HIGH",
+        "finding": "The initial screen has seven closed cards, no explanation, and a disabled button; the expected first action relies on an unsupported assumption about the question-mark icon.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v1.json:2"
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "MEDIUM",
+        "finding": "s1 describes a four-channel family route costing 6, while its action and the simulator use the valid three-channel cost-5 route.",
+        "file": "factory/projects/legacy-reach-mix/design/play_seeds_v1.json:5"
+      },
+      {
+        "code": "SIMULATION_ASSERTION_WEAKNESS",
+        "severity": "MEDIUM",
+        "finding": "The alleged minimum-cost universal combination is assigned directly rather than found by enumerating all legal subsets.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:247"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "MEDIUM",
+        "finding": "c_compression says reach values, costs, and probability are disclosed in fact_sheet uncertainties, but that list omits reach values, costs, budget, and thresholds.",
+        "file": "factory/projects/legacy-reach-mix/design/c_compression_v1.json:8"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run produced 20 passed, 0 failed and exactly matched design-sim-result.json: older win rate 0.5055, random 0.1779, fixed routes 0.3357/0.3337/0.3372, triple legitimate 0.5773, triple fixed 0.0363, triple random 0.006.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": false,
+      "three_bucket_memorization_risk_assessed": true,
+      "probability_disclosed_honestly": false,
+      "gambling_element_feels_fair_not_punishing": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/rules/principles.md:27 — 明らかな正解だけの2択 and C-independent play are explicit blockers; adding a third fixed lookup bucket does not add contextual judgment.",
+      "factory/projects/legacy-reach-mix/research.md:72 — reach values, costs, budget, and thresholds are explicitly identified as game-side inventions.",
+      "factory/projects/legacy-reach-mix/research.md:137 — SNS dissemination and actual attendance-producing recognition can diverge.",
+      "factory/projects/legacy-reach-mix/research.md:163 — attendance increase cannot be attributed to a single year's media selection.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:101 — flyer is assigned family 3 and zero to both other audiences without direct source support.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:111 — SNS is assigned young 3 and categorical zeroes for family and older.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:121 — poster is assigned deterministic older reach despite research describing that relationship as an unmeasured inference.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:126 — successful media relations receives invented cross-audience values 2/1/4.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:182 — the intended solution policy is explicitly fixed per primary audience.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v1.json:10 — passing thresholds produces a visual scene of audience groups gathering at the venue.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v1.json:15 — single commit and non-scored reflection close same-session retoggle/spam-submit.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v1.json:8 — select-all exceeds budget and is structurally closed.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v1.json:40 — Gate G reflection and Gate H partial outcome are explicitly specified.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v1.json:2 — first screen consists entirely of closed cards plus a disabled control, with no instruction.",
+      "src/data/content/townEvent.ts:367 — reach_mix concerns pre-event media delivery, distinct from layout, sound adjustment, and live crowd flow.",
+      "src/q1/SoundCheckGame.tsx:27 — sound_check manipulates volume, speaker direction, and rear speakers during rehearsal, confirming distinct D and timing.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2 — stored results match the fresh deterministic simulation output."
+    ],
+    "recommended_actions": [
+      "Replace the three fixed audience recipes with session-specific measured inputs or trade-offs that vary within each audience—for example event attributes, actual audience proportions, channel availability, lead time, or budget shocks—so the player must compare evidence rather than select one memorized row.",
+      "Remove categorical zeroes and deterministic audience effects unless directly supported. Use explicitly approximate ranges, relative indicators, or scenario-specific observations, and ensure no invented exclusivity is necessary to determine the correct answer.",
+      "Separate awareness from attendance in E. Show information being published, distributed, viewed, or inquiries increasing; do not automatically animate people arriving as a causal result of passing reach thresholds.",
+      "Either remove random full-success gating or disclose the exact odds before commitment and grade the quality of the portfolio independently from pickup luck. A correct diversified plan should receive the game's main success recognition even when press coverage does not occur.",
+      "Provide exact player-facing card copy, displayed costs/effects, threshold labels, and the explanation that all numeric values are game-balance abstractions rather than measured rates.",
+      "Add an explicit first-screen prompt and enforce the intended disclosure order before selection.",
+      "Correct s1's stale four-channel route and replace the hard-coded minimum-cost assertion with exhaustive subset enumeration."
+    ]
+  },
+  "elapsed_sec": 156.056
+}

@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t1-primary-audience-budget-tradeoff（game_translations_v1.json）は、scope_core_v1.jsonのcoreが定義する『今回の重点対象を確認し、限られた手間の中で媒体を組み合わせる』という単一の判断軸を、C_interaction/system_reaction/E_consequenceのすべてで一貫して保持している。design-sim.mjsの検証結果（family/young primaryは確実な手筋で常に100%成功、older primaryは報道機関への投げ込みに賭ける推奨手筋で約50%——MEDIA_RELATIONS_SUCCESS_PROBと一致——フルクリアし失敗時も他2対象の最低基準は維持される、内容を無視した固定戦略・ランダム選択はいずれも単発で34%前後・3ラウンド独立合成で約4%以下まで低下、全3対象を主対象水準で同時に満たす最安の組み合わせがBUDGETを超える）は、ae_v1.json/game_translations_v1.json/play_seeds_v1.json/first_5_seconds_v1.json/no_manual_exploit_check_v1.jsonのすべてに一貫して反映されていることを確認した。旧実装のreverse-audit指摘（brute force：コストゼロでの何度でもの組み合わせ変更）は単発確定化で、旧実装が構造的に抱えていた固定の重点対象による記憶攻略のリスクは重点対象の独立ランダム化で、それぞれ解消されている。research.md §7がlegacy-place-and-test/legacy-venue-layoutとの比較で示した『2つの独立した強い一次資料系統を持つ』という仮説が、このデザインでも実際に2つの独立した根拠系統（竹内2023の実測順位、総務省の年代別統計）として反映されていることを確認した——ただしこのデザインが実際にOBVIOUS_BINARY_CHOICEを回避できているかどうかの最終判断は、独立design reviewに委ねる。",
+  "pass": true
+}

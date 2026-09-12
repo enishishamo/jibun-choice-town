@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t5-compare-candidate-plans（game_translations_v7.json、REDESIGN #2・最終、design_iteration 2->3）は、scope_core_v3.jsonのcoreが定義する『今回の重点対象・今回の状況に照らして、3つの既製プラン案の中から最もよく合う1つを選ぶ。数値は一切示さない』という単一の判断軸を、design review r1〜r4が4ラウンド連続で検出し続けたCORE_CAUSAL_MODEL_DISTORTED（子どもに完成済みの数値を渡して閾値算術をさせる構造）を、Dの形そのものの転換によって解消したうえで一貫して保持している。fact_sheet_v3.json/scope_core_v3.json/ae_v3.json/reference_research_v5.json/c_compression_v5.json/play_seeds_v5.json/game_translations_v7.json/no_manual_exploit_check_v5.jsonのすべてに、数値表現を完全に排した比較・見きわめ構造が一貫して反映されていることを確認した。design-sim.mjs v5の検証結果（legitimate_reasoning=1[決定論的]、name_match_only_on_trap_sessions≈0.11、triple_name_match_only≈0.34）は、D（子ども自身の、今回の重点対象と今回の状況の両方を踏まえた見きわめ）が実質的に必要とされていることを裏付ける。旧実装のreverse-audit指摘（brute force）は単発確定化で維持解消されている。design review r3/r4のHIGH（CORRECT_REASONING_RANDOM_FAILURE——正しい判断をしても賭けに負けて主要な成功を逃す不公平感）も、報道機関への投げ込みの不確実性を正誤判定から完全に切り離すことで解消した。ただし、design review r4が示唆した『メカニクス自体が構造的にこのBLOCKERを回避できない可能性』——この根本的に異なるD構造への転換が実際にそれを覆せるかどうか——の最終判断は、design review r5に委ねる。もしr5でも同じ軸のBLOCKERが再発する場合、この職種のリビルドはHuman Decisionへのエスカレーションが必要になる（redesign_count 2/2使い切り済み）。",
+  "pass": true
+}

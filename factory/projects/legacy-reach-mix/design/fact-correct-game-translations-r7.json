@@ -1,0 +1,6 @@
+{
+  "claim_removed": "The adopted t5 entry's job_reveal_bridge field's claim that comparing pre-made plans against today's audience/scenario is '実在の確認業務' (an actually-existing, real confirmation duty)",
+  "cited_source": "research.md §1・§7 (factory/projects/legacy-reach-mix/research.md)",
+  "source_does_not_support_because": "Same basis as scope_core.json's already-corrected framing (v6) and reference_research.json's already-corrected 4th reference item (v7): research.md does not directly document a specific 'compare prepared plan drafts against current circumstances' workflow as an established real business procedure -- it supports the more general facts that resource scarcity forces channel choices and that measured/directional channel-audience data exists. Design review r7 found this job_reveal_bridge field, which was not touched during the r6 correction round (only C_interaction was), still asserted the specific plan-comparison mechanic as a documented real duty -- a propagation gap matching r6's original finding. This correction removes the overreaching '実在の' (actually-existing/real) characterization via pure deletion.",
+  "core_ae_translation_impact": "narrowing_only"
+}

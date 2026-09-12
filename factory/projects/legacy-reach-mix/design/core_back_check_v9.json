@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t5-compare-candidate-plans（game_translations.json v11、adopted_translation_idは一貫してt5のまま）は、scope_core.jsonのcoreが定義する『今回の重点対象・今回の状況に照らして、3つの既製プラン案の中から最もよく合う1つを選ぶ。数値は一切示さない』という単一の判断軸を一貫して保持している。design review r5でARBITRARY_TIE_BREAK/CAUSAL_REALISM_ERRORを是正、r6でその是正の伝播漏れ3件を検出しESCALATE、Human Decision（2026-09-11、limited repair exceptionは不付与）によりconsistency-repair/fact-correct（budget不消費）でr6の3件を是正、r7がさらに2件の追加伝播漏れ（c_compression.compressed_C、game_translations.job_reveal_bridge）と、タイブレークの評価根拠を削除した結果その順位自体の根拠が『開示されているが未説明』になっているという新規BLOCKER（CORE_CAUSAL_MODEL_DISTORTED）を検出——このうち伝播漏れ2件は同じ日にconsistency-repair/fact-correctで追加是正済み。タイブレークの根拠問題は、r7のreviewer自身が『Human Decisionへ——虚構のゲーム上の慣例として明示的に許容するか、裏付けとなる証拠を得るか、同点処理自体を作り直すか』と明言しており、narrowing/consistency修正の範囲を超える（新しい主張を追加できないfact-correctの制約上、削除だけでは根拠の空白を埋められない）ため、Human Decisionへ差し戻す。design-sim.mjsの検証結果（independent_strategy_matches_internal_oracle=1、legitimate_reasoning=1、name_match_only_on_trap_sessions≈0.11）は変更なく維持されている——D（子ども自身の、開示された情報だけに基づく見きわめ）が実質的に必要とされることに変わりはない。旧実装のreverse-audit指摘（brute force）は単発確定化で維持解消。repair予算(1/1)・redesign予算(2/2)は使い切ったまま（consistency-repair/fact-correctはbudgetを一切消費しない）。",
+  "pass": true
+}

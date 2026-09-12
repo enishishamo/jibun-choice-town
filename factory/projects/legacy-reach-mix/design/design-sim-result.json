@@ -1,0 +1,28 @@
+{
+  "legitimate_reasoning": 1,
+  "independent_strategy_matches_internal_oracle": 1,
+  "multi_answer_session_rate": 0.1452,
+  "name_match_only": 0.7058,
+  "trap_session_rate": 0.3295,
+  "name_match_only_on_trap_sessions": 0.1073,
+  "random_pick": 0.375,
+  "always_pick_flyer_plan": 0.3815,
+  "always_pick_sns_plan": 0.3841,
+  "always_pick_media_plan": 0.3796,
+  "always_first_displayed": 0.3808,
+  "triple_legitimate_reasoning": 1,
+  "triple_name_match_only": 0.3443,
+  "triple_random_pick": 0.0563,
+  "primary_freq": {
+    "family": 0.3357,
+    "young": 0.3337,
+    "older": 0.3306
+  },
+  "best_plan_freq": {
+    "flyer_plan": 0.3815,
+    "sns_plan": 0.3841,
+    "media_plan": 0.3796
+  },
+  "all_checks_passed": true,
+  "n_per_check": 20000
+}

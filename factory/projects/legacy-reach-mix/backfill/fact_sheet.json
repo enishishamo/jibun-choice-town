@@ -1,0 +1,32 @@
+{
+  "profession": "広報・PRの仕事",
+  "sources": [
+    {
+      "url": "factory/state/audits/q1-audit.json",
+      "type": "internal_audit"
+    }
+  ],
+  "who_or_what_they_serve": "(from current implementation — verify)",
+  "representative_duties": [
+    "媒体カードの到達特性と手間を比較し、合計手間5以内で3つの対象グループすべての到達基準を満たす組み合わせを作る"
+  ],
+  "expertise": [
+    "届けたい3グループと優先度、手間上限、各媒体の対象別到達値・特徴・コスト、選択中の到達メーター"
+  ],
+  "tools": [
+    "届けたい3グループと優先度、手間上限、各媒体の対象別到達値・特徴・コスト、選択中の到達メーター"
+  ],
+  "information_used": [
+    "届けたい3グループと優先度、手間上限、各媒体の対象別到達値・特徴・コスト、選択中の到達メーター"
+  ],
+  "decisions": [
+    "媒体の詳細を確認し、予算内で相互補完する媒体を選択・解除して、対象別の不足を調整する"
+  ],
+  "outputs_or_value": "同じ画面で媒体を解除・追加し、何度でも再判定できる",
+  "adjacent_profession_boundaries": "(verify)",
+  "uncertainties": [
+    "seeded from implementation, not primary sources — FACT_CHECK_REQUIRED"
+  ],
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/reach_mix.json"
+}

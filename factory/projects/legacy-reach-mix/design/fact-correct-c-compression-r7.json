@@ -1,0 +1,6 @@
+{
+  "claim_removed": "compressed_C field's claim that the reference card's ranking is '竹内2023の実測順位（チラシ＞テレビ・新聞＞SNS）をそのまま反映した' (directly reflects 竹内2023's measured ranking) and is '一般的な効果の強さ' (general/universal effectiveness)",
+  "cited_source": "竹内裕二（2023）表4「イベントを知った情報源」(cited in research.md and fact_sheet.json's sources)",
+  "source_does_not_support_because": "Same basis as the parallel corrections already applied to game_translations.json's t5 C_interaction and scope_core.json's core field: the cited study measured self-reported information sources for individual channels in ONE documented event, not a general/universal effectiveness ranking of the game's three COMPOSITE plans. Design review r7 found this exact phrase still present in c_compression.json's compressed_C after the parallel fields were corrected -- a propagation gap. This correction removes the same overreaching characterization via pure deletion, consistent with the already-corrected wording elsewhere in the chain.",
+  "core_ae_translation_impact": "narrowing_only"
+}

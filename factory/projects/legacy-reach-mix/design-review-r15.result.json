@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r15",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "SOURCE_TRACEABILITY_MISMATCH remains in research.md. Although the specifically flagged r14 passages are now adequately hedged, the §0 conclusion still says Takeuchi's information-source response counts support 「どの媒体が相対的に強いか」 and instructs preservation of that 「順序関係」. This converts response frequency into comparative channel strength without the direct-measurement disclaimer used elsewhere.",
+      "SOURCE_TRACEABILITY_MISMATCH also remains in the CURRENT design chain outside historical revision notes. fact_sheet_v9 and reference_research_v10 combine Takeuchi's television response count with general media-importance data and conclude that television/newspaper are a 「強い経路」 for older/broad audiences; AE similarly calls its audience-strength directions Takeuchi 「実測データ」. Those sources do not directly measure audience-specific event reach or effectiveness."
+    ],
+    "medium": [],
+    "low": [
+      "The specified 108px sticky comparison bar still needs implementation-stage verification at 375px width."
+    ],
+    "failure_codes": [
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "research.md still explicitly treats Takeuchi 2023's self-reported information-source response-count ordering as support for which media are relatively strong, despite the survey not directly measuring reach, reliability, or effectiveness.",
+        "file": "factory/projects/legacy-reach-mix/research.md:75",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "CURRENT fact_sheet/reference_research/AE language still turns attendee response frequency and general media-use statistics into an unqualified audience-specific 「strong route」 or Takeuchi-derived measured-strength direction.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v9.json:17",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563; stored all_checks_passed=true.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": true,
+      "source_traceability_honest": false,
+      "reference_card_description_consistent": true,
+      "no_stale_version_references_remain": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/research.md:37-50 — correctly introduces the figures as attendee information-source responses, but then says they support the broader claim that different media reach different audiences.",
+      "factory/projects/legacy-reach-mix/research.md:75-80 — says the response counts support 「どの媒体が相対的に強いか」 and that their strength ordering should be preserved, without stating here that response ordering is not effectiveness ordering.",
+      "factory/projects/legacy-reach-mix/research.md:322-328 — the r14-flagged family passage is now adequately qualified as response frequency rather than directly measured effectiveness.",
+      "factory/projects/legacy-reach-mix/research.md:369-371 — both §5 rows are now correctly distinguished: posting is an explicitly unmeasured inference, while the flyer row identifies the measured category and disclaims direct measurement of reliable delivery/effectiveness.",
+      "factory/projects/legacy-reach-mix/research.md:375-381 — the media-relations paragraph now accurately says television was the next-most-named information source and separately identifies editorial uncertainty.",
+      "factory/projects/legacy-reach-mix/research.md:421-427 — §7 correctly labels the figures as attendee information-source response counts and expressly disclaims direct reach measurement.",
+      "factory/projects/legacy-reach-mix/research.md:486-491 — the revised quantification conclusion accurately distinguishes response frequency, general media-use statistics, and unmeasured reach effects.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v9.json:17 — expertise[2] moves from television being next-most-named in Takeuchi and general age-based importance to an unqualified conclusion that television/newspaper are a strong route for older/broad audiences.",
+      "factory/projects/legacy-reach-mix/design/reference_research_v10.json:16 — references[2].reference repeats the unqualified 「テレビ・新聞は年配・幅広い世代への強い経路」 conclusion.",
+      "factory/projects/legacy-reach-mix/design/ae_v9.json:4 — C calls the plan-card audience-strength directions 「竹内2023の実測データ…に基づく」 without distinguishing Takeuchi's response-frequency evidence from direct audience-specific reach measurement.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v18.json:85 — adopted Plan A correctly limits Takeuchi to the flyer response category, documents distribution only, and treats posting as an unmeasured game-side inference.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — bestPlanSet returns all maximum-fit plans and sessionWin accepts any member; no arbitrary tie-break exists.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150-192 — the independent player strategy uses a separately implemented weakening predicate and exactly matches the internal accepted-answer set.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v8.json:4-15 — one scored confirmation, randomized card order, no answer disclosure, and non-scored reconsideration close brute-force and answer-leak paths.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2-5 — plan cards are initially tappable and only confirmation is gated, resolving the interaction contradiction.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all eleven registered artifacts are CURRENT and their source_artifacts form a sensible fact_sheet→scope→AE/seeds→research/compression→translation→checks DAG."
+    ],
+    "recommended_actions": [
+      "In research.md §0, replace 「どの媒体が相対的に強いか」 and the associated 「順序関係」 claim with wording limited to the ordering of attendee-reported information-source frequency, explicitly stating that the ordering is not a direct effectiveness ranking.",
+      "In fact_sheet_v9 expertise[2], reference_research_v10 references[2], and AE.C, label the older/broad-audience relationship as a design inference drawn from general age-based media-use/importance statistics; do not attribute audience-specific measured strength to Takeuchi's response counts."
+    ]
+  },
+  "elapsed_sec": 142.456
+}

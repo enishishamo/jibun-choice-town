@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r8",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 34,
+    "career_authenticity_score": 34,
+    "game_quality_score": 39,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED remains: OVERALL_STRENGTH_RANK fixes flyer_plan > media_plan > sns_plan and determines the sole accepted plan in tied trap sessions, but the current chain supplies no professional or evidentiary justification for applying that order to the three composite plans. fact_sheet.json's uncertainty disclosure covers invented weakening conditions and preservation of supported ordinal directions; it does not disclose or justify this different composite-plan tie-break.",
+      "SOURCE_TRACEABILITY_MISMATCH propagation is still incomplete. Although compressed_C and job_reveal_bridge were corrected, other current fields continue to characterize the decisive composite-plan order as a general strength/effectiveness ranking or as based on Takeuchi 2023: c_compression.preserved_D, how_player_still_performs_D, and failure_risk; adopted t5 strengths and top-level adoption_rationale; design-sim.mjs's independentPlayerStrategy comment; and no_manual_exploit_check's protected contextual_cue_only/visual_hierarchy_leak fields. The protected no_manual phrase is not merely a neutral topic label: visual_hierarchy_leak explicitly calls the decisive fixed order '一般情報', so it repeats the unsupported generalization."
+    ],
+    "high": [
+      "FIRST_PLAY_LEGIBILITY remains unresolved independently of the tie-break-policy Human Decision. Plan C is roughly 130 Japanese characters and needs about 7–8 lines under the specified 18–20-character wrapping rule, contradicting the stated 3–4 lines and approximately 96px expanded-card height.",
+      "PLAYER_FACING_DECISION_SUPPORT remains unresolved independently of the tie-break-policy Human Decision. The vertically scrolling mobile layout does not keep the priority audience, three scenario states, plan details, and decisive rank co-located or sticky; collapsed plan cards retain only plan names and central media."
+    ],
+    "medium": [
+      "Plan B's failure consequence—prepared additional publicity material being left unused—still lacks a clear causal connection to the low-follower condition.",
+      "The success acknowledgment remains generic and invariant rather than responding to the selected plan or the child's reasoning.",
+      "The simulation's 'independent' strategy shares planIsWeakenedThisSession and OVERALL_STRENGTH_RANK with the oracle, so its 100% agreement establishes code-path consistency, not independent derivability or professional validity of the player-facing rule."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "A game-side fixed ordering of three composite plans decides the sole correct answer in tied trap sessions without evidence or an explicit accepted convention supporting that composite ranking. This specifically requires Human judgment: accept and disclose it as a fictional convention, obtain supporting evidence, or redesign tie handling.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:104",
+        "fixable_by_narrowing": false
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "Current c_compression fields outside compressed_C still call the decisive order a general strength ranking and failure_risk still says it was based on Takeuchi 2023. These are mechanically removable propagation gaps.",
+        "file": "factory/projects/legacy-reach-mix/design/c_compression_v8.json:6",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "The adopted t5 strengths and top-level adoption_rationale still call the composite order a general strength ranking, despite the corrected C_interaction no longer making that claim.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v11.json:93",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "The independentPlayerStrategy comment still calls the disclosed composite order a general strength ranking.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:163",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "Protected fields characterize the decisive composite-plan order as '一般的な効果の強さ' and '一般情報'. Because that order determines the sole winner, this is a substantive overclaim rather than an innocuous topic label; current mechanical correction rules cannot edit it.",
+        "file": "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v6.json:15",
+        "fixable_by_narrowing": false
+      },
+      {
+        "code": "FIRST_PLAY_LEGIBILITY",
+        "severity": "HIGH",
+        "finding": "Plan C cannot fit the specified 3–4 lines/approximately 96px at 14px and 18–20 full-width characters per line. This is mechanically fixable by measured copy shortening or realistic expanded sizing; it does not require deciding whether the tie-break convention is acceptable.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:3",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "PLAYER_FACING_DECISION_SUPPORT",
+        "severity": "HIGH",
+        "finding": "The mobile specification lacks a persistent combined comparison surface for the audience, scenario weaknesses, plan details, and tie-break rank. This can be fixed mechanically with a sticky compact summary or equivalent layout specification.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:3",
+        "fixable_by_narrowing": false
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 19/19 and exactly matched the stored r7 numeric results: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.328, always_pick flyer/sns/media=0.3815/0.2871/0.3315, always_first_displayed=0.3448, triple legitimate/name/random=1/0.3443/0.0372, primary frequencies=0.3357/0.3337/0.3306, best-plan frequencies=0.3815/0.2871/0.3315. No logic change was detected.",
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "tie_break_is_sole_remaining_issue": false,
+      "causal_realism_honest": true,
+      "world_feedback_adequate": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:93 — comments accurately disclose that Takeuchi 2023 measured one event's single-channel information-source counts, not the three composite plans.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:104 — OVERALL_STRENGTH_RANK remains flyer_plan:3, media_plan:2, sns_plan:1 and is used by bestPlan to choose one winner on equal planFit.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:163 — a remaining comment still calls that composite ordering a general strength ranking.",
+      "factory/projects/legacy-reach-mix/design/c_compression_v8.json:3 — the two specifically reported compressed_C overclaims were deleted.",
+      "factory/projects/legacy-reach-mix/design/c_compression_v8.json:6 — preserved_D still calls the tie-break a disclosed general strength ranking.",
+      "factory/projects/legacy-reach-mix/design/c_compression_v8.json:8 — failure_risk still says the tie-break was replaced with an order based on Takeuchi 2023.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:85 — adopted C_interaction now states only the bare reference-card order and no longer claims a directly measured composite-plan comparison.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:92 — job_reveal_bridge no longer calls prepared-plan comparison an actually existing confirmation duty.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:93 — adopted t5 strengths still calls the decisive order '一般的な強さの順位'.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:100 — adoption_rationale repeats the general-strength characterization and incorrectly claims the relevant defects were resolved.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v6.json:4 — protected contextual_cue_only calls the reference order '一般的な効果の強さの順位'.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v6.json:15 — protected visual_hierarchy_leak calls the same decisive order session-invariant '一般情報'.",
+      "factory/projects/legacy-reach-mix/design/core_scope_check_v7.json:5 — the stale v3/v5-era chain references were replaced with the current scope_core v6, ae v6/v7, and current simulation history.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:2 — the mobile specification fixes plan cards at approximately 96px and states 18–20 full-width characters per line.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:85 — Plan C's approximately 130-character copy exceeds the declared 3–4-line budget.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:3 — collapsed cards preserve only plan name and central medium, not the scenario facts and rank required for the decisive comparison.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v6.json:10 — one scored commitment and a non-scored reflection preserve Gates G/H and prevent same-session submit brute force.",
+      "factory/projects/legacy-reach-mix/design/ae_v6.json:6 — failure consequences remain production-side and explicitly avoid claims about actual awareness or attendance.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v11.json:86 — the safe production consequences and external committee acknowledgment remain intact.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v6.json:5 — profession-name-hidden and non-overlap distinctions remain specified.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2 — stored results report all checks passed and match the fresh run."
+    ],
+    "recommended_actions": [
+      "Before the Human Decision, mechanically remove the remaining overclaim wording from c_compression.preserved_D, how_player_still_performs_D, failure_risk; adopted t5 strengths; game_translations.adoption_rationale; and design-sim.mjs line 163. Do not treat self-evaluations claiming resolution as evidence.",
+      "Include the protected no_manual_exploit_check wording in the Human Decision because current correction rules cannot edit it. The decision should authorize a correction path or explicitly accept its general-information characterization.",
+      "Ask the Human to decide the substantive tie-break policy: accept and clearly disclose flyer > media > SNS as a fictional game convention, obtain evidence for the three composite plans, or redesign tie handling so an unsupported rank cannot determine the sole winner.",
+      "Separately fix the two mobile HIGHs: prototype the exact copy at 375px, shorten Plan C or expand its measured height, and add a persistent compact comparison surface containing the priority audience, all three scenario states, and the tie-break order.",
+      "Clarify Plan B's low-follower failure consequence and make successful feedback respond to the selected plan."
+    ]
+  },
+  "elapsed_sec": 102.695
+}

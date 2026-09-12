@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r4",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 34,
+    "career_authenticity_score": 34,
+    "game_quality_score": 43,
+    "blockers": [
+      "EXCLUSIVITY_OVERCLAIM remains as an executable bug: website.family and website.older are always zero. With followerTier limited to 0–2, floor(max(0,followerTier-1)/2) evaluates to zero for every possible session, directly contradicting the repeated claim that every non-school-board channel can reach both non-primary audiences.",
+      "The remaining school_board hard zeroes are not defensible for the stated broad audience categories. A school/daycare board is location-limited, but pupils, young staff, older staff, grandparents, and visitors can belong to the young or older groups. Physical restriction to an institution does not imply categorical restriction to families.",
+      "CORE_CAUSAL_MODEL_DISTORTED persists on the same recurring axis. Per-channel packaging has not changed the underlying task: cards supply already-computed invented reach points, and the child performs budget-constrained threshold arithmetic. The scenario facts neither constitute observed campaign evidence nor require interpretation once the card gives the answer. Exact secondary formulas remain unsupported, and poster/media_relations even use identical prepWeeks formulas for family and young reach.",
+      "CAUSAL_REALISM_ERROR persists through a semantic substitution: the executable model calculates audience reach and tests audience-reach thresholds, but passing those thresholds is declared to prove that planned publishing actions were completed. Printing, posting, and sending are determined by selecting the channel, not by an invented audience-reach total or press pickup. Although the revised prose avoids directly claiming awareness or attendance, the success definition still converts an unsupported audience-side score into an unrelated controllable-output claim."
+    ],
+    "high": [
+      "Correct reasoning remains unfairly denied full success. A gamble is required in 10.74% of sessions and loses half the time; the 88.40% optimal full-win rate also implies sessions with no full-clear path. Disclosure of the 50/50 probability does not make unavoidable random failure or unwinnable instances fair to a child.",
+      "The current design chain is internally inconsistent. play_seeds_v4 still says short prep time reduces flyer and SNS secondary reach, while the repaired code makes flyer depend only on coopInstitutions and SNS depend only on followerTier. The same seed presents a specific media_relations+school_board+website route without reproducible scenario values or budget proving it valid.",
+      "The visible payoff is largely the organizer's own production activity—printing, posting, publishing, and sending—rather than a concrete social consequence. This is safer than falsely depicting attendance, but it does not complete principles.md's intended transition from the child's decision to an observable change for people or society."
+    ],
+    "medium": [
+      "The three-stage disclosure gate clarifies the first legal action, but the claimed two-to-five-second flow requires opening four prerequisite cards. The full task then requires six more cards, up to eighteen reach values, six costs, three thresholds, and a budget on a 375px display without a specified persistent comparison surface.",
+      "Several exact formulas are materially arbitrary even where their direction is plausible. In particular, flyer.older=coopInstitutions-1 and identical poster/media_relations cross-audience formulas imply precise audience effects absent from the research; disclosure as balance values prevents source deception but does not make them an authentic causal model."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "website.family and website.older remain categorical zeroes in every possible session because followerTier never exceeds 2; school_board's young/older zeroes also confuse institutional visibility with audience age/category exclusivity.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:154"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "The repair differentiates some formulas syntactically but leaves the interaction as reading precomputed invented reach points and solving a threshold knapsack. Scenario facts label the arithmetic rather than becoming evidence the child interprets. Poster and media_relations also retain identical prepWeeks-based cross-audience formulas.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:148"
+      },
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "Audience-reach thresholds determine whether the game claims planned distribution was executed, although execution of printing/posting/sending does not follow from audience reach and should not depend on press pickup. The wording removes explicit awareness claims but does not repair the model-to-outcome mismatch.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v5.json:67"
+      },
+      {
+        "code": "CORRECT_REASONING_RANDOM_FAILURE",
+        "severity": "HIGH",
+        "finding": "Optimal play needs the 50/50 media gamble in 10.74% of sessions and achieves full success only 88.40% overall, so well-reasoned play can lose through luck and some generated sessions provide no full-success route.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim-result.json:2"
+      },
+      {
+        "code": "MODEL_SPEC_INCONSISTENCY",
+        "severity": "HIGH",
+        "finding": "The current older-primary seed says prepWeeks controls flyer and SNS secondary spread, contradicting the repaired executable formulas, which use coopInstitutions and followerTier respectively.",
+        "file": "factory/projects/legacy-reach-mix/design/play_seeds_v4.json:17"
+      },
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "HIGH",
+        "finding": "The success scene shows completed organizer outputs but no observable effect on another person or the surrounding society, leaving the A→B→C⇄D→E payoff incomplete.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v5.json:67"
+      },
+      {
+        "code": "FIRST_PLAY_COGNITIVE_LOAD",
+        "severity": "MEDIUM",
+        "finding": "Four prerequisite reveals plus six channel cards and simultaneous cost/reach constraints are specified without a persistent compact comparison view for the 375px target.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v4.json:2"
+      },
+      {
+        "code": "UNSUPPORTED_NUMERIC_PRECISION",
+        "severity": "MEDIUM",
+        "finding": "Channel-specific presentation does not evidence exact slopes, floors, and cross-audience mappings; several formulas remain tuning inventions that materially decide success.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:149"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 18/18 and matched design-sim-result.json exactly: optimal=0.8840, gamble_needed=0.1074, certain routes family=0.8807/young=0.9315/older=0.6752, random=0.2904, fixed=0.1633, triple optimal=0.6906/fixed=0.0047/random=0.0250. The passing assertions do not test the false website non-zero claim or causal validity.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": true,
+      "mechanic_structurally_capable_of_passing": false,
+      "zero_values_honestly_grounded": false,
+      "probability_disclosed_honestly": true,
+      "gambling_element_feels_fair_not_punishing": false,
+      "causal_realism_honest": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:135 — followerTier is restricted to 0, 1, or 2.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:161 — website family reach is floor(max(0,followerTier-1)/2), which is always zero over the declared domain.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:163 — website older reach uses the same always-zero expression.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:154 — school_board assigns zero to young and older despite an institution being visited or staffed by people in those categories.",
+      "factory/projects/legacy-reach-mix/research.md:483 — only roughly two or three of eighteen audience/channel relationships have direct measured support; most are directional inference or invention.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:166 — poster family and young use the same prepWeeks formula.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:171 — media_relations repeats the poster family/young formula exactly, so differentiated packaging has not eliminated cross-channel lockstep behavior.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v5.json:66 — cards explicitly give computed answers such as coopInstitutions=2 therefore family reach=4; the child does not derive or test that causal relation.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:189 — the executable state is explicitly computed as audience reach, not completed distribution volume.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:209 — full success is determined exclusively by cost and audience-reach thresholds.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v5.json:71 — passing reach thresholds is reinterpreted as proof that planned transmission actions were executed, creating a metric/outcome mismatch.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v4.json:17 — the current seed incorrectly states that prepWeeks controls flyer and SNS secondary spread.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2 — the stored gamble-needed rate is 0.1074 and optimal full-win rate is 0.8840, exactly matching the fresh run.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v4.json:8 — all channels cost 10 against a maximum budget of 6, closing select-all.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v5.json:72 — one scored commitment plus mandatory non-scored reflection specifies Gate G and prevents same-session resubmission.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v4.json:2 — the initial disclosure sequence requires one target card and three scenario cards before any of six media cards can be used."
+    ],
+    "recommended_actions": [
+      "Use the final redesign for a genuinely different interaction. The recurring CORE_CAUSAL_MODEL_DISTORTED defect is now structural to this mechanic: precomputed audience points plus budget thresholds will continue to make the child solve a synthetic knapsack, regardless of whether the numbers are random, shared-formula, or per-channel-formula.",
+      "Center the redesign on concrete professional evidence and controllable actions—for example choosing actual partner facilities or poster locations, matching a message/version to a documented audience observation, sequencing a release and follow-up, or interpreting prior campaign observations—without translating every choice into invented universal reach points.",
+      "Define success using outputs that the chosen action truly controls, and show an honest external response separately. Press pickup can be a non-scored bonus or branch; it should never determine whether a correct plan receives the main completion result.",
+      "Eliminate categorical audience zeroes unless audience definitions make them logically exhaustive. In particular, do not treat school/daycare location restriction as equivalent to exclusion of young and older people.",
+      "Guarantee a deterministic principal-success route in every generated instance. If uncertainty remains, grade the plan before resolving luck and use the random event only for secondary feedback.",
+      "Regenerate the entire authoritative chain after redesign and add executable assertions that enumerate every channel/audience domain, proving claimed non-zero capability and detecting formulas that are constant over their input range.",
+      "If the final redesign still reduces professional judgment to synthetic score-threshold optimization, route the profession to Human Decision rather than performing another numeric repair."
+    ]
+  },
+  "elapsed_sec": 252.369
+}

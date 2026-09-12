@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r12",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 70,
+    "career_authenticity_score": 70,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "SOURCE_TRACEABILITY_MISMATCH was only partially propagated. scope_core_v8.json and reference_research_v8.json still call Takeuchi 2023 an 「実測順位」 about media reach, while research.md itself repeatedly characterizes the attendee information-source responses as measured reach/effectiveness data. In addition, fact_sheet_v7.json and the adopted Plan A copy conflate the surveyed answer 「チラシ」 with 「チラシ・掲示」 even though school/childcare facilities were distribution locations, not a separately measured respondent category."
+    ],
+    "medium": [
+      "STALE_ARTIFACT_REFERENCE remains in core_back_check_v14.json. Its notes promise not to hardcode versions but immediately identify the current scope core as 「scope_core.json（v8）」 and later pin numerous upstream filenames. This recreates the resubmission-staleness mechanism the round claimed to eliminate."
+    ],
+    "low": [
+      "The specified 108px sticky comparison bar must contain an introduction, emphasized target, three condition rows, and padding at 375px width. Actual mobile rendering still requires implementation verification."
+    ],
+    "failure_codes": [
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The correction at the fact-sheet root did not propagate through the entire chain. scope_core.scope_is_representative_because and reference_research still describe Takeuchi 2023 as a reach-oriented 「実測順位」; research.md itself retains stronger descriptions including 「媒体×到達の強さの実測順位」 and 「個別事例の実測到達数」. The study reports self-declared information sources among 334 attendees, not total reach or channel-attributable reach counts.",
+        "file": "factory/projects/legacy-reach-mix/design/scope_core_v8.json:4; factory/projects/legacy-reach-mix/design/reference_research_v8.json:22; factory/projects/legacy-reach-mix/research.md:37,49,78,113,420-421,435",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The current fact sheet and adopted player-facing Plan A say respondents identified 「チラシ・掲示」 or treat that combined route as the most frequently reported source. Takeuchi's reported survey category was 「チラシ」; schools and childcare facilities describe where flyers were distributed, not a separately measured 「掲示」 response category.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v7.json:17; factory/projects/legacy-reach-mix/design/game_translations_v16.json:85",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "MEDIUM",
+        "finding": "core_back_check notes still pin the current upstream scope to v8 despite explicitly claiming version numbers will no longer be hardcoded. The same notes contain additional pinned upstream filenames, preserving the exact stale-reference failure mode under another resubmission.",
+        "file": "factory/projects/legacy-reach-mix/design/core_back_check_v14.json:5",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20. Metrics matched design-sim-result.json exactly: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, and best-plan frequencies=0.3815/0.3841/0.3796.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": true,
+      "source_traceability_honest": false,
+      "reference_card_description_consistent": true,
+      "no_stale_version_references_remain": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2-27 — every stored metric exactly matches the fresh 20/20 run.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — bestPlanSet returns all maximum-fit plans and sessionWin accepts membership, with no fixed tie-break.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150-166 — the player strategy independently implements the disclosed weakening predicate and returns all equally best plans.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v16.json:86 — Plan B now relies only on the pre-existing follower condition and an internal deployment rule; it does not infer post-publication audience engagement.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v16.json:93 — strengths now repeats the corrected, audience-response-free Plan B chain; r11's causal propagation gap is closed.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v8.json:4 — still calls Takeuchi's data 「竹内2023の実測順位」 in the context of media reach.",
+      "factory/projects/legacy-reach-mix/design/reference_research_v8.json:22 — independently repeats 「媒体ごとの届き方」「竹内2023の実測順位」.",
+      "factory/projects/legacy-reach-mix/research.md:420-421 — calls the attendee-source responses 「媒体×到達の強さ」の「実測順位」.",
+      "factory/projects/legacy-reach-mix/research.md:435 — calls the same evidence 「個別事例の実測到達数」.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v7.json:4 — the corrected source description accurately says the values are respondent counts and not directly measured total reach.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v7.json:17 — nevertheless expands the survey's flyer result into 「チラシ・学校/保育園への掲示」 as the most-reported route.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v16.json:85 — player-facing Plan A likewise says respondents answered 「チラシ・掲示」 although the source category was flyers.",
+      "factory/projects/legacy-reach-mix/design/core_back_check_v14.json:5 — notes say version numbers will not be hardcoded, then immediately pin 「scope_core.json（v8）」 and several upstream filenames.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2-5 — plan cards are tappable from the start; only confirmation remains disabled until all three are opened.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v6.json:40 — s4 specifies honest failure, mandatory non-scored reconsideration, and unchanged final outcome, satisfying Gates G and H.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v16.json:90-91 — success and failure receive visibly different committee responses, and failure is not converted into success.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v8.json:2,6 — one scored commitment, no answer disclosure on failure, randomized card order, and multi-answer acceptance close same-session brute force and answer leaks.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all eleven registered artifacts are CURRENT and source_artifacts form a sensible fact_sheet→scope→AE/seeds→research/compression→translation→checks DAG."
+    ],
+    "recommended_actions": [
+      "Replace every surviving reach-oriented characterization of Takeuchi 2023 in research.md, scope_core_v8.json, and reference_research_v8.json with explicit attendee self-reported information-source survey terminology.",
+      "Change fact_sheet expertise[0] and adopted Plan A copy so the measured survey category is only 「チラシ」; describe schools and childcare facilities separately as documented flyer distribution locations, not respondent-reported 「掲示」.",
+      "Remove current-upstream version pins from core_back_check_v14.notes and refer exclusively to q1-pipeline.json's CURRENT mappings."
+    ]
+  },
+  "elapsed_sec": 208.168
+}

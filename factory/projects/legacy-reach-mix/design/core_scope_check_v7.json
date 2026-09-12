@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core.json（現行v6）のcoreとae.json（現行v6/v7）のD/Eは、『今回の重点対象と今回の状況設定を確認し、3つの既製プラン案の中から今回に最もよく合う1つを選ぶ。数値は一切示さず、質的な比較・見きわめのみで判断する』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjs（現行、r6/r7の是正でコード内コメントのみ更新、ロジック自体は不変）で数値検証済みの勝敗構造と整合する: 正しい判断（重点対象との一致＋今回の状況での強さの両方を確認、独立実装のプレイヤー戦略が内部の勝利条件と全セッションで一致することを直接検証済み）は常に100%成功する決定論的なマスタリーであり、賭け・偶然性は一切ない。重点対象の名前だけで機械的にプランを選ぶ戦略は全体では約71%成功してしまうが、『一見当たり前のプランが今回は弱くなっているtrapセッション』（全体の約33%）に限定すると約11%にとどまり、3ラウンド独立合成では名前だけ戦略が約34%・ランダムが約4%まで低下する一方、正しい判断は常に100%を維持する。design review r1〜r4（4ラウンド連続FAIL、reviewerがメカニクス自体の構造的限界と明言）を経て、design_iteration 3のREDESIGN #2（最終）でDの形を『媒体組み合わせの構築』から『既製プラン案の比較・見きわめ』へ根本的に転換し、具体的な数値表現を完全に排したことを確認した。r5（FAIL 41→mechanic_structurally_capable_of_passing=true）・r6（FAIL 36→伝播漏れによりESCALATE）・Human Decision（2026-09-11、consistency-repair/fact-correctでの是正指示）・r7（FAIL 35→タイブレークの根拠に関する新規BLOCKERと、c_compression/job_reveal_bridgeへの伝播漏れを検出）を経て、CORE/SCOPE/A-E/adopted mechanic自体は一貫して変更されていないことを確認した。profession_name_hidden_testは、C（媒体ごとの一般的な強み・弱み、今回の状況、複数のプラン案）とD（プランの比較・選択判断）が他の既存Q1ゲーム（legacy-crowd-flow・legacy-venue-layout・sound_check）と重複しないことを確認済み（research.md §6）。",
+  "pass": true
+}

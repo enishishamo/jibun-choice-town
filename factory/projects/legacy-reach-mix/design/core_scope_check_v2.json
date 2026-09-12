@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v1.jsonのcoreとae_v1.jsonのD/Eは、『今回の重点対象と今回の状況設定を確認し、限られた手間の中で媒体を組み合わせる』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjs v3（design review r2 FAIL 38是正、REDESIGN #1）で数値検証済みの勝敗構造と整合する: 網羅探索による最適な手筋（3つの状況設定——協力施設数1-3・フォロワー0-2・準備期間1-3週——から一意に決まる今回の数字に対するその場の計算）がセッションの約85%でフルクリアを達成し、family/young/older各primaryで賭けなしの確実な勝ち筋が存在するセッションはそれぞれ約74%・89%・66%。今回の手間の上限は毎セッション独立にランダム（4〜6）。内容を無視した固定の組み合わせはいずれも単発で約12%、3ラウンド独立合成では約0.2%まで低下する。すべての対象を主対象水準で同時に満たす最安の組み合わせはBUDGET上限を超え、『とりあえず大きく賭ける万能手筋』は存在しない（design-sim.mjsのall_channels_exceeds_max_budget=true）。design review r1（FAIL 31）のBLOCKER是正（OBVIOUS_BINARY_CHOICE——固定の正解表への還元）と、r2（FAIL 38）のBLOCKER是正（CORE_CAUSAL_MODEL_DISTORTED——読み取れる理由のない乱数、EXCLUSIVITY_OVERCLAIM——website/posterの排他的な0、CAUSAL_REALISM_ERROR——来場者の認知を断定する成功文言）を、design-sim.mjs v3とgame_translations_v4.json（採用t4-scenario-driven-reach）で解消したことを確認した。profession_name_hidden_testは、C（媒体ごとの届き方データ、今回の状況設定）とD（重点対象・状況設定に応じた媒体の組み合わせ判断）が他の既存Q1ゲーム（legacy-crowd-flow・legacy-venue-layout・sound_check）と重複しないことを確認済み（research.md §6）。",
+  "pass": true
+}

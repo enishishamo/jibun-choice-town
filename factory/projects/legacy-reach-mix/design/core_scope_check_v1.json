@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v1.jsonのcoreとae_v1.jsonのD/Eは、『今回の重点対象を確認し、限られた手間の中で媒体を組み合わせる』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjsで数値検証済みの勝敗構造（family/young primaryは確実な手筋で常に100%成功、older primaryは報道機関への投げ込みに賭ける推奨手筋で約50%——媒体_relations_success_probと一致——フルクリアするが、失敗しても他2対象のsecondary基準は保険の媒体で維持される。ランダム選択は約18%、内容を無視した固定の組み合わせはいずれも約34%[primaryが偶然一致する場合のみ]、3ラウンド独立合成では正しい判断が約58%に対し固定戦略は約4%・ランダムは約1%未満に低下）と整合する。すべての対象を主対象水準で同時に満たす最安の組み合わせ（flyer+sns+media_relations、cost7）がBUDGET(5)を超えることも確認済みで、『とりあえず大きく賭ける万能手筋』が存在しないことを構造的に保証している。profession_name_hidden_testは、C（媒体ごとの届き方データ）とD（重点対象に応じた媒体の組み合わせ判断）が他の既存Q1ゲーム（legacy-crowd-flow・legacy-venue-layout・sound_check）と重複しないことを確認済み（research.md §6）。",
+  "pass": true
+}

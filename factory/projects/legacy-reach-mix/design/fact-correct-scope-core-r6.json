@@ -1,0 +1,6 @@
+{
+  "claim_removed": "core field's '一般的な' (general/universal) and '竹内2023の実測順位に基づく' (based on 竹内2023's measured ranking) qualifiers describing the tie-break reference card's effectiveness ordering",
+  "cited_source": "竹内裕二（2023）表4「イベントを知った情報源」(cited in research.md and fact_sheet.json's sources)",
+  "source_does_not_support_because": "Same basis as the parallel correction applied to game_translations.json's adopted t5 entry (fact-correct v9): the cited study measured self-reported information sources for individual channels in ONE documented event, not a general/universal comparative effectiveness ranking of the game's three COMPOSITE plans (one of which, media_plan, includes poster -- a channel research.md explicitly says has no quantitative verification, §5). Calling the tie-break ordering '一般的な' (general/universal) and directly '竹内2023の実測順位に基づく' overstates what a single-event, single-channel survey can establish about composite-plan comparisons -- the same CORE_CAUSAL_MODEL_DISTORTED/SOURCE_TRACEABILITY_MISMATCH finding design review r6 raised. This correction removes exactly those two overreaching qualifiers via pure deletion, leaving the same reference-card mechanism (present a strength ordering, use it as tie-break) intact and consistent with the already-corrected game_translations.json wording.",
+  "core_ae_translation_impact": "narrowing_only"
+}

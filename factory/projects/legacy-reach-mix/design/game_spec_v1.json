@@ -1,0 +1,55 @@
+{
+  "goal": "今回のイベントの重点対象（子育て中の家族／若い世代／年配の世代・地域の幅広い人、毎セッション独立にランダム）と今回の3つの状況設定（協力施設の数1-3／SNSフォロワーの多さ0-2／準備期間1-3週）を確認したうえで、実行委員会内で用意された3つの広報プラン案（チラシ・掲示中心／SNS・ウェブサイト中心／ポスター・報道機関中心）を読み比べ、今回の重点対象・状況に照らして妥当な1つを選んで1回だけ確定する。今回の重点対象・状況に照らして複数のプランが同程度に妥当な場合は、そのいずれを選んでも正解（Human Decision 2026-09-12）。",
+  "initial_visual_state": "375px幅、画面上部に常設のsticky比較サマリーバー（position: fixedで実装——.app-frameのoverflow-x:hidden指定がoverflow-yをautoへ暗黙変換するがapp-frame自体はmin-height:100dvhで内部スクロールしないため、position: stickyは効かない。fixedなら祖先にtransform/filterが一切ないため確実に効く）。バーには『イベントの準備は進んだ。でも、まだだれも知らない！』の導入文、今回の重点対象（絵文字＋強調）、3つの状況設定（協力施設の数／フォロワーの多さ／準備期間）が最初から開いた状態で表示され、開閉操作は不要。その下（フローの先頭には測定済みバー高さ+マージン分のスペーサーdivを置き、fixedバーとの重なりを防ぐ）に3枚のプラン案カード（『？』見出しのみ、本文は閉じた状態、タップで開閉できる——確定ボタンとは独立に最初からタップ可能）と、確定ボタン（3枚すべて開くまで disabled）。旧来の媒体別強さの参考カード・固定タイブレーク順位は存在しない。",
+  "interactive_objects": [
+    {
+      "id": "planCard[flyer_plan|sns_plan|media_plan]",
+      "type": "tap toggle（見出しをタップで開閉）",
+      "state": "closed|open",
+      "reaction": "開くと、そのプランの中心媒体・対象適性・今回の状況次第での弱まり方を説明する確定コピーが表示される。閉じても再度開ける。開閉はいつでも自由（コストなし）。",
+      "budget": "なし（開閉自体は無制限）"
+    },
+    {
+      "id": "planPickButton[flyer_plan|sns_plan|media_plan]",
+      "type": "tap（対応するplanCardがopenの間のみ表示）",
+      "state": "unselected|selected",
+      "reaction": "『この案で決める』を押すと、そのプランがselectedになり（ラジオ的排他選択、他の選択は解除）、カード全体の枠線が強調される。選択自体は正誤を示さない。",
+      "budget": "なし（選び直し自由、確定するまでは何度でも変更可）"
+    },
+    {
+      "id": "confirmButton",
+      "type": "tap（一回のみ有効）",
+      "state": "disabled(未読了 or 未選択)|enabled|used",
+      "reaction": "3枚すべてopen済み かつ selectedが存在する場合のみ有効。押すと即座にconfirmedPlanが確定し、選択・確定操作はこれ以降一切できなくなる（同一プレイ内でのbrute forceを構造的に排除）。押すと結果画面へ遷移。",
+      "budget": "1セッション1回のみ"
+    }
+  ],
+  "primary_action": "画面上部の比較サマリーバー（今回の重点対象＋3つの状況設定）を確認する → 3枚のプラン案カードをすべてタップして開いて読む → 今回の重点対象・状況に照らして妥当だと判断した1枚の『この案で決める』を押す → 確定ボタンを押す（1回のみ、やり直し不可）。",
+  "C": "今回の重点対象（1つ、毎セッション独立ランダム）と3つの状況設定（協力施設数1-3・フォロワー多さ0-2・準備期間1-3週）を常時表示する比較サマリーバー。3つの広報プラン案の確定コピー（factory/projects/legacy-reach-mix/design/game_translations_v18.jsonのadopted t5-compare-candidate-plans.C_interactionそのまま）——各案の中心媒体・一般的な対象適性・今回の状況次第での弱まり方が説明文の中に組み込まれており、独立した参考カード・数値・固定順位は一切存在しない。内部の判定ロジック（src/q1/reachMixLogic.ts: planFit/bestPlanSet/sessionWin）は子どもに一切見せない。",
+  "D": "今回の重点対象と今回の状況を読み、3つのプラン案を比較し、重点対象に一見合っていそうなプランでも今回の状況次第で弱くなっている場合があることを見抜き、今回に照らして妥当な1つを選ぶ。今回の重点対象・状況に照らして複数のプランが同程度に妥当な場合は、そのいずれを選んでも正解として扱う——これ以上の細かい優劣づけ（同点になった場合にどちらがより強いか）は要求しない（Human Decision 2026-09-12）。選んだプランを1回だけ確定する（やり直しはできない）。",
+  "system_reactions": {
+    "card_open": "該当プランの確定コピーが表示される。正誤に関する示唆は一切なし。",
+    "pick_select": "選んだプランのカード枠が強調表示に変わる。他のプランの選択は解除される。確定ボタンの状態は「3枚すべて開いたか」と「selectedが存在するか」で決まる。",
+    "confirm_win": "『今回のプランはうまく進んだ！』の成功結果。選んだプランの実行がスムーズに進んでいく旨のテキストと、実行委員会メンバーからの前向きな反応（『これでいこう、この調子で進めよう』）が続けて表示される。",
+    "confirm_lose": "『今回は、うまく進まなかった』という正直な結果。選んだプランの中心媒体固有の、主催団体自身の作業上の具体的なつまずき（対象側の反応には一切依拠しない——プランAは配布施設不足で配りきれず、プランBは投稿前から分かっていたフォロワー数の少なさにより追加素材の運用条件に該当せず未投下、プランCは準備期間不足で資料を間に合わせられず）と、実行委員会メンバーからのつまずきを踏まえた反応（『ここは次回、もう少し工夫が必要かもしれないね』）が続けて表示される。"
+  },
+  "state_transitions": "SELECT(cards closed, nothing selected) → [open all 3 cards] → SELECT(all opened) → [pick one] → SELECT(all opened, selected) → [confirm] → RESULT(win) → onComplete ／ SELECT(all opened, selected) → [confirm] → RESULT(lose) → [振り返ってみる] → REFLECT(same session, all cards still open, non-scored re-pick) → [次へ] → onPartialComplete。RESULT/REFLECTからSELECTへ戻る手段はない（1セッション1回確定、同一プレイ内でのbrute force不可）。",
+  "failure_behavior": "対象側の反応・認知には一切言及せず、主催団体自身の作業上の具体的なつまずきのみを正直に描く（design review r10 BLOCKER是正: CAUSAL_REALISM_ERROR、r11でstrengths内の伝播漏れも是正済み）。成功結果と同じ画面構成にはしない（結果カードの色・タイトル文言が異なる——Gate H）。実行委員会メンバーの反応は成功時と失敗時で内容が異なる（design review r9是正: WORLD_FEEDBACK_QUALITY）が、確定後にのみ表示され正誤判定には一切影響しない。",
+  "retry_behavior": "失敗結果の直後、非採点の振り返り（Gate G）: 同じ重点対象・状況・3つのプラン案（すでに開いた状態のまま）を再提示し、『今度はどのプランを選べばよかったか』を考えさせる。振り返りでの選択は結果に一切影響せず、何を選んでも『次へ』でonPartialCompleteへ進める（少なくとも1つ選ぶまで次へは無効、考える行為自体を保証する）。同一セッションでの再確定・同じ状況でのやり直しは存在しない（brute force排除の核）。",
+  "E": "選んだプランが今回の重点対象・状況に照らして妥当であれば（複数のプランが同程度に妥当なこともある）、そのプランの実行が今回はスムーズに進んだという成功結果。妥当でなかった場合は、選んだプランの中心媒体固有の、主催団体自身の作業上の具体的なつまずきが起きたという正直な結果。来場者数やイベントの認知度そのものについては、このゲームは一切主張しない。Job Revealは成否にかかわらず同じ（discoveryEchoはcontentのexperiencesに置く——src/data/content/townEvent.tsのpromo-event）。",
+  "job_reveal": "『さっき、今回の重点対象と状況を確かめて、3つのプラン案を比べて選んだよね。こうやって今回に合う伝え方を見きわめるのが、広報・PRの大事な仕事のひとつです。』（discoveryEcho, src/data/content/townEvent.ts）",
+  "first_5_seconds": "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json のとおり。プラン案カードは最初からタップして開ける状態（disabledではない）——無効化するのは確定ボタンのみ（design review r9 FIRST_PLAY_INTERACTION_CONTRADICTION是正）。操作手順の文はなく、比較サマリーバーの常時表示と、3枚のプラン案カードをすべて開くと確定ボタンが有効になるという構造自体が手順を教える。",
+  "no_manual_requirements": "説明画面・手順文なし。手がかりは比較サマリーバー（今回の重点対象・状況、開閉不要で常時読める）とプラン案カードの確定コピーのみ。具体的な到達人数・点数・固定の強さの順位はいずれも一切示されない。誤答時はどの媒体でどんな作業上のつまずきが起きたかのみを伝え、正解のプランは開示しない。プラン案は1つだけ選ぶ構造で複数選択・全選択という概念自体が存在しない。プランの選択・確定は1回のみで、確定後に選び直して再確定することはできない。3枚のプラン案カードの表示順は毎セッションシャッフルされ、位置が正解を示唆しない。3枚は同じ視覚的な強調度・同じ情報量で提示し、色・位置・見た目で正解を示唆しない（詳細: factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v8.json）。",
+  "mobile_constraints": "375px幅で: 比較サマリーバーはposition:fixedで画面上部に常時表示（横幅は.app-frameのmax-width:480pxに合わせてcenter、左右16pxパディングで.screenの余白と揃える）。バーの実測高さをuseLayoutEffectで測定し、同じ高さのスペーサーdivをカード列の前に置いてコンテンツの重なりを防ぐ（セッションごとの重点対象ラベル長の違いに対応）。プラン案カードのタップ領域（見出し行）は最小44px高さ。確定ボタン・この案で決めるボタンも44px以上。カード本文は14px程度・1行あたり全角18-20字程度で折り返す想定文言量。縦スクロールは許容する（カード3枚+バーで375x812には収まりきらないため）が、比較のためにスクロールして戻る必要はない（バーが常時見えているため）。",
+  "asset_requirements": [
+    {
+      "asset_id": "legacy_reach_mix_no_art",
+      "use": "none — 3枚のプラン案カード・比較サマリーバーはすべてテキスト＋CSSのみで表現し、画像・イラストは一切使用しない（art_brief.no_art_required=true）。",
+      "producer": "n/a",
+      "output_path": "n/a",
+      "notes": "既存のplace.image（venue_map、E()ヘルパー経由の既存アセット）を流用し、新規アセットは追加しない。"
+    }
+  ],
+  "human_decision_domains": [],
+  "revision_note": "v1: design review r16 PASS（score 84、no blockers）を受けてGAME_DESIGN_READY後に新規作成。game_translations_v18.json（adopted t5-compare-candidate-plans）、first_5_seconds_v8.json、no_manual_exploit_check_v8.json、design-sim.mjs（design_spec作成時点でのCURRENT版）の内容をそのまま実装仕様として書き起こした。"
+}

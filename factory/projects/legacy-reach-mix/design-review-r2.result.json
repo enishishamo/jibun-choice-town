@@ -1,0 +1,138 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 38,
+    "career_authenticity_score": 38,
+    "game_quality_score": 49,
+    "blockers": [
+      "EXCLUSIVITY_OVERCLAIM remains: the implementation does not keep only school_board's grounded zeroes. website is hard-coded to zero for family/older and poster to zero for family/young. These categorical exclusions are not established by research.md and directly contradict the repair's own description.",
+      "CORE_CAUSAL_MODEL_DISTORTED: independently re-rolling every audience-reach value without any corresponding event, placement, distribution, audience-composition, or historical-data input turns the profession's evidence into arbitrary session parameters. The player performs a generated knapsack calculation, but does not interpret why a medium is stronger this time. Player-facing copy calls these invented rolls '今回の実際の数字,' implying situational evidence that the design never models.",
+      "CAUSAL_REALISM_ERROR is only partially repaired. Removing arriving crowds is correct, but t1 still converts invented threshold totals deterministically into '多くの人にイベントの存在が伝わった' and says SNS posts '広がっていく.' research.md specifically distinguishes dissemination/reach from recognition and reports that SNS reach did not reliably translate to event recognition."
+    ],
+    "high": [
+      "The design chain repeatedly says channel effort/cost is independently re-rolled each session, but design-sim.mjs uses one fixed CHANNEL_COST table. This affects the claimed decision structure and makes play_seeds_v2, c_compression_v2, game_translations_v2, no_manual_exploit_check_v2, and core_back_check_v2 inaccurate descriptions of the executable model.",
+      "The fairness defect persists in the sessions where no certain route exists. optimal_gamble_needed_rate=0.1275 means the rational route still requires a disclosed 50/50 coin flip in about 13% of all sessions; losing that flip denies full success despite optimal reasoning. In addition, the 0.9036 optimal full-win rate implies some generated sessions cannot be fully cleared even with optimal play and favorable coverage. The design does not tell the child that a full-clear route may not exist.",
+      "Unchanged upstream artifacts remain materially stale. core_scope_check_v1 still states family/young certain success is 100%, older success is about 50%, fixed strategies are about 34%, budget is fixed at 5, and the universal-primary minimum-cost combination costs 7—all descriptions of v1 rather than the current model.",
+      "PLAYER_FACING_SPEC_INCOMPLETE remains. The adopted translation says the cards show tier labels and numbers, but provides no exact reusable card copy explaining what a reach point represents, why today's values changed, whether they are estimates rather than measurements, or that thresholds/costs/reach values are game-balance abstractions. Only the press probability is explicitly described as a provisional game value elsewhere.",
+      "fact_sheet_v1 remains inconsistent with the repair and the simulator's own line-63 claim: its uncertainties disclose the audience taxonomy, press probability, and poster inference, but not the invented reach ranges, fixed costs, budget range, or thresholds. c_compression_v2 avoids the exact old false attribution to fact_sheet, but the required traceability disclosure is still absent from the preserved fact sheet."
+    ],
+    "medium": [
+      "The staged disclosure gate successfully forces the primary-audience card first, but the specification then requires opening six information-dense cards and solving three simultaneous threshold sums on a 375px screen. No compact comparison view or persistent table is specified, creating a substantial first-play memory and legibility burden.",
+      "s2 presents one fixed example combination—media relations, school board, and website—without supplying the actual generated values or demonstrating that this combination is legal and optimal for a reproducible session. It therefore cannot serve as a verifiable walkthrough of the current randomized model."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Contrary to the claim that only school_board retains true zeroes, website has NONE for family/older and poster has NONE for family/young. The research does not support these categorical exclusions; the poster older MODERATE tier is also tuning based on an explicitly unquantified inference about different paper media.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:102"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Audience reach is independently randomized inside broad tiers without a modeled cause or observable real-world input. Calling those rolls 'this session's actual numbers' substitutes arbitrary puzzle variation for professional interpretation of audience, distribution, placement, timing, or prior performance data.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:128"
+      },
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "The revised outcome avoids depicting attendance, but still treats invented reach-score thresholds as deterministic proof that many people learned about the event and depicts an SNS post spreading, despite the research's explicit reach-versus-recognition distinction.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v2.json:10"
+      },
+      {
+        "code": "MODEL_SPEC_INCONSISTENCY",
+        "severity": "HIGH",
+        "finding": "Multiple current documents say reach, effort/cost, and budget are all independently re-rolled, while the executable model re-rolls only reach and budget and keeps CHANNEL_COST fixed.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:110"
+      },
+      {
+        "code": "CORRECT_REASONING_RANDOM_FAILURE",
+        "severity": "HIGH",
+        "finding": "A gamble is required by the model's optimal policy in 12.75% of sessions; its 50/50 outcome can deny full success after optimal reasoning. Some generated sessions also lack any full-win route, as shown by the optimal success rate remaining below the probability implied by gamble losses alone.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:255"
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "HIGH",
+        "finding": "core_scope_check_v1 records v1's fixed-budget, fixed-solution, and old probability results and directly conflicts with design-sim.mjs v2 and design-sim-result.json.",
+        "file": "factory/projects/legacy-reach-mix/design/core_scope_check_v1.json:5"
+      },
+      {
+        "code": "PLAYER_FACING_SPEC_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "No exact card explanation defines the semantics and evidentiary status of the randomized reach points, costs, and thresholds. The adopted copy instead labels them as today's actual numbers, risking presentation of balance inventions as measured facts.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v2.json:9"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The preserved fact sheet does not disclose reach ranges, costs, budget range, or thresholds as invented values, despite design-sim.mjs claiming that it now does and the repair being required to preserve the fact sheet accurately.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:35"
+      },
+      {
+        "code": "FIRST_PLAY_COGNITIVE_LOAD",
+        "severity": "MEDIUM",
+        "finding": "After the initial gate, the child must inspect six separate cards and retain 18 reach values plus costs while checking four constraints; no persistent comparison table or equivalent externalization is specified.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v2.json:8"
+      },
+      {
+        "code": "UNVERIFIABLE_PLAY_SEED",
+        "severity": "MEDIUM",
+        "finding": "The older-primary seed names a proposed three-channel route but supplies no reproducible session values proving that it is the best legal choice for the described roll.",
+        "file": "factory/projects/legacy-reach-mix/design/play_seeds_v2.json:16"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 17/17 and exactly matched design-sim-result.json: optimal=0.9036, gamble_needed=0.1275, certain routes family=0.9209/young=0.8945/older=0.7030, random=0.2788, fixed=0.1943, triple optimal=0.7351/fixed=0.0073/random=0.0224.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": true,
+      "zero_values_honestly_grounded": false,
+      "probability_disclosed_honestly": true,
+      "gambling_element_feels_fair_not_punishing": false,
+      "causal_realism_honest": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:95 — TIER_RANGE defines WEAK as 0–2, so even repaired 'trickle' tiers can still produce categorical zero in an individual session.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:104 — school_board young/older are NONE, but the assertion that only institution-family audiences can physically see school or daycare notices is not categorically true of students, staff, visitors, or participating high schools.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:106 — website remains exactly zero for family and older, contrary to the stated every-channel/every-audience repair.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:107 — poster remains exactly zero for family and young, and older is upgraded to MODERATE using evidence that research.md itself labels an unquantified inference.",
+      "factory/projects/legacy-reach-mix/research.md:336 — research explicitly says poster audience effects were not quantitatively verified.",
+      "factory/projects/legacy-reach-mix/research.md:483 — only roughly 2–3 of the 18 channel/audience relationships have direct measured support; most are directional inference or invention.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:110 — channel costs are fixed constants, disproving current artifacts' repeated claim that effort is re-rolled.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:128 — newSession independently draws reach values without any modeled contextual cause.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v2.json:9 — player-facing specification calls generated values '今回の具体的な数字' and does not disclose reach, cost, or threshold values as balance abstractions.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v2.json:10 — successful totals deterministically become widespread recognition and SNS spreading, although the research separates exposure from recognition.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v2.json:15 — one commit and read-only, non-scored reflection close same-session re-toggle and spam-submit.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v2.json:40 — s4 explicitly provides Gate G reflection and Gate H partial outcome without rewriting the result.",
+      "factory/projects/legacy-reach-mix/design/core_scope_check_v1.json:5 — untouched validation still cites v1's 100% family/young certain routes, approximately 50% older result, approximately 34% fixed strategies, fixed budget 5, and obsolete fixed combination.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:35 — uncertainties omit the reach ranges, costs, budget range, and thresholds that design-sim.mjs:63 claims were added.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2 — stored deterministic results exactly matched the fresh run.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:3 — optimal reasoning wins only 90.36% overall; disclosed odds do not ensure that every well-reasoned attempt has a fair path to mastery.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v2.json:2 — the primary-card gate repairs the prior ambiguity about the first required action.",
+      "factory/projects/legacy-reach-mix/research.md:384 — reach_mix is genuinely distinct from crowd flow, venue layout, and sound check in timing, location, information, and operation."
+    ],
+    "recommended_actions": [
+      "Route this iteration to REDESIGN_REQUIRED rather than another parameter repair.",
+      "Replace independently randomized reach scores with intelligible scenario evidence that causes performance to vary—for example audience composition, distribution location, lead time, existing followers, prior survey results, or available partner facilities—so the child interprets professional context rather than arbitrary rolls.",
+      "Remove all unsupported NONE mappings. Do not use the poster-to-older upgrade as a win-rate tuning lever unless stronger evidence is obtained; distinguish street posters from自治会回覧板/掲示板.",
+      "Grade the quality of the communication plan deterministically. Press pickup may remain as an honest secondary world event, but it should not determine whether correct reasoning receives the main success recognition.",
+      "Separate actions, exposure indicators, reactions/inquiries, and attendance explicitly. Show concrete publication/distribution outputs without claiming threshold totals prove widespread awareness.",
+      "Create a single authoritative v2 chain, update or replace fact_sheet/scope/ae/core-scope artifacts, and ensure every statement about randomized inputs matches executable code.",
+      "Provide exact player-facing explanations for every metric and a persistent comparison table suitable for a 375px screen, explicitly labeling all balance values as hypothetical estimates rather than measured facts."
+    ]
+  },
+  "elapsed_sec": 165.344
+}

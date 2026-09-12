@@ -1,0 +1,8 @@
+{
+  "core": "媒体の特性を開いて確認し、組み合わせを変更しながら、手間と3対象への到達のバランスを整える",
+  "scope": "イベント編／なんかイベントをやることになった！",
+  "scope_is_representative_because": "(current implementation; verify)",
+  "profession_name_hidden_test": "(re-run)",
+  "derived_from": "reverse_audit",
+  "reverse_audit": "factory/state/legacy/reverse-audits/reach_mix.json"
+}

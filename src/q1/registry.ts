@@ -90,7 +90,7 @@ export const gameRegistry: Record<string, ComponentType<Q1GameProps>> = {
   line_debug: FactoryLineGame, // データで原因を探し、調整して再実行
   // イベント編
   plan_mix: PlanEventGame, // 条件の中で企画を組み合わせる
-  reach_mix: PromoGame, // 届けたい相手ごとの到達を組み立てる
+  reach_mix: PromoGame, // 今回の重点対象・状況を見て、3つの広報プラン案を比較し妥当な1つを選ぶ
   timetable: TimetableGame, // 演目＋転換を並べて終演に合わせる
   venue_layout: VenueLayoutGame, // 会場に配置して見やすさ・通りやすさを試す
   sound_check: SoundCheckGame, // 機材を操作して席ごとの聞こえ方を合わせる

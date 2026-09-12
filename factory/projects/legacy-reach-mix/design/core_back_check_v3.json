@@ -1,0 +1,7 @@
+{
+  "core_still_intact": true,
+  "scope_still_representative": true,
+  "d_still_performed_by_child": true,
+  "notes": "採用した翻訳t4-scenario-driven-reach（game_translations_v4.json、REDESIGN #1・design_iteration 1->2）は、scope_core_v1.jsonのcoreが定義する『今回の重点対象を確認し、限られた手間の中で媒体を組み合わせる』という単一の判断軸を、design review r1（FAIL 31）・r2（FAIL 38）が指摘したすべてのBLOCKERを解消したうえで一貫して保持している。(1) OBVIOUS_BINARY_CHOICE是正（r1）と、その後r2で再指摘されたCORE_CAUSAL_MODEL_DISTORTED是正: design-sim.mjs v3は、媒体の届きやすさを理由のない乱数ではなく、3つの名前のある・画面に表示される状況設定（協力施設数・フォロワー数・準備期間）から一意に、理由つきで計算する構造へ転換した——game_translations_v4.json/play_seeds_v3.json/no_manual_exploit_check_v3.jsonのすべてに一貫して反映されている。(2) EXCLUSIVITY_OVERCLAIM是正: website/posterを含むすべての媒体が、状況設定（特に準備期間による副次的トリクル）次第で他対象へも小さな到達を持ちうる構造にした——school_boardのみ、学校・保育園という場所の物理的性質上、根拠のある0として維持しており、根拠のない0と根拠のある0を区別している（reference_research_v3.json）。(3) CAUSAL_REALISM_ERROR是正: 成功の定義を『主催団体が予定していた発信を計画どおりに実行できたか』という、主催団体自身の統制可能な行為の達成度へ絞り込み、来場者数・認知度の変化については一切主張しない表現に統一した（game_translations_v4.json）。design-sim.mjs v3の検証結果（optimal_reasoning_full_win_rate≈0.85、fixed_combo_ignoring_session≈0.12、3ラウンド独立合成でoptimal≈0.63 vs fixed≈0.002）は、D（子ども自身の、今回の状況設定に基づくその場の判断）が実質的に必要とされていることを裏付ける。旧実装のreverse-audit指摘（brute force）は単発確定化で維持解消されている。この修正が実際にOBVIOUS_BINARY_CHOICE/CORE_CAUSAL_MODEL_DISTORTEDを完全に解消できているかどうかの最終判断は、design review r3に委ねる。",
+  "pass": true
+}

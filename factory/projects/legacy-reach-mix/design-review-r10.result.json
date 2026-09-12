@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r10",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 44,
+    "career_authenticity_score": 44,
+    "game_quality_score": 62,
+    "blockers": [
+      "CAUSAL_REALISM_ERROR was reintroduced by the attempted Plan B causal-chain fix. A low follower count is now said to cause the first post's audience reaction not to spread, despite the chain explicitly claiming that no target-side reaction is depicted. This is the same unsupported deterministic audience-response inference previously removed."
+    ],
+    "high": [
+      "PROPAGATION_GAP remains in the CURRENT chain: ae_v8 and fact_sheet_v5 still specify player-facing reference cards, and ae_v8 describes one as based on Takeuchi 2023's measured reach ranking. The adopted t5 and first-play artifact instead say the ranking/reference card was completely removed. An implementation cannot follow both specifications.",
+      "SOURCE_TRACEABILITY_MISMATCH remains in player-facing copy. Plan A says flyers reached the most people in an actual event, but the source measured self-reported information sources only among surveyed attendees; it did not measure total reach or establish that the composite flyer/school-notice plan reached the most people."
+    ],
+    "medium": [],
+    "low": [
+      "core_back_check_v12 line 5 initially identifies game_translations v13 as the adopted current translation even though the CURRENT pipeline artifact is v14; the same note later describes the v14 changes. This is stale version labeling, though its substantive summary includes the latest changes.",
+      "The proposed 108px sticky summary containing an introduction, audience line, three condition lines, and padding remains unusually tight and needs implementation-stage rendering verification."
+    ],
+    "failure_codes": [
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "Plan B's revised failure branch deterministically turns low follower growth into the first post's reaction failing to spread. That is an audience-side engagement result, contradicting the same field's assertion that target-side reactions are never depicted, and the cited research does not establish this deterministic outcome.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v14.json:86",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "PROPAGATION_GAP",
+        "severity": "HIGH",
+        "finding": "The CURRENT AE and fact sheet retain a reference-card mechanism, including a card described as based on a measured reach ranking, while adopted t5, first_5_seconds, and no_manual_exploit_check state that the ranking/reference card no longer exists. The full chain is therefore not implementation-consistent.",
+        "file": "factory/projects/legacy-reach-mix/design/ae_v8.json:4",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The exact player-facing Plan A copy converts a survey of information sources among attendees into a claim that the channel reached the most people. The research supports 'most frequently reported source among surveyed attendees,' not measured total reach by the composite plan.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v14.json:85",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 20/20. Results matched design-sim-result.json: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, and recorded frequency objects were unchanged.",
+      "design_sim_numbers_unchanged_from_r9": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": false,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_now_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": false,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/game_translations_v14.json:86 — success and failure committee reactions genuinely differ, but Plan B now says low follower growth caused the first post's reaction not to spread, then incorrectly claims no target-side reaction was depicted.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v14.json:85 — Plan A's exact copy says it had a record of reaching the most people; research.md and fact_sheet_v5 identify the underlying evidence as an information-source survey of 334 attendees.",
+      "factory/projects/legacy-reach-mix/design/ae_v8.json:4 — CURRENT AE still requires a general-strength/weakness reference card based on Takeuchi's measured reach ranking.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v5.json:27 — CURRENT fact sheet still lists general media-strength reference cards as tools.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v14.json:85 — adopted t5 says no fixed-strength ranking reference information exists.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2 — first screen says the old persistent strength-ranking reference card was completely removed.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2-5 — only the confirmation button is initially disabled; all three closed plan cards are tappable, so the r9 interaction contradiction is resolved.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — bestPlanSet returns every maximum-fit plan and sessionWin accepts membership, with no fixed tie-break.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150-166 — independentPlayerStrategy uses its own isWeakenedFromDisclosedFacts implementation and shares no scoring helper with planFit/bestPlanSet.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v8.json:10 — one scored confirmation and a non-scored reflection prevent same-session brute-force success.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v6.json:40 — s4 preserves honest failure followed by mandatory non-scored reconsideration using the original evidence.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all 11 registered artifacts are marked CURRENT and source_artifacts form the expected fact_sheet v6-to-downstream cascade, but CURRENT content still conflicts about reference cards.",
+      "factory/projects/legacy-reach-mix/design/core_back_check_v12.json:5 — note begins by identifying game_translations v13 despite the pipeline's CURRENT v14, then later describes v14 fixes."
+    ],
+    "recommended_actions": [
+      "Remove the unsupported audience-response clause from Plan B. Use an organizer-controlled consequence that follows directly from the disclosed condition, without asserting views, engagement, awareness, or reaction.",
+      "Resolve the reference-card contradiction across fact_sheet and AE. If adopted t5 is authoritative, remove the reference-card tool and measured-ranking wording rather than allowing it to re-enter implementation.",
+      "Rewrite Plan A's evidence statement narrowly as an attendee-survey result, explicitly limited to that event and respondents, or omit the empirical superlative from player-facing copy.",
+      "Update core_back_check to identify game_translations v14 consistently and re-submit affected downstream artifacts."
+    ]
+  },
+  "elapsed_sec": 100.233
+}

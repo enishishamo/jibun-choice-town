@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r14",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "SOURCE_TRACEABILITY_MISMATCH remains in research.md despite the claimed project-wide rewrite. Several passages still convert Takeuchi 2023's attendee self-reported information-source answers into claims about relative effectiveness, strongest reach routes, or directly measured reach. The most explicit surviving examples say flyer distribution was the strongest way to reach families, television was second in strength, and that several audience-channel relationships have directly measured strong reach/effective-reach values. These claims exceed what the N=334 attendee survey measured.",
+      "The §5 flyer row is not fully accurate. The posting row now correctly identifies school/institution bulletin-board posting as an unmeasured inference, but the flyer row still says hand delivery reaches people reliably and labels its validity the highest based on the 148 attendee answers. The survey establishes that 148 surveyed attendees named flyers as an information source, not reliable delivery or comparative total reach."
+    ],
+    "medium": [],
+    "low": [
+      "The specified 108px sticky comparison bar still requires implementation-stage verification at 375px width."
+    ],
+    "failure_codes": [
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "Takeuchi 2023's self-reported attendee information-source counts are still presented in multiple non-historical parts of research.md as evidence of channel effectiveness or directly measured reach, including claims that flyers were the strongest family-reach method, television had second-place strength, and several audience-channel relationships had directly measured strong reach/effective reach rates.",
+        "file": "factory/projects/legacy-reach-mix/research.md:37,322-326,373-375,443-445,482-485",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The §5 flyer row overstates the evidence by saying hand delivery reaches people reliably and grounding the highest-validity characterization in the 148 responses. The posting row is corrected, but the flyer evidence only establishes attendee-reported information-source frequency and documented distribution activity—not reliable or total reach.",
+        "file": "factory/projects/legacy-reach-mix/research.md:367-369",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, best-plan frequencies=0.3815/0.3841/0.3796.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": true,
+      "source_traceability_honest": false,
+      "reference_card_description_consistent": true,
+      "no_stale_version_references_remain": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/research.md:37-50 — introduces Takeuchi's response-count ordering as evidence about relative effectiveness and support for the claim that media reach different audiences, even though the same passage identifies the data as attendee self-reports.",
+      "factory/projects/legacy-reach-mix/research.md:195-217 — accurately describes the underlying measurement as N=334 attendee answers to which information source told them about the event.",
+      "factory/projects/legacy-reach-mix/research.md:322-326 — says flyer distribution was the strongest means of reaching families and that its effectiveness is supported by the survey, converting attendee-source frequency into reach/effectiveness.",
+      "factory/projects/legacy-reach-mix/research.md:367 — correctly states that school/children's-center posting was not directly measured and is only an inference by analogy with documented flyer distribution.",
+      "factory/projects/legacy-reach-mix/research.md:369 — correctly identifies flyers as the most frequently reported source but then overstates the old description as reliable delivery.",
+      "factory/projects/legacy-reach-mix/research.md:373-375 — calls media exposure second in strength based on the television response count.",
+      "factory/projects/legacy-reach-mix/research.md:419-425 — accurately labels the values as information-source response counts and expressly disclaims direct measurement of channel reach.",
+      "factory/projects/legacy-reach-mix/research.md:443-445 — nevertheless says the research demonstrates an ordering of flyer/school distribution/media over SNS, conflating the flyer response category with school distribution and treating response frequency as channel strength.",
+      "factory/projects/legacy-reach-mix/research.md:482-485 — explicitly calls flyer-to-family strong reach, SNS effective reach rate, and television/newspaper-to-older-audience strong reach directly measured numerical relationships.",
+      "factory/projects/legacy-reach-mix/research.md:520-524 — the FACT_CHECK_REQUIRED list correctly states that Takeuchi reports self-declared information sources from one event and did not directly measure channel reach.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v9.json:17 — distinguishes the measured flyer response category and documented flyer distribution from unmeasured bulletin-board posting.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v18.json:85 — adopted Plan A now says only school/kindergarten flyer distribution was documented; posting is not presented as separately measured.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — the win condition accepts every plan in the maximum-fit set, eliminating arbitrary tie-breaking.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150-180 — the player-visible-facts strategy independently reconstructs weakening conditions and matches the accepted-answer set.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:1 — stored results report all_checks_passed=true and exactly match the fresh 20/20 execution.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all eleven registered artifacts are CURRENT; source_artifacts form a sensible fact_sheet→scope→AE/seeds→research/compression→translation→checks DAG."
+    ],
+    "recommended_actions": [
+      "Rewrite every surviving effectiveness/reach characterization in research.md—especially lines 37-50, 322-326, 373-375, 443-445, and 482-485—as attendee-reported information-source frequency, with no claim of total reach, reliable delivery, effectiveness rate, or directly measured audience-specific strength.",
+      "Revise the §5 flyer row to retain only the documented facts: 148 surveyed attendees named flyers, approximately 12,000 flyers were distributed, and distribution required multiple days and facility coordination. Remove or explicitly label as inference the claim that hand delivery reaches people reliably.",
+      "Re-run a full-document semantic search for combinations of Takeuchi/148/116 with terms such as 強い, 効果, 到達, 届く, 実効, 確実, and 順位; checking only the previously banned exact phrases is insufficient."
+    ]
+  },
+  "elapsed_sec": 151.033
+}

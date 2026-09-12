@@ -1,0 +1,134 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r5",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 41,
+    "career_authenticity_score": 41,
+    "game_quality_score": 44,
+    "blockers": [
+      "CORE_CAUSAL_MODEL_DISTORTED persists in the executable win condition, although the precomputed-point knapsack itself is gone. In a trap session, weakening the audience-matching plan does not provide evidence for which of the two nonmatching plans better serves that audience. Both receive the same internal score of 2 whenever unweakened, and bestPlan silently accepts whichever appears first in the fixed PLAN_IDS order. For example, with family as the priority, coopInstitutions=1, followerTier>0, and prepWeeks>1, sns_plan and media_plan are equally scored, but only sns_plan wins. A child who correctly reads every scenario fact cannot infer that tie-break from the cards. The reported legitimate_reasoning=1 is therefore an oracle calling bestPlan itself, not a demonstrated human-interpretable strategy.",
+      "CAUSAL_REALISM_ERROR remains in the failure feedback. The specification says it makes no audience-awareness claim, yet it deterministically turns a low follower tier into a post being 'ほとんど見られなかった' and short preparation into weak journalist response. Those are audience-side exposure/reaction claims, not controllable production complications, and the cited research supplies neither deterministic relationships nor the game's exact cutoffs."
+    ],
+    "high": [
+      "The adopted translation does not provide exact player-facing copy for all three plan cards, all scenario states, or the language connecting each state to a weakness. Consequently it cannot establish that a 10–12-year-old can discover the internal equality cutoffs or distinguish the two alternative plans in trap sessions.",
+      "WORLD_FEEDBACK_QUALITY remains inadequate. Successful play produces only the organizer's printing, posting, publishing, or sending process; it shows no observable change for another person or society. The failure branches that attempt external feedback instead introduce the unsupported causal claims identified above.",
+      "The claimed professional basis for reviewing three precomposed plans is overstated. research.md supports audience differences, distribution locations, media observations, and constraints, but does not document the asserted real-world 'plan review/checking process' or establish that any unweakened off-target plan becomes preferable to a weakened target-matching plan.",
+      "The first-five-seconds specification is not sufficient for a 375px implementation: it gives no card dimensions, font sizes, wrapping limits, viewport behavior, or persistent comparison layout. It also expects four sequential reveals within seconds while initially showing seven cards and a disabled control without explicit instructional copy."
+    ],
+    "medium": [
+      "game_translations_v7.json retains a false historical assertion that t4's v4 formulas fixed the EXCLUSIVITY_OVERCLAIM implementation bug, directly contradicting the r4 result, which found website mappings permanently zero and school_board exclusions indefensible.",
+      "The simulation verifies strategy frequencies but contains no assertion that the best plan is unique or that independently reasoned alternatives with equal planFit scores are accepted. Thus all 18 checks pass while the decisive ambiguity remains undetected."
+    ],
+    "low": [
+      "game_translations_v7.json uses the typo 'report機関' in t5 strengths."
+    ],
+    "failure_codes": [
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Trap sessions replace the old numeric knapsack with an internally scored target-match-plus-veto lookup. When the matching plan is weakened, both unweakened off-target plans score 2; fixed object iteration, rather than professional evidence visible to the child, selects the sole accepted answer.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:74"
+      },
+      {
+        "code": "ARBITRARY_TIE_BREAK",
+        "severity": "BLOCKER",
+        "finding": "bestPlan uses a strict greater-than comparison over fixed PLAN_IDS order, so equal-scoring plans are not both accepted. The simulation's 'legitimate reasoning' strategy simply calls this hidden oracle and therefore cannot prove a child can derive the accepted choice.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:96"
+      },
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "Despite disclaiming awareness and attendance claims, the adopted reaction deterministically claims that low followers cause a post to be barely viewed and short preparation causes weak press response. These are unsupported audience-side exposure/reaction outcomes rather than production-only consequences.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v7.json:86"
+      },
+      {
+        "code": "PLAYER_FACING_SPEC_INCOMPLETE",
+        "severity": "HIGH",
+        "finding": "No exact complete card copy is supplied for the three plans and every scenario state, so the discoverability, age-level clarity, and alignment of player-visible evidence with the executable cutoffs cannot be verified.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v7.json:85"
+      },
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "HIGH",
+        "finding": "The honest success branch stops at the organizer's internal production activity and does not show a visible effect on another person or society, leaving the intended A→B→C⇄D→E payoff incomplete.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v7.json:90"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The current chain presents review of precomposed plans as a documented representative confirmation process, but research.md does not establish that process or the rule that any unweakened off-target plan outranks a weakened audience-matching plan.",
+        "file": "factory/projects/legacy-reach-mix/design/scope_core_v3.json:4"
+      },
+      {
+        "code": "FIRST_PLAY_LEGIBILITY",
+        "severity": "HIGH",
+        "finding": "The first-screen document does not specify mobile dimensions, typography, overflow, or a persistent comparison surface, while requiring four prerequisite taps and presenting seven cards plus a disabled button on the 375px target.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v5.json:2"
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "MEDIUM",
+        "finding": "The rejected t4 history says its v4 repair resolved EXCLUSIVITY_OVERCLAIM, contradicting design-review-r4.result.json's executable findings.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v7.json:74"
+      },
+      {
+        "code": "SIMULATION_ASSERTION_WEAKNESS",
+        "severity": "MEDIUM",
+        "finding": "The 18 passing checks never test uniqueness of bestPlan, acceptance of equal-best alternatives, or whether a player-visible reasoning rule reproduces bestPlan without calling the oracle.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:206"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run produced 18 passed, 0 failed and matched design-sim-result.json exactly: legitimate_reasoning=1, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.3285, triple_name_match_only=0.3443. These figures do not detect equal-score arbitrary tie-breaking.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": false,
+      "mechanic_structurally_capable_of_passing": true,
+      "defect_fixable_by_repair": true,
+      "trap_sessions_genuinely_require_scenario_reading": true,
+      "causal_realism_honest": false,
+      "world_feedback_adequate": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:78 — an unweakened audience-matching plan scores 3.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:79 — a weakened audience-matching plan drops to 1.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:80 — every unweakened off-target plan receives the identical score 2, regardless of which audience it might serve secondarily.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:98 — plans are evaluated in fixed PLAN_IDS order.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:100 — strict score > bestScore silently keeps the first plan on ties.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:132 — legitimate_reasoning is measured by passing bestPlan(s) directly back to sessionWin, making the 100% result tautological.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:211 — the trap assertion tests only whether the audience-name strategy loses; it does not test whether the accepted alternative is uniquely inferable.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v7.json:85 — card content is described generically rather than specified as exact player-facing copy.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v7.json:86 — '投稿がほとんど見られなかった' and '記者の反応も鈍かった' are external exposure/reaction claims despite the production-only framing.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v7.json:90 — successful E explicitly limits itself to smooth plan execution and disclaims recognition or attendance change.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v7.json:94 — the artifact itself acknowledges that external world feedback remains only partially addressed.",
+      "factory/projects/legacy-reach-mix/research.md:137 — the research distinguishes SNS reach from actual event recognition and warns against converting one into the other.",
+      "factory/projects/legacy-reach-mix/research.md:483 — only roughly two or three of eighteen audience-channel relationships have direct measured support; most are directional inference or invention.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v3.json:45 — the exact weakening condition is admitted to be a game-side invention despite being decisive.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v5.json:2 — seven closed/disabled cards and a disabled confirmation control are present initially without specified mobile geometry or instruction.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v7.json:74 — the claim that t4 fixed EXCLUSIVITY_OVERCLAIM contradicts the r4 review findings.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v5.json:10 — one scored commitment and a non-scored reflection close same-session brute force and specify Gate G/H.",
+      "factory/projects/legacy-reach-mix/research.md:384 — reach_mix remains distinct from crowd flow, venue layout, and sound check in timing, location, information, and operation."
+    ],
+    "recommended_actions": [
+      "Keep the three-plan comparison form; it is structurally different from the rejected knapsack and the profession itself is not shown to be incompatible with Factory standards. The present defect is repairable without another mechanic redesign.",
+      "Eliminate hidden tie-breaking. Either accept every genuinely equal-best plan, or add player-visible, research-grounded evidence that uniquely distinguishes the two alternatives for the current audience. Add exhaustive tests proving every generated session has at least one accepted answer and that every rejected answer is distinguishable from every accepted answer using visible facts.",
+      "Replace the oracle-based legitimate_reasoning test with an independently implemented player strategy derived only from specified card text. Assert that it always reaches an accepted answer.",
+      "Provide exact Japanese copy for every audience card, every scenario state, and all three plan cards. Make each comparison rule understandable without exposing scores or undocumented cutoffs.",
+      "Reframe failure consequences strictly around controllable outputs: for example, approved distribution locations unavailable, a scheduled post cannot be issued through the planned account, or the press packet remains incomplete. Do not claim views, awareness, journalist response, inquiries, or attendance unless independently observed and honestly qualified.",
+      "Add an honest external response that does not determine correctness—for example, named recipients receiving the finished materials or a facility staff member accepting a permitted notice—so E visibly reaches another person without claiming awareness or attendance.",
+      "Specify and prototype the 375px layout with minimum body text size, card widths, collapsed/expanded behavior, scroll position preservation, and a persistent compact comparison summary.",
+      "Correct the stale t4 historical statement and the 'report機関' typo."
+    ]
+  },
+  "elapsed_sec": 126.649
+}

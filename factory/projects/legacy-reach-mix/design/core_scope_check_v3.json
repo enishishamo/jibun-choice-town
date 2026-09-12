@@ -1,0 +1,7 @@
+{
+  "core_consistent": true,
+  "scope_representative": true,
+  "profession_name_hidden_test_pass": true,
+  "notes": "scope_core_v2.jsonのcoreとae_v2.jsonのD/Eは、『今回の重点対象と今回の状況設定を確認し、限られた手間の中で媒体を組み合わせる』『成功は主催団体自身が統制できる発信の実行度で定義する』という単一の判断軸を一貫して記述しており矛盾はない。design-sim.mjs v4（design review r3 FAIL 40是正、design_iteration 2のREPAIR）で数値検証済みの勝敗構造と整合する: 網羅探索による最適な手筋（3つの状況設定——協力施設数1-3・フォロワー0-2・準備期間1-3週——から媒体ごとに独立した計算式で決まる今回の数字に対するその場の計算）がセッションの約88%でフルクリアを達成し、family/young/older各primaryで賭けなしの確実な勝ち筋が存在するセッションはそれぞれ約88%・93%・68%。今回の手間の上限は毎セッション独立にランダム（4〜6）。内容を無視した固定の組み合わせはいずれも単発で約16%、3ラウンド独立合成では約0.5%まで低下する。すべての対象を主対象水準で同時に満たす最安の組み合わせはBUDGET上限を超え、『とりあえず大きく賭ける万能手筋』は存在しない。design review r1（FAIL 31、OBVIOUS_BINARY_CHOICE）→r2（FAIL 38、CORE_CAUSAL_MODEL_DISTORTED/EXCLUSIVITY_OVERCLAIM/CAUSAL_REALISM_ERROR）→r3（FAIL 40、同3系統の再発——単一の一律ルールが機械的な閾値だったこと、website/posterの排他的な0が実装バグとして残存していたこと）を経て、design_iteration 2のREPAIRで、媒体ごとに独立した計算式（各媒体固有の状況変数から連続的に到達を計算）へ改め、school_board以外のすべての媒体が実際に3対象すべてへ非ゼロの到達を持つよう実装バグを修正し、成功/部分的成功いずれの文言も主催団体自身の行為の完了のみを主張する表現に統一したことを確認した。profession_name_hidden_testは、C（媒体ごとの届き方データ、今回の状況設定）とD（重点対象・状況設定に応じた媒体の組み合わせ判断）が他の既存Q1ゲーム（legacy-crowd-flow・legacy-venue-layout・sound_check）と重複しないことを確認済み（research.md §6）。",
+  "pass": true
+}

@@ -1,0 +1,4 @@
+{
+  "no_art_required": true,
+  "revision_note": "v1: t5-compare-candidate-plans (game_translations_v18/v19) is text + CSS only — a sticky comparison bar and 3 plan cards, no illustrations. The existing place image (venue_map, already used for this experience's Q1 intro) is reused unchanged; no new art asset is needed."
+}

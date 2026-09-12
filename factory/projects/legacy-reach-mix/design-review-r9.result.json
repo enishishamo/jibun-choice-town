@@ -1,0 +1,104 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r9",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 55,
+    "career_authenticity_score": 78,
+    "game_quality_score": 55,
+    "blockers": [],
+    "high": [
+      "WORLD_FEEDBACK_QUALITY remains unresolved. The only external-person reaction is explicitly invariant and decorative—shown regardless of correctness—so it cannot demonstrate a person/social consequence caused by the child's judgment. Success otherwise ends with the organizer's own production work progressing.",
+      "The 375px first-play specification contradicts itself: it says all three plan cards are initially disabled, while the required first action is tapping those cards to open them. A literal implementation makes the disclosure gate impossible to complete."
+    ],
+    "medium": [
+      "Plan B's failure outcome remains causally unexplained: low follower count can constrain likely SNS reach, but does not explain why already-prepared additional publicity material is left unused.",
+      "Propagation into the current fact sheet is incomplete. Its decision field still uses singular-superlative wording ('最もよく合うプランを選ぶ') and never records multiple-answer acceptance. This does not override the executable win condition, but leaves the declared full-chain propagation incomplete.",
+      "The claimed independent strategy still calls planIsWeakenedThisSession, the same helper used by planFit. The exhaustive set-equality check proves the two paths agree, but the description overstates this as a fully independent implementation."
+    ],
+    "low": [
+      "The 108px sticky bar must contain an introduction, one emphasized audience line, three fact lines, and padding. This is exceptionally tight and should be verified with an actual 375px rendering; the design itself acknowledges possible viewport pressure."
+    ],
+    "failure_codes": [
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "HIGH",
+        "finding": "The committee acknowledgment is explicitly unchanged across correct and incorrect outcomes, while the remaining visual changes concern only the organizer's internal execution. It therefore does not supply a visible external consequence caused by the player's choice.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v13.json:90",
+        "fixable_by_narrowing": false
+      },
+      {
+        "code": "FIRST_PLAY_INTERACTION_CONTRADICTION",
+        "severity": "HIGH",
+        "finding": "The layout declares all three plan cards disabled initially but also requires those cards to be tapped open before the confirm button can unlock. The interaction cannot proceed if 'disabled' is implemented literally.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v7.json:2",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "CAUSAL_CHAIN_UNEXPLAINED",
+        "severity": "MEDIUM",
+        "finding": "Plan B maps low followers to prepared additional materials being left unused without explaining the causal connection.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v13.json:86",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "PROPAGATION_GAP",
+        "severity": "MEDIUM",
+        "finding": "The CURRENT fact sheet was not updated with the Human Decision's multiple-answer rule and retains singular-superlative decision wording.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v4.json:31",
+        "fixable_by_narrowing": false
+      },
+      {
+        "code": "SIMULATION_ASSERTION_WEAKNESS",
+        "severity": "MEDIUM",
+        "finding": "independentPlayerStrategy avoids bestPlanSet and planFit but shares planIsWeakenedThisSession with the oracle, so it is not fully independent in the sense claimed by downstream artifacts.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:147",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 20/20. Every reported metric matched design-sim-result.json exactly: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always_pick flyer/sns/media=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple legitimate/name/random=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, best-plan frequencies=0.3815/0.3841/0.3796. The stored file additionally contains all_checks_passed=true and n_per_check=20000.",
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "causal_realism_honest": true,
+      "world_feedback_adequate": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": false,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113 — bestPlanSet returns every plan whose planFit equals the session maximum.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:126 — sessionWin accepts any pick included in bestPlanSet.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:180 — exhaustive sameSet verification compares the acceptable-answer set with the internal oracle.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v13.json:82 — adopted goal explicitly accepts every equally valid plan and forbids a replacement fixed ranking.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v13.json:85 — player-facing C contains no cross-plan tie-break ranking; it exposes only audience fit and each plan's weakening condition.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v8.json:2 — core preserves the audience-plus-scenario comparison D and expressly prohibits finer tie resolution.",
+      "factory/projects/legacy-reach-mix/design/ae_v8.json:5 — AE.D accepts either equally valid plan and adds no finer-grained judgment.",
+      "factory/projects/legacy-reach-mix/design/reference_research_v8.json:34 — revision note correctly states that its references ground single-plan audience/condition relationships, not flyer>media>SNS composite ordering.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v7.json:2 — all plan cards are described as disabled initially despite being the required gate-opening controls.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v7.json:3 — first-play flow requires tapping all three plan cards to unlock confirmation.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v13.json:90 — committee acknowledgment is expressly decorative and invariant across correctness, so it cannot be the player's caused external consequence.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v13.json:91 — one scored commitment followed by a non-scored reflection preserves Gates G and H and closes same-session brute force.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v6.json:40 — s4 specifies honest failure followed by a mandatory, non-scored reconsideration using the original evidence.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v8.json:5 — profession-name-hidden and adjacent-profession boundary checks remain intact.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all 11 current artifacts are marked CURRENT, and downstream source_artifacts consistently point to the newly submitted upstream logical versions."
+    ],
+    "recommended_actions": [
+      "Plain-submit a corrected first_5_seconds specification in which plan cards are visibly unopened but enabled/tappable; only the confirm control should be disabled before all three cards have been opened.",
+      "Plain-submit a genuinely choice-responsive external consequence, or obtain a new Human Decision defining what honest observable person/social result may be shown without making unsupported awareness or attendance claims.",
+      "Use a consistency sync to replace Plan B's unexplained unused-material outcome with a production consequence that follows directly from the stated condition.",
+      "Plain-submit the multiple-answer rule into fact_sheet decisions/outputs_or_value so the root artifact no longer implies only one best plan.",
+      "Narrow the simulation-evidence wording to say the strategies use separate scoring paths but share the disclosed weakening predicate, unless a genuinely separate predicate implementation is added."
+    ]
+  },
+  "elapsed_sec": 116.961
+}

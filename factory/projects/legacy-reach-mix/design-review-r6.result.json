@@ -1,0 +1,130 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r6",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 36,
+    "career_authenticity_score": 36,
+    "game_quality_score": 44,
+    "blockers": [
+      "CAUSAL_REALISM_ERROR remains in the current authoritative chain. Although adopted t5's failure copy itself stays on organizer-controlled production activity, ae_v3.json still says a low follower count causes the post to be barely viewed. That is the same unsupported audience-side exposure claim identified in r5.",
+      "CORE_CAUSAL_MODEL_DISTORTED/SOURCE_TRACEABILITY_MISMATCH remains in the repaired tie-break. The cited study measured self-reported information sources among attendees for one event; it did not measure universal plan effectiveness. The design nevertheless turns flyer 148, television 116, and SNS 22 into a fixed strength ranking for three composite plans, even though the middle plan also includes an unmeasured poster channel and the first includes school/childcare notices. This overgeneralized ranking materially determines the sole accepted answer.",
+      "SOURCE_TRACEABILITY_MISMATCH remains outside scope_core. fact_sheet_v3 and reference_research_v5 still present a real plan-review/checking process as documented or suggested by research.md, despite scope_core_v4 correctly admitting that the source does not document such a workflow."
+    ],
+    "high": [
+      "The submitted current chain is stale and internally inconsistent. The requested scope_core_v5.json does not exist; q1-pipeline.json and core_back_check_v6 reference scope_core_v4, while core_scope_check_v4 still references scope_core_v3 and design-sim v5, omits the disclosed tie-break, and declares the chain passed before the r5 repair. ae_v3 and play_seeds_v5 also retain pre-repair wording and logic.",
+      "The tie-break is disclosed but not reliably usable in the specified mobile interaction. It requires combining target match, the relevant weakening condition, and a cross-plan strength order. The reference is merely somewhere in a vertically scrolling page, while the persistent collapsed surface shows only plan names. No sticky summary or combined state externalizes the three facts at decision time.",
+      "The 375px layout specification contradicts the final copy. A 343px-wide card wrapping at 18–20 full-width characters cannot fit the supplied plan descriptions—especially Plan C—in the stated 3–4 lines or approximately 96px height. Expanded heights, spacing, viewport anchoring, and preservation of the reference/selected scenario while comparing cards remain unspecified."
+    ],
+    "medium": [
+      "The success acknowledgment is causal-safe but weak world feedback. 「これでいこう」 is generic and identical for every successful plan, so it confirms acceptance without responding to what the child noticed or why the choice fit this session.",
+      "Plan B's failure consequence—prepared follow-up material going unused—does not follow intelligibly from a low follower count. It avoids an audience claim but replaces it with an unexplained organizer behavior.",
+      "The simulation's independent strategy does not call bestPlan or planFit, but it still calls the same planIsWeakenedThisSession helper used by the oracle. Therefore it proves agreement of two ranking implementations, not independent derivability from player-facing Japanese copy."
+    ],
+    "low": [],
+    "failure_codes": [
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "The current AE still deterministically converts low follower count into an audience-side exposure result: 「投稿がほとんど見られなかった」.",
+        "file": "factory/projects/legacy-reach-mix/design/ae_v3.json:6"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "A one-event attendee-source count is promoted into a universal ordinal ranking of composite plans and used to choose the only winning answer; poster and school-board components are not represented by the cited 148/116/22 comparison.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:87"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "The fact sheet asserts a real confirmation/review process and says fixed plans are prepared within the committee, although research.md does not document that workflow and scope_core_v4 now admits it is a game-side operationalization.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v3.json:12"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "BLOCKER",
+        "finding": "The reference artifact still says research.md establishes a plan-review process and calls it faithful to a process suggested by Takeuchi 2023, contradicting the repaired scope framing.",
+        "file": "factory/projects/legacy-reach-mix/design/reference_research_v5.json:22"
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "HIGH",
+        "finding": "scope_core_v5.json is absent. The pipeline uses scope_core_v4, while core_scope_check_v4 validates scope_core_v3 and design-sim v5 and therefore is not a current post-r5 check.",
+        "file": "factory/projects/legacy-reach-mix/design/core_scope_check_v4.json:5"
+      },
+      {
+        "code": "ARBITRARY_TIE_BREAK",
+        "severity": "HIGH",
+        "finding": "The tie-break is visible in prose but not adequately externalized at selection time; the child must retain target fit, weakening state, and rank across a long scrolling card stack whose persistent headers contain only plan names.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:3"
+      },
+      {
+        "code": "FIRST_PLAY_LEGIBILITY",
+        "severity": "HIGH",
+        "finding": "The exact plan copy exceeds the specified 3–4 lines and approximately 96px card height at the stated 18–20-character wrap, leaving the 375px expanded layout materially unresolved.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:2"
+      },
+      {
+        "code": "WORLD_FEEDBACK_QUALITY",
+        "severity": "MEDIUM",
+        "finding": "The committee response is safe but generic and invariant, acknowledging approval without reacting to the selected plan or the child's reasoning.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v8.json:86"
+      },
+      {
+        "code": "CAUSAL_CHAIN_UNEXPLAINED",
+        "severity": "MEDIUM",
+        "finding": "Low followers do not explain why the organizer leaves already-prepared follow-up material unused, so Plan B's production-only failure is causally arbitrary.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v8.json:86"
+      },
+      {
+        "code": "SIMULATION_ASSERTION_WEAKNESS",
+        "severity": "MEDIUM",
+        "finding": "independentPlayerStrategy avoids bestPlan and planFit but shares planIsWeakenedThisSession with the oracle, limiting the claimed independence of the verification.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:147"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run produced 19 passed, 0 failed. All reported metric values match design-sim-result.json; the stored file additionally contains all_checks_passed=true and n_per_check=20000. independentPlayerStrategy does not call bestPlan or planFit, but shares planIsWeakenedThisSession with the oracle.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": true,
+      "tie_break_disclosed_and_usable": false,
+      "causal_realism_honest": false,
+      "world_feedback_adequate": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": false,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:144 — independentPlayerStrategy has no bestPlan/planFit call; line 147 reuses planIsWeakenedThisSession.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:87 — comments derive the composite-plan rank from flyer/television/SNS counts.",
+      "factory/projects/legacy-reach-mix/research.md:237 — the figures are information sources reported by attendees in one event, not comparative effectiveness rates for the three composite plans.",
+      "factory/projects/legacy-reach-mix/research.md:334 — poster audience effects were not quantitatively verified.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v8.json:85 — the reference card discloses the ranking, but calls it general effectiveness strength.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v8.json:86 — adopted t5 failure examples contain no audience/follower/journalist reaction claim.",
+      "factory/projects/legacy-reach-mix/design/ae_v3.json:6 — stale audience-side phrase 「投稿がほとんど見られなかった」 remains in the current chain.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v3.json:21 — asserts that real practice has a review/checking process not documented by research.md.",
+      "factory/projects/legacy-reach-mix/design/reference_research_v5.json:22 — directly says research.md documents such a process.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v4.json:4 — correctly characterizes plan comparison as a game-side operationalization, contradicting those artifacts.",
+      "factory/projects/legacy-reach-mix/design/core_scope_check_v4.json:5 — still checks scope_core_v3 and design-sim v5.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v6.json:2 — specifies approximately 96px plan cards and 18–20 full-width characters per line.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v8.json:85 — Plan C's exact copy is substantially longer than the specified 3–4-line capacity.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v6.json:10 — one scored commitment and non-scored reflection close same-session brute force and specify Gates G/H."
+    ],
+    "recommended_actions": [
+      "Route to Human Decision Required; automated repair and redesign budgets are exhausted.",
+      "If implementation is authorized, first establish one authoritative post-r5 chain: remove the stale audience claim, regenerate AE/seeds/core-scope validation, and resolve the scope_core filename/version discrepancy.",
+      "Do not use the 148/116/22 figures as a universal composite-plan tie-break without new evidence. Either accept all genuinely tied alternatives or obtain evidence that directly supports the compared plan-level ordering.",
+      "Prototype the exact Japanese copy at 375px and provide a sticky or compact decision summary showing target, all three weakening states, and rank together.",
+      "Replace the generic acknowledgment with plan-specific but causal-safe committee feedback, and give Plan B a production consequence that actually follows from the stated condition."
+    ]
+  },
+  "elapsed_sec": 137.576
+}

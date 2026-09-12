@@ -1,0 +1,132 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "legacy-reach-mix-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 40,
+    "career_authenticity_score": 40,
+    "game_quality_score": 48,
+    "blockers": [
+      "EXCLUSIVITY_OVERCLAIM remains materially unchanged in executable code. Contrary to the redesign's central claim, school_board is not the only channel with categorical exclusions: flyer→young, website→family/older, and poster→family/young are hard-coded zero in every session, including when prepWeeks>=2. These unsupported exclusions still shape the solution space.",
+      "CORE_CAUSAL_MODEL_DISTORTED is only partially repaired. The three visible facts give some variation an intelligible direction, but the player is handed already-calculated reach scores and still solves a generated threshold knapsack. Several mappings—especially prepWeeks causing a universal binary secondary-reach step and linearly increasing poster/press reach—are neither observed professional evidence nor activities the child interprets or controls. The redesign supplies causal labels, but not a sufficiently grounded causal model.",
+      "The executable and documentary models continue converting invented audience-reach formulas and thresholds into claims that information reached particular audiences. Reframing the headline success as execution of planned distribution helps, but t4 still calls the metrics audience '到達' and says insured audiences continue to receive information, while the sources support only directionality and controllable publication/distribution actions."
+    ],
+    "high": [
+      "Correct reasoning remains unfairly gated by luck or by unwinnable generated sessions. Media pickup is required in 18.93% of sessions and can deny the main success on a disclosed 50/50 roll; moreover, the 85.42% optimal full-win rate and route rates imply some sessions lack any full-clear route even with favorable coverage. The child is not warned that full success may be impossible.",
+      "The preserved upstream artifacts are materially stale. fact_sheet_v1 omits the three scenario facts from information_used and still describes successful selection as people learning about the event and leading to attendance; scope_core_v1 and ae_v1 describe the older fixed/randomization-era model and awareness-based E. They do not accurately specify the adopted t4 model.",
+      "Player-facing evidentiary disclosure remains incomplete. The design identifies the press probability as provisional, but does not give exact child-facing copy clearly labeling reach formulas, costs, budgets, and thresholds as invented game abstractions. Calling formula outputs this session's reach numbers risks presenting unsupported precision as situational measurement."
+    ],
+    "medium": [
+      "The three-stage disclosure gate makes the initial action unambiguous but increases first-play burden: the child must open one target card, three fact cards, then six media cards before acting, while retaining up to 18 reach values, six costs, a budget, and three thresholds on a 375px screen. No persistent comparison table or compact externalization is specified.",
+      "The exact linear slopes and cutoffs are substantially more precise than the research. Directional relations such as more cooperating facilities helping distribution are reasonable abstractions, but formulas such as family=2+institutions, poster older=1+weeks, and a universal secondary step at two weeks are unsupported. This becomes more than harmless abstraction where those values determine hard success/failure.",
+      "The claimed success scene is concrete—printed flyers, posted notices, published posts, and delivered press materials—and avoids attendance claims, but the reward is framed chiefly as satisfying abstract reach bars. A child-facing implementation will need stronger visible completion feedback without upgrading exposure into recognition."
+    ],
+    "low": [
+      "The source comment says media relations 'becomes available' with prep time even though the executable design makes it available at all prep durations; the later text and test state the intended behavior correctly."
+    ],
+    "failure_codes": [
+      {
+        "code": "EXCLUSIVITY_OVERCLAIM",
+        "severity": "BLOCKER",
+        "finding": "Four non-school-board mappings remain categorically zero across all sessions, directly contradicting t4's assertion that every other medium can gain secondary reach when preparation time is at least two weeks.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:106"
+      },
+      {
+        "code": "CORE_CAUSAL_MODEL_DISTORTED",
+        "severity": "BLOCKER",
+        "finding": "Visible scenario facts improve interpretability, but arbitrary exact formulas and a universal prepWeeks cutoff manufacture audience effects that the research does not establish. Because media cards supply the computed answers, play remains primarily threshold arithmetic rather than interpretation of professional evidence or execution choices.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:103"
+      },
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "Although the principal success sentence is now about executed distribution, t4 still evaluates invented audience reach and asserts that information has reached insured audiences. The formula-backed thresholds cannot establish audience-side exposure as a deterministic fact.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v4.json:71"
+      },
+      {
+        "code": "CORRECT_REASONING_RANDOM_FAILURE",
+        "severity": "HIGH",
+        "finding": "The optimal policy needs the 50/50 press gamble in 18.93% of sessions, and some generated sessions have no full-win route. Thus sound reasoning can still be denied the principal success by an invented random outcome or an impossible instance.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:207"
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "HIGH",
+        "finding": "Untouched fact_sheet/scope/ae artifacts omit the new scenario-driven decision model and retain awareness/attendance-oriented outcome language that conflicts with adopted t4's claimed output-only E.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:27"
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The preserved fact sheet does not disclose reach formulas, channel costs, budget range, or success thresholds as invented balance values, although research.md requires specific numeric values to be treated as provisional abstractions.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:35"
+      },
+      {
+        "code": "FIRST_PLAY_COGNITIVE_LOAD",
+        "severity": "MEDIUM",
+        "finding": "The gate clarifies sequence but requires four prerequisite reveals followed by six information-dense media cards, with no specified persistent comparison surface for a 375px display.",
+        "file": "factory/projects/legacy-reach-mix/design/first_5_seconds_v3.json:2"
+      },
+      {
+        "code": "UNSUPPORTED_NUMERIC_PRECISION",
+        "severity": "MEDIUM",
+        "finding": "Exact slopes and binary cutoffs imply a precision absent from the cited directional evidence and materially determine success or failure.",
+        "file": "factory/projects/legacy-reach-mix/design/design-sim.mjs:103"
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh run passed 18/18 and exactly matched design-sim-result.json: optimal=0.8542, gamble_needed=0.1893, certain routes family=0.7368/young=0.8876/older=0.6579, random=0.2896, fixed=0.1246, triple optimal=0.6307/fixed=0.002/random=0.0229.",
+      "brute_force_closed": true,
+      "no_invented_threshold": false,
+      "obvious_binary_choice_resolved": true,
+      "scenario_facts_genuinely_interpretable": false,
+      "zero_values_honestly_grounded": false,
+      "probability_disclosed_honestly": true,
+      "gambling_element_feels_fair_not_punishing": false,
+      "causal_realism_honest": false,
+      "first_play_cognitive_load_acceptable": false,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": false,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:103 — secondary is a universal binary 0/1 step at two preparation weeks, not a measured relationship.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:106 — flyer→young is always zero; flyer therefore does not receive the claimed universal secondary trickle.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:107 — school_board→young/older are zero, but the claimed physical exclusivity also overlooks pupils, staff, visitors, and participating high schools who may belong to those broad audience categories.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:109 — website→family/older remain always zero.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:110 — poster→family/young remain always zero.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:66 — cards expose already-calculated scores such as '協力施設が2つなので、家族に4届く'; the player need not derive or critically interpret the relationship.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:67 — the concrete visual outputs are controllable publication/distribution actions and correctly avoid depicting attendance.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:68 — information_gained is still defined as audience reach bars produced by invented formulas.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:71 — partial outcome says information continues to reach insured audiences, exceeding a purely execution-based claim.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:72 — one scored commitment followed only by read-only, non-scored reflection closes same-session brute force and specifies Gate G/H.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v4.json:74 — the claim that only school_board retains zero mappings is disproved by executable lines 106, 109, and 110.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:28 — information_used lists only primary audience and thresholds, omitting all three scenario facts central to t4.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v1.json:33 — outputs_or_value still says people learn about the event and this leads to attendance, conflicting with t4's output-only reframing.",
+      "factory/projects/legacy-reach-mix/design/ae_v1.json:6 — E still equates threshold satisfaction with the event actually being communicated to many people.",
+      "factory/projects/legacy-reach-mix/design/core_scope_check_v2.json:5 — simulation statistics are current, but its assertion that the zero and causal-realism defects are resolved is contradicted by executable and adopted-copy details.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:2 — stored optimal gamble-needed rate 0.1893 matched the fresh run.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:3 — stored optimal full-win rate 0.8542 matched the fresh run.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v3.json:3 — four prerequisite cards must be opened before any of the six media cards becomes usable.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v3.json:8 — all six channels cost 10 against maximum budget 6, closing select-all.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v3.json:40 — s4 specifies honest partial outcome, mandatory data-restated reflection, and no retroactive result change.",
+      "factory/projects/legacy-reach-mix/research.md:483 — research states that only roughly two or three of eighteen audience-channel relationships have direct measured support and most others are directional inference or invention."
+    ],
+    "recommended_actions": [
+      "Use the remaining redesign budget for a genuinely different interaction rather than another numeric repair of the generated reach-mix matrix. Center play on concrete professional actions—choosing actual partner facilities or distribution locations, adapting a message to an audience, scheduling a release, or interpreting prior campaign observations—with consequences tied directly to those actions.",
+      "Remove every unsupported categorical zero, including the supposed school-board exclusivity unless audience definitions are narrowed so the physical boundary truly follows. Do not rely on zeroes to make combinations solvable.",
+      "Replace exact universal formulas with explicitly hypothetical scenario observations or ordinal evidence. If numbers remain, label them as estimates and make their provenance visible rather than implying measured reach.",
+      "Grade the communication plan deterministically before resolving press pickup. Treat coverage as a secondary world event or bonus so an optimal plan always receives the principal mastery recognition.",
+      "Separate planned actions, completed outputs, possible exposure, observed inquiries, recognition, and attendance throughout every artifact and every player-facing field.",
+      "Regenerate fact_sheet, scope_core, ae, core-scope, compression, translations, seeds, and checks as one authoritative design-iteration-2 chain; do not preserve stale v1 causal or randomization descriptions.",
+      "Specify a persistent compact comparison view for mobile instead of requiring children to retain ten sequential card disclosures."
+    ]
+  },
+  "elapsed_sec": 103.384
+}

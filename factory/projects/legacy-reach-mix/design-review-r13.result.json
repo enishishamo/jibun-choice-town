@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r13",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 84,
+    "blockers": [],
+    "high": [
+      "SOURCE_TRACEABILITY_MISMATCH remains in the authoritative research basis. research.md still repeatedly characterizes Takeuchi 2023's attendee information-source answers as measured reach/rankings, including 「到達実績」「実測順位」「実測到達数」. The corrected downstream wording is therefore inconsistent with its cited research artifact, and the r12 propagation gap has not fully terminated.",
+      "SOURCE_TRACEABILITY_MISMATCH remains for Plan A. research.md §2 documents flyer distribution to schools, kindergartens, and childcare facilities, but does not document bulletin-board posting. fact_sheet_v8.json and the adopted t5 card nevertheless state that both distribution and posting were separately recorded, while reference_research_v9.json still treats the composite 「チラシ・掲示」 plan relationship as directly supported by measured data."
+    ],
+    "medium": [],
+    "low": [
+      "The 108px sticky comparison bar still requires implementation-stage verification at 375px width."
+    ],
+    "failure_codes": [
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "research.md continues to describe self-reported information-source counts as measured reach performance and rankings, contradicting both the study framing stated in §2 and the corrected CURRENT artifacts.",
+        "file": "factory/projects/legacy-reach-mix/research.md:113,196,420-421,435",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The source records flyer distribution through schools and childcare facilities, not bulletin-board posting. CURRENT fact_sheet, reference_research, and adopted Plan A incorrectly claim or imply that the composite distribution-and-posting practice was separately documented or directly supported by the survey evidence.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v8.json:17; factory/projects/legacy-reach-mix/design/reference_research_v9.json:4-6; factory/projects/legacy-reach-mix/design/game_translations_v17.json:85",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20. Metrics exactly matched design-sim-result.json and the reported r9-r12 values: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, name_match_only=0.7058, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, and best-plan frequencies=0.3815/0.3841/0.3796.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": true,
+      "source_traceability_honest": false,
+      "reference_card_description_consistent": true,
+      "no_stale_version_references_remain": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": true,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/research.md:201-218 — §2 correctly identifies the measurement as answers to 「このイベントを知った情報源」 from N=334 attendees.",
+      "factory/projects/legacy-reach-mix/research.md:206 — the documented school/kindergarten/childcare practice is distribution of flyers; posting is not stated.",
+      "factory/projects/legacy-reach-mix/research.md:420-421 — the same responses are still mislabeled 「媒体×到達の強さ」の「実測順位」.",
+      "factory/projects/legacy-reach-mix/research.md:435 — the attendee-source evidence is still called 「個別事例の実測到達数」.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v8.json:17 — correctly distinguishes the surveyed category 「チラシ」 from the composite plan, but incorrectly says distribution and posting were both separately recorded.",
+      "factory/projects/legacy-reach-mix/design/reference_research_v9.json:4-6 — cites only flyer distribution, then says the measured data strongly supports the composite 「チラシ・掲示」 plan relationship.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v17.json:85 — player-facing Plan A says school/childcare distribution and posting were recorded as the actual distribution route, exceeding research.md §2.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113-127 — bestPlanSet returns all maximum-fit plans and sessionWin accepts any member, so no arbitrary tie-break exists.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150-166 — the independent strategy derives the same accepted-answer set without calling scoring helpers.",
+      "factory/projects/legacy-reach-mix/design/no_manual_exploit_check_v8.json:10 — only one scored confirmation is allowed; failure reflection is non-scored and cannot change the outcome.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v6.json:40 — s4 specifies honest failure followed by mandatory non-scored reconsideration, satisfying Gates G and H.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v17.json:86,90-91 — success and failure have different organizer-controlled consequences and committee reactions without asserting audience engagement.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2-5 — plan cards are initially tappable and only confirmation is gated, resolving the first-play contradiction.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all eleven registered artifacts are CURRENT, with sensible fact_sheet→scope→AE/seeds→research/compression→translation→checks provenance edges."
+    ],
+    "recommended_actions": [
+      "Rewrite research.md throughout—not only §2—to call the Takeuchi figures attendee self-reported information-source response counts, removing reach-performance labels such as 「到達実績」「実測順位」「実測到達数」.",
+      "Remove claims that Takeuchi documented bulletin-board posting. Describe only school/kindergarten/childcare flyer distribution as sourced; identify the posting component and the composite 「チラシ・掲示」 plan explicitly as game-side simplification in fact_sheet, reference_research, and every adopted t5 field."
+    ]
+  },
+  "elapsed_sec": 143.41
+}

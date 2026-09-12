@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-r11",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 44,
+    "career_authenticity_score": 44,
+    "game_quality_score": 68,
+    "blockers": [
+      "CAUSAL_REALISM_ERROR remains in the adopted t5 entry. Although system_reaction was substantively rewritten to rely only on the pre-post follower fact and an internal deployment rule, strengths still states the superseded causal chain that low follower growth caused the first post's reaction not to spread. This is the same audience-side engagement inference rejected in r10 and contradicts system_reaction's claim that no post-hoc audience response is assumed."
+    ],
+    "high": [
+      "SOURCE_TRACEABILITY_MISMATCH remains in fact_sheet_v6. Its expertise fields still call the Takeuchi attendee-survey counts an '実測順位' of actual reach, describe flyer/school distribution as an empirically verified route that '最も強く届く', and call television's 116 survey responses an '実測到達数'. The source measured self-reported information sources among attendees, not total audience reach or channel-attributable reach counts."
+    ],
+    "medium": [
+      "STALE_ARTIFACT_REFERENCE remains in core_scope_check_v8: its notes identify ae.json as current v8, while the current pipeline maps AE logical v10 to ae_v9.json. The substantive D/E summary is current, but the asserted version reference is not."
+    ],
+    "low": [
+      "The 108px sticky bar must contain an introduction, an emphasized target line, three condition lines, and padding; implementation-stage 375px rendering verification remains necessary."
+    ],
+    "failure_codes": [
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "The adopted t5 strengths field retains the rejected statement that low follower growth caused the first post's reaction not to spread. Fixing system_reaction alone did not propagate the causal correction across all fields of the adopted entry.",
+        "file": "factory/projects/legacy-reach-mix/design/game_translations_v15.json:93",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "SOURCE_TRACEABILITY_MISMATCH",
+        "severity": "HIGH",
+        "finding": "The current fact sheet continues to transform information-source answers from 334 attendees into measured actual-reach claims, including '最も強く届く実測済みの経路' and '実測到達数'.",
+        "file": "factory/projects/legacy-reach-mix/design/fact_sheet_v6.json:17",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "STALE_ARTIFACT_REFERENCE",
+        "severity": "MEDIUM",
+        "finding": "The current core/scope check calls AE current v8, although q1-pipeline.json identifies logical AE v10 and file ae_v9.json as CURRENT.",
+        "file": "factory/projects/legacy-reach-mix/design/core_scope_check_v8.json:5",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_ran": true,
+      "design_sim_result": "Fresh execution passed 20/20. All reported metrics matched design-sim-result.json exactly: legitimate_reasoning=1, independent_strategy_matches_internal_oracle=1, multi_answer_session_rate=0.1452, trap_session_rate=0.3295, name_match_only_on_trap_sessions=0.1073, name_match_only=0.7058, random_pick=0.375, always-pick rates=0.3815/0.3841/0.3796, always_first_displayed=0.3808, triple rates=1/0.3443/0.0563, primary frequencies=0.3357/0.3337/0.3306, and best-plan frequencies=0.3815/0.3841/0.3796.",
+      "design_sim_numbers_unchanged": true,
+      "brute_force_closed": true,
+      "propagation_gaps_closed": false,
+      "no_arbitrary_tie_break_reintroduced": true,
+      "multi_answer_acceptance_correctly_implemented": true,
+      "mobile_ui_is_layout_only": true,
+      "world_feedback_outcome_differentiated": true,
+      "first_play_gate_contradiction_resolved": true,
+      "causal_realism_honest": false,
+      "source_traceability_honest": false,
+      "reference_card_description_consistent": true,
+      "no_overlap_with_crowd_flow_venue_layout_or_sound_check": true,
+      "file_naming_consistent": false,
+      "player_facing_copy_clear": true,
+      "gate_g_specified": true,
+      "gate_h_specified": true,
+      "e_shows_visible_world_consequence": true,
+      "ready_for_implementation": false
+    },
+    "evidence": [
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:113 — bestPlanSet returns every maximum-fit plan rather than applying a tie-break.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:126 — sessionWin accepts any member of bestPlanSet.",
+      "factory/projects/legacy-reach-mix/design/design-sim.mjs:150 — independentPlayerStrategy uses the separately implemented isWeakenedFromDisclosedFacts path.",
+      "factory/projects/legacy-reach-mix/design/design-sim-result.json:1 — stored metrics and the fresh 20/20 run are identical.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v15.json:85 — Plan A player-facing copy now accurately identifies the evidence as an attendee information-source survey.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v15.json:86 — the new Plan B system_reaction itself follows without observing post-publication engagement: the disclosed low follower count fails a predeclared internal deployment condition, so the extra material is not deployed.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v15.json:93 — strengths nevertheless retains the superseded claim that follower growth and the first post's reaction caused the follow-up opportunity not to occur.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v6.json:17 — calls flyer/school distribution the empirically verified route that reaches families most strongly, exceeding what the attendee survey measured.",
+      "factory/projects/legacy-reach-mix/design/fact_sheet_v6.json:19 — calls television's 116 attendee answers an actual measured reach count.",
+      "factory/projects/legacy-reach-mix/research.md:220 — the underlying question was which information source surveyed attendees reported, with N=334.",
+      "factory/projects/legacy-reach-mix/research.md:237 — the research distinguishes SNS reach analytics from attendees' reported recognition source.",
+      "factory/projects/legacy-reach-mix/design/ae_v9.json:4 — medium strengths and weaknesses are explicitly embedded in plan descriptions; no independent reference card exists.",
+      "factory/projects/legacy-reach-mix/design/c_compression_v12.json:3 — the same embedded-only reference-information model is specified.",
+      "factory/projects/legacy-reach-mix/design/first_5_seconds_v8.json:2 — plan cards are tappable from the start and only the confirmation button is disabled.",
+      "factory/projects/legacy-reach-mix/design/play_seeds_v6.json:40 — s4 preserves honest failure followed by mandatory non-scored reconsideration with the original evidence redisplayed.",
+      "factory/projects/legacy-reach-mix/design/game_translations_v15.json:90 — committee feedback differs between success and failure and is displayed only after confirmation.",
+      "factory/projects/legacy-reach-mix/design/scope_core_v8.json:5 — profession-name-hidden and adjacent-game boundaries remain intact.",
+      "factory/projects/legacy-reach-mix/design/core_scope_check_v8.json:5 — stale text identifies AE as current v8 rather than current ae_v9/logical v10.",
+      "factory/projects/legacy-reach-mix/q1-pipeline.json — all 11 registered artifacts are CURRENT and their source_artifacts edges form a sensible upstream-to-downstream DAG."
+    ],
+    "recommended_actions": [
+      "Remove or rewrite the stale Plan B sentence in adopted t5 strengths so it describes the v15 pre-post condition and internal deployment rule, without mentioning post reaction, engagement, or spread.",
+      "Narrow fact_sheet_v6 expertise[0] and expertise[2] to attendee-survey terminology: reported information-source counts among 334 attendees at one event, not measured reach or a universally strongest route.",
+      "Update core_scope_check_v8's AE version reference to the current artifact/file designation and resubmit downstream provenance as needed.",
+      "Retain the current multi-answer win condition, reference-card removal, tappable-card gate, differentiated committee feedback, and s4 Gate G/H flow; those checks remain resolved."
+    ]
+  },
+  "elapsed_sec": 155.619
+}

@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "reach-mix-impl-r1",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "career_authenticity_score": 68,
+    "game_quality_score": 76,
+    "blockers": [
+      "src/data/content/townEvent.ts:377 — 成功時の解決文「イベントのことが、届きはじめた！」は、承認仕様が明示的に禁止する対象側への到達・認知の断定を再導入している。ゲームが検証するのは主催団体側の作業が円滑に進んだかだけであり、実際に届いたことは判定していない。"
+    ],
+    "high": [
+      "src/q1/PromoGame.tsx:186-206 — 承認済みsystem_reactionが要求する、選択したプランの実行またはつまずきを示す具体的な視覚的変化が実装されていない。結果は色の異なる汎用カードと文章だけで表示される。"
+    ],
+    "medium": [
+      "src/q1/PromoGame.tsx:95-101 — toggleOpenはSetへ追加するだけで、開いたカードを閉じられない。game_spec_v1の「タップで開閉」「閉じても再度開ける」およびfirst_5_seconds_v8の閉じた状態での比較要件から逸脱している。",
+      "src/q1/PromoGame.tsx:76 — カード本文が12.5pxで、承認仕様の約14pxを下回る。対象年齢と長文量を考えると可読性上の実装差異がある。"
+    ],
+    "low": [
+      "src/q1/PromoGame.tsx:140-141 — 初期カード見出しは仕様の「？」アイコンではなく媒体別絵文字と「＋」を表示する。正解依存ではないため回答漏洩ではない。"
+    ],
+    "failure_codes": [
+      {
+        "code": "CAUSAL_REALISM_ERROR",
+        "severity": "BLOCKER",
+        "finding": "成功時に、判定されていない対象側への到達を「イベントのことが、届きはじめた！」と断定する。",
+        "file": "src/data/content/townEvent.ts",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "WORLD_FEEDBACK_IMPLEMENTATION_GAP",
+        "severity": "HIGH",
+        "finding": "承認仕様にある媒体固有の具体的な視覚的結果がなく、結果が文章中心の汎用表示に縮退している。",
+        "file": "src/q1/PromoGame.tsx",
+        "fixable_by_narrowing": false
+      },
+      {
+        "code": "PLAN_CARD_TOGGLE_REGRESSION",
+        "severity": "MEDIUM",
+        "finding": "カードを開くことはできるが閉じられず、指定された無制限の開閉操作を実装していない。",
+        "file": "src/q1/PromoGame.tsx",
+        "fixable_by_narrowing": true
+      },
+      {
+        "code": "FIRST_PLAY_LEGIBILITY",
+        "severity": "MEDIUM",
+        "finding": "カード本文の12.5px指定が承認済みの約14px要件を下回る。",
+        "file": "src/q1/PromoGame.tsx",
+        "fixable_by_narrowing": true
+      }
+    ],
+    "checks": {
+      "design_sim_qa_ran": true,
+      "design_sim_qa_result": "20 passed, 0 failed。全報告値がdesign-sim-result.jsonと一致した。",
+      "logic_matches_design_sim": true,
+      "no_answer_leak": true,
+      "no_brute_force_path": true,
+      "gate_g_non_scored": true,
+      "disclosure_gate_correct": true,
+      "causal_realism_copy_matches_approved": false,
+      "fixed_bar_technically_sound": true,
+      "touch_targets_ge_44px": true,
+      "content_data_consistent": false,
+      "typecheck_and_build_pass": false,
+      "qa_harness_tests_shipped_module": true,
+      "ready_for_release": false
+    },
+    "evidence": [
+      "src/q1/reachMixLogic.ts:19-83 — PLANS、弱体化条件、3/1/2/0のplanFit、全同点を返すbestPlanSet、sessionWinがdesign-sim.mjsと一致。",
+      "factory/harness/gameplay-qa-reach-mix.mjs:10-13 — shipped moduleのsrc/q1/reachMixLogic.tsを直接importしている。",
+      "factory/harness/gameplay-qa-reach-mix.mjs:102-124 — 実行結果20/20 PASS。主要数値はlegitimate_reasoning=1、multi_answer_session_rate=0.1452、random_pick=0.375など保存結果と一致。",
+      "src/q1/PromoGame.tsx:93 — confirmedPlanがnullの間はsessionWinを呼ばないため、確定前の正解依存レンダーはない。",
+      "src/q1/PromoGame.tsx:102-106,159-232 — 確定後にselectへ戻す遷移がなく、reflectPickはsessionWinと比較されずonPartialCompleteへ進む。",
+      "src/q1/PromoGame.tsx:139-148,170-174 — カード見出しは最初から有効で、確定ボタンだけがallOpenedとselectedで無効化される。",
+      "src/q1/PromoGame.tsx:25-52 — PLAN_INFOとSTUMBLE_TEXTは採用済みt5コピーと一致し、つまずき文自体に対象側の反応断定はない。",
+      "src/q1/PromoGame.tsx:69-70,86-90,163-169 — fixedバーとuseLayoutEffectで測定したスペーサーを実装。祖先の恒常的なtransform/filterは確認されず、375px前提では技術的に妥当。",
+      "src/q1/PromoGame.tsx:74,145-148 — カード見出しと選択ボタンはいずれもmin-height:44px。",
+      "src/data/content/townEvent.ts:372-380 — mission、discoveryEcho、seedsは新しい3案比較操作へ更新済みだが、resolutionだけが未検証の到達を断定。",
+      "src/q1/registry.ts:93 — reach_mixはPromoGameへ正しく登録されている。",
+      "src/q1/PromoGame.tsx:186-206 — 成否画面には媒体固有の視覚的実行結果がなく、汎用result-cardと文章だけがある。",
+      "src/q1/PromoGame.tsx:95-101 — toggleOpenはdelete処理を持たず、カードを閉じられない。",
+      "npx tsc --noEmit -p . — exit 0。",
+      "npm run build — コードエラーではなく、読み取り専用環境でnode_modules/.tmp/*.tsbuildinfoを作成できずTS5033で停止したため、成功確認はできなかった。"
+    ],
+    "recommended_actions": [
+      "成功時resolutionを、対象への到達を断定しない「広報プランの実行が、うまく進みはじめた！」等へ変更する。",
+      "各プランの実行・つまずきを具体的に見せる媒体固有の視覚状態を成否画面へ追加する。",
+      "toggleOpenで既存IDをdeleteし、未登録IDをaddする真のトグルにする。",
+      "カード本文を約14pxへ引き上げ、375pxで折返しを再確認する。",
+      "書込み可能な環境でnpm run buildを再実行し、最終ビルド成功を記録する。"
+    ]
+  },
+  "elapsed_sec": 126.92
+}
