@@ -16,6 +16,26 @@ const BASE = process.argv.includes("--base")
 const CHROME = process.env.JC_CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// 2026-09-17 (Gesture Arbitration repair round 2 — regression-test repair):
+// this used to be 4 near-identical inline page.evaluate() blocks, each
+// hunting for a button whose text started with "社会を冒険する" inside a
+// ".home-card-primary" card — HomeScreen's actual CTA since the 2026-09-15
+// "VISUAL SOURCE OF TRUTH" rebuild is a plain <button class="home-play">
+// containing "まちへ行く". Because every one of those 4 blocks silently
+// failed to find anything, `enter-world-map-from-true-home` had been
+// returning pass:false and the harness was exiting via SETUP_FAILED before
+// ever reaching Case 3 (the exact "does a genuine tap still work" guard) —
+// this harness could not have caught the setPointerCapture regression
+// (WorldMapScreen.tsx) no matter how it broke, because it never ran far
+// enough to test it. One shared helper now, so a future HOME markup change
+// can only break this in one place instead of four.
+async function enterWorldMapFromHome() {
+  await page.evaluate(() => {
+    const btn = document.querySelector(".home-play");
+    btn?.click();
+  });
+}
+
 const results = { cases: [], blockers: [] };
 
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: "new" });
@@ -30,13 +50,7 @@ await page.reload({ waitUntil: "networkidle2" });
 await sleep(1200);
 
 // enter the World Map from True Home
-await page.evaluate(() => {
-  const btn = [...document.querySelectorAll("button, [role=button], *")].find((e) =>
-    e.textContent && e.textContent.trim().startsWith("社会を冒険する") && e.children.length < 5,
-  );
-  const card = btn?.closest(".home-card-primary") || document.querySelector(".home-card-primary");
-  (card ?? btn)?.click();
-});
+await enterWorldMapFromHome();
 await sleep(900);
 const onMap = await page.evaluate(() => !!document.querySelector(".region-viewport"));
 results.cases.push({ case: "enter-world-map-from-true-home", pass: onMap });
@@ -109,13 +123,7 @@ async function resetToRegionOverview() {
       // later case never runs against a dead page.
       await page.goto(BASE, { waitUntil: "networkidle2" });
       await sleep(900);
-      await page.evaluate(() => {
-        const btn = [...document.querySelectorAll("button, [role=button], *")].find((e) =>
-          e.textContent && e.textContent.trim().startsWith("社会を冒険する") && e.children.length < 5,
-        );
-        const card = btn?.closest(".home-card-primary") || document.querySelector(".home-card-primary");
-        (card ?? btn)?.click();
-      });
+      await enterWorldMapFromHome();
       await sleep(900);
     }
   }
@@ -193,18 +201,37 @@ async function resetToRegionOverview() {
   }
 }
 
+// ---- Case 3b: a genuine short tap on a district-node still opens it ------
+// (2026-09-17, Gesture Arbitration repair round 2: the actual production
+// bug — e.currentTarget.setPointerCapture(e.pointerId) called unconditionally
+// in onPointerDown, before any movement was known — broke this exact
+// interaction site-wide, town-hitzone/district-node/world-marker alike, not
+// just world-marker; Case 3 alone would not have caught a fix that only
+// half-worked (e.g. one that special-cased world-marker but left
+// district-node broken)). Districts sit off-screen at default overview zoom
+// (see rectOf's comment), so pan one into view first with a real drag.
+{
+  await touchDrag(280, 400, -220, -80, 10);
+  await sleep(400);
+  const d = await rectOf(".district-node", "non-foggy");
+  if (d) {
+    await page.touchscreen.tap(d.x, d.y);
+    await sleep(650);
+    const districtOpened = await page.evaluate(() => !!document.querySelector(".region-back"));
+    results.cases.push({ case: "genuine-tap-still-opens-district", pass: districtOpened });
+    if (!districtOpened) results.blockers.push("A genuine no-movement tap on a district-node failed to open it — the fix over-suppressed taps (district-node specifically)");
+    await resetToRegionOverview();
+  } else {
+    results.cases.push({ case: "genuine-tap-still-opens-district", pass: null, note: "no non-foggy district hotspot found in viewport" });
+  }
+}
+
 // ---- Case 4: rapid repeated drags don't leave arbitration state stuck ----
 // Re-enter fresh (earlier cases' pans can leave no marker on-screen at this
 // point) rather than relying on whatever state cases 1-3 happened to leave.
 await page.reload({ waitUntil: "networkidle2" });
 await sleep(1200);
-await page.evaluate(() => {
-  const btn = [...document.querySelectorAll("button, [role=button], *")].find((e) =>
-    e.textContent && e.textContent.trim().startsWith("社会を冒険する") && e.children.length < 5,
-  );
-  const card = btn?.closest(".home-card-primary") || document.querySelector(".home-card-primary");
-  (card ?? btn)?.click();
-});
+await enterWorldMapFromHome();
 await sleep(900);
 {
   const m = await rectOf(".world-marker");
@@ -241,13 +268,7 @@ await sleep(900);
 // reversal already moves the camera, from both the right and left edges.
 await page.reload({ waitUntil: "networkidle2" });
 await sleep(1200);
-await page.evaluate(() => {
-  const btn = [...document.querySelectorAll("button, [role=button], *")].find((e) =>
-    e.textContent && e.textContent.trim().startsWith("社会を冒険する") && e.children.length < 5,
-  );
-  const card = btn?.closest(".home-card-primary") || document.querySelector(".home-card-primary");
-  (card ?? btn)?.click();
-});
+await enterWorldMapFromHome();
 await sleep(900);
 
 async function canvasTx() {
@@ -292,6 +313,49 @@ async function reverseMoves(dx) {
     atLeftEdgeTx: atLeft?.tx, reversedFromLeftOnFirstSwipe: reversedFromLeft,
   });
   if (!pass) results.blockers.push("Pan did not resume immediately on reversal from an edge — MAP_PAN_BOUNDARY_BLOCKER (2026-09-06 REAL_USER_OBSERVED)");
+}
+
+// ---- Case 7: a 2-finger pinch whose midpoint crosses a marker must -------
+// zoom, not open it (2026-09-17, Gesture Arbitration repair round 2, §C).
+// Uses two independent TouchHandles (puppeteer-core's Touchscreen supports
+// concurrent touches) so the pinch is a REAL 2-touch gesture at the CDP
+// level, not a synthetic same-tick dispatchEvent — a same-tick
+// dispatchEvent pinch was tried manually during this repair and could not
+// reproduce real input at all (Chrome refuses setPointerCapture for a
+// pointerId the browser never saw as an active touch), which is exactly why
+// this suite drives puppeteer-core's touchscreen instead of dispatchEvent.
+await page.reload({ waitUntil: "networkidle2" });
+await sleep(1200);
+await enterWorldMapFromHome();
+await sleep(900);
+{
+  const m = await rectOf(".world-marker");
+  if (m) {
+    const before = await canvasTx();
+    const cx = m.x, cy = m.y;
+    const t1 = await page.touchscreen.touchStart(cx - 15, cy);
+    const t2 = await page.touchscreen.touchStart(cx + 15, cy);
+    for (let i = 1; i <= 6; i++) {
+      const half = 15 + i * 12; // pinch OUTWARD (zoom in), midpoint stays on the marker
+      await t1.move(cx - half, cy);
+      await t2.move(cx + half, cy);
+      await sleep(30);
+    }
+    await t1.end();
+    await t2.end();
+    await sleep(500);
+    const after = await canvasTx();
+    const markerOpened = await page.evaluate(
+      () => !!document.querySelector(".region-back") || !document.querySelector(".region-viewport"),
+    );
+    const zoomedIn = !!(before && after && Math.abs(after.tx - before.tx) + Math.abs(after.ty - before.ty) > 1);
+    const pass = !markerOpened;
+    results.cases.push({ case: "pinch-crossing-marker-does-not-open-it", pass, markerOpened, zoomedIn, before, after });
+    if (!pass) results.blockers.push("A pinch gesture whose midpoint crossed a world-marker opened it instead of zooming — ACCIDENTAL_ACTIVATION_RATE != 0 (pinch case)");
+    await resetToRegionOverview();
+  } else {
+    results.cases.push({ case: "pinch-crossing-marker-does-not-open-it", pass: null, note: "no on-screen world-marker found" });
+  }
 }
 
 await browser.close();
