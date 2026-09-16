@@ -44,7 +44,6 @@ export default function LogisticsGame({ onComplete, onPartialComplete }: Q1GameP
   const [placement, setPlacement] = useState<Partial<Record<string, ZoneId>>>({});
   const [visitOrder, setVisitOrder] = useState<Slot[]>([]);
   const [openFoodId, setOpenFoodId] = useState<string | null>(null);
-  const [openSchool, setOpenSchool] = useState<Slot | null>(null);
   const [outcome, setOutcome] = useState<"playing" | "success" | "partial">("playing");
 
   const foodList = foodOrder.map((id) => session.foods.find((f) => f.id === id)!);
@@ -143,19 +142,16 @@ export default function LogisticsGame({ onComplete, onPartialComplete }: Q1GameP
             <div key={slot} className={`dx-card ${idx >= 0 ? "selected" : ""}`}>
               <div className="dx-head">
                 <span className="dx-name">{schoolName[slot]}</span>
-                <button
-                  className="dx-more"
-                  aria-label={openSchool === slot ? "とじる" : "移動時間・受け入れ時刻を見る"}
-                  onClick={() => setOpenSchool(openSchool === slot ? null : slot)}
-                >
-                  {openSchool === slot ? "－" : "？"}
-                </button>
               </div>
-              {openSchool === slot && (
-                <p className="dx-pattern">
-                  センターから移動{travel}分／出発から{deadline}分後までに受け入れ
-                </p>
-              )}
+              {/* 2026-09-13 UX fix: deciding visit order requires comparing
+                 BOTH schools' travel time and deadline at once. This used to
+                 be gated behind a per-school "？" toggle (only one school
+                 open at a time), so comparing them meant opening one,
+                 memorizing it, closing it, then opening the other. Both
+                 schools' data now render unconditionally. */}
+              <p className="dx-pattern">
+                センターから移動{travel}分／出発から{deadline}分後までに受け入れ
+              </p>
               <button className={`dx-commit ${idx >= 0 ? "on" : ""}`} onClick={() => tapSchool(slot)}>
                 {idx >= 0 ? `${idx + 1}番目に訪問` : "この順番にする"}
               </button>

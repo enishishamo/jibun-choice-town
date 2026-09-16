@@ -7,41 +7,9 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import { IDEAS, STAGE_MINUTES, MIN_KIDS_SCORE, totalMinutes, totalKids, totalAdults, hasAllDayIdea } from "./planEventLogic";
 
 const P = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
-
-interface Idea {
-  id: string;
-  name: string;
-  img: string;
-  minutes: number;
-  /** 会場条件に引っかかる場合の理由（資料に書いてある） */
-  blocked?: string;
-  forKids: number; // 小さい子も楽しめる 0-2
-  forAdults: number; // 大人も楽しめる 0-2
-  note: string;
-}
-
-const IDEAS: Idea[] = [
-  { id: "band", name: "バンド演奏", img: P("a_musician"), minutes: 60, forKids: 1, forAdults: 2, note: "音が大きい。ステージが必要。" },
-  { id: "dance", name: "ダンスショー", img: P("a_dancer"), minutes: 40, forKids: 2, forAdults: 1, note: "見ていて楽しい。ステージが必要。" },
-  { id: "magic", name: "マジックショー", img: P("a_magician"), minutes: 30, forKids: 2, forAdults: 2, note: "近くで見ると盛り上がる。" },
-  { id: "mascot", name: "マスコットと写真", img: P("a_mascot"), minutes: 30, forKids: 2, forAdults: 0, note: "小さい子に人気。" },
-  { id: "food", name: "キッチンカー", img: P("p_booth_food"), minutes: 0, forKids: 1, forAdults: 2, note: "ずっと出ている。休けいにもなる。" },
-  { id: "goods", name: "手づくり市（物販）", img: P("p_booth_goods"), minutes: 0, forKids: 0, forAdults: 2, note: "ずっと出ている。" },
-  {
-    id: "fire",
-    name: "キャンプファイヤー",
-    img: P("p_flag"),
-    minutes: 40,
-    forKids: 1,
-    forAdults: 1,
-    blocked: "この広場は火を使えない決まりだった…",
-    note: "夜にもりあがる。",
-  },
-];
-
-const STAGE_MINUTES = 150; // ステージで使える時間（10:00-16:00のうち）
 
 export default function PlanEventGame({ onComplete }: Q1GameProps) {
   const [picked, setPicked] = useState<string[]>([]);
@@ -49,10 +17,10 @@ export default function PlanEventGame({ onComplete }: Q1GameProps) {
   const [done, setDone] = useState(false);
 
   const chosen = IDEAS.filter((i) => picked.includes(i.id));
-  const minutes = chosen.reduce((a, i) => a + i.minutes, 0);
-  const kids = chosen.reduce((a, i) => a + i.forKids, 0);
-  const adults = chosen.reduce((a, i) => a + i.forAdults, 0);
-  const hasAllDay = chosen.some((i) => i.minutes === 0);
+  const minutes = totalMinutes(picked);
+  const kids = totalKids(picked);
+  const adults = totalAdults(picked);
+  const hasAllDay = hasAllDayIdea(picked);
 
   const docs = [
     {
@@ -99,7 +67,7 @@ export default function PlanEventGame({ onComplete }: Q1GameProps) {
           <div className="plan-list">
             {chosen.map((i) => (
               <span key={i.id} className="plan-chip">
-                <img src={i.img} alt="" />
+                <img src={P(i.img)} alt="" />
                 {i.name}
                 <small>{i.minutes > 0 ? `${i.minutes}分` : "ずっと"}</small>
               </span>
@@ -163,7 +131,7 @@ export default function PlanEventGame({ onComplete }: Q1GameProps) {
                 setPicked((p) => (on ? p.filter((x) => x !== i.id) : [...p, i.id]));
               }}
             >
-              <img src={i.img} alt="" />
+              <img src={P(i.img)} alt="" />
               <span className="idea-name">{i.name}</span>
               <small>{i.minutes > 0 ? `${i.minutes}分` : "ずっと"}</small>
               {on && <span className="idea-check">✓</span>}
@@ -184,7 +152,7 @@ export default function PlanEventGame({ onComplete }: Q1GameProps) {
             setNote(`ステージの時間が ${minutes}分。${STAGE_MINUTES}分をこえてしまう…🕙使える時間を見てみよう。`);
             return;
           }
-          if (kids < 3) {
+          if (kids < MIN_KIDS_SCORE) {
             setNote("家族連れが中心なのに、小さい子が楽しめるものが少ないかも…👨‍👩‍👧来てほしい人を見てみよう。");
             return;
           }

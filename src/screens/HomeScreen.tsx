@@ -1,18 +1,28 @@
 // TRUE HOME (2026-09-04, Human Review "True Home + Mobile Map Simplification").
 // This is the app's actual front door — "today what do you want to do?" —
 // separate from the World Map (src/screens/WorldMapScreen.tsx), which used
-// to render here and is now reached ONLY via the "社会を冒険する" card below.
-// Game-title-screen feel, not a dashboard: a few big, visual, one-tap cards.
-// No world list, no map, no long instructional paragraphs here.
+// to render here and is now reached ONLY via the ▶ CTA below.
+//
+// 2026-09-15 (Human Visual Review — "VISUAL SOURCE OF TRUTH" mockup pass):
+// this is a from-scratch rebuild of the composition, not a variation on the
+// 2026-09-13/14 passes. The Human supplied a finished mockup screenshot as
+// the exact visual target and an explicit instruction: reproduce it with
+// REAL DOM (logo/headline/CTA/secondary are actual elements, not baked into
+// an image) using ONLY the plain photo asset (home-child-watching.png, no
+// text/UI baked in) as a background layer — never render the mockup itself
+// as a picture, and never wrap the photo in a bordered/shadowed "card".
+// The whole screen is ONE continuous composition: logo and headline sit
+// directly over the photo's own sky, the CTA sits directly over its own
+// grass — not "text block, then image block, then button block" stacked as
+// three separate visual units.
+//
+// Per the Human's explicit instruction this pass: the 4-visual rotation is
+// PAUSED (not removed — pickHomeVisual()/HOME_VISUALS in ../lib/homeVisual
+// are untouched) until this one composition (home-child-watching.png, the
+// "child watching" concept) passes visual review; the other 3 visuals will
+// reuse the same DOM structure once approved.
 import { useGame } from "../state/GameState";
-
-/** 2026-09-05 (Human Review — Map V1 minimum repair #1): the primary card
- * used to show the old town-hero art, while tapping it now leads to the
- * Continuous World Base Illustration map — a visible "different world"
- * jump. This is a non-destructive crop of the SAME approved
- * continuous-world.png (town-center plaza, matching WorldMapScreen's
- * "center" district framing), not a new illustration. */
-const WORLD_CROP = `${import.meta.env.BASE_URL}assets/world/town-center-crop.png`;
+import { HOME_VISUALS } from "../lib/homeVisual";
 
 /** 2026-09-04 (Experience Design Harness — Visual Design System §ICONOGRAPHY):
  * OS emoji (📖🌱) render as photorealistic/platform-dependent glyphs that
@@ -26,7 +36,7 @@ const WORLD_CROP = `${import.meta.env.BASE_URL}assets/world/town-center-crop.png
 const ICON_STROKE = 1.8;
 function BookIcon() {
   return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M4 5.5c2.2-1 4.6-1 7 0v13c-2.4-1-4.8-1-7 0v-13Z M20 5.5c-2.2-1-4.6-1-7 0v13c2.4-1 4.8-1 7 0v-13Z"
         stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinejoin="round" strokeLinecap="round"
@@ -34,57 +44,80 @@ function BookIcon() {
     </svg>
   );
 }
+
+// 2026-09-15: rotation paused per Human instruction (see file header) —
+// pinned to the "child-watching" entry of the untouched HOME_VISUALS list
+// rather than duplicating its path/alt here, so re-enabling rotation later
+// is a one-line change back to `pickHomeVisual()`. 2026-09-16: the entry's
+// `src` now points at a NEW phone-native-aspect-ratio asset (see
+// ../lib/homeVisual.ts) — this line itself didn't need to change.
+const PINNED_VISUAL = HOME_VISUALS.find((v) => v.id === "child-watching")!;
+
 export default function HomeScreen() {
   const { navigate, progress } = useGame();
 
   return (
     <div className="screen true-home">
+      {/* the ONLY image — a plain photo layer behind everything else, never
+         a bordered/shadowed "card". object-position is tuned so the two
+         kids stay in frame at 375px (see index.css .true-home-bg). */}
+      <img className="true-home-bg" src={PINNED_VISUAL.src} alt="" aria-hidden="true" />
+
       <div className="true-home-inner">
         <div className="true-home-brand">
-          <h1 className="logo">JIBUN CHOICE</h1>
+          {/* 2026-09-15: a real wordmark, not a single-color label — "JIBUN"
+             dark navy, "CHOICE" cycling the app's OWN existing accent
+             tokens (--orange/--blue/--green/--red, index.css :root) rather
+             than inventing new brand colors, per the Human's "既存ブランドに
+             合わせて". */}
+          <h1 className="true-home-logo">
+            <span className="logo-jibun">
+              <span className="spark-mark" aria-hidden="true" />
+              JIBUN
+              <span className="spark-mark" aria-hidden="true" />
+            </span>
+            <span className="logo-choice">
+              <span>C</span><span>H</span><span>O</span><span>I</span><span>C</span><span>E</span>
+            </span>
+          </h1>
         </div>
+
+        {/* 2026-09-15/16: the screen's single most important copy — dark
+           navy, bold, sitting directly on the photo's sky, no card behind
+           it. One small yellow CSS "spark" mark (not an emoji) accents the
+           second line, per the mockup. */}
         <p className="true-home-lead">
-          {progress.discovered.length > 0
-            ? `これまでに ${progress.discovered.length}この仕事に出会った。つづきから遊ぼう。`
-            : "今日は、どこ行く？"}
+          今日は、<br />なにが起きてる？
+          <span className="spark-mark lead-spark" aria-hidden="true" />
         </p>
 
-        {/* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"):
-           the old full-bleed photo-card + small PLAY icon read as a generic
-           "photo card" (SaaS/app pattern). Replaced with the approved
-           "World window + PLAY" CTA — a tilted, thick-bordered window onto
-           the SAME town-center crop (a postcard/sticker, not a plain photo
-           card), with an overlapping PLAY banner below it — translating the
-           JC flyer's collage/sticker visual language, not a new graphic. */}
-        <button
-          className="home-hero"
-          onClick={() => navigate({ name: "map" })}
-          aria-label="社会を冒険する。まちへ出て、ゲームをする。"
-        >
-          <span className="home-hero-window">
-            <img className="home-hero-window-img" src={WORLD_CROP} alt="" />
-          </span>
-          <span className="home-hero-playbar">
-            <span className="home-hero-play-icon" aria-hidden="true">▶</span>
-            <span className="home-hero-copy">
-              <span className="home-hero-title">社会を冒険する</span>
-              <span className="home-hero-sub">まちへ出て、ゲームをする</span>
-            </span>
-          </span>
-        </button>
+        {/* pushes the CTA block down to the photo's grass/flowers zone near
+           the bottom of the screen, however tall the header block is. */}
+        <div className="true-home-spacer" aria-hidden="true" />
 
-        {/* 2026-09-05 (Home Visual Refresh): secondary action, deliberately
-           NOT the same visual weight as the primary card — a slim bar, not
-           a same-size sibling card. "毎日のチャレンジ" (disabled placeholder
-           for a not-yet-decided core feature) is removed from this prime
-           slot entirely per Human instruction, not relocated/expanded. */}
-        <button className="home-secondary-bar" onClick={() => navigate({ name: "zukan" })}>
-          <span className="home-card-icon"><BookIcon /></span>
-          <span className="home-secondary-title">しごと図鑑</span>
-          {progress.discovered.length > 0 && (
-            <span className="home-card-badge">{progress.discovered.length}</span>
-          )}
-        </button>
+        <div className="true-home-cta">
+          {/* the Primary Action — a real <button>, not a pseudo-button
+             baked into the photo. Always goes to the World Map, never a
+             specific event directly. */}
+          <button
+            className="home-play"
+            onClick={() => navigate({ name: "map" })}
+          >
+            <span className="play-tri" aria-hidden="true">▶</span>
+            <span className="play-label">まちへ行く</span>
+            <span className="play-arrow" aria-hidden="true">→</span>
+          </button>
+
+          {/* Secondary action — deliberately smaller/quieter than the CTA. */}
+          <button className="home-secondary-bar" onClick={() => navigate({ name: "zukan" })}>
+            <span className="home-card-icon"><BookIcon /></span>
+            <span className="home-secondary-title">しごと図鑑</span>
+            {progress.discovered.length > 0 && (
+              <span className="home-card-badge">{progress.discovered.length}</span>
+            )}
+            <span className="home-secondary-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
       </div>
     </div>
   );

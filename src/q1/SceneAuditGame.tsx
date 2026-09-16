@@ -7,69 +7,14 @@
 //    レバー式水栓・古い2槽シンクは「紛らわしい適合」— 全部✗の総当たりは通らない。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-type SpotId = "door" | "wash" | "sink" | "washT" | "bin" | "shelf" | "backwash";
-type Mark = "ok" | "ng";
-
-interface Spot {
-  id: SpotId;
-  emoji: string;
-  area: string;
-  label: string;
-  /** what the inspector actually SEES (the raw observation, not the verdict) */
-  seen: string;
-  fixedSeen?: string; // after improvement
-  okSeen?: string; // when this pool candidate was NOT drawn (already compliant)
-  ngWhenDefect?: boolean; // becomes a defect if drawn from the pool
-}
-const SPOTS: Spot[] = [
-  { id: "door", emoji: "🚪", area: "厨房", label: "厨房と客席のあいだ",
-    seen: "新しいスイングドアで仕切られている。きちんと閉まる。" },
-  { id: "wash", emoji: "🚰", area: "厨房", label: "厨房の手洗い",
-    seen: "棒のような長いレバーがついた水栓。ひじでも押して止められそう。" },
-  { id: "sink", emoji: "💧", area: "厨房", label: "シンク",
-    seen: "前の店から残っている古いシンク。年季は入っているが、槽が2つあって、みがかれている。" },
-  { id: "washT", emoji: "🧼", area: "トイレ", label: "トイレの手洗い",
-    seen: "トイレのドアのすぐ横に、専用の小さな手洗いがある。" },
-  { id: "bin", emoji: "🗑", area: "バックヤード", label: "ゴミ箱", ngWhenDefect: true,
-    seen: "新品のゴミ箱がとどいている。でも、上があいたまま…フタが見あたらない。",
-    okSeen: "フタ付きの新しいゴミ箱が置かれている。",
-    fixedSeen: "同じゴミ箱に、フタが付いた。" },
-  { id: "shelf", emoji: "🗄", area: "バックヤード", label: "食器棚", ngWhenDefect: true,
-    seen: "新しい食器棚。でも扉がまだ付いておらず、食器がむき出し。横に扉の板が立てかけてある。",
-    okSeen: "扉付きの食器棚に、食器がきちんとしまわれている。",
-    fixedSeen: "扉が付いて、食器がしまわれた。" },
-  { id: "backwash", emoji: "🚿", area: "バックヤード", label: "奥の古い手洗い",
-    seen: "図面にのっていない古い手洗いが残っていて、スタッフが使う場所にある。十字のハンドルを回して止める水栓だ。",
-    fixedSeen: "水栓が、レバー式にかえられた。" },
-];
-
-// which improvement instruction is right, per defect
-const FIXES: Record<string, { text: string; good?: true; bounce?: string }[]> = {
-  backwash: [
-    { text: "手でさわらずに止められる水栓に、かえてください", good: true },
-    { text: "よくみがいて、きれいにしてください",
-      bounce: "きれいかどうかではなく、水栓の「構造」の話みたいだ。もう一度、基準を見てみよう。" },
-    { text: "使用禁止のはり紙をしてください",
-      bounce: "はり紙だけでは、スタッフがつい使ってしまいそうだ。" },
-  ],
-  bin: [
-    { text: "フタ付きの容器に、かえてください", good: true },
-    { text: "ゴミをこまめに捨ててください",
-      bounce: "こまめに捨てても、あいたままでは虫やほこりが入ってしまう。" },
-  ],
-  shelf: [
-    { text: "扉を取り付けて、食器をしまってください", good: true },
-    { text: "食器にラップをかけてください",
-      bounce: "その場しのぎになってしまう。棚そのものの話みたいだ。" },
-  ],
-};
+import { SPOTS, FIXES, defectsFor, isDefect as isDefectOf, spotSeen as spotSeenOf, evaluateJudge, isGoodFix } from "./sceneAuditLogic";
+import type { SpotId, Spot, Mark, Drawn } from "./sceneAuditLogic";
 
 export default function SceneAuditGame({ onComplete }: Q1GameProps) {
   // defect pool: backwash is always a defect + one of bin/shelf (drawn once)
-  const [drawn] = useState<SpotId>(() => (Math.random() < 0.5 ? "bin" : "shelf"));
-  const defects: SpotId[] = ["backwash", drawn];
-  const isDefect = (s: SpotId) => defects.includes(s);
+  const [drawn] = useState<Drawn>(() => (Math.random() < 0.5 ? "bin" : "shelf"));
+  const defects: SpotId[] = defectsFor(drawn);
+  const isDefect = (s: SpotId) => isDefectOf(s, drawn);
 
   const [visited, setVisited] = useState<SpotId[]>([]);
   const [marks, setMarks] = useState<Partial<Record<SpotId, Mark>>>({});
@@ -84,23 +29,21 @@ export default function SceneAuditGame({ onComplete }: Q1GameProps) {
 
   // The non-drawn pool candidate appears as a normal, compliant spot
   // (if the lidless bin was drawn, the shelf is already fine — and vice versa).
-  const spotSeen = (s: Spot) =>
-    s.ngWhenDefect && !isDefect(s.id) ? s.okSeen! : s.seen;
+  const spotSeen = (s: Spot) => spotSeenOf(s, drawn);
 
   const judge = () => {
     setNote(null);
-    const unvisited = SPOTS.filter((s) => !visited.includes(s.id));
-    if (unvisited.length) {
+    const result = evaluateJudge(visited, marks, drawn);
+    if (result === "unvisited_remaining") {
       setNote("まだ見ていない場所がある。ぜんぶ自分の目でたしかめよう。");
       return;
     }
-    const unmarked = SPOTS.filter((s) => marks[s.id] === undefined);
-    if (unmarked.length) {
+    if (result === "unmarked_remaining") {
       setNote("チェックリストに、まだ記入していない項目がある。");
       return;
     }
-    const wrong = SPOTS.filter((s) => (marks[s.id] === "ng") !== isDefect(s.id));
-    if (wrong.length) {
+    if (result === "marks_wrong") {
+      const wrong = SPOTS.filter((s) => (marks[s.id] === "ng") !== isDefect(s.id));
       setNote(`チェックと現場が合っていないところが ${wrong.length}か所ある。もう一度、形をよく見てみよう。`);
       return;
     }
@@ -109,7 +52,7 @@ export default function SceneAuditGame({ onComplete }: Q1GameProps) {
 
   const instruct = (sid: SpotId, i: number) => {
     const f = FIXES[sid][i];
-    if (f.good) {
+    if (isGoodFix(sid, i)) {
       setNote(null);
       setInstructed((x) => [...x, sid]);
       setInstructing(null);

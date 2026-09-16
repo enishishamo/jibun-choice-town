@@ -128,6 +128,30 @@ export default function LandfillOpsGame({ onComplete }: Q1GameProps) {
     </div>
   );
 
+  // 2026-09-13 UX audit fix: this card used to render ONLY in the "place"
+  // step's return block. But the decision it explains most (which cells to
+  // cover when 材料 is short) is made in the "cover" step below -- where the
+  // rain/wind water-and-complaint math and the soil-shortage priority tip
+  // used to be completely absent from the screen. Hoisted so both steps can
+  // show it.
+  const docs = [{
+    id: "rule", icon: "📋", title: "処分場のきまり",
+    body: (
+      <>
+        <p><strong>覆い（覆土）は毎日の日課</strong>：その日さわった区画（作業面）に必ずかけて、
+          飛散・におい・雨水の侵入を防ぐ。かけた覆いは、次にその区画をさわるまで残る。</p>
+        <p>今週は材料の納入が遅れていて<strong>全部には足りない日がある</strong>——
+          さわる区画を少なくする埋め方と、足りない夜の優先順位が腕の見せどころ。</p>
+        <p><strong>この処分場の受入区分：⚱️焼却灰 と 🪨不燃残さ は別の区画へ</strong>（灰は資源化に
+          回せるよう分けて管理する、この施設のきまり）。</p>
+        <p>🌧 雨の夜：覆いのない区画は、雨がごみに触れて<strong>汚れた水（浸出水）</strong>になり、
+          処理タンクにたまる（1区画で+2。タンクは1日に1しか処理できない）。</p>
+        <p>💨 風の夜：覆いのない区画から飛散・においが出て<strong>苦情</strong>になる（1区画で+1）。</p>
+        <p>あふれ・苦情{LF_COMPLAINT_LIMIT}件で操業見直し。埋める区画を<strong>集約</strong>すると覆いが少なくてすむ。</p>
+      </>
+    ),
+  }];
+
   if (step === "place") {
     return (
       <div className="game board-game">
@@ -140,26 +164,7 @@ export default function LandfillOpsGame({ onComplete }: Q1GameProps) {
           {today.slice(s.placedToday).map((l, i) => (i === 0 ? "▶" : "") + (l === "ash" ? "⚱️" : "🪨")).join(" ")}
         </div>
         {cells(true, false)}
-        <InfoCards
-          label="しごとの資料"
-          cards={[{
-            id: "rule", icon: "📋", title: "処分場のきまり",
-            body: (
-              <>
-                <p><strong>覆い（覆土）は毎日の日課</strong>：その日さわった区画（作業面）に必ずかけて、
-                  飛散・におい・雨水の侵入を防ぐ。かけた覆いは、次にその区画をさわるまで残る。</p>
-                <p>今週は材料の納入が遅れていて<strong>全部には足りない日がある</strong>——
-                  さわる区画を少なくする埋め方と、足りない夜の優先順位が腕の見せどころ。</p>
-                <p><strong>この処分場の受入区分：⚱️焼却灰 と 🪨不燃残さ は別の区画へ</strong>（灰は資源化に
-                  回せるよう分けて管理する、この施設のきまり）。</p>
-                <p>🌧 雨の夜：覆いのない区画は、雨がごみに触れて<strong>汚れた水（浸出水）</strong>になり、
-                  処理タンクにたまる（1区画で+2。タンクは1日に1しか処理できない）。</p>
-                <p>💨 風の夜：覆いのない区画から飛散・においが出て<strong>苦情</strong>になる（1区画で+1）。</p>
-                <p>あふれ・苦情{LF_COMPLAINT_LIMIT}件で操業見直し。埋める区画を<strong>集約</strong>すると覆いが少なくてすむ。</p>
-              </>
-            ),
-          }]}
-        />
+        <InfoCards label="しごとの資料" cards={docs} />
         {note && <p className="game-note">{note}</p>}
       </div>
     );
@@ -181,6 +186,7 @@ export default function LandfillOpsGame({ onComplete }: Q1GameProps) {
         今夜おおう：{coverCost}/{exposedNow.length}区画 ・ 材料のこり {s.soil}
         {shortfall > 0 ? "（足りない！どこを覆うか選んで）" : ""}
       </p>
+      <InfoCards label="しごとの資料" cards={docs} />
       {note && <p className="game-note">{note}</p>}
       <button
         className="btn primary big"

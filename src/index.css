@@ -220,70 +220,69 @@ img {
   place-items: center;
 }
 
-/* ===== True Home (2026-09-04) =====
-   Game-title-screen feel: a couple of big, visual, one-tap cards — never a
-   dashboard list, never a paragraph of instructions. See
-   factory/state/expansion/mobile-map-repair-2026-09-04.md for the
-   Human-Review background and the option comparison this replaced. */
+/* ===== True Home (2026-09-04, rebuilt 2026-09-15, finalized 2026-09-16) =====
+   2026-09-16 (Human Visual Review — GPT-produced finished mockup supplied
+   as pixel-level VISUAL SOURCE OF TRUTH, plus a matching text-free
+   background asset generated at a PHONE-NATIVE aspect ratio): this
+   composition (photo fills the whole viewport, logo/headline/CTA/secondary
+   sit directly on it, no card/frame/border around the photo) carries over
+   from 2026-09-15 unchanged — only the exact sizes/spacing/asset/typography
+   below were retuned against the new mockup. See
+   factory/state/expansion/mobile-map-repair-2026-09-04.md for the original
+   2026-09-04 background; every pass since has been Human Visual Review
+   iteration on top of it. */
 .true-home {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
   position: relative;
+  min-height: 100dvh;
   overflow: hidden;
-  /* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"): the
-     Human Review after the 2026-09-05 refresh judged the result still
-     "generic education/SaaS" — root cause was that the World was blurred
-     into an abstract pastel wash instead of staying recognizable. Kept
-     the same non-destructive bleed technique (no new art) but the actual
-     tinting now lives in ::before's own gradient layer (see below) so this
-     base tone only needs to cover the unmasked edges. */
-  background: var(--cream);
-  /* Human Review §Font: headings should read as bold/friendly gothic, not
-     the rounded "maru" style used elsewhere in the app — that specific
-     roundness was flagged as reading generic-education/beauty-app here.
-     Scoped to Home only; every other screen keeps the shared body stack. */
-  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+  /* sky-blue fallback — only visible for a flash before the photo paints,
+     or in any letterbox sliver object-fit:cover leaves; matches the
+     photo's own sky so there is no visible seam either way. */
+  background: #cfe7f6;
+  /* 2026-09-16 (Human instruction): a REAL Google Fonts import (see
+     index.html's <link>), not a silent fallback to a system font if it
+     fails to load — "M PLUS Rounded 1c" first, "Hiragino Maru Gothic ProN"
+     (the rounded font the rest of the app already uses) as the fallback
+     ONLY for when the network font genuinely can't load, per spec. */
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
 }
-.true-home::before {
-  content: "";
+/* the ONE visual — a plain <img>, absolutely positioned to fill the whole
+   screen behind everything else. NOT a card: no border-radius, no border,
+   no box-shadow, no wrapper element of its own. */
+.true-home-bg {
   position: absolute;
-  inset: -6%;
-  /* 2026-09-06: a warm color-band layer ON TOP of the photo (first-listed
-     background layer paints above later ones) — this is the same trick a
-     flyer uses to lay bold type over a busy photo (a duotone/color-band,
-     not a blur) instead of diffusing the image itself into an abstract
-     wash. The photo underneath now stays recognizable as the town. */
-  background-image:
-    linear-gradient(180deg, rgba(250, 245, 233, 0.82) 0%, rgba(250, 245, 233, 0.32) 34%, rgba(250, 245, 233, 0) 58%),
-    url("/jibun-choice-town/assets/world/continuous-world.png");
-  background-size: cover, cover;
-  background-position: center, 48% 40%;
-  /* town plaza is at roughly (850,380) of the 1774x887 source — the same
-     landmark the hero window crops (town-center-crop.png) and the Map's
-     "center" district frame, so Home visually continues into the Map. */
-  filter: blur(3px) saturate(1.25);
-  transform: scale(1.06);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 2026-09-16: this asset (home-child-watching-v2.png, 711x1536, aspect
+     ~0.463) was generated at essentially the SAME aspect ratio as a phone
+     viewport (375x812 = ~0.462), unlike the previous generic-photo crop
+     (1149x1368, ~0.84) that needed a large, town/kids-cropping correction.
+     `center center` now trims only a thin sliver off the left/right edges
+     at any real phone width — sky/mountain/town/kids all render close to
+     the source's own framing. */
+  object-position: center center;
   z-index: 0;
-  /* fade the bled illustration out toward the bottom of the screen instead
-     of covering it edge-to-edge — on a tall viewport with unused space
-     below the cards, a full-height photo reads as a smear rather than an
-     extension of the world; fading back to the plain cream keeps the
-     "one place" effect near the hero without that risk. Reveals more of
-     the image than the previous 60%-then-fade curve, per Human Decision
-     "背景はWorldを認識できる程度に見せる". */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 97%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 97%);
+  pointer-events: none;
+  /* 2026-09-15 (Human Visual Review — "見本よりぼやけて見える"): improves
+     the upsampling filter Safari/WebKit uses when a source photo is
+     displayed larger than its native resolution (matters less now that the
+     source aspect ratio needs far less scaling to cover the viewport, but
+     kept as a harmless quality hint). */
+  image-rendering: -webkit-optimize-contrast;
 }
 .true-home-inner {
   position: relative;
   z-index: 1;
-  flex: 1;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 14px;
-  padding: 8dvh 18px 10dvh;
+  align-items: center;
+  /* 2026-09-16: logo top ~28-38px (safe-area aware) and CTA block bottom
+     ~72-100px, per the mockup's measured proportions — see the `justify-
+     content` note on .true-home-spacer below for how the middle is filled. */
+  padding: calc(env(safe-area-inset-top, 0px) + 30px) 24px calc(env(safe-area-inset-bottom, 0px) + 40px);
   max-width: 560px;
   width: 100%;
   margin: 0 auto;
@@ -291,156 +290,157 @@ img {
 .true-home-brand {
   text-align: center;
 }
-.true-home-brand .logo {
-  /* 2026-09-05 (Home Visual Refresh): the wordmark stays as the brand
-     name but is deliberately QUIETER than before — the lead line below is
-     now the screen's actual headline. Smaller size, tighter tracking. */
-  font-size: 18px;
+/* 2026-09-16 (Human Visual Review, mockup finalized): logo/headline no
+   longer carry a heavy white text-stroke (round #2's "toy-block outline" —
+   the Human judged this round's mockup only needs a MUCH softer lift off
+   the sky, "ごく弱いwhite highlight/shadowは可。強いstrokeは不要"). A
+   gentle text-shadow replaces the stroke. "JIBUN" dark navy, "CHOICE"
+   cycling the app's OWN existing accent tokens per letter instead of
+   inventing new brand colors, per "既存ブランドに合わせて". */
+.true-home-logo {
+  margin: 0;
   font-weight: 800;
-  letter-spacing: 1.5px;
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8), 0 1px 0 rgba(255, 255, 255, 0.6);
+  line-height: 0.88;
+  letter-spacing: 1px;
+}
+.true-home-logo .logo-jibun,
+.true-home-logo .logo-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.true-home-logo .logo-jibun,
+.true-home-logo .logo-choice span {
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.65), 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.true-home-logo .logo-jibun {
+  font-size: 34px;
+  color: #1f3a5c;
+}
+.true-home-logo .logo-choice {
+  font-size: 34px;
+  margin-top: 2px;
+}
+/* 2026-09-16: 5 colors cycling across CHOICE's 6 letters, matching the
+   mockup's own multi-color logo (orange / light-blue / green / orange-red
+   / blue), all drawn from :root's existing token palette. */
+.true-home-logo .logo-choice span:nth-child(1) { color: var(--orange); }
+.true-home-logo .logo-choice span:nth-child(2) { color: var(--blue); }
+.true-home-logo .logo-choice span:nth-child(3) { color: var(--green); }
+.true-home-logo .logo-choice span:nth-child(4) { color: var(--red); }
+.true-home-logo .logo-choice span:nth-child(5) { color: var(--orange); }
+.true-home-logo .logo-choice span:nth-child(6) { color: var(--blue); }
+/* small yellow decorative marks flanking the wordmark/headline — CSS
+   shapes (an organic rounded blob, not a glyph/emoji), per "絵文字は使用
+   しない". */
+.spark-mark {
+  display: inline-block;
+  width: 11px;
+  height: 17px;
+  background: var(--home-cta-yellow, #f6c343);
+  border-radius: 70% 30% 70% 30% / 60% 40% 60% 40%;
+  transform: rotate(-18deg);
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(120, 90, 10, 0.25);
 }
 .true-home-lead {
-  /* 2026-09-06 (Home Design Review — Human Decision "大胆に、ただし幼児的
-     手書き文字にはしない"): bigger/heavier than the 2026-09-05 pass, and
-     the soft blurred halo-shadow (a refined lifestyle-app technique) is
-     replaced with a hard 2px offset shadow — the same "flat layer stacked
-     on a layer" language as the hero's box-shadows — for a poster-type
-     read. No rotation/script font on the text itself, so it stays bold
-     without reading as handwritten. */
-  margin: 0 0 2px;
+  position: relative;
+  margin: 16px 0 0;
   text-align: center;
-  font-size: 30px;
-  line-height: 1.18;
-  font-weight: 900;
-  letter-spacing: -0.2px;
-  color: var(--text);
-  text-shadow: 2px 2px 0 rgba(255, 251, 240, 0.95);
+  font-size: 27px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: #1f3a5c;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.65), 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.true-home-lead .lead-spark {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+/* fills the middle of the screen so the header block stays pinned near the
+   top (measured ~30-38px) and the CTA block stays pinned near the bottom
+   (measured ~72-100px from the screen edge) regardless of exact photo
+   height — the single continuous photo underneath is what visually
+   connects them, not equal empty space. */
+.true-home-spacer {
+  flex: 1;
+  min-height: 16px;
+}
+.true-home-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 @media (min-width: 980px) {
-  .true-home-inner { max-width: 720px; padding-top: 11dvh; }
-  .home-hero-window { width: 70%; }
+  .true-home-inner { max-width: 720px; }
 }
 
-/* 2026-09-06 (Home Design Review — Human Decision "C65+B25+A10"): the old
-   .home-card-primary was a plain full-bleed photo with soft radius/shadow —
-   exactly the "generic app photo card" pattern the review's Independent
-   Critic flagged. Replaced by .home-hero: a tilted, thick-cream-bordered
-   "postcard" window onto the World with a hard offset shadow (not a soft
-   blur), plus an overlapping "ticket" PLAY banner tilted the other way —
-   translating the JC flyer's collage/sticker layering into UI chrome
-   itself, not just decorating the one photo. Single <button> (one nav
-   action), two visual zones. */
-.home-hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+/* 2026-09-16 (Human Visual Review, mockup finalized): "▶ まちへ行く →" —
+   pill-shaped, warm gold, dark navy text, a thin white outer border, a
+   restrained shadow. Sized down from round #2 (was min-height 44 + 15/26
+   padding, reading larger than the mockup's own CTA) to the mockup's own
+   210-230 x 58-64 measured footprint. Always goes to the World Map, never
+   a specific event directly. */
+.home-play {
+  --home-cta-yellow: #f6c343;
+  display: inline-flex;
   align-items: center;
-  width: 100%;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
+  justify-content: center;
+  gap: 10px;
+  min-width: 210px;
+  max-width: 230px;
+  height: 60px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  background: var(--home-cta-yellow);
+  color: #1f3a5c;
+  padding: 0 22px;
+  box-shadow: 0 6px 14px -4px rgba(80, 60, 10, 0.35);
   font-family: inherit;
-  color: var(--text);
-}
-.home-hero-window {
-  display: block;
-  width: 92%;
-  aspect-ratio: 4 / 3;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 6px solid var(--card);
-  box-shadow: 5px 7px 0 rgba(74, 59, 46, 0.22);
-  transform: rotate(-1.6deg);
-  transition: transform 0.15s ease;
-  /* 2026-09-04 origin (HOME_GAME_FEEL too low, "static, no sense of ongoing
-     play"): a slow breathing scale — purely decorative CSS, cheap
-     transform-only composite. Kept, now combined with the tilt. */
-  animation: home-hero-breathe 5s ease-in-out infinite;
-}
-@keyframes home-hero-breathe {
-  0%, 100% { transform: rotate(-1.6deg) scale(1); }
-  50% { transform: rotate(-1.3deg) scale(1.012); }
-}
-.home-hero-window-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 58%;
-  display: block;
-}
-.home-hero-playbar {
-  position: relative;
-  z-index: 1;
-  margin-top: -24px;
-  width: 84%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--orange);
-  border: 4px solid var(--card);
-  border-radius: 14px;
-  padding: 12px 16px;
-  box-shadow: 3px 5px 0 rgba(74, 59, 46, 0.22);
-  transform: rotate(0.9deg);
-  transition: transform 0.15s ease;
-}
-.home-hero:active .home-hero-window { transform: rotate(-1.6deg) scale(0.98); }
-.home-hero:active .home-hero-playbar { transform: rotate(0.9deg) scale(0.97); }
-.home-hero-play-icon {
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--card);
-  color: var(--orange);
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-}
-.home-hero-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  text-align: left;
-}
-.home-hero-title {
-  color: #fff;
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
-.home-hero-sub {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 12.5px;
-  font-weight: 600;
-}
+.home-play:active { transform: scale(0.96); }
+.home-play .play-tri { font-size: 14px; }
+.home-play .play-arrow { font-size: 16px; }
 
 /* 2026-09-05 (Home Visual Refresh): secondary action — deliberately a slim
    bar, not a card the same shape/size as the primary. With "毎日の
    チャレンジ" removed from Home entirely (not a Human-decided core
    feature; see factory/rules/product-identity-gate.md), しごと図鑑 is the
-   only secondary item. 2026-09-06: border thickened/warmed to match the
-   hero's frame language instead of the previous thin generic-app pill
-   border, without changing its size or weight relative to the hero. */
+   only secondary item. 2026-09-16 (Human Visual Review, mockup finalized):
+   resized to the mockup's own measured footprint (170-190 x 42-48, vs. the
+   larger 2026-09-06 sizing) and switched from an opaque cream card to a
+   translucent white pill — reads as clearly lighter/quieter than the solid
+   gold CTA above it, per "primaryと競合させない". */
 .home-secondary-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--card);
-  border: 3px solid var(--line);
-  border-radius: 16px;
-  padding: 11px 18px;
-  box-shadow: 3px 4px 0 rgba(74, 59, 46, 0.1);
+  gap: 8px;
+  min-width: 170px;
+  max-width: 190px;
+  height: 44px;
+  background: rgba(255, 253, 246, 0.82);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 0 16px;
+  box-shadow: 0 3px 8px -2px rgba(74, 59, 46, 0.18);
   position: relative;
-  color: var(--text-soft);
+  color: var(--text);
   font-family: inherit;
   cursor: pointer;
 }
 .home-secondary-bar:active { transform: scale(0.98); }
 .home-secondary-bar .home-card-icon { display: flex; color: var(--text-soft); }
-.home-secondary-title { font-size: 14px; font-weight: 600; }
+.home-secondary-title { font-size: 14px; font-weight: 700; white-space: nowrap; }
+.home-secondary-arrow { color: var(--text-soft); font-size: 13px; }
 .home-card-badge {
   margin-left: auto;
   background: var(--red);
@@ -4241,10 +4241,17 @@ img {
 .dx-card.selected { border-color: var(--orange); background: var(--orange-soft); }
 .dx-head { display: flex; align-items: center; gap: 6px; }
 .dx-name { font-size: 13px; font-weight: bold; flex: 1; min-width: 0; }
+/* 2026-09-13 (UX/Logic audit — mobile touch-target rule): was 38x38px,
+   under this app's 44px-minimum for important controls. Bumped to 44x44;
+   .dx-grid is a 2-column layout at 375px (~152px content width per card),
+   which has ample room for +6px on this circle — verified no wrap/overflow
+   across the 9 games sharing this class (DiagnoseGame, FarmGame,
+   LogisticsGame, HotelReceiveGame, NurseObserveGame, RecycleGame,
+   UrbanHeatGame, WaterGame, DelayRecoverGame). */
 .dx-more {
-  flex-shrink: 0; width: 38px; height: 38px; padding: 0;
+  flex-shrink: 0; width: 44px; height: 44px; padding: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: bold; color: var(--blue);
+  font-size: 16px; font-weight: bold; color: var(--blue);
   border: 1.5px solid var(--line); border-radius: 50%; background: var(--ivory);
 }
 .dx-pattern {
@@ -4500,9 +4507,6 @@ img {
   border-radius: 16px;
   overflow: hidden;
 }
-.supplier.open {
-  border-color: var(--blue);
-}
 .supplier-head {
   display: flex;
   align-items: center;
@@ -4512,6 +4516,11 @@ img {
   min-height: 48px;
   text-align: left;
 }
+/* 2026-09-13 (UX/Logic audit — SourcingGame redesign): .supplier-head used
+   to be a <button> that opened/closed a "＋くわしく" accordion
+   (.supplier-detail below, now removed). It's a plain <div> now — every
+   fact it used to hide lives in .supplier-facts, always rendered. */
+.supplier-head-flat { cursor: default; }
 .sup-emoji {
   font-size: 21px;
 }
@@ -4523,22 +4532,17 @@ img {
   font-size: 13px;
   color: var(--orange);
   font-weight: bold;
-}
-.sup-toggle {
   margin-left: auto;
-  font-size: 11.5px;
-  color: var(--blue);
-  font-weight: bold;
-  white-space: nowrap;
 }
-.supplier-detail {
-  background: var(--blue-soft);
-  padding: 9px 14px;
-  font-size: 13px;
-  animation: fadein 0.25s ease;
-}
-.supplier-detail p {
-  margin: 3px 0;
+/* 2026-09-13: replaces .supplier-detail (an accordion panel that had to be
+   opened, read, and closed to see 上限/届く日 — the exact "read → memorize
+   → close → compare" pattern this audit pass bans). Always visible now. */
+.supplier-facts {
+  display: flex;
+  gap: 14px;
+  padding: 0 13px 8px;
+  font-size: 12.5px;
+  color: var(--text-soft);
 }
 .supplier-buy {
   display: flex;
@@ -4574,6 +4578,128 @@ img {
   font-size: 11px;
   color: var(--orange);
   font-weight: bold;
+}
+
+/* 2026-09-13 (UX/Logic audit — SourcingGame "週の道＋箱" redesign):
+   給食室のたな — fills LIVE as boxes are added (before "はこんでみる" is ever
+   pressed), so "am I done yet" is visible the instant an amount changes,
+   not only after committing. */
+.shelf-box {
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 11px 14px;
+  box-shadow: var(--shadow);
+}
+.shelf-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13px;
+  padding: 2px 0 6px;
+}
+.shelf-head strong {
+  font-size: 16px;
+}
+.shelf-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.shelf-slot {
+  font-size: 24px;
+  opacity: 0.28;
+  filter: grayscale(1);
+  transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+}
+.shelf-slot.filled {
+  opacity: 1;
+  filter: none;
+  animation: shelf-pop 0.3s ease;
+}
+@keyframes shelf-pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.shelf-note {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--orange);
+  font-weight: bold;
+}
+
+/* 今週の道 — a horizontal day-scale with the deadline gate and each
+   supplier's truck positioned at its own arrival day, so "who's fast /
+   who's cutting it close" is a glance, never a number to remember. */
+.road-box {
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 14px 30px;
+  box-shadow: var(--shadow);
+  overflow: visible;
+}
+.road-track {
+  position: relative;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 26px 6px 34px;
+}
+.road-today {
+  position: absolute;
+  left: 0;
+  top: -22px;
+  font-size: 11.5px;
+  font-weight: bold;
+  color: var(--text-soft);
+}
+.road-gate {
+  position: absolute;
+  top: -8px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.road-gate::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  width: 2px;
+  height: 46px;
+  background: var(--orange);
+  opacity: 0.55;
+}
+.road-gate-flag {
+  font-size: 18px;
+  z-index: 1;
+}
+.road-gate-label {
+  margin-top: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--orange);
+  white-space: nowrap;
+}
+.road-truck {
+  position: absolute;
+  top: -18px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.road-truck-emoji {
+  font-size: 22px;
+}
+.road-truck-day {
+  margin-top: 2px;
+  font-size: 10.5px;
+  font-weight: bold;
+  color: var(--text-soft);
+  white-space: nowrap;
 }
 
 /* recipe */
@@ -5643,9 +5769,10 @@ img {
 
 /* .district-chips / .district-chip retired 2026-09-04 (Home/World Map Human
    Visual Review repair): the chip bar fully duplicated on-canvas district
-   taps and read as an independent menu. Replaced by .compass-* below, a
-   compressed VIEW of the same canvas geometry. See
-   factory/state/expansion/map-repair-decision.md. */
+   taps and read as an independent menu. See
+   factory/state/expansion/map-repair-decision.md. (It was replaced by a
+   .compass-* minimap, itself removed 2026-09-14 — see WorldMapScreen.tsx.
+   On-canvas district/marker taps remain the only navigation.) */
 
 .quiet-dot {
   position: absolute;
@@ -5658,8 +5785,26 @@ img {
   z-index: 3;
   pointer-events: none;
 }
-.region-viewport.is-region { cursor: grab; touch-action: none; }
-.region-viewport.is-region:active { cursor: grabbing; }
+/* 2026-09-13 (Gesture Arbitration repair §2): district mode is now pannable
+   and pinch-zoomable too, so touch-action:none (which hands ALL touch
+   gesture interpretation to our own pointer handlers, instead of letting
+   the browser's native scroll/pinch-zoom fight with them) applies to BOTH
+   modes, not just the region overview. */
+.region-viewport.is-region,
+.region-viewport.is-district { cursor: grab; touch-action: none; }
+.region-viewport.is-region:active,
+.region-viewport.is-district:active { cursor: grabbing; }
+/* 2026-09-13 (Gesture Arbitration repair §1): while a gesture (pan/pinch) is
+   live, or the camera is mid-transition after a tap-driven focus change,
+   every tappable element on the canvas goes inert — a finger currently
+   panning/pinching, or a camera animation still gliding toward its target,
+   must never ALSO register as a tap on whatever happens to be underneath.
+   Re-enabled automatically the instant gestureActive/camBusy clear. */
+.region-viewport.is-busy .district-node,
+.region-viewport.is-busy .world-marker,
+.region-viewport.is-busy .town-hitzone {
+  pointer-events: none;
+}
 /* 2026-09-04 (Codex review follow-up, true-home-map-codex-review.json):
    peripheral districts peeking in at the region-overview edges read as a
    hard, unintentional crop rather than a deliberate "there's more this way"
@@ -5717,33 +5862,11 @@ img {
   .app-frame:has(.true-home) { max-width: 960px; }
 }
 
-/* Compass (map repair, 2026-09-04): replaces the old chip-bar menu. A
-   compressed VIEW of the same canvas geometry — not an independent list —
-   so it cannot compete with the canvas as a second navigation system. */
-.compass-wrap {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  z-index: 6;
-  filter: drop-shadow(0 3px 8px rgba(60, 50, 30, 0.2));
-}
-/* 2026-09-04 (Mobile Map Simplification): moved from top-right to
-   bottom-right and shrunk on narrow viewports — top-right is where the
-   forest (mori-kawa) district sits at the tightened mobile initial zoom,
-   and a full-size compass there both crowded the screen and covered a real
-   tappable district (factory/state/backlog/ui-ux-backlog.md
-   compass-forest-overlap). Bottom-right keeps it clear of every district's
-   signpost at the new initial framing. */
-@media (max-width: 700px) {
-  /* 2026-09-05 (Human Review — Map V1 minimum repair #3): this is not a
-     navigation game — the minimap overlay competed with the World Art and
-     event exploration on a 375px screen. Desktop keeps it (scale is
-     unaffected there); this query only removes it below the mobile/desktop
-     breakpoint already used throughout this file. */
-  .compass-wrap { display: none; }
-}
-.compass-dot { cursor: pointer; }
-.compass-dot text { pointer-events: none; user-select: none; }
+/* 2026-09-14 (Human Visual Review): the .compass-wrap/.compass-dot minimap
+   overlay (bottom-right circular "you are here" overview, added 2026-09-04)
+   was removed outright per explicit Human instruction — no replacement
+   overview UI. See the removal note at the old `Compass` component's call
+   site in WorldMapScreen.tsx for the full rationale. */
 
 /* Presentation Gate: locked scene hotspots must not dominate the artwork.
    A locked spot shrinks to a small quiet dot; the label carries a tiny 🔒. */

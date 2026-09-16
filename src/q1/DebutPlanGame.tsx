@@ -97,6 +97,32 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
     );
   }
 
+  // 2026-09-13 UX audit fix: this card used to be rendered ONLY inside the
+  // "plan" step's return block, so once the debut started (step "run") it
+  // vanished entirely -- yet the lever-vs-event matching a child needs during
+  // "run" ("人数しぼりは「こみあい」に、距離を広げるのは..." etc) is exactly
+  // the content that lived only on the screen BEFORE that decision ever came
+  // up. Hoisted here so both "plan" and "run" can show the same reference.
+  const docs = [
+    {
+      id: "log", icon: "📗", title: "展示練習の記録（この子のようす）",
+      body: (<>{c.practiceLog.map((l, i) => <p key={i}>・{l}</p>)}</>),
+    },
+    {
+      id: "rule", icon: "📋", title: "デビューのきまり",
+      body: (
+        <>
+          <p>最初から終日公開はしない。<strong>練習のようすに合わせて</strong>短時間・遠め・人数しぼりから。</p>
+          <p>当日にストレスサイン（行ったり来たり・隠れがち・食べるのをやめる）が出たら、
+            <strong>縮小や中止をためらわない</strong>。サイン{SIGN_LIMIT}つで、その日は終了。</p>
+          <p>サインが出ていないのに中止はできない（お客さんに説明がつかない）。</p>
+          <p>縮小はどれも同じではない。<strong>人数しぼりは「こみあい」に、距離を広げるのは「近い観覧」に、
+            切り上げは「長い公開」に</strong>、いちばんよくきく。</p>
+        </>
+      ),
+    },
+  ];
+
   if (step === "plan") {
     const v = planValue(plan);
     return (
@@ -106,28 +132,7 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
           <span className="task-sub">プラン値 {v} — 園の期待に届くかは園長がチェックする（練習が順調な子ほど、期待も大きい）</span>
         </div>
 
-        <InfoCards
-          label="しごとの資料"
-          cards={[
-            {
-              id: "log", icon: "📗", title: "展示練習の記録（この子のようす）",
-              body: (<>{c.practiceLog.map((l, i) => <p key={i}>・{l}</p>)}</>),
-            },
-            {
-              id: "rule", icon: "📋", title: "デビューのきまり",
-              body: (
-                <>
-                  <p>最初から終日公開はしない。<strong>練習のようすに合わせて</strong>短時間・遠め・人数しぼりから。</p>
-                  <p>当日にストレスサイン（行ったり来たり・隠れがち・食べるのをやめる）が出たら、
-                    <strong>縮小や中止をためらわない</strong>。サイン{SIGN_LIMIT}つで、その日は終了。</p>
-                  <p>サインが出ていないのに中止はできない（お客さんに説明がつかない）。</p>
-                  <p>縮小はどれも同じではない。<strong>人数しぼりは「こみあい」に、距離を広げるのは「近い観覧」に、
-                    切り上げは「長い公開」に</strong>、いちばんよくきく。</p>
-                </>
-              ),
-            },
-          ]}
-        />
+        <InfoCards label="しごとの資料" cards={docs} />
 
         <p className="pick-title">こうかい時間</p>
         <div className="choice-row">
@@ -232,6 +237,8 @@ export default function DebutPlanGame({ onComplete }: Q1GameProps) {
               : "☀️ おだやかな時間帯。"}
         </p>
       )}
+
+      <InfoCards label="しごとの資料" cards={docs} />
 
       <p className="pick-title">この時間帯、どうする？</p>
       <div className="choice-row wrap">

@@ -8,46 +8,22 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import { useDragDrop } from "./useDragDrop";
-
-interface Slot {
-  h: string;
-  wbgt: number;
-}
-// WBGT（暑さ指数）は昼〜午後に高くなる
-const SLOTS: Slot[] = [
-  { h: "8時", wbgt: 25 },
-  { h: "10時", wbgt: 29 },
-  { h: "12時", wbgt: 33 },
-  { h: "14時", wbgt: 32 },
-  { h: "16時", wbgt: 28 },
-];
-
-type TaskId = "heavy1" | "heavy2" | "light" | "indoor" | "rest";
-interface Task {
-  id: TaskId;
-  name: string;
-  emoji: string;
-  load: number; // 2=重い 1=軽い 0=休憩
-  progress: number;
-}
-const TASKS: Task[] = [
-  { id: "heavy1", name: "重い屋外作業", emoji: "🏗", load: 2, progress: 30 },
-  { id: "heavy2", name: "重い屋外作業", emoji: "🧱", load: 2, progress: 30 },
-  { id: "light", name: "軽い作業", emoji: "🔧", load: 1, progress: 15 },
-  { id: "indoor", name: "屋内作業", emoji: "🏠", load: 0.5, progress: 15 },
-  { id: "rest", name: "休憩", emoji: "🧊", load: 0, progress: 0 },
-];
-
-// 危険度：WBGTが高い時間に重い作業を置くほど上がる
-const risk = (wbgt: number, load: number) => {
-  if (load === 0) return 0;
-  const score = (wbgt - 25) * load;
-  return score >= 12 ? 2 : score >= 6 ? 1 : 0;
-};
-const RISK_MARK = ["🟢", "🟡", "🔴"];
+import {
+  SLOTS,
+  TASKS,
+  RISK_MARK,
+  type TaskId,
+  type Plan,
+  taskOf as taskOfPlan,
+  isFilled,
+  totalProgress,
+  risksFor,
+  maxRiskFor,
+  isSuccess,
+} from "./siteHeatLogic";
 
 export default function SiteHeatGame({ onComplete }: Q1GameProps) {
-  const [plan, setPlan] = useState<Partial<Record<string, TaskId>>>({});
+  const [plan, setPlan] = useState<Plan>({});
   const [ran, setRan] = useState(false);
   const [openWbgt, setOpenWbgt] = useState(false);
   const [selected, setSelected] = useState<TaskId | null>(null);
@@ -61,17 +37,14 @@ export default function SiteHeatGame({ onComplete }: Q1GameProps) {
     setSelected(selected === (id as TaskId) ? null : (id as TaskId)),
   );
 
-  const taskOf = (h: string) => TASKS.find((t) => t.id === plan[h]);
-  const filled = SLOTS.every((s) => plan[s.h]);
-  const progress = SLOTS.reduce((a, s) => a + (taskOf(s.h)?.progress ?? 0), 0);
-  const risks = SLOTS.map((s) => {
-    const t = taskOf(s.h);
-    return t ? risk(s.wbgt, t.load) : 0;
-  });
-  const maxRisk = Math.max(...risks, 0);
+  const taskOf = (h: string) => taskOfPlan(plan, h);
+  const filled = isFilled(plan);
+  const progress = totalProgress(plan);
+  const risks = risksFor(plan);
+  const maxRisk = maxRiskFor(plan);
   const heavyPlaced = SLOTS.filter((s) => (taskOf(s.h)?.load ?? 0) >= 2).length;
 
-  const good = ran && maxRisk < 2 && progress >= 75;
+  const good = ran && isSuccess(plan);
 
   if (good) {
     return (

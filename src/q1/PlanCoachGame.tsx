@@ -6,56 +6,8 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
-
-type FieldId = "naiyou" | "uriage" | "keihi" | "jikin" | "kariire" | "uri";
-
-interface Field {
-  id: FieldId;
-  label: string;
-  value: string;
-  weak: boolean;
-  /** reply when the child asks about this field */
-  answer: string;
-  /** reply when the child (wrongly) flags a non-weak field */
-  notWeak?: string;
-}
-const FIELDS: Field[] = [
-  { id: "naiyou", label: "お店の内容", value: "小さな定食屋（8席）", weak: false,
-    answer: "カウンターごしに話せる、小さな定食屋にしたいんです。席は8席です。",
-    notWeak: "お店の内容は、はっきりしている。ここは強みだ。" },
-  { id: "uriage", label: "売上の見込み", value: "1日50人 × 700円", weak: true,
-    answer: "1日50人くらいは来ると思うんです！" },
-  { id: "keihi", label: "経費", value: "家賃 ＋ 材料費", weak: true,
-    answer: "家賃と材料費は入れました。" },
-  { id: "jikin", label: "自己資金", value: "150万円", weak: false,
-    answer: "毎月コツコツ、3年かけて貯めました。",
-    notWeak: "そこはだいじょうぶそう。毎月の貯金の記録があるからね。" },
-  { id: "kariire", label: "借りたいお金", value: "250万円", weak: false,
-    answer: "内装の工事に使う予定です。",
-    notWeak: "使いみちははっきりしている。金額は、ほかの欄しだいかな。" },
-  { id: "uri", label: "お店の売り", value: "出汁からとるみそ汁", weak: false,
-    answer: "出汁からちゃんととる、みそ汁が自慢なんです。",
-    notWeak: "いいね。ここは計画の弱点ではなさそうだ。" },
-];
-
-// Advice choices per weakness. Exactly one lands; the others bounce with a
-// reason (never the answer itself).
-const ADVICE: Record<string, { text: string; good?: true; bounce?: string }[]> = {
-  uriage: [
-    { text: "席の数と営業時間から、入れる人数を計算し直してみたら？", good: true },
-    { text: "駅前の人通りを数えてみたら？",
-      bounce: "人通りは参考になるけど、8席のお店に一度に入れる人数の答えにはならないみたいだ。" },
-    { text: "値段を2倍にすれば？",
-      bounce: "「お客さんが来なくなるかも…」とハルさんが心配そうだ。" },
-  ],
-  keihi: [
-    { text: "アルバイト代と、自分の生活費も入れてみよう", good: true },
-    { text: "材料費をうんと安いものにかえよう",
-      bounce: "「出汁からとるみそ汁が売りなのに…」とハルさんが困っている。売りを削る直し方みたいだ。" },
-    { text: "経費は少なく書いたほうが、計画がよく見えるよ",
-      bounce: "その直し方だと、面談で「本当にこれだけ？」と聞かれたとき困りそうだ。" },
-  ],
-};
+import { FIELDS, ADVICE, evaluateFlag, isGoodAdvice, isComplete } from "./planCoachLogic";
+import type { Field, FieldId } from "./planCoachLogic";
 
 export default function PlanCoachGame({ onComplete }: Q1GameProps) {
   const [asked, setAsked] = useState<FieldId[]>([]);
@@ -74,19 +26,23 @@ export default function PlanCoachGame({ onComplete }: Q1GameProps) {
 
   const flag = (f: Field) => {
     setBubble(null);
-    if (!asked.includes(f.id)) {
+    const outcome = evaluateFlag(f.id, asked, found, advised);
+    if (outcome === "not_asked") {
       setNote("まだ聞いていない欄だ。面談で確かめていないことは、指摘できないよ。");
       return;
     }
-    if (found.includes(f.id)) {
-      // reopen the advice dialog for a flagged-but-unadvised weakness
-      if (!advised.includes(f.id)) setAdvising(f.id);
+    if (outcome === "reopen_advice") {
+      setAdvising(f.id);
       return;
     }
-    if (!f.weak) {
+    if (outcome === "already_advised") {
+      return;
+    }
+    if (outcome === "not_weak") {
       setNote(f.notWeak ?? "そこは弱点ではなさそうだ。");
       return;
     }
+    // "new_weak_found"
     setNote(null);
     setFound((x) => [...x, f.id]);
     setAdvising(f.id);
@@ -94,7 +50,7 @@ export default function PlanCoachGame({ onComplete }: Q1GameProps) {
 
   const advise = (fid: FieldId, i: number) => {
     const a = ADVICE[fid][i];
-    if (a.good) {
+    if (isGoodAdvice(fid, i)) {
       setNote(null);
       setAdvised((x) => [...x, fid]);
       setAdvising(null);
@@ -103,7 +59,7 @@ export default function PlanCoachGame({ onComplete }: Q1GameProps) {
     }
   };
 
-  const done = advised.length === 2;
+  const done = isComplete(advised);
   const extraAsked = asked.filter((id) => !FIELDS.find((f) => f.id === id)!.weak).length;
 
   // ---------- E: the plan, rewritten into explainable numbers ----------

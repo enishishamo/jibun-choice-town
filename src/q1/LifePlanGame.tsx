@@ -6,47 +6,7 @@
 // 困りごととサービスの単純な線つなぎにもしない。全部やってもらうと本人が「それはやりたい」と返す。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-// 家で困りそうなこと（生活の場面のことばで）
-interface Trouble {
-  id: string;
-  icon: string;
-  label: string;
-  say: string;
-  /** これで手当てできる助け */
-  helps: string[];
-  /** 本人が「そこは自分でやりたい」と思っていること */
-  keep?: string;
-}
-const TROUBLES: Trouble[] = [
-  { id: "shop", icon: "🛒", label: "買い物", say: "「重いものを持って帰れるかなあ」",
-    helps: ["food", "hand"], keep: "近所のお店には、自分で行きたい" },
-  { id: "meal", icon: "🍚", label: "ごはん", say: "「毎日ごはんを用意できるかな」", helps: ["food", "hand"] },
-  { id: "bath", icon: "🛁", label: "お風呂", say: "「一人で入るのは、ちょっと不安だな」", helps: ["hand", "rail"] },
-  { id: "med", icon: "💊", label: "薬", say: "「薬、忘れずに飲めるかな」", helps: ["health"] },
-  { id: "hosp", icon: "🏥", label: "病院", say: "「次の診察の日、どうやって行こう」", helps: ["ride", "family"] },
-  { id: "alone", icon: "👤", label: "一人の時間", say: "「急に具合が悪くなったら、だれに言えばいい？」", helps: ["call", "health"] },
-];
-
-// 助けてくれる人・方法（正式名称ではなく「何をしてくれるか」で見せる）
-interface Help { id: string; icon: string; label: string; note: string }
-const HELPS: Help[] = [
-  { id: "food", icon: "🍱", label: "ごはんを届けてくれる人", note: "あたたかいごはんを、家まで運んでくれる" },
-  { id: "hand", icon: "🧹", label: "家に来て生活を手伝ってくれる人", note: "そうじや買い物、お風呂の手伝いをしてくれる" },
-  { id: "health", icon: "🩺", label: "家で体調を見てくれる人", note: "家に来て、具合や薬のことを見てくれる" },
-  { id: "walk", icon: "🚶", label: "家でも歩く練習を手伝ってくれる人", note: "家の中や近所で、安全に動く練習をしてくれる" },
-  { id: "ride", icon: "🚐", label: "病院まで行くのを助ける方法", note: "送りむかえをしてもらえる" },
-  { id: "family", icon: "👧", label: "娘さんにお願いできること", note: "遠くに住んでいて、来られるのは週に1回くらい" },
-  { id: "call", icon: "🔔", label: "困ったとき相談できる人", note: "何かあったとき、すぐ連絡できるようにする" },
-  { id: "rail", icon: "🤝", label: "家に手すりをつける", note: "つかまる場所があると、自分で動きやすい" },
-];
-
-// 本人の希望（画面に残しておく）
-const WISHES = [
-  "できることは、自分でやりたい",
-  "自分の家で暮らしたい",
-  "また近所を散歩したい",
-];
+import { TROUBLES, HELPS, WISHES, covered, allCovered, isTooMuch, isFamilyOnly } from "./lifePlanLogic";
 
 type Step = "ask" | "find" | "plan" | "react" | "done";
 
@@ -57,11 +17,9 @@ export default function LifePlanGame({ onComplete }: Q1GameProps) {
   const [note, setNote] = useState<string | null>(null);
   const [said, setSaid] = useState<string | null>(null);
 
-  const covered = (t: Trouble) => t.helps.some((h) => picked.includes(h));
-  const allCovered = TROUBLES.every(covered);
-  // 「全部やってもらう」＝本人がやりたいことまで代わりにしてしまう組み方
-  const tooMuch = picked.includes("food") && picked.includes("hand") && picked.length >= 5;
-  const familyOnly = picked.length > 0 && picked.every((p) => p === "family");
+  const allCoveredNow = allCovered(picked);
+  const tooMuch = isTooMuch(picked);
+  const familyOnly = isFamilyOnly(picked);
 
   // ---------- ①本人に聞く ----------
   if (step === "ask") {
@@ -162,8 +120,8 @@ export default function LifePlanGame({ onComplete }: Q1GameProps) {
         <>
           <div className="trouble-status">
             {TROUBLES.map((t) => (
-              <span key={t.id} className={`tstat ${covered(t) ? "ok" : ""}`}>
-                {t.icon} {t.label} {covered(t) ? "✓" : ""}
+              <span key={t.id} className={`tstat ${covered(t, picked) ? "ok" : ""}`}>
+                {t.icon} {t.label} {covered(t, picked) ? "✓" : ""}
               </span>
             ))}
           </div>
@@ -193,7 +151,7 @@ export default function LifePlanGame({ onComplete }: Q1GameProps) {
                   ? "「娘は遠くてね……週に1回来てくれるだけでも、ありがたいんだけど。」"
                   : tooMuch
                     ? "「そこまでしてもらったら助かるけど……近所のお店には、自分で行きたいなあ。」"
-                    : !allCovered
+                    : !allCoveredNow
                       ? "「うーん、まだちょっと不安なところがあるなあ。」"
                       : "「これなら、自分の家でやっていけそうだ。」",
               );
@@ -213,12 +171,12 @@ export default function LifePlanGame({ onComplete }: Q1GameProps) {
           </div>
           <div className="trouble-status">
             {TROUBLES.map((t) => (
-              <span key={t.id} className={`tstat ${covered(t) ? "ok" : ""}`}>
-                {t.icon} {t.label} {covered(t) ? "✓" : ""}
+              <span key={t.id} className={`tstat ${covered(t, picked) ? "ok" : ""}`}>
+                {t.icon} {t.label} {covered(t, picked) ? "✓" : ""}
               </span>
             ))}
           </div>
-          {(familyOnly || tooMuch || !allCovered) ? (
+          {(familyOnly || tooMuch || !allCoveredNow) ? (
             <>
               <p className="game-note">
                 {familyOnly

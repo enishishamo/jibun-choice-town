@@ -4,101 +4,30 @@
 //  - The park is ONE illustration that stays on screen the whole time.
 //    Countermeasures are ADDED on top of it; slides, benches and paths are
 //    never replaced or hidden.
-//  - No abstract gauges. The goal is concrete: 「あそべる場所を3か所つくろう」.
+//  - No abstract gauges. The goal is concrete: 「あそべる場所を4か所つくろう」.
 //  - Data layers (日射 / 地面の温度 / 風) overlay the same park, so the child
 //    reads the park itself instead of a text explanation.
+//  - 2026-09-13 audit fix: GOAL was 3 of 4 spots. Since "tree" alone is a
+//    correct countermeasure for play/bench/path (3 of the 4 spots), a child
+//    could win by dropping the same part everywhere without ever reasoning
+//    about the one spot (plaza) that needs different treatment — exactly
+//    the "気づく" moment this game's weak-messages were written to trigger.
+//    Raising GOAL to require all 4 spots closes that shortcut; a fully
+//    correct solution still exists (tree/shade/mist/pavement, one per spot).
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import { useDragDrop } from "./useDragDrop";
+import { SPOTS, PARTS, GOAL, computeResult, countOk, isGoalReached, type PartId, type SpotId } from "./parkHeatLogic";
 
 const H = (n: string) => `${import.meta.env.BASE_URL}assets/heat/${n}.png`;
 
-type SpotId = "play" | "bench" | "plaza" | "path";
-type PartId = "tree" | "shade" | "pavement" | "mist";
 type Layer = "sun" | "surface" | "wind" | null;
-
-interface Spot {
-  id: SpotId;
-  name: string;
-  /** position on the park illustration (percent) */
-  pos: { left: string; top: string };
-  sun: string;
-  surface: string;
-  wind: string;
-  /** countermeasures that actually cool this spot */
-  good: PartId[];
-  weak: Partial<Record<PartId, string>>;
-}
-
-const SPOTS: Spot[] = [
-  {
-    id: "play",
-    name: "遊具",
-    pos: { left: "21%", top: "43%" },
-    sun: "一日中 日なた",
-    surface: "すべり台 58℃",
-    wind: "風はふつう",
-    good: ["tree", "shade"],
-    weak: {
-      pavement: "地面はすずしくなったけど、すべり台はまだ熱いまま…",
-      mist: "少しすずしい。でも直射日光はそのまま…",
-    },
-  },
-  {
-    id: "bench",
-    name: "ベンチ",
-    pos: { left: "61%", top: "42%" },
-    sun: "午後だけ 日なた",
-    surface: "ベンチ 52℃",
-    wind: "風がとおる",
-    good: ["tree", "shade"],
-    weak: {
-      pavement: "すわる面は日なたのまま…",
-      mist: "ベンチがぬれてしまった…",
-    },
-  },
-  {
-    id: "plaza",
-    name: "広場",
-    pos: { left: "47%", top: "58%" },
-    sun: "さえぎるものなし",
-    surface: "土・砂 62℃！",
-    wind: "風はよくとおる",
-    good: ["pavement", "mist"],
-    weak: {
-      tree: "広すぎて、木の日陰だけでは足りない…",
-      shade: "広場ぜんぶは屋根でおおえない…",
-    },
-  },
-  {
-    id: "path",
-    name: "通路",
-    pos: { left: "70%", top: "76%" },
-    sun: "ほぼ 日なた",
-    surface: "石だたみ 57℃",
-    wind: "風はよわい",
-    good: ["tree", "pavement"],
-    weak: {
-      shade: "細長い通路には屋根がつけにくい…",
-      mist: "通りぬけるだけなので、あまり効かない…",
-    },
-  },
-];
-
-const PARTS: { id: PartId; name: string }[] = [
-  { id: "tree", name: "樹木" },
-  { id: "shade", name: "日よけ" },
-  { id: "pavement", name: "遮熱・保水の地面" },
-  { id: "mist", name: "ミスト" },
-];
 
 const LAYERS: { id: Exclude<Layer, null>; name: string; img: string }[] = [
   { id: "sun", name: "日射マップ", img: H("data-sun") },
   { id: "surface", name: "地面の温度", img: H("data-surface") },
   { id: "wind", name: "風の情報", img: H("data-wind") },
 ];
-
-const GOAL = 3;
 
 export default function ParkHeatGame({ onComplete }: Q1GameProps) {
   const [layer, setLayer] = useState<Layer>(null);
@@ -116,21 +45,15 @@ export default function ParkHeatGame({ onComplete }: Q1GameProps) {
     setSelected(selected === (id as PartId) ? null : (id as PartId)),
   );
 
-  const cooled = (s: Spot) => {
-    const part = placed[s.id];
-    return !!part && s.good.includes(part);
-  };
-  const okCount = result ? SPOTS.filter((s) => result[s.id]).length : 0;
+  const okCount = countOk(result);
   const anyPlaced = Object.keys(placed).length > 0;
 
   // 「ためす」は結果を公園に描くだけ。達成していても自動では進まず、
   // 子どもが変化（人が戻る／まだ暑い場所）を見てから自分で次へ進む。
   const run = () => {
-    const r: Partial<Record<SpotId, boolean>> = {};
-    SPOTS.forEach((s) => (r[s.id] = cooled(s)));
-    setResult(r);
+    setResult(computeResult(placed));
   };
-  const goalReached = okCount >= GOAL;
+  const goalReached = isGoalReached(result);
 
   // Which "after" illustration matches what the child actually built?
   const afterImage = () => {

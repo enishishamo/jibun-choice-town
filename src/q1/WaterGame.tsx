@@ -42,7 +42,12 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
   const [session] = useState(() => newSession());
   const [cardOrder] = useState<CardId[]>(() => shuffledIds(ALL_CARD_IDS));
   const [depthOrder] = useState<Depth[]>(() => shuffledIds(DEPTHS));
-  const [openCard, setOpenCard] = useState<CardId | null>(null);
+  // 2026-09-13 (UX spot-check): a card's reading used to be gated behind a
+  // single `openCard` slot, so opening card B silently hid card A's numbers
+  // again -- the player had to memorize 5 readings one at a time before
+  // comparing them to pick a sector+depth. Readings now stay visible once
+  // opened (openedCards only ever grows), so all previously-checked cards
+  // stay on screen together for the comparison this decision needs.
   const [openedCards, setOpenedCards] = useState<Set<CardId>>(new Set());
   const [selectedSector, setSelectedSector] = useState<Sector | null>(null);
   const [selectedDepth, setSelectedDepth] = useState<Depth | null>(null);
@@ -57,7 +62,6 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
   const canContinueReflection = reflectSector !== null && reflectDepth !== null;
 
   const toggleOpen = (id: CardId) => {
-    setOpenCard((cur) => (cur === id ? null : id));
     setOpenedCards((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   };
 
@@ -207,13 +211,13 @@ export default function WaterGame({ onComplete, onPartialComplete }: Q1GameProps
                 <span className="dx-name">{cardLabel(id)}</span>
                 <button
                   className="dx-more"
-                  aria-label={openCard === id ? "とじる" : "データを見る"}
+                  aria-label={openedCards.has(id) ? "確認ずみ" : "データを見る"}
                   onClick={() => toggleOpen(id)}
                 >
-                  {openCard === id ? "－" : "？"}
+                  {openedCards.has(id) ? "✓" : "？"}
                 </button>
               </div>
-              {openCard === id && <p className="dx-pattern">{readingOf(id)}</p>}
+              {openedCards.has(id) && <p className="dx-pattern">{readingOf(id)}</p>}
               {isSector && (
                 <button className={`dx-commit ${selectedSector === id ? "on" : ""}`} onClick={() => setSelectedSector(id as Sector)}>
                   ここに割り当てる

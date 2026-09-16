@@ -7,24 +7,8 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
-
-// ※数値はプロトタイプ用の簡略モデル。
-const NEED = 1400; // 1日に届けたいエネルギーの目安（kcal）
-
-type Portion = "full" | "half" | "small";
-type Times = 3 | 5;
-type Form = "normal" | "soft" | "drink";
-
-const PORTION: Record<Portion, { label: string; perMeal: number; eatRate: number }> = {
-  full: { label: "ふつう量", perMeal: 500, eatRate: 0.3 },
-  half: { label: "半分くらい", perMeal: 300, eatRate: 0.75 },
-  small: { label: "少なめ", perMeal: 200, eatRate: 0.95 },
-};
-const FORM: Record<Form, { label: string; bonus: number; note: string }> = {
-  normal: { label: "ふつうの食事", bonus: 0, note: "かむ力はある。でも今はしんどい" },
-  soft: { label: "やわらかめ", bonus: 0.1, note: "のどを通りやすい" },
-  drink: { label: "飲みもので補う", bonus: 0.15, note: "栄養のある飲みものを足す" },
-};
+import { NEED, PORTION, FORM, evaluateMeal } from "./mealFitLogic";
+import type { Portion, Times, Form } from "./mealFitLogic";
 
 export default function MealFitGame({ onComplete }: Q1GameProps) {
   const [asked, setAsked] = useState(false);
@@ -35,12 +19,7 @@ export default function MealFitGame({ onComplete }: Q1GameProps) {
   const [note, setNote] = useState<string | null>(null);
 
   const p = PORTION[portion];
-  const served = p.perMeal * times;
-  const rate = Math.min(1, p.eatRate + FORM[form].bonus);
-  const eaten = Math.round(served * rate);
-  // 「たくさん出して残す」では合格にしない：食べられた量 かつ 出しすぎでないこと。
-  const wasted = served > NEED * 1.5;
-  const ok = eaten >= NEED * 0.8 && !wasted;
+  const { served, eaten, wasted, ok } = evaluateMeal(portion, times, form);
 
   const docs = [
     { id: "need", icon: "🎯", title: "1日に届けたい栄養",

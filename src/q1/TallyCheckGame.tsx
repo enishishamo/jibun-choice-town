@@ -92,6 +92,24 @@ export default function TallyCheckGame({ onComplete }: Q1GameProps) {
     setStep(r.state.outcome === "done" ? "done" : "work");
   };
 
+  // 2026-09-13 UX audit fix: this reference card used to render ONLY in the
+  // main照合 screen below. But the wording rule it states ("見たまま"を書く、
+  // いつついたかは確かめられた時だけ) is exactly what decides THIS screen's
+  // choice, and the "wording" step is reached via its own separate button
+  // press/return block -- so the one rule that matters here used to be back
+  // on a screen the player had already left. Hoisted so both steps show it.
+  const docs = [{
+    id: "rule", icon: "📋", title: "検数のきまり",
+    body: (
+      <>
+        <p>{withRuby("番号・｜封印《ふういん》・外観を、書類とひと組で照合する。")}</p>
+        <p>番号は11文字。1文字ずつ、指でなぞって見比べる。</p>
+        <p>ちがいがあれば照会（といあわせ）。ちがいがないのに照会すると、作業が止まる。</p>
+        <p>損傷は「見たまま」を記録する。<strong>いつついたかは、確かめられた時だけ</strong>書く。</p>
+      </>
+    ),
+  }];
+
   if (step === "wording") {
     return (
       <div className="game board-game">
@@ -101,6 +119,7 @@ export default function TallyCheckGame({ onComplete }: Q1GameProps) {
         </div>
         {gateStrip}
         <p className="game-note" style={{ margin: "4px 14px" }}>📦 {b.id}：とびらの右下に、へこみが見える。</p>
+        <InfoCards label="しごとの資料" cards={docs} />
         <div className="choice-row wrap">
           {WORDINGS.map((w) => (
             <button key={w.id} className="choice-card" onClick={() => { setStep("work"); handle("record_damage", w.id); }}>
@@ -137,20 +156,7 @@ export default function TallyCheckGame({ onComplete }: Q1GameProps) {
         </div>
       </div>
 
-      <InfoCards
-        label="しごとの資料"
-        cards={[{
-          id: "rule", icon: "📋", title: "検数のきまり",
-          body: (
-            <>
-              <p>{withRuby("番号・｜封印《ふういん》・外観を、書類とひと組で照合する。")}</p>
-              <p>番号は11文字。1文字ずつ、指でなぞって見比べる。</p>
-              <p>ちがいがあれば照会（といあわせ）。ちがいがないのに照会すると、作業が止まる。</p>
-              <p>損傷は「見たまま」を記録する。<strong>いつついたかは、確かめられた時だけ</strong>書く。</p>
-            </>
-          ),
-        }]}
-      />
+      <InfoCards label="しごとの資料" cards={docs} />
 
       {note && <p className="game-note">{withRuby(note)}</p>}
 

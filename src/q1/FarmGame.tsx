@@ -23,7 +23,6 @@ export default function FarmGame({ onComplete, onPartialComplete }: Q1GameProps)
   const [session] = useState(() => newSession());
   const [order] = useState(() => shuffledIds(VARIETY_IDS));
   const [committed, setCommitted] = useState<string | null>(null);
-  const [openId, setOpenId] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<"playing" | "success" | "partial">("playing");
 
   const varietyList = order.map((id) => VARIETIES.find((v) => v.id === id)!);
@@ -88,20 +87,19 @@ export default function FarmGame({ onComplete, onPartialComplete }: Q1GameProps)
             <div key={v.id} className={`dx-card ${isCommitted ? "selected" : ""}`}>
               <div className="dx-head">
                 <span className="dx-name">{v.name}</span>
-                <button
-                  className="dx-more"
-                  aria-label={openId === v.id ? "とじる" : "どんな品種か見る"}
-                  onClick={() => setOpenId(openId === v.id ? null : v.id)}
-                >
-                  {openId === v.id ? "－" : "？"}
-                </button>
               </div>
-              {openId === v.id && (
-                <p className="dx-pattern">
-                  播種適期 {v.window.map((m) => `${m}月`).join("・")} / 収穫まで約{v.harvestDays}日 /
-                  暑さに{v.heatOk ? "強い" : "弱い"}
-                </p>
-              )}
+              {/* 2026-09-13 UX fix: this was gated behind a per-card "？"
+                 toggle where only one variety could be open at a time,
+                 forcing the player to memorize one card's window/harvestDays/
+                 heatOk before opening the next to compare them against the
+                 day's month/deadline/forecast. All 3 varieties' data now
+                 render unconditionally so the comparison never needs
+                 memorization (same known failure mode as SourcingGame's
+                 supplier accordion). */}
+              <p className="dx-pattern">
+                播種適期 {v.window.map((m) => `${m}月`).join("・")} / 収穫まで約{v.harvestDays}日 /
+                暑さに{v.heatOk ? "強い" : "弱い"}
+              </p>
               <button
                 className={`dx-commit ${isCommitted ? "on" : ""}`}
                 onClick={() => sow(v.id)}

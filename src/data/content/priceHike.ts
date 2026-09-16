@@ -267,7 +267,12 @@ export const priceHike: ContentModule = {
       place: { name: "材料・倉庫", image: P("warehouse"), fit: "cover", focus: "center 38%" },
       mission: {
         title: "材料が高くなってる！",
-        lines: ["いちご原料を、来週までに120kgそろえよう。"],
+        // 2026-09-13 (UX/Logic audit — SourcingGame redesign): "6箱" is now
+        // the primary unit the child actually operates in-game (see
+        // SourcingGame.tsx/sourcingLogic.ts); 120kg stays only as a small
+        // parenthetical so this intro line doesn't contradict the game's
+        // own task-bar.
+        lines: ["いちご原料を、来週までに6箱（120kg）そろえよう。"],
       },
       tools: [],
       resolution: {

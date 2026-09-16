@@ -8,65 +8,11 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import { SPOTS, crowdOf as crowdOfSpot, allCalm as isAllCalm } from "./crowdFlowLogic";
+import type { SpotId, ToolId, Placement } from "./crowdFlowLogic";
 
 const E = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.jpg`;
 const P = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
-
-type SpotId = "gate" | "food" | "stage";
-type ToolId = "fence" | "signpost" | "infomap" | "cone";
-
-interface Spot {
-  id: SpotId;
-  name: string;
-  pos: { left: string; top: string };
-  crowd: number; // 0-3
-  why: string;
-  /** この場所の混雑をやわらげる道具 */
-  fix: ToolId[];
-  wrong: Partial<Record<ToolId, string>>;
-}
-
-// ※実際の警備計画は現場ごとに大きく異なる。ここでは「詰まりを見つけて
-//   流れを分ける」という考え方だけを取り出した簡易モデル。
-const SPOTS: Spot[] = [
-  {
-    id: "gate",
-    name: "入口",
-    pos: { left: "50%", top: "78%" },
-    crowd: 3,
-    why: "入ってきた人が立ち止まって、うしろがつかえている",
-    fix: ["fence", "infomap"],
-    wrong: {
-      cone: "コーンだけでは、人の列が分かれない…",
-      signpost: "入口では、まだどこへ行くか決まっていない人が多い…",
-    },
-  },
-  {
-    id: "food",
-    name: "飲食ブースの前",
-    pos: { left: "22%", top: "46%" },
-    crowd: 2,
-    why: "行列が通路にはみ出している",
-    fix: ["cone", "fence"],
-    wrong: {
-      infomap: "案内図を見に人が集まって、よけい混んでしまった…",
-      signpost: "行列そのものは動かない…",
-    },
-  },
-  {
-    id: "stage",
-    name: "ステージ前",
-    pos: { left: "72%", top: "34%" },
-    crowd: 2,
-    why: "みんな同じ道からステージへ向かっている",
-    fix: ["signpost"],
-    wrong: {
-      fence: "柵でふさぐと、行き場がなくなってもっと混んだ…",
-      cone: "せまくすると、かえって詰まってしまった…",
-      infomap: "立ち止まって見る人が増えてしまった…",
-    },
-  },
-];
 
 const TOOLS: { id: ToolId; name: string; img: string; desc: string }[] = [
   { id: "fence", name: "柵", img: P("p_fence"), desc: "列を分けて、流れを2つにする" },
@@ -76,19 +22,15 @@ const TOOLS: { id: ToolId; name: string; img: string; desc: string }[] = [
 ];
 
 export default function CrowdFlowGame({ onComplete }: Q1GameProps) {
-  const [placed, setPlaced] = useState<Partial<Record<SpotId, ToolId>>>({});
+  const [placed, setPlaced] = useState<Placement>({});
   const [holding, setHolding] = useState<ToolId | null>(null);
   const [checked, setChecked] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [looked, setLooked] = useState<SpotId[]>([]);
 
-  const crowdOf = (s: Spot) => {
-    const t = placed[s.id];
-    if (!t) return s.crowd;
-    return s.fix.includes(t) ? 0 : s.crowd;
-  };
-  const allCalm = SPOTS.every((s) => crowdOf(s) === 0);
+  const crowdOf = (s: (typeof SPOTS)[number]) => crowdOfSpot(s, placed[s.id]);
+  const allCalm = isAllCalm(placed);
 
   const docs = [
     {
