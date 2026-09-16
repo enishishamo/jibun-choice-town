@@ -8,11 +8,13 @@ import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
+import { CELLS, ITEM_IDS, evaluate, allPlaced as isAllPlaced } from "./venueLayoutLogic";
+import type { ItemId, Placement } from "./venueLayoutLogic";
 
 const E = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.jpg`;
 const P = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
 
-interface Item { id: string; name: string; img: string; hint: string }
+interface Item { id: ItemId; name: string; img: string; hint: string }
 const ITEMS: Item[] = [
   { id: "stage", name: "ステージ", img: P("p_stage"), hint: "大きい。見える場所に。" },
   { id: "food", name: "飲食ブース", img: P("p_booth_food"), hint: "においと行列が出る。" },
@@ -20,16 +22,8 @@ const ITEMS: Item[] = [
   { id: "rest", name: "休けいスペース", img: P("p_rest_table"), hint: "すわって休む場所。" },
 ];
 
-// 3x3 grid. row0 = 奥（ステージ向き）, row2 = 手前（入口側）
-const CELLS = [
-  { id: "c0", row: 0, col: 0 }, { id: "c1", row: 0, col: 1 }, { id: "c2", row: 0, col: 2 },
-  { id: "c3", row: 1, col: 0 }, { id: "c4", row: 1, col: 1 }, { id: "c5", row: 1, col: 2 },
-  { id: "c6", row: 2, col: 0 }, { id: "c7", row: 2, col: 1 }, { id: "c8", row: 2, col: 2 },
-];
-const ENTRANCE_COL = 1; // 入口は手前の中央
-
 export default function VenueLayoutGame({ onComplete }: Q1GameProps) {
-  const [placed, setPlaced] = useState<Record<string, string>>({}); // cellId -> itemId
+  const [placed, setPlaced] = useState<Placement>({}); // cellId -> itemId
   const [selected, setSelected] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
   const [note, setNote] = useState<string | null>(null);
@@ -37,10 +31,10 @@ export default function VenueLayoutGame({ onComplete }: Q1GameProps) {
 
   const put = (itemId: string, cellId: string) => {
     setPlaced((p) => {
-      const n: Record<string, string> = {};
+      const n: Placement = {};
       // one of each item, one item per cell
-      for (const [c, i] of Object.entries(p)) if (i !== itemId && c !== cellId) n[c] = i;
-      n[cellId] = itemId;
+      for (const [c, i] of Object.entries(p)) if (i !== itemId && c !== cellId) n[c] = i as ItemId;
+      n[cellId] = itemId as ItemId;
       return n;
     });
     setSelected(null);
@@ -52,23 +46,10 @@ export default function VenueLayoutGame({ onComplete }: Q1GameProps) {
   );
 
   const cellOf = (itemId: string) => Object.entries(placed).find(([, i]) => i === itemId)?.[0];
-  const cell = (id?: string) => CELLS.find((c) => c.id === id);
-  const allPlaced = ITEMS.every((i) => cellOf(i.id));
+  const allPlaced = isAllPlaced(placed, ITEM_IDS);
 
   // --- evaluation (all derived from the rules in the docs) ---
-  const stage = cell(cellOf("stage"));
-  const food = cell(cellOf("food"));
-  const goods = cell(cellOf("goods"));
-  const rest = cell(cellOf("rest"));
-
-  const stageVisible = !!stage && stage.row === 0; // 奥に置くと客席から見える
-  const pathClear = ![food, goods].some((c) => c && c.row === 2 && c.col === ENTRANCE_COL);
-  const restQuiet = !!rest && !(rest.row === 0); // ステージ真横だとうるさい
-  const issues: string[] = [];
-  if (!stageVisible) issues.push("ステージが手前にあって、うしろの人から見えにくい…");
-  if (!pathClear) issues.push("入口の正面にお店があって、入ってきた人がすぐ止まってしまう…");
-  if (!restQuiet) issues.push("休けいスペースがステージのすぐ横。ゆっくり休めない…");
-  const ok = allPlaced && issues.length === 0;
+  const { issues, ok } = evaluate(placed);
 
   const docs = [
     {

@@ -19,7 +19,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { events, places } from "../data";
 import {
-  DISTRICTS, TOWN_TILE, WORLD_DISTRICT, DISTRICT_CAPACITY, TERRAIN_FILL, districtSlot, getDistrict,
+  DISTRICTS, TOWN_TILE, WORLD_DISTRICT, DISTRICT_CAPACITY, districtSlot, getDistrict,
 } from "../data/districts";
 import type { District } from "../data/districts";
 import { useGame } from "../state/GameState";
@@ -55,63 +55,13 @@ const MAX_SIGNALS = 5;
  * reveal mechanism, no marker architecture change. */
 const MAX_INITIAL_OVERVIEW = 4;
 
-/** small always-visible "compass" — a MINIATURE PAINTING of the same canvas
- * geography (green ground, blue sea corner, terrain-colored district
- * patches, a "you are here" viewport frame), not an icon wheel — Codex's
- * verify pass flagged the first version as "visually ambiguous... more like
- * selecting menu categories" once it had no visible relationship to the map.
- * Tapping a patch performs the exact same pan/zoom as tapping the district
- * on the full canvas (repair §2/§3 — still one navigation system, viewed at
- * two sizes, never a second independent list). */
-function Compass({ focus, onPick, cam, vp }: {
-  focus: string | null; onPick: (d: District) => void;
-  cam: { s: number; tx: number; ty: number }; vp: { w: number; h: number };
-}) {
-  const R = 42;
-  const cx0 = 50, cy0 = 50;
-  const toXY = (x: number, y: number) => ({
-    x: cx0 + ((x - CANVAS_W / 2) / CANVAS_W) * R * 2,
-    y: cy0 + ((y - CANVAS_H / 2) / CANVAS_H) * R * 2,
-  });
-  // "you are here" frame: the canvas-space rectangle currently visible in
-  // the viewport, mapped into compass-space — this is what makes it read as
-  // a shrunk map rather than a neutral control.
-  const view = {
-    x1: -cam.tx / cam.s, y1: -cam.ty / cam.s,
-    x2: (-cam.tx + vp.w) / cam.s, y2: (-cam.ty + vp.h) / cam.s,
-  };
-  const p1 = toXY(view.x1, view.y1);
-  const p2 = toXY(view.x2, view.y2);
-  return (
-    <svg className="compass" viewBox="0 0 100 100" width={100} height={100}>
-      <circle cx={cx0} cy={cy0} r={48} fill="#dcead0" stroke="#c9b895" strokeWidth={1.5} />
-      <clipPath id="compassClip"><circle cx={cx0} cy={cy0} r={47} /></clipPath>
-      <g clipPath="url(#compassClip)">
-        {DISTRICTS.filter((d) => !d.foggy && d.id !== "center").map((d) => {
-          const { x, y } = toXY(d.cx, d.cy);
-          return <ellipse key={d.id} cx={x} cy={y} rx={5} ry={4} fill={TERRAIN_FILL[d.terrain] ?? "#cddcae"} opacity={0.95} />;
-        })}
-      </g>
-      {/* the town: a small house mark, always the visual anchor */}
-      {(() => { const c = toXY(TOWN_TILE.x + TOWN_TILE.w / 2, TOWN_TILE.y + TOWN_TILE.h / 2); return <text x={c.x} y={c.y} textAnchor="middle" dominantBaseline="central" fontSize={9}>🏠</text>; })()}
-      {/* "you are here" viewport frame */}
-      <rect x={Math.min(p1.x, p2.x)} y={Math.min(p1.y, p2.y)} width={Math.abs(p2.x - p1.x)} height={Math.abs(p2.y - p1.y)} fill="none" stroke="#e0862c" strokeWidth={1.6} rx={3} />
-      {DISTRICTS.map((d) => {
-        const { x, y } = toXY(d.cx, d.cy);
-        const active = focus === d.id;
-        return (
-          <g key={d.id} className="compass-dot" onClick={() => onPick(d)} transform={`translate(${x},${y})`}>
-            {/* generous invisible hit-area — a confident thumb target even
-                though the painted dot stays small (mobile usability repair) */}
-            <circle r={11} fill="transparent" />
-            <circle r={active ? 7.5 : 6} fill={d.foggy ? "#aeb6bd" : "transparent"} stroke={d.foggy ? "#9aa1a8" : active ? "#e0862c" : "transparent"} strokeWidth={1.6} opacity={d.foggy ? 0.85 : 1} />
-            {d.foggy && <text textAnchor="middle" dominantBaseline="central" fontSize={7}>?</text>}
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
+// 2026-09-14 (Human Visual Review): the bottom-right circular minimap
+// (formerly a `Compass` component here — a miniature painting of the canvas
+// geography with a "you are here" viewport frame and its own district-tap
+// hotspots) was removed outright. The Human's instruction was explicit: no
+// replacement overview UI, no current-location pin, no compass — the map
+// should just be the map, explored directly. Tapping a district/world
+// marker on the full canvas (unchanged) remains the only way to navigate.
 
 interface WorldMarker {
   eventId: string;
@@ -123,11 +73,21 @@ interface WorldMarker {
 }
 
 // ONE face icon per world state — the map reads without labels (§13):
-// unseen worlds burn (come look!), visited ones rest, in-progress shows the
-// tool, completed plants the flag, updated sparkles the call-back.
+// unseen worlds burn (come look!), in-progress shows the tool, completed
+// plants the flag, updated sparkles the call-back.
+// 2026-09-13 (Map repair §3): VISITED used to show "📍" — a generic map-pin
+// glyph that reads as a "you are here / current location" marker, out of
+// place in a hand-made clay-diorama world (nothing else on the map uses a
+// literal pin shape) and reported as looking wrong near the river/forest
+// district. Removed outright, no replacement — the marker itself is
+// untouched and still tappable; only the icon inside it is empty now, with
+// the existing `.st-visited` border-color/desaturation CSS (index.css)
+// still carrying the state distinction non-verbally. If a future "you are
+// here" or "current area" indicator is wanted, it should be an area
+// label / subtle highlight woven into the world, never a generic pin.
 const STATE_FACE: Record<WorldState, string> = {
   DISCOVERED: "🔥",
-  VISITED: "📍",
+  VISITED: "",
   IN_PROGRESS: "🔨",
   COMPLETED: "🚩",
   UPDATED: "✨",
@@ -139,8 +99,25 @@ export default function HomeScreen() {
   const [teaser, setTeaser] = useState<string | null>(null);
   const fogTapCount = useRef<Record<string, number>>({});
   const enterTimer = useRef<number | null>(null);
-  const [pan, setPan] = useState({ x: 0, y: 0 }); // region-mode drag offset
-  const drag = useRef<{ x: number; y: number; px: number; py: number; moved: boolean } | null>(null);
+  // 2026-09-13 (Gesture Arbitration repair — see §1/§2 of the audit that
+  // produced this pass): `pan` and `zoom` are no longer region-mode-only.
+  // Both region AND district view now share ONE continuous camera model
+  // (see `cam` below) — pinch-zooming or dragging works the same way in
+  // either mode, and "zoomed in" no longer means "can't move anymore".
+  const [pan, setPan] = useState({ x: 0, y: 0 }); // camera drag offset, current mode
+  const [zoom, setZoom] = useState(1); // pinch-zoom multiplier ON TOP OF the mode's fitted scale
+  const MIN_ZOOM = 1; // never pinch out past the tuned "fit" framing — the district-tap / 地域全体 back button already cover "zoom out"
+  const MAX_ZOOM = 2; // how much further a pinch can push in from the fitted view
+  // Multi-touch tracking: every currently-down pointer, keyed by pointerId —
+  // this is what makes "a 2nd finger just touched down" detectable at all,
+  // which single-pointer drag tracking (the pre-repair implementation) had
+  // no way to see.
+  const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const gesture = useRef<
+    | { mode: "pan"; startX: number; startY: number; startPanX: number; startPanY: number; moved: boolean }
+    | { mode: "pinch"; startDist: number; s0: number; canvasX: number; canvasY: number }
+    | null
+  >(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [vp, setVp] = useState({ w: 375, h: 480 });
   // 2026-09-07 (REAL_USER_FEEDBACK onboarding fix, round-2 independent
@@ -341,6 +318,10 @@ export default function HomeScreen() {
   const heightFitScale = (vp.h * 1.15) / CANVAS_H;
   const widthCapScale = vp.w / (CANVAS_W * MAX_VISIBLE_WIDTH_FRACTION);
   const regionScale = Math.min(Math.max(Math.max(heightFitScale, widthCapScale), 0.35), 1.6);
+  // world bounds: at ANY scale (region, district, or further pinched-in from
+  // either), the canvas may never pan far enough to show empty space beyond
+  // its own edge — this is what keeps "explore after zooming" from ever
+  // scrolling the child off the edge of the world.
   const clampPan = (tx: number, ty: number, s: number) => ({
     tx: Math.min(0, Math.max(vp.w - CANVAS_W * s, tx)),
     ty: Math.min(0, Math.max(vp.h - CANVAS_H * s, ty)),
@@ -361,40 +342,58 @@ export default function HomeScreen() {
     const focalY = center.cy - center.r * 0.12;
     return { tx: vp.w / 2 - focalX * s, ty: vp.h / 2 - focalY * s };
   };
-  const cam = useMemo(() => {
-    if (!focus) {
-      const s = regionScale;
-      const rb = regionBase(s);
-      const base = clampPan(rb.tx, rb.ty, s);
-      const c = clampPan(base.tx + pan.x, base.ty + pan.y, s);
-      return { s, tx: c.tx, ty: c.ty };
+  // repair (2026-09-04): zoom was tight enough to hide all surrounding
+  // context, so the district close-up read as a mode-switch rather than
+  // movement through one continuous world (Codex verify finding). Zoom in
+  // less; the town and neighboring roads stay partly visible.
+  // repair (2026-09-04): iterated between too-tight (2.2, hid all context)
+  // and too-loose (0.85/2.0, left large low-information margins); this
+  // fill/cap scored best across two independent Codex verify rounds
+  // — calibrated against the region-viewport's PRE-Mobile-Map-Simplification
+  // fixed height (~560px). That height grew substantially (flex:1, fills
+  // the screen) in the 2026-09-04 True Home / Mobile Map pass, so a
+  // width-only fill fraction under-zoomed against the new taller portrait
+  // viewport and left a large empty band below the district (Codex review,
+  // true-home-map-codex-review-r2.json). Now fills against height too —
+  // districts read as filling the frame instead of floating in it — while
+  // the cap still leaves neighbouring roads/town visible at the edges.
+  // Extracted to a plain function (2026-09-13 Gesture Arbitration repair)
+  // so it can be reused as the district mode's BASE scale — pinch-zoom then
+  // multiplies further from this fitted baseline instead of replacing it.
+  const districtBaseScale = (d: District) => Math.min(Math.max(
+    (Math.min(vp.w, vp.h) * 0.78) / (d.r * 2),
+    (vp.h * 0.54) / (d.r * 1.44),
+    regionScale * 1.35,
+  ), 2.0);
+  // 2026-09-13 (Gesture Arbitration repair, §2 "zoom後も自由にパンできる"):
+  // region and district view used to be two separate camera formulas, and
+  // ONLY region mode accepted a pan offset at all — a district, once
+  // focused, was a fixed, unpannable close-up. They're unified into one
+  // formula now: `baseScaleNow` is whichever mode's tuned FIT scale applies
+  // (unchanged math, just extracted), `zoom` is a pinch-driven multiplier on
+  // top of it (1 = exactly the fitted view, up to MAX_ZOOM further in), and
+  // `pan` is a screen-px offset from the mode's anchor point — honored in
+  // BOTH modes now, not just region. Leaving a district always resets pan
+  // and zoom back to 0/1 (see openDistrict / the region-back button below),
+  // so "back to region" is never left mid-pinch from an unrelated district.
+  const baseScaleNow = focus ? districtBaseScale(getDistrict(focus)!) : regionScale;
+  const s = Math.min(Math.max(baseScaleNow * zoom, baseScaleNow * MIN_ZOOM), baseScaleNow * MAX_ZOOM);
+  const anchorFor = (sc: number) => {
+    if (focus) {
+      const d = getDistrict(focus)!;
+      return { tx: vp.w / 2 - d.cx * sc, ty: vp.h / 2 - d.cy * sc };
     }
-    const d = getDistrict(focus)!;
-    // repair (2026-09-04): zoom was tight enough to hide all surrounding
-    // context, so the district close-up read as a mode-switch rather than
-    // movement through one continuous world (Codex verify finding). Zoom in
-    // less; the town and neighboring roads stay partly visible.
-    // repair (2026-09-04): iterated between too-tight (2.2, hid all context)
-    // and too-loose (0.85/2.0, left large low-information margins); this
-    // fill/cap scored best across two independent Codex verify rounds
-    // — calibrated against the region-viewport's PRE-Mobile-Map-Simplification
-    // fixed height (~560px). That height grew substantially (flex:1, fills
-    // the screen) in the 2026-09-04 True Home / Mobile Map pass, so a
-    // width-only fill fraction under-zoomed against the new taller portrait
-    // viewport and left a large empty band below the district (Codex review,
-    // true-home-map-codex-review-r2.json). Now fills against height too —
-    // districts read as filling the frame instead of floating in it — while
-    // the cap still leaves neighbouring roads/town visible at the edges.
-    const s = Math.min(Math.max(
-      (Math.min(vp.w, vp.h) * 0.78) / (d.r * 2),
-      (vp.h * 0.54) / (d.r * 1.44),
-      regionScale * 1.35,
-    ), 2.0);
-    return { s, tx: vp.w / 2 - d.cx * s, ty: vp.h / 2 - d.cy * s };
+    return regionBase(sc);
+  };
+  const cam = useMemo(() => {
+    const anchor = anchorFor(s);
+    const c = clampPan(anchor.tx + pan.x, anchor.ty + pan.y, s);
+    return { s, tx: c.tx, ty: c.ty };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focus, vp, regionScale, pan]);
+  }, [focus, vp, s, pan]);
 
-  // Drag-to-pan (region mode only); a real drag suppresses the tap.
+  // Drag-to-pan AND pinch-to-zoom, in either region or district mode; a real
+  // gesture always suppresses the tap it would otherwise leave behind.
   // 2026-09-04 (Experience Design Harness — Interaction blocker repair):
   // Human Review on a real iPhone found that placing a finger near/on a
   // district while trying to pan could fire that district's tap and open a
@@ -415,49 +414,126 @@ export default function HomeScreen() {
   // constants real platforms use (Android ~8dp, iOS ~10pt) — so a real
   // finger's natural first-frame jitter cannot itself register as "moved".
   const TOUCH_SLOP = 8;
+  const dist2 = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y);
+  const mid2 = (a: { x: number; y: number }, b: { x: number; y: number }) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
   const onPointerDown = (e: React.PointerEvent) => {
-    if (focus) return;
-    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y, moved: false };
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     e.currentTarget.setPointerCapture(e.pointerId);
+    if (pointers.current.size === 1) {
+      gesture.current = { mode: "pan", startX: e.clientX, startY: e.clientY, startPanX: pan.x, startPanY: pan.y, moved: false };
+    } else if (pointers.current.size === 2) {
+      // 2026-09-13 (Gesture Arbitration repair, §1): a 2nd finger touching
+      // down is NEVER part of a tap, even if the 1st finger hadn't moved
+      // enough yet to count as a drag — suppress immediately, don't wait for
+      // pinch movement to prove itself.
+      suppressTap.current = true;
+      const pts = Array.from(pointers.current.values());
+      // The canvas-space point currently sitting under the pinch midpoint,
+      // derived from the ALREADY-RENDERED camera (this render's cam.tx/ty/s)
+      // — not re-derived from scratch, so it can never drift from what's
+      // actually on screen when the gesture starts.
+      const m = mid2(pts[0], pts[1]);
+      gesture.current = {
+        mode: "pinch",
+        startDist: Math.max(1, dist2(pts[0], pts[1])),
+        s0: cam.s,
+        canvasX: (m.x - cam.tx) / cam.s,
+        canvasY: (m.y - cam.ty) / cam.s,
+      };
+    }
+    // a 3rd+ finger is ignored — the existing 2-finger pinch gesture continues undisturbed
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d) return;
-    const dx = e.clientX - d.x;
-    const dy = e.clientY - d.y;
-    if (!d.moved && Math.hypot(dx, dy) > TOUCH_SLOP) d.moved = true;
-    if (d.moved) {
-      // 2026-09-06 (REAL_USER_OBSERVED — Map pan blocker): `pan` used to be
-      // an unbounded accumulator — only the DERIVED cam.tx/ty (via clampPan,
-      // inside the `cam` useMemo) were clamped for rendering. Dragging far
-      // enough to hit an edge let `pan` keep drifting past the point where
-      // that render-time clamp saturates; the NEXT gesture then re-based its
-      // delta on that still-unclamped `pan` (onPointerDown snapshots it
-      // as `px`), so reversing direction produced zero visible movement
-      // until the drag had "walked back" the entire invisible overshoot —
-      // often more than a single real swipe covers. Clamping `pan` itself
-      // here (using the SAME regionBase/clampPan the render path uses) keeps
-      // it always in sync with what's actually on screen, so any reversal
-      // moves immediately, from any edge, in either axis.
-      const s = regionScale;
-      const rb = regionBase(s);
-      const clamped = clampPan(rb.tx + d.px + dx, rb.ty + d.py + dy, s);
-      setPan({ x: clamped.tx - rb.tx, y: clamped.ty - rb.ty });
-      setDragging(true);
+    if (!pointers.current.has(e.pointerId)) return;
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const g = gesture.current;
+    if (!g) return;
+    if (g.mode === "pan" && pointers.current.size === 1) {
+      const dx = e.clientX - g.startX;
+      const dy = e.clientY - g.startY;
+      if (!g.moved && Math.hypot(dx, dy) > TOUCH_SLOP) g.moved = true;
+      if (g.moved) {
+        // 2026-09-06 (REAL_USER_OBSERVED — Map pan blocker): `pan` used to be
+        // an unbounded accumulator — only the DERIVED cam.tx/ty (via clampPan,
+        // inside the `cam` useMemo) were clamped for rendering. Dragging far
+        // enough to hit an edge let `pan` keep drifting past the point where
+        // that render-time clamp saturates; the NEXT gesture then re-based its
+        // delta on that still-unclamped `pan` (onPointerDown snapshots it
+        // as `startPanX`), so reversing direction produced zero visible
+        // movement until the drag had "walked back" the entire invisible
+        // overshoot. Clamping `pan` itself here (the SAME anchor/clampPan the
+        // render path uses) keeps it always in sync with what's actually on
+        // screen, so any reversal moves immediately, from any edge, in either
+        // axis — and now in BOTH region and district mode.
+        const anchor = anchorFor(s);
+        const clamped = clampPan(anchor.tx + g.startPanX + dx, anchor.ty + g.startPanY + dy, s);
+        setPan({ x: clamped.tx - anchor.tx, y: clamped.ty - anchor.ty });
+        setGestureActive(true);
+      }
+    } else if (g.mode === "pinch" && pointers.current.size >= 2) {
+      const pts = Array.from(pointers.current.values());
+      const d = Math.max(1, dist2(pts[0], pts[1]));
+      const m = mid2(pts[0], pts[1]);
+      const rawS = g.s0 * (d / g.startDist);
+      const newS = Math.min(baseScaleNow * MAX_ZOOM, Math.max(baseScaleNow * MIN_ZOOM, rawS));
+      // keep the canvas point captured at gesture-start fixed under the
+      // (possibly drifting) pinch midpoint — this is what makes the zoom
+      // feel anchored to the child's fingers instead of always the corner.
+      const newTx = m.x - g.canvasX * newS;
+      const newTy = m.y - g.canvasY * newS;
+      const anchor = anchorFor(newS);
+      const clamped = clampPan(newTx, newTy, newS);
+      setZoom(newS / baseScaleNow);
+      setPan({ x: clamped.tx - anchor.tx, y: clamped.ty - anchor.ty });
+      setGestureActive(true);
     }
   };
-  const endDrag = (e?: React.PointerEvent) => {
-    const d = drag.current;
-    drag.current = null;
-    setDragging(false);
-    if (d?.moved) suppressTap.current = true;
-    window.setTimeout(() => (suppressTap.current = false), 80);
-    if (e?.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+  const endPointer = (e: React.PointerEvent) => {
+    if (!pointers.current.has(e.pointerId)) return;
+    pointers.current.delete(e.pointerId);
+    if (e.currentTarget.hasPointerCapture?.(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+    if (pointers.current.size === 0) {
+      const g = gesture.current;
+      gesture.current = null;
+      setGestureActive(false);
+      if (g && (g.mode === "pinch" || g.moved)) {
+        suppressTap.current = true;
+        window.setTimeout(() => (suppressTap.current = false), 80);
+      }
+    } else if (pointers.current.size === 1) {
+      // dropped from a pinch (or a stray extra pointer) back to one finger —
+      // re-anchor so the remaining finger keeps panning from exactly here,
+      // with no jump, and treat the lift of THIS remaining finger as a
+      // continuation of the same real gesture (never a fresh tap).
+      const [[, pt]] = Array.from(pointers.current.entries());
+      gesture.current = { mode: "pan", startX: pt.x, startY: pt.y, startPanX: pan.x, startPanY: pan.y, moved: true };
+      suppressTap.current = true;
+    }
   };
-  const onPointerUp = (e: React.PointerEvent) => endDrag(e);
-  const onPointerCancel = (e: React.PointerEvent) => endDrag(e);
+  const onPointerUp = (e: React.PointerEvent) => endPointer(e);
+  const onPointerCancel = (e: React.PointerEvent) => endPointer(e);
+  const onPointerLeaveViewport = (e: React.PointerEvent) => endPointer(e);
   const suppressTap = useRef(false);
-  const [dragging, setDragging] = useState(false);
+  const [gestureActive, setGestureActive] = useState(false);
+  // 2026-09-13 (Gesture Arbitration repair, §1 "zoom / camera transition中は
+  // marker の pointer eventsを無効化"): true for the ~700ms the camera is
+  // ANIMATING toward a new focus (district-node tap, or the glide-then-enter
+  // a world marker starts) — a window with no finger down at all, so
+  // `gestureActive` (which only tracks live pointers) can't cover it. While
+  // true, `.is-busy` (below) disables pointer-events on every marker/district
+  // node, and `suppressTap` swallows anything that slips through.
+  const [camBusy, setCamBusy] = useState(false);
+  const camBusyTimer = useRef<number | null>(null);
+  const setCamBusyFor = (ms: number) => {
+    suppressTap.current = true;
+    setCamBusy(true);
+    if (camBusyTimer.current) window.clearTimeout(camBusyTimer.current);
+    camBusyTimer.current = window.setTimeout(() => {
+      suppressTap.current = false;
+      setCamBusy(false);
+    }, ms);
+  };
 
   // first-visit sweep: the camera starts a little west and glides home,
   // showing that the map continues beyond the screen
@@ -467,7 +543,15 @@ export default function HomeScreen() {
     return () => window.clearTimeout(t);
   }, []);
 
-  useEffect(() => () => { if (enterTimer.current) window.clearTimeout(enterTimer.current); }, []);
+  useEffect(() => () => {
+    if (enterTimer.current) window.clearTimeout(enterTimer.current);
+    if (camBusyTimer.current) window.clearTimeout(camBusyTimer.current);
+  }, []);
+
+  // camera transition duration (.region-canvas transition: transform 0.65s
+  // in index.css) plus a small buffer — markers/districts stay inert for
+  // exactly this long after a tap-driven focus change, per §1.
+  const CAMERA_TRANSITION_MS = 700;
 
   const openDistrict = (d: District) => {
     if (enterTimer.current) { window.clearTimeout(enterTimer.current); enterTimer.current = null; }
@@ -479,8 +563,21 @@ export default function HomeScreen() {
       window.setTimeout(() => setTeaser(null), 3200);
       return;
     }
+    // 2026-09-13 (Gesture Arbitration repair): reset pan/zoom on every focus
+    // change — a district is always entered (and region is always returned
+    // to) at its clean, tuned default framing, never mid-pinch from whatever
+    // a PREVIOUS district was left at.
     setPan({ x: 0, y: 0 });
+    setZoom(1);
     setFocus(d.id);
+    setCamBusyFor(CAMERA_TRANSITION_MS);
+  };
+
+  const backToRegion = () => {
+    setPan({ x: 0, y: 0 });
+    setZoom(1);
+    setFocus(null);
+    setCamBusyFor(CAMERA_TRANSITION_MS);
   };
 
   const focused = focus ? getDistrict(focus) : null;
@@ -501,16 +598,16 @@ export default function HomeScreen() {
         {!focused && <p className="world-lead map-prompt">どこへ行く？</p>}
 
         <div
-          className={`region-viewport ${focus ? "is-district" : "is-region"}`}
+          className={`region-viewport ${focus ? "is-district" : "is-region"} ${gestureActive || camBusy ? "is-busy" : ""}`}
           ref={viewportRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerCancel}
-          onPointerLeave={onPointerUp}
+          onPointerLeave={onPointerLeaveViewport}
         >
           <div
-            className={`region-canvas ${dragging ? "no-anim" : ""}`}
+            className={`region-canvas ${gestureActive ? "no-anim" : ""}`}
             style={{ width: CANVAS_W, height: CANVAS_H, transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.s})` }}
           >
             {/* Human-approved single continuous world illustration — one
@@ -669,8 +766,14 @@ export default function HomeScreen() {
                     if (suppressTap.current) return;
                     if (!inFocus) {
                       // a WORLD marker tap is never a dead tap: the camera
-                      // glides in, then the world opens (one continuous move)
+                      // glides in, then the world opens (one continuous move).
+                      // 2026-09-13 (Gesture Arbitration repair §1): busy for
+                      // the whole glide, so a second tap landing on another
+                      // marker mid-flight can't also fire.
+                      setPan({ x: 0, y: 0 });
+                      setZoom(1);
                       setFocus(m.districtId);
+                      setCamBusyFor(680);
                       if (enterTimer.current) window.clearTimeout(enterTimer.current);
                       enterTimer.current = window.setTimeout(
                         () => navigate({ name: "area", eventId: m.eventId }),
@@ -700,19 +803,10 @@ export default function HomeScreen() {
           {teaser && <div className="fog-teaser">{teaser}</div>}
 
           {focus && (
-            <button className="region-back" onClick={() => setFocus(null)}>
+            <button className="region-back" onClick={backToRegion}>
               🗺 地域全体
             </button>
           )}
-          {/* Compass: replaces the old chip-bar menu, which fully duplicated
-              on-canvas district taps (Human Visual Review repair, 2026-09-04
-              — see factory/state/expansion/map-repair-decision.md). This is
-              a compressed VIEW of the same canvas geometry, not a second,
-              independent navigation list — tapping a dot performs the exact
-              same action as tapping the district on the full map. */}
-          <div className="compass-wrap">
-            <Compass focus={focus} onPick={openDistrict} cam={cam} vp={vp} />
-          </div>
         </div>
 
         {focus && <p className="town-hint">気になる出来事をタップ。全部回らなくてもいい。</p>}

@@ -39,7 +39,6 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
   const [toolOrder] = useState<Tool[]>(() => shuffledIds(TOOLS) as Tool[]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
-  const [openSlot, setOpenSlot] = useState<number | null>(null);
   const [openedSlots, setOpenedSlots] = useState<Set<number>>(new Set());
   const [outcome, setOutcome] = useState<"playing" | "reflecting" | "success">("playing");
   const [reflectionPick, setReflectionPick] = useState<number | null>(null);
@@ -47,10 +46,14 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
   const allDataRead = openedSlots.size === session.slots.length;
   const canCommit = allDataRead && selectedSlot !== null && selectedTool !== null;
 
-  const toggleOpen = (i: number) => {
-    setOpenSlot(openSlot === i ? null : i);
+  // 2026-09-13 UX fix: this used to be a single-slot toggle (openSlot),
+  // so only one site's sun/wind/pavement reading could be visible at a
+  // time even though diagnosing the true cause requires comparing all 3
+  // sites against each other. Opening a site now reveals it for good
+  // (openedSlots, already tracked for the read-all gate below) instead of
+  // replacing whichever site was open before.
+  const revealSlot = (i: number) =>
     setOpenedSlots((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
-  };
 
   const commit = () => {
     if (selectedSlot === null || !selectedTool) return;
@@ -119,15 +122,13 @@ export default function UrbanHeatGame({ onComplete, onPartialComplete }: Q1GameP
           <div key={slot.roleId} className={`dx-card ${selectedSlot === i ? "selected" : ""}`}>
             <div className="dx-head">
               <span className="dx-name">{slot.name}</span>
-              <button
-                className="dx-more"
-                aria-label={openSlot === i ? "とじる" : "データを見る"}
-                onClick={() => toggleOpen(i)}
-              >
-                {openSlot === i ? "－" : "？"}
-              </button>
+              {!openedSlots.has(i) && (
+                <button className="dx-more" aria-label="データを見る" onClick={() => revealSlot(i)}>
+                  ？
+                </button>
+              )}
             </div>
-            {openSlot === i && (
+            {openedSlots.has(i) && (
               <p className="dx-pattern">
                 {AXIS_TEXT.sun[slot.reading.sun]} ／ {AXIS_TEXT.wind[slot.reading.wind]} ／{" "}
                 {AXIS_TEXT.pavement[slot.reading.pavement]}

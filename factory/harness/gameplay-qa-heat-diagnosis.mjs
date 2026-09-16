@@ -125,16 +125,23 @@ check("'avoid wind, apply fixed tool' strategies stay well below full reasoning"
   check("commit button requires a location, a tool, AND that all three locations' data has been opened — CORE_DATA_DISCLOSURE_NOT_REQUIRED regression (impl review r1 BLOCKER)", (() => {
     const canCommitLine = src.match(/const canCommit = ([^;]+);/)?.[1] ?? "";
     const allDataReadLine = src.match(/const allDataRead = ([^;]+);/)?.[1] ?? "";
-    const toggleOpenBody = src.match(/const toggleOpen = \(i: number\) => \{([\s\S]*?)\};/)?.[1] ?? "";
+    // 2026-09-13 (UX/Logic audit): the setter function was renamed
+    // toggleOpen -> revealSlot when the single-slot toggle became a
+    // sticky/add-only reveal (info-visibility fix — all 3 sites now stay
+    // open for comparison instead of re-hiding on the next tap). Match the
+    // REQUIRED behavior (an add-only Set update on openedSlots, called
+    // somewhere in the component) rather than a specific function name, so
+    // a legitimate rename can't silently defeat this check again.
+    const addOnlyUpdatePresent = /setOpenedSlots\(\(prev\) => \(prev\.has\(i\) \? prev : new Set\(prev\)\.add\(i\)\)\)/.test(body);
+    // no mutation of openedSlots anywhere in the component may ever remove
+    // an index (that would revoke disclosure credit for a re-closed card).
+    const openedSlotsMutations = body.match(/setOpenedSlots\([^;]*\)/g) ?? [];
+    const noRemovalSemantics = openedSlotsMutations.every((m) => !/delete|filter/.test(m));
     return (
       /disabled=\{!canCommit\}/.test(src) &&
       canCommitLine.includes("allDataRead") && canCommitLine.includes("selectedSlot !== null") && canCommitLine.includes("selectedTool !== null") &&
       allDataReadLine.includes("openedSlots.size") &&
-      // toggleOpen must be an add-only functional update (never remove an index, e.g. re-closing a
-      // card must not revoke disclosure credit -- impl review r2 LOW: strengthen beyond string
-      // presence to actually check add-only semantics).
-      /setOpenedSlots\(\(prev\) => \(prev\.has\(i\) \? prev : new Set\(prev\)\.add\(i\)\)\)/.test(toggleOpenBody) &&
-      !/delete|filter/.test(toggleOpenBody)
+      addOnlyUpdatePresent && noRemovalSemantics
     );
   })());
   check("the reflection continue button is disabled until a reflection pick is made — THINK_AGAIN_SKIPPABLE regression (impl review r1 BLOCKER)", (() => {

@@ -5,6 +5,18 @@
     <link rel="icon" type="image/png" href="/assets/ui-fire.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JIBUN CHOICE</title>
+    <!-- 2026-09-16 (Human Visual Review — HOME typography): "M PLUS Rounded
+         1c" for the True Home screen's logo/headline only (src/index.css
+         .true-home font-family) — loaded for real via Google Fonts, not a
+         silent fallback to Hiragino Maru if it fails to load, per explicit
+         Human instruction. Every other screen keeps its existing font
+         stack untouched. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

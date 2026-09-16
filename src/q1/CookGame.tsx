@@ -8,29 +8,23 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import {
+  SPOTS,
+  TEMPS,
+  MIN_CORE_TEMP,
+  allSpotsMeasured,
+  anySpotMeasured,
+  isRoundSuccess,
+  emptyMeasured,
+  type SpotId,
+} from "./cookLogic";
 
 const K = (n: string) => `${import.meta.env.BASE_URL}assets/kyushoku/${n}.jpg`;
-
-type SpotId = "thin" | "middle" | "thick";
-const SPOTS: { id: SpotId; label: string }[] = [
-  { id: "thin", label: "うすい切り身" },
-  { id: "middle", label: "ふつうの切り身" },
-  { id: "thick", label: "いちばん厚い切り身" },
-];
-// round1: 厚いところがまだ低い / round2: 追加加熱後
-const TEMPS: Record<1 | 2, Record<SpotId, number>> = {
-  1: { thin: 76, middle: 68, thick: 62 },
-  2: { thin: 82, middle: 78, thick: 76 },
-};
 
 export default function CookGame({ onComplete }: Q1GameProps) {
   const [holdThermo, setHoldThermo] = useState(false);
   const [round, setRound] = useState<1 | 2>(1);
-  const [measured, setMeasured] = useState<Record<SpotId, number | null>>({
-    thin: null,
-    middle: null,
-    thick: null,
-  });
+  const [measured, setMeasured] = useState<Record<SpotId, number | null>>(emptyMeasured());
   const [note, setNote] = useState<string | null>(null);
   const [heated, setHeated] = useState(false);
   const [sanitizeAsk, setSanitizeAsk] = useState(false);
@@ -80,11 +74,10 @@ export default function CookGame({ onComplete }: Q1GameProps) {
     setNote(null);
   };
 
-  const allMeasured = SPOTS.every((s) => measured[s.id] !== null);
-  const minTemp = Math.min(...SPOTS.map((s) => measured[s.id] ?? 999));
-  const anyMeasured = SPOTS.some((s) => measured[s.id] !== null);
-  const thickLow = measured.thick !== null && measured.thick < 75;
-  const round2ok = round === 2 && allMeasured && minTemp >= 75;
+  const allMeasured = allSpotsMeasured(measured);
+  const anyMeasured = anySpotMeasured(measured);
+  const thickLow = measured.thick !== null && measured.thick < MIN_CORE_TEMP;
+  const round2ok = isRoundSuccess(round, measured);
 
   const openSheet = () => {
     if (round === 1 || !allMeasured) {
@@ -232,7 +225,7 @@ export default function CookGame({ onComplete }: Q1GameProps) {
             }
             setHeated(true);
             setRound(2);
-            setMeasured({ thin: null, middle: null, thick: null });
+            setMeasured(emptyMeasured());
             setNote("⏱ 6分追加加熱した。ルールどおり、もう一度たしかめよう。");
           }}
         >

@@ -36,7 +36,6 @@ export default function DiagnoseGame({ onComplete, onPartialComplete }: Q1GamePr
   const [orders, setOrders] = useState(newOrders);
   const [committed, setCommitted] = useState<string | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
-  const [openPattern, setOpenPattern] = useState<string | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<"playing" | "success" | "partial">("playing");
@@ -48,7 +47,6 @@ export default function DiagnoseGame({ onComplete, onPartialComplete }: Q1GamePr
     setOrders(newOrders());
     setCommitted(null);
     setSelected([]);
-    setOpenPattern(null);
     setAttemptsLeft(MAX_ATTEMPTS);
     setFeedback(null);
     setOutcome("playing");
@@ -119,15 +117,14 @@ export default function DiagnoseGame({ onComplete, onPartialComplete }: Q1GamePr
             <div key={d.id} className={`dx-card ${isCommitted ? "selected" : ""}`}>
               <div className="dx-head">
                 <span className="dx-name">{d.name}</span>
-                <button
-                  className="dx-more"
-                  aria-label={openPattern === d.id ? "とじる" : "どんな病気か見る"}
-                  onClick={() => setOpenPattern(openPattern === d.id ? null : d.id)}
-                >
-                  {openPattern === d.id ? "－" : "？"}
-                </button>
               </div>
-              {openPattern === d.id && <p className="dx-pattern">{d.pattern}</p>}
+              {/* 2026-09-13 UX fix: judging which candidate fits the (always
+                 visible) evidence requires comparing all 4 typical-symptom
+                 patterns against each other. A per-card "？" toggle (only
+                 one open at a time) made that comparison memorize-and-close,
+                 same known failure mode as SourcingGame's supplier
+                 accordion. All 4 patterns now render unconditionally. */}
+              <p className="dx-pattern">{d.pattern}</p>
               <button
                 className={`dx-commit ${isCommitted ? "on" : ""}`}
                 onClick={() => { setCommitted(d.id); setFeedback(null); }}

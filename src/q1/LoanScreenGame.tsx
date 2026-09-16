@@ -5,26 +5,8 @@
 //    250万(計画書) vs 280万(見積書) の食い違いが照合の鍵（design v1.2 §3）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-type CheckId = "savings" | "amount" | "sales";
-type Mark = "ok" | "ask";
-
-const CHECKS: { id: CheckId; label: string }[] = [
-  { id: "savings", label: "自己資金の貯まり方" },
-  { id: "amount", label: "計画書の金額と見積書" },
-  { id: "sales", label: "売上の根拠" },
-];
-
-// 通帳: 3年ぶんのこつこつ入金を4ページに要約
-const PASSBOOK_PAGES = [
-  ["3年前〜", "毎月 +3万円", "+3万 +3万 +3万 …", "残高 12万 → 36万"],
-  ["2年前〜", "毎月 +3万円", "+3万 +3万 +3万 …", "残高 36万 → 72万"],
-  ["1年前〜", "毎月 +3万円", "ボーナス月 +5万", "残高 72万 → 114万"],
-  ["今年", "毎月 +3万円", "先月まで続く", "残高 150万円"],
-];
-
-const PROFIT = 9; // 万円/月（計画書v2の月の利益）
-const repay = (amount: number) => Math.round((amount / 84) * 10) / 10; // 7年返済のめやす
+import { CHECKS, PASSBOOK_PAGES, PROFIT, repay, allMarked as allMarkedOf, canMark, evaluateInterviewGate } from "./loanScreenLogic";
+import type { CheckId, Mark } from "./loanScreenLogic";
 
 export default function LoanScreenGame({ onComplete }: Q1GameProps) {
   const [openDoc, setOpenDoc] = useState<"plan" | "passbook" | "quote" | null>(null);
@@ -37,9 +19,7 @@ export default function LoanScreenGame({ onComplete }: Q1GameProps) {
   const [note, setNote] = useState<string | null>(null);
   const [approved, setApproved] = useState<number | null>(null);
 
-  // 貯まり方は最後のページまでめくって初めて分かる
-  const passbookRead = maxPage >= PASSBOOK_PAGES.length - 1;
-  const allMarked = CHECKS.every((c) => marks[c.id]);
+  const allMarked = allMarkedOf(marks);
 
   const openDocTab = (doc: "plan" | "passbook" | "quote") => {
     setOpenDoc(openDoc === doc ? null : doc);
@@ -48,12 +28,13 @@ export default function LoanScreenGame({ onComplete }: Q1GameProps) {
 
   const mark = (id: CheckId, m: Mark) => {
     setNote(null);
-    if (id === "savings" && !passbookRead) {
+    const reject = canMark(id, maxPage, seenDocs as ("plan" | "passbook" | "quote")[]);
+    if (reject === "savings_needs_full_passbook") {
       setNote("自己資金は「額」だけじゃなく「貯まり方」を見るんだ。通帳を最後までめくってみよう。");
       return;
     }
     // 金額の照合は、両方の書類を実際に開き比べてから（勘での記入を防ぐ）
-    if (id === "amount" && !(seenDocs.includes("plan") && seenDocs.includes("quote"))) {
+    if (reject === "amount_needs_both_docs_seen") {
       setNote("金額は、創業計画書と見積書の両方をひらいて、見比べてから記入しよう。");
       return;
     }
@@ -62,15 +43,16 @@ export default function LoanScreenGame({ onComplete }: Q1GameProps) {
 
   const toInterview = () => {
     setNote(null);
-    if (!allMarked) {
+    const gate = evaluateInterviewGate(marks);
+    if (gate === "not_all_marked") {
       setNote("まだたしかめていない項目がある。○か▲を、自分の手で記入しよう。");
       return;
     }
-    if (marks.amount === "ok") {
+    if (gate === "amount_marked_ok") {
       setNote("書類のあいだで、数字が合っていないところがないかな。もう一度、開きくらべてみよう。");
       return;
     }
-    if (marks.savings === "ask" || marks.sales === "ask") {
+    if (gate === "savings_or_sales_marked_ask") {
       setNote("▲にした項目を見直そう。書類でもう十分たしかめられるものが、まじっていないかな。");
       return;
     }

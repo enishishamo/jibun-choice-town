@@ -8,43 +8,7 @@ import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
-
-interface Card {
-  id: string;
-  name: string;
-  icon: string;
-  time: number; // 分
-  cost: number; // 予算ポイント
-  learn?: boolean;
-  tired: number; // 増える(+)か、休むと減る(-)
-  cat: "move" | "visit" | "meal" | "rest" | "hotel" | "free";
-}
-
-const CARDS: Card[] = [
-  { id: "shinkansen_go", name: "新幹線で京都へ", icon: "🚄", time: 210, cost: 40, tired: 2, cat: "move" },
-  { id: "bus1", name: "バスにのりかえる", icon: "🚌", time: 30, cost: 5, tired: 1, cat: "move" },
-  { id: "kiyomizu", name: "清水寺を見学する", icon: "⛩️", time: 90, cost: 10, learn: true, tired: 2, cat: "visit" },
-  { id: "kinkaku", name: "金閣寺を見学する", icon: "🏯", time: 80, cost: 10, learn: true, tired: 2, cat: "visit" },
-  { id: "nara", name: "奈良公園でシカとふれあう", icon: "🦌", time: 100, cost: 10, learn: true, tired: 1, cat: "visit" },
-  { id: "todaiji", name: "東大寺の大仏を見学する", icon: "🗿", time: 70, cost: 10, learn: true, tired: 2, cat: "visit" },
-  { id: "craft", name: "清水焼の絵付け体験をする", icon: "🎨", time: 100, cost: 15, learn: true, tired: 2, cat: "visit" },
-  { id: "lunch1", name: "昼食をとる", icon: "🍱", time: 50, cost: 8, tired: -2, cat: "meal" },
-  { id: "lunch2", name: "昼食をとる", icon: "🍱", time: 50, cost: 8, tired: -2, cat: "meal" },
-  { id: "rest1", name: "休憩をとる", icon: "🪑", time: 20, cost: 0, tired: -2, cat: "rest" },
-  { id: "free1", name: "自由時間・おみやげ", icon: "🎁", time: 60, cost: 10, tired: 1, cat: "free" },
-  { id: "hotel_in", name: "旅館にチェックインする", icon: "🏮", time: 20, cost: 0, tired: -1, cat: "hotel" },
-  { id: "bus2", name: "バスで学校へもどる準備", icon: "🚌", time: 20, cost: 5, tired: 1, cat: "move" },
-  { id: "shinkansen_back", name: "新幹線で東京へ帰る", icon: "🚄", time: 150, cost: 40, tired: 2, cat: "move" },
-];
-
-const DAYS = [
-  { id: "d1", label: "1日目", window: 600, note: "8:00 学校を出発 → 18:00までに宿へ" },
-  { id: "d2", label: "2日目", window: 660, note: "8:00〜19:00 京都・奈良をまわる" },
-  { id: "d3", label: "3日目", window: 480, note: "8:00 宿を出発 → 16:00までに学校へ" },
-] as const;
-
-const BUDGET = 220;
-const TIRED_CAP = 16;
+import { CARDS, DAYS, BUDGET, dayStats as dayStatsOf, totals as totalsOf, computeIssues, enoughPlaced as enoughPlacedOf, computeTags } from "./tripPlanLogic";
 
 export default function TripPlanGame({ onComplete }: Q1GameProps) {
   const [days, setDays] = useState<Record<string, string[]>>({ d1: [], d2: [], d3: [] });
@@ -72,42 +36,15 @@ export default function TripPlanGame({ onComplete }: Q1GameProps) {
   );
 
   const dayCards = (id: string) => days[id].map((cid) => CARDS.find((c) => c.id === cid)!);
-  const dayStats = (id: string) => {
-    const list = dayCards(id);
-    return {
-      time: list.reduce((a, c) => a + c.time, 0),
-      hasHotel: list.some((c) => c.cat === "hotel"),
-      hasReturn: list.some((c) => c.id === "shinkansen_back"),
-      hasRestOrMeal: list.some((c) => c.cat === "meal" || c.cat === "rest"),
-    };
-  };
+  const dayStats = (id: string) => dayStatsOf(id, days);
 
-  const learnTotal = CARDS.filter((c) => used.has(c.id) && c.learn).length;
-  const costTotal = CARDS.filter((c) => used.has(c.id)).reduce((a, c) => a + c.cost, 0);
-  const tiredTotal = CARDS.filter((c) => used.has(c.id)).reduce((a, c) => a + c.tired, 0);
+  const { learnTotal, costTotal } = totalsOf(days);
+  const issues = computeIssues(days);
 
-  const issues: string[] = [];
-  DAYS.forEach((d) => {
-    const s = dayStats(d.id);
-    if (s.time > d.window) issues.push(`${d.label}の予定が詰め込みすぎ。乗換や移動の時間が足りないかも。`);
-  });
-  if (learnTotal < 2) issues.push("学びになる見学・体験が、まだ少ないかも。もう1つ増やしてみよう。");
-  if (!dayStats("d1").hasHotel) issues.push("1日目のうちに、宿に着けるようにしよう。");
-  if (!dayStats("d2").hasRestOrMeal) issues.push("2日目に休憩や昼食がないと、100人が動きにくいよ。");
-  if (!dayStats("d3").hasReturn) issues.push("3日目、学校へ帰る新幹線を入れよう。");
-  if (costTotal > BUDGET) issues.push(`予算オーバー（${costTotal} / ${BUDGET}）。安く済む予定に変えてみよう。`);
-  if (tiredTotal > TIRED_CAP) issues.push("このままだと、みんな疲れすぎてしまうかも。休憩を増やそう。");
-
-  const enoughPlaced = used.size >= 8;
+  const enoughPlaced = enoughPlacedOf(days);
   const ok = issues.length === 0 && enoughPlaced;
 
-  const tags: string[] = [];
-  if (ok) {
-    if (learnTotal >= 3) tags.push("学びが多い旅程");
-    if (costTotal <= 180) tags.push("費用をおさえた旅程");
-    if (tiredTotal <= 10) tags.push("ゆとりのある旅程");
-    if (tags.length === 0) tags.push("バランスの取れた旅程");
-  }
+  const tags: string[] = ok ? computeTags(days) : [];
 
   const docs = [
     { id: "rule", icon: "📋", title: "旅程を組むときの決まり",

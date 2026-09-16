@@ -6,52 +6,21 @@
 // D: 素材 × 形 × サイズ を組み立てて「テストする」→ 4つのテスト結果。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-interface Material {
-  id: string;
-  name: string;
-  emoji: string;
-  cost: number; // 1個あたり円
-  frozen: number; // 冷凍への強さ 0-3
-  strength: number; // つぶれにくさ 0-3
-  desc: string;
-}
-const MATERIALS: Material[] = [
-  { id: "paper", name: "紙", emoji: "📄", cost: 6, frozen: 1, strength: 1, desc: "軽くて安い。ただし冷凍庫の水分でふやけやすい。" },
-  { id: "plastic", name: "プラスチック", emoji: "🧴", cost: 9, frozen: 3, strength: 2, desc: "冷凍に強く、水をとおさない。使う材料はやや多め。" },
-  { id: "alumi", name: "アルミ", emoji: "🥈", cost: 13, frozen: 3, strength: 3, desc: "とても丈夫で冷凍にも強い。そのぶんコストが高い。" },
-  { id: "bio", name: "バイオ素材", emoji: "🌱", cost: 12, frozen: 2, strength: 2, desc: "植物からつくる素材。環境にやさしいが、まだコストは高め。" },
-];
-
-interface Shape {
-  id: string;
-  name: string;
-  emoji: string;
-  cost: number;
-  strength: number;
-  open: number; // あけやすさ 0-3
-  desc: string;
-}
-const SHAPES: Shape[] = [
-  { id: "cup", name: "カップ", emoji: "🥣", cost: 3, strength: 2, open: 3, desc: "そのまま食べやすい。少し場所をとる。" },
-  { id: "bag", name: "ふくろ", emoji: "🍬", cost: 0, strength: 0, open: 2, desc: "材料が少なくてすむ。つぶれには弱い。" },
-  { id: "box", name: "はこ", emoji: "📦", cost: 5, strength: 3, open: 1, desc: "しっかり守れる。材料を多く使う。" },
-];
-
-interface Size {
-  id: string;
-  name: string;
-  costMul: number;
-  label: number; // 表示スペース 0-3
-  desc: string;
-}
-const SIZES: Size[] = [
-  { id: "s", name: "小さめ", costMul: 0.8, label: 1, desc: "材料が少なくてすむ。書ける表示のスペースが少ない。" },
-  { id: "m", name: "ふつう", costMul: 1, label: 3, desc: "必要な表示がぜんぶ書ける。" },
-  { id: "l", name: "大きめ", costMul: 1.3, label: 3, desc: "余裕があるが、材料もコストも増える。" },
-];
-
-const COST_TARGET = 14; // 円/個 以下にしたい
+import {
+  MATERIALS,
+  SHAPES,
+  SIZES,
+  COST_TARGET,
+  cost as computeCost,
+  frozen as computeFrozen,
+  carry as computeCarry,
+  openness as computeOpenness,
+  label as computeLabel,
+  isPass,
+  type Material,
+  type Shape,
+  type Size,
+} from "./packageLogic";
 
 const MARK = ["✕", "△", "○", "◎"];
 
@@ -63,13 +32,16 @@ export default function PackageGame({ onComplete }: Q1GameProps) {
   const [tested, setTested] = useState(false);
 
   const ready = mat && shape && size;
-  const cost = ready ? Math.round((mat.cost + shape.cost) * size.costMul) : 0;
-  const frozen = mat ? mat.frozen : 0;
-  const carry = ready ? Math.min(3, mat.strength + shape.strength - 1) : 0;
-  const openness = shape ? shape.open : 0;
-  const label = size ? size.label : 0;
+  const cost = ready ? computeCost({ mat, shape, size }) : 0;
+  const frozen = mat ? computeFrozen({ mat }) : 0;
+  const carry = ready ? computeCarry({ mat, shape }) : 0;
+  const openness = shape ? computeOpenness({ shape }) : 0;
+  const label = size ? computeLabel({ size }) : 0;
+  // 2026-09-13 audit fix: 素材・形を選んだ時点でわかる「運ぶ」の見込みを、
+  // サイズ未選択でもプレビューできるようにする（下のライブ表示で使う）。
+  const carryPreview = mat && shape ? computeCarry({ mat, shape }) : null;
 
-  const pass = ready && frozen >= 2 && carry >= 2 && label >= 2 && cost <= COST_TARGET;
+  const pass = !!ready && isPass({ mat, shape, size });
 
   if (tested && pass) {
     return (
@@ -134,6 +106,34 @@ export default function PackageGame({ onComplete }: Q1GameProps) {
         <span className="task-sub">
           中身を守れて、必要な表示が書けて、コストは{COST_TARGET}円/個まで
         </span>
+      </div>
+
+      {/* 2026-09-13 audit fix: 以前はここに何も無く、選んだ素材/形の説明文
+          (detail) が次の選択で上書きされて消えてしまうため、「冷凍」や
+          「運ぶ」の合否は結局テストするまで分からなかった（読む→閉じる→
+          頭の中で比較、のアンチパターン）。①②③を選ぶそばから常に見える
+          ライブ判定に変更する。 */}
+      <div className="taste-panel">
+        <div className="taste-cost">
+          <span>包装コスト（目安）</span>
+          <strong className={ready ? (cost <= COST_TARGET ? "good" : "bad") : ""}>
+            {ready ? `${cost}円/個` : "？"}
+          </strong>
+        </div>
+        <div className="taste-rows">
+          <span className={`taste-row ${mat ? (frozen >= 2 ? "ok" : "low") : ""}`}>
+            <b>冷凍</b>
+            <span className="dots">{mat ? MARK[frozen] : "？"}</span>
+          </span>
+          <span className={`taste-row ${carryPreview !== null ? (carryPreview >= 2 ? "ok" : "low") : ""}`}>
+            <b>運ぶ</b>
+            <span className="dots">{carryPreview !== null ? MARK[carryPreview] : "？"}</span>
+          </span>
+          <span className={`taste-row ${size ? (label >= 2 ? "ok" : "low") : ""}`}>
+            <b>表示スペース</b>
+            <span className="dots">{size ? MARK[label] : "？"}</span>
+          </span>
+        </div>
       </div>
 
       <Row

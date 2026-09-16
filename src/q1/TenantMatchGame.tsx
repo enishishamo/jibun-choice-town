@@ -7,62 +7,8 @@
 // Art: TODO(art) board-street.png 生成後にCSSカードをクロップ表示へ差し替え。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-type ShopId = "A" | "B" | "C";
-type GuestId = "haru" | "zakka" | "bread";
-type CardId = "term" | "rentup" | "keep";
-
-const GUESTS: { id: GuestId; emoji: string; name: string; want: string }[] = [
-  { id: "haru", emoji: "🍚", name: "ハルさん（定食屋）", want: "厨房（水回り）が必要。家賃は月8万円まで" },
-  { id: "zakka", emoji: "🪴", name: "雑貨屋を開きたい人", want: "水回りはいらない。商店街にない業種" },
-  { id: "bread", emoji: "🥐", name: "パン屋を開きたい人", want: "商店街にすでに2軒ある業種" },
-];
-
-interface Shop {
-  id: ShopId;
-  emoji: string;
-  name: string;
-  facts: string[];
-  memo?: string; // owner's intent memo (the key C for negotiation)
-}
-const SHOPS: Shop[] = [
-  {
-    id: "A",
-    emoji: "👕",
-    name: "元・洋品店",
-    facts: ["せまい", "家賃 安い", "水回り なし", "所有者「どうぞ歓迎」"],
-  },
-  {
-    id: "B",
-    emoji: "🍜",
-    name: "元・食堂",
-    facts: ["給排水あり（厨房が作りやすい）", "家賃 ふつう"],
-    memo:
-      "大事にしてきた店だから、知らない人に「ずっと貸しっぱなし」になるのが不安。古い店だから、直してもらうのはかまわない。ただ、家賃を安くしすぎるのはいやだ。",
-  },
-  {
-    id: "C",
-    emoji: "👘",
-    name: "元・呉服店",
-    facts: ["広い", "所有者「代々の店。貸す気はない」"],
-  },
-];
-
-// The street as it stands: what kinds of shops already exist (業種マップ).
-const STREET: { emoji: string; label: string; shopId?: ShopId }[] = [
-  { emoji: "🥐", label: "パン屋" },
-  { emoji: "🏚", label: "空き店舗A", shopId: "A" },
-  { emoji: "🥬", label: "八百屋" },
-  { emoji: "🏚", label: "空き店舗B", shopId: "B" },
-  { emoji: "🥐", label: "パン屋" },
-  { emoji: "🏚", label: "空き店舗C", shopId: "C" },
-];
-
-const CARDS: { id: CardId; text: string }[] = [
-  { id: "term", text: "期間を区切った契約にする（まずは3年。様子を見て更新）" },
-  { id: "rentup", text: "家賃を少し上げるかわりに、改装は自由にしてもらう" },
-  { id: "keep", text: "内装は大きく変えない約束にする" },
-];
+import { GUESTS, SHOPS, STREET, CARDS, canDrop, evaluate } from "./tenantMatchLogic";
+import type { ShopId, GuestId, CardId } from "./tenantMatchLogic";
 
 export default function TenantMatchGame({ onComplete }: Q1GameProps) {
   const [assign, setAssign] = useState<Partial<Record<ShopId, GuestId>>>({});
@@ -79,14 +25,15 @@ export default function TenantMatchGame({ onComplete }: Q1GameProps) {
   const drop = (guest: GuestId, shop: ShopId) => {
     setNote(null);
     setSelected(null);
-    if (shop === "C") {
-      setNote("所有者さんに話を聞きに行った。「代々の店だから、貸す気はないんだ」…首はたてにふられなかった。ほかの店はどうだろう。");
-      return;
-    }
-    if (shop === "B" && guest !== "haru") {
-      // Bounce BEFORE the condition dialog (critic-review 2回目の実装注意).
-      const g = GUESTS.find((x) => x.id === guest)!;
-      setNote(`${g.name}は水回りを使わないお店。この物件のいちばんの持ち味が、いきてこないかも。`);
+    const d = canDrop(shop, guest);
+    if (!d.ok) {
+      if (d.reason === "owner_refuses") {
+        setNote("所有者さんに話を聞きに行った。「代々の店だから、貸す気はないんだ」…首はたてにふられなかった。ほかの店はどうだろう。");
+      } else {
+        // Bounce BEFORE the condition dialog (critic-review 2回目の実装注意).
+        const g = GUESTS.find((x) => x.id === guest)!;
+        setNote(`${g.name}は水回りを使わないお店。この物件のいちばんの持ち味が、いきてこないかも。`);
+      }
       return;
     }
     // A guest can only stand in one shop at a time.
@@ -104,31 +51,34 @@ export default function TenantMatchGame({ onComplete }: Q1GameProps) {
 
   const check = () => {
     setNote(null);
-    const haruAt = (["A", "B"] as ShopId[]).find((s) => assign[s] === "haru");
-    if (!haruAt) {
+    const status = evaluate(assign, bCard);
+    if (status === "no_haru") {
       setNote("ハルさんの行き先が、まだ決まっていない。今月中に決めたい、と言っていたよ。");
       return;
     }
-    if (haruAt === "A") {
+    if (status === "haru_at_a") {
       setNote("厨房を一からつくると、改装のお金がかかりすぎる。ハルさんの予算では厳しそうだ。");
       return;
     }
-    // haru is at B
-    if (bCard === "keep") {
+    if (status === "bad_card") {
       setNote("所有者さん「うーん、わたしの心配はそこじゃないんだ」。それに、定食屋を開くなら厨房の工事がいるんじゃないかな。");
       return;
     }
-    if (!bCard) {
+    if (status === "need_card") {
       setDialogB(true);
       return;
     }
-    if (!assign.A) {
+    if (status === "need_a") {
       setNote("もう1枚のシャッターにも、開けたい人が来ている。組み合わせを考えてみよう。");
       return;
     }
     // success (2 solutions x A-business tradeoff)
     try {
-      localStorage.setItem("jc.shop-opening.tenantChoice", assign.A);
+      // evaluate() only reaches "success" once assign.A is set (it returns
+      // "need_a" otherwise, tenantMatchLogic.ts) — TS can't see across that
+      // function boundary, so assert here the same way guestOf("A")! does
+      // just below for the identical guarantee.
+      localStorage.setItem("jc.shop-opening.tenantChoice", assign.A!);
     } catch { /* storage may be unavailable; the game still works */ }
     setCleared(true);
   };

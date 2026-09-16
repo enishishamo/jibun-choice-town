@@ -6,48 +6,12 @@
 //    コストを下げつつ味を保つ組み合わせは複数ある。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-
-interface Ing {
-  id: string;
-  name: string;
-  emoji: string;
-  yen: number; // 1あたりのコスト
-  smooth: number;
-  sweet: number;
-  milk: number;
-  berry: number;
-  max: number;
-}
-
-// 「いつもの配合」= 基準。ここから動かして試す。
-const ING: Ing[] = [
-  { id: "milk", name: "乳原料", emoji: "🥛", yen: 8, smooth: 3, sweet: 0, milk: 5, berry: 0, max: 12 },
-  { id: "sugar", name: "糖類", emoji: "🧊", yen: 3, smooth: 1, sweet: 5, milk: 0, berry: 0, max: 12 },
-  { id: "berry", name: "いちご原料", emoji: "🍓", yen: 12, smooth: 0, sweet: 2, milk: 0, berry: 6, max: 12 },
-  { id: "water", name: "水分", emoji: "💧", yen: 1, smooth: -2, sweet: -2, milk: -2, berry: -2, max: 12 },
-  { id: "other", name: "その他原料", emoji: "🌿", yen: 4, smooth: 4, sweet: 0, milk: 1, berry: 0, max: 12 },
-];
-
-const START: Record<string, number> = { milk: 7, sugar: 5, berry: 5, water: 3, other: 2 };
-
-const TARGET_COST = 150; // 円以下にしたい
-const MIN = { smooth: 20, sweet: 18, milk: 24, berry: 20 }; // 守りたいおいしさ
+import { ING, START, TARGET_COST, MIN, calc, isTasteOk, isCostOk } from "./recipeLogic";
 
 export default function RecipeGame({ onComplete }: Q1GameProps) {
   const [amt, setAmt] = useState<Record<string, number>>({ ...START });
   const [tried, setTried] = useState(false);
   const [note, setNote] = useState<string | null>(null);
-
-  const calc = (a: Record<string, number>) => {
-    const sum = (k: keyof Ing) => ING.reduce((t, i) => t + a[i.id] * (i[k] as number), 0);
-    return {
-      cost: Math.round(sum("yen") + 40), // 40 = その他の固定費
-      smooth: Math.max(0, sum("smooth")),
-      sweet: Math.max(0, sum("sweet")),
-      milk: Math.max(0, sum("milk")),
-      berry: Math.max(0, sum("berry")),
-    };
-  };
 
   const now = calc(amt);
   const base = calc(START);
@@ -64,9 +28,8 @@ export default function RecipeGame({ onComplete }: Q1GameProps) {
     return "●".repeat(n) + "○".repeat(3 - n);
   };
 
-  const tasteOk =
-    now.smooth >= MIN.smooth && now.sweet >= MIN.sweet && now.milk >= MIN.milk && now.berry >= MIN.berry;
-  const costOk = now.cost <= TARGET_COST;
+  const tasteOk = isTasteOk(now);
+  const costOk = isCostOk(now);
 
   const test = () => {
     setTried(true);

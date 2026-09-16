@@ -1,97 +1,86 @@
 // Q1: 食品メーカーの「調達」 (gameType: sourcing_mix)
-// B: いちご原料120kgを、来週の生産までにそろえたい。値段は上がっている。
-// C: 仕入先カード（価格・品質・納期・供給できる量・安定性）。開かないと
-//    「その会社が何kgまで出せるか」が分からない → 量が足りず失敗する。
-// D: 3社から何kgずつ買うかを +/- で組み立てる（組み合わせ可）。
-// E: 量・予算・納期・安定性が結果として返る。成立する解は複数ある。
+// B: いちご原料120kg（=20kg×6箱）を、来週までにそろえたい。
+// C: 3社（価格・積める上限・届く日）— すべて常時表示、開閉なし。
+// D: どの会社から何箱ずつ運ぶかを組み立てる（組み合わせ可）。
+// E: 量・費用・届く日が、操作した瞬間から見える。
+//
+// 2026-09-13 (UX/Logic audit — full redesign per items ⑤/⑥-A of the audit
+// request). AS-IS problems this replaces (both confirmed real bugs, see
+// sourcingLogic.ts's header comment and factory/harness/gameplay-qa-
+// sourcing.mjs for the proof):
+//   1. LOGIC BUG: the old displayed budget (¥96,000) had ZERO simultaneously
+//      valid solutions once the deadline was also respected (cheapest
+//      in-time combo was ¥99,000) — a genuine "success solution = 0" defect
+//      for anyone trying to also hit the shown budget.
+//   2. LOGIC/DESIGN BUG: B社 could never be used AT ALL — any purchase from
+//      it instantly failed the "0 late kg" rule, making it a pure trap with
+//      no legitimate role.
+//   3. UX BUG: 上限/届く日 were hidden behind a "＋くわしく" accordion — the
+//      exact "read → memorize → close → compare" pattern this whole audit
+//      pass is banning. Every supplier's price/cap/arrival-day is now
+//      always-visible text on its own card; nothing needs to be opened.
+//   4. UX BUG: outcome (足りない/間に合わない) was only revealed AFTER
+//      pressing the commit button. The shelf below now fills LIVE as boxes
+//      are added — the child sees "am I done yet" continuously, not just
+//      after committing.
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
+import {
+  SUPPLIERS, NEED_BOXES, DEADLINE_DAY, BUDGET, BOX_KG,
+  totalBoxes, totalCost, lateBoxes, onTimeBoxes, isSuccess, isSingleSupplierHeavy, emptyOrder,
+} from "./sourcingLogic";
+import type { Order, Supplier } from "./sourcingLogic";
 
-interface Supplier {
-  id: string;
-  name: string;
-  emoji: string;
-  yenPerKg: number;
-  max: number; // 出せる上限 kg
-  quality: string;
-  lead: string;
-  /** 来週の生産に間に合うか */
-  inTime: boolean;
-  stability: string;
-  stable: boolean;
-}
-
-const SUPPLIERS: Supplier[] = [
-  { id: "a", name: "A社", emoji: "🚚", yenPerKg: 900, max: 120, quality: "◎ とても良い", lead: "早い（3日）", inTime: true, stability: "◎ 安定している", stable: true },
-  { id: "b", name: "B社", emoji: "🛻", yenPerKg: 600, max: 80, quality: "○ ふつう", lead: "遅い（10日）", inTime: false, stability: "△ 年によって変わる", stable: false },
-  { id: "c", name: "C社", emoji: "🚐", yenPerKg: 750, max: 60, quality: "◎ とても良い", lead: "ふつう（5日）", inTime: true, stability: "○ わりと安定", stable: true },
-];
-
-const NEED = 120; // kg
-const BUDGET = 96000; // 円（目安）
-const STEP = 20;
+/** road/gate positions as a 0-100% scale across "today (day 0) .. day 8"
+ * (one day of margin past the deadline so the gate/latest truck never sit
+ * flush against the track's own edge). */
+const ROAD_END_DAY = 8;
+const dayPct = (day: number) => `${Math.min(100, (day / ROAD_END_DAY) * 100)}%`;
 
 export default function SourcingGame({ onComplete }: Q1GameProps) {
-  const [kg, setKg] = useState<Record<string, number>>({ a: 0, b: 0, c: 0 });
-  const [open, setOpen] = useState<string | null>(null);
-  const [seen, setSeen] = useState<string[]>([]);
-  const [result, setResult] = useState<null | {
-    total: number;
-    cost: number;
-    lateKg: number;
-    concentrated: boolean;
-  }>(null);
+  const [order, setOrder] = useState<Order>(emptyOrder());
+  const [tried, setTried] = useState(false); // has the child pressed 「はこんでみる」at least once
 
-  const total = SUPPLIERS.reduce((a, s) => a + kg[s.id], 0);
-  const cost = SUPPLIERS.reduce((a, s) => a + kg[s.id] * s.yenPerKg, 0);
+  const boxes = totalBoxes(order);
+  const cost = totalCost(order);
+  const shelfFilled = Math.min(onTimeBoxes(order), NEED_BOXES); // live — updates as boxes are added, per §UX-BUG-4 above
+  const stillOnRoad = lateBoxes(order); // always 0 with the current supplier numbers (see sourcingLogic.ts) — kept real, not hardcoded
 
-  const change = (id: string, d: number) => {
+  const change = (id: Supplier["id"], d: number) => {
     const s = SUPPLIERS.find((x) => x.id === id)!;
-    setKg((k) => ({ ...k, [id]: Math.max(0, Math.min(s.max, k[id] + d)) }));
-    setResult(null);
+    setOrder((o) => ({ ...o, [id]: Math.max(0, Math.min(s.maxBoxes, o[id] + d)) }));
   };
 
-  const run = () => {
-    const lateKg = SUPPLIERS.filter((s) => !s.inTime).reduce((a, s) => a + kg[s.id], 0);
-    const concentrated = SUPPLIERS.some((s) => kg[s.id] >= NEED);
-    setResult({ total, cost, lateKg, concentrated });
-  };
+  const success = isSuccess(order);
 
-  const ok = result && result.total >= NEED && result.lateKg === 0;
-
-  if (ok) {
-    const overBudget = result.cost > BUDGET;
+  if (success && tried) {
+    const overBudget = cost > BUDGET;
+    const heavy = isSingleSupplierHeavy(order);
     return (
       <div className="game board-game">
         <div className="result-card good">
-          <span className="result-title">いちご原料 {result.total}kg、そろった！</span>
+          <span className="result-title">いちご原料 {boxes}箱、そろった！</span>
           <div className="result-rows">
             <span className="rrow">
               <b>そろった量</b>
-              <span>{result.total}kg／{NEED}kg ✓</span>
+              <span>{boxes}箱／{NEED_BOXES}箱 ✓（{boxes * BOX_KG}kg）</span>
             </span>
             <span className="rrow">
               <b>材料費</b>
               <span className={overBudget ? "bad" : "good"}>
-                {result.cost.toLocaleString()}円{overBudget ? "（目安より高め）" : "（目安内）"}
+                {cost.toLocaleString()}円{overBudget ? "（目安より高め）" : "（目安内）"}
               </span>
             </span>
             <span className="rrow">
               <b>届く日</b>
-              <span className="good">来週までに間に合う ✓</span>
-            </span>
-            <span className="rrow">
-              <b>安定性</b>
-              <span className={result.concentrated ? "" : "good"}>
-                {result.concentrated
-                  ? "1社にまとめた（その会社が届けられないと止まる）"
-                  : "何社かに分けた ✓"}
-              </span>
+              <span className="good">来週までに、全部間に合う ✓</span>
             </span>
           </div>
         </div>
         <p className="game-line soft center-line">
-          そろえ方はひとつじゃない。何を大事にするかで、選び方が変わる。
+          {heavy
+            ? "1社にまとめると安く済むこともあるけど、その会社が急に届けられなくなったら全部止まる。"
+            : "そろえ方はひとつじゃない。何を大事にするかで、選び方が変わる。"}
         </p>
         <button className="btn primary big" onClick={onComplete}>
           この仕入れでいく！
@@ -101,108 +90,114 @@ export default function SourcingGame({ onComplete }: Q1GameProps) {
   }
 
   return (
-    <div className="game board-game">
+    <div className="game board-game sourcing-game">
       <div className="task-bar">
-        <span className="task-now">仕入先を見て、いちご原料をそろえよう</span>
-        <span className="task-sub">
-          目標 {NEED}kg・来週まで／材料費の目安 {BUDGET.toLocaleString()}円
-        </span>
+        <span className="task-now">いちご原料を、来週までに{NEED_BOXES}箱そろえよう</span>
+        <span className="task-sub">1箱＝{BOX_KG}kg／費用の目安 {BUDGET.toLocaleString()}円</span>
       </div>
 
-      {/* live total */}
+      {/* 給食室のたな — always visible, fills LIVE as boxes are added below.
+         This is the "見る→触る→変わる" moment: no button press needed to
+         see whether a choice is helping. */}
+      <div className="shelf-box">
+        <div className="shelf-head">
+          <span>給食室のたな</span>
+          <strong className={shelfFilled >= NEED_BOXES ? "good" : ""}>{shelfFilled} / {NEED_BOXES}箱</strong>
+        </div>
+        <div className="shelf-slots">
+          {Array.from({ length: NEED_BOXES }, (_, i) => (
+            <span key={i} className={`shelf-slot ${i < shelfFilled ? "filled" : ""}`} aria-hidden="true">📦</span>
+          ))}
+        </div>
+        {stillOnRoad > 0 && (
+          <p className="shelf-note">あと{stillOnRoad}箱は、来週までに間に合わず道の上…</p>
+        )}
+      </div>
+
+      {/* 今週の道 — always visible: shows WHERE each supplier's truck sits
+         relative to the day-7 deadline gate, without needing to open or
+         read anything (§UX-BUG-3). */}
+      <div className="road-box">
+        <div className="road-track">
+          <span className="road-today">今日</span>
+          <span className="road-gate" style={{ left: dayPct(DEADLINE_DAY) }}>
+            <span className="road-gate-flag">🚩</span>
+            <span className="road-gate-label">来週</span>
+          </span>
+          {SUPPLIERS.map((s) => (
+            <span key={s.id} className="road-truck" style={{ left: dayPct(s.arrivalDay) }}>
+              <span className="road-truck-emoji">{s.emoji}</span>
+              <span className="road-truck-day">{s.arrivalDay}日目</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* 仕入先 — price / cap / arrival day are ALL plain always-visible
+         text now, on every card, all the time; nothing is behind a toggle
+         (§UX-BUG-3). Stacked full-width (not a 3-column grid) so the ±
+         buttons can stay full 46px touch targets on a 375px screen — all 3
+         are still on one screen with no open/close needed, which is the
+         actual requirement (comparing without opening anything). */}
+      <div className="supplier-list">
+        {SUPPLIERS.map((s) => (
+          <div key={s.id} className="supplier">
+            <div className="supplier-head supplier-head-flat">
+              <span className="sup-emoji">{s.emoji}</span>
+              <span className="sup-name">{s.name}</span>
+              <span className="sup-price">{s.pricePerBox.toLocaleString()}円／箱</span>
+            </div>
+            <div className="supplier-facts">
+              <span>🗓 {s.arrivalDay}日目に届く</span>
+              <span>📦 最大 {s.maxBoxes}箱まで</span>
+            </div>
+            <div className="supplier-buy">
+              <button className="kg-btn" onClick={() => change(s.id, -1)} disabled={order[s.id] === 0} aria-label={`${s.name}を1箱減らす`}>
+                −
+              </button>
+              <span className="kg-value">
+                {order[s.id]}
+                <small>箱</small>
+              </span>
+              <button className="kg-btn" onClick={() => change(s.id, 1)} disabled={order[s.id] >= s.maxBoxes} aria-label={`${s.name}を1箱増やす`}>
+                ＋
+              </button>
+              {order[s.id] >= s.maxBoxes && <span className="kg-note">この会社の上限</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 費用 — live total, always visible; budget is a soft "目安" line,
+         never a hidden/hard condition. */}
       <div className="meter-box">
-        <div className="meter-head">
-          <span>そろった量</span>
-          <strong className={total >= NEED ? "good" : ""}>
-            {total}kg / {NEED}kg
-          </strong>
-        </div>
-        <div className="mini-bar">
-          <div
-            className={`mini-fill ${total >= NEED ? "" : "warn"}`}
-            style={{ width: `${Math.min(100, (total / NEED) * 100)}%` }}
-          />
-        </div>
         <div className="meter-head">
           <span>材料費</span>
           <strong className={cost > BUDGET ? "bad" : ""}>{cost.toLocaleString()}円</strong>
         </div>
+        <div className="mini-bar">
+          <div
+            className={`mini-fill ${cost > BUDGET ? "warn" : ""}`}
+            style={{ width: `${Math.min(100, (cost / BUDGET) * 100)}%` }}
+          />
+        </div>
       </div>
 
-      {/* suppliers */}
-      <div className="supplier-list">
-        {SUPPLIERS.map((s) => {
-          const isOpen = open === s.id;
-          return (
-            <div key={s.id} className={`supplier ${isOpen ? "open" : ""}`}>
-              <button
-                className="supplier-head"
-                onClick={() => {
-                  setOpen(isOpen ? null : s.id);
-                  if (!isOpen) setSeen((v) => (v.includes(s.id) ? v : [...v, s.id]));
-                }}
-              >
-                <span className="sup-emoji">{s.emoji}</span>
-                <span className="sup-name">{s.name}</span>
-                <span className="sup-price">{s.yenPerKg}円/kg</span>
-                <span className="sup-toggle">{isOpen ? "− とじる" : "+ くわしく"}</span>
-              </button>
-              {isOpen && (
-                <div className="supplier-detail">
-                  <p>品質：{s.quality}</p>
-                  <p>届く日：{s.lead}</p>
-                  <p>
-                    出せる量：<strong>{s.max}kgまで</strong>
-                  </p>
-                  <p>安定性：{s.stability}</p>
-                </div>
-              )}
-              <div className="supplier-buy">
-                <button className="kg-btn" onClick={() => change(s.id, -STEP)} disabled={kg[s.id] === 0}>
-                  −
-                </button>
-                <span className="kg-value">
-                  {kg[s.id]}
-                  <small>kg</small>
-                </span>
-                <button
-                  className="kg-btn"
-                  onClick={() => change(s.id, STEP)}
-                  disabled={kg[s.id] >= s.max}
-                >
-                  ＋
-                </button>
-                {kg[s.id] >= s.max && <span className="kg-note">この会社の上限</span>}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* what happened */}
-      {result && !ok && (
+      {tried && !success && (
         <div className="sched-issues">
-          {result.total < NEED && (
-            <p>
-              {NEED - result.total}kg 足りなかった…。このままではアイスがつくれない。
-            </p>
-          )}
-          {result.lateKg > 0 && (
-            <p>
-              安くできた！でも{result.lateKg}kg分が、いちごが必要な日までに届かなかった…。
-            </p>
-          )}
+          {boxes < NEED_BOXES && <p>まだ{NEED_BOXES - boxes}箱、足りない…。</p>}
+          {stillOnRoad > 0 && <p>{stillOnRoad}箱分が、来週までに届かなかった…。</p>}
         </div>
       )}
-      {seen.length === 0 && (
-        <p className="game-line soft">仕入先の「くわしく」を開くと、出せる量や届く日が分かるよ。</p>
+      {!tried && boxes === 0 && (
+        <p className="game-line soft">会社ごとの＋／−で、何箱ずつ運ぶかきめよう。たなの様子がすぐ変わるよ。</p>
       )}
 
-      <button className="btn primary big" disabled={total === 0} onClick={run}>
-        {total === 0 ? "仕入れる量をきめよう" : "▶ 仕入れてみる"}
+      <button className="btn primary big" disabled={boxes === 0} onClick={() => setTried(true)}>
+        {boxes === 0 ? "運ぶ箱をきめよう" : "▶ はこんでみる"}
       </button>
-      {total > 0 && (
-        <button className="btn ghost" onClick={() => { setKg({ a: 0, b: 0, c: 0 }); setResult(null); }}>
+      {boxes > 0 && (
+        <button className="btn ghost" onClick={() => { setOrder(emptyOrder()); setTried(false); }}>
           はじめからえらび直す
         </button>
       )}

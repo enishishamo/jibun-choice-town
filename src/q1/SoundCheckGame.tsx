@@ -11,44 +11,20 @@
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
+import { LABEL, evaluate } from "./soundCheckLogic";
+import type { Angle } from "./soundCheckLogic";
 
 const P = (n: string) => `${import.meta.env.BASE_URL}assets/event/${n}.png`;
 
-type SeatId = "front" | "middle" | "back";
-const SEATS: { id: SeatId; label: string }[] = [
-  { id: "front", label: "前の席" },
-  { id: "middle", label: "まん中" },
-  { id: "back", label: "うしろ" },
-];
-
-// 0=聞こえない 1=小さい 2=ちょうどいい 3=うるさい
-const LABEL = ["聞こえない", "小さい", "ちょうどいい", "うるさい！"];
-
 export default function SoundCheckGame({ onComplete }: Q1GameProps) {
   const [volume, setVolume] = useState(3); // 1-6
-  const [angle, setAngle] = useState<"down" | "wide">("down"); // 向き
+  const [angle, setAngle] = useState<Angle>("down"); // 向き
   const [extra, setExtra] = useState(false); // うしろ用スピーカー
   const [tried, setTried] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
-  // simple model: sound falls off with distance; wide angle trades front
-  // level for reach; the extra speaker lifts the back only.
-  const level = (seat: SeatId): number => {
-    const base = volume;
-    let v =
-      seat === "front" ? base : seat === "middle" ? base - 1.5 : base - 3;
-    if (angle === "wide") v += seat === "front" ? -1 : 0.5;
-    if (extra && seat === "back") v += 2;
-    if (extra && seat === "middle") v += 0.5;
-    if (v >= 5.5) return 3; // too loud
-    if (v >= 3) return 2;
-    if (v >= 1.5) return 1;
-    return 0;
-  };
-
-  const states = SEATS.map((s) => ({ ...s, v: level(s.id) }));
-  const allGood = states.every((s) => s.v === 2);
+  const { states, allGood } = evaluate(volume, angle, extra);
 
   const docs = [
     {

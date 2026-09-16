@@ -8,38 +8,10 @@ import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
 import InfoCards from "./InfoCards";
 import { useDragDrop } from "./useDragDrop";
+import { ALL, CANDIDATES, ORIGINAL, isAcceptableSide } from "./menuLogic";
 
 // 0=×, 1=△, 2=○, 3=◎
 const G = ["×", "△", "○", "◎"];
-
-interface SideDish {
-  id: string;
-  name: string;
-  emoji: string;
-  nutri: number;
-  budget: number;
-  supply: number;
-  cook: number;
-}
-
-const ORIGINAL: SideDish = {
-  id: "hourensou",
-  name: "ほうれん草のごまあえ",
-  emoji: "🥬",
-  nutri: 3,
-  budget: 2,
-  supply: 0, // 長雨で調達できない
-  cook: 3,
-};
-
-const CANDIDATES: SideDish[] = [
-  { id: "betsusanchi", name: "ほうれん草（別の産地）", emoji: "🥬", nutri: 3, budget: 1, supply: 2, cook: 3 },
-  { id: "komatsuna", name: "小松菜のごまあえ", emoji: "🥗", nutri: 3, budget: 3, supply: 3, cook: 3 },
-  { id: "cabbage", name: "キャベツのおかかあえ", emoji: "🥦", nutri: 2, budget: 3, supply: 3, cook: 2 },
-  { id: "potato", name: "フライドポテト", emoji: "🍟", nutri: 0, budget: 3, supply: 3, cook: 3 },
-];
-
-const ALL = [ORIGINAL, ...CANDIDATES];
 
 export default function MenuGame({ onComplete }: Q1GameProps) {
   const [sideId, setSideId] = useState(ORIGINAL.id);
@@ -136,7 +108,7 @@ export default function MenuGame({ onComplete }: Q1GameProps) {
     );
   }
 
-  const acceptable = side.supply >= 1 && side.nutri >= 1;
+  const acceptable = isAcceptableSide(side);
 
   return (
     <div className="game board-game" {...surfaceProps}>
