@@ -419,7 +419,21 @@ export default function HomeScreen() {
 
   const onPointerDown = (e: React.PointerEvent) => {
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    e.currentTarget.setPointerCapture(e.pointerId);
+    // 2026-09-17 (Gesture Arbitration repair round 2 — REAL_USER_OBSERVED:
+    // tap-to-navigate was completely dead in production). Capturing the
+    // pointer HERE, unconditionally, on every pointerdown — even a plain tap
+    // that never moves — was the bug: once `.region-viewport` holds pointer
+    // capture, the browser also retargets the compatibility `click` event's
+    // `target` to the capturing element itself (confirmed via a live
+    // event-target log on both localhost and production), so the nested
+    // district-node / world-marker / town-hitzone <button>'s own onClick
+    // never fires, for ANY tap, on any input type. Capture is now deferred
+    // until a gesture is actually CONFIRMED real: immediately below for a
+    // 2nd finger (pinch — unambiguously never a tap, per the existing
+    // comment), and for a single finger, only once onPointerMove's
+    // TOUCH_SLOP check proves real movement (see the `g.moved` transition
+    // there). A plain tap never captures at all now, so its native click
+    // reaches the button normally.
     if (pointers.current.size === 1) {
       gesture.current = { mode: "pan", startX: e.clientX, startY: e.clientY, startPanX: pan.x, startPanY: pan.y, moved: false };
     } else if (pointers.current.size === 2) {
@@ -428,6 +442,10 @@ export default function HomeScreen() {
       // enough yet to count as a drag — suppress immediately, don't wait for
       // pinch movement to prove itself.
       suppressTap.current = true;
+      // capture BOTH active pointers now — pinch is confirmed real the
+      // instant a 2nd finger lands, so (unlike the single-finger path above)
+      // there's no remaining "plain tap" case here to protect.
+      pointers.current.forEach((_, id) => e.currentTarget.setPointerCapture(id));
       const pts = Array.from(pointers.current.values());
       // The canvas-space point currently sitting under the pinch midpoint,
       // derived from the ALREADY-RENDERED camera (this render's cam.tx/ty/s)
@@ -452,7 +470,14 @@ export default function HomeScreen() {
     if (g.mode === "pan" && pointers.current.size === 1) {
       const dx = e.clientX - g.startX;
       const dy = e.clientY - g.startY;
-      if (!g.moved && Math.hypot(dx, dy) > TOUCH_SLOP) g.moved = true;
+      if (!g.moved && Math.hypot(dx, dy) > TOUCH_SLOP) {
+        g.moved = true;
+        // Capture only now that this is a confirmed drag, not a tap (see
+        // onPointerDown's 2026-09-17 comment) — guarantees pointermove/up
+        // keep reaching this container even if the finger slides off the
+        // element it started on, without ever stealing a plain tap's click.
+        e.currentTarget.setPointerCapture(e.pointerId);
+      }
       if (g.moved) {
         // 2026-09-06 (REAL_USER_OBSERVED — Map pan blocker): `pan` used to be
         // an unbounded accumulator — only the DERIVED cam.tx/ty (via clampPan,
