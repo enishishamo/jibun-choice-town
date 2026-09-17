@@ -98,7 +98,6 @@ export default function HomeScreen() {
   const [focus, setFocus] = useState<string | null>(null); // district id or null = region
   const [teaser, setTeaser] = useState<string | null>(null);
   const fogTapCount = useRef<Record<string, number>>({});
-  const enterTimer = useRef<number | null>(null);
   // 2026-09-13 (Gesture Arbitration repair — see §1/§2 of the audit that
   // produced this pass): `pan` and `zoom` are no longer region-mode-only.
   // Both region AND district view now share ONE continuous camera model
@@ -287,54 +286,56 @@ export default function HomeScreen() {
   }, [markers, focus, overviewVisibleIds]);
 
   // ---- camera --------------------------------------------------------------
-  // region mode fills the viewport height and is PANNABLE (the map is a place,
-  // not a thumbnail); district mode zooms the camera onto the district.
-  // 2026-09-05 (Map V1, Human Directive §3/§4/§19): mobile is the PRIMARY
-  // target, sized so the town center reads as the main focus with adjacent
-  // districts peeking at the edges — never the whole 1774x887 world shrunk
-  // to fit (that reads as "a big list", not "a world you're standing in").
-  // Fit by HEIGHT against a fixed reference (not a width breakpoint split)
-  // so desktop does NOT get to see more of the world just because it has a
+  // 2026-09-17 (Camera Architecture repair — Human Product Decision, "勝手に
+  // 寄る" bug report): an independent GPT code review of this file + the MAP
+  // CSS traced the "camera moves without the user asking it to" reports to
+  // the architecture itself, not one single bug — camera state and district
+  // SELECTION state used to be the same thing (`focus` fed straight into
+  // `baseScaleNow`/`anchorFor` below, so picking a district always
+  // re-centered and re-zoomed the camera onto it, whether the user
+  // dragged/pinched there or not). Fixed at the architecture level, not by
+  // patching the numbers to 1: `focus` now ONLY drives which district is
+  // "active" for reveal purposes (labels, in-focus marker styling, the 🗺
+  // back button, progressive disclosure — all further below, unchanged) and
+  // NEVER touches `s`/`tx`/`ty`. There is exactly one camera mode now;
+  // `pan`/`zoom` are the only two camera-owning pieces of state, both driven
+  // exclusively by the user's own drag/pinch (see onPointerDown/Move below)
+  // — never reset or nudged by a focus change, and never by a mount-time
+  // "sweep" either (the old first-visit auto-pan effect this replaces is
+  // removed outright, not just disabled).
+  //
+  // 2026-09-05 (Map V1, Human Directive §3/§4/§19 — still governs the FIT
+  // scale itself, unrelated to the bug above): mobile is the PRIMARY target,
+  // sized so the town center reads as the main focus with adjacent districts
+  // peeking at the edges — never the whole 1774x887 world shrunk to fit
+  // (that reads as "a big list", not "a world you're standing in"). Fit by
+  // HEIGHT against a fixed reference (not a width breakpoint split) so
+  // desktop does NOT get to see more of the world just because it has a
   // bigger viewport (§19 explicitly forbids "PC basis then shrink to
-  // mobile" and the reverse — showing more world on a bigger screen). A
-  // taller viewport (mobile portrait) naturally shows a bit more vertical
-  // context than a short wide desktop window at the same reference height,
-  // which is the desired "vertical exploration exists too" (§6) without a
-  // separate code path.
-  // Two independent constraints, both driven by the SAME formula regardless
-  // of device (no separate mobile/desktop branch):
+  // mobile" and the reverse). Two independent constraints, both driven by
+  // the SAME formula regardless of device:
   // 1. height must be overscanned a bit past a bare fill (x1.15), or a tall
   //    portrait viewport exactly matches this image's short (887px) native
-  //    height and vertical pan becomes mathematically impossible (§6
-  //    requires up/down pan to actually work, not just be wired up).
-  // 2. width must never reveal more than ~46% of the image at once — this
-  //    image is much wider than any viewport is tall, so on a WIDE desktop
-  //    window the height constraint alone would happily reveal most of the
-  //    world in one glance (measured: ~80% at a typical desktop size),
-  //    which is exactly what §19 forbids ("desktop shouldn't see more of
-  //    the world just because it has more room"). Whichever constraint
-  //    wants the tighter (larger) scale wins.
+  //    height and vertical pan becomes mathematically impossible (§6).
+  // 2. width must never reveal more than ~46% of the image at once, or a
+  //    WIDE desktop window reveals most of the world in one glance (§19).
+  // Whichever constraint wants the tighter (larger) scale wins.
   const MAX_VISIBLE_WIDTH_FRACTION = 0.46;
   const heightFitScale = (vp.h * 1.15) / CANVAS_H;
   const widthCapScale = vp.w / (CANVAS_W * MAX_VISIBLE_WIDTH_FRACTION);
   const regionScale = Math.min(Math.max(Math.max(heightFitScale, widthCapScale), 0.35), 1.6);
-  // world bounds: at ANY scale (region, district, or further pinched-in from
-  // either), the canvas may never pan far enough to show empty space beyond
-  // its own edge — this is what keeps "explore after zooming" from ever
-  // scrolling the child off the edge of the world.
+  // world bounds: at any zoom (the user's own pinch on top of regionScale),
+  // the canvas may never pan far enough to show empty space beyond its own
+  // edge.
   const clampPan = (tx: number, ty: number, s: number) => ({
     tx: Math.min(0, Math.max(vp.w - CANVAS_W * s, tx)),
     ty: Math.min(0, Math.max(vp.h - CANVAS_H * s, ty)),
   });
-  // Region-mode camera anchor BEFORE any drag offset — shared by the
-  // render-time camera (cam, below) and onPointerMove's pan clamping so the
-  // two can never drift apart (2026-09-06, REAL_USER_OBSERVED pan blocker:
-  // they used to duplicate this math informally through `pan`, and only
-  // cam's OUTPUT was clamped — see onPointerMove for the actual bug).
-  // §5/§7: don't center the camera exactly on the plaza/fountain — a
-  // dead-center lock on the strongest landmark reads as "a finished plaza
-  // screen", not "midway through a bigger world". Bias the focal point
-  // up-and-left within the town so harbor (lower-left) and station/hill
+  // The camera's one and only anchor — BEFORE the user's own pan offset —
+  // shared by the render-time camera (cam, below) and onPointerMove's pan
+  // clamping so the two can never drift apart (2026-09-06, REAL_USER_OBSERVED
+  // pan blocker). §5/§7: don't center exactly on the plaza/fountain — bias
+  // the focal point up-and-left so harbor (lower-left) and station/hill
   // (upper-right) both have more room to peek at the opposite edges.
   const regionBase = (s: number) => {
     const center = getDistrict("center")!;
@@ -342,55 +343,15 @@ export default function HomeScreen() {
     const focalY = center.cy - center.r * 0.12;
     return { tx: vp.w / 2 - focalX * s, ty: vp.h / 2 - focalY * s };
   };
-  // repair (2026-09-04): zoom was tight enough to hide all surrounding
-  // context, so the district close-up read as a mode-switch rather than
-  // movement through one continuous world (Codex verify finding). Zoom in
-  // less; the town and neighboring roads stay partly visible.
-  // repair (2026-09-04): iterated between too-tight (2.2, hid all context)
-  // and too-loose (0.85/2.0, left large low-information margins); this
-  // fill/cap scored best across two independent Codex verify rounds
-  // — calibrated against the region-viewport's PRE-Mobile-Map-Simplification
-  // fixed height (~560px). That height grew substantially (flex:1, fills
-  // the screen) in the 2026-09-04 True Home / Mobile Map pass, so a
-  // width-only fill fraction under-zoomed against the new taller portrait
-  // viewport and left a large empty band below the district (Codex review,
-  // true-home-map-codex-review-r2.json). Now fills against height too —
-  // districts read as filling the frame instead of floating in it — while
-  // the cap still leaves neighbouring roads/town visible at the edges.
-  // Extracted to a plain function (2026-09-13 Gesture Arbitration repair)
-  // so it can be reused as the district mode's BASE scale — pinch-zoom then
-  // multiplies further from this fitted baseline instead of replacing it.
-  const districtBaseScale = (d: District) => Math.min(Math.max(
-    (Math.min(vp.w, vp.h) * 0.78) / (d.r * 2),
-    (vp.h * 0.54) / (d.r * 1.44),
-    regionScale * 1.35,
-  ), 2.0);
-  // 2026-09-13 (Gesture Arbitration repair, §2 "zoom後も自由にパンできる"):
-  // region and district view used to be two separate camera formulas, and
-  // ONLY region mode accepted a pan offset at all — a district, once
-  // focused, was a fixed, unpannable close-up. They're unified into one
-  // formula now: `baseScaleNow` is whichever mode's tuned FIT scale applies
-  // (unchanged math, just extracted), `zoom` is a pinch-driven multiplier on
-  // top of it (1 = exactly the fitted view, up to MAX_ZOOM further in), and
-  // `pan` is a screen-px offset from the mode's anchor point — honored in
-  // BOTH modes now, not just region. Leaving a district always resets pan
-  // and zoom back to 0/1 (see openDistrict / the region-back button below),
-  // so "back to region" is never left mid-pinch from an unrelated district.
-  const baseScaleNow = focus ? districtBaseScale(getDistrict(focus)!) : regionScale;
+  const baseScaleNow = regionScale; // one camera mode now — see the 2026-09-17 note above
   const s = Math.min(Math.max(baseScaleNow * zoom, baseScaleNow * MIN_ZOOM), baseScaleNow * MAX_ZOOM);
-  const anchorFor = (sc: number) => {
-    if (focus) {
-      const d = getDistrict(focus)!;
-      return { tx: vp.w / 2 - d.cx * sc, ty: vp.h / 2 - d.cy * sc };
-    }
-    return regionBase(sc);
-  };
+  const anchorFor = (sc: number) => regionBase(sc);
   const cam = useMemo(() => {
     const anchor = anchorFor(s);
     const c = clampPan(anchor.tx + pan.x, anchor.ty + pan.y, s);
     return { s, tx: c.tx, ty: c.ty };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focus, vp, s, pan]);
+  }, [vp, s, pan]);
 
   // Drag-to-pan AND pinch-to-zoom, in either region or district mode; a real
   // gesture always suppresses the tap it would otherwise leave behind.
@@ -541,45 +502,16 @@ export default function HomeScreen() {
   const onPointerLeaveViewport = (e: React.PointerEvent) => endPointer(e);
   const suppressTap = useRef(false);
   const [gestureActive, setGestureActive] = useState(false);
-  // 2026-09-13 (Gesture Arbitration repair, §1 "zoom / camera transition中は
-  // marker の pointer eventsを無効化"): true for the ~700ms the camera is
-  // ANIMATING toward a new focus (district-node tap, or the glide-then-enter
-  // a world marker starts) — a window with no finger down at all, so
-  // `gestureActive` (which only tracks live pointers) can't cover it. While
-  // true, `.is-busy` (below) disables pointer-events on every marker/district
-  // node, and `suppressTap` swallows anything that slips through.
-  const [camBusy, setCamBusy] = useState(false);
-  const camBusyTimer = useRef<number | null>(null);
-  const setCamBusyFor = (ms: number) => {
-    suppressTap.current = true;
-    setCamBusy(true);
-    if (camBusyTimer.current) window.clearTimeout(camBusyTimer.current);
-    camBusyTimer.current = window.setTimeout(() => {
-      suppressTap.current = false;
-      setCamBusy(false);
-    }, ms);
-  };
-
-  // first-visit sweep: the camera starts a little west and glides home,
-  // showing that the map continues beyond the screen
-  useEffect(() => {
-    setPan({ x: 140, y: 30 });
-    const t = window.setTimeout(() => setPan({ x: 0, y: 0 }), 450);
-    return () => window.clearTimeout(t);
-  }, []);
-
-  useEffect(() => () => {
-    if (enterTimer.current) window.clearTimeout(enterTimer.current);
-    if (camBusyTimer.current) window.clearTimeout(camBusyTimer.current);
-  }, []);
-
-  // camera transition duration (.region-canvas transition: transform 0.65s
-  // in index.css) plus a small buffer — markers/districts stay inert for
-  // exactly this long after a tap-driven focus change, per §1.
-  const CAMERA_TRANSITION_MS = 700;
+  // 2026-09-17 (Camera Architecture repair): the old `camBusy`/
+  // `setCamBusyFor`/mount-time "first-visit sweep" all existed to mask a
+  // CAMERA TRANSITION ANIMATION that no longer happens — district selection
+  // never moves the camera now (see the "---- camera ----" section above) —
+  // so all three are removed outright rather than patched. `gestureActive`
+  // (a live pointer actually panning/pinching) is now the only thing that
+  // makes markers/districts inert (`.is-busy` below), which is exactly the
+  // case genuine tap/pan/pinch arbitration still needs.
 
   const openDistrict = (d: District) => {
-    if (enterTimer.current) { window.clearTimeout(enterTimer.current); enterTimer.current = null; }
     if (d.foggy) {
       // every re-tap yields the NEXT clue — curiosity is answered, honestly
       const hints = d.teasers ?? [d.teaser ?? "まだ、もやの向こう。"];
@@ -588,21 +520,18 @@ export default function HomeScreen() {
       window.setTimeout(() => setTeaser(null), 3200);
       return;
     }
-    // 2026-09-13 (Gesture Arbitration repair): reset pan/zoom on every focus
-    // change — a district is always entered (and region is always returned
-    // to) at its clean, tuned default framing, never mid-pinch from whatever
-    // a PREVIOUS district was left at.
-    setPan({ x: 0, y: 0 });
-    setZoom(1);
+    // 2026-09-17 (Camera Architecture repair): district selection is purely
+    // a UI-reveal state change now — camera ownership is always the user's,
+    // so this never touches pan/zoom (contrast the pre-repair version, which
+    // used to force pan/zoom back to 0/1 here — that WAS part of the
+    // "camera moves on its own" bug this repair removes).
     setFocus(d.id);
-    setCamBusyFor(CAMERA_TRANSITION_MS);
   };
 
   const backToRegion = () => {
-    setPan({ x: 0, y: 0 });
-    setZoom(1);
+    // same principle as openDistrict — leaving a district must not move the
+    // camera either.
     setFocus(null);
-    setCamBusyFor(CAMERA_TRANSITION_MS);
   };
 
   const focused = focus ? getDistrict(focus) : null;
@@ -611,19 +540,36 @@ export default function HomeScreen() {
   return (
     <div className="screen world-screen">
       <div className="world">
-        {!focus && (
-          <header className="world-header">
-            <button className="map-home-back" onClick={() => navigate({ name: "home" })}>
-              ← ホーム
-            </button>
-          </header>
-        )}
+        {/* 2026-09-17 (Camera Architecture repair): this header used to be
+           removed entirely while a district was focused (to free up extra
+           height for the map) — but `.region-viewport` is `flex:1` inside
+           this column, so removing/adding the header changed its actual
+           rendered height, which fed straight back into `regionScale`
+           (via the ResizeObserver on viewportRef) and moved the camera by a
+           tiny but real amount on every district tap — a SECOND, indirect
+           form of exactly the "focus moves the camera" bug this whole
+           repair removes. Always rendering it now keeps `.region-viewport`
+           a constant height regardless of focus, so the camera has nothing
+           to react to. */}
+        <header className="world-header">
+          <button className="map-home-back" onClick={() => navigate({ name: "home" })}>
+            ← ホーム
+          </button>
+        </header>
 
-        {focused && <p className="world-lead">{focused.lead}</p>}
-        {!focused && <p className="world-lead map-prompt">どこへ行く？</p>}
+        {/* same reasoning as the header above: always the SAME element (not
+           two conditionally-mounted <p>s), and index.css gives `.world-lead`
+           a fixed min-height covering its longest 2-line content either way
+           — `map-prompt` still toggles the quieter font-size/color for the
+           unfocused prompt, but never the box's rendered height, so swapping
+           between it and a district's (variable-length) lead text never
+           changes region-viewport's rendered size. */}
+        <p className={`world-lead ${focused ? "" : "map-prompt"}`}>
+          {focused ? focused.lead : "どこへ行く？"}
+        </p>
 
         <div
-          className={`region-viewport ${focus ? "is-district" : "is-region"} ${gestureActive || camBusy ? "is-busy" : ""}`}
+          className={`region-viewport ${focus ? "is-district" : "is-region"} ${gestureActive ? "is-busy" : ""}`}
           ref={viewportRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -788,24 +734,14 @@ export default function HomeScreen() {
                   ].join(" ")}
                   style={{ left: m.x, top: m.y, ...(labelShift ? { "--label-shift": `${labelShift}px` } as CSSProperties : {}) }}
                   onClick={() => {
+                    // 2026-09-17 (Camera Architecture repair): a marker tap
+                    // always navigates immediately now. It used to glide the
+                    // camera into the marker's district first (setFocus +
+                    // setPan/setZoom + a matching setTimeout delay) whenever
+                    // that district wasn't already selected — itself another
+                    // instance of the same "selecting/entering something
+                    // moves the camera" bug this repair removes site-wide.
                     if (suppressTap.current) return;
-                    if (!inFocus) {
-                      // a WORLD marker tap is never a dead tap: the camera
-                      // glides in, then the world opens (one continuous move).
-                      // 2026-09-13 (Gesture Arbitration repair §1): busy for
-                      // the whole glide, so a second tap landing on another
-                      // marker mid-flight can't also fire.
-                      setPan({ x: 0, y: 0 });
-                      setZoom(1);
-                      setFocus(m.districtId);
-                      setCamBusyFor(680);
-                      if (enterTimer.current) window.clearTimeout(enterTimer.current);
-                      enterTimer.current = window.setTimeout(
-                        () => navigate({ name: "area", eventId: m.eventId }),
-                        680,
-                      );
-                      return;
-                    }
                     navigate({ name: "area", eventId: m.eventId });
                   }}
                 >
@@ -834,7 +770,14 @@ export default function HomeScreen() {
           )}
         </div>
 
-        {focus && <p className="town-hint">気になる出来事をタップ。全部回らなくてもいい。</p>}
+        {/* 2026-09-17 (Camera Architecture repair): same reasoning as the
+           header/world-lead above — always mounted so its reserved line
+           height (index.css .town-hint) never comes and goes with focus;
+           `visibility: hidden` (not a conditional unmount) hides the text
+           itself without freeing that space back to region-viewport. */}
+        <p className="town-hint" style={{ visibility: focus ? "visible" : "hidden" }}>
+          気になる出来事をタップ。全部回らなくてもいい。
+        </p>
       </div>
     </div>
   );

@@ -1486,6 +1486,20 @@ img {
   line-height: 1.5;
   position: relative;
   z-index: 4;
+  /* 2026-09-17 (Camera Architecture repair): reserve space for the LONGEST
+     content this element ever shows (a 2-line district `lead`) regardless
+     of which (shorter) text is actually showing right now — the overview
+     prompt and every district's lead text share this one element/box, so a
+     1-line text just centers within the same reserved height instead of
+     shrinking the box (which would resize region-viewport below it, and
+     with it the camera's own fit-scale — see the WorldMapScreen.tsx render
+     comment at this element's use site for the full story). 14px * 1.5
+     line-height * 2 lines = 42px.
+  */
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /* the unfocused overview prompt is now a short wayfinding question, not a
    sentence — a touch smaller/quieter than a district's own flavor line */
