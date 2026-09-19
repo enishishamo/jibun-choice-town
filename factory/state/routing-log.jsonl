@@ -364,3 +364,5 @@
 {"ts":"2026-09-12T00:41:33.725Z","tool":"codex-review","label":"reach-mix-r16","prompt_file":"factory/projects/legacy-reach-mix/design-review-r16-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":212.306}
 {"ts":"2026-09-12T01:14:26.251Z","tool":"codex-review","label":"reach-mix-impl-r1","prompt_file":"factory/projects/legacy-reach-mix/impl-review-r1-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":126.92}
 {"ts":"2026-09-12T01:27:06.318Z","tool":"codex-review","label":"reach-mix-impl-r2","prompt_file":"factory/projects/legacy-reach-mix/impl-review-r2-prompt.md","status":"OK","verdict":"PASS","elapsed_sec":103.585}
+{"ts":"2026-09-19T06:42:12.390Z","tool":"codex-review","label":"child-coDesign-photo-crane","prompt_file":"factory/state/_tmp-codex-prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":56.666}
+{"ts":"2026-09-19T06:50:33.090Z","tool":"codex-review","label":"child-coDesign-fix-followup","prompt_file":"factory/state/_tmp-codex-prompt2.md","status":"OK","verdict":"PASS","elapsed_sec":50.317}

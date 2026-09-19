@@ -6054,12 +6054,16 @@ img {
   min-height: 16px;
 }
 .crane-release {
-  font-size: 12px;
+  /* 2026-09-19 (独立レビュー指摘): 44x44px未満のタップ対象だった。
+     見た目（下線テキストリンク）は変えず、実際のヒット領域だけ広げる。 */
+  min-height: 44px;
+  min-width: 44px;
+  font-size: 13px;
   color: var(--text-soft);
   text-decoration: underline;
   background: none;
   border: none;
-  padding: 4px 8px;
+  padding: 10px 14px;
 }
 .crane-drop-zones {
   opacity: 1;

@@ -4,7 +4,6 @@
 // ルールは src/q1/wasteLogic.ts（判定・袋生成・ミス予算）。
 import { useState } from "react";
 import type { Q1GameProps } from "./gameTypes";
-import InfoCards from "./InfoCards";
 import { CURB_MISTAKE_LIMIT, makeBags, judgeBag, pickDayType } from "./wasteLogic";
 import type { Bag, CurbAction, DayType } from "./wasteLogic";
 
@@ -186,25 +185,28 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
         )}
       </div>
 
-      <InfoCards
-        label="しごとの資料"
-        cards={[
-          {
-            id: "rule",
-            icon: "📋",
-            title: "今日の収集ルール",
-            body: (
-              <>
-                <p><strong>今日は「{DAY_INFO[day].name}」の日。</strong>出せるのは{DAY_INFO[day].bag}だけ。</p>
-                <p><strong>積めるもの：</strong>{DAY_INFO[day].ok}</p>
-                <p><strong>積めないもの：</strong>{DAY_INFO[day].ng}、指定袋でない袋。</p>
-                <p><strong>⚠️あぶないもの：</strong>スプレー缶・電池は収集車の中で火が出ることがある。
-                  積まずに、はなれて営業所へ連絡する。</p>
-              </>
-            ),
-          },
-        ]}
-      />
+      {/* 2026-09-19 (独立レビュー指摘): 判定に必須のルール（今日の分別・
+         積める/積めないもの・危険物の扱い）を、開閉式のInfoCardsの中に
+         隠していた。他の多くのQ1ゲームと同じ「常時表示」原則に合わせ、
+         同じ見た目（doc-*クラス）のまま、タップしないと開かない構造だけ
+         やめた。共有コンポーネントInfoCards自体は変更していない（他30+
+         ゲームへの影響なし）。 */}
+      <div className="doc-stack">
+        <span className="doc-label">📚 しごとの資料</span>
+        <div className="doc-card open">
+          <div className="doc-head" style={{ cursor: "default" }}>
+            <span className="doc-icon">📋</span>
+            <span className="doc-title">今日の収集ルール</span>
+          </div>
+          <div className="doc-body">
+            <p><strong>今日は「{DAY_INFO[day].name}」の日。</strong>出せるのは{DAY_INFO[day].bag}だけ。</p>
+            <p><strong>積めるもの：</strong>{DAY_INFO[day].ok}</p>
+            <p><strong>積めないもの：</strong>{DAY_INFO[day].ng}、指定袋でない袋。</p>
+            <p><strong>⚠️あぶないもの：</strong>スプレー缶・電池は収集車の中で火が出ることがある。
+              積まずに、はなれて営業所へ連絡する。</p>
+          </div>
+        </div>
+      </div>
 
       {note && <p className="game-note">{note}</p>}
 
