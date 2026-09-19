@@ -45,6 +45,10 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
   // truck bed / stays at the curb with a sticker / waits for the hazard team —
   // a wrong call is marked on the bag itself, not explained in prose.
   const [judged, setJudged] = useState<{ icon: string; dest: "truck" | "left" | "call"; wrong: boolean }[]>([]);
+  // 2026-09-19 (子ども共創テスト「クレーンゲーム」案): judgeBagの判定
+  // ルール（wasteLogic.ts）は無変更。「タップで即判定」を「まずクレーンで
+  // つかむ→運ぶ先を選んで落とす」の2段階に分けるための見た目専用state。
+  const [grabbed, setGrabbed] = useState(false);
 
   const restart = () => {
     const d = pickDayType();
@@ -54,6 +58,7 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
     setMistakes(0);
     setNote(null);
     setJudged([]);
+    setGrabbed(false);
     setStep("work");
     setAttempts((a) => a + 1);
   };
@@ -131,30 +136,54 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
 
       {streetStrip}
 
-      <div className="body-stage" style={{ padding: "14px 0" }}>
-        <div
-          style={{
-            margin: "0 auto",
-            width: 150,
-            height: 140,
-            borderRadius: "18px 18px 22px 22px",
-            background: bag.look.bagStyle === "black" ? "#5a5a5f" : "rgba(160,200,235,0.55)",
-            border: "3px solid " + (bag.look.bagStyle === "black" ? "#3f3f44" : "#7fa8cc"),
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
-          }}
-        >
-          <span style={{ fontSize: 34, letterSpacing: 4, filter: bag.look.bagStyle === "black" ? "brightness(0.4) blur(2px)" : "none" }}>
-            {bag.look.items.join("")}
-          </span>
-          <span style={{ fontSize: 11, color: "#555", background: "rgba(255,255,255,0.8)", borderRadius: 8, padding: "2px 8px" }}>
-            {bag.look.bagStyle === "black" ? "黒い袋" : "指定袋（半透明）"}
-          </span>
+      {/* 2026-09-19 (子ども共創テスト「クレーンゲーム」案): judgeBagの判定
+         ルールは無変更。タップ2段階（①クレーンでつかむ→②運ぶ先を選んで
+         落とす）にして、「自分でねらって操作する」感覚を出す。ドラッグは
+         375px実機での不安定さを避けるため使わない。 */}
+      <div className="crane-stage">
+        <span className={`crane-arm ${grabbed ? "grabbed" : ""}`} aria-hidden="true">
+          {grabbed ? "🦾✊" : "🦾"}
+        </span>
+        <div className={`crane-bag-wrap ${grabbed ? "grabbed" : ""}`}>
+          <button
+            className="crane-bag-btn"
+            disabled={grabbed}
+            aria-label={grabbed ? "つかんでいる" : "クレーンでつかむ"}
+            onClick={() => setGrabbed(true)}
+          >
+            <div
+              style={{
+                margin: "0 auto",
+                width: 150,
+                height: 140,
+                borderRadius: "18px 18px 22px 22px",
+                background: bag.look.bagStyle === "black" ? "#5a5a5f" : "rgba(160,200,235,0.55)",
+                border: "3px solid " + (bag.look.bagStyle === "black" ? "#3f3f44" : "#7fa8cc"),
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 4,
+              }}
+            >
+              <span style={{ fontSize: 34, letterSpacing: 4, filter: bag.look.bagStyle === "black" ? "brightness(0.4) blur(2px)" : "none" }}>
+                {bag.look.items.join("")}
+              </span>
+              <span style={{ fontSize: 11, color: "#555", background: "rgba(255,255,255,0.8)", borderRadius: 8, padding: "2px 8px" }}>
+                {bag.look.bagStyle === "black" ? "黒い袋" : "指定袋（半透明）"}
+              </span>
+            </div>
+          </button>
         </div>
         <span className="body-cap">👀 {bag.look.hint}</span>
+        <p className="crane-hint">
+          {grabbed ? "つかんだ！運ぶ先をえらんで落とそう" : "袋をタップして、クレーンでつかもう"}
+        </p>
+        {grabbed && (
+          <button className="crane-release" onClick={() => setGrabbed(false)}>
+            🖐 放す（つかみ直す）
+          </button>
+        )}
       </div>
 
       <InfoCards
@@ -179,12 +208,15 @@ export default function CurbCheckGame({ onComplete }: Q1GameProps) {
 
       {note && <p className="game-note">{note}</p>}
 
-      <div className="choice-row wrap">
+      <div className={`choice-row wrap crane-drop-zones ${grabbed ? "" : "waiting"}`}>
         {ACTIONS.map((a) => (
           <button
             key={a.id}
             className="choice-card"
+            disabled={!grabbed}
             onClick={() => {
+              if (!grabbed) return;
+              setGrabbed(false);
               const r = judgeBag(bag, a.id);
               const icon = bag.look.items[0] || "🛍";
               const dest = a.id === "load" ? "truck" : a.id === "reject_hazard" ? "call" : "left";

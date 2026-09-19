@@ -40,53 +40,60 @@ export default function PhotoCluesGame({ onComplete }: Q1GameProps) {
     setAttempts((a) => a + 1);
   };
 
-  // the matching board IS the world: photo clues × candidate pins
+  // 2026-09-19 (子ども共創テスト「間違い探し」案): 同じ判定ロジック
+  // （photoCheck/verifiedMatches、libraryLogic.tsは無変更）を、テキスト表の
+  // 読み比べではなく「1枚の古写真の中の気になる部分をタップして資料と
+  // 見比べる」操作に置き換えた最小プロトタイプ。新規画像は使わず、既存の
+  // CLUE_INFO絵文字を写真内の“ちがいがあるかもしれない場所”として配置する。
   const board = (
-    <div style={{ margin: "6px 14px", background: "#efe7d6", borderRadius: 14, padding: "8px 10px", border: "2px solid #d8c9a8" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
-        <span style={{ fontSize: 22 }}>🖼</span>
-        <span style={{ fontSize: 11, color: "#6b5d45" }}>持ちこまれた古い写真（セピア色・撮影地ふめい）</span>
+    <div className="photo-diff-board">
+      <div className="photo-diff-frames">
+        <div className="photo-frame photo-frame-old">
+          <span className="photo-frame-emoji">🖼</span>
+          <span className="photo-frame-label">古い写真</span>
+        </div>
+        <div className="photo-frame photo-frame-ref">
+          <span className="photo-frame-emoji">📚</span>
+          <span className="photo-frame-label">資料写真帳</span>
+        </div>
       </div>
-      <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ textAlign: "left", padding: 2 }}>手がかり</th>
-            {(["kita", "naka", "minato"] as const).map((id) => (
-              <th key={id} style={{ padding: 2, fontWeight: pick === id ? "bold" : "normal", color: bounced.includes(id) ? "#a34a2e" : undefined }}>
-                {bounced.includes(id) ? "📄↩ " : ""}
-                {CAND_INFO[id].emoji}
-                <br />
-                {CAND_INFO[id].label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {CLUES.map((cl) => {
-            const checked = ps.checked.includes(cl);
-            return (
-              <tr key={cl} style={{ borderTop: "1px solid #ddd0b5" }}>
-                <td style={{ padding: 2 }}>{CLUE_INFO[cl].emoji} {CLUE_INFO[cl].label}</td>
-                {ps.c.candidates.map((cd) => (
-                  <td key={cd.id} style={{ textAlign: "center", padding: 2 }}>
-                    {checked ? (cd.matches[cl] ? "📍一致" : "✕ちがう") : "—"}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
-          <tr style={{ borderTop: "2px solid #c9b88f" }}>
-            <td style={{ padding: 2, color: "#6b5d45" }}>一致の数</td>
-            {ps.c.candidates.map((cd) => (
-              <td key={cd.id} style={{ textAlign: "center", fontWeight: "bold", padding: 2 }}>
-                {verifiedMatches(ps, cd.id)}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-      <p className="game-line" style={{ margin: "6px 2px 0", fontSize: 16 }}>
-        一致の数：{(["kita", "naka", "minato"] as const).map((id) => `${CAND_INFO[id].label.slice(0, 3)} ${verifiedMatches(ps, id)}`).join("・")}
+      <p className="game-line soft center-line photo-diff-instruction">
+        気になる場所をタップして、資料と見比べよう（のこり{CLUE_BUDGET - ps.checked.length}回）
+      </p>
+      <div className="photo-diff-grid">
+        {CLUES.map((cl) => {
+          const checked = ps.checked.includes(cl);
+          return (
+            <button
+              key={cl}
+              className={`photo-diff-spot ${checked ? "checked" : ""}`}
+              disabled={checked}
+              onClick={() => {
+                const nx = photoCheck(ps, cl);
+                if (nx.refusal) { setNote(nx.refusal); return; }
+                setPs(nx);
+                setNote(null);
+              }}
+            >
+              <span className="photo-diff-emoji">{CLUE_INFO[cl].emoji}</span>
+              <span className="photo-diff-label">{CLUE_INFO[cl].label}</span>
+              {checked ? (
+                <span className="photo-diff-result">
+                  {ps.c.candidates.map((cd) => (
+                    <span key={cd.id} className={`photo-diff-tag ${cd.matches[cl] ? "match" : "nomatch"}`}>
+                      {CAND_INFO[cd.id].emoji}{cd.matches[cl] ? "○" : "×"}
+                    </span>
+                  ))}
+                </span>
+              ) : (
+                <span className="photo-diff-hint">？ タップして比べる</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <p className="game-line" style={{ margin: "6px 2px 0", fontSize: 13 }}>
+        一致の数：{(["kita", "naka", "minato"] as const).map((id) => `${bounced.includes(id) ? "📄↩" : ""}${CAND_INFO[id].label.slice(0, 3)} ${verifiedMatches(ps, id)}${pick === id ? "★" : ""}`).join("・")}
       </p>
     </div>
   );
@@ -132,25 +139,6 @@ export default function PhotoCluesGame({ onComplete }: Q1GameProps) {
       </div>
 
       {board}
-
-      <p className="pick-title">🔍 手がかりを照合する（のこり{CLUE_BUDGET - ps.checked.length}回）</p>
-      <div className="choice-row wrap">
-        {CLUES.filter((cl) => !ps.checked.includes(cl)).map((cl) => (
-          <button
-            key={cl}
-            className="choice-card"
-            onClick={() => {
-              const nx = photoCheck(ps, cl);
-              if (nx.refusal) { setNote(nx.refusal); return; }
-              setPs(nx);
-              setNote(null);
-            }}
-          >
-            <span className="choice-name" style={{ fontSize: 13 }}>{CLUE_INFO[cl].emoji} {CLUE_INFO[cl].label}</span>
-            <small style={{ opacity: 0.7 }}>{CLUE_INFO[cl].source}</small>
-          </button>
-        ))}
-      </div>
 
       <InfoCards
         label="しごとの資料"
