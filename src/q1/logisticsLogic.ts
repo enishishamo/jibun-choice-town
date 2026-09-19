@@ -31,7 +31,7 @@ export const FOODS: Food[] = [
   { id: "milk", validZones: ["cold5", "cold10"] },
   { id: "frozen_croquette", validZones: ["frozen"] },
   { id: "frozen_vegetable", validZones: ["frozen"] },
-  { id: "potato", validZones: ["ambient"] },
+  { id: "potato", validZones: ["cold10"] },
   { id: "bread", validZones: ["ambient"] },
   { id: "flour", validZones: ["ambient"] },
 ];

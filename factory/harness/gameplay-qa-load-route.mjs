@@ -51,10 +51,23 @@ function routeWinners(s) {
     const zs = FOODS.find((f) => f.id === id).validZones;
     return zs.includes("cold5") && zs.includes("cold10") && zs.length === 2;
   }));
-  check("frozen items accept only frozen; ambient items (potato/bread/flour) accept only ambient (design review r3: does not generalize past the upper-bound categories)", (() => {
+  // 2026-09-19 (End-to-End Route Audit, FAIL_P0 fix): potato's own
+  // FOOD_STORAGE_TEXT says "10℃前後" (a real potato-storage fact — too warm
+  // is the failure mode, not "colder is always safe") but this assertion
+  // used to hard-code validZones=["ambient"] as correct, so it silently
+  // enshrined the bug as the spec: a child who read the hint and picked
+  // 🌡️冷蔵10℃ (matching "10℃前後" exactly) was told they were wrong. This
+  // is the ONLY reason "legitimate zone reasoning always wins" above still
+  // passed even with the bug — that check derives its own placement FROM
+  // validZones[0], so it can never catch validZones disagreeing with the
+  // FOOD_STORAGE_TEXT a real player actually reads. Fixed data: potato now
+  // requires cold10 (bread/flour, genuinely room-temperature grain
+  // products, are unaffected and still require ambient).
+  check("frozen items accept only frozen; potato requires cold10 (10℃前後 per its own storage text, not ambient); bread/flour accept only ambient", (() => {
     const frozenOk = ["frozen_croquette", "frozen_vegetable"].every((id) => FOODS.find((f) => f.id === id).validZones.join(",") === "frozen");
-    const ambientOk = ["potato", "bread", "flour"].every((id) => FOODS.find((f) => f.id === id).validZones.join(",") === "ambient");
-    return frozenOk && ambientOk;
+    const potatoOk = FOODS.find((f) => f.id === "potato").validZones.join(",") === "cold10";
+    const ambientOk = ["bread", "flour"].every((id) => FOODS.find((f) => f.id === id).validZones.join(",") === "ambient");
+    return frozenOk && potatoOk && ambientOk;
   })());
   check("3 route archetypes defined", ARCHETYPES.length === 3);
 }
