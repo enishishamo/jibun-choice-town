@@ -6,4 +6,8 @@
   Art QA HARD GATES（`docs/jibun-choice-v2/ART_PIPELINE.md` §5）のチェック結果を記録する。
 - Master は「その時点の正」。差し替えは新ファイル＋新 approval で行い、旧版は `rejected/` へ移す。
 
-現在: **空**（2026-09-20 時点で Master は 1 枚もない）。
+## 現在の Master
+
+| asset | 種別 | 承認 | 状況 |
+|---|---|---|---|
+| `companion-model-sheet-2026-09-20.png` | 相棒 Character Master（4 面図） | Human 2026-09-20 → [approval](companion-model-sheet-2026-09-20.approval.md) | PNG 配置待ち（Human が Work 経由で配置） |

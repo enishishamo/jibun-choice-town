@@ -207,3 +207,21 @@ Human Reviewを待つ。
 - **HUMAN_PRODUCT_DECISION_REQUIRED**: LOCKED 項目は false。新規 OPEN 項目（D-18 / D-19 / T-07 / T-08）は true。
 - **実装状況**: ルール整備のみ。PLAY 実装・画像生成・PUBLIC 変更は未着手。`src/v2/App.tsx` の
   仮画面を `TEMP_IMPLEMENTATION_ONLY` と明示した。
+
+---
+
+## entry-2026-09-20-03: 相棒 Character Master 承認 ＋ 鼻の HARD RULE — Human Decision 記録
+
+- **決定者**: Human（Product Owner）、2026-09-20
+- **決定内容（LOCKED）**:
+  - 相棒 4 面図（正面／後ろ／横 2 方向）を **Character Master** として承認。
+    `design/v2/master/companion-model-sheet-2026-09-20.png`（配置は Human が Work 経由で行う）。
+    以後、相棒を扱う際は CHARACTER_BIBLE の文章と Master 画像の両方を visual source of truth とする
+  - 顔中央の小さな丸いオレンジ色の突起は **「鼻」** として正式仕様化。くちばしではない。
+    HARD RULE: 口なし／くちばしなし／小さな丸いオレンジ色の鼻あり。鼻を尖らせたり横に伸ばして
+    鳥のくちばし状にしない
+- **Art QA HARD GATES**: 耳 4 面 PASS、口なし PASS、鼻は Human 判断で PASS
+  （記録: `design/v2/master/companion-model-sheet-2026-09-20.approval.md`）
+- **更新ファイル**: CHARACTER_BIBLE §2/§3/§4/§6/§6.5、ART_PIPELINE §5、CLAUDE.md §0.5、
+  master/README、OPEN_DECISIONS D-02
+- **HUMAN_PRODUCT_DECISION_REQUIRED**: false（決定済み）。表情セット・装着スロット・名前・セリフは引き続き OPEN

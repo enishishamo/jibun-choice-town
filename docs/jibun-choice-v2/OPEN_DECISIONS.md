@@ -8,7 +8,7 @@
 | ID | 項目 | 関連仕様書 | 状態 |
 |---|---|---|---|
 | D-01 | 相棒の正式名称 | CHARACTER_BIBLE §0 | OPEN |
-| D-02 | 相棒の表情・姿勢の正式 Model Sheet（Master 承認） | CHARACTER_BIBLE §5 / ART_PIPELINE | OPEN |
+| D-02 | 相棒の表情・姿勢の正式 Model Sheet（Master 承認） | CHARACTER_BIBLE §5 / ART_PIPELINE | **一部決定 2026-09-20**: 姿勢 4 面図を Master 化（`design/v2/master/companion-model-sheet-2026-09-20.png`）。表情セットは OPEN |
 | D-03 | 相棒のアイテム装着スロット定義 | CHARACTER_BIBLE §5 | OPEN |
 | D-04 | 相棒のセリフ・声の有無 | CHARACTER_BIBLE §5 | OPEN |
 | D-05 | 給食 WORLD の具体的アイテム一覧と獲得条件 | GAME_DESIGN_RULES §3 | OPEN（reward/collection = Identity Gate） |

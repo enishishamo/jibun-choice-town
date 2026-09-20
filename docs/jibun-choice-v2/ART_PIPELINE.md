@@ -65,8 +65,10 @@ World consistency review → human approval → master 昇格。
 □ character LEFT  ear = ❤️
 □ 前後左右で耳が反転していない
 □ beak がない
+□ 鼻は小さく・丸く・オレンジ色（尖っていない／横に伸びていない）
 □ 別キャラクター化していない
 □ body proportion が大きく変化していない
+□ Master 画像（design/v2/master/companion-model-sheet-2026-09-20.png）と同一キャラクターに見える
 ```
 
 ### WORLD 画像

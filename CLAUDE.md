@@ -32,7 +32,7 @@ in [`factory/state/product-ideas/gate-log.md`](factory/state/product-ideas/gate-
 | File | Content |
 |---|---|
 | [`PRODUCT_PRINCIPLES.md`](docs/jibun-choice-v2/PRODUCT_PRINCIPLES.md) | Mission (unchanged), what never changes, PLAY FIRST, core loop, UI/TEXT RULE |
-| [`CHARACTER_BIBLE.md`](docs/jibun-choice-v2/CHARACTER_BIBLE.md) | Companion character HARD RULES (right ear = 🔍, left ear = ❤️, mouth = NONE) |
+| [`CHARACTER_BIBLE.md`](docs/jibun-choice-v2/CHARACTER_BIBLE.md) | Companion character HARD RULES (right ear = 🔍, left ear = ❤️, mouth = NONE, beak = NONE, small round orange nose). Visual source of truth: `design/v2/master/companion-model-sheet-2026-09-20.png` — always reference the Master image, not only the text |
 | [`WORLD_DESIGN.md`](docs/jibun-choice-v2/WORLD_DESIGN.md) | Overall MAP (giant everyday objects), 「パカッ」, lunch WORLD MAP, progress-as-map |
 | [`GAME_DESIGN_RULES.md`](docs/jibun-choice-v2/GAME_DESIGN_RULES.md) | Ver.2 game rules, items, ぼうけんノート, first benchmark game (栄養・メニュー) |
 | [`ART_PIPELINE.md`](docs/jibun-choice-v2/ART_PIPELINE.md) | `design/v2/{reference,master,generated,rejected}` and Art QA HARD GATES |

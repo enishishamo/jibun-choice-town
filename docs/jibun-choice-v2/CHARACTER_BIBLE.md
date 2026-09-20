@@ -21,8 +21,14 @@
 ```
 character RIGHT ear = 🔍 magnifying glass  （さがす）
 character LEFT  ear = ❤️ heart             （すき）
-mouth = NONE
+mouth = NONE          口なし
+beak  = NONE          くちばしなし
+nose  = small round ORANGE nose   小さな丸いオレンジ色の鼻あり（2026-09-20 Human 決定）
 ```
+
+- 鼻は**小さく・丸く・オレンジ色**。**尖らせない／横に伸ばさない**（鳥のくちばし状にしない）。
+  これも HARD RULE。
+- 鼻は口ではない。鼻の下に口・線・表情記号を描かない。
 
 - 左右は**本人の身体基準**。**絶対に入れ替えない。**
 - 表示上の見え方:
@@ -35,12 +41,18 @@ mouth = NONE
 
 - **口を描かない。** 表情は目・姿勢・身体の動きで表現する。
 - 画像生成 AI による左右反転を「正しい仕様」として採用しない。
+- **Visual source of truth**: `design/v2/master/companion-model-sheet-2026-09-20.png`（正面／後ろ／
+  横向き 2 方向の 4 面図、Human 承認済み Master）。以後、相棒を扱うときは本書の文章と
+  **この Master 画像の両方**を参照する。文章と Master 画像が食い違う場合は Human に確認する
+  （AI がどちらかを勝手に正としない）。承認記録: `design/v2/master/companion-model-sheet-2026-09-20.approval.md`。
   Visual Reference（`design/v2/reference/`）に未修正の反転が含まれていても、本書が優先。
 
 ## 3. 外見仕様（LOCKED）
 
 - body: white / cream
 - eyes: small black eyes
+- nose: 小さな丸いオレンジ色の鼻（口・くちばしではない）
+- cheeks: Master 画像どおりの淡い頬の赤み（表情の一部。誇張しない）
 - hat: explorer hat を基本、beige 系 + green band
 - body shape: white / cream の rounded body（VISUAL_TONE の toy / clay 質感）
 - 必要に応じて green backpack
@@ -48,7 +60,7 @@ mouth = NONE
 
 ## 4. 禁止（LOCKED）
 
-- 鳥にしない / くちばし（beak）を付けない
+- 鳥にしない / くちばし（beak）を付けない / 鼻を尖らせたり横に伸ばしたりしてくちばし状にしない
 - スカーフ等の装飾を勝手に追加しない
 - profession-specific な服を**初期状態で**着せない
 - 別キャラクター化しない / body proportion を大きく変えない
@@ -76,12 +88,19 @@ Claude Code は相棒を描き直さない・emoji / CSS で代替しない（[D
 □ character LEFT  ear = ❤️
 □ 前後左右で耳が反転していない
 □ beak がない
+□ 鼻は小さく・丸く・オレンジ色（尖っていない／横に伸びていない）
 □ 別キャラクター化していない
 □ body proportion が大きく変化していない
+□ Master 画像（companion-model-sheet-2026-09-20.png）と同一キャラクターに見える
 ```
 
 違反は visual review 上の **BLOCKER**。自動レビューだけで Master Asset へ昇格させない
 （→ [ART_PIPELINE.md](ART_PIPELINE.md)）。
+
+## 6.5. 未決定（OPEN）から Master 化で決まったこと（2026-09-20）
+
+- 姿勢バリエーション（まえ・うしろ・よこ 2 方向）の Model Sheet → **Master 化**（D-02 の一部解消）。
+- 表情バリエーション・アイテム装着スロット・名前・セリフは引き続き OPEN（D-01 / D-02 残り / D-03 / D-04）。
 
 ## 7. Ver.1 との関係
 
