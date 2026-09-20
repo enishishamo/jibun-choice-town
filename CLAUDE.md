@@ -49,6 +49,12 @@ Rules that follow from this:
 - **Ver.2 work happens on `v2/develop`**, one game at a time, starting with
   給食 WORLD「栄養・メニュー」. `main` stays Ver.1 until a Human explicitly
   promotes Ver.2 (it is a core-gameplay-loop change → never auto-deploy).
+- **Ver.2 code lives only under `src/v2/`** (entry `v2.html`, dev URL
+  `/jibun-choice-town/v2.html`). The CI build (`npm run build`) does NOT
+  include it; `npm run build:v2` does. Run `npm run check:ver1-freeze`
+  before every Ver.2 commit — it fails if Ver.1 files drifted from
+  `ver1-archive-2026-09-20` or if `src/v2` imports Ver.1 screens/q1/state.
+  See [`src/v2/README.md`](src/v2/README.md).
 - Spec priority: Design Bible text > LOCKED items > `design/v2/reference/`
   images > AI inference. Reference images are direction, not master
   assets; nothing is promoted to `design/v2/master/` without human approval.

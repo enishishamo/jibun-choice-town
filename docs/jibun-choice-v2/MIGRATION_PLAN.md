@@ -29,7 +29,29 @@
 - `main` — 引き続き Ver.1 の Stable/Public。Ver.2 の作業を直接 push しない。
 - `wip/map-pan-direct-manipulation` — Ver.1 側の未完了作業（MAP 横pan ⑧）。Ver.2 とは無関係。ローカルのみ。
 
-### コードの分離方式（T-01・OPEN、推奨案あり）
+### コードの分離方式（T-01・**決定: 案A**、2026-09-20 Human Decision）
+
+実装済み（`v2/develop`）:
+
+| | Ver.1（公開版） | Ver.2（開発中） |
+|---|---|---|
+| HTML エントリ | `index.html` → `src/main.tsx` | `v2.html` → `src/v2/main.tsx` |
+| dev URL | `/jibun-choice-town/` | `/jibun-choice-town/v2.html` |
+| `npm run build`（CI と同一） | 含む | **含まない**（`vite.config.ts` の `rollupOptions.input` は `index.html` のみ） |
+| `npm run build:v2` | 含む | 含む（`VITE_INCLUDE_V2=1`） |
+| CSS / localStorage | `src/index.css` / `jibun-choice-progress-v1` | `src/v2/index.css` / 未定（T-03、決まるまで触らない） |
+
+- Ver.1 側のファイルは一切変更していない（`src/main.tsx`・`index.html` も無変更）。
+- `main` に将来 `v2/develop` を merge しても、CI の `npm run build` は環境変数なしなので
+  **Ver.2 は公開されない**。公開の切り替えは T-02 の Human Decision。
+- ガード: `npm run check:ver1-freeze`（`factory/harness/ver1-freeze-check.mjs`）が
+  「`src/`・`public/`（`src/v2/` 除く）が `ver1-archive-2026-09-20` と一致」「`src/v2` が Ver.1 の
+  screens/q1/state/App を import していない」を機械的に検査する。Ver.2 のコミット前に必ず実行。
+- 詳細: [`src/v2/README.md`](../../src/v2/README.md)
+
+以下は決定前の比較記録として残す。
+
+#### 比較（決定済み・記録）
 
 | 案 | 内容 | 長所 | 短所 |
 |---|---|---|---|

@@ -29,7 +29,7 @@
 
 | ID | 項目 | 関連仕様書 | 状態 |
 |---|---|---|---|
-| T-01 | Ver.2 コードの分離方式（同一 app 内 `src/v2/` ＋切替 / 別エントリ / 別リポジトリ） | MIGRATION_PLAN §3 | OPEN（推奨案あり） |
+| T-01 | Ver.2 コードの分離方式 | MIGRATION_PLAN §3 | **決定済み 2026-09-20: 案A**（`src/v2/` ＋ `v2.html` 別エントリ、本番ビルドは `VITE_INCLUDE_V2=1` の時のみ含む） |
 | T-02 | Ver.2 の公開先（同一 GitHub Pages を置き換える／`/v2/` サブパス／別 Pages） | MIGRATION_PLAN §3 | OPEN |
 | T-03 | 進捗データの保存キー（`jibun-choice-progress-v1` 拡張 or 新キー、移行の要否） | GAME_DESIGN_RULES §4 | OPEN |
 | T-04 | Ver.1 MAP（`WorldMapScreen`）を Ver.2 で置き換えるか並存させるか | WORLD_DESIGN §6 | OPEN |
@@ -53,3 +53,4 @@
 |---|---|---|
 | 2026-09-20 | Ver.2 の思想・ループ・相棒 HARD RULE・アイテム思想・ノート構造・UI/TEXT RULE・最初の基準ゲーム | 本仕様書群 + `factory/state/product-ideas/gate-log.md` entry-2026-09-20-01 |
 | 2026-09-20 | Ver.1 を `ver1-archive-2026-09-20` / `archive/ver1` に凍結 | `factory/state/release/ver1-archive.md` |
+| 2026-09-20 | T-01 コード分離＝案A（`src/v2/` ＋ `v2.html`、`npm run check:ver1-freeze` でガード） | `src/v2/README.md`、MIGRATION_PLAN §3 |

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:v2": "tsc -b && VITE_INCLUDE_V2=1 vite build",
+    "check:ver1-freeze": "node factory/harness/ver1-freeze-check.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
