@@ -1,0 +1,33 @@
+[
+ {
+  "name": "dish-rice",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1024,
+    1024
+   ],
+   "alpha_corners": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "keyed_white": false,
+   "content_bbox": [
+    124,
+    182,
+    901,
+    854
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/dishes/rice.png",
+   "out_size": [
+    256,
+    256
+   ],
+   "content_fill": 0.61
+  }
+ }
+]

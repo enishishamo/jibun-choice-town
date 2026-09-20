@@ -142,6 +142,17 @@ const done = L.commit(s);
 check("commit records score and phase", done.phase === "cleared" && typeof done.committedScore === "number");
 check("cleared session is inert", !L.place(done, "bread").ok && L.remove(done, "rice") === done && L.commit(done) === done);
 
+// 6b. hint structure (spec 2026-09-21 §3): related dishes are ≤2, never all when a rule
+//     involves 3+ dishes, and never empty when the rule names dishes
+{
+  let bad = [];
+  for (const t of all) for (const h of L.evaluate(t.tray).hits) {
+    const r = L.relatedDishes(h);
+    if (r.length > 2 || (h.dishIds.length > 2 && r.length >= h.dishIds.length) || (h.dishIds.length > 0 && r.length === 0)) bad.push(`${h.rule}:${h.dishIds.join("+")}→${r.join("+")}`);
+  }
+  check("hints wobble at most two related dishes, never all, never zero", bad.length === 0, bad.slice(0, 3).join(" | "));
+}
+
 // 7. bounds + facts
 check("all scores within 0..100", all.every((t) => t.score >= 0 && t.score <= 100));
 check("every rule has a fact reference", Object.values(L.RULES).every((r) => /^V-A\d$/.test(r.fact)));

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import "./screens/screens.css";
 import LunchWorldMap from "./world/LunchWorldMap";
 import LunchMenuPlay from "./play/LunchMenuPlay";
+import { LUNCH_ASSETS } from "./assets";
 import JobReveal from "./screens/JobReveal";
 import SeedPick from "./screens/SeedPick";
 import { loadProgress, markSolved, recordSeed, saveProgress, type V2Progress } from "../state/progress";
@@ -29,6 +30,7 @@ export default function LunchWorldApp() {
   if (screen.name === "play") {
     return (
       <LunchMenuPlay
+        assets={LUNCH_ASSETS}
         onCleared={(score) => { setLastScore(score); setScreen({ name: "reveal" }); }}
       />
     );

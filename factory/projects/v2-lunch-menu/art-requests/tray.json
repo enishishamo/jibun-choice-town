@@ -1,0 +1,37 @@
+{
+ "asset_id": "v2_lunch_tray",
+ "filename": "tray.png",
+ "world": "lunch-v2",
+ "use": "place",
+ "aspect_ratio": "4:3",
+ "size": "1200x900",
+ "transparent_background": true,
+ "composition": "ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.",
+ "forbidden_objects": [
+  "readable text",
+  "letters or numbers",
+  "logos",
+  "attribute marks, icons, badges or symbols",
+  "hands or people",
+  "table, cloth, background, backdrop or drop shadow outside the dish",
+  "chopsticks or cutlery",
+  "steam text or speech bubbles",
+  "photorealistic rendering",
+  "elements touching the image edge"
+ ],
+ "character_constraints": "no characters at all",
+ "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+ "reference_assets": [
+  "public/assets/kyushoku/classroom_lunch.jpg"
+ ],
+ "used_by": [
+  "src/v2/lunch/play/LunchMenuPlay.tsx"
+ ],
+ "purpose": "こんだてPLAY のトレー（4 枠＋牛乳枠）。料理 master をこの上に重ねる",
+ "scene": "an empty pale cream plastic school-lunch tray seen from the same 35-degree camera as the dishes: a rounded rectangle with a raised rim, four shallow compartments in a 2x2 layout on the left/center and one round cup recess on the right (matching the tray in the approved reference), matte plastic-like clay surface. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
+ "required_objects": [
+  "empty cream lunch tray with four square recesses and one round recess",
+  "transparent background"
+ ],
+ "output_path": "public/assets/v2/lunch/tray.png"
+}

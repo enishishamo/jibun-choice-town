@@ -59,14 +59,19 @@
 .lmp-tray-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .lmp-slots {
   position: absolute;
-  inset: 10% 8%;
+  inset: 12% 8% 12% 8%;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 1fr 1fr 0.9fr;
   grid-template-rows: 1fr 1fr;
-  gap: 8px;
+  gap: 8px 10px;
+  grid-template-areas: "s0 s1 milk" "s2 s3 milk";
 }
+.lmp-slot.s0 { grid-area: s0; } .lmp-slot.s1 { grid-area: s1; } .lmp-slot.s2 { grid-area: s2; } .lmp-slot.s3 { grid-area: s3; }
+.lmp-slot.fixed { grid-area: milk; border-radius: 50%; align-self: center; aspect-ratio: 1; width: 100%; }
+.lmp-tray.has-art { background: transparent; box-shadow: none; }
+.lmp-tray.has-art .lmp-slot { background: transparent; border-color: transparent; }
+.lmp-tray.has-art .lmp-slot.empty { border-color: color-mix(in srgb, var(--v2-deep-green) 12%, transparent); }
 .lmp-slot {
-  grid-column: span 2;
   border: 3px dashed color-mix(in srgb, var(--v2-deep-green) 15%, transparent);
   border-radius: 20px;
   background: color-mix(in srgb, var(--v2-warm-cream) 70%, transparent);
@@ -76,12 +81,10 @@
   min-height: 44px;
   transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.3s ease;
 }
-.lmp-slot:nth-child(4) { grid-column: 2 / span 2; }
-.lmp-slot:nth-child(5) { grid-column: 4 / span 2; }
 .lmp-slot.filled { border-style: solid; border-color: transparent; background: var(--v2-warm-cream); }
 .lmp-slot.fixed { background: var(--v2-soft-sky); }
 .lmp-slot.pop { animation: lmp-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.lmp-slot.hit { box-shadow: inset 0 0 0 3px var(--v2-coral); }
+.lmp-slot.related .lmp-dish, .lmp-slot.related .lmp-dish-art { animation: lmp-wobble 2.2s ease-in-out infinite; }
 .lmp-slot:active { transform: scale(0.94); }
 
 /* status layer (DN-04): three colour marks + rule marks; appears after the first full tray */
@@ -128,6 +131,22 @@
 .chg-up { animation: lmp-up 0.9s ease; }
 .chg-down { animation: lmp-down 0.9s ease; }
 
+/* colour grains: fly from a dish to its colour mark (dish→cue relation by motion) */
+.lmp-grains { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.lmp-grain {
+  position: absolute;
+  width: 9px; height: 9px; margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  opacity: 0.95;
+  transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.4, 1), opacity 0.7s ease;
+}
+.lmp-grain.red { background: var(--v2-coral); }
+.lmp-grain.yellow { background: var(--v2-honey-yellow); }
+.lmp-grain.green { background: var(--v2-deep-green); }
+.lmp-grain.go { opacity: 0.2; }
+.lmp-school-art, .lmp-truck-art { width: 100%; height: 100%; object-fit: contain; }
+.lmp-school.ready .lmp-school-art { filter: drop-shadow(0 4px 0 color-mix(in srgb, var(--v2-deep-green) 12%, transparent)); }
+
 /* candidates */
 .lmp-cands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .lmp-cand {
@@ -163,7 +182,8 @@
 .lmp-dish[data-dish="karaage"], .lmp-dish[data-dish="croquette"] { border-radius: 40% 60% 55% 45%; }
 .lmp-dish[data-dish="potato_salad"] { border-radius: 35%; }
 .lmp-dish[data-dish="corn_soup"] { background: var(--v2-soft-sky); }
-.lmp-dish-art { width: 86%; height: 86%; object-fit: contain; }
+.lmp-dish-art { width: 92%; height: 92%; object-fit: contain; display: block; }
+.lmp-slot .lmp-dish-art { width: 96%; height: 96%; }
 
 /* EVENT truck */
 .lmp-truck { position: absolute; z-index: 2; top: 44px; left: -140px; width: 120px; height: 64px; transition: transform 0.7s cubic-bezier(0.22, 0.8, 0.3, 1); }
@@ -172,6 +192,7 @@
 .lmp-truck.st-parked { transform: translateX(150px); }
 .lmp-ph-truck { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 14px; background: var(--v2-sky-blue); color: var(--v2-warm-cream); }
 
+@keyframes lmp-wobble { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-3deg) translateY(-1px); } 75% { transform: rotate(3deg) translateY(1px); } }
 @keyframes lmp-pop { 0% { transform: scale(0.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 @keyframes lmp-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @keyframes lmp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
@@ -183,6 +204,6 @@
 @keyframes lmp-down { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .lmp-cand.invite, .lmp-school.ready, .lmp-slot.pop, .lmp-truck.st-arrive, .lmp.is-delivering .lmp-tray, .chg-up, .chg-down, .lmp-mark { animation: none; }
+  .lmp-cand.invite, .lmp-school.ready, .lmp-slot.pop, .lmp-slot.related .lmp-dish, .lmp-slot.related .lmp-dish-art, .lmp-truck.st-arrive, .lmp.is-delivering .lmp-tray, .chg-up, .chg-down, .lmp-mark { animation: none; }
   .lmp.is-delivering .lmp-tray { opacity: 0.6; }
 }

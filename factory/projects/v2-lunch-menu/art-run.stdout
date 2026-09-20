@@ -1,0 +1,8 @@
+[2026-09-20T23:49:44.999Z] === dish-rice (v2_lunch_dish_rice) ===
+[2026-09-20T23:51:17.484Z] art-loop exit=0
+[v2_lunch_dish_rice] iteration 1: generating...
+[v2_lunch_dish_rice] QA PASS (iter 1)
+
+
+[2026-09-20T23:51:17.667Z] postprocess exit=0 {"src_size": [1024, 1024], "alpha_corners": [0, 0, 0, 0], "keyed_white": false, "content_bbox": [124, 182, 901, 854], "ok": true, "out": "public/assets/v2/lunch/dishes/rice.png", "out_size": [256, 256], "content_fill": 0.61} 
+[2026-09-20T23:51:17.668Z] === dish-bread (v2_lunch_dish_bread) ===

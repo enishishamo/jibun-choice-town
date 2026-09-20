@@ -256,6 +256,20 @@ export function commit(s: Session): Session {
   return { ...s, phase: "cleared", committedScore: evaluate(s.tray).score };
 }
 
+/** Dishes to nudge for a hit: the strongest contributors, at most two (spec §3:
+ * hint, never a single "answer", never every dish). Exact-pair rules keep both. */
+export function relatedDishes(h: Hit): string[] {
+  if (h.dishIds.length <= 2) return h.dishIds;
+  const weight = (id: string): number => {
+    const d = DISH_BY_ID[id];
+    if (h.rule === "group_high") return d.groups[h.detail as Group];
+    if (h.rule === "salt_over") return d.salt;
+    if (h.rule === "fat_over") return d.fat;
+    return 1;
+  };
+  return [...h.dishIds].sort((a, b) => weight(b) - weight(a)).slice(0, 2);
+}
+
 // ---------------------------------------------------------------- analysis (QA)
 
 export function enumerateTrays(candidates: string[]): { tray: string[]; score: number }[] {

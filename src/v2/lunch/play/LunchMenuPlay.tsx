@@ -3,20 +3,23 @@
 //
 // Experience spec (Human/GPT 2026-09-21): no total score for the child, no
 // explanation up front; after the first full tray a minimal status layer
-// shows how the combination stands; EVENT after the child has seen a change
-// they made; CLEAR = sending the finished lunch off to the school (the
-// principal's check, V-A5, is a beat inside that moment, not a button).
+// shows how the combination stands — small colour grains fly from each dish
+// into the three colour marks so the dish→colour relation is learnt by
+// motion, not text; dishes related to a problem wobble gently (never all of
+// them, never exactly one as "the answer"); EVENT after the child has seen a
+// change they made; CLEAR = sending the finished lunch off to the school
+// (the principal's check, V-A5, is a beat inside that moment, not a button).
 // Dish art is a pure visual asset — game attributes live in the UI layer.
 //
-// TEMP_IMPLEMENTATION_ONLY: every shape, colour placement and motion curve is
-// a placeholder. Layout, dish/tray/truck/school art, the status cues' form
-// (DN-04), the reactions and the delivery moment are DESIGN_NEEDED. Strings
-// come only from ../copy.ts. Approved art drops in via `assets`.
+// TEMP_IMPLEMENTATION_ONLY where no approved art exists: placeholder shapes,
+// motion curves and the status cues' form (DN-04) are placeholders. Strings
+// come only from ../copy.ts. Approved art arrives via `assets`; a missing or
+// broken file falls back to the placeholder at render time.
 import { useEffect, useRef, useState } from "react";
 import "./lunchMenuPlay.css";
 import { COPY } from "../copy";
 import {
-  DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, RULES, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, remove,
+  DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, RULES, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, relatedDishes, remove,
   type Dish, type Evaluation, type Group, type RuleId, type Session, type Tray,
 } from "./lunchMenuLogic";
 
@@ -54,6 +57,8 @@ function delta(prev: Evaluation | null, next: Evaluation): Delta {
   return d;
 }
 
+interface Grain { id: number; g: Group; x0: number; y0: number; x1: number; y1: number; delay: number }
+
 export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps) {
   const [s, setS] = useState<Session>(() => newSession());
   const [shake, setShake] = useState<string | null>(null);
@@ -61,20 +66,56 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [truck, setTruck] = useState<"hidden" | "arrive" | "parked">("hidden");
   const [delivering, setDelivering] = useState(false);
   const [changed, setChanged] = useState<Delta>({});
+  const [grains, setGrains] = useState<Grain[]>([]);
+  const [flying, setFlying] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
   const eventTimer = useRef<number | null>(null);
   const clearTimer = useRef<number | null>(null);
   const fxTimers = useRef<Set<number>>(new Set());
   const committedRef = useRef(false);
   const swipeStartY = useRef<number | null>(null);
   const lastEval = useRef<Evaluation | null>(null);
+  const grainSeq = useRef(0);
 
   const ev = evaluate(s.tray);
-  const hitDishes = new Set(ev.hits.flatMap((h) => h.dishIds));
+  const related = new Set(ev.hits.flatMap(relatedDishes));
   const showStatus = s.firstScore !== null; // spec §3: only after the first full tray
 
   const fx = (fn: () => void, ms: number) => {
     const t = window.setTimeout(() => { fxTimers.current.delete(t); fn(); }, ms);
     fxTimers.current.add(t);
+  };
+
+  // dish → colour grains: when the tray is (re)completed, grains leave each
+  // dish and land in the matching colour mark (learning by motion, spec §3)
+  const launchGrains = () => {
+    const root = rootRef.current;
+    if (!root) return;
+    const rb = root.getBoundingClientRect();
+    const out: Grain[] = [];
+    const dishes = [...s.tray.filter((d): d is string => !!d), ...(MILK_FIXED ? [MILK.id] : [])];
+    dishes.forEach((id, si) => {
+      const slot = root.querySelector<HTMLElement>(`[data-slot-dish="${id}"]`);
+      if (!slot) return;
+      const sb = slot.getBoundingClientRect();
+      for (const g of GROUPS) {
+        const mark = root.querySelector<HTMLElement>(`[data-group="${g}"]`);
+        if (!mark) continue;
+        const mb = mark.getBoundingClientRect();
+        for (let i = 0; i < DISH_BY_ID[id].groups[g]; i++) {
+          out.push({
+            id: ++grainSeq.current, g,
+            x0: sb.left - rb.left + sb.width / 2 + (i - 0.5) * 8, y0: sb.top - rb.top + sb.height / 2,
+            x1: mb.left - rb.left + mb.width / 2, y1: mb.top - rb.top + mb.height / 2,
+            delay: si * 90 + i * 60,
+          });
+        }
+      }
+    });
+    setGrains(out);
+    setFlying(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setFlying(true)));
+    fx(() => { setGrains([]); setFlying(false); }, 1400);
   };
 
   // status-layer reaction: which cues improved / worsened since the last full tray
@@ -83,6 +124,8 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       const d = delta(lastEval.current, ev);
       lastEval.current = ev;
       if (Object.keys(d).length) { setChanged(d); fx(() => setChanged({}), 900); }
+      // grains fly after the status layer exists in the DOM (next frame)
+      fx(launchGrains, 60);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [s.tray.join("|")]);
@@ -132,8 +175,8 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const dishName = (id: string) => COPY.play.dish[id] ?? COPY.play.unknownDish;
 
   return (
-    <section className={`lmp ${delivering ? "is-delivering" : ""} phase-${s.phase}`} aria-label={COPY.play.title}>
-      <p className="lmp-temp">{COPY.dev.temp}</p>
+    <section ref={rootRef} className={`lmp ${delivering ? "is-delivering" : ""} phase-${s.phase}`} aria-label={COPY.play.title}>
+      {!assets && <p className="lmp-temp">{COPY.dev.temp}</p>}
 
       {/* the school — appears as a destination once the lunch can be sent off */}
       <button
@@ -143,17 +186,17 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         disabled={!commitReady}
         onClick={deliver}
       >
-        {assets?.school ? <img src={assets.school} alt="" /> : <span className="lmp-ph lmp-ph-school">{COPY.dev.tag}</span>}
+        <Art src={assets?.school} className="lmp-school-art" fallback={<span className="lmp-ph lmp-ph-school">{COPY.dev.tag}</span>} />
         {delivering && <span className="lmp-stamp lmp-ph">{COPY.dev.stamp}</span>}
       </button>
 
       <div className={`lmp-truck st-${truck}`} aria-hidden="true">
-        {assets?.truck ? <img src={assets.truck} alt="" /> : <span className="lmp-ph lmp-ph-truck">{COPY.dev.tag}</span>}
+        <Art src={assets?.truck} className="lmp-truck-art" fallback={<span className="lmp-ph lmp-ph-truck">{COPY.dev.tag}</span>} />
       </div>
 
       {/* tray — visual priority #1 */}
       <div
-        className={`lmp-tray ${commitReady ? "can-deliver" : ""}`}
+        className={`lmp-tray ${commitReady ? "can-deliver" : ""} ${assets?.tray ? "has-art" : ""}`}
         onPointerDown={(e) => { if (commitReady) swipeStartY.current = e.clientY; }}
         onPointerUp={(e) => {
           if (swipeStartY.current !== null && swipeStartY.current - e.clientY > COMMIT_SWIPE_PX) deliver();
@@ -161,7 +204,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         }}
         onPointerCancel={() => { swipeStartY.current = null; }}
       >
-        {assets?.tray && <img className="lmp-tray-art" src={assets.tray} alt="" />}
+        <Art src={assets?.tray} className="lmp-tray-art" />
         <div className="lmp-slots">
           {Array.from({ length: FREE_SLOTS }).map((_, i) => {
             const id = s.tray[i];
@@ -169,8 +212,9 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
               <button
                 key={i}
                 type="button"
-                className={`lmp-slot ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${showStatus && id && hitDishes.has(id) ? "hit" : ""}`}
+                className={`lmp-slot s${i} ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${showStatus && id && related.has(id) ? "related" : ""}`}
                 aria-label={id ? dishName(id) : COPY.play.slotEmpty(i + 1)}
+                data-slot-dish={id ?? undefined}
                 disabled={!id}
                 onClick={() => id && tapTrayDish(id)}
               >
@@ -179,7 +223,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
             );
           })}
           {MILK_FIXED && (
-            <div className="lmp-slot filled fixed" role="img" aria-label={COPY.play.milkSlot}>
+            <div className="lmp-slot fixed filled" role="img" aria-label={COPY.play.milkSlot} data-slot-dish={MILK.id}>
               <DishFace dish={MILK} src={assets?.dish?.milk} />
             </div>
           )}
@@ -188,6 +232,17 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 
       {/* status layer — visual priority #3, only after the first full tray (spec §3) */}
       {showStatus && <StatusLayer ev={ev} tray={s.tray} changed={changed} />}
+
+      {/* colour grains in flight (dish → colour mark) */}
+      <div className="lmp-grains" aria-hidden="true">
+        {grains.map((gr) => (
+          <i
+            key={gr.id}
+            className={`lmp-grain ${gr.g} ${flying ? "go" : ""}`}
+            style={{ left: gr.x0, top: gr.y0, transitionDelay: `${gr.delay}ms`, transform: flying ? `translate(${gr.x1 - gr.x0}px, ${gr.y1 - gr.y0}px) scale(0.6)` : "translate(0,0)" }}
+          />
+        ))}
+      </div>
 
       {/* candidates — visual priority #2 */}
       <div className="lmp-cands">
@@ -213,11 +268,24 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   );
 }
 
+/** <img> that falls back to `fallback` when the file is missing/broken. */
+function Art({ src, className, fallback }: { src?: string; className?: string; fallback?: React.ReactNode }) {
+  const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [src]);
+  if (!src || broken) return <>{fallback ?? null}</>;
+  return <img className={className} src={src} alt="" draggable={false} onError={() => setBroken(true)} />;
+}
+
 /** Dish = pure visual asset (spec: attributes are NOT baked into the art).
  * Placeholder: a role-shaped disc so dishes are tellable apart before art exists. */
 export function DishFace({ dish, src }: { dish: Dish; src?: string }) {
-  if (src) return <img className="lmp-dish-art" src={src} alt="" />;
-  return <span className={`lmp-ph lmp-dish role-${dish.role}`} data-dish={dish.id} aria-hidden="true" />;
+  return (
+    <Art
+      src={src}
+      className="lmp-dish-art"
+      fallback={<span className={`lmp-ph lmp-dish role-${dish.role}`} data-dish={dish.id} aria-hidden="true" />}
+    />
+  );
 }
 
 /** The judgment cues, translated from the fact-based rules to a minimum
@@ -243,6 +311,7 @@ export function StatusLayer({ ev, tray, changed }: { ev: Evaluation; tray: Tray;
             key={g}
             className={`lmp-group ${g} is-${groupState(g)} ${changed[`group:${g}`] ? `chg-${changed[`group:${g}`]}` : ""}`}
             data-cue={groupCue(g) || `group:${g}`}
+            data-group={g}
             role="img"
             aria-label={`${COPY.play.status.group[g]} ${COPY.play.status.groupState[groupState(g)]}`}
           />
