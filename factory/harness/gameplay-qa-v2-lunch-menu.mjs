@@ -44,23 +44,26 @@ L.enumerateTrays(cands);
 for (const [id, d] of Object.entries(originals)) L.DISH_BY_ID[id] = d;
 const hiddenReads = [...touched].filter((k) => k !== "id" && !L.VISIBLE_ATTRIBUTES.includes(k));
 check("evaluate() reads no attribute outside VISIBLE_ATTRIBUTES (recorded)", hiddenReads.length === 0, `read: ${[...touched].join(", ")}`);
-// (c) the board renders a cue for every visible attribute, with AND without approved art
+// (c) the UI layer shows a consequence cue for EVERY rule (spec 2026-09-21: attributes are
+//     not baked into dish art; the child sees each rule's effect in the status layer)
 const React = await import("react");
 const { renderToStaticMarkup } = await import("react-dom/server");
 const P = await (async () => { const v2 = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" }); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
-const cueOf = { role: (h) => /data-role="/.test(h), groups: (h) => /data-attr="groups"/.test(h), method: (h) => /data-method="/.test(h), ingredient: (h) => /data-ingredient="/.test(h), salt: (h) => /data-attr="salt"/.test(h), fat: (h) => /data-attr="fat"/.test(h) };
-for (const src of [undefined, "x.png"]) {
-  const missingCue = [];
-  for (const d of L.DISHES) {
-    const html = renderToStaticMarkup(React.createElement(P.DishFace, { dish: d, src }));
-    for (const a of L.VISIBLE_ATTRIBUTES) if (!cueOf[a](html)) missingCue.push(`${d.id}.${a}`);
-  }
-  check(`DishFace renders a cue for every visible attribute (${src ? "with art" : "placeholder"})`, missingCue.length === 0, missingCue.slice(0, 6).join(", "));
-}
-// (d) placeholder ingredient patterns exist for every ingredient in the pool
-const css = (await import("node:fs")).readFileSync("src/v2/lunch/play/lunchMenuPlay.css", "utf8");
-const noPattern = [...new Set(L.DISHES.map((d) => d.ingredient))].filter((i) => !css.includes(`[data-ingredient="${i}"]`));
-check("every ingredient has a distinct placeholder pattern", noPattern.length === 0, noPattern.join(", "));
+// a tray that trips every rule at once: two staples (dup role + missing main/side/soup…), etc.
+const worst = { score: 0, complete: true, filled: 4, hits: Object.keys(L.RULES).map((r) => ({ rule: r, dishIds: [], detail: r === "group_low" ? "red" : r === "group_high" ? "yellow" : r, points: 1 })) };
+const html = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: worst, tray: ["rice", "bread", "rice", "bread"], changed: {} }));
+const noCue = Object.keys(L.RULES).filter((r) => !html.includes(`data-cue="${r}"`));
+check("StatusLayer renders a cue for every rule when hit", noCue.length === 0, noCue.join(", "));
+const clean = all.find((t) => t.score === 100)?.tray ?? [];
+const okEval = L.evaluate(clean);
+const htmlOk = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: okEval, tray: clean, changed: {} }));
+check("StatusLayer shows the three colour marks on a clean tray, no rule marks", ["red", "yellow", "green"].every((g) => htmlOk.includes(`data-cue="group:${g}"`)) && !/lmp-mark /.test(htmlOk));
+// (d) no total score reaches the child (spec 2026-09-21 §1): the board never renders ev.score
+const src = (await import("node:fs")).readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
+check("board never renders the total score", !/\{\s*(ev|shown)\.score|<output/.test(src) && !/\{shown/.test(src));
+// (e) dish art carries no game attribute (pure visual asset)
+const dishHtml = renderToStaticMarkup(React.createElement(P.DishFace, { dish: L.DISHES[0] }));
+check("DishFace is a pure visual (no attribute data)", !/data-(attr|ingredient|method|role)=/.test(dishHtml));
 
 // 2. solutions
 const high = all.filter((t) => t.score >= 95);

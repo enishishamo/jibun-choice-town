@@ -7,7 +7,7 @@ export const COPY = {
   dev: {
     temp: "TEMP_IMPLEMENTATION_ONLY",
     tag: "TEMP",
-    commitTemp: "TEMP commit ↑",
+    stamp: "TEMP 校長OK", // placeholder for the principal-check beat inside the delivery moment (V-A5)
     revealVisual: "DESIGN_NEEDED DN-08",
     seedIcon: "DESIGN_NEEDED DN-09",
   },
@@ -17,6 +17,23 @@ export const COPY = {
     milkSlot: "ぎゅうにゅう（いつも）", // aria only — V-A1 fixed slot
     unknownDish: "りょうり", // aria fallback; never expose an internal id
     dishUnavailable: (name: string) => `${name}（とどかなかった）`, // aria — V-A5
+    deliver: "がっこうへ とどける", // aria of the in-world commit target (spec §6)
+    // status cues (aria only; the visual form is DESIGN_NEEDED DN-04)
+    status: {
+      title: "こんだての ようす",
+      group: { red: "あか", yellow: "きいろ", green: "みどり" } as Record<string, string>,
+      groupState: { ok: "そろった", low: "たりない", high: "おおすぎ" } as Record<string, string>,
+      rule: {
+        missing_role: "たりない しゅるい",
+        duplicate_role: "おなじ しゅるいが ふたつ",
+        dup_ingredient: "おなじ ざいりょうが かぶってる",
+        dup_method: "おなじ つくりかたが かぶってる",
+        salt_over: "しおが おおい",
+        fat_over: "あぶらが おおい",
+        group_low: "たりない いろ",
+        group_high: "おおすぎる いろ",
+      } as Record<string, string>,
+    },
     // dish display names: content facts, appearance DESIGN_NEEDED (DN-02)
     dish: {
       rice: "ごはん",
