@@ -270,6 +270,15 @@ export function relatedDishes(h: Hit): string[] {
   return [...h.dishIds].sort((a, b) => weight(b) - weight(a)).slice(0, 2);
 }
 
+/** Union of related dishes over all hits, capped so the wobble never covers
+ * every dish on the tray (spec §3: a hint, not a highlight of everything). */
+export function relatedSet(hits: Hit[]): Set<string> {
+  const weight = new Map<string, number>();
+  for (const h of hits) for (const id of relatedDishes(h)) weight.set(id, (weight.get(id) ?? 0) + h.points);
+  const cap = Math.max(1, FREE_SLOTS - 1);
+  return new Set([...weight.entries()].sort((a, b) => b[1] - a[1]).slice(0, cap).map(([id]) => id));
+}
+
 // ---------------------------------------------------------------- analysis (QA)
 
 export function enumerateTrays(candidates: string[]): { tray: string[]; score: number }[] {

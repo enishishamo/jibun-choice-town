@@ -151,6 +151,8 @@ check("cleared session is inert", !L.place(done, "bread").ok && L.remove(done, "
     if (r.length > 2 || (h.dishIds.length > 2 && r.length >= h.dishIds.length) || (h.dishIds.length > 0 && r.length === 0)) bad.push(`${h.rule}:${h.dishIds.join("+")}→${r.join("+")}`);
   }
   check("hints wobble at most two related dishes, never all, never zero", bad.length === 0, bad.slice(0, 3).join(" | "));
+  const overs = all.filter((t) => L.relatedSet(L.evaluate(t.tray).hits).size >= L.FREE_SLOTS);
+  check("the combined wobble set never covers the whole tray", overs.length === 0, `${overs.length} trays`);
 }
 
 // 7. bounds + facts

@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import "./lunchMenuPlay.css";
 import { COPY } from "../copy";
 import {
-  DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, RULES, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, relatedDishes, remove,
+  DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, RULES, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, relatedSet, remove,
   type Dish, type Evaluation, type Group, type RuleId, type Session, type Tray,
 } from "./lunchMenuLogic";
 
@@ -76,9 +76,12 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const swipeStartY = useRef<number | null>(null);
   const lastEval = useRef<Evaluation | null>(null);
   const grainSeq = useRef(0);
+  const sessionRef = useRef<Session>(s);
+  sessionRef.current = s;
+  const [trayArtOk, setTrayArtOk] = useState(false);
 
   const ev = evaluate(s.tray);
-  const related = new Set(ev.hits.flatMap(relatedDishes));
+  const related = relatedSet(ev.hits);
   const showStatus = s.firstScore !== null; // spec §3: only after the first full tray
 
   const fx = (fn: () => void, ms: number) => {
@@ -114,7 +117,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     });
     setGrains(out);
     setFlying(false);
-    requestAnimationFrame(() => requestAnimationFrame(() => setFlying(true)));
+    fx(() => setFlying(true), 40); // timer, not rAF: rAF is throttled in background tabs
     fx(() => { setGrains([]); setFlying(false); }, 1400);
   };
 
@@ -154,19 +157,25 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 
   const tapCandidate = (id: string) => {
     if (committedRef.current) return;
-    const r = place(s, id);
+    const r = place(sessionRef.current, id);
     if (!r.ok) { bump(id); if (r.reason === "unavailable") setTruck("arrive"); return; }
+    sessionRef.current = r.session;
     setS(r.session);
     setPop(r.slot);
     fx(() => setPop((cur) => (cur === r.slot ? null : cur)), 380);
   };
-  const tapTrayDish = (id: string) => { if (!committedRef.current) setS(remove(s, id)); };
+  const tapTrayDish = (id: string) => {
+    if (committedRef.current) return;
+    sessionRef.current = remove(sessionRef.current, id);
+    setS(sessionRef.current);
+  };
 
   // CLEAR = deliver: swipe the tray up to the school, or tap the school (a11y)
   const deliver = () => {
-    if (committedRef.current || !canCommit(s)) return;
+    if (committedRef.current || !canCommit(sessionRef.current)) return;
     committedRef.current = true;
-    const done = commit(s);
+    const done = commit(sessionRef.current);
+    sessionRef.current = done;
     setS(done);
     setDelivering(true);
     clearTimer.current = window.setTimeout(() => onCleared(done.committedScore ?? 0), DELIVER_MS);
@@ -196,7 +205,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 
       {/* tray — visual priority #1 */}
       <div
-        className={`lmp-tray ${commitReady ? "can-deliver" : ""} ${assets?.tray ? "has-art" : ""}`}
+        className={`lmp-tray ${commitReady ? "can-deliver" : ""} ${trayArtOk ? "has-art" : ""}`}
         onPointerDown={(e) => { if (commitReady) swipeStartY.current = e.clientY; }}
         onPointerUp={(e) => {
           if (swipeStartY.current !== null && swipeStartY.current - e.clientY > COMMIT_SWIPE_PX) deliver();
@@ -204,7 +213,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         }}
         onPointerCancel={() => { swipeStartY.current = null; }}
       >
-        <Art src={assets?.tray} className="lmp-tray-art" />
+        <Art src={assets?.tray} className="lmp-tray-art" onState={setTrayArtOk} />
         <div className="lmp-slots">
           {Array.from({ length: FREE_SLOTS }).map((_, i) => {
             const id = s.tray[i];
@@ -269,11 +278,20 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 }
 
 /** <img> that falls back to `fallback` when the file is missing/broken. */
-function Art({ src, className, fallback }: { src?: string; className?: string; fallback?: React.ReactNode }) {
+function Art({ src, className, fallback, onState }: { src?: string; className?: string; fallback?: React.ReactNode; onState?: (ok: boolean) => void }) {
   const [broken, setBroken] = useState(false);
-  useEffect(() => setBroken(false), [src]);
+  useEffect(() => { setBroken(false); if (!src) onState?.(false); }, [src]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!src || broken) return <>{fallback ?? null}</>;
-  return <img className={className} src={src} alt="" draggable={false} onError={() => setBroken(true)} />;
+  return (
+    <img
+      className={className}
+      src={src}
+      alt=""
+      draggable={false}
+      onLoad={() => onState?.(true)}
+      onError={() => { setBroken(true); onState?.(false); }}
+    />
+  );
 }
 
 /** Dish = pure visual asset (spec: attributes are NOT baked into the art).
