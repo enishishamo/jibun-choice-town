@@ -17,6 +17,13 @@ Ver.2 固有の決定を積むもので、矛盾する箇所は本仕様書群�
 として** 優先する（記録: `factory/state/product-ideas/gate-log.md`
 entry-2026-09-20-01）。
 
+## 役割（2026-09-20 追加・LOCKED）
+
+- **Design Owner = GPT**（Human 承認を経る）: 見る・読む・感じるものすべて（文言・色・icon・配置・character・animation の見せ方）
+- **Implementation Owner = Claude Code**: React・state・操作・scoring・技術実装・QA・CI
+- Claude Code は承認済み design を独自に変えない（DESIGN LOCK）。不足は `DESIGN_NEEDED`、仮表示は `TEMP_IMPLEMENTATION_ONLY`。
+  詳細: [DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md)
+
 ## 仕様の優先順位（HARD）
 
 1. 本仕様書群の文章ルール（Product / Design Bible）
@@ -42,6 +49,8 @@ entry-2026-09-20-01）。
 | [CHARACTER_BIBLE.md](CHARACTER_BIBLE.md) | 相棒キャラクターの HARD RULE（耳の左右・口なし 等） |
 | [WORLD_DESIGN.md](WORLD_DESIGN.md) | 全体MAP・「パカッ」・給食WORLD MAP・進行表現・出来事状態 |
 | [GAME_DESIGN_RULES.md](GAME_DESIGN_RULES.md) | Ver.2 ゲーム設計規約・アイテム・ぼうけんノート・最初の基準ゲーム |
+| [DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md) | **Design Owner = GPT / Implementation Owner = Claude Code**、DESIGN LOCK、`DESIGN_NEEDED` / `TEMP_IMPLEMENTATION_ONLY`、Production Flow |
+| [VISUAL_TONE.md](VISUAL_TONE.md) | Color grammar・基準 palette v1・NG visual・Material / Light（HARD DIRECTION） |
 | [ART_PIPELINE.md](ART_PIPELINE.md) | `design/v2/` の運用・Art Pipeline・Art QA HARD GATES |
 | [MIGRATION_PLAN.md](MIGRATION_PLAN.md) | Ver.1 凍結・Ver.2 開発系統・既存ゲームの扱い・次の最小タスク |
 | [OPEN_DECISIONS.md](OPEN_DECISIONS.md) | 未決定事項 / NEEDS_VALIDATION の台帳 |

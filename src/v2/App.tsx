@@ -7,10 +7,15 @@
 //
 // Progress storage: Ver.2 must NOT read or write Ver.1's localStorage key
 // ("jibun-choice-progress-v1") until T-03 is decided.
+//
+// TEMP_IMPLEMENTATION_ONLY: every string and style on this screen is a
+// technical placeholder written by Claude Code, not an approved design
+// (docs/jibun-choice-v2/DESIGN_OWNERSHIP.md §2). It must be replaced by the
+// GPT-designed, Human-approved screen before anything here goes PUBLIC.
 export default function V2App() {
   return (
     <main className="v2-shell">
-      <p className="v2-shell-badge">Ver.2 開発用エントリ</p>
+      <p className="v2-shell-badge">TEMP_IMPLEMENTATION_ONLY — Ver.2 開発用エントリ</p>
       <h1 className="v2-shell-title">JIBUN CHOICE</h1>
       <p className="v2-shell-line">PLAY FIRST — まだ何も実装されていません。</p>
       <p className="v2-shell-note">

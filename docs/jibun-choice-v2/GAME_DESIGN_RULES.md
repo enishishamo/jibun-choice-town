@@ -17,6 +17,10 @@
    ただし、正解が一つしかない実務（安全基準など）を無理に改善型にしない。
 9. 失敗は「即答の文章」ではなく、**世界の反応**で返す（principles.md と同じ）。
 10. 適性判定・タイプ分類をしない（Mission）。
+11. 画面の見た目・文言は **Design Owner（GPT）承認済み design のみ**を実装する。Claude Code が
+    完成 UI を先に独自設計しない。不足は `DESIGN_NEEDED`、技術検証用の仮表示は
+    `TEMP_IMPLEMENTATION_ONLY`（[DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md)）。
+12. 色は [VISUAL_TONE.md](VISUAL_TONE.md) の palette v1 のみ。ゲームごとの別 palette・職業別テーマカラーを作らない。
 
 ## 2. Ver.1 から引き継ぐ骨格
 

@@ -32,20 +32,23 @@ design/v2/
   特に相棒は **「口なし」「本人基準で右耳＝🔍、左耳＝❤️」** が正
   （[CHARACTER_BIBLE.md](CHARACTER_BIBLE.md)）。
 
-## 4. 将来の Art Pipeline（設計のみ・今回は実行しない）
+## 4. Art Pipeline（2026-09-20 更新 — DESIGN_OWNERSHIP.md §3 の Production Flow と同一）
 
 ```
-Design Bible
- ↓ Master Asset 確認
- ↓ 必要 asset 定義（manifest）
- ↓ image generation（Codex 組み込み画像生成 等。有料 API は使わない）
- ↓ visual review
- ↓ Character Bible review（§5 HARD GATES）
- ↓ World consistency review（WORLD_DESIGN.md §7）
- ↓ human approval
- ↓ master 昇格（design/v2/master/ へ移動 + 承認記録）
- ↓ implementation（public/assets/ へ配置）
+体験設計
+ ↓ GPT Screen Design / Assets（Design Owner = GPT。image generation は Codex 組み込み等、有料 API は使わない）
+ ↓ Human Approval
+ ↓ Master / Approved Design（design/v2/master/ へ配置 + approval 記録。§5 HARD GATES を通過）
+ ↓ Claude Code Implementation（承認済み design のみ。public/assets/ へ配置）
+ ↓ Screenshot（375px）
+ ↓ GPT / Codex Visual QA（§5 HARD GATES、VISUAL_TONE.md §4/§5、WORLD_DESIGN.md §7）
+ ↓ 修正
+ ↓ Human Approval
+ ↓ PUBLIC
 ```
+
+asset 単位の内訳（GPT Screen Design 段の中）: 必要 asset 定義（manifest）→ 生成 → Character Bible review →
+World consistency review → human approval → master 昇格。
 
 - 今回のタスクでは**大量の新規画像生成を開始しない**。
 - 既存の `factory/harness/` の Art Harness（Codex 組み込み画像生成が契約内で自動化可能、
@@ -86,9 +89,10 @@ Design Bible
 - `art-style.md` の「丸みのある 3D クレイ／ジオラマ」「画像に文字を焼き込まない」は Ver.2 でも有効。
 - `art-style.md` の「小4〜6向け・少し大人っぽく」と Ver.2 Reference の toy 感の距離は OPEN
   （Human が Master を承認する時点で確定する）。
-- `visual-design-system.md` の TYPOGRAPHY / COLOR ルール（既存パレット維持）は、
-  Ver.2 の色指定（sky blue / green / coral / yellow / cream）と**併存できるか未検証**。
-  Ver.2 の画面実装時に照合し、矛盾があれば OPEN_DECISIONS へ。
+- `art-style.md` の art ownership（Claude = UI/CSS/SVG、GPT = illustration）は **Ver.2 では
+  [DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md) が上書き**（GPT が UI layout・icon・color・文言まで設計、Claude は実装）。
+- `visual-design-system.md` の COLOR ルール（既存パレット維持）は Ver.1 画面にのみ適用。
+  Ver.2 の色は [VISUAL_TONE.md](VISUAL_TONE.md) palette v1（2026-09-20 決定、D-16 解消）。
 
 ## 7. Art Harness との接続（OPEN）
 

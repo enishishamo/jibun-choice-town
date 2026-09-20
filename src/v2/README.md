@@ -54,6 +54,9 @@ src/v2/
 
 ## やってはいけないこと
 
+- 承認済み design にない文言・色・icon・card・装飾を追加する／illustration を emoji・CSS で代替する
+  （DESIGN LOCK。不足は `DESIGN_NEEDED`、仮表示は `TEMP_IMPLEMENTATION_ONLY` と明示し PUBLIC に出さない —
+  [`docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`](../../docs/jibun-choice-v2/DESIGN_OWNERSHIP.md)）
 - Ver.1 のコード・アセットを変更・削除する
 - `src/v2` から Ver.1 の画面・ゲームコンポーネントを import する
 - `docs/jibun-choice-v2/OPEN_DECISIONS.md` の OPEN / NEEDS_VALIDATION を推測で埋める

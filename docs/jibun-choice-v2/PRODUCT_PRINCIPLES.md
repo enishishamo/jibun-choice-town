@@ -70,6 +70,11 @@ Ver.2 で新設される（→ [WORLD_DESIGN.md](WORLD_DESIGN.md), [GAME_DESIGN_
 Ver.1 の既知の反例（`audits/` 参照）: Q1 intro の mission 文、開閉式 InfoCards の中にしか
 書かれていない判定条件、「読む→3択」だけのステップ。Ver.2 では同型を作らない。
 
+- 表示する文言と文字量は **Design Owner（GPT）が決める**。Claude Code は tutorial copy・
+  success message・helper text 等を独自に追加しない（[DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md) §2）。
+- PLAY 画面では背景装飾より「今触ってほしいものが最も触れそうに見える」ことを優先する
+  （[VISUAL_TONE.md](VISUAL_TONE.md) §6）。
+
 ## 6. Ver.1 から引き継ぐ設計原則
 
 `factory/rules/principles.md` の以下は Ver.2 でもそのまま BLOCKER:

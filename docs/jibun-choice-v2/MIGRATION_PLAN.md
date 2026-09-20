@@ -90,6 +90,9 @@ Ver.2 が「1 ゲーム完成 → テスト」の段階に入った時点で決�
   **Ver.2 を `main` へ反映する行為は自動 deploy 対象外**（必ず Human 承認）。
 - **release gate（tasks.json）**: `v2/develop` 上でも 1 ゲームごとに task を作り、QA / 独立レビュー
   （`factory/harness/codex-review.mjs`）の evidence を記録する運用を推奨（T-05）。
+- **Design Ownership**（2026-09-20）: 見た目・文言は GPT（Design Owner）が設計し Human が承認、Claude Code は実装のみ。
+  `art-style.md` / `visual-design-system.md` / `visual-production-flow.md` は Ver.1 にのみ従来どおり適用
+  （[DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md) §4）。
 - **language-style / qa-rules / game-critic-v2**: 引き続き適用。ただし game-critic-v2 の採点軸に
   PLAY FIRST（説明画面なし・最初のタップで反応）が入っていない場合は、Ver.2 用に追記が必要（OPEN）。
 
@@ -100,14 +103,16 @@ Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-
 Visual Reference 配置（`design/v2/reference/concept-board-2026-09-20.png`、Master ではない）。
 → **Ver.2 移行準備は完了扱い。** 以降は Step 1 から。
 
-**Step 1（次）— 栄養・メニュー Ver.2 の「設計」**（コードを書かない）:
+**Step 1（次）— 栄養・メニュー Ver.2 の「体験設計」**（コードを書かない。DESIGN_OWNERSHIP §3 の第 1 段）:
 1. NEEDS_VALIDATION V-01〜V-04 の事実確認（`jc-researcher` 相当の一次情報調査）
-2. 事実に基づく「盤面」の設計: 何を触る／何が即座に変わる／スコアの見せ方（数字か、絵か）
+2. 事実に基づく「体験」の設計: 何を触る／何が即座に変わる／スコアの意味（見せ方は GPT Screen Design）
 3. Lv1（栄養のみ）の最小仕様を `factory/projects/v2-lunch-menu/design.md` として作成
 4. `jc-critic` 相当の独立レビュー（PLAY FIRST 規約・principles.md BLOCKER）
-5. Human 承認 → Step 2（実装）へ
+5. → **GPT Screen Design / Assets → Human Approval → Master**（Claude Code はここで待つ）
 
-**Step 2 以降**: 実装（`src/v2/` 案 A の場合）→ 375px 実機テスト → 子どもテスト → 改善 → 次ゲーム（候補順は OPEN）。
+**Step 2 以降**: Claude Code Implementation（承認済み design のみ、`src/v2/games/lunch-menu/`）→
+Screenshot（375px）→ GPT / Codex Visual QA → 修正 → Human Approval → 子どもテスト → 改善 → 次ゲーム（候補順は OPEN）。
+Human Approval 前に完成 UI を独自設計しない。
 
 ## 7. 今回やらなかったこと（意図的）
 

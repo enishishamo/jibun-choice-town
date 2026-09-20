@@ -175,3 +175,35 @@ Human Reviewを待つ。
 - **実装状況**: 2026-09-20時点でコード変更なし（仕様書・アーカイブ・ブランチ作成のみ）。
   Ver.2のmain反映・PUBLIC deployは別途Human承認が必要（deploy-release-policyの
   「core gameplay変更」に該当）。
+
+---
+
+## entry-2026-09-20-02: Ver.2 Design Ownership & Visual Direction — Human Decision 記録
+
+- **決定者**: Human（Product Owner）、2026-09-20
+- **決定の正本**: `docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`、`docs/jibun-choice-v2/VISUAL_TONE.md`
+- **決定内容（LOCKED、Ver.2 のみ。Ver.1 には遡及しない）**:
+  - Design Owner = GPT（Human 承認を経る）: character / illustration / background、WORLD・MAP・PLAY の
+    visual、UI layout、button / card / icon、color、typography の見せ方、表示文言と文字量（1〜2 語でも）、
+    spacing / hierarchy、visual feedback、reward / item、animation の見せ方、character pose
+  - Implementation Owner = Claude Code: React、state / interaction、操作、scoring logic、animation の技術実装、
+    responsive、asset loading、persistence、test / QA、CI / build / deploy、accessibility
+  - DESIGN LOCK: 承認済み screen / asset / spec を Claude Code が再デザインしない（helper text・CTA・card・
+    装飾の追加、文言・色変更、icon 差し替え、emoji/CSS 代替、character 描き直しを禁止）。
+    不足は `DESIGN_NEEDED`、技術検証用の仮表示は `TEMP_IMPLEMENTATION_ONLY`（PUBLIC 禁止）
+  - Color / Visual tone HARD DIRECTION: bright / clear / warm / playful toy color。Color grammar
+    （BLUE+GREEN=世界、CORAL+YELLOW=遊び・発見、CREAM+BEIGE=キャラクター・UI）。基準 palette v1
+    （#64B4DC / #B1D4EB / #779763 / #427D50 / #E5784F / #E5BF7A / #F1F1EE / #E4D3B8）。職業別テーマカラー禁止。
+    NG visual と Material / Light（rounded 3D toy / clay、slightly matte、soft daylight）
+  - CHARACTER HARD RULE の再確認（mouth = NONE、本人基準 右耳=🔍・左耳=❤️、front: viewer LEFT=🔍、
+    back: viewer LEFT=❤️、鳥化・くちばし禁止、white/cream rounded body、explorer hat）
+  - Production Flow: 体験設計 → GPT Screen Design / Assets → Human Approval → Master → Claude Code
+    Implementation → Screenshot → GPT/Codex Visual QA → 修正 → Human Approval → PUBLIC。
+    Claude Code は Design Approval 前に完成 UI を独自設計しない
+  - `design/v2/reference/concept-board-2026-09-20.png` を色・明るさ・質感の Reference として承認（Master ではない）
+- **既存ルールとの接続**: `factory/rules/art-style.md` と `visual-design-system.md` に scoped notice を追記
+  （Ver.1 に引き続き適用、Ver.2 は上記が優先）。`product-identity-gate.md` は変更なし —
+  GPT の承認は Human Product Decision を代替しない。`deploy-release-policy.md` は変更なし。
+- **HUMAN_PRODUCT_DECISION_REQUIRED**: LOCKED 項目は false。新規 OPEN 項目（D-18 / D-19 / T-07 / T-08）は true。
+- **実装状況**: ルール整備のみ。PLAY 実装・画像生成・PUBLIC 変更は未着手。`src/v2/App.tsx` の
+  仮画面を `TEMP_IMPLEMENTATION_ONLY` と明示した。

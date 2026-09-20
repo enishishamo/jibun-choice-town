@@ -22,7 +22,9 @@
 | D-13 | 「学校で食べる」🍴 に対応する PLAY の有無 | WORLD_DESIGN §3 | OPEN |
 | D-14 | Event State（たいへん！…）を採用するか、採用時の表現 | WORLD_DESIGN §5 | OPEN |
 | D-15 | 栄養ゲームの Lv1〜Lv5 構成の採否 | GAME_DESIGN_RULES §5 | OPEN（検討段階） |
-| D-16 | Ver.2 の色指定と `visual-design-system.md` 既存パレットの関係 | ART_PIPELINE §6 | OPEN |
+| D-16 | Ver.2 の色指定と `visual-design-system.md` 既存パレットの関係 | VISUAL_TONE §3/§7 | **決定済み 2026-09-20**: Ver.2 は palette v1、Ver.1 は既存パレットのまま |
+| D-18 | GPT Screen Design の成果物の受け渡し形式と置き場所（画像のみ／spec 文書／Figma 等） | DESIGN_OWNERSHIP §3 | OPEN |
+| D-19 | 「体験設計」段の成果物形式（Claude Code が書く盤面・操作・ロジック案の様式） | DESIGN_OWNERSHIP §3 | OPEN |
 | D-17 | 相棒が全画面に出るとき、Ver.1 True Home（写真ベース）をどうするか | MIGRATION_PLAN | OPEN |
 
 ## B. 技術・移行（AI が案を出し、Human が選ぶ）
@@ -35,6 +37,8 @@
 | T-04 | Ver.1 MAP（`WorldMapScreen`）を Ver.2 で置き換えるか並存させるか | WORLD_DESIGN §6 | OPEN |
 | T-05 | `factory/state/tasks.json` の release gate を Ver.2 ブランチにも適用する運用 | MIGRATION_PLAN §5 | OPEN（適用する前提で推奨） |
 | T-06 | Ver.2 用 Art QA（耳・口）の機械チェックの要否 | ART_PIPELINE §7 | OPEN |
+| T-07 | palette v1 を `src/v2/index.css` の CSS トークンにする実装タイミング | VISUAL_TONE §3 | OPEN（最初の PLAY 実装時） |
+| T-08 | `TEMP_IMPLEMENTATION_ONLY` / `DESIGN_NEEDED` 残存を release gate で機械検出するか | DESIGN_OWNERSHIP §2 | OPEN（grep ベースで実装可能） |
 
 ## C. NEEDS_VALIDATION（事実確認が必要。推測で実装しない）
 
@@ -54,3 +58,4 @@
 | 2026-09-20 | Ver.2 の思想・ループ・相棒 HARD RULE・アイテム思想・ノート構造・UI/TEXT RULE・最初の基準ゲーム | 本仕様書群 + `factory/state/product-ideas/gate-log.md` entry-2026-09-20-01 |
 | 2026-09-20 | Ver.1 を `ver1-archive-2026-09-20` / `archive/ver1` に凍結 | `factory/state/release/ver1-archive.md` |
 | 2026-09-20 | T-01 コード分離＝案A（`src/v2/` ＋ `v2.html`、`npm run check:ver1-freeze` でガード） | `src/v2/README.md`、MIGRATION_PLAN §3 |
+| 2026-09-20 | Design Owner = GPT / Implementation Owner = Claude Code、DESIGN LOCK、Production Flow、Color/Material HARD DIRECTION（palette v1） | DESIGN_OWNERSHIP.md、VISUAL_TONE.md、gate-log entry-2026-09-20-02 |

@@ -1,3 +1,12 @@
+> **2026-09-20 scoped notice（削除ではなく追記）**: 本ファイルは **Ver.1**（`main` /
+> `archive/ver1` / `src/{screens,q1}`）に引き続き適用される。**Ver.2**（`src/v2/`、
+> `v2/develop`）では、art ownership・色・文言・UI の設計責任は
+> [`docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`](../../docs/jibun-choice-v2/DESIGN_OWNERSHIP.md)
+> （Design Owner = GPT / Implementation Owner = Claude Code）と
+> [`docs/jibun-choice-v2/VISUAL_TONE.md`](../../docs/jibun-choice-v2/VISUAL_TONE.md)
+> （palette v1）が優先する（Human Decision、`factory/state/product-ideas/gate-log.md`
+> entry-2026-09-20-02）。優先順位の正本は `CLAUDE.md` §0.5。
+
 # Visual Design System
 
 2026-09-04 制定（Experience Design Harness）。根拠:

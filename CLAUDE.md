@@ -58,6 +58,19 @@ Rules that follow from this:
 - Spec priority: Design Bible text > LOCKED items > `design/v2/reference/`
   images > AI inference. Reference images are direction, not master
   assets; nothing is promoted to `design/v2/master/` without human approval.
+- **Design Owner = GPT, Implementation Owner = Claude Code**
+  ([`DESIGN_OWNERSHIP.md`](docs/jibun-choice-v2/DESIGN_OWNERSHIP.md), 2026-09-20).
+  Everything the child sees/reads/feels — layout, copy (even 1–2 words),
+  color, icons, character pose, animation look — is designed by GPT and
+  approved by a Human. Claude Code implements approved designs only and
+  never re-designs them (DESIGN LOCK: no added helper text / CTA / cards /
+  decoration, no copy or color changes, no emoji/CSS stand-ins for
+  illustrations). Missing design → mark `DESIGN_NEEDED`; technical
+  placeholder → mark `TEMP_IMPLEMENTATION_ONLY`, never PUBLIC. Colors come
+  only from [`VISUAL_TONE.md`](docs/jibun-choice-v2/VISUAL_TONE.md) palette v1.
+  For Ver.2 this supersedes the Ver.1 art-ownership split in
+  `factory/rules/art-style.md` (Claude=UI/CSS/SVG) and the "keep existing
+  palette" rule in `visual-design-system.md`; both still apply to Ver.1.
 - The Product Identity Gate (§1) still applies to every **OPEN** item in
   `OPEN_DECISIONS.md`; the LOCKED items are the Human's decision and may be
   implemented within the plan in `MIGRATION_PLAN.md`.
@@ -92,7 +105,7 @@ one-line summaries below staying accurate:
 | Game quality rubric (binding two-axis gate) | `game-critic-v2.md` |
 | Language/text style, Language QA gate | `language-style.md` |
 | QA checklist (superseded for game-scoring by `game-critic-v2.md`) | `qa-rules.md` |
-| Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) | `art-style.md`, `visual-design-system.md` |
+| Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) — **Ver.1 only; Ver.2 uses `docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`** | `art-style.md`, `visual-design-system.md` |
 | Research sourcing rules | `research-rules.md` |
 | **Ver.2 Product / Design Bible (see §0.5)** | `docs/jibun-choice-v2/*.md` |
 

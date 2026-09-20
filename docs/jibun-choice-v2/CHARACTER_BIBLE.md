@@ -41,7 +41,8 @@ mouth = NONE
 
 - body: white / cream
 - eyes: small black eyes
-- hat: explorer hat、beige 系 + green band
+- hat: explorer hat を基本、beige 系 + green band
+- body shape: white / cream の rounded body（VISUAL_TONE の toy / clay 質感）
 - 必要に応じて green backpack
 - torso / arms / legs を維持（後からアイテムを装着できる身体）
 
@@ -52,6 +53,12 @@ mouth = NONE
 - profession-specific な服を**初期状態で**着せない
 - 別キャラクター化しない / body proportion を大きく変えない
 - 口を描かない（再掲）
+
+## 4.5. 誰が描くか（2026-09-20 追加）
+
+相棒の pose・表情・装着アイテムの見た目は **Design Owner（GPT）** が設計し Human が承認する。
+Claude Code は相棒を描き直さない・emoji / CSS で代替しない（[DESIGN_OWNERSHIP.md](DESIGN_OWNERSHIP.md) §2）。
+承認済み asset がない画面では `DESIGN_NEEDED` とし、相棒を仮描画しない。
 
 ## 5. 未決定（OPEN）
 
