@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "v2-lunch-impl-r2",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "blockers": [],
+    "high": [
+      "src/v2/lunch/play/LunchMenuPlay.tsx:177 — Real assets erase visible scoring attributes — When a dish image is supplied, DishFace returns only the image; role, groups, method, ingredient, salt, and fat indicators disappear, so scoring can depend on hidden information — Render persistent attribute indicators alongside approved artwork or require and validate artwork variants that visibly encode every VISIBLE_ATTRIBUTE.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:30 — Visible-attribute QA proves declarations, not visibility — The check only compares each rule's self-declared uses against VISIBLE_ATTRIBUTES and verifies data fields exist; it neither detects undeclared reads in evaluate() nor inspects DishFace, and therefore passes the asset-path defect — Add an independent rule-dependency assertion and component/render tests covering placeholder and asset-backed dishes.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:159 — User-visible aria copy remains outside copy.ts — Japanese parentheses are composed inline, and dishName at line 98 can expose a raw internal ID; JobReveal.tsx:9 and SeedPick.tsx:15 also pass rendered DN identifiers as inline literals — Move complete aria formatting, fallback text, and rendered DESIGN_NEEDED labels into src/v2/lunch/copy.ts."
+    ],
+    "medium": [
+      "src/v2/lunch/play/lunchMenuPlay.css:132 — Ingredient encoding is incomplete — Placeholder patterns distinguish only potato, fish, chicken, and meat; rice, wheat, spinach, tofu, corn, and other ingredients have no distinct ingredient representation even though dup_ingredient scoring reads ingredient — Give every candidate ingredient a perceptibly distinct visual encoding and test pairwise distinguishability.",
+      "src/v2/lunch/world/LunchWorldMap.tsx:103 — Four map buttons accept taps with no reaction — grow, carry, cook, and serve are enabled buttons, but LunchWorldApp.tsx:24 handles only menu, producing inert first taps contrary to the touch-and-react interaction rule — Disable unavailable spots semantically or provide an approved immediate visual reaction.",
+      "src/v2/state/progress.ts:28 — Persisted data is only shallowly validated — Any version-1 object with solved as an array is accepted even when scores, seeds, or entries are malformed; markSolved then spreads or indexes those values and can crash after CLEAR — Validate the full persisted schema and normalize every nested field before returning it."
+    ],
+    "low": [
+      "src/v2/lunch/play/LunchMenuPlay.tsx:68 — Feedback timers survive unmount — Shake and pop timeouts are not retained or cleared, so callbacks may run after navigation/unmount — Track these timer handles and clear them in the existing cleanup effect."
+    ],
+    "evidence": [
+      "lunchMenuLogic.ts:223-256 now enforces EVENT after first result, at least one removal/re-arrangement, and a full tray; CLEAR requires rebuild plus a full available tray and has no score threshold.",
+      "LunchMenuPlay.tsx:47-61 releases and revalidates the EVENT timer, while lines 88-95 use committedRef to prevent duplicate commits.",
+      "lunchMenuLogic.ts:44-45 declares role, groups, method, ingredient, salt, and fat visible, but LunchMenuPlay.tsx:177 bypasses every corresponding indicator when src is present.",
+      "The exhaustive QA loop at gameplay-qa-v2-lunch-menu.mjs:68-93 iterates enumerateTrays(DEFAULT_CANDIDATES), which yields C(9,4)=126 trays, and searches all available recovery combinations.",
+      "The mediocre-tray and cross-axis checks are exhaustive over enumerated trays and one-dish replacements at gameplay-qa-v2-lunch-menu.mjs:44-66.",
+      "All reviewed CSS color values use the eight palette-v1 token definitions or color-mix() of those tokens; no additional literal colors were found.",
+      "ver1-freeze-check.mjs completed successfully: Ver.1 matched ver1-archive-2026-09-20 and 17 src/v2 files had no forbidden Ver.1 imports.",
+      "The gameplay harness and build could not be executed in the read-only review environment because Vite and TypeScript attempted writes under node_modules; the harness findings above come from direct code inspection."
+    ],
+    "recommended_actions": [
+      "Preserve all scoring cues when real dish assets are provided, and add render-level assertions for both asset and placeholder paths.",
+      "Replace the self-attested visible-attribute check with independent coverage capable of detecting evaluate() reads and verifying rendered cues.",
+      "Centralize the complete aria strings and rendered placeholder identifiers in copy.ts.",
+      "Make every rendered map button responsive or disabled.",
+      "Add strict schema validation and normalization to loadProgress(), then rerun the gameplay harness, build, and freeze guard in a writable environment."
+    ]
+  },
+  "elapsed_sec": 103.794
+}

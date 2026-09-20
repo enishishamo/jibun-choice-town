@@ -2,9 +2,8 @@
 // Ver.1 uses localStorage["jibun-choice-progress-v1"] (src/state/GameState.tsx)
 // and this module must never read or write that key. The Ver.2 key uses a
 // colon namespace so no prefix-based migration of Ver.1 can ever pick it up.
-// (T-03 in docs/jibun-choice-v2/OPEN_DECISIONS.md — adopted 2026-09-20 per
-// Human instruction "命名承認待ちで停止しなくて構いません".)
-import type { SpotId } from "../lunch/types";
+// (T-03 in docs/jibun-choice-v2/OPEN_DECISIONS.md — adopted 2026-09-20.)
+import { SPOT_IDS, type SpotId } from "../lunch/types";
 
 export const V2_STORAGE_KEY = "jibun-choice:v2:progress";
 
@@ -12,7 +11,7 @@ export interface V2Progress {
   version: 1;
   /** spots (per world) the child has cleared, in order */
   solved: { world: "lunch"; spot: SpotId; at: string }[];
-  /** 好きの種: the one "行為" the child picked after a PLAY, keyed by world:spot */
+  /** 好きの種: the one 行為 the child picked after a PLAY, keyed by world:spot */
   seeds: Record<string, string>;
   /** committed scores per PLAY, most recent last (for AGAIN comparisons; never a label) */
   scores: Record<string, number[]>;
@@ -20,13 +19,35 @@ export interface V2Progress {
 
 const EMPTY: V2Progress = { version: 1, solved: [], seeds: {}, scores: {} };
 
+const isSpot = (x: unknown): x is SpotId => typeof x === "string" && (SPOT_IDS as string[]).includes(x);
+const isRecord = (x: unknown): x is Record<string, unknown> => !!x && typeof x === "object" && !Array.isArray(x);
+
+/** Strict normalisation: every nested field is rebuilt from validated pieces,
+ * so a malformed or hand-edited store can never crash markSolved/recordSeed. */
+export function normalizeProgress(raw: unknown): V2Progress {
+  if (!isRecord(raw) || raw.version !== 1) return { ...EMPTY };
+  const solved = Array.isArray(raw.solved)
+    ? raw.solved.flatMap((e) =>
+        isRecord(e) && e.world === "lunch" && isSpot(e.spot)
+          ? [{ world: "lunch" as const, spot: e.spot, at: typeof e.at === "string" ? e.at : "" }]
+          : [],
+      )
+    : [];
+  const seeds: Record<string, string> = {};
+  if (isRecord(raw.seeds)) for (const [k, v] of Object.entries(raw.seeds)) if (typeof v === "string") seeds[k] = v;
+  const scores: Record<string, number[]> = {};
+  if (isRecord(raw.scores)) {
+    for (const [k, v] of Object.entries(raw.scores)) {
+      if (Array.isArray(v)) scores[k] = v.filter((n): n is number => typeof n === "number" && Number.isFinite(n));
+    }
+  }
+  return { version: 1, solved, seeds, scores };
+}
+
 export function loadProgress(): V2Progress {
   try {
     const raw = localStorage.getItem(V2_STORAGE_KEY);
-    if (raw) {
-      const p = JSON.parse(raw);
-      if (p && p.version === 1 && Array.isArray(p.solved)) return { ...EMPTY, ...p };
-    }
+    if (raw) return normalizeProgress(JSON.parse(raw));
   } catch {
     /* private mode / corrupted -> fresh */
   }

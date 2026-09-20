@@ -27,12 +27,40 @@ const check = (name, ok, detail = "") => { results.push({ name, ok }); console.l
 const cands = L.DEFAULT_CANDIDATES;
 const all = L.enumerateTrays(cands);
 
-// 1. visible attributes
+// 1. visible attributes — three independent angles
+// (a) declarations
 const hiddenUse = Object.values(L.RULES).flatMap((r) => r.uses.filter((u) => !L.VISIBLE_ATTRIBUTES.includes(u)).map((u) => `${r.id}:${u}`));
-check("every rule reads only VISIBLE_ATTRIBUTES", hiddenUse.length === 0, hiddenUse.join(", "));
-// ...and the dish data actually carries every visible attribute
+check("every rule declares only VISIBLE_ATTRIBUTES", hiddenUse.length === 0, hiddenUse.join(", "));
 const missingAttr = L.DISHES.flatMap((d) => L.VISIBLE_ATTRIBUTES.filter((a) => d[a] === undefined).map((a) => `${d.id}.${a}`));
 check("every dish defines every visible attribute", missingAttr.length === 0, missingAttr.join(", "));
+// (b) what evaluate() ACTUALLY reads: wrap every dish in a recording Proxy and
+// run the whole enumeration — any property outside VISIBLE ∪ {id} is a hidden read
+const touched = new Set();
+const originals = { ...L.DISH_BY_ID };
+for (const [id, d] of Object.entries(originals)) {
+  L.DISH_BY_ID[id] = new Proxy(d, { get(t, k) { if (typeof k === "string") touched.add(k); return t[k]; } });
+}
+L.enumerateTrays(cands);
+for (const [id, d] of Object.entries(originals)) L.DISH_BY_ID[id] = d;
+const hiddenReads = [...touched].filter((k) => k !== "id" && !L.VISIBLE_ATTRIBUTES.includes(k));
+check("evaluate() reads no attribute outside VISIBLE_ATTRIBUTES (recorded)", hiddenReads.length === 0, `read: ${[...touched].join(", ")}`);
+// (c) the board renders a cue for every visible attribute, with AND without approved art
+const React = await import("react");
+const { renderToStaticMarkup } = await import("react-dom/server");
+const P = await (async () => { const v2 = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" }); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
+const cueOf = { role: (h) => /data-role="/.test(h), groups: (h) => /data-attr="groups"/.test(h), method: (h) => /data-method="/.test(h), ingredient: (h) => /data-ingredient="/.test(h), salt: (h) => /data-attr="salt"/.test(h), fat: (h) => /data-attr="fat"/.test(h) };
+for (const src of [undefined, "x.png"]) {
+  const missingCue = [];
+  for (const d of L.DISHES) {
+    const html = renderToStaticMarkup(React.createElement(P.DishFace, { dish: d, src }));
+    for (const a of L.VISIBLE_ATTRIBUTES) if (!cueOf[a](html)) missingCue.push(`${d.id}.${a}`);
+  }
+  check(`DishFace renders a cue for every visible attribute (${src ? "with art" : "placeholder"})`, missingCue.length === 0, missingCue.slice(0, 6).join(", "));
+}
+// (d) placeholder ingredient patterns exist for every ingredient in the pool
+const css = (await import("node:fs")).readFileSync("src/v2/lunch/play/lunchMenuPlay.css", "utf8");
+const noPattern = [...new Set(L.DISHES.map((d) => d.ingredient))].filter((i) => !css.includes(`[data-ingredient="${i}"]`));
+check("every ingredient has a distinct placeholder pattern", noPattern.length === 0, noPattern.join(", "));
 
 // 2. solutions
 const high = all.filter((t) => t.score >= 95);

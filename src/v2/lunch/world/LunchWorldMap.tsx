@@ -4,6 +4,7 @@
 // trouble badge, roads, solved ring) is a placeholder so the flow can be
 // exercised. Real art is DESIGN_NEEDED and drops in through `assets` without
 // code changes (see README.md in this folder). Strings come only from copy.ts.
+import { useEffect, useRef, useState } from "react";
 import { COPY } from "../copy";
 import { ROAD_IDS, SPOT_IDS } from "../types";
 import type { LunchWorldView, RoadId, RoadState, SpotId } from "../types";
@@ -65,6 +66,17 @@ function Road({ id, state }: { id: RoadId; state: RoadState }) {
 }
 
 export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = false }: LunchWorldMapProps) {
+  // every tap reacts (touch → react): non-playable spots get a short nudge
+  // (placeholder motion; the approved reaction is DESIGN_NEEDED DN-12)
+  const [nudged, setNudged] = useState<SpotId | null>(null);
+  const nudgeTimer = useRef<number | null>(null);
+  useEffect(() => () => { if (nudgeTimer.current !== null) clearTimeout(nudgeTimer.current); }, []);
+  const tap = (id: SpotId) => {
+    setNudged(id);
+    if (nudgeTimer.current !== null) clearTimeout(nudgeTimer.current);
+    nudgeTimer.current = window.setTimeout(() => setNudged(null), 450);
+    onTapSpot(id);
+  };
   return (
     <div className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
       {/* Layer 1: bento box frame (open lid at top, tray body below) */}
@@ -94,6 +106,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
           "lw-spot",
           `is-${state}`,
           view.newTrouble === id ? "is-new" : "",
+          nudged === id ? "is-nudged" : "",
           id === "menu" ? "is-playable" : "",
         ]
           .filter(Boolean)
@@ -107,7 +120,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
             data-spot={id}
             aria-label={COPY.world.spotLabel[id]}
             style={{ left: pct(SPOT_POS[id].x, MAP_W), top: pct(SPOT_POS[id].y, MAP_H) }}
-            onClick={() => onTapSpot(id)}
+            onClick={() => tap(id)}
           >
             <span className="lw-spot-body">
               {art ? (

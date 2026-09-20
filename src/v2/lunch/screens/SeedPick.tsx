@@ -12,7 +12,7 @@ export default function SeedPick({ onDone }: { onDone: (seedId: string) => void 
       <div className="lsc-seeds">
         {COPY.seed.options.map((o) => (
           <button key={o.id} type="button" className={`lsc-seed-btn ${picked === o.id ? "on" : ""}`} onClick={() => setPicked(o.id)}>
-            <span className="lsc-seed-icon lmp-ph">{COPY.dev.needed("DN-09")}</span>
+            <span className="lsc-seed-icon lmp-ph">{COPY.dev.seedIcon}</span>
             {o.label}
           </button>
         ))}

@@ -129,10 +129,23 @@
 .lmp-dish.method-simmered { border-color: var(--v2-warm-beige); border-style: double; }
 .lmp-dish.method-dressed { border-color: var(--v2-fresh-green); border-style: dashed; }
 .lmp-dish.method-soup { border-color: var(--v2-soft-sky); }
-.lmp-dish[data-ingredient="potato"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-warm-cream) 60%, transparent) 20%, transparent 22%); background-size: 10px 10px; }
+/* ingredient = pattern: one distinct placeholder pattern per ingredient in the pool */
+.lmp-dish[data-ingredient="rice"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-warm-cream) 70%, transparent) 30%, transparent 32%); background-size: 6px 6px; }
+.lmp-dish[data-ingredient="wheat"] { background-image: linear-gradient(45deg, color-mix(in srgb, var(--v2-warm-cream) 45%, transparent) 25%, transparent 25%, transparent 50%, color-mix(in srgb, var(--v2-warm-cream) 45%, transparent) 50%, color-mix(in srgb, var(--v2-warm-cream) 45%, transparent) 75%, transparent 75%); background-size: 10px 10px; }
 .lmp-dish[data-ingredient="fish"] { background-image: linear-gradient(135deg, color-mix(in srgb, var(--v2-warm-cream) 40%, transparent) 25%, transparent 25%); background-size: 8px 8px; }
-.lmp-dish[data-ingredient="chicken"], .lmp-dish[data-ingredient="meat"] { background-image: linear-gradient(0deg, color-mix(in srgb, var(--v2-warm-cream) 35%, transparent) 50%, transparent 50%); background-size: 6px 6px; }
-.lmp-dish-art { width: 86%; height: 86%; object-fit: contain; }
+.lmp-dish[data-ingredient="chicken"] { background-image: linear-gradient(0deg, color-mix(in srgb, var(--v2-warm-cream) 35%, transparent) 50%, transparent 50%); background-size: 6px 6px; }
+.lmp-dish[data-ingredient="meat"] { background-image: linear-gradient(90deg, color-mix(in srgb, var(--v2-warm-cream) 35%, transparent) 50%, transparent 50%); background-size: 6px 6px; }
+.lmp-dish[data-ingredient="potato"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-warm-cream) 60%, transparent) 20%, transparent 22%); background-size: 10px 10px; }
+.lmp-dish[data-ingredient="spinach"] { background-image: linear-gradient(0deg, color-mix(in srgb, var(--v2-deep-green) 35%, transparent) 25%, transparent 25%); background-size: 4px 12px; }
+.lmp-dish[data-ingredient="seaweed"] { background-image: linear-gradient(45deg, color-mix(in srgb, var(--v2-deep-green) 45%, transparent) 50%, transparent 50%); background-size: 5px 5px; }
+.lmp-dish[data-ingredient="tofu"] { background-image: linear-gradient(0deg, color-mix(in srgb, var(--v2-warm-cream) 55%, transparent) 50%, transparent 50%), linear-gradient(90deg, color-mix(in srgb, var(--v2-warm-cream) 55%, transparent) 50%, transparent 50%); background-size: 12px 12px; }
+.lmp-dish[data-ingredient="corn"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-honey-yellow) 80%, transparent) 35%, transparent 37%); background-size: 8px 8px; }
+.lmp-dish[data-ingredient="root_veg"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-coral) 55%, transparent) 25%, transparent 27%); background-size: 14px 14px; }
+.lmp-dish[data-ingredient="fruit"] { background-image: radial-gradient(color-mix(in srgb, var(--v2-coral) 45%, transparent) 40%, transparent 42%); background-size: 16px 16px; }
+.lmp-dish[data-ingredient="milk"] { background-image: linear-gradient(0deg, color-mix(in srgb, var(--v2-soft-sky) 60%, transparent) 30%, transparent 30%); background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom; }
+.lmp-dish.has-art { background: none; border-color: transparent; background-image: none; }
+.lmp-dish-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.lmp-dish.has-art .lmp-dots { position: absolute; left: 6%; top: 6%; }
 .lmp-dots { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; max-width: 40px; }
 .lmp-dots i { width: 8px; height: 8px; border-radius: 50%; display: block; border: 1.5px solid var(--v2-warm-cream); }
 .lmp-dots .dot-red { background: var(--v2-coral); }

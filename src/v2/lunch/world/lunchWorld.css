@@ -160,6 +160,9 @@
   border-radius: 50%;
 }
 
+.lw-spot.is-nudged .lw-spot-body { animation: lw-nudge 0.45s ease; }
+@keyframes lw-nudge { 0%, 100% { transform: scale(1); } 40% { transform: scale(0.92) rotate(-3deg); } 70% { transform: scale(1.04) rotate(2deg); } }
+
 @keyframes lw-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6%); } }
 
 @keyframes lw-shake {
@@ -180,6 +183,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lw-spot .lw-spot-body,
+  .lw-spot.is-nudged .lw-spot-body,
   .lw-road-pulse {
     animation: none;
   }

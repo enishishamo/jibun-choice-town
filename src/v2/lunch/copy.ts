@@ -7,13 +7,16 @@ export const COPY = {
   dev: {
     temp: "TEMP_IMPLEMENTATION_ONLY",
     tag: "TEMP",
-    needed: (id: string) => `DESIGN_NEEDED ${id}`,
     commitTemp: "TEMP commit ↑",
+    revealVisual: "DESIGN_NEEDED DN-08",
+    seedIcon: "DESIGN_NEEDED DN-09",
   },
   play: {
     title: "こんだてを考える", // aria only
     slotEmpty: (n: number) => `${n}ばんめ（あき）`, // aria only
     milkSlot: "ぎゅうにゅう（いつも）", // aria only — V-A1 fixed slot
+    unknownDish: "りょうり", // aria fallback; never expose an internal id
+    dishUnavailable: (name: string) => `${name}（とどかなかった）`, // aria — V-A5
     // dish display names: content facts, appearance DESIGN_NEEDED (DN-02)
     dish: {
       rice: "ごはん",
@@ -31,7 +34,6 @@ export const COPY = {
       mikan: "みかん",
       milk: "ぎゅうにゅう",
     } as Record<string, string>,
-    unavailable: "とどかなかった", // aria suffix — V-A5
   },
   reveal: {
     lead: "いまやってたこと、じつは仕事。", // DESIGN_NEEDED (spec §11 example)

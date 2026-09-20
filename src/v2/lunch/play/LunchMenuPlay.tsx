@@ -32,6 +32,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [cleared, setCleared] = useState(false);
   const eventTimer = useRef<number | null>(null);
   const clearTimer = useRef<number | null>(null);
+  const fxTimers = useRef<Set<number>>(new Set());
   const committedRef = useRef(false);
   const swipeStartY = useRef<number | null>(null);
 
@@ -58,7 +59,12 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   useEffect(() => () => {
     if (eventTimer.current !== null) clearTimeout(eventTimer.current);
     if (clearTimer.current !== null) clearTimeout(clearTimer.current);
+    for (const t of fxTimers.current) clearTimeout(t);
   }, []);
+  const fx = (fn: () => void, ms: number) => {
+    const t = window.setTimeout(() => { fxTimers.current.delete(t); fn(); }, ms);
+    fxTimers.current.add(t);
+  };
   useEffect(() => {
     if (truck !== "arrive") return;
     const t = window.setTimeout(() => setTruck("parked"), 700);
@@ -67,7 +73,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 
   const bump = (id: string) => {
     setShake(id);
-    window.setTimeout(() => setShake((cur) => (cur === id ? null : cur)), 420);
+    fx(() => setShake((cur) => (cur === id ? null : cur)), 420);
   };
 
   const tapCandidate = (id: string) => {
@@ -80,7 +86,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     }
     setS(r.session);
     setPop(r.slot);
-    window.setTimeout(() => setPop((cur) => (cur === r.slot ? null : cur)), 380);
+    fx(() => setPop((cur) => (cur === r.slot ? null : cur)), 380);
   };
 
   const tapTrayDish = (id: string) => { if (!committedRef.current) setS(remove(s, id)); };
@@ -95,7 +101,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   };
 
   const commitReady = !cleared && canCommit(s);
-  const dishName = (id: string) => COPY.play.dish[id] ?? id;
+  const dishName = (id: string) => COPY.play.dish[id] ?? COPY.play.unknownDish;
 
   return (
     <section className={`lmp ${cleared ? "is-cleared" : ""} phase-${s.phase}`} aria-label={COPY.play.title}>
@@ -156,7 +162,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
               key={id}
               type="button"
               className={`lmp-cand ${onTray ? "on-tray" : ""} ${unavailable ? "unavailable" : ""} ${shake === id ? "shake" : ""} ${i === 0 && ev.filled === 0 ? "invite" : ""}`}
-              aria-label={unavailable ? `${dishName(id)}（${COPY.play.unavailable}）` : dishName(id)}
+              aria-label={unavailable ? COPY.play.dishUnavailable(dishName(id)) : dishName(id)}
               disabled={onTray}
               onClick={() => tapCandidate(id)}
             >
@@ -170,21 +176,30 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   );
 }
 
-/** Placeholder dish: every VISIBLE_ATTRIBUTE is drawn (role = shape, groups =
- * dots, method = rim style, ingredient = pattern, salt/fat = small bars).
- * The real representation is DESIGN_NEEDED (DN-03). */
-function DishFace({ dish, src }: { dish: Dish; src?: string }) {
-  if (src) return <img className="lmp-dish-art" src={src} alt="" />;
+/** Every VISIBLE_ATTRIBUTE is drawn on every dish, with or without approved
+ * art: role = shape, method = rim, ingredient = pattern (placeholder body) and,
+ * always, groups = dots + salt/fat = bars (overlay). When approved art
+ * arrives, the art replaces the body but the overlay stays until the Design
+ * Owner supplies art that encodes the same cues (DN-03) — scoring must never
+ * depend on something the child cannot see. */
+export function DishFace({ dish, src }: { dish: Dish; src?: string }) {
   return (
-    <span className={`lmp-ph lmp-dish role-${dish.role} method-${dish.method}`} data-ingredient={dish.ingredient} aria-hidden="true">
-      <span className="lmp-dots">
+    <span
+      className={`lmp-dish role-${dish.role} method-${dish.method} ${src ? "has-art" : "lmp-ph"}`}
+      data-ingredient={dish.ingredient}
+      data-role={dish.role}
+      data-method={dish.method}
+      aria-hidden="true"
+    >
+      {src && <img className="lmp-dish-art" src={src} alt="" />}
+      <span className="lmp-dots" data-attr="groups">
         {(["red", "yellow", "green"] as const).map((g) =>
           Array.from({ length: dish.groups[g] }).map((_, i) => <i key={g + i} className={`dot-${g}`} />),
         )}
       </span>
       <span className="lmp-levels">
-        <span className="lmp-level salt">{Array.from({ length: dish.salt }).map((_, i) => <i key={i} />)}</span>
-        <span className="lmp-level fat">{Array.from({ length: dish.fat }).map((_, i) => <i key={i} />)}</span>
+        <span className="lmp-level salt" data-attr="salt">{Array.from({ length: dish.salt }).map((_, i) => <i key={i} />)}</span>
+        <span className="lmp-level fat" data-attr="fat">{Array.from({ length: dish.fat }).map((_, i) => <i key={i} />)}</span>
       </span>
     </span>
   );
