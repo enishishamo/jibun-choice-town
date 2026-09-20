@@ -10,20 +10,30 @@
 // Exit 1 on any violation. Usage: npm run check:ver1-freeze
 import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 
 const ROOT = process.cwd();
 const TAG = process.env.VER1_TAG || "ver1-archive-2026-09-20";
 const V2_DIR = join(ROOT, "src", "v2");
-const FORBIDDEN = [
-  /from\s+["'](\.\.\/)+screens\//,
-  /from\s+["'](\.\.\/)+q1\//,
-  /from\s+["'](\.\.\/)+state\//,
-  /from\s+["'](\.\.\/)+App(\.tsx)?["']/,
-  /from\s+["'](\.\.\/)+main(\.tsx)?["']/,
-  /import\s+["'](\.\.\/)+index\.css["']/,
-  /from\s+["']\/src\/(screens|q1|state)\//,
-];
+// Ver.1 code = anything under src/ that is not src/v2. Imports are resolved
+// relative to the importing file, so src/v2/state/* (Ver.2's own state) is
+// allowed while src/state/* (Ver.1) is not. src/data and src/lib stay
+// importable read-only.
+const VER1_FORBIDDEN_DIRS = ["screens", "q1", "state"];
+const VER1_FORBIDDEN_FILES = ["App.tsx", "App", "main.tsx", "main", "index.css"];
+const IMPORT_RE = /(?:from\s+|import\s+)["']([^"']+)["']/g;
+function forbiddenTarget(file, spec) {
+  let abs;
+  if (spec.startsWith("/src/")) abs = join(ROOT, spec);
+  else if (spec.startsWith(".")) abs = resolve(dirname(file), spec);
+  else return null; // package import
+  const rel = relative(join(ROOT, "src"), abs);
+  if (rel.startsWith("v2/") || rel.startsWith("..")) return null;
+  const top = rel.split("/")[0];
+  if (VER1_FORBIDDEN_DIRS.includes(top)) return rel;
+  if (VER1_FORBIDDEN_FILES.includes(rel)) return rel;
+  return null;
+}
 
 let failed = false;
 
@@ -65,7 +75,10 @@ const violations = [];
 for (const file of v2Files) {
   const lines = readFileSync(file, "utf8").split("\n");
   lines.forEach((line, i) => {
-    if (FORBIDDEN.some((re) => re.test(line))) violations.push(`${relative(ROOT, file)}:${i + 1}: ${line.trim()}`);
+    for (const m of line.matchAll(IMPORT_RE)) {
+      const hit = forbiddenTarget(file, m[1]);
+      if (hit) violations.push(`${relative(ROOT, file)}:${i + 1}: ${line.trim()}  → src/${hit}`);
+    }
   });
 }
 if (violations.length) {

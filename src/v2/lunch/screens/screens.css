@@ -1,0 +1,50 @@
+/* JOB REVEAL / 好きの種 — TEMP_IMPLEMENTATION_ONLY. Palette v1 tokens only. */
+.lsc {
+  min-height: 100dvh;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--v2-warm-cream);
+  animation: lsc-in 0.35s ease;
+}
+.lsc-visual {
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  border-radius: 28px;
+  background: var(--v2-soft-sky);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+.lsc-lead { margin: 8px 0 0; font-size: 16px; text-align: center; }
+.lsc-line { margin: 0; font-size: 18px; text-align: center; line-height: 1.6; }
+.lsc-job { margin: 0; font-size: 24px; text-align: center; color: var(--v2-deep-green); }
+.lsc-next {
+  margin-top: auto;
+  min-width: 160px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--v2-coral);
+  color: #fff;
+  font-size: 16px;
+}
+.lsc-next:disabled { opacity: 0.35; }
+.lsc-seeds { display: flex; flex-direction: column; gap: 12px; width: min(100%, 320px); }
+.lsc-seed-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border: 3px solid transparent;
+  border-radius: 20px;
+  background: #fff;
+  padding: 8px 14px;
+  font-size: 16px;
+  text-align: left;
+}
+.lsc-seed-btn.on { border-color: var(--v2-honey-yellow); }
+.lsc-seed-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--v2-soft-sky); display: grid; place-items: center; font-size: 9px; }
+@keyframes lsc-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

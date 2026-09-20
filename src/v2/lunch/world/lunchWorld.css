@@ -1,0 +1,186 @@
+/* 給食 WORLD MAP — TEMP_IMPLEMENTATION_ONLY placeholder visuals.
+   Colors: palette v1 tokens only (--v2-*, defined in src/v2/index.css).
+   Flat fills, no gradients, shadows never darker than rgba(0,0,0,0.15). */
+
+.lw-map {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- Layer 1: bento box frame ---- */
+.lw-bento,
+.lw-bento-img,
+.lw-roads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lw-bento-img { object-fit: contain; }
+
+.lw-bento-lid,
+.lw-bento-tray { fill: var(--v2-warm-beige); }
+.lw-bento-lid-inner,
+.lw-bento-tray-inner { fill: var(--v2-warm-cream); }
+
+.lw-temp-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  fill: var(--v2-coral);
+  color: var(--v2-coral);
+  pointer-events: none;
+}
+
+/* ---- Layer 2: roads (pathLength=100 on every path) ---- */
+.lw-roads { pointer-events: none; }
+
+.lw-road-base {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke: var(--v2-warm-beige);
+  stroke-dasharray: 4 5;
+}
+
+.lw-road.is-partial .lw-road-base {
+  stroke: var(--v2-honey-yellow);
+  stroke-dasharray: 50 100; /* first half lit */
+}
+
+.lw-road.is-on .lw-road-base {
+  stroke: var(--v2-honey-yellow);
+  stroke-dasharray: none;
+}
+
+/* one-shot light pulse; remounted (React key) when the state changes */
+.lw-road-pulse {
+  fill: none;
+  stroke: var(--v2-warm-cream);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 12 100;
+  stroke-dashoffset: 12; /* dash parked before the path start = invisible */
+  animation: lw-pulse-full 1.2s ease-in-out 1;
+}
+
+.lw-road.is-partial .lw-road-pulse { animation-name: lw-pulse-half; }
+
+@keyframes lw-pulse-full { from { stroke-dashoffset: 12; } to { stroke-dashoffset: -100; } }
+@keyframes lw-pulse-half { from { stroke-dashoffset: 12; } to { stroke-dashoffset: -50; } }
+
+/* ---- Layer 3: spots ---- */
+.lw-spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: clamp(64px, 22%, 110px);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  color: inherit;
+  touch-action: manipulation;
+}
+
+.lw-spot:focus-visible {
+  outline: 3px solid var(--v2-sky-blue);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.lw-spot-body {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.lw-spot-shape,
+.lw-spot-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.lw-spot-shape { display: block; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); }
+.lw-spot-shape .lw-temp-tag { position: absolute; right: 10%; bottom: 12%; }
+.lw-spot-img { object-fit: contain; border-radius: 0; }
+
+.lw-spot-label {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #333333;
+}
+
+/* muted: unplayed, desaturated, no motion */
+.lw-spot.is-muted {
+  filter: saturate(0.25);
+  opacity: 0.55;
+}
+
+/* trouble: visible 異変 — slightly larger, gentle bob, coral badge (marker art DESIGN_NEEDED) */
+.lw-spot.is-trouble { transform: translate(-50%, -50%) scale(1.08); }
+.lw-spot.is-trouble .lw-spot-body { animation: lw-bob 1.6s ease-in-out infinite; }
+
+.lw-spot.is-trouble.is-new .lw-spot-body {
+  animation: lw-shake 600ms ease-out 1, lw-bob 1.6s ease-in-out 600ms infinite;
+}
+
+.lw-spot-badge {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  width: 24%;
+  height: 24%;
+  border-radius: 50%;
+  background: var(--v2-coral);
+  box-shadow: 0 0 0 2px var(--v2-warm-cream);
+}
+
+/* solved: full color + soft honey ring */
+.lw-spot.is-solved .lw-spot-shape,
+.lw-spot.is-solved .lw-spot-img {
+  box-shadow: 0 0 0 4px var(--v2-honey-yellow), 0 0 0 8px rgba(229, 191, 122, 0.35);
+  border-radius: 50%;
+}
+
+@keyframes lw-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6%); } }
+
+@keyframes lw-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-4%, -6%) rotate(-5deg); }
+  40% { transform: translate(4%, 2%) rotate(4deg); }
+  60% { transform: translate(-3%, -2%) rotate(-3deg); }
+  80% { transform: translate(2%, 1%) rotate(2deg); }
+}
+
+.lw-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lw-spot .lw-spot-body,
+  .lw-road-pulse {
+    animation: none;
+  }
+}

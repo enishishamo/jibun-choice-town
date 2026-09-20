@@ -1680,6 +1680,34 @@
           "note": "released to main 1e02c91 (GitHub Pages)"
         }
       ]
+    },
+    "v2-lunch-vertical-slice": {
+      "task_id": "v2-lunch-vertical-slice",
+      "task_type": "game-content",
+      "status": "READY",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "qa_status": null,
+      "qa_evidence": null,
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-20T14:29:27.246Z",
+      "updated_at": "2026-09-20T14:29:27.253Z",
+      "history": [
+        {
+          "at": "2026-09-20T14:29:27.253Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES"
+        }
+      ]
     }
   }
 }

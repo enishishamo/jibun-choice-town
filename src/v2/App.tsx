@@ -12,7 +12,14 @@
 // technical placeholder written by Claude Code, not an approved design
 // (docs/jibun-choice-v2/DESIGN_OWNERSHIP.md §2). It must be replaced by the
 // GPT-designed, Human-approved screen before anything here goes PUBLIC.
+import LunchWorldApp from "./lunch/LunchWorldApp";
+
 export default function V2App() {
+  // TEMP_IMPLEMENTATION_ONLY dev switch: /v2.html#lunch mounts the 給食 WORLD
+  // vertical slice directly. The TOP / overall-map task (separate lane) owns
+  // the real entry into this slice; this hash route is only for QA and will
+  // be replaced when that lane lands.
+  if (window.location.hash === "#lunch") return <LunchWorldApp />;
   return (
     <main className="v2-shell">
       <p className="v2-shell-badge">TEMP_IMPLEMENTATION_ONLY — Ver.2 開発用エントリ</p>

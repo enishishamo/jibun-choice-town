@@ -57,3 +57,16 @@ body {
   font-size: 14px;
   color: #333333;
 }
+
+/* VISUAL_TONE.md §3 — 基準 palette v1 (LOCKED, 2026-09-20). Token names mirror
+   the table; do not add colors outside this list (DESIGN_OWNERSHIP §2). */
+:root {
+  --v2-sky-blue: #64B4DC;
+  --v2-soft-sky: #B1D4EB;
+  --v2-fresh-green: #779763;
+  --v2-deep-green: #427D50;
+  --v2-coral: #E5784F;
+  --v2-honey-yellow: #E5BF7A;
+  --v2-warm-cream: #F1F1EE;
+  --v2-warm-beige: #E4D3B8;
+}
