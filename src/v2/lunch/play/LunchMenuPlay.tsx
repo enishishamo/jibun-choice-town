@@ -1,16 +1,17 @@
 // 給食 WORLD「こんだてを考える」PLAY — board component.
 // Rules live in lunchMenuLogic.ts; this file is interaction + reaction plumbing.
 //
-// TEMP_IMPLEMENTATION_ONLY: every shape, colour placement, motion curve and
-// the two strings shown here are technical placeholders. Layout, dish art,
-// tray art, the score's visual form, the reactions, the EVENT truck and the
-// CLEAR moment are all DESIGN_NEEDED (GPT Screen Design). The component keeps
-// asset slots (`assets`) so approved art drops in without logic changes.
+// TEMP_IMPLEMENTATION_ONLY: every shape, colour placement and motion curve is
+// a technical placeholder. Layout, dish/tray/truck art, the score's visual
+// form, the reactions and the CLEAR moment ("校長先生に見せる", V-A5) are
+// DESIGN_NEEDED. Strings come only from ../copy.ts. Approved art drops in via
+// `assets` without logic changes.
 import { useEffect, useRef, useState } from "react";
 import "./lunchMenuPlay.css";
+import { COPY } from "../copy";
 import {
-  DISH_BY_ID, TRAY_SIZE, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, remove,
-  type Session,
+  DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, canCommit, commit, evaluate, eventReady, fireEvent, newSession, place, remove,
+  type Dish, type Session,
 } from "./lunchMenuLogic";
 
 export interface LunchMenuPlayProps {
@@ -30,27 +31,34 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [scoreBump, setScoreBump] = useState(0);
   const [cleared, setCleared] = useState(false);
   const eventTimer = useRef<number | null>(null);
+  const clearTimer = useRef<number | null>(null);
+  const committedRef = useRef(false);
   const swipeStartY = useRef<number | null>(null);
 
   const ev = evaluate(s.tray);
   const shown = ev.complete ? ev.score : null;
   const hitDishes = new Set(ev.hits.flatMap((h) => h.dishIds));
 
-  useEffect(() => {
-    if (shown !== null) setScoreBump((n) => n + 1);
-  }, [shown]);
+  useEffect(() => { if (shown !== null) setScoreBump((n) => n + 1); }, [shown]);
 
-  // EVENT: fires once, shortly after the child re-arranged and re-completed
-  // the tray (Human decision §2). The delay lets the new score land first.
+  // EVENT: armed when the child re-completed the tray after a re-arrangement.
+  // Re-validated at fire time (the child may have changed the tray during the
+  // delay); if no longer ready, the timer is released so it can re-arm later.
   useEffect(() => {
-    if (s.phase !== "improve" || !eventReady(s) || eventTimer.current !== null) return;
+    if (eventTimer.current !== null || !eventReady(s)) return;
     eventTimer.current = window.setTimeout(() => {
-      setTruck("arrive");
-      setS((cur) => fireEvent(cur));
+      eventTimer.current = null;
+      setS((cur) => {
+        const next = fireEvent(cur);
+        if (next !== cur) setTruck("arrive");
+        return next;
+      });
     }, EVENT_DELAY_MS);
-    return () => { /* keep the timer: the event must not be cancelled by a re-render */ };
   }, [s]);
-
+  useEffect(() => () => {
+    if (eventTimer.current !== null) clearTimeout(eventTimer.current);
+    if (clearTimer.current !== null) clearTimeout(clearTimer.current);
+  }, []);
   useEffect(() => {
     if (truck !== "arrive") return;
     const t = window.setTimeout(() => setTruck("parked"), 700);
@@ -63,8 +71,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   };
 
   const tapCandidate = (id: string) => {
-    if (cleared) return;
-    if (s.tray.includes(id)) return;
+    if (committedRef.current) return;
     const r = place(s, id);
     if (!r.ok) {
       bump(id);
@@ -76,31 +83,29 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     window.setTimeout(() => setPop((cur) => (cur === r.slot ? null : cur)), 380);
   };
 
-  const tapTrayDish = (id: string) => {
-    if (cleared) return;
-    setS(remove(s, id));
-  };
+  const tapTrayDish = (id: string) => { if (!committedRef.current) setS(remove(s, id)); };
 
   const doCommit = () => {
-    if (cleared || !canCommit(s)) return;
+    if (committedRef.current || !canCommit(s)) return;
+    committedRef.current = true;
     const done = commit(s);
     setS(done);
     setCleared(true);
-    window.setTimeout(() => onCleared(done.committedScore ?? 0), CLEAR_DELAY_MS);
+    clearTimer.current = window.setTimeout(() => onCleared(done.committedScore ?? 0), CLEAR_DELAY_MS);
   };
 
   const commitReady = !cleared && canCommit(s);
+  const dishName = (id: string) => COPY.play.dish[id] ?? id;
 
   return (
-    <section className={`lmp ${cleared ? "is-cleared" : ""} phase-${s.phase}`} aria-label="こんだてを考える">
-      <p className="lmp-temp">TEMP_IMPLEMENTATION_ONLY</p>
+    <section className={`lmp ${cleared ? "is-cleared" : ""} phase-${s.phase}`} aria-label={COPY.play.title}>
+      <p className="lmp-temp">{COPY.dev.temp}</p>
 
-      {/* EVENT truck (placeholder shape) */}
       <div className={`lmp-truck st-${truck}`} aria-hidden="true">
-        {assets?.truck ? <img src={assets.truck} alt="" /> : <span className="lmp-ph lmp-ph-truck">TEMP</span>}
+        {assets?.truck ? <img src={assets.truck} alt="" /> : <span className="lmp-ph lmp-ph-truck">{COPY.dev.tag}</span>}
       </div>
 
-      {/* tray — visual priority #1. Swipe up = commit (DESIGN_NEEDED: final in-world gesture). */}
+      {/* tray — visual priority #1. Swipe up = commit (final in-world gesture: DESIGN_NEEDED). */}
       <div
         className={`lmp-tray ${commitReady ? "can-commit" : ""}`}
         onPointerDown={(e) => { if (commitReady) swipeStartY.current = e.clientY; }}
@@ -112,30 +117,32 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       >
         {assets?.tray && <img className="lmp-tray-art" src={assets.tray} alt="" />}
         <div className="lmp-slots">
-          {Array.from({ length: TRAY_SIZE }).map((_, i) => {
+          {Array.from({ length: FREE_SLOTS }).map((_, i) => {
             const id = s.tray[i];
             return (
               <button
                 key={i}
                 type="button"
                 className={`lmp-slot ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${id && hitDishes.has(id) ? "hit" : ""}`}
-                aria-label={id ? DISH_BY_ID[id].id : `slot ${i + 1}`}
+                aria-label={id ? dishName(id) : COPY.play.slotEmpty(i + 1)}
                 disabled={!id}
                 onClick={() => id && tapTrayDish(id)}
               >
-                {id && <DishFace id={id} src={assets?.dish?.[id]} />}
+                {id && <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />}
               </button>
             );
           })}
+          {MILK_FIXED && (
+            <div className="lmp-slot filled fixed" role="img" aria-label={COPY.play.milkSlot}>
+              <DishFace dish={MILK} src={assets?.dish?.milk} />
+            </div>
+          )}
         </div>
-        {/* score — visual priority #3 (its form is DESIGN_NEEDED) */}
         <output className={`lmp-score ${shown === null ? "off" : ""}`} key={scoreBump} aria-live="polite">
           {shown ?? ""}
         </output>
         {commitReady && (
-          <button type="button" className="lmp-commit lmp-ph" onClick={doCommit}>
-            TEMP commit ↑
-          </button>
+          <button type="button" className="lmp-commit lmp-ph" onClick={doCommit}>{COPY.dev.commitTemp}</button>
         )}
       </div>
 
@@ -149,11 +156,11 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
               key={id}
               type="button"
               className={`lmp-cand ${onTray ? "on-tray" : ""} ${unavailable ? "unavailable" : ""} ${shake === id ? "shake" : ""} ${i === 0 && ev.filled === 0 ? "invite" : ""}`}
-              aria-label={id}
+              aria-label={unavailable ? `${dishName(id)}（${COPY.play.unavailable}）` : dishName(id)}
               disabled={onTray}
               onClick={() => tapCandidate(id)}
             >
-              <DishFace id={id} src={assets?.dish?.[id]} />
+              <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />
               {unavailable && <span className="lmp-badge" aria-hidden="true" />}
             </button>
           );
@@ -163,17 +170,21 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   );
 }
 
-function DishFace({ id, src }: { id: string; src?: string }) {
+/** Placeholder dish: every VISIBLE_ATTRIBUTE is drawn (role = shape, groups =
+ * dots, method = rim style, ingredient = pattern, salt/fat = small bars).
+ * The real representation is DESIGN_NEEDED (DN-03). */
+function DishFace({ dish, src }: { dish: Dish; src?: string }) {
   if (src) return <img className="lmp-dish-art" src={src} alt="" />;
-  const d = DISH_BY_ID[id];
-  // placeholder: role decides the shape, the three group dots are the visible
-  // attribute (DESIGN_NEEDED-03 decides the real representation)
   return (
-    <span className={`lmp-ph lmp-dish role-${d.role}`}>
-      <span className="lmp-dots" aria-hidden="true">
+    <span className={`lmp-ph lmp-dish role-${dish.role} method-${dish.method}`} data-ingredient={dish.ingredient} aria-hidden="true">
+      <span className="lmp-dots">
         {(["red", "yellow", "green"] as const).map((g) =>
-          Array.from({ length: d.groups[g] }).map((_, i) => <i key={g + i} className={`dot-${g}`} />),
+          Array.from({ length: dish.groups[g] }).map((_, i) => <i key={g + i} className={`dot-${g}`} />),
         )}
+      </span>
+      <span className="lmp-levels">
+        <span className="lmp-level salt">{Array.from({ length: dish.salt }).map((_, i) => <i key={i} />)}</span>
+        <span className="lmp-level fat">{Array.from({ length: dish.fat }).map((_, i) => <i key={i} />)}</span>
       </span>
     </span>
   );

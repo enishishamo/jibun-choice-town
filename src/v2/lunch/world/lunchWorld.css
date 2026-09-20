@@ -1,6 +1,6 @@
 /* 給食 WORLD MAP — TEMP_IMPLEMENTATION_ONLY placeholder visuals.
    Colors: palette v1 tokens only (--v2-*, defined in src/v2/index.css).
-   Flat fills, no gradients, shadows never darker than rgba(0,0,0,0.15). */
+   Flat fills; translucency only via color-mix of a palette token. */
 
 .lw-map {
   position: relative;
@@ -118,14 +118,14 @@
   border-radius: 50%;
 }
 
-.lw-spot-shape { display: block; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); }
+.lw-spot-shape { display: block; box-shadow: 0 2px 4px color-mix(in srgb, var(--v2-deep-green) 14%, transparent); }
 .lw-spot-shape .lw-temp-tag { position: absolute; right: 10%; bottom: 12%; }
 .lw-spot-img { object-fit: contain; border-radius: 0; }
 
 .lw-spot-label {
   font-size: 12px;
   line-height: 1.2;
-  color: #333333;
+  color: var(--v2-deep-green);
 }
 
 /* muted: unplayed, desaturated, no motion */
@@ -156,7 +156,7 @@
 /* solved: full color + soft honey ring */
 .lw-spot.is-solved .lw-spot-shape,
 .lw-spot.is-solved .lw-spot-img {
-  box-shadow: 0 0 0 4px var(--v2-honey-yellow), 0 0 0 8px rgba(229, 191, 122, 0.35);
+  box-shadow: 0 0 0 4px var(--v2-honey-yellow), 0 0 0 8px color-mix(in srgb, var(--v2-honey-yellow) 35%, transparent);
   border-radius: 50%;
 }
 

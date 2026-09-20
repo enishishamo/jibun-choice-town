@@ -76,7 +76,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
           <rect className="lw-bento-lid-inner" x="44" y="22" width="287" height="46" rx="12" />
           <rect className="lw-bento-tray" x="16" y="96" width="343" height="456" rx="24" />
           <rect className="lw-bento-tray-inner" x="32" y="112" width="311" height="424" rx="18" />
-          <text className="lw-temp-tag" x="40" y="130">TEMP</text>
+          <text className="lw-temp-tag" x="40" y="130">{COPY.dev.tag}</text>
         </svg>
       )}
 
@@ -115,7 +115,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
               ) : (
                 <span className="lw-spot-shape" style={{ background: SPOT_TONE[id] }}>
                   {/* TEMP marker, not user copy: flags the placeholder shape as non-final art */}
-                  <span className="lw-temp-tag">TEMP</span>
+                  <span className="lw-temp-tag">{COPY.dev.tag}</span>
                 </span>
               )}
               {state === "trouble" && <span className="lw-spot-badge" />}
