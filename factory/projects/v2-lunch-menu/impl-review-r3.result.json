@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "status": "CODEX_ERROR",
+  "error": "codex exec exited 1: .score < 90);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:89:    const better = Object.keys(a).filter((k) => (b[k] ?? 0) < a[k]);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:90:    const worse = Object.keys(b).filter((k) => (a[k] ?? 0) < b[k]);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:143:check(\"all scores within 0..100\", all.every((t) => t.score >= 0 && t.score <= 100));\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 1:45 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 1:45 AM.\ntokens used\n44,287\n",
+  "elapsed_sec": 27.348
+}
