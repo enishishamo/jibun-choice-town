@@ -17,6 +17,44 @@ current.
   trusting any claim of automation elsewhere): [`factory/state/factory-architecture-audit-2026-09-06.md`](factory/state/factory-architecture-audit-2026-09-06.md)
 - Open/blocked work: [`factory/state/blocked-queue.md`](factory/state/blocked-queue.md), [`factory/state/tasks.json`](factory/state/tasks.json) (machine-readable task ledger — see §5), `factory/state/backlog/*.md`
 - What's already shipped: [`factory/state/release/current-release.json`](factory/state/release/current-release.json)
+- **Ver.2 (PLAY FIRST) is in preparation — see §0.5 before touching
+  games, MAP, HOME, character, items or collection.**
+
+## 0.5. Ver.2 — Product / Design Bible (2026-09-20, Human Decision)
+
+JIBUN CHOICE is moving from Ver.1 ("use games to teach about jobs") to
+**Ver.2 — PLAY FIRST** ("you were playing, and ran into a job/society you
+didn't know"). The Human Product Decision that defines Ver.2 is recorded
+in [`factory/state/product-ideas/gate-log.md`](factory/state/product-ideas/gate-log.md)
+(entry-2026-09-20-01) and the canonical specification lives in
+[`docs/jibun-choice-v2/`](docs/jibun-choice-v2/README.md):
+
+| File | Content |
+|---|---|
+| [`PRODUCT_PRINCIPLES.md`](docs/jibun-choice-v2/PRODUCT_PRINCIPLES.md) | Mission (unchanged), what never changes, PLAY FIRST, core loop, UI/TEXT RULE |
+| [`CHARACTER_BIBLE.md`](docs/jibun-choice-v2/CHARACTER_BIBLE.md) | Companion character HARD RULES (right ear = 🔍, left ear = ❤️, mouth = NONE) |
+| [`WORLD_DESIGN.md`](docs/jibun-choice-v2/WORLD_DESIGN.md) | Overall MAP (giant everyday objects), 「パカッ」, lunch WORLD MAP, progress-as-map |
+| [`GAME_DESIGN_RULES.md`](docs/jibun-choice-v2/GAME_DESIGN_RULES.md) | Ver.2 game rules, items, ぼうけんノート, first benchmark game (栄養・メニュー) |
+| [`ART_PIPELINE.md`](docs/jibun-choice-v2/ART_PIPELINE.md) | `design/v2/{reference,master,generated,rejected}` and Art QA HARD GATES |
+| [`MIGRATION_PLAN.md`](docs/jibun-choice-v2/MIGRATION_PLAN.md) | Ver.1 freeze, `v2/develop` branch, one-game-at-a-time plan, next task |
+| [`OPEN_DECISIONS.md`](docs/jibun-choice-v2/OPEN_DECISIONS.md) | Everything still OPEN / NEEDS_VALIDATION — **never fill these in by guessing** |
+| [`audits/`](docs/jibun-choice-v2/audits/README.md) | Ver.1 AS-IS audits used as rebuild input |
+
+Rules that follow from this:
+
+- **Ver.1 is frozen** at tag `ver1-archive-2026-09-20` / branch
+  `archive/ver1` (= `main` at `78ada73`). Never delete or overwrite Ver.1
+  games, content or assets. Restore/compare instructions:
+  [`factory/state/release/ver1-archive.md`](factory/state/release/ver1-archive.md).
+- **Ver.2 work happens on `v2/develop`**, one game at a time, starting with
+  給食 WORLD「栄養・メニュー」. `main` stays Ver.1 until a Human explicitly
+  promotes Ver.2 (it is a core-gameplay-loop change → never auto-deploy).
+- Spec priority: Design Bible text > LOCKED items > `design/v2/reference/`
+  images > AI inference. Reference images are direction, not master
+  assets; nothing is promoted to `design/v2/master/` without human approval.
+- The Product Identity Gate (§1) still applies to every **OPEN** item in
+  `OPEN_DECISIONS.md`; the LOCKED items are the Human's decision and may be
+  implemented within the plan in `MIGRATION_PLAN.md`.
 
 ## 1. Product Identity Gate (highest priority — read this first)
 
@@ -50,6 +88,7 @@ one-line summaries below staying accurate:
 | QA checklist (superseded for game-scoring by `game-critic-v2.md`) | `qa-rules.md` |
 | Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) | `art-style.md`, `visual-design-system.md` |
 | Research sourcing rules | `research-rules.md` |
+| **Ver.2 Product / Design Bible (see §0.5)** | `docs/jibun-choice-v2/*.md` |
 
 ### Conflict resolution order
 

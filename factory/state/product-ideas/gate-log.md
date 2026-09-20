@@ -140,3 +140,38 @@ map-v1-implementation-2026-09-05.md`）。自動テスト（gesture arbitration
 5/5・smoke QA 0 blocker・flow bot 2件）すべてPASS。production
 実装ではなくDevelopment Trackのみ、Stable/remote pushは未実施。
 Human Reviewを待つ。
+
+---
+
+## entry-2026-09-20-01: Ver.2（PLAY FIRST）Product Direction — Human Decision 記録
+
+このentryは「AIが発火させたgate」ではなく、**Humanが Product Identity Gate 対象の
+複数項目を同時に決定した記録**。以後、この範囲内はHuman-approved Product Direction
+として扱い、範囲外（OPEN項目）は引き続きHuman Decisionを待つ。
+
+- **決定者**: Human（Product Owner）、2026-09-20
+- **決定の正本**: `docs/jibun-choice-v2/`（PRODUCT_PRINCIPLES / CHARACTER_BIBLE /
+  WORLD_DESIGN / GAME_DESIGN_RULES / ART_PIPELINE / MIGRATION_PLAN）
+- **決定された項目（LOCKED）**:
+  - Missionは不変。届け方をPLAY FIRSTへ変更（説明→操作 から 触る→起こる→また触る へ）
+  - 新しいcore gameplay loop（探す→パカッ→遊ぶ→知る→❤️→持ち帰る→また探す）
+  - brand character（相棒）の新設と HARD RULE（右耳=🔍・左耳=❤️・口なし・鳥/くちばし禁止・
+    職業服の初期装着禁止・職業キャラへの変身禁止）
+  - 体験由来アイテムを相棒に装着する仕組み（職業コスプレのみにしない、複数職業の同時装着可、
+    適性判定に使わない）
+  - 「ぼうけんノート」（であったもの / すきかも / もちもの）。職業図鑑コンプリートを主目的にしない
+  - 全体MAP＝巨大な身近なオブジェが点在する世界（給食=閉じたお弁当箱）、「パカッ」で内部の社会が現れる
+  - WORLD MAP自体を進捗表示にする（未体験gray→体験で点灯→関連で道が光る）
+  - UI/TEXT RULE（絵・動き・反応で伝えられるなら文字を書かない、説明画面を先に置かない）
+  - 最初の基準ゲーム＝給食WORLD「栄養・メニュー」。改善型スコア（60〜100）、複数の高得点解
+  - 既存ゲームは削除せずVer.1として保存（`ver1-archive-2026-09-20` / `archive/ver1`）
+- **決定されていない項目（OPEN / NEEDS_VALIDATION）**: `docs/jibun-choice-v2/OPEN_DECISIONS.md`
+  に台帳化（相棒の名前・アイテム一覧と獲得条件・❤️のタイミング・道のグラフ・他WORLDの詳細・
+  栄養基準等の事実・コード分離方式・公開先 等）。**AIはこれらを推測で確定しない。**
+- **既存entryとの関係**: entry-2026-09-04-01（mascot新設REJECTED）は、本entryのHuman Decisionに
+  より更新された。`idea-001-interest-grown-companion.md`（DESIGN_RESERVED）は、Ver.2の
+  「相棒＋体験由来アイテム」として方向づけられたが、その未決論点は自動的には決まっていない。
+- **HUMAN_PRODUCT_DECISION_REQUIRED**: LOCKED項目についてはfalse（決定済み）。OPEN項目はtrue。
+- **実装状況**: 2026-09-20時点でコード変更なし（仕様書・アーカイブ・ブランチ作成のみ）。
+  Ver.2のmain反映・PUBLIC deployは別途Human承認が必要（deploy-release-policyの
+  「core gameplay変更」に該当）。

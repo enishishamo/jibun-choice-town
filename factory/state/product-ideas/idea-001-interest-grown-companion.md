@@ -51,3 +51,14 @@
 
 上記いずれも、SELECT（一案への決定）・IMPLEMENT・GENERATE PRODUCTION
 ASSET・MERGE INTO PRODUCTは含まない。それらは人間の明示承認後に別途行う。
+
+---
+
+## 2026-09-20 追記: Ver.2 Product Direction との関係
+
+Human Decision（`gate-log.md` entry-2026-09-20-01、正本 `docs/jibun-choice-v2/`）により、
+「興味から育つ何か」は Ver.2 では **「相棒キャラクター（探検に行って好きなものを見つける子）
+＋ 体験由来アイテムを後から身につける」** という形で方向づけられた。
+ただし本ファイルの「未決定の論点」（分類軸・成長/変化ルール・可視化方法 等）は
+自動的には決まっていない → `docs/jibun-choice-v2/OPEN_DECISIONS.md` D-03 / D-05 / D-06 / D-07。
+status は **DESIGN_RESERVED → PARTIALLY_DIRECTED（Ver.2）** とする。
