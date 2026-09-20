@@ -95,7 +95,10 @@ Ver.2 が「1 ゲーム完成 → テスト」の段階に入った時点で決�
 
 ## 6. 次に着手できる最小タスク（実装はまだ開始しない）
 
-**Step 0（このタスクで完了）**: Ver.1 凍結 / `v2/develop` / Design Bible / Ver.1 AS-IS 監査。
+**Step 0（2026-09-20 完了）**: Ver.1 凍結（`ver1-archive-2026-09-20` / `archive/ver1`）/ `v2/develop` /
+Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-freeze`）/
+Visual Reference 配置（`design/v2/reference/concept-board-2026-09-20.png`、Master ではない）。
+→ **Ver.2 移行準備は完了扱い。** 以降は Step 1 から。
 
 **Step 1（次）— 栄養・メニュー Ver.2 の「設計」**（コードを書かない）:
 1. NEEDS_VALIDATION V-01〜V-04 の事実確認（`jc-researcher` 相当の一次情報調査）
