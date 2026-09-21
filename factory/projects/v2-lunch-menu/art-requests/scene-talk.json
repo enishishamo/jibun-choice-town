@@ -29,7 +29,7 @@
  "used_by": [
   "src/v2/lunch/play/LunchMenuPlay.tsx"
  ],
- "purpose": "こんだてPLAY の「相談する場所」の場面カット。落ち着いて話し合う場面であることを一目で伝える小さなジオラマ",
+ "purpose": "こんだてPLAY の「相談する場所」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・部屋・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。空であること・人がいないことは欠陥ではなく要件",
  "scene": "a miniature quiet corner diorama with no people in it: one small round warm wooden table with two small wooden chairs facing each other across it, and a single sheet of blank pale cream paper lying flat on the table top. Calm, warm and simple, nothing else on the table. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
  "required_objects": [
   "one small round table",

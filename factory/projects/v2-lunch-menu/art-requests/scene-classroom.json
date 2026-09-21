@@ -29,7 +29,7 @@
  "used_by": [
   "src/v2/lunch/play/LunchMenuPlay.tsx"
  ],
- "purpose": "こんだてPLAY の「教室」の場面カット。作った給食が誰のところへ届くのかを一目で伝える小さなジオラマ",
+ "purpose": "こんだてPLAY の「教室」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。人がいないこと・黒板が真っ白（無記入）なことは欠陥ではなく要件",
  "scene": "a miniature classroom diorama with no people in it: one small blackboard with a warm wooden frame and a completely blank flat dark green surface standing at the back, two small wooden school desks in front of it with a pale cream lunch tray set on each desk, and one small wooden chair beside them. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
  "required_objects": [
   "one blackboard with a completely blank surface and no writing",

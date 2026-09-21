@@ -178,9 +178,10 @@ const checkTouchGeometry = async (where) => {
       // the point must land on this control or something inside it. Another
       // control, a transparent overlay, or nothing at all all mean the same
       // thing: the child cannot touch it where they can see it.
-      // this control, something inside it, or a container it sits in are all
-      // fine; a SIBLING on top of it is an overlay that swallows the tap
-      if (!(hit && (hit === el || el.contains(hit) || hit.contains(el)))) {
+      // only this control or something inside it counts: a tap that lands on a
+      // container never reaches the control's handler, however innocent the
+      // container looks
+      if (!(hit && (hit === el || el.contains(hit)))) {
         const other = hit && hit.closest ? hit.closest(".lmp-slot, .lmp-school, .lmp-cand") : null;
         wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${other ? other.getAttribute("aria-label") : hit ? (hit.className || hit.tagName) : "nothing"}`);
       }
@@ -194,14 +195,49 @@ const checkTouchGeometry = async (where) => {
     const w = Math.min(a.right, c.right) - Math.max(a.left, c.left), h = Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top);
     if (w > 0 && h > 0) overlaps.push(`${boxes[i].getAttribute("aria-label")} x ${boxes[j].getAttribute("aria-label")}: ${Math.round(w)}x${Math.round(h)}`);
   }
-  return { wrong, overlaps, counted: boxes.filter((b) => b.getBoundingClientRect().width > 0).length };
+  const tooSmall = boxes.filter((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && (r.width < 44 || r.height < 44); })
+    .map((el) => { const r = el.getBoundingClientRect(); return `${el.getAttribute("aria-label")} ${Math.round(r.width)}x${Math.round(r.height)}`; });
+  return { wrong, overlaps, tooSmall, counted: boxes.filter((b) => b.getBoundingClientRect().width > 0).length };
   });
   // a geometry check that found nothing to check has proved nothing
   if (r.counted < 10) flag(`touch geometry at "${where}": only ${r.counted} controls were on screen — the check was vacuous`);
   for (const w of r.wrong) flag(`tap ownership at "${where}": ${w}`);
   for (const o of r.overlaps) flag(`touch areas overlap at "${where}": ${o}`);
+  for (const s of r.tooSmall) flag(`touch target smaller than 44x44 at "${where}": ${s}`);
 };
 
+
+// ── the whole loop must still be playable with motion turned off ─────────
+//    (the beads and the flying dishes carry meaning, so this is not cosmetic)
+{
+  const rm = await browser.newPage();
+  await rm.setViewport({ width: 375, height: 812, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await rm.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+  const rmErrors = [];
+  rm.on("pageerror", (e) => rmErrors.push(String(e)));
+  rm.on("console", (m) => { if (m.type() === "error") rmErrors.push(m.text()); });
+  await rm.goto(`${BASE}v2.html`, { waitUntil: "networkidle0" });
+  await rm.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
+  await rm.reload({ waitUntil: "networkidle0" });
+  const rmTap = async (label, settle = 400) => {
+    for (const b of await rm.$$("button")) {
+      const al = await b.evaluate((e) => e.getAttribute("aria-label") ?? "");
+      if (al === label || al.startsWith(label)) { await b.tap(); await sleep(settle); return true; }
+    }
+    return false;
+  };
+  await rmTap("こんだてを考える", 700);
+  for (const d of ["パン", "さけのしおやき", "やさいのごまあえ", "ポテトサラダ"]) await rmTap(d, 700);
+  const state = await rm.evaluate(() => ({
+    sendable: !!document.querySelector(".lmp-school.ready"),
+    // nothing may be left running when motion is off
+    running: [...document.querySelectorAll(".lmp *")].filter((e) => getComputedStyle(e).animationName !== "none").map((e) => e.className).slice(0, 5),
+  }));
+  if (!state.sendable) flag("with reduced motion the menu could not be completed to a sendable state");
+  if (state.running.length) flag(`with reduced motion these are still animating: ${state.running.join(", ")}`);
+  if (rmErrors.length) flag(`reduced-motion run had console errors: ${rmErrors[0]}`);
+  await rm.close();
+}
 
 // ── 01 START ─────────────────────────────────────────────────────────────
 await shot("01-world-map");

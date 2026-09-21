@@ -17,3 +17,13 @@ Must NOT include: readable text; letters or numbers; writing, chalk marks or smu
 Characters: no characters at all
 Aspect ratio: 3:2 (compose for this frame).
 Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 白いスタジオ背景の単体オブジェクト写真に見え、参照の教室・職場シーンにある空間的なミニチュアジオラマ感が弱い
+- Fix vs reference set: 机・椅子・黒板の表面が均一で滑らかかつ光沢が強く、参照のマットで手練り感のある粘土質感よりプラスチック玩具に近い
+- Fix vs reference set: 参照の場面カットより背景情報と生活感が大幅に少なく、同じ街の学校内という世界のつながりが伝わりにくい
+- Fix vs reference set: 黒板、机、椅子の縮尺関係がやや不自然で、特に椅子が机に対して小さく見える
+- Fix vs reference set: 参照シーンの柔らかな斜光と奥行きに比べ、影が薄く、白背景への切り抜きレンダー感が強い
+- 空の給食トレーだけで児童や配膳物が存在しないため、『作った給食が誰のところへ届くのか』を一目で伝えられない
+- 教室を示す要素が机2台・椅子1脚・黒板だけで、場所シーンとして必要な文脈と情報量が不足している
+- 机が2台あるのに椅子が1脚しかなく、場面として未完成に見える

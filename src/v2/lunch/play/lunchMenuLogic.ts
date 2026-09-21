@@ -242,6 +242,7 @@ export function remove(s: Session, dishId: string): Session {
 
 /** Swap in place: used when the tray is full and the child taps a new dish. */
 export function swap(s: Session, outId: string, inId: string): PlaceResult {
+  if (s.phase === "cleared") return { ok: false, reason: "cleared" };
   const slot = s.tray.indexOf(outId);
   if (slot < 0) return { ok: false, reason: "not_candidate" };
   if (!s.available[inId]) return { ok: false, reason: "unavailable" };
