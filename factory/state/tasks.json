@@ -1757,7 +1757,7 @@
       "producer": "claude-code-builder",
       "repair_count": 1,
       "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r3.result.json",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r4.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -1832,14 +1832,14 @@
         }
       ],
       "deploy_status": null,
-      "release_commit": "cc19901f034302a3be6aebf577836cd5a4a136c6",
+      "release_commit": "506de326b720ce83b08f2f3a714b0ec4809dae27",
       "blocked_reason": "最後の独立再レビュー（r4）が Codex usage limit で実行できなかった。有効な最新レビューは r3 = FAIL 78（blocker 0 / high 1 / medium 3）で、その指摘はすべて修正済み（コミット 8b03691 ほか）だが、修正後の fresh re-review が未実施のため PASS とは記録しない。quota 回復後に factory/projects/v2-lunch-menu/impl-review-slice.prompt.md で再実行し、set-review すること。なお can-deploy は他に Product Identity 未承認と design_needed 6件でも拒否しており、これらは Human/Design Owner の判断",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T19:58:08.013Z",
+      "updated_at": "2026-09-21T20:05:47.833Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2029,6 +2029,53 @@
           "resolved_at": null,
           "approval": null,
           "status_unchanged": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:59:46.023Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "8279693f816bc5ccff803cb979573aff9f148be8"
+        },
+        {
+          "at": "2026-09-21T19:59:46.091Z",
+          "event": "release_commit_set",
+          "sha": "8279693f816bc5ccff803cb979573aff9f148be8",
+          "given": "8279693f816bc5ccff803cb979573aff9f148be8"
+        },
+        {
+          "at": "2026-09-21T20:04:38.702Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "506de326b720ce83b08f2f3a714b0ec4809dae27"
+        },
+        {
+          "at": "2026-09-21T20:04:38.776Z",
+          "event": "release_commit_set",
+          "sha": "506de326b720ce83b08f2f3a714b0ec4809dae27",
+          "given": "506de326b720ce83b08f2f3a714b0ec4809dae27"
+        },
+        {
+          "at": "2026-09-21T20:05:47.834Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r4.result.json",
+          "score": 80,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "64d812eadab27e2168357b94fee3c5eaef4ab21297ee2ddc325765318d53e44e"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2075,6 +2122,43 @@
           "human_decision": true,
           "design_needed": false,
           "status": "HUMAN_DECISION_REQUIRED"
+        }
+      ]
+    },
+    "v2-lunch-qa-harness-hardening-r4": {
+      "task_id": "v2-lunch-qa-harness-hardening-r4",
+      "task_type": "qa-harness",
+      "status": "READY",
+      "producer": "claude-code-builder",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T20:23:59.876Z",
+      "updated_at": "2026-09-21T20:23:59.877Z",
+      "history": [
+        {
+          "at": "2026-09-21T20:23:59.877Z",
+          "event": "created",
+          "type": "qa-harness",
+          "identityImpact": "NONE",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
         }
       ]
     }

@@ -89,7 +89,11 @@ await page.evaluateOnNewDocument(() => {
   };
   const start = () => {
     record();
-    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label"] });
+    // class and style are watched too, not just aria-label: a score written as
+    // `.lmp.is-settled::before { content: "100てん" }` appears and disappears
+    // through a CLASS change alone, with no node added and no text edited, so an
+    // aria-only filter would never re-scan while it is on screen.
+    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label", "class", "style"] });
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
@@ -159,8 +163,8 @@ const beads = () => page.$$eval(".lmp-bead", (bs) => bs.map((b) => ({ axis: b.ge
 
 // ── no control may steal a tap meant for another ─────────────────────────
 //    (a dish's picture is allowed to overflow its recess; its touch area is not)
-const checkTouchGeometry = async (where) => {
-  const r = await page.evaluate(() => {
+const checkTouchGeometry = async (where, pg = page) => {
+  const r = await pg.evaluate(() => {
   const wrong = [];
   const all = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
   // a control that is deliberately not touchable (disabled, or pointer-events:none)
@@ -226,8 +230,17 @@ const checkTouchGeometry = async (where) => {
     }
     return false;
   };
+  // exact match only: 「さけのしおやき」 is a prefix of 「さけのしおやき（おぼんから もどす）」,
+  // so a prefix match would take a dish OFF the tray when we meant to put one on
+  const rmTapExact = async (label, settle = 400) => {
+    for (const b of await rm.$$("button")) {
+      if ((await b.evaluate((e) => e.getAttribute("aria-label") ?? "")) === label) { await b.tap(); await sleep(settle); return true; }
+    }
+    return false;
+  };
+  const rmSendable = () => rm.evaluate(() => !!document.querySelector(".lmp-school.ready"));
   await rmTap("こんだてを考える", 700);
-  for (const d of ["パン", "さけのしおやき", "やさいのごまあえ", "ポテトサラダ"]) await rmTap(d, 700);
+  for (const d of ["パン", "さけのしおやき", "やさいのごまあえ", "ポテトサラダ"]) await rmTapExact(d, 700);
   const state = await rm.evaluate(() => ({
     sendable: !!document.querySelector(".lmp-school.ready"),
     // nothing may be left running when motion is off
@@ -235,8 +248,84 @@ const checkTouchGeometry = async (where) => {
   }));
   if (!state.sendable) flag("with reduced motion the menu could not be completed to a sendable state");
   if (state.running.length) flag(`with reduced motion these are still animating: ${state.running.join(", ")}`);
+
+  // …and the rest of the journey, which is where motion actually carries the
+  // meaning: the interception, the dish that did not arrive, the rebuild, the
+  // second delivery and the reveal. Stopping at "sendable" proved none of it.
+  if (state.sendable) {
+    await rmTapExact(COPY.play.send, 2600); // the accessible equivalent of the swipe
+    const lost = await rm.evaluate(() => {
+      const b = [...document.querySelectorAll(".lmp-cand.gone")][0];
+      return b ? b.getAttribute("aria-label") : null;
+    });
+    if (!lost) flag("with reduced motion the first send did not produce a delivery trouble");
+    // rebuild generically: try each dish that is still choosable — not already
+    // on the tray, not the one that failed to arrive — and keep the one that
+    // brings the school back, taking the others off again
+    const choosable = () => rm.$$eval(".lmp-cand", (bs) => bs
+      .filter((b) => !b.classList.contains("gone") && !b.classList.contains("on-tray"))
+      .map((b) => b.getAttribute("aria-label")));
+    // 1600ms per try: the beads still travel to their grooves with motion off
+    // (only the decorative CSS animation is dropped), and the school is offered
+    // from where the beads are DRAWN, so reading sooner reads a bead in transit
+    for (const n of await choosable()) {
+      if (await rmSendable()) break;
+      if (!(await rmTapExact(n, 1600))) continue;
+      if (await rmSendable()) break;
+      await rmTapExact(COPY.play.onTray(n), 800);
+    }
+    if (!(await rmSendable())) flag("with reduced motion the menu could not be rebuilt after the delivery trouble");
+    else {
+      await rmTapExact(COPY.play.send, 3200);
+      const done = await rm.evaluate(() => ({ left: !document.querySelector(".lmp"), body: document.body.innerText }));
+      if (!done.left || !done.body.includes("栄養教諭")) {
+        flag(`with reduced motion the second send did not reach the job reveal — board gone: ${done.left}`);
+      }
+    }
+  }
   if (rmErrors.length) flag(`reduced-motion run had console errors: ${rmErrors[0]}`);
   await rm.close();
+}
+
+// ── the slice claims five phone sizes; assert them instead of claiming ───
+//    Vertical fit matters as much as horizontal: a board that scrolls hides the
+//    counter, and a child who cannot see a dish cannot choose it.
+for (const [w, h] of [[320, 568], [375, 667], [375, 812], [390, 844], [430, 932]]) {
+  const vp = await browser.newPage();
+  await vp.setViewport({ width: w, height: h, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const vpErrors = [];
+  vp.on("pageerror", (e) => vpErrors.push(String(e)));
+  await vp.goto(`${BASE}v2.html`, { waitUntil: "networkidle0" });
+  await vp.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
+  await vp.reload({ waitUntil: "networkidle0" });
+  const vpTap = async (label, settle = 350, exact = true) => {
+    for (const b of await vp.$$("button")) {
+      const al = await b.evaluate((e) => e.getAttribute("aria-label") ?? "");
+      if (al === label || (!exact && al.startsWith(label))) { await b.tap(); await sleep(settle); return true; }
+    }
+    return false;
+  };
+  // the map spot carries its state in its name 「こんだてを考える（いま こまっている）」
+  if (!(await vpTap("こんだてを考える", 700, false))) flag(`${w}x${h}: the こんだて spot could not be opened`);
+  for (const label of ["empty tray", "tray full"]) {
+    if (label === "tray full") for (const d of ["パン", "さけのしおやき", "やさいのごまあえ", "ポテトサラダ"]) await vpTap(d, 500);
+    await sleep(400);
+    const fit = await vp.evaluate(() => {
+      const de = document.documentElement;
+      const cands = [...document.querySelectorAll(".lmp-cand")];
+      const offscreen = cands.filter((e) => { const r = e.getBoundingClientRect(); return r.width === 0 || r.bottom > innerHeight + 1 || r.top < -1 || r.right > innerWidth + 1 || r.left < -1; })
+        .map((e) => e.getAttribute("aria-label"));
+      return { scrollW: de.scrollWidth, scrollH: de.scrollHeight, innerW: innerWidth, innerH: innerHeight, dishes: cands.length, offscreen };
+    });
+    const at = `${w}x${h}, ${label}`;
+    if (fit.scrollW > fit.innerW) flag(`${at}: the page scrolls sideways (${fit.scrollW} > ${fit.innerW})`);
+    if (fit.scrollH > fit.innerH + 1) flag(`${at}: the board does not fit vertically (${fit.scrollH} > ${fit.innerH})`);
+    if (fit.dishes !== 9) flag(`${at}: ${fit.dishes} dishes on the counter, expected 9`);
+    if (fit.offscreen.length) flag(`${at}: dishes off screen — ${fit.offscreen.join(", ")}`);
+    await checkTouchGeometry(at, vp);
+  }
+  if (vpErrors.length) flag(`${w}x${h}: console errors — ${vpErrors[0]}`);
+  await vp.close();
 }
 
 // ── 01 START ─────────────────────────────────────────────────────────────

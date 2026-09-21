@@ -438,4 +438,9 @@
   .lmp-counter { gap: 1px; padding: 4px 10px 2px; }
   .lmp-cand { width: clamp(56px, 20vw, 70px); height: 46px; }
   .lmp-empty-spot { width: 36px; height: 36px; }
+  /* at 320x568 the tray is ~130px tall, so a 33% recess is 43px — under the
+     44px minimum. The row pitch is 37% (~48px), so 46px still leaves a gap
+     and two recesses cannot share a pixel. */
+  .lmp-slot { height: 35%; min-height: 46px; }
+  .lmp-slot.fixed { width: 24%; height: 32%; min-width: 46px; min-height: 46px; }
 }

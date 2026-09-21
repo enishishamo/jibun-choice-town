@@ -1,10 +1,42 @@
 {
-  "ok": false,
-  "status": "CODEX_ERROR",
-  "error": "codex exec exited 1: MAT (mandatory): your ENTIRE final message must be ONE JSON object, no prose, no code fences, exactly this shape:\n{\"verdict\":\"PASS|FAIL|HUMAN_REQUIRED\",\"score\":0-100,\"blockers\":[string],\"high\":[string],\"medium\":[string],\"low\":[string],\"evidence\":[string],\"recommended_actions\":[string]}\nEach finding string: \"<file>:<line> — <title> — <why it is wrong> — <fix>\". blockers/high non-empty ⇒ verdict FAIL.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 22nd, 2026 3:38 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 22nd, 2026 3:38 AM.\n",
-  "elapsed_sec": 3.29,
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 80,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:92 — State-gated generated text escapes the audit — the MutationObserver watches only aria-label attributes, so changing only a class or style does not call record(); a mutation such as `.lmp.is-settled::before { content: \"100てん\" }` can appear during the 900ms settle state without entering board/all sets — observe class/style attributes and audit generated content immediately after every observed state change"
+    ],
+    "medium": [
+      "factory/harness/v2-lunch-shots.mjs:229 — Reduced-motion pass does not complete the flow — it stops when the first menu becomes sendable; it never performs either send, delivery trouble, rebuild, second delivery, or transition to reveal, despite claiming the flow completes — drive both sends and assert the board exits successfully under reduced motion",
+      "factory/harness/v2-lunch-shots.mjs:46 — Claimed responsive coverage is absent — the harness runs only 375x812, checks only horizontal overflow, and never exercises 320x568, 375x667, 390x844, or 430x932 or asserts vertical fit/all nine dishes visible — parameterize the geometry run across every supported viewport and assert scrollHeight <= innerHeight plus visibility and 44x44 targets"
+    ],
+    "low": [],
+    "evidence": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:283-295 — pickEventDish selects only tray dishes with at least MIN_RECOVERIES; exhaustive QA reported a worst case of seven recoveries across all 16 viable menus.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:220-262 — place, remove, swap, and canSend all reject cleared sessions; send remains the only model transition to cleared.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:104-111 — sending is unavailable during flights/motes, and all PLAY timers are registered in fxTimers and cleared on unmount.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:420-422 — each rack hollow position and width is computed directly from bandOnTrack(), so the unwired painted rack cannot drift into the rule.",
+      "src/v2/lunch/Art.tsx:13-24 — missing sources and image load errors replace the img with a fallback or null, preventing a persistent broken-image icon.",
+      "src/v2/lunch/assets.ts:23-36 — all six newly wired paths exist under public/assets/v2/lunch; map/bento.png and gauge-rack.png remain deliberately unreferenced.",
+      "src/v2/state/progress.ts:33-50 — malformed stored progress is normalized field-by-field and parse/storage failures fall back safely; only jibun-choice:v2:progress is accessed.",
+      "factory/harness/ver1-freeze-check.mjs:40-89 — the freeze check passed: archived Ver.1 files are unchanged and 22 src/v2 files import no forbidden Ver.1 UI/state module.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:168-235 — executable logic QA completed 54/54 checks, including all 126 trays, non-send clearing paths, first-send interception, recovery, and cleared-session inertia.",
+      "TypeScript no-emit checks for both tsconfig.app.json and tsconfig.node.json completed successfully.",
+      "The requested scratch mutation run could not be performed because this review environment denies every filesystem write, including mktemp under /tmp. Source tracing shows the repaired harness catches inserted DOM text/ARIA verdicts, auto-clear model mutations, and auto-advance within its 3.5-second idle window; it still misses class-only pseudo-element content and auto-advance scheduled after that fixed window."
+    ],
+    "recommended_actions": [
+      "Extend the observer to class/style mutations and add the state-gated pseudo-score mutation as a permanent negative test.",
+      "Make the reduced-motion scenario execute the complete two-send journey through job reveal.",
+      "Run touch, visibility, horizontal-overflow, and vertical-overflow assertions at all five documented phone sizes.",
+      "Add a deterministic fake-clock or longer bounded timer audit so delayed auto-send implementations cannot evade the 3.5-second window."
+    ]
+  },
+  "elapsed_sec": 216.378,
   "review_mechanism": "factory/harness/codex-review.mjs",
   "reviewer": "codex",
   "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
-  "prompt_sha256": "6c8a49c57988b506eb73889359622530018529ff33932f50db70ac4e4df19520"
+  "prompt_sha256": "64d812eadab27e2168357b94fee3c5eaef4ab21297ee2ddc325765318d53e44e"
 }
