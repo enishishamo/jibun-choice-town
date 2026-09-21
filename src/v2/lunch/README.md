@@ -48,7 +48,14 @@ provenance: `factory/state/art/manifest-v2.json`（asset_id `v2_lunch_*`）、ra
 - `LunchMenuPlay` props `assets.tray` / `assets.dish[id]` / `assets.truck`
 - 承認済み画像は `public/assets/v2/lunch/` に置き、`LunchWorldApp` から渡す（コード変更は 1 箇所）。
 
-## DESIGN_NEEDED（見た目が未決のもの）
+## 現在の見た目の状態（2026-09-21）
 
-`factory/projects/v2-lunch-menu/experience-design-proposal.md` §6 DN-01〜14 と `world/README.md` を正とする。
-本ディレクトリの CSS・図形・文言はすべて `TEMP_IMPLEMENTATION_ONLY`。PUBLIC には出さない。
+| 領域 | 状態 |
+|---|---|
+| 料理 9 品＋牛乳・トレー・トラック・学校 | **生成済み・Art QA PASS**（`public/assets/v2/lunch/`、Visual Reference 準拠） |
+| PLAY のレイアウト・状態 cue（三色の丸／マーク／粒／揺れ）・送り出し演出 | 実装済み（palette v1 の CSS/DOM）。in-context Art QA PASS。GPT の監修・上書き待ち（DN-04 / DN-05 / DN-07） |
+| JOB REVEAL・好きの種の画面 | TEMP（文言は copy.ts、visual は DN-08 / DN-09） |
+| 給食 WORLD MAP | TEMP 図形（弁当箱・スポット・道は別途「全体MAP との空間連続性」設計後に生成、DN-10） |
+| 相棒の反応ポーズ | 未制作（Master PNG 未配置。別キャラで代替しない） |
+
+`factory/projects/v2-lunch-menu/experience-design-proposal.md` §3''/§6 を正とする。TEMP のものは PUBLIC に出さない。
