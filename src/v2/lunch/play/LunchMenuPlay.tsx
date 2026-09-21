@@ -320,7 +320,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                   type="button"
                   className={`lmp-slot s${i} ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${arriving === i ? "arriving" : ""} ${leavingSlot === i ? "leaving" : ""} ${id && related.has(id) ? "related" : ""}`}
                   style={{ left: `${SLOT_POS[i].x}%`, top: `${SLOT_POS[i].y}%` }}
-                  aria-label={id ? COPY.play.onTray(dishName(id)) : COPY.play.emptySlot(i + 1)}
+                  aria-label={id ? COPY.play.onTray(dishName(id)) : COPY.play.emptySlot(COPY.play.slotPlace[i])}
                   data-slot-dish={id ?? undefined}
                   data-slot-index={i}
                   disabled={arriving === i}

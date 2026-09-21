@@ -17,3 +17,13 @@ Must NOT include: readable text; letters or numbers; logos; attribute marks, ico
 Characters: no characters at all
 Aspect ratio: 1:1 (compose for this frame).
 Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the tile.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate surfaces are smoother and more uniform than the references’ visibly handmade, softly textured clay.
+- Fix vs reference set: White studio-like background lacks the environmental depth and miniature world context seen in the reference place scenes.
+- Fix vs reference set: Cool gray equipment dominates, while the references use warmer, brighter colors and more varied clay materials.
+- Fix vs reference set: Lighting is flatter and cooler than the references’ warm, soft directional illumination.
+- Fix vs reference set: The perfectly clean, sparse arrangement reads as a generic isolated 3D icon rather than a lived-in JIBUN CHOICE diorama.
+- SERIES_STYLE_MATCH is below 80: the asset does not convincingly look made by the same hands as the reference set.
+- An empty pot and prep tables do not communicate school-lunch preparation strongly enough; ingredients, trays, steam, or other recognizable meal-production details are needed.
+- As a place tile, the scene is too sparse and isolated; it depicts equipment rather than a small school-kitchen environment.

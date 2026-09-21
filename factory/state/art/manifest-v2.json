@@ -4474,45 +4474,145 @@
    "filename": "map/bento.png",
    "world": "lunch-v2",
    "purpose": "給食 WORLD の WORLD MAP の地面。開いた弁当箱の中に小さな町（畑・調理場・こんだて机）が置かれる土台なので、内側は完全に空で平ら",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
+   "status": "qa_passed",
    "iteration": 1,
-   "qa_issues": [
-    "codex exec exited 1"
+   "qa_issues": [],
+   "created_at": "2026-09-21T13:47:11.467Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one OPEN school lunch box (弁当箱) seen from the same 35-degree above-front camera as the tray: a rounded rectangular box with a warm coral-red lid hinged open and standing up behind it, and a pale warm cream interior that is completely EMPTY, smooth and flat, like a shallow empty clay dish waiting to hold a miniature town. Same matte clay / miniature toy material, same lighting and same warm palette as the cream lunch tray and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: 給食 WORLD の WORLD MAP の地面。開いた弁当箱の中に小さな町（畑・調理場・こんだて机）が置かれる土台なので、内側は完全に空で平ら\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the lunch box centered and filling about 75% of the frame with even margins (at least 12% on every side). The open box is the GROUND on which a miniature town will be placed later, so the whole pale cream interior must stay EMPTY, smooth, evenly lit and uncluttered — clear flat space with no food, no dividers, no pattern, no clutter. No table, no cloth, no shadow plate: the lunch box floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the box. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one open lunch box with a coral-red lid hinged open behind it; a completely empty, smooth, evenly lit pale cream interior with clear flat space; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; food, rice, or anything placed inside the box; compartment dividers, inner trays or patterned lining; hands or people; chopsticks or cutlery; table, cloth, background, backdrop or drop shadow outside the lunch box; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 4:3 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the lunch box.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/rice.png",
+    "public/assets/v2/lunch/school.png"
    ],
-   "created_at": "2026-09-21T12:14:13.119Z"
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 98,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "file_hash": "44b38c9daac6",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ]
   },
   {
    "asset_id": "v2_lunch_map_grow",
    "filename": "map/grow.png",
    "world": "lunch-v2",
    "purpose": "給食 WORLD MAP の「そだてる」タイル。弁当箱の中に置かれる小さな畑のジオラマ 1 個",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
+   "status": "qa_passed",
    "iteration": 1,
    "qa_issues": [
-    "codex exec exited 1"
+    "The isolated white background weakens the sense that this miniature belongs inside the established town world, although it remains appropriate for a tile object intended to sit inside a bento-box interface.",
+    "The dense leaf arrangement may lose some separation at small mobile sizes; slightly simpler silhouettes or wider spacing would improve instant recognition.",
+    "The very bright lime-green border competes with the crops and makes the base read somewhat like a decorative tart rather than soil contained in a miniature field."
    ],
-   "created_at": "2026-09-21T12:14:23.712Z"
+   "created_at": "2026-09-21T13:50:40.581Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a tiny vegetable field as a single miniature diorama tile, built on a small round clay base exactly like the round base under the approved school building: a few short rows of green leafy vegetables and carrot tops growing out of ridged brown clay soil, fresh green and deep green leaves, warm brown earth. Same matte clay / miniature toy material, same lighting and same warm palette as the school tile and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: 給食 WORLD MAP の「そだてる」タイル。弁当箱の中に置かれる小さな畑のジオラマ 1 個\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the tile centered and filling about 70% of the square with even margins (at least 14% on every side). It is ONE single small diorama tile that will be placed inside an open lunch box, so it must read as one compact object on its own little round base, not as a landscape. No table, no cloth, no shadow plate: the tile floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only within the tile. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: a few rows of green leafy vegetables and carrot tops in brown soil; one small round clay base under the whole tile; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; signposts, flags or markers; hands or people; table, cloth, background, backdrop or drop shadow outside the tile; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the tile.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/school.png",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/gomaae.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 90,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 96,
+    "READABILITY": 95,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 88,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 86,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "file_hash": "102965bb8a88",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ]
   },
   {
    "asset_id": "v2_lunch_map_cook",
    "filename": "map/cook.png",
    "world": "lunch-v2",
    "purpose": "給食 WORLD MAP の「つくる」タイル。弁当箱の中に置かれる小さな給食調理場のジオラマ 1 個",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
-   "iteration": 1,
+   "status": "qa_failed",
+   "iteration": 2,
    "qa_issues": [
-    "codex exec exited 1"
+    "SERIES_STYLE_MATCH is below 80: the asset does not convincingly look made by the same hands as the reference set.",
+    "An empty pot and prep tables do not communicate school-lunch preparation strongly enough; ingredients, trays, steam, or other recognizable meal-production details are needed.",
+    "As a place tile, the scene is too sparse and isolated; it depicts equipment rather than a small school-kitchen environment.",
+    "The near-white background and pale equipment reduce silhouette separation at mobile tile size.",
+    "The base and rear tables are complete and safely framed, but the long diagonal paddle consumes substantial space without adding enough occupational context.",
+    "vision critic verdict: FAIL (MUST violation or unstated failure)",
+    "JOB_ACCURACY below threshold: 67",
+    "SERIES_STYLE_MATCH below SERIES gate (80): 76"
    ],
-   "created_at": "2026-09-21T12:14:39.553Z"
+   "created_at": "2026-09-21T13:57:24.488Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature school-kitchen tile as a single diorama piece, built on a small round clay base exactly like the round base under the approved school building: one large rounded stainless-steel cooking pot standing on a low sturdy stand, with one big wooden paddle resting across the rim of the pot. Soft matte metal rendered as clay, warm wooden paddle. Same matte clay / miniature toy material, same lighting and same warm palette as the school tile and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: 給食 WORLD MAP の「つくる」タイル。弁当箱の中に置かれる小さな給食調理場のジオラマ 1 個\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the tile centered and filling about 70% of the square with even margins (at least 14% on every side). It is ONE single small diorama tile that will be placed inside an open lunch box, so it must read as one compact object on its own little round base, not as a kitchen interior. No table, no cloth, no shadow plate: the tile floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only within the tile. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one large stainless cooking pot on a low stand; one big wooden paddle resting across the pot; one small round clay base under the whole tile; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; walls, room, floor tiles or kitchen interior around the tile; food inside the pot; hands or people; table, cloth, background, backdrop or drop shadow outside the tile; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the tile.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 鍋と台座の金属表現がreference setの柔らかな粘土質感より写実的で、表面の擦れや反射が強い\n- Fix vs reference set: 真っ白なスタジオ背景と均一な商品レンダー風の光が、referencesの暖かな斜光と生活感のあるジオラマ背景から外れる\n- Fix vs reference set: 草地付きの円形台座は屋外設備のように見え、給食室のミニチュアとしての世界観が弱い\n- Fix vs reference set: referenceの給食調理場にある人物・大型調理器具・ステンレス作業台などの文脈がなく、単体オブジェクト寄りに見える\n- 給食調理場を示す情報が鍋としゃもじだけで不足しており、屋外の炊事設備や一般的な調理アイコンにも見える — 「つくる」給食調理場としての役割認識が弱い\n- 草や土の台座が学校給食室という用途と矛盾する — 弁当箱内のWORLD MAPで誤った場所として読まれる可能性がある\n- 金属の細かな傷と反射がやや写実的 — 人物・建物・道具を同じ粘土素材感で統一するMUSTから軽度に逸脱している\n- 場所シーンとしては設備と空間情報が少なく、調理場ではなく単体のtool/objectに近い構成になっている",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/school.png",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/miso_soup.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "qa_score": 67,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 76,
+    "COMPOSITION": 86,
+    "CROP_SAFETY": 96,
+    "READABILITY": 88,
+    "OBJECT_COMPLETENESS": 92,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 76,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 67,
+    "MOBILE_USABILITY": 88,
+    "SERIES_STYLE_MATCH": 76,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "file_hash": "bc3a18d4467b",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ]
   }
  ]
 }

@@ -24,7 +24,10 @@ export const COPY = {
     rack: "こんだての ようす", // aria
     send: "がっこうへ おくる", // aria of the school
     milk: "ぎゅうにゅう", // aria — V-A1 fixed slot
-    emptySlot: (n: number) => `${n}ばんめの あいている ところ`, // aria
+    // the four recesses are named by where they are, not numbered: a number on
+    // the board is exactly what this game never shows
+    slotPlace: { 0: "ひだり うえ", 1: "みぎ うえ", 2: "ひだり した", 3: "みぎ した" } as Record<string, string>,
+    emptySlot: (place: string) => `${place}の あいている ところ`, // aria
     onTray: (name: string) => `${name}（おぼんから もどす）`, // aria
     calling: "りょうりを えらんでね", // aria live, when an empty recess is touched
     axis: { energy: "エネルギー", protein: "たんぱく質", fat: "あぶら", salt: "塩分" } as Record<string, string>,

@@ -24,8 +24,9 @@ const ALLOWED = new Set();
 const collect = (v) => {
   if (typeof v === "string") ALLOWED.add(v.trim());
   else if (typeof v === "function") {
-    for (const n of ["さけのしおやき", "とりのからあげ", "ごはん", "パン", "やさいのごまあえ", "ポテトサラダ", "とうふのみそしる", "コーンスープ", "コロッケ", "ぎゅうにゅう", "りょうり"]) collect(v(n));
-    for (let i = 1; i <= 6; i++) collect(v(i));
+    // expand every template with every value the slice can actually pass it, so
+    // the allow-list is what copy.ts can produce, not a hand-written list
+    for (const n of [...Object.values(COPY.play.dish), ...Object.values(COPY.play.slotPlace)]) collect(v(n));
   }
   else if (v && typeof v === "object") for (const x of Object.values(v)) collect(x);
 };
@@ -53,16 +54,26 @@ page.on("requestfailed", (r) => errors.push(`requestfailed: ${r.url()} ${r.failu
 // for 380ms during a dish flight, or a verdict that shows only during a 900ms
 // celebration, is invisible to a screenshot taken between them.
 await page.evaluateOnNewDocument(() => {
-  window.__seen = { board: new Set(), all: new Set(), aria: new Set() };
+  window.__seen = { board: new Set(), boardAria: new Set(), all: new Set(), aria: new Set(), duringPlay: new Set() };
   const record = () => {
     const push = (root, set) => {
       if (!root) return;
       const it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
       for (let n = it.nextNode(); n; n = it.nextNode()) { const t = n.textContent.trim(); if (t) set.add(t); }
     };
+    const before = new Set();
     push(document.body, window.__seen.all);
-    push(document.querySelector(".lmp"), window.__seen.board);
-    for (const e of document.querySelectorAll("[aria-label]")) window.__seen.aria.add(e.getAttribute("aria-label"));
+    push(document.body, before);
+    const board = document.querySelector(".lmp");
+    push(board, window.__seen.board);
+    for (const e of document.querySelectorAll("[aria-label]")) {
+      const a = e.getAttribute("aria-label");
+      window.__seen.aria.add(a);
+      before.add(a);
+      if (board && board.contains(e)) window.__seen.boardAria.add(a);
+    }
+    // anything on screen while the board is mounted is being shown DURING play
+    if (board) for (const t of before) window.__seen.duringPlay.add(t);
   };
   const start = () => {
     record();
@@ -131,10 +142,42 @@ const swipeTrayUp = async () => {
 };
 const beads = () => page.$$eval(".lmp-bead", (bs) => bs.map((b) => ({ axis: b.getAttribute("data-bead"), band: [...b.classList].find((c) => c.startsWith("band-")) })));
 
+// ── no control may steal a tap meant for another ─────────────────────────
+//    (a dish's picture is allowed to overflow its recess; its touch area is not)
+const checkTouchGeometry = async (where) => {
+  const r = await page.evaluate(() => {
+  const wrong = [];
+  const boxes = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
+  for (const el of boxes) {
+    const b = el.getBoundingClientRect();
+    if (b.width === 0) continue;
+    for (const [x, y] of [[b.left + 4, b.top + 4], [b.right - 4, b.top + 4], [b.left + 4, b.bottom - 4], [b.right - 4, b.bottom - 4], [b.left + b.width / 2, b.top + b.height / 2]]) {
+      const owner = document.elementFromPoint(x, y)?.closest(".lmp-slot, .lmp-school, .lmp-cand");
+      if (owner && owner !== el) wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${owner.getAttribute("aria-label")}`);
+    }
+  }
+  // and no two touch areas may intersect at all
+  const overlaps = [];
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i].getBoundingClientRect(), c = boxes[j].getBoundingClientRect();
+    if (a.width === 0 || c.width === 0) continue;
+    const w = Math.min(a.right, c.right) - Math.max(a.left, c.left), h = Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top);
+    if (w > 0 && h > 0) overlaps.push(`${boxes[i].getAttribute("aria-label")} x ${boxes[j].getAttribute("aria-label")}: ${Math.round(w)}x${Math.round(h)}`);
+  }
+  return { wrong, overlaps, counted: boxes.filter((b) => b.getBoundingClientRect().width > 0).length };
+  });
+  // a geometry check that found nothing to check has proved nothing
+  if (r.counted < 10) violations.push(`touch geometry at "${where}": only ${r.counted} controls were on screen — the check was vacuous`);
+  for (const w of r.wrong) violations.push(`tap ownership at "${where}": ${w}`);
+  for (const o of r.overlaps) violations.push(`touch areas overlap at "${where}": ${o}`);
+};
+
+
 // ── 01 START ─────────────────────────────────────────────────────────────
 await shot("01-world-map");
 await tap("こんだてを考える", 700);
 await shot("02-play-start");
+await checkTouchGeometry("play, empty tray");
 
 // ── 02 one or two dishes placed ──────────────────────────────────────────
 // every axis must visibly answer the very first dish, however small its share:
@@ -171,6 +214,7 @@ const after = await beads();
 
 // ── 05 the first "it came together" ──────────────────────────────────────
 await shot("08-settled");
+await checkTouchGeometry("play, tray full and the school offered");
 
 // ── the game must never play itself ──────────────────────────────────────
 //    The tray is sendable and nothing is touched for 3.5s. A build that
@@ -238,31 +282,6 @@ await shot("22-world-return");
 await sleep(1200);
 await shot("23-next-trouble");
 
-// ── no control may steal a tap meant for another ─────────────────────────
-//    (a dish's picture is allowed to overflow its recess; its touch area is not)
-const tapOwnership = await page.evaluate(() => {
-  const wrong = [];
-  const boxes = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
-  for (const el of boxes) {
-    const b = el.getBoundingClientRect();
-    if (b.width === 0) continue;
-    for (const [x, y] of [[b.left + 4, b.top + 4], [b.right - 4, b.top + 4], [b.left + 4, b.bottom - 4], [b.right - 4, b.bottom - 4], [b.left + b.width / 2, b.top + b.height / 2]]) {
-      const owner = document.elementFromPoint(x, y)?.closest(".lmp-slot, .lmp-school, .lmp-cand");
-      if (owner && owner !== el) wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${owner.getAttribute("aria-label")}`);
-    }
-  }
-  // and no two touch areas may intersect at all
-  const overlaps = [];
-  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
-    const a = boxes[i].getBoundingClientRect(), c = boxes[j].getBoundingClientRect();
-    if (a.width === 0 || c.width === 0) continue;
-    const w = Math.min(a.right, c.right) - Math.max(a.left, c.left), h = Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top);
-    if (w > 0 && h > 0) overlaps.push(`${boxes[i].getAttribute("aria-label")} x ${boxes[j].getAttribute("aria-label")}: ${Math.round(w)}x${Math.round(h)}`);
-  }
-  return { wrong, overlaps };
-});
-for (const w of tapOwnership.wrong) violations.push(`tap ownership: ${w}`);
-for (const o of tapOwnership.overlaps) violations.push(`touch areas overlap: ${o}`);
 
 // ── the one structural rule besides the four axes: a lunch needs a 主食.
 //    Played on a fresh visit so the state is unambiguous.
@@ -280,14 +299,26 @@ if (!noStaple.stapleShelfAsks || noStaple.schoolOffered) {
 
 // ── the accumulated record, not the snapshots ────────────────────────────
 const seen = await page.evaluate(() => ({
-  board: [...window.__seen.board], all: [...window.__seen.all], aria: [...window.__seen.aria],
+  board: [...window.__seen.board],
+  boardAria: [...window.__seen.boardAria],
+  all: [...window.__seen.all],
+  aria: [...window.__seen.aria],
+  duringPlay: [...window.__seen.duringPlay],
 }));
-for (const t of seen.board) if (/[0-9０-９]/.test(t)) violations.push(`a number was shown on the board at some point — "${t}"`);
+for (const t of [...seen.board, ...seen.boardAria]) if (/[0-9０-９]/.test(t)) violations.push(`a number was shown on the board at some point — "${t}"`);
 for (const t of seen.all) if (!ALLOWED.has(t)) violations.push(`text rendered at some point is not in copy.ts — "${t}"`);
 for (const a of seen.aria) {
-  const bare = a.replace(/（.*?）|：.*$/g, "").trim();
-  if (!ALLOWED.has(a) && !ALLOWED.has(bare)) violations.push(`aria-label rendered at some point is not in copy.ts — "${a}"`);
+  if (ALLOWED.has(a)) continue; // the exact string copy.ts produces
+  // otherwise it may only be two allowed pieces joined by the slice's own two shapes,
+  // 「<name>（<state>）」 and 「<name>：<state>」 — nothing may be invented in between
+  const bare = a.replace(/（[^）]*）$/, "").replace(/：[^：]*$/, "").trim();
+  const suffix = ((a.match(/（([^）]*)）$/)?.[1] ?? "") + (a.match(/：(.*)$/)?.[1] ?? "")).trim();
+  if (!(suffix && ALLOWED.has(bare) && ALLOWED.has(suffix))) {
+    violations.push(`aria-label rendered at some point is not in copy.ts — "${a}"`);
+  }
 }
+// the job may not be named anywhere while the child is still playing
+for (const t of seen.duringPlay) if (/栄養教諭|学校栄養職員|栄養士/.test(t)) violations.push(`the job was named while the board was still on screen — "${t}"`);
 
 // every <img> the flow rendered must be a real, loaded picture — a CSS fallback
 // carries no text and returns no 4xx, so the marker grep alone cannot see it

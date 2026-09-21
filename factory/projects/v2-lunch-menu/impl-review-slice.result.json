@@ -1,10 +1,50 @@
 {
-  "ok": false,
-  "status": "CODEX_ERROR",
-  "error": "codex exec exited 1: ther they break.\n\nOUTPUT FORMAT (mandatory): your ENTIRE final message must be ONE JSON object, no prose, no code fences, exactly this shape:\n{\"verdict\":\"PASS|FAIL|HUMAN_REQUIRED\",\"score\":0-100,\"blockers\":[string],\"high\":[string],\"medium\":[string],\"low\":[string],\"evidence\":[string],\"recommended_actions\":[string]}\nEach finding string: \"<file>:<line> — <title> — <why it is wrong> — <fix>\". blockers/high non-empty ⇒ verdict FAIL.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:35 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:35 PM.\n",
-  "elapsed_sec": 4.257,
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 68,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:241 — Touch-overlap assertion tests an empty page — the ownership check runs after line 237 returns to the world map, where no .lmp-slot, .lmp-school, or .lmp-cand elements exist; boxes is empty and both claimed geometry assertions pass vacuously — run the geometry checks while the PLAY board is mounted, including ready-school and filled-tray states, and assert the expected control count before testing rectangles.",
+      "factory/harness/v2-lunch-shots.mjs:102 — Digit prohibition ignores accessible names — seen.boardText contains only visible text, so a numeric score placed in an aria-label inside .lmp is not checked; the later aria allow-list also strips everything after ：, allowing labels such as an allowed prefix followed by ：100 — accumulate board-scoped text and aria-labels separately and reject digits in both without normalization.",
+      "factory/harness/v2-lunch-shots.mjs:101 — Transient pre-CLEAR job-name leaks are not detected — the job-name check occurs only at screenshots; the MutationObserver accumulates strings without recording whether CLEAR had happened, and 栄養教諭 is already allow-listed from copy.ts, so a short pre-CLEAR flash passes — record each mutation with the current flow phase and fail immediately when a forbidden job name appears before reveal."
+    ],
+    "medium": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:243 — swap() can mutate a cleared or malformed session — unlike place() and remove(), swap() never rejects phase === \"cleared\" and never verifies inId is a candidate; the harness's “cleared session is inert” assertion omits swap entirely — reject cleared sessions and non-candidate IDs in swap(), then include swap in the cleared-session invariant.",
+      "factory/harness/v2-lunch-shots.mjs:105 — Aria allow-list is not verbatim — removing parenthesized and colon-delimited suffixes contradicts the claimed every-string-verbatim contract and permits invented verdicts or scores after an approved prefix — compare complete generated labels against an explicit set of expected dynamic labels instead of truncating them.",
+      "src/v2/lunch/screens/screens.css:8 — Post-CLEAR screens omit the top safe-area inset — padding has a fixed 26px top while only the bottom uses env(safe-area-inset-bottom), so headings and controls can enter a notched or Dynamic Island region — use max(26px, env(safe-area-inset-top)) for top padding.",
+      "factory/harness/v2-lunch-shots.mjs:241 — Mobile target-size coverage is absent — the harness claims control geometry safety but checks neither the 44×44 minimum nor disabled/ready-school states, and its current placement makes even overlap checks vacuous — assert dimensions and ownership for every interactive control at each relevant PLAY state."
+    ],
+    "low": [
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:129 — “Almost every” near-miss check deliberately permits defects — up to two near-miss trays may require two swaps while the surrounding comments and model documentation claim every one-axis-off menu is one swap away — either enforce zero exceptions or revise the documented claim and print the exceptional trays.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:23 — QA reports success despite Vite initialization errors — execution emitted WebSocket EPERM and cache mkdir EPERM errors yet exited 0 with 54/54, making environmental failures easy to overlook — disable HMR/optimization for the SSR loader or treat initialization errors as harness failures."
+    ],
+    "evidence": [
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:168 — the exhaustive pure-logic run completed 54/54 checks, covering all 126 trays and 3,654 non-send operations; it found 16 viable menus and no EVENT recovery dead end.",
+      "factory/harness/ver1-freeze-check.mjs:40 — the freeze check passed: Ver.1 files matched ver1-archive-2026-09-20 and 22 src/v2 files imported no forbidden Ver.1 UI/state module.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:107 — PLAY animation timers are routed through fxTimers and cleared on unmount; send is guarded by sending/sentRef and invoked only from the swipe/school handler.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:282 — exhaustive inspection confirms pickEventDish selects only an on-tray dish with at least MIN_RECOVERIES; the run's worst recovery count was seven.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:32 — per-dish values are explicitly documented as game coefficients rather than official nutrition data.",
+      "factory/harness/v2-lunch-shots.mjs:52 — mutation coverage analysis: visible rendered digits, ordinary unapproved visible verdicts, ordinary aptitude text, place/remove/swap/fireEvent auto-clear, and auto-advance within the 3.5-second idle window are caught; aria-only numeric scores using an approved prefix, transient pre-CLEAR job names, auto-advance delayed beyond 3.5 seconds, and invented aria suffixes after ： or parentheses remain missed.",
+      "factory/harness/v2-lunch-shots.mjs:55 — the requested scratch-copy mutation execution could not be completed because this review environment is read-only: worktree/temp writes, Vite cache creation, build metadata, and browser-output creation were denied; the reported mutation matrix is therefore derived from direct harness control-flow analysis rather than a successful scratch mutation run.",
+      "src/v2/state/progress.ts:27 — malformed progress is rebuilt from validated nested fields, JSON/storage exceptions are caught, and only the separate jibun-choice:v2:progress key is accessed.",
+      "src/v2/lunch/play/lunchMenuPlay.css:416 — reduced-motion rules cover continuous invitations, tray delivery, motes, flights, beads, truck, trouble and shake animations.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:281 — the school is a real button, removed from accessibility and tab order until sendable, then enabled as the accessible send equivalent."
+    ],
+    "recommended_actions": [
+      "Move touch ownership/overlap checks into mounted PLAY states, assert a nonzero expected control count, and add 44×44 target-size assertions.",
+      "Replace aria-label normalization with exact expected-label generation; apply digit checks to all board-scoped text and accessible names.",
+      "Make the MutationObserver phase-aware so transient job-name leaks and other forbidden pre-CLEAR content fail regardless of screenshot timing.",
+      "Harden swap() and extend the inert-cleared-session test to cover it and malformed IDs.",
+      "Run the seven named mutations in a writable scratch worktree and preserve a per-mutation pass/fail report; include aria-only score and transient job-name mutations in that suite.",
+      "Fix top safe-area padding and rerun the 375×812 browser flow on a notched-device emulation."
+    ]
+  },
+  "elapsed_sec": 159.58,
   "review_mechanism": "factory/harness/codex-review.mjs",
   "reviewer": "codex",
   "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
-  "prompt_sha256": "ee36195bb4f95202bb5619f0652a8133731cbf3ea2bbd3b6223c87f028ee5496"
+  "prompt_sha256": "e98188300f8ef3c78a14edf2d6370649c0f3105d68d3647249aadeedb8d58809"
 }

@@ -80,17 +80,35 @@
 /* the band above the tray is taller than the school, so no part of the send
    target can ever sit over a dish the child is reaching for */
 .lmp-table { padding: calc(92px + env(safe-area-inset-top)) 16px 0; }
-@media (max-height: 700px) {
-  .lmp-table { padding-top: calc(72px + env(safe-area-inset-top)); }
+/* short phones: the whole scene shrinks rather than scrolling away, because the
+   tray, the rack and the dishes only teach anything when they are seen together */
+@media (max-height: 760px) {
+  .lmp-table { padding-top: calc(74px + env(safe-area-inset-top)); }
   .lmp-school { height: 62px; width: 118px; margin-left: -59px; }
-  .lmp-truck { width: 92px; height: 50px; }
-  .lmp-tray { width: min(100%, 300px); }
-  .lmp-rack { width: min(100%, 300px); height: 118px; margin-top: 6px; }
+  .lmp-truck { width: 92px; height: 50px; top: calc(8px + env(safe-area-inset-top)); }
+  .lmp-trouble { top: calc(44px + env(safe-area-inset-top)); font-size: 14px; }
+  .lmp-tray { width: min(100%, 296px); }
+  .lmp-rack { width: min(100%, 296px); height: 112px; margin-top: 6px; }
   .lmp-bead { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
   .lmp-counter { gap: 2px; padding: 6px 12px 4px; }
-  .lmp-cand { width: clamp(64px, 21vw, 82px); height: 58px; }
-  .lmp-empty-spot { width: 44px; height: 44px; }
+  .lmp-cand { width: clamp(62px, 21vw, 80px); height: 56px; }
+  .lmp-empty-spot { width: 42px; height: 42px; }
   .lmp-groove-name { font-size: 11px; }
+}
+@media (max-height: 620px) {
+  .lmp-table { padding-top: calc(56px + env(safe-area-inset-top)); }
+  .lmp-school { height: 50px; width: 96px; margin-left: -48px; }
+  .lmp-truck { width: 74px; height: 40px; top: calc(4px + env(safe-area-inset-top)); }
+  .lmp-trouble { top: calc(32px + env(safe-area-inset-top)); font-size: 13px; padding: 5px 11px; }
+  .lmp-tray { width: min(100%, 258px); }
+  .lmp-rack { width: min(100%, 258px); height: 92px; margin-top: 4px; border-radius: 16px; }
+  .lmp-bead { width: 19px; height: 19px; margin: -9.5px 0 0 -9.5px; }
+  .lmp-groove { height: 22px; margin-top: -11px; }
+  .lmp-groove-name { font-size: 10px; }
+  .lmp-groove-lip { margin-top: 5px; height: 17px; }
+  .lmp-counter { gap: 1px; padding: 4px 10px 2px; }
+  .lmp-cand { width: clamp(56px, 20vw, 70px); height: 46px; }
+  .lmp-empty-spot { width: 36px; height: 36px; }
 }
 .lmp-tray {
   position: relative;
