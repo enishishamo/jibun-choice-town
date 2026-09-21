@@ -54,14 +54,19 @@
   stroke-dasharray: 4 5;
 }
 
+/* A lit road is the SAME dashed road in a warmer colour — never a solid bar.
+ * `50 100` used to draw one unbroken 50-unit stroke out of the spot, which read
+ * as a pole stuck into the place rather than as a path that is partly lit.
+ * The list below is the base rhythm (4 5) written out six times and then closed
+ * with a gap longer than the path, so exactly the first half carries dashes. */
 .lw-road.is-partial .lw-road-base {
   stroke: var(--v2-honey-yellow);
-  stroke-dasharray: 50 100; /* first half lit */
+  stroke-dasharray: 4 5 4 5 4 5 4 5 4 5 4 100;
 }
 
 .lw-road.is-on .lw-road-base {
   stroke: var(--v2-honey-yellow);
-  stroke-dasharray: none;
+  stroke-dasharray: 4 5;
 }
 
 /* one-shot light pulse; remounted (React key) when the state changes */

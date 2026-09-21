@@ -27,6 +27,8 @@ Four independent agent reviews already ran and their findings were repaired. Do 
 - a quick second tap on a full tray refused a legal dish with the same shake used for "this dish did not arrive".
 - 完全給食 = 主食 + ミルク + おかず: a tray with no rice and no bread is now refused however well the four axes sit.
 
+SINCE that round, the only change is asset wiring (commit 8279693): six generated pictures replaced clay-SVG fallbacks 1:1 with no geometry change — three WORLD MAP tiles (`map/grow.png`, `map/cook.png`, `map/menu.png`) through `LUNCH_ASSETS.map.spot`, and three KNOW THE JOB scenes (`scenes/kitchen.png`, `scenes/classroom.png`, `scenes/talk.png`) through a new optional `scenes` prop on `KnowTheJob`. Two generated pictures were deliberately NOT wired and are recorded as open design items: `map/bento.png` (its empty interior is only ~57%x32% of the frame, so the five spots do not fit the portrait map without a layout redesign) and `gauge-rack.png` (its four painted hollows are all ~17% wide while the four GOOD BANDs are ~21/29/38/19%, so a painted hollow would contradict the rule the bead obeys; the hollow stays computed from `bandOnTrack()`). Check that reasoning: is the rack hollow still provably derived from the band, is anything now referencing a file that does not exist, and does `Art`'s fallback still guarantee no broken-image icon.
+
 ## What the slice is
 
 `MAP → こんだて PLAY → EVENT → CLEAR → JOB REVEAL → KNOW THE JOB → (CAREER PATH, optional) → 好きの種 → MAP RETURN`, mounted by `src/v2/lunch/LunchWorldApp.tsx`.

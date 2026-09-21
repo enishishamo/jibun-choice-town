@@ -1,5 +1,5 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND. -->
-<!-- Regenerate with: node factory/harness/task-state.mjs list --status BLOCKED,HUMAN_DECISION_REQUIRED,DESIGN_BLOCKED --markdown > factory/state/blocked-queue.md -->
+<!-- Regenerate with: node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md -->
 
 # Blocked Queue（自動生成）
 
@@ -8,10 +8,10 @@
 変える（`block` / `set-status` / `reset-iteration`）。
 
 ```
-node factory/harness/task-state.mjs list --status BLOCKED,HUMAN_DECISION_REQUIRED,DESIGN_BLOCKED --markdown > factory/state/blocked-queue.md
+node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md
 ```
 
-生成時刻: 2026-09-21T13:41:36.415Z / 対象 7 件
+生成時刻: 2026-09-21T20:00:22.479Z / 対象 8 件
 
 `BLOCKED` / `HUMAN_DECISION_REQUIRED` は Human Decision が下りるまで
 Continuous Product Loop から自動で再着手しない。`DESIGN_BLOCKED` は
@@ -27,5 +27,6 @@ Continuous Product Loop から自動で再着手しない。`DESIGN_BLOCKED` は
 | q1-improve-power | BLOCKED | game-content | Q1 First-Play Standard V1 Gate F/HONEST OUTCOME（表示と実際の判定の矛盾）に該当し続け、既定のAuto Repair上限（1回）を超過。表示ロジック設計の人間判断が必要 | - | 2026-09-07 |
 | q1-improve-safety-plan | BLOCKED | game-content | Q1 First-Play Standard V1 Gate C/D（月組の配慮情報がゲーム内のどの役割とも因果的に結びつかない）に該当し続け、既定のAuto Repair上限（1回）を超過。新しい役割/仕組みの追加を要するゲームデザイン人間判断が必要 | - | 2026-09-07 |
 | q1-improve-timetable | BLOCKED | game-content | After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 1 genuine HIGH per Q1 First-Play Standard V1 Gate C/D (explicitly on the BLOCKER-adjacent list: 'can clear without using C'): from the declared initial (all-5-acts, already-overflowing) lineup, removing ANY SINGLE arbitrary optional act (no reordering, no reading the changeover rule card, no understanding of stage-setup grouping) always succeeds -- round4-review's own arithmetic confirms all 5 single-act cuts (with the untouched declared order) finish under the 13:40 deadline. This is a genuine, non-overridable content-independent shortcut: a first-time player can win by deleting literally any one row without ever engaging with the job-specific C (changeover/setup-type reasoning) the game exists to teach. Fixing this requires either a further numeric rebalance (harder to get right without ALSO reopening the 'no ordering ever fits' failure mode from round 1, given only 5 acts/2 setup categories to work with) or a structural change (e.g. requiring an explicit reorder step, or making at least one arbitrary single-cut also fail) -- both are real game-design judgment calls beyond this task's already-used 1 auto-repair. | - | 2026-09-07 |
+| v2-lunch-nutrition-teacher-slice | BLOCKED | game-content | 最後の独立再レビュー（r4）が Codex usage limit で実行できなかった。有効な最新レビューは r3 = FAIL 78（blocker 0 / high 1 / medium 3）で、その指摘はすべて修正済み（コミット 8b03691 ほか）だが、修正後の fresh re-review が未実施のため PASS とは記録しない。quota 回復後に factory/projects/v2-lunch-menu/impl-review-slice.prompt.md で再実行し、set-review すること。なお can-deploy は他に Product Identity 未承認と design_needed 6件でも拒否しており、これらは Human/Design Owner の判断 | DN-KNOW-LAYOUT, DN-CAREER-LAYOUT, DN-SEED-LAYOUT, DN-MAPGROUND, DN-RACK-HOLLOW | 2026-09-21 |
 | ver1-freeze-tag-vs-main-drift | HUMAN_DECISION_REQUIRED | factory-integrity | main が凍結タグ ver1-archive-2026-09-20 から Ver.1 の 83 ファイル分ずれている（タグは main の祖先ではない）。凍結ガード check:ver1-freeze は作業ツリーをタグと比較するため、タグ基準のブランチでは PASS するが、そのブランチを main へマージすると main 側の Ver.1 改善（f71d042 / 3df51c8 / 805977e / acdf316 / 49dcf4c / 1847d29 系）と衝突・巻き戻りが起きうる。どちらを Ver.1 の正とするか（タグを打ち直すか、main を正として凍結基準を更新するか）は Human 判断。2026-09-21 の栄養教諭スライス作業中に発見。当該スライス自体は Ver.1 パスを一切変更していない | - | 2026-09-21 |
 
