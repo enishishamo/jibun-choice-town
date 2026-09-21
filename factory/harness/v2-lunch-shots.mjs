@@ -49,6 +49,29 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(`console: ${m.
 page.on("response", (r) => { if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`); });
 page.on("requestfailed", (r) => errors.push(`requestfailed: ${r.url()} ${r.failure()?.errorText ?? ""}`));
 
+// Everything the page ever renders is accumulated, because a score that flashes
+// for 380ms during a dish flight, or a verdict that shows only during a 900ms
+// celebration, is invisible to a screenshot taken between them.
+await page.evaluateOnNewDocument(() => {
+  window.__seen = { board: new Set(), all: new Set(), aria: new Set() };
+  const record = () => {
+    const push = (root, set) => {
+      if (!root) return;
+      const it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let n = it.nextNode(); n; n = it.nextNode()) { const t = n.textContent.trim(); if (t) set.add(t); }
+    };
+    push(document.body, window.__seen.all);
+    push(document.querySelector(".lmp"), window.__seen.board);
+    for (const e of document.querySelectorAll("[aria-label]")) window.__seen.aria.add(e.getAttribute("aria-label"));
+  };
+  const start = () => {
+    record();
+    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label"] });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+});
+
 await page.goto(`${BASE}v2.html`, { waitUntil: "networkidle0" });
 await page.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
 await page.reload({ waitUntil: "networkidle0" });
@@ -114,7 +137,19 @@ await tap("こんだてを考える", 700);
 await shot("02-play-start");
 
 // ── 02 one or two dishes placed ──────────────────────────────────────────
-await tap("パン", 700);
+// every axis must visibly answer the very first dish, however small its share:
+// a 2px slide is not an answer, so each bead is struck as its mote lands
+{
+  const h = await page.$('button[aria-label="パン"]');
+  await h.tap();
+  let everStruck = new Set();
+  for (let i = 0; i < 40; i++) {
+    for (const a of await page.$$eval(".lmp-bead.struck", (bs) => bs.map((b) => b.getAttribute("data-bead")))) everStruck.add(a);
+    await sleep(50);
+  }
+  if (everStruck.size !== 4) violations.push(`only ${everStruck.size}/4 beads answered the first dish (${[...everStruck].join(",")})`);
+  await sleep(300);
+}
 await shot("03-one-placed");
 await tap("さけのしおやき", 700);
 await shot("04-two-placed");
@@ -136,6 +171,18 @@ const after = await beads();
 
 // ── 05 the first "it came together" ──────────────────────────────────────
 await shot("08-settled");
+
+// ── the game must never play itself ──────────────────────────────────────
+//    The tray is sendable and nothing is touched for 3.5s. A build that
+//    advances here is one where the child is a spectator.
+{
+  const before = await page.evaluate(() => document.querySelector(".lmp")?.className ?? "");
+  await sleep(3500);
+  const after = await page.evaluate(() => ({ cls: document.querySelector(".lmp")?.className ?? "", left: !document.querySelector(".lmp") }));
+  if (after.left || !/phase-build/.test(after.cls) || before !== after.cls) {
+    violations.push(`the game advanced with no input: "${before}" -> "${after.cls}"${after.left ? " (left the board entirely)" : ""}`);
+  }
+}
 
 // ── 06 EVENT: the first send is intercepted ──────────────────────────────
 await swipeTrayUp();
@@ -231,6 +278,17 @@ if (!noStaple.stapleShelfAsks || noStaple.schoolOffered) {
   violations.push(`24-no-staple: a tray with no 主食 must not be sendable and the 主食 pan must ask — got ${JSON.stringify(noStaple)}`);
 }
 
+// ── the accumulated record, not the snapshots ────────────────────────────
+const seen = await page.evaluate(() => ({
+  board: [...window.__seen.board], all: [...window.__seen.all], aria: [...window.__seen.aria],
+}));
+for (const t of seen.board) if (/[0-9０-９]/.test(t)) violations.push(`a number was shown on the board at some point — "${t}"`);
+for (const t of seen.all) if (!ALLOWED.has(t)) violations.push(`text rendered at some point is not in copy.ts — "${t}"`);
+for (const a of seen.aria) {
+  const bare = a.replace(/（.*?）|：.*$/g, "").trim();
+  if (!ALLOWED.has(a) && !ALLOWED.has(bare)) violations.push(`aria-label rendered at some point is not in copy.ts — "${a}"`);
+}
+
 // every <img> the flow rendered must be a real, loaded picture — a CSS fallback
 // carries no text and returns no 4xx, so the marker grep alone cannot see it
 const brokenImages = await page.evaluate(() =>
@@ -247,7 +305,7 @@ const beadsMoved = JSON.stringify(before) !== JSON.stringify(after);
 const solved = (() => { try { return JSON.parse(info.progress)?.solved?.[0]?.spot === "menu"; } catch { return false; } })();
 const seed = (() => { try { return JSON.parse(info.progress)?.seeds?.["lunch:menu"]; } catch { return null; } })();
 const ok = errors.length === 0 && info.scrollW <= info.innerW && !info.markers && beadsMoved && solved && seed === "rebuild" && brokenImages.length === 0 && violations.length === 0;
-writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), ok, shots, errors, violations, brokenImages, beadsBefore: before, beadsAfter: after, ...info }, null, 1));
+writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), ok, shots, errors, violations, brokenImages, everRendered: seen, beadsBefore: before, beadsAfter: after, ...info }, null, 1));
 console.log(JSON.stringify({ ok, errors, violations: violations.slice(0, 12), brokenImages, scrollW: info.scrollW, innerW: info.innerW, visibleDevMarkers: info.markers, beadsMoved, solved, seed }));
 await browser.close();
 process.exit(ok ? 0 : 1);

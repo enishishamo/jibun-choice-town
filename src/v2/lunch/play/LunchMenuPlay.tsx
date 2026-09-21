@@ -28,7 +28,7 @@ import {
 
 export interface LunchMenuPlayProps {
   onCleared: () => void;
-  assets?: { tray?: string; dish?: Record<string, string>; truck?: string; school?: string; rack?: string };
+  assets?: { tray?: string; dish?: Record<string, string>; truck?: string; school?: string };
 }
 
 const FLY_MS = 380;
@@ -62,6 +62,10 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [flyGo, setFlyGo] = useState(false);
   const [sparks, setSparks] = useState<Spark[]>([]);
   const [motes, setMotes] = useState<Mote[]>([]);
+  /** which beads were just struck by a mote — every axis reacts visibly, even
+   * when the dish moves it only a little, so "this dish moved those four" is
+   * never conveyed by a 2px slide alone */
+  const [struck, setStruck] = useState<Set<Axis>>(() => new Set());
   const [motesGo, setMotesGo] = useState(false);
   const [truck, setTruck] = useState<"away" | "arriving" | "parked">("away");
   /** the trouble is announced once and then gets out of the way */
@@ -80,7 +84,6 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   sessionRef.current = s;
   const prevViable = useRef(false);
   const [trayArtOk, setTrayArtOk] = useState(false);
-  const [rackArtOk, setRackArtOk] = useState(false);
   const [schoolArtOk, setSchoolArtOk] = useState(false);
 
   const ev = evaluate(s.tray);
@@ -96,7 +99,9 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     return [a, at < b0 ? "low" : at > b1 ? "high" : "good"];
   })) as Record<Axis, Band>;
   const beadsSettled = ev.complete && ev.hasStaple && AXES.every((a) => drawn[a] === "good");
-  const sendable = !sending && beadsSettled && canSend(s);
+  // nothing is offered while a dish or its motes are still in the air: the
+  // picture must have finished settling before the world reacts to it
+  const sendable = !sending && !fly && motes.length === 0 && beadsSettled && canSend(s);
   const dishName = (id: string) => COPY.play.dish[id] ?? COPY.play.dish.unknown;
 
   const fx = (fn: () => void, ms: number) => {
@@ -129,7 +134,11 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     setMotesGo(false);
     fx(() => setMotesGo(true), 30); // a timer, not rAF: rAF is throttled in a hidden tab
     // the beads move when the motes reach them, never before
-    AXES.forEach((a, i) => fx(() => setShown((cur) => ({ ...cur, [a]: beadPositions(evaluate(sessionRef.current.tray))[a] })), 30 + i * 70 + MOTE_MS * 0.75));
+    AXES.forEach((a, i) => fx(() => {
+      setShown((cur) => ({ ...cur, [a]: beadPositions(evaluate(sessionRef.current.tray))[a] }));
+      setStruck((cur) => new Set(cur).add(a));
+      fx(() => setStruck((cur) => { const n = new Set(cur); n.delete(a); return n; }), 420);
+    }, 30 + i * 70 + MOTE_MS * 0.75));
     fx(() => { setMotes([]); setMotesGo(false); }, 30 + AXES.length * 70 + MOTE_MS + 120);
   };
   /** no dish to fly from (a removal): the beads simply roll back */
@@ -196,17 +205,26 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     const course = DISH_BY_ID[id].course;
     const same = cur.tray.filter((d): d is string => !!d && DISH_BY_ID[d].course === course);
     if (same.length !== 1) { bump(id); return; }
-    const leaving = same[0];
-    const slot = cur.tray.indexOf(leaving);
     // the dish that is making way lifts out first, so the exchange is visible
-    setLeavingSlot(slot);
+    setLeavingSlot(cur.tray.indexOf(same[0]));
     fx(() => {
       setLeavingSlot(null);
-      const r = swap(sessionRef.current, leaving, id);
-      if (!r.ok) { bump(id); return; }
-      sessionRef.current = r.session;
-      setS(r.session);
-      flyDish(id, r.slot, el);
+      // recompute against the tray as it is NOW: a second quick tap must not be
+      // rejected just because the first one had not finished lifting out
+      const now = sessionRef.current;
+      if (now.tray.includes(id) || !now.available[id]) return;
+      const free = now.tray.indexOf(null);
+      if (free >= 0) {
+        const r = place(now, id);
+        if (!r.ok) return;
+        sessionRef.current = r.session; setS(r.session); flyDish(id, r.slot, el);
+        return;
+      }
+      const out = now.tray.filter((d): d is string => !!d && DISH_BY_ID[d].course === DISH_BY_ID[id].course)[0];
+      if (!out) return; // nothing legal to replace — say nothing rather than refuse a good dish
+      const r = swap(now, out, id);
+      if (!r.ok) return;
+      sessionRef.current = r.session; setS(r.session); flyDish(id, r.slot, el);
     }, 260);
   };
 
@@ -320,7 +338,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
           </div>
         </div>
 
-        <GaugeRack ev={ev} shown={shown} drawn={drawn} src={assets?.rack} onArt={setRackArtOk} hasArt={rackArtOk} />
+        <GaugeRack ev={ev} shown={shown} drawn={drawn} struck={struck} />
       </div>
 
       {/* motion layer: the flying dish, its landing burst, and the motes going into the grooves */}
@@ -381,16 +399,15 @@ function beadPositions(ev: Evaluation): Record<Axis, number> {
  * hollow in the middle. A bead that reaches the hollow settles into it; a bead
  * out on the shallow part keeps rocking. Nothing here is a bar or a percentage.
  * Exported for the QA harness. */
-export function GaugeRack({ ev, shown, drawn, src, onArt, hasArt }: {
-  ev: Evaluation; shown: Record<Axis, number>; drawn: Record<Axis, Band>; src?: string; onArt?: (ok: boolean) => void; hasArt?: boolean;
+export function GaugeRack({ ev, shown, drawn, struck }: {
+  ev: Evaluation; shown: Record<Axis, number>; drawn: Record<Axis, Band>; struck?: Set<Axis>;
 }) {
   // while the tray is still being filled the beads only MOVE; nothing is judged,
   // so a child's first dish can never look like a mistake
   const judging = ev.complete;
   const ready = ev.filled > 0;
   return (
-    <div className={`lmp-rack ${hasArt ? "has-art" : ""} ${ready ? "ready" : ""}`} role="group" aria-label={COPY.play.rack}>
-      <Art src={src} className="lmp-rack-art" onState={onArt} fallback={null} />
+    <div className={`lmp-rack ${ready ? "ready" : ""}`} role="group" aria-label={COPY.play.rack}>
       {AXES.map((a) => {
         const pos = shown[a] ?? ev.readings[a].pos;
         return (
@@ -409,7 +426,7 @@ export function GaugeRack({ ev, shown, drawn, src, onArt, hasArt }: {
             <span className="lmp-groove-hollow" />
             <span className="lmp-groove-lip" />
             <i
-              className={`lmp-bead band-${!ready ? "idle" : judging ? drawn[a] : "filling"}`}
+              className={`lmp-bead band-${!ready ? "idle" : judging ? drawn[a] : "filling"} ${struck?.has(a) ? "struck" : ""}`}
               data-bead={a}
               style={{ left: `${GROOVE.x0 + (GROOVE.x1 - GROOVE.x0) * pos}%` }}
               role="img"

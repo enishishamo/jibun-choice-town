@@ -1684,7 +1684,7 @@
     "v2-lunch-vertical-slice": {
       "task_id": "v2-lunch-vertical-slice",
       "task_type": "game-content",
-      "status": "BLOCKED",
+      "status": "SUPERSEDED",
       "repair_count": 0,
       "review_status": "FAIL",
       "review_evidence": "factory/projects/v2-lunch-menu/impl-review-r4.result.json",
@@ -1699,7 +1699,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-20T14:29:27.246Z",
-      "updated_at": "2026-09-21T04:05:16.981Z",
+      "updated_at": "2026-09-21T13:40:56.990Z",
       "history": [
         {
           "at": "2026-09-20T14:29:27.253Z",
@@ -1740,6 +1740,13 @@
           "event": "blocked",
           "reason": "2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched.",
           "human_decision": false
+        },
+        {
+          "at": "2026-09-21T13:40:56.991Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "2026-09-21 の Human 指令（FACTORY RESTORATION + 栄養教諭 JOB VERTICAL SLICE）により、このタスクの対象だった三色食品群カゴ方式の PLAY は撤去され、スライスは v2-lunch-nutrition-teacher-slice で作り直された。本タスクを止めていた DN-04（状態 cue の見た目）は失われておらず、新タスクの design_needed に DN-RACK として引き継がれている（未解決のまま）。台帳の付け替えであって、止まっていた設計判断を回避したものではない"
         }
       ]
     },

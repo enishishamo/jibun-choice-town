@@ -166,10 +166,10 @@
 .lmp-slot.fixed .lmp-dish-art { height: 150%; }
 
 /* ── the counting rack: four channels carved into one block ──
-   The bead travels 38%..93% of the rack (GROOVE in LunchMenuPlay.tsx). The good
-   band is the middle 41.7% of that travel (lunchMenuLogic TRACK = the band padded
-   by 0.7x on each side), so the hollow spans 38+55*0.2917 = 54.0% and is
-   55*0.4167 = 22.9% wide. If TRACK or GROOVE changes, these change with it.
+   The bead travels GROOVE.x0..GROOVE.x1 of the rack. The hollow's position and
+   width are NOT written here: they arrive per axis as --hollow-left /
+   --hollow-width, computed from the model's own BAND and TRACK, so the drawn
+   hole and the rule can never drift apart.
 
    The bead must read as being INSIDE the channel, never as a knob sitting on a
    slider. That is done with a near lip (.lmp-groove-lip) drawn OVER the bead's
@@ -185,8 +185,6 @@
               0 10px 12px color-mix(in srgb, var(--v2-deep-green) 14%, transparent),
               inset 0 2px 0 color-mix(in srgb, var(--v2-warm-cream) 80%, transparent);
 }
-.lmp-rack.has-art { background: none; box-shadow: none; }
-.lmp-rack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
 .lmp-groove { position: absolute; left: 0; right: 0; height: 30px; margin-top: -15px; display: block; }
 .lmp-groove-name {
@@ -237,7 +235,6 @@
   background: var(--v2-warm-beige);
   z-index: 2;
 }
-.lmp-rack.has-art .lmp-groove-track, .lmp-rack.has-art .lmp-groove-hollow, .lmp-rack.has-art .lmp-groove-lip { opacity: 0; }
 
 /* One clay bead per channel. It is ALWAYS the same bead — the difference between
    "resting in the hollow" and "stuck on the shallow part" is how deep it sits and
@@ -408,6 +405,7 @@
 @keyframes lmp-settle { 0% { transform: translateY(-4px); } 45% { transform: translateY(5px) scale(0.985); } 100% { transform: translateY(-4px); } }
 @keyframes lmp-deliver { 0% { transform: translateY(-4px); } 22% { transform: translateY(7px) scale(0.98); } 100% { transform: translateY(-104px) scale(0.42); opacity: 0.35; } }
 @keyframes lmp-spark { from { transform: rotate(var(--a)) translateX(6px) scale(1); opacity: 1; } to { transform: rotate(var(--a)) translateX(40px) scale(0.3); opacity: 0; } }
+@keyframes lmp-struck { 0% { transform: translateY(0) scale(1); } 35% { transform: translateY(-7px) scale(1.16); } 100% { transform: translateY(0) scale(1); } }
 @keyframes lmp-rock { 0%, 100% { transform: translateY(-4px) rotate(-8deg); } 50% { transform: translateY(-6px) rotate(8deg); } }
 @keyframes lmp-await { 0%, 100% { opacity: 0.18; transform: scale(0.82); } 50% { opacity: 0.5; transform: scale(1); } }
 @keyframes lmp-leave { to { transform: translateY(-16px) scale(0.7); opacity: 0; } }
@@ -418,7 +416,7 @@
 @media (prefers-reduced-motion: reduce) {
   .lmp-cand.invite, .lmp-shelf.wanted .lmp-cand, .lmp-school.ready, .lmp-slot.empty::after, .lmp-slot.pop, .lmp-slot.related .lmp-dish, .lmp-slot.related .lmp-dish-art,
   .lmp-truck.st-arriving, .lmp.is-delivering .lmp-tray, .lmp.is-settled .lmp-tray, .lmp-tray.can-send, .lmp-tray.can-send::after, .lmp-spark, .lmp-bead.band-low,
-  .lmp-bead.band-high, .lmp-trouble, .lmp-cand.shake { animation: none; }
+  .lmp-bead.band-high, .lmp-bead.struck, .lmp-trouble, .lmp-cand.shake { animation: none; }
   .lmp-fly, .lmp-mote, .lmp-bead, .lmp-truck { transition: none; }
   .lmp.is-delivering .lmp-tray { opacity: 0.55; }
 }

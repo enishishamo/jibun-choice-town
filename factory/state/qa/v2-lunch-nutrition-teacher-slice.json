@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T13:22:48.810Z",
- "commit": "0384ce6a6f6d9470542fb0539336cbc483c228eb",
+ "ran_at": "2026-09-21T13:42:19.731Z",
+ "commit": "3075ad05cbd31b7fd804cc6b4b631a4000664a29",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,7 +10,7 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/gameplay-qa-zoo.mjs:9:77: warning eslint(no-unused-vars): Identifier 'planValue' is imported but never used. help: Consider removing this import."
+   "summary": "factory/harness/gameplay-qa-waste.mjs:14:44: warning eslint(no-unused-vars): Identifier 'LF_TANK_CAP' is imported but never used. help: Consider removing this import."
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",

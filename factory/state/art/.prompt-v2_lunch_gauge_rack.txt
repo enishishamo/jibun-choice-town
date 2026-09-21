@@ -17,3 +17,13 @@ Must NOT include: readable text; letters or numbers; logos; attribute marks, ico
 Characters: no characters at all
 Aspect ratio: 3:2 (compose for this frame).
 Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the rack.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: The plain white studio background lacks the tabletop and miniature-diorama context consistently visible in the reference set.
+- Fix vs reference set: The object surface resembles smooth molded plastic or baked dough more than the references' visibly handcrafted matte clay.
+- Fix vs reference set: Lighting is flatter and more clinical than the references' warm, softly directional diorama lighting.
+- Fix vs reference set: The nearly monochrome beige palette is less colorful and less visually integrated with the established JIBUN CHOICE world.
+- No particles are shown rolling through or gathered in the four central recesses, so the intended physical cue of reaching “just right” is not visually explained.
+- The rack floats against a white background instead of reading as a wooden tool placed on a desk, contrary to the stated presentation purpose.
+- The four long grooves and shallow central depressions are visible, but their function is ambiguous without particles or a restrained tabletop context.
+- The very pale background and similarly light object reduce edge separation, especially at mobile size.
