@@ -64,6 +64,7 @@ World consistency review → human approval → master 昇格。
 □ character RIGHT ear = 🔍
 □ character LEFT  ear = ❤️
 □ 前後左右で耳が反転していない
+□ 実装コードで左右反転（scaleX(-1) / rotateY(180deg) / flip）していない
 □ beak がない
 □ 鼻は小さく・丸く・オレンジ色（尖っていない／横に伸びていない）
 □ 別キャラクター化していない

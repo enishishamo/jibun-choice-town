@@ -41,6 +41,10 @@ nose  = small round ORANGE nose   小さな丸いオレンジ色の鼻あり（2
 
 - **口を描かない。** 表情は目・姿勢・身体の動きで表現する。
 - 画像生成 AI による左右反転を「正しい仕様」として採用しない。
+- **実装で左右反転しない（HARD RULE、2026-09-21 Human 指示）**: CSS / SVG / canvas での
+  `transform: scaleX(-1)`・`scale(-1, 1)`・`rotateY(180deg)`・画像の flip 等で相棒の向きを作らない。
+  反転すると耳（🔍/❤️）と身体基準の左右が入れ替わるため。向きが必要なら Master 由来の
+  その向きの asset を使い、無ければ `DESIGN_NEEDED`。
 - **Visual source of truth**: `design/v2/master/companion-model-sheet-2026-09-20.png`（正面／後ろ／
   横向き 2 方向の 4 面図、Human 承認済み Master）。以後、相棒を扱うときは本書の文章と
   **この Master 画像の両方**を参照する。文章と Master 画像が食い違う場合は Human に確認する
@@ -87,6 +91,7 @@ Claude Code は相棒を描き直さない・emoji / CSS で代替しない（[D
 □ character RIGHT ear = 🔍
 □ character LEFT  ear = ❤️
 □ 前後左右で耳が反転していない
+□ 実装コードで左右反転（scaleX(-1) / rotateY(180deg) / flip）していない
 □ beak がない
 □ 鼻は小さく・丸く・オレンジ色（尖っていない／横に伸びていない）
 □ 別キャラクター化していない
