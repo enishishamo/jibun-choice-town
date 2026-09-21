@@ -14,8 +14,9 @@
 // all, never exactly one as "the answer"). EVENT after the child has seen a
 // change they made; CLEAR = sending the finished lunch off to the school.
 // Dish art is a pure visual asset — game attributes live in the UI layer.
-// A dish already on the tray is shown on the counter as a used spot (ring +
-// small check), a visual language distinct from EVENT-unavailable (grey +
+// The counter is a serving counter: one pan per kind of dish. A dish already
+// on the tray leaves a vacant spot in its pan (no mark — a check would read as
+// right/wrong), a visual language distinct from EVENT-unavailable (grey +
 // coral badge + shake).
 //
 // TEMP_IMPLEMENTATION_ONLY where no approved art exists: placeholder shapes,
@@ -50,10 +51,11 @@ const MILK_POS = { x: 77, y: 43 };
 const GHOST_POS = { x: 77, y: 80 };
 /** salt specks fall in a scattered order, not left-to-right */
 const SALT_DELAYS = [0.9, 0.2, 1.25, 0.5, 1.05, 0];
-/** where bits rest inside a basket (% of the basket box); index ≥ GROUP_MAX spills over the rim */
+/** where bits rest inside a basket (% of the square basket box, measured from the basket masters:
+ * the opening's centre sits at about (50%, 36%)); index ≥ GROUP_MAX spills over the rim */
 const BASKET_SPOTS: { x: number; y: number }[] = [
-  { x: 30, y: 70 }, { x: 54, y: 74 }, { x: 72, y: 66 }, { x: 44, y: 54 }, // inside the basket
-  { x: 60, y: 22 }, { x: 34, y: 16 }, { x: 78, y: 12 }, { x: 50, y: 2 }, { x: 20, y: -2 }, { x: 86, y: -6 }, // spilling over the rim
+  { x: 32, y: 40 }, { x: 52, y: 45 }, { x: 68, y: 38 }, { x: 45, y: 31 }, // inside the basket
+  { x: 62, y: 21 }, { x: 38, y: 17 }, { x: 100, y: 74 }, { x: 50, y: 7 }, { x: 24, y: 5 }, { x: 84, y: 1 }, // piled on the rim, then fallen out beside it
 ];
 
 /** per-rule penalty totals — the unit the status layer reacts on */
@@ -103,6 +105,8 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [changed, setChanged] = useState<Delta>({});
   const [grains, setGrains] = useState<Grain[]>([]);
   const [flying, setFlying] = useState(false);
+  /** basket contents shown while bits are still in the air (they appear in the basket on landing) */
+  const [held, setHeld] = useState<Record<Group, number> | null>(null);
   const rootRef = useRef<HTMLElement>(null);
   const eventTimer = useRef<number | null>(null);
   const clearTimer = useRef<number | null>(null);
@@ -113,6 +117,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const prevTray = useRef<Tray>(s.tray);
   const basketsShown = useRef(false);
   const seq = useRef(0);
+  const flightSeq = useRef(0);
   const sessionRef = useRef<Session>(s);
   sessionRef.current = s;
   const [trayArtOk, setTrayArtOk] = useState(false);
@@ -157,7 +162,9 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     setGrains(out);
     setFlying(false);
     fx(() => setFlying(true), 40); // timer, not rAF: rAF is throttled in background tabs
-    fx(() => { setGrains([]); setFlying(false); }, 1400);
+    const lastLanding = 40 + 700 + Math.max(0, ...out.map((g) => g.delay));
+    fx(() => setHeld(null), lastLanding); // the bits now sit in the baskets
+    fx(() => { setGrains([]); setFlying(false); }, lastLanding + 300);
   };
 
   // status-layer reaction: which cues improved / worsened since the last full
@@ -169,14 +176,17 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     if (ev.complete) {
       const d = delta(lastEval.current, ev);
       lastEval.current = ev;
-      if (Object.keys(d).length) { setChanged(d); fx(() => setChanged({}), 900); }
+      // the improved / worsened cues pulse once the bits have landed, not before
+      if (Object.keys(d).length) fx(() => { setChanged(d); fx(() => setChanged({}), 900); }, FLY_MS + 1000);
     }
     if (!showStatus) return;
     if (!basketsShown.current) {
       basketsShown.current = true;
-      // first full tray: the baskets slide in first (their entrance moves them), then every dish sends its bits
+      // first full tray: the baskets slide in empty, then every dish sends its bits
+      setHeld({ red: 0, yellow: 0, green: 0 });
       fx(() => launchGrains([...s.tray.filter((d): d is string => !!d), ...(MILK_FIXED ? [MILK.id] : [])]), FLY_MS + 360);
     } else if (added.length) {
+      setHeld(groupCounts(before)); // the new dish's bits show up in the baskets only when they land
       fx(() => launchGrains(added), FLY_MS + 40); // after the flying dish has landed
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -215,14 +225,18 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     const from = (el.querySelector(".lmp-dish-art, .lmp-dish") ?? el).getBoundingClientRect();
     const to = rootRef.current?.querySelector<HTMLElement>(`[data-slot-index="${r.slot}"]`)?.getBoundingClientRect();
     if (rb && to) {
-      const mine = ++seq.current; // a later tap replaces the clone; only the latest flight clears it
+      const mine = ++seq.current; // a later tap replaces the clone; only the latest flight lands
+      flightSeq.current = mine;
       setFly({ seq: mine, id, x0: from.left - rb.left, y0: from.top - rb.top, w0: from.width, x1: to.left - rb.left, y1: to.top - rb.top, w1: to.width });
       setFlyGo(false);
       setArriving(r.slot);
-      fx(() => setFlyGo(true), 20);
+      fx(() => { if (flightSeq.current === mine) setFlyGo(true); }, 20);
       fx(() => {
-        setFly((cur) => (cur && cur.seq === mine ? null : cur));
-        setArriving((cur) => (cur === r.slot ? null : cur));
+        if (flightSeq.current !== mine) return; // a later tap took over this flight
+        setFly(null);
+        setArriving(null);
+        // land only if the dish is still where it was heading (it may have been removed or taken by the EVENT)
+        if (sessionRef.current.tray[r.slot] !== id) return;
         setPop(r.slot);
         const cx = to.left - rb.left + to.width / 2, cy = to.top - rb.top + to.height / 2;
         setSparks(Array.from({ length: 7 }, (_, i) => ({ id: ++seq.current, x: cx, y: cy, a: (i / 7) * 360 + 15 })));
@@ -263,6 +277,8 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         type="button"
         className={`lmp-school ${commitReady ? "ready" : ""} ${delivering ? "stamped" : ""} ${schoolArtOk ? "has-art" : ""}`}
         aria-label={COPY.play.deliver}
+        aria-hidden={!commitReady && !delivering}
+        tabIndex={commitReady ? 0 : -1}
         disabled={!commitReady}
         onClick={deliver}
       >
@@ -289,7 +305,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
           {/* status layer — only after the first full tray (spec §3): cues on the tray (some under the
               dishes, some over them) + the baskets on the table. Rendered before the slots so the
               layer can stack around them. */}
-          {showStatus && <StatusLayer ev={ev} tray={s.tray} changed={changed} basketArt={assets?.basket} />}
+          {showStatus && <StatusLayer ev={ev} tray={s.tray} changed={changed} basketArt={assets?.basket} shown={held ?? undefined} />}
           <div className="lmp-slots">
             {Array.from({ length: FREE_SLOTS }).map((_, i) => {
               const id = s.tray[i];
@@ -302,7 +318,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                   aria-label={id ? dishName(id) : COPY.play.slotEmpty(i + 1)}
                   data-slot-dish={id ?? undefined}
                   data-slot-index={i}
-                  disabled={!id}
+                  disabled={!id || arriving === i}
                   onClick={() => id && tapTrayDish(id)}
                 >
                   {id && <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />}
@@ -357,7 +373,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                   disabled={onTray}
                   onClick={(e) => tapCandidate(id, e.currentTarget)}
                 >
-                  {onTray ? <span className="lmp-used" aria-hidden="true"><i className="lmp-used-ring" /><i className="lmp-used-check" /></span> : <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />}
+                  {onTray ? <span className="lmp-used" aria-hidden="true" /> : <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />}
                   {unavailable && <span className="lmp-badge" aria-hidden="true" />}
                 </button>
               );
@@ -411,8 +427,11 @@ const slotPos = (tray: Tray, id: string) => {
  * same cooking / same kind), a ghost ring where a kind is missing. Every
  * RuleId has a cue (harness-checked); `changed` pulses a cue that just
  * improved or worsened. Form: DN-04 (TEMP until the Design Owner overrides). */
-export function StatusLayer({ ev, tray, changed, basketArt }: { ev: Evaluation; tray: Tray; changed: Delta; basketArt?: Partial<Record<Group, string>> }) {
-  const counts = groupCounts(tray);
+export function StatusLayer({ ev, tray, changed, basketArt, shown }: { ev: Evaluation; tray: Tray; changed: Delta; basketArt?: Partial<Record<Group, string>>; shown?: Record<Group, number> }) {
+  const real = groupCounts(tray);
+  // while bits are in the air the baskets still show the previous contents (`shown`), never more than the real count
+  const counts: Record<Group, number> = { red: 0, yellow: 0, green: 0 };
+  for (const g of GROUPS) counts[g] = shown ? Math.min(real[g], shown[g]) : real[g];
   const groupState = (g: Group): "ok" | "low" | "high" => {
     if (ev.hits.some((h) => h.rule === "group_low" && h.detail === g)) return "low";
     if (ev.hits.some((h) => h.rule === "group_high" && h.detail === g)) return "high";
@@ -427,7 +446,7 @@ export function StatusLayer({ ev, tray, changed, basketArt }: { ev: Evaluation; 
         {/* under the dishes: the oil puddle leaking from under the fatty dish's plate */}
         {trayHits.filter((h) => h.rule === "fat_over").map((h, i) => {
           const p = relatedDishes(h)[0] ? slotPos(tray, relatedDishes(h)[0]) : GHOST_POS;
-          return <b key={`puddle-${i}`} className="lmp-puddle" aria-hidden="true" style={{ left: `${p.x}%`, top: `${p.y}%` }} />;
+          return <b key={`puddle-${i}`} className="lmp-puddle" aria-hidden="true" style={{ left: `${p.x}%`, top: `${p.y}%` }}><b className="lmp-puddle-lobe" /></b>;
         })}
         {trayHits.map((h, i) => {
           const ids = relatedDishes(h);
@@ -445,6 +464,7 @@ export function StatusLayer({ ev, tray, changed, basketArt }: { ev: Evaluation; 
             >
               {h.rule === "salt_over" && SALT_DELAYS.map((d, k) => <b key={k} className="lmp-salt" style={{ ["--k" as string]: k, ["--d" as string]: `${d}s` }} />)}
               {h.rule === "fat_over" && Array.from({ length: 2 }, (_, k) => <b key={k} className="lmp-drip" style={{ ["--k" as string]: k }} />)}
+              {h.rule === "fat_over" && Array.from({ length: 3 }, (_, k) => <b key={`g${k}`} className="lmp-gloss" style={{ ["--k" as string]: k }} />)}
             </i>
           );
         })}
@@ -464,7 +484,7 @@ export function StatusLayer({ ev, tray, changed, basketArt }: { ev: Evaluation; 
               role="img"
               aria-label={`${COPY.play.status.group[g]} ${COPY.play.status.groupState[st]}`}
             >
-              <Art src={basketArt?.[g]} className="lmp-basket-art" fallback={<b className="lmp-ph lmp-basket-ph" />} />
+              <Art src={basketArt?.[g]} className="lmp-basket-art" fallback={<b className="lmp-ph lmp-basket-ph">{COPY.dev.tag}</b>} />
               <b className="lmp-bits">
                 {Array.from({ length: Math.min(n, BASKET_SPOTS.length) }, (_, k) => (
                   <b key={k} className={`lmp-bit ${k >= GROUP_MAX ? "over" : ""}`} style={{ left: `${BASKET_SPOTS[k].x}%`, top: `${BASKET_SPOTS[k].y}%` }} />

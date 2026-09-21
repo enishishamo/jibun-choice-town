@@ -4279,6 +4279,149 @@
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
    "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_basket_red",
+   "filename": "baskets/red.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（fish, meat, egg and milk の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a warm coral-tinted woven basket: a small, wide, low woven basket in the same miniature clay / toy style as the tray and dishes, empty, open top visible, with a small round tag on the front showing a simple fish silhouette (a simple embossed clay pictogram, no text). Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（fish, meat, egg and milk の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the basket centered and filling about 70% of the square with even margins (at least 14% on every side). The basket is EMPTY and seen slightly from above so its open top is visible; the game piles small round bits into it at runtime, so the inside must be plain and uncluttered. No table, no cloth, no shadow outside the basket: it floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the basket. Matte clay / miniature toy texture, rounded simplified shapes, the same material and lighting as the dish set and tray.\nMust include: one empty low woven basket, open top visible; one small round front tag with a simple pictogram; transparent background\nMust NOT include: readable text; letters or numbers; logos; food inside the basket; coloured dots, marks, gauges or icons other than the single front tag; hands or people; table, cloth, background, backdrop or drop shadow outside the basket; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the basket.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/rice.png",
+    "public/assets/v2/lunch/dishes/karaage.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T03:38:33.605Z",
+   "iteration": 1,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 98,
+    "READABILITY": 97,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 96,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "白背景が実画像として固定されている場合、ゲーム画面上でトレーや料理粒と重ねた際に白い矩形が見えるため、透過背景での納品確認が必要",
+    "魚タグは文字を使わず用途を明瞭に示しており、中央配置と大きさもモバイル表示に適している",
+    "かご全体と開口部が十分な余白内に収まり、料理から飛んできた粒が中にたまる状態を視覚的に表現しやすい"
+   ],
+   "file_hash": "86f02e780b6a",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_basket_yellow",
+   "filename": "baskets/yellow.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（rice, bread and potatoes の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a warm honey-yellow-tinted woven basket: a small, wide, low woven basket in the same miniature clay / toy style as the tray and dishes, empty, open top visible, with a small round tag on the front showing a simple rice-grain / bread-loaf silhouette (a simple embossed clay pictogram, no text). Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（rice, bread and potatoes の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the basket centered and filling about 70% of the square with even margins (at least 14% on every side). The basket is EMPTY and seen slightly from above so its open top is visible; the game piles small round bits into it at runtime, so the inside must be plain and uncluttered. No table, no cloth, no shadow outside the basket: it floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the basket. Matte clay / miniature toy texture, rounded simplified shapes, the same material and lighting as the dish set and tray.\nMust include: one empty low woven basket, open top visible; one small round front tag with a simple pictogram; transparent background\nMust NOT include: readable text; letters or numbers; logos; food inside the basket; coloured dots, marks, gauges or icons other than the single front tag; hands or people; table, cloth, background, backdrop or drop shadow outside the basket; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the basket.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/rice.png",
+    "public/assets/v2/lunch/dishes/karaage.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T03:42:26.678Z",
+   "iteration": 1,
+   "qa_score": 82,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 96,
+    "READABILITY": 84,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 87,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 82,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 86,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "前面タグがパン単体の絵なので、米・パン・いもが集まる共通カテゴリではなく「パン専用かご」と誤認される可能性がある",
+    "かご内部と背景がともに明るいため、ゲーム画面を小さく表示した際に内側の輪郭と蓄積状態の変化がやや見分けにくくなる可能性がある"
+   ],
+   "file_hash": "30e010ece132",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_basket_green",
+   "filename": "baskets/green.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（vegetables and fruit の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a soft green-tinted woven basket: a small, wide, low woven basket in the same miniature clay / toy style as the tray and dishes, empty, open top visible, with a small round tag on the front showing a simple leaf silhouette (a simple embossed clay pictogram, no text). Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（vegetables and fruit の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the basket centered and filling about 70% of the square with even margins (at least 14% on every side). The basket is EMPTY and seen slightly from above so its open top is visible; the game piles small round bits into it at runtime, so the inside must be plain and uncluttered. No table, no cloth, no shadow outside the basket: it floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the basket. Matte clay / miniature toy texture, rounded simplified shapes, the same material and lighting as the dish set and tray.\nMust include: one empty low woven basket, open top visible; one small round front tag with a simple pictogram; transparent background\nMust NOT include: readable text; letters or numbers; logos; food inside the basket; coloured dots, marks, gauges or icons other than the single front tag; hands or people; table, cloth, background, backdrop or drop shadow outside the basket; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the basket.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/dishes/rice.png",
+    "public/assets/v2/lunch/dishes/karaage.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T03:46:37.682Z",
+   "iteration": 1,
+   "qa_score": 76,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 97,
+    "READABILITY": 76,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 86,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 78,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 85,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "前面タグが葉だけなので、野菜は連想できるが果物も集まるかごであることは十分に伝わりにくい",
+    "かご本体とタグの葉が同系色で、小さい画面では状態キューの識別力が下がる",
+    "白背景が完全な透過背景でない場合、トレー上への配置時に白い矩形として見える可能性がある"
+   ],
+   "file_hash": "2ec5c1011def",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
   }
  ]
 }

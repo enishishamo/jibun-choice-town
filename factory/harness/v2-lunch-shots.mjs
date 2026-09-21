@@ -48,8 +48,11 @@ await tap("ごはん", 150);
 await shot("02b-one-placed-flying");                           // R2 1品置いた瞬間（飛んでいる途中）
 await sleep(330);
 await shot("02c-one-placed-landed");                           // R2 着地・粒
-for (const d of ["とりのからあげ", "ポテトサラダ", "コーンスープ"]) await tap(d);
-await sleep(700);
+for (const d of ["とりのからあげ", "ポテトサラダ"]) await tap(d);
+await tap("コーンスープ", 0);
+// bits leave the dishes FLY_MS+360 ms after the last tap and fly for 700 ms: shoot inside that window
+await page.waitForSelector(".lmp-grain", { timeout: 3000 });
+await sleep(260);
 await shot("03-first-complete-grains");                        // R3 4品完成、粒が飛ぶ途中
 await sleep(1300);
 await shot("04-first-complete-status");                        // R3 4品完成、状態 cue が出た直後

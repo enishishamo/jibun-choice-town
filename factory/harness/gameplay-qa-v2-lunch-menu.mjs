@@ -17,10 +17,14 @@
 //   7. scores within 0..100; every rule carries a fact reference
 // Usage: node factory/harness/gameplay-qa-v2-lunch-menu.mjs
 import { createServer } from "vite";
+import react from "@vitejs/plugin-react";
 
 import { tmpdir } from "node:os";
 const CACHE = `${tmpdir()}/jc-vite-cache-v2-lunch`; // write-free repo: Vite temp files go to the OS tmpdir
-const vite = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE });
+// configFile:false — loading vite.config.ts would bundle it into node_modules/.vite-temp (a repo write,
+// EPERM in a read-only sandbox); the harness only needs the react plugin inline.
+const VITE = { configFile: false, plugins: [react()], server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE };
+const vite = await createServer(VITE);
 const L = await vite.ssrLoadModule("/src/v2/lunch/play/lunchMenuLogic.ts");
 await vite.close();
 
@@ -50,12 +54,19 @@ check("evaluate() reads no attribute outside VISIBLE_ATTRIBUTES (recorded)", hid
 //     not baked into dish art; the child sees each rule's effect in the status layer)
 const React = await import("react");
 const { renderToStaticMarkup } = await import("react-dom/server");
-const P = await (async () => { const v2 = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE }); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
-// a tray that trips every rule at once: two staples (dup role + missing main/side/soup…), etc.
-const worst = { score: 0, complete: true, filled: 4, hits: Object.keys(L.RULES).map((r) => ({ rule: r, dishIds: [], detail: r === "group_low" ? "red" : r === "group_high" ? "yellow" : r, points: 1 })) };
-const html = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: worst, tray: ["rice", "bread", "rice", "bread"], changed: {} }));
-const noCue = Object.keys(L.RULES).filter((r) => !html.includes(`data-cue="${r}"`));
-check("StatusLayer renders a cue for every rule when hit", noCue.length === 0, noCue.join(", "));
+const P = await (async () => { const v2 = await createServer(VITE); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
+// contract-level witnesses: for every rule, a VALID enumerated tray whose real evaluate() hits it,
+// rendered through StatusLayer with that real evaluation (no fabricated hits)
+const witness = {};
+for (const t of all) for (const h of L.evaluate(t.tray).hits) witness[h.rule] ??= t.tray;
+const noWitness = Object.keys(L.RULES).filter((r) => !witness[r]);
+check("every rule is reachable from a valid tray of the default candidates", noWitness.length === 0, noWitness.join(", "));
+const noCue = Object.keys(L.RULES).filter((r) => {
+  if (!witness[r]) return true;
+  const html = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: L.evaluate(witness[r]), tray: witness[r], changed: {} }));
+  return !html.includes(`data-cue="${r}"`);
+});
+check("StatusLayer renders a cue for every rule from its real evaluation", noCue.length === 0, noCue.join(", "));
 const clean = all.find((t) => t.score === 100)?.tray ?? [];
 const okEval = L.evaluate(clean);
 const htmlOk = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: okEval, tray: clean, changed: {} }));

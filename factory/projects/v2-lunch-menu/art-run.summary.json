@@ -1,6 +1,6 @@
 [
  {
-  "name": "dish-bread",
+  "name": "basket-red",
   "ok": true,
   "loop_exit": 0,
   "post": {
@@ -16,18 +16,80 @@
    ],
    "keyed_white": true,
    "content_bbox": [
-    79,
-    173,
-    947,
-    873
+    60,
+    218,
+    965,
+    843
    ],
    "ok": true,
-   "out": "public/assets/v2/lunch/dishes/bread.png",
+   "out": "public/assets/v2/lunch/baskets/red.png",
    "out_size": [
     256,
     256
    ],
-   "content_fill": 0.568
+   "content_fill": 0.489
+  }
+ },
+ {
+  "name": "basket-yellow",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1024,
+    1024
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    67,
+    214,
+    961,
+    830
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/baskets/yellow.png",
+   "out_size": [
+    256,
+    256
+   ],
+   "content_fill": 0.486
+  }
+ },
+ {
+  "name": "basket-green",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1024,
+    1024
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    65,
+    208,
+    963,
+    819
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/baskets/green.png",
+   "out_size": [
+    256,
+    256
+   ],
+   "content_fill": 0.479
   }
  }
 ]

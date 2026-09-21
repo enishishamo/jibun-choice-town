@@ -1686,20 +1686,20 @@
       "task_type": "game-content",
       "status": "BLOCKED",
       "repair_count": 0,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-r4.result.json",
       "review_required": true,
       "qa_status": "PASS",
-      "qa_evidence": "factory/harness/gameplay-qa-v2-lunch-menu.mjs 19/19 (2026-09-20) + 375px manual playthrough MAP→PLAY→EVENT→commit→REVEAL→seed→MAP",
+      "qa_evidence": "npm run qa:v2-lunch 27/27 (2026-09-21, contract-level cue witnesses) + npm run shots:v2-lunch 375x812 real-tap 15 states, 0 console errors / 0 4xx",
       "deploy_status": null,
       "release_commit": null,
-      "blocked_reason": "independent review r4 could not run: Codex CLI usage limit (ChatGPT subscription) reached after the 13-asset image batch; r3 findings all addressed locally (see impl-review-r3.result.json + commits b32fb09). Re-run r4 when the quota resets.",
+      "blocked_reason": "2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched.",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-20T14:29:27.246Z",
-      "updated_at": "2026-09-21T01:03:10.207Z",
+      "updated_at": "2026-09-21T04:05:16.981Z",
       "history": [
         {
           "at": "2026-09-20T14:29:27.253Z",
@@ -1717,6 +1717,28 @@
           "at": "2026-09-21T01:03:10.208Z",
           "event": "blocked",
           "reason": "independent review r4 could not run: Codex CLI usage limit (ChatGPT subscription) reached after the 13-asset image batch; r3 findings all addressed locally (see impl-review-r3.result.json + commits b32fb09). Re-run r4 when the quota resets.",
+          "human_decision": false
+        },
+        {
+          "at": "2026-09-21T03:38:08.213Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-r4.result.json",
+          "score": 64,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-21T03:38:08.250Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "npm run qa:v2-lunch 27/27 (2026-09-21, contract-level cue witnesses) + npm run shots:v2-lunch 375x812 real-tap 15 states, 0 console errors / 0 4xx"
+        },
+        {
+          "at": "2026-09-21T04:05:16.982Z",
+          "event": "blocked",
+          "reason": "2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched.",
           "human_decision": false
         }
       ]
