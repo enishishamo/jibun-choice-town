@@ -1832,14 +1832,14 @@
         }
       ],
       "deploy_status": null,
-      "release_commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
+      "release_commit": "4310abeeb1e52953449c1631bafca639c4223b1d",
       "blocked_reason": "独立レビューは r1..r5 まで実施済み（68→72→78→80→84、blocker は r2 以降ゼロ）。指摘はすべてQAハーネス側の穴で、毎回修正のうえ変異テストで落ちることを確認している（M1..M19）。それでも直近の r5 は FAIL 84 で、修正後の fresh re-review（r6）が未完了のため PASS とは記録しない。加えて can-deploy は (a) Product Identity impact=YES の人間承認が未取得、(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW、いずれも画面設計＝Design Owner 判断）でも拒否している。QAハーネス側の修正は別タスク v2-lunch-qa-harness-hardening-r4 に分けて記録（本タスクの repair 枠は使い切り済み）",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T20:50:50.352Z",
+      "updated_at": "2026-09-21T21:04:51.995Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2130,6 +2130,22 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
+        },
+        {
+          "at": "2026-09-21T21:04:51.936Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:04:51.995Z",
+          "event": "release_commit_set",
+          "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
+          "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2192,18 +2208,18 @@
       "reviewer": "codex",
       "review_independent": true,
       "qa_status": "PASS",
-      "qa_evidence": "factory/state/qa/v2-lunch-qa-harness-hardening-r4.json",
+      "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
       "qa_evidence_kind": "file",
       "design_needed": [],
       "deploy_status": null,
-      "release_commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
+      "release_commit": "4310abeeb1e52953449c1631bafca639c4223b1d",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T20:23:59.876Z",
-      "updated_at": "2026-09-21T20:50:50.312Z",
+      "updated_at": "2026-09-21T21:04:52.088Z",
       "history": [
         {
           "at": "2026-09-21T20:23:59.877Z",
@@ -2259,6 +2275,22 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
+        },
+        {
+          "at": "2026-09-21T21:04:52.034Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:04:52.088Z",
+          "event": "release_commit_set",
+          "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
+          "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
