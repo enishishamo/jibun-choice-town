@@ -1771,24 +1771,24 @@
           "where": "src/v2/lunch/play/lunchMenuPlay.css:.lmp-rack",
           "note": "生成待ち: 木の板に4本の溝と中央の窪み（public/assets/v2/lunch/gauge-rack.png）。現状は同じ形をCSSで描いている",
           "added_at": "2026-09-21T13:02:47.346Z",
-          "resolved_at": null,
-          "approval": null
+          "resolved_at": "2026-09-21T19:58:07.975Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
         },
         {
           "id": "DN-MAPTILES",
           "where": "src/v2/lunch/PlaceMark.tsx",
           "note": "生成待ち: 弁当箱の地面と そだてる/つくる/こんだて のタイル。truck.png/school.png と同じカメラ・光・接地影で揃える",
           "added_at": "2026-09-21T13:02:47.387Z",
-          "resolved_at": null,
-          "approval": null
+          "resolved_at": "2026-09-21T19:57:49.913Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
         },
         {
           "id": "DN-SCENES",
           "where": "src/v2/lunch/screens/KnowTheJob.tsx",
           "note": "生成待ち: 給食室／教室／相談の3場面。同じ枠・同じ比率・同じカメラ",
           "added_at": "2026-09-21T13:02:47.432Z",
-          "resolved_at": null,
-          "approval": null
+          "resolved_at": "2026-09-21T19:57:49.876Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
         },
         {
           "id": "DN-KNOW-LAYOUT",
@@ -1813,6 +1813,22 @@
           "added_at": "2026-09-21T13:17:47.498Z",
           "resolved_at": null,
           "approval": null
+        },
+        {
+          "id": "DN-MAPGROUND",
+          "where": "src/v2/lunch/world/LunchWorldMap.tsx:MAP_H",
+          "note": "5つの場所タイルは配線済み。地面(map/bento.png)は35度パースの浅い皿で内側が横57%×縦32%しかなく、縦長MAPの5か所が入らない。MAP作り直し(A)か、内側が縦60%以上取れる弁当箱の描き直し(B)か。factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md §1",
+          "added_at": "2026-09-21T19:57:49.950Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-RACK-HOLLOW",
+          "where": "src/v2/lunch/play/LunchMenuPlay.tsx:GaugeRack",
+          "note": "板の絵は生成済み(qa 84)だが未配線。窪み=GOOD BANDの幅は4軸で21/29/38/19%と違うのに、絵の窪みは4本とも約17%。敷くと玉が窪みの外なのに「ちょうどいい」判定になる。溝ごとに窪み幅を変えた板(A)か、窪みなしの板だけ描いて溝は計算描画のまま(B、実装側の推奨)か、現状CSSのまま(C)。art-wiring-2026-09-22.md §2",
+          "added_at": "2026-09-21T19:58:08.012Z",
+          "resolved_at": null,
+          "approval": null
         }
       ],
       "deploy_status": null,
@@ -1823,7 +1839,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T14:33:05.418Z",
+      "updated_at": "2026-09-21T19:58:08.013Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -1973,6 +1989,46 @@
           "human_decision": false,
           "design_needed": false,
           "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:57:49.877Z",
+          "event": "design_needed_resolved",
+          "id": "DN-SCENES",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:57:49.914Z",
+          "event": "design_needed_resolved",
+          "id": "DN-MAPTILES",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:57:49.950Z",
+          "event": "design_needed_added",
+          "id": "DN-MAPGROUND",
+          "where": "src/v2/lunch/world/LunchWorldMap.tsx:MAP_H",
+          "note": "5つの場所タイルは配線済み。地面(map/bento.png)は35度パースの浅い皿で内側が横57%×縦32%しかなく、縦長MAPの5か所が入らない。MAP作り直し(A)か、内側が縦60%以上取れる弁当箱の描き直し(B)か。factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md §1",
+          "added_at": "2026-09-21T19:57:49.950Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:58:07.976Z",
+          "event": "design_needed_resolved",
+          "id": "DN-RACK",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:58:08.013Z",
+          "event": "design_needed_added",
+          "id": "DN-RACK-HOLLOW",
+          "where": "src/v2/lunch/play/LunchMenuPlay.tsx:GaugeRack",
+          "note": "板の絵は生成済み(qa 84)だが未配線。窪み=GOOD BANDの幅は4軸で21/29/38/19%と違うのに、絵の窪みは4本とも約17%。敷くと玉が窪みの外なのに「ちょうどいい」判定になる。溝ごとに窪み幅を変えた板(A)か、窪みなしの板だけ描いて溝は計算描画のまま(B、実装側の推奨)か、現状CSSのまま(C)。art-wiring-2026-09-22.md §2",
+          "added_at": "2026-09-21T19:58:08.012Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "BLOCKED"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"

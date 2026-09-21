@@ -3,11 +3,14 @@
 // at the start, so the screen is a small world, not an article.
 // Content: Ver.1 src/data/content/schoolLunch.ts (frozen) + the Ver.2 facts set.
 import { useState } from "react";
+import Art from "../Art";
 import PlaceMark, { type PlaceId } from "../PlaceMark";
 import { COPY } from "../copy";
 import { useScreenFocus } from "../useScreenFocus";
 
-export default function KnowTheJob({ onCareer, onNext }: {
+export default function KnowTheJob({ scenes, onCareer, onNext }: {
+  /** one picture per side, keyed by COPY.know.sides id; absent → the clay mark */
+  scenes?: Record<string, string>;
   onCareer: () => void;
   onNext: () => void;
 }) {
@@ -30,7 +33,11 @@ export default function KnowTheJob({ onCareer, onNext }: {
             <div key={side.id} className={`v2s-scene ${isOpen ? "open" : ""} ${seen.has(side.id) ? "seen" : ""}`}>
               <button type="button" className="v2s-scene-tap" aria-expanded={isOpen} aria-controls={`v2s-scene-${side.id}`} onClick={() => touch(side.id)}>
                 <span className="v2s-scene-art">
-                  <PlaceMark id={side.id as PlaceId} className="v2s-scene-mark" />
+                  <Art
+                    src={scenes?.[side.id]}
+                    className="v2s-scene-img"
+                    fallback={<PlaceMark id={side.id as PlaceId} className="v2s-scene-mark" />}
+                  />
                 </span>
                 <span className="v2s-scene-label">{side.label}</span>
               </button>
