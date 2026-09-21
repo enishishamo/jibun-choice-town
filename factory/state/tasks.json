@@ -1757,7 +1757,7 @@
       "producer": "claude-code-builder",
       "repair_count": 1,
       "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -1833,13 +1833,13 @@
       ],
       "deploy_status": null,
       "release_commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
-      "blocked_reason": "最後の独立再レビュー（r4）が Codex usage limit で実行できなかった。有効な最新レビューは r3 = FAIL 78（blocker 0 / high 1 / medium 3）で、その指摘はすべて修正済み（コミット 8b03691 ほか）だが、修正後の fresh re-review が未実施のため PASS とは記録しない。quota 回復後に factory/projects/v2-lunch-menu/impl-review-slice.prompt.md で再実行し、set-review すること。なお can-deploy は他に Product Identity 未承認と design_needed 6件でも拒否しており、これらは Human/Design Owner の判断",
+      "blocked_reason": "独立レビューは r1..r5 まで実施済み（68→72→78→80→84、blocker は r2 以降ゼロ）。指摘はすべてQAハーネス側の穴で、毎回修正のうえ変異テストで落ちることを確認している（M1..M19）。それでも直近の r5 は FAIL 84 で、修正後の fresh re-review（r6）が未完了のため PASS とは記録しない。加えて can-deploy は (a) Product Identity impact=YES の人間承認が未取得、(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW、いずれも画面設計＝Design Owner 判断）でも拒否している。QAハーネス側の修正は別タスク v2-lunch-qa-harness-hardening-r4 に分けて記録（本タスクの repair 枠は使い切り済み）",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T20:41:58.478Z",
+      "updated_at": "2026-09-21T20:50:50.352Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2107,6 +2107,29 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
+        },
+        {
+          "at": "2026-09-21T20:42:41.397Z",
+          "event": "blocked",
+          "reason": "独立レビューは r1..r5 まで実施済み（68→72→78→80→84、blocker は r2 以降ゼロ）。指摘はすべてQAハーネス側の穴で、毎回修正のうえ変異テストで落ちることを確認している（M1..M19）。それでも直近の r5 は FAIL 84 で、修正後の fresh re-review（r6）が未完了のため PASS とは記録しない。加えて can-deploy は (a) Product Identity impact=YES の人間承認が未取得、(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW、いずれも画面設計＝Design Owner 判断）でも拒否している。QAハーネス側の修正は別タスク v2-lunch-qa-harness-hardening-r4 に分けて記録（本タスクの repair 枠は使い切り済み）",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T20:50:50.353Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+          "score": 86,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2163,7 +2186,7 @@
       "producer": "claude-code-builder",
       "repair_count": 0,
       "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -2180,7 +2203,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T20:23:59.876Z",
-      "updated_at": "2026-09-21T20:41:58.441Z",
+      "updated_at": "2026-09-21T20:50:50.312Z",
       "history": [
         {
           "at": "2026-09-21T20:23:59.877Z",
@@ -2221,6 +2244,21 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
+        },
+        {
+          "at": "2026-09-21T20:50:50.313Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+          "score": 86,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"

@@ -1,10 +1,10 @@
 {
-  "ran_at": "2026-09-21T12:19:05.735Z",
+  "ran_at": "2026-09-21T20:53:09.022Z",
   "script": "factory/harness/factory-self-test.mjs",
   "ledger": "scratch (JC_TASKS_PATH) — the real factory/state/tasks.json is never read or written",
   "fixture_commits": {
-    "clean": "acf6e081d6a33188cdfcf8676c2077e0ae0d2673",
-    "src_touching": "d151012803f93e1c4a745d57bac90ffbd8b44e5f"
+    "clean": "1b5a9fd772819671be4ec0080b16b3d4ebe7bea5",
+    "src_touching": "686922a1c5f9bf2fc4086bc05f4e7156c3696b4d"
   },
   "results": [
     {
@@ -29,7 +29,7 @@
       "id": "D",
       "name": "release-gate-check refuses a src-touching commit with no task record",
       "ok": true,
-      "detail": "exit=1, names the commit=true: FAIL: 1 commit(s) touch src/ or public/ with NO task in /var/folders/tl/zbr33y4s10ng8xn0zdh44wdc0000gn/T/jc-factory-selftest-x9A9xn/tasks.json whose release_commit is exactly that sha: |   - d151012803f93e1c4a745d57bac90ffbd8b44e5f  (public/assets/v2/lunch/baskets/green.png, public/assets/v2/lunch/b"
+      "detail": "exit=1, names the commit=true: FAIL: 1 commit(s) touch src/ or public/ with NO task in /var/folders/tl/zbr33y4s10ng8xn0zdh44wdc0000gn/T/jc-factory-selftest-59tQJb/tasks.json whose release_commit is exactly that sha: |   - 686922a1c5f9bf2fc4086bc05f4e7156c3696b4d  (src/v2/lunch/play/lunchMenuPlay.css) | Record each one: node facto"
     },
     {
       "id": "E",

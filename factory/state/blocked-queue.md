@@ -11,7 +11,7 @@
 node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md
 ```
 
-生成時刻: 2026-09-21T20:00:22.479Z / 対象 8 件
+生成時刻: 2026-09-21T20:42:26.521Z / 対象 8 件
 
 `BLOCKED` / `HUMAN_DECISION_REQUIRED` は Human Decision が下りるまで
 Continuous Product Loop から自動で再着手しない。`DESIGN_BLOCKED` は

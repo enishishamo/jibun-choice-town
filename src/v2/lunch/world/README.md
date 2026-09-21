@@ -1,48 +1,52 @@
 # 給食 WORLD MAP (`LunchWorldMap`)
 
-TEMP_IMPLEMENTATION_ONLY — 見た目はすべて Claude Code の仮置き。GPT（Design Owner）の art が
-`assets` から差し込まれるまで PUBLIC には出さない（DESIGN_OWNERSHIP.md §2）。
+5 つの場所は生成済みのクレイタイル。地面（開いた弁当箱）だけがまだ CSS 描画で、
+生成物はあるが配線していない（理由は
+[`art-wiring-2026-09-22.md`](../../../../factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md) §1、
+台帳の `DN-MAPGROUND`）。ラベルは常に隠し、`aria-label` だけ付く（PLAY FIRST）。
 
 ## Props
 
 | prop | 型 | 説明 |
 |---|---|---|
 | `view` | `LunchWorldView` | `spots[id]`: `muted` / `trouble` / `solved`、`roads[id]`: `off` / `partial` / `on`、`newTrouble`: マウント時に「ガタッ」登場演出を再生する spot |
-| `onTapSpot` | `(id: SpotId) => void` | 全 spot で呼ぶ。何が起きるかは親が決める |
-| `assets` | `{ bento?: string; spot?: Partial<Record<SpotId, string>> }` | 指定した slot は仮シェイプの代わりに `<img object-fit: contain>` で描画 |
-| `showLabels` | `boolean`（既定 `false`） | `COPY.world.spotLabel` を表示するか。false でも `aria-label` は常に付く（PLAY FIRST） |
+| `onTapSpot` | `(id: SpotId) => void` | 全 spot で呼ぶ。何が起きるかは親が決める。遊べない場所も必ず一度揺れる（触って無反応にしない） |
+| `assets` | `{ bento?: string; spot?: Partial<Record<SpotId, string>> }` | 指定した slot は `PlaceMark` の代わりに `<Art>`（読み込み失敗時は `PlaceMark` に戻る） |
+| `showLabels` | `boolean`（既定 `false`） | `COPY.world.spot[id]` を表示するか |
 
-class hook: `is-playable`（`menu` のみ）、`is-muted` / `is-trouble` / `is-solved` / `is-new`。
+class hook: `is-playable`（`menu` のみ）、`is-muted` / `is-trouble` / `is-solved` / `is-nudged` / `is-new`。
 
-## 位置テーブル（`SPOT_POS`、map 座標 375×560）
+## 位置テーブル（`SPOT_POS`、map 座標 375×700）
 
 | spot | x | y | 配置 |
 |---|---|---|---|
-| grow | 95 | 190 | 左上 |
-| carry | 280 | 190 | 右上 |
-| serve | 187 | 320 | 中央（学校） |
-| cook | 95 | 450 | 左下 |
-| menu | 280 | 450 | 右下 |
+| grow | 96 | 250 | 左上 |
+| carry | 279 | 250 | 右上 |
+| serve | 187 | 405 | 中央（学校） |
+| cook | 96 | 560 | 左下 |
+| menu | 279 | 560 | 右下 |
 
 道（`ROAD_PATH`）は同じ座標系のベジェ。spot を動かしたら両端を合わせて調整する。
-`carry-cook` は中央の serve を避けて左寄りを通る（仮）。
+道は常に破線で、点いても破線のまま色だけ変わる（`is-partial` は前半だけ蜂蜜色）。
+一本の実線にすると、場所に棒が刺さっているように見える。
 
-## DESIGN_NEEDED
+## いま配線しているもの
 
-- お弁当箱（開いたフタ＋トレイ）の art
-- 5 spot × 3 状態（muted / trouble / solved）の art — 現状は 1 枚を CSS で減色・リング付与している
-- 異変マーカー（現状: コーラルの無地丸。「!」等の記号は使っていない）
-- 道の art（off の破線 / 点灯時の蜂蜜色 / 走る光）
-- solved リング（現状: 蜂蜜色の box-shadow）
-- 登場演出「ガタッ」の見え方（現状: 600ms の translate/rotate シェイク → 1.6s bob）
-- 道の経路そのもの（グラフ定義は WORLD_DESIGN §4 で OPEN）
-- 仮シェイプの色割り当て（`SPOT_TONE`）は Claude Code の独断
+| slot | ファイル |
+|---|---|
+| `spot.grow` | `public/assets/v2/lunch/map/grow.png` |
+| `spot.cook` | `public/assets/v2/lunch/map/cook.png` |
+| `spot.menu` | `public/assets/v2/lunch/map/menu.png` |
+| `spot.carry` | `public/assets/v2/lunch/truck.png`（流用） |
+| `spot.serve` | `public/assets/v2/lunch/school.png`（流用） |
+| `bento` | **未配線** — `map/bento.png` は浅い皿のパースで、内側に 5 か所が入らない |
 
-## Asset slot 契約
+コンポーネントはパスを知らない。URL は `LunchWorldApp` が `assets.ts` から渡す。
 
-| slot | 想定ファイル | サイズ | 備考 |
-|---|---|---|---|
-| `assets.bento` | `bento-open.png` | 375×560 縦・透過 PNG | フタが上、トレイが下。spot はこの座標系に置かれる |
-| `assets.spot.grow` 等 | `spot-grow.png` … `spot-serve.png` | 160×160 透過 PNG | 正方形。状態別 art が来たら親が `view.spots[id]` に応じて差し替える |
+## まだ設計が要るもの（Design Owner）
 
-配置例: `public/v2/lunch/world/`（親が URL を渡す。コンポーネントはパスを知らない）。
+- 地面。上記 A/B の選択（`DN-MAPGROUND`）
+- 場所ごとの状態別 art（現状は 1 枚に CSS の減色と glow）
+- 異変の見え方（現状: コーラルの glow。記号は使っていない）
+- 登場演出「ガタッ」の見え方（現状: 600ms の translate/rotate → 1.6s bob）
+- 道の経路そのもの（グラフ定義は `WORLD_DESIGN.md` §4 で OPEN）

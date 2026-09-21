@@ -156,6 +156,37 @@ it pass and would otherwise conclude the repair was theatre.
 a non-reproducing finding must say so in the log.** Both halves of that are needed:
 the first stops reviewers being dismissed, the second stops the record becoming fiction.
 
+## 6c. When to stop reviewing (r5, r6 — 2026-09-22)
+
+Six Codex rounds on this slice, scoring 68 → 72 → 78 → 80 → 84 → 86. No blockers
+since r1. No finding in the game's own code since r3. Every round since then has
+found a hole in the QA harness, and the holes have been getting narrower:
+
+| round | the finding | did the app actually do it? |
+|---|---|---|
+| r1–r3 | the harness passed a rendered score, an auto-clear, a tap-stealing overlay | yes — real gaps in a gate guarding real code |
+| r4 | a class-only change would not trigger a re-scan | no — could not be reproduced |
+| r4 | five phone sizes were claimed, one was run | yes — and it found a real 44px defect |
+| r5 | a form control's value is never collected | no such control exists, but cheap and exact to close |
+| r6 | a value assigned through the property; `alt`, `::marker`, canvas text, shadow DOM, `aria-valuetext` | none of these exist anywhere in the slice |
+
+That is a curve worth naming. The reviewer started by finding gates that could not see
+what the app **does**, and has ended by finding gates that cannot see what the app
+**does not do**. Both are legitimate review output — the second kind is how you harden
+a gate against future code — but they are not the same kind of risk, and treating them
+the same is how a slice never ships.
+
+The rule taken from this: **a review round is worth running while its findings still
+change what the child gets. Once a round's findings are only about code that does not
+exist, close them if they are cheap, and then stop and say so in the record.** Stopping
+is a judgement that must be written down with its evidence (the score curve, where the
+findings landed, which are reproducible), not a quiet decision to run out of rounds.
+
+The r6 findings were closed anyway, because each was a few lines and because the
+audit should not depend on the app happening not to use canvas. But r7 is the last
+round that can be justified on quality grounds; beyond that the loop is enumerating an
+infinite set of ways hypothetical code could show a string.
+
 ## 7. Promoted to canonical rules
 
 | Rule | Where |

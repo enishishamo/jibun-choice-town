@@ -31,8 +31,14 @@ and reverted; the source was restored from a copy taken before each mutation.
 | M17 | `content: "100てん"` gated on the bead's own band class — the pure form of the r4 finding | same as M14 |
 | M18 | the near lip reaches past its own channel and sits on the next channel's name | the rack check in the viewport sweep: "energy covers the protein name" |
 | M19 | a score displayed as a form control's value (`<input readOnly value="100てん">`) | form-control values are collected in both `record()` and `shot()`; the digit rule and the allow-list both fire |
+| M20 | a value assigned through the PROPERTY on an input that is removed 30ms later — no attribute changes, so nothing to find afterwards | the `value` setter on the form-control prototypes is wrapped, so the string is recorded at the moment it is assigned |
+| M21 | `<img alt="100てん">` on a picture that loads normally | `alt` is collected with the other readable attributes |
+| M22 | `::marker { content: "100てん" }` on the day list | `::marker` is scanned alongside `::before` / `::after` |
+| M23 | `fillText("100てん", …)` into a canvas that is removed 30ms later | `CanvasRenderingContext2D.fillText` / `strokeText` are wrapped |
+| M24 | an open shadow root containing the score | every open root is kept at `attachShadow` time and walked with the document |
+| M25 | `aria-valuetext="100てん"` on an element with `role="meter"` | ARIA value attributes are collected with `alt` / `title` / `placeholder` |
 
-19 of 19 fail a named assertion. M5, M7, M8 were found by an independent review of the
+25 of 25 fail a named assertion. M5, M7, M8 were found by an independent review of the
 *first* rebuilt harness; M9–M12 by the two rounds after that, M13 by the round
 after those, and M14–M16 by the closing round (r4 — FAIL 80, 0 blockers, 1 HIGH, 2
 MEDIUM, all three in the harness rather than in the game). Each round found
@@ -82,6 +88,30 @@ The lesson is the same one as M16 and worth writing down once more: **a check th
 only measures what can be touched cannot see what cannot be read.** Both failures were
 visible in one glance at the smallest supported phone, and both survived four
 independent reviews that never opened it.
+
+## The r6 round: every remaining way to put a string on screen
+
+r6 (FAIL 86) named six more display channels. **None of them exists anywhere in the
+slice** — there is no canvas, no shadow DOM, no form control, no `alt` text, no meter.
+They were closed anyway, because an audit that only works while the app happens not to
+use canvas is not an audit, and each was a few lines:
+
+| channel | how it is now seen |
+|---|---|
+| a value assigned through the property | the `value` setter is wrapped on the form-control prototypes |
+| canvas text | `fillText` / `strokeText` are wrapped |
+| an open shadow root | every root is kept at `attachShadow` and walked with the document |
+| `::marker` | scanned with `::before` / `::after` |
+| `alt`, `title`, `placeholder`, `aria-valuetext`, `aria-valuenow`, `aria-roledescription` | collected per element |
+
+The two wrapped APIs matter more than they look: they record **at the moment the string
+is produced**, so a node that is created and destroyed between two observations is still
+caught (M20, M23 both remove their node after 30ms). Everything else is a sweep, and a
+sweep can always be outrun.
+
+One thing narrowed rather than widened: `value` is read only from controls that actually
+display one. Reading it from every element that merely *has* the property made the run
+fail on `li.value`, which is a list item's ordinal and is never on screen.
 
 ## What M16 found in the game, not in the gate
 

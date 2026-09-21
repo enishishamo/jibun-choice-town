@@ -55,54 +55,95 @@ page.on("requestfailed", (r) => errors.push(`requestfailed: ${r.url()} ${r.failu
 // celebration, is invisible to a screenshot taken between them.
 await page.evaluateOnNewDocument(() => {
   window.__seen = { board: new Set(), boardAria: new Set(), all: new Set(), aria: new Set(), duringPlay: new Set() };
+  // Two display channels cannot be found by looking at the DOM after the fact,
+  // because nothing is left to look at: a value assigned to a form control
+  // through its PROPERTY (no attribute changes, so no mutation fires) and text
+  // painted into a canvas (no node at all). Both are recorded at the moment they
+  // happen, by wrapping the API that does it.
+  window.__sideChannel = new Set();
+  const note = (v) => { const t = String(v ?? "").trim(); if (t) { window.__sideChannel.add(t); window.__seen.all.add(t); } };
+  for (const [Ctor, prop] of [[HTMLInputElement, "value"], [HTMLTextAreaElement, "value"], [HTMLSelectElement, "value"], [HTMLOptionElement, "text"]]) {
+    const d = Object.getOwnPropertyDescriptor(Ctor.prototype, prop);
+    if (!d || !d.set) continue;
+    Object.defineProperty(Ctor.prototype, prop, { ...d, set(v) { note(v); d.set.call(this, v); } });
+  }
+  for (const m of ["fillText", "strokeText"]) {
+    const orig = CanvasRenderingContext2D.prototype[m];
+    CanvasRenderingContext2D.prototype[m] = function (t, ...rest) { note(t); return orig.call(this, t, ...rest); };
+  }
+  // an open shadow root is a second document the walkers below cannot enter
+  // unless they are handed the root itself, so keep every one that is created
+  window.__roots = [];
+  const attach = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (init) { const r = attach.call(this, init); if (init && init.mode === "open") window.__roots.push(r); return r; };
+
   const record = () => {
-    const push = (root, set) => {
-      if (!root) return;
-      const it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      for (let n = it.nextNode(); n; n = it.nextNode()) { const t = n.textContent.trim(); if (t) set.add(t); }
-    };
-    const before = new Set();
-    push(document.body, window.__seen.all);
-    push(document.body, before);
     const board = document.querySelector(".lmp");
-    push(board, window.__seen.board);
-    // ::before / ::after content is on screen but is not a text node: a score
-    // written as `content: "100てん"` would otherwise never be looked at
-    for (const e of document.querySelectorAll("*")) {
-      for (const which of ["::before", "::after"]) {
-        const c = getComputedStyle(e, which).content;
-        if (!c || c === "none" || c === "normal") continue;
-        const t = c.replace(/^["']|["']$/g, "").trim();
-        if (!t || t === "\"\"") continue;
-        window.__seen.all.add(t); before.add(t);
-        if (board && board.contains(e)) window.__seen.board.add(t);
+    const before = new Set();
+    const inBoard = (e) => board && (board.contains(e) || (e.getRootNode && board.contains(e.getRootNode().host)));
+    const add = (v, e) => {
+      const t = String(v ?? "").trim();
+      if (!t) return;
+      window.__seen.all.add(t); before.add(t);
+      if (inBoard(e)) window.__seen.board.add(t);
+    };
+    const roots = [document.body, ...window.__roots.filter((r) => r.host && r.host.isConnected)];
+    for (const root of roots) {
+      const it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let n = it.nextNode(); n; n = it.nextNode()) add(n.textContent, n.parentElement);
+      for (const e of root.querySelectorAll("*")) {
+        // generated content is on screen but is not a text node: a score written
+        // as `content: "100てん"` would otherwise never be looked at. ::marker is
+        // in the list because a list item's bullet is generated content too.
+        for (const which of ["::before", "::after", "::marker"]) {
+          const c = getComputedStyle(e, which).content;
+          if (!c || c === "none" || c === "normal") continue;
+          add(c.replace(/^["']|["']$/g, ""), e);
+        }
+        // everything else a child can read or a screen reader can say, and that
+        // lives in an attribute or a property rather than in a text node
+        // only controls that actually SHOW a value. `li.value` is its ordinal
+        // and `button.value` is form data; neither is on screen, and reading
+        // them would fail the run on text no child ever sees.
+        if (e.matches("input, textarea, select, output, progress, meter, [contenteditable]")) add(e.value ?? e.textContent, e);
+        for (const a of ["alt", "title", "placeholder", "aria-valuetext", "aria-valuenow", "aria-roledescription"]) {
+          if (e.hasAttribute && e.hasAttribute(a)) add(e.getAttribute(a), e);
+        }
+        if (e.hasAttribute && e.hasAttribute("aria-label")) {
+          const l = e.getAttribute("aria-label");
+          window.__seen.aria.add(l);
+          before.add(l);
+          if (inBoard(e)) window.__seen.boardAria.add(l);
+        }
       }
     }
-    // a form control shows its VALUE, which is neither a text node nor generated
-    // content: `<input value="100てん" readonly>` would otherwise be a score the
-    // audit never looks at
-    for (const e of document.querySelectorAll("input, textarea, select, output, [contenteditable]")) {
-      const v = String(e.value ?? e.textContent ?? "").trim();
-      if (!v) continue;
-      window.__seen.all.add(v); before.add(v);
-      if (board && board.contains(e)) window.__seen.board.add(v);
-    }
-    for (const e of document.querySelectorAll("[aria-label]")) {
-      const a = e.getAttribute("aria-label");
-      window.__seen.aria.add(a);
-      before.add(a);
-      if (board && board.contains(e)) window.__seen.boardAria.add(a);
-    }
     // anything on screen while the board is mounted is being shown DURING play
-    if (board) for (const t of before) window.__seen.duringPlay.add(t);
+    if (board) {
+      for (const t of before) window.__seen.duringPlay.add(t);
+      for (const t of window.__sideChannel) { window.__seen.board.add(t); window.__seen.duringPlay.add(t); }
+    }
   };
+  // record() reads generated content for every element, so it must not run once
+  // per mutation during an animation: coalesce to at most one pass per 30ms,
+  // always with a trailing pass so the last state of a burst is still seen.
+  let last = 0, pending = 0;
+  const schedule = () => {
+    const now = Date.now();
+    if (now - last >= 30) { last = now; record(); return; }
+    if (pending) return;
+    pending = setTimeout(() => { pending = 0; last = Date.now(); record(); }, 30);
+  };
+  window.__record = record;
   const start = () => {
     record();
     // class and style are watched too, not just aria-label: a score written as
     // `.lmp.is-settled::before { content: "100てん" }` appears and disappears
     // through a CLASS change alone, with no node added and no text edited, so an
     // aria-only filter would never re-scan while it is on screen.
-    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label", "class", "style", "value"] });
+    new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true });
+    // and a sweep on a timer, because a node that is inserted and removed
+    // between two mutations of its own is still a thing the child saw
+    setInterval(record, 80);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
@@ -131,14 +172,16 @@ const shot = async (name) => {
       for (let n = it.nextNode(); n; n = it.nextNode()) { const t = n.textContent.trim(); if (t) texts.push(t); }
     };
     walk(document.body);
+    for (const r of window.__roots || []) if (r.host && r.host.isConnected) walk(r);
     const board = document.querySelector(".lmp");
-    // innerText does not include what a form control displays
-    const vals = [...document.querySelectorAll("input, textarea, select, output, [contenteditable]")]
+    // innerText covers neither what a form control displays nor what was painted
+    // into a canvas or assigned through a property
+    const vals = [...document.querySelectorAll("input, textarea, select, output, progress, meter, [contenteditable]")]
       .map((e) => String(e.value ?? e.textContent ?? "").trim()).filter(Boolean);
-    texts.push(...vals);
-    const inBoard = board ? [...board.querySelectorAll("input, textarea, select, output, [contenteditable]")]
+    texts.push(...vals, ...(window.__sideChannel ? [...window.__sideChannel] : []));
+    const inBoard = board ? [...board.querySelectorAll("input, textarea, select, output, progress, meter, [contenteditable]")]
       .map((e) => String(e.value ?? e.textContent ?? "").trim()).filter(Boolean) : [];
-    const boardText = board ? `${board.innerText} ${inBoard.join(" ")}` : "";
+    const boardText = board ? `${board.innerText} ${inBoard.join(" ")} ${(window.__sideChannel ? [...window.__sideChannel] : []).join(" ")}` : "";
     const aria = [...document.querySelectorAll("[aria-label]")].map((e) => e.getAttribute("aria-label"));
     return { texts, boardText, aria, body: document.body.innerText };
   });
