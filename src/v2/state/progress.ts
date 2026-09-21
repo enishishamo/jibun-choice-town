@@ -2,7 +2,9 @@
 // Ver.1 uses localStorage["jibun-choice-progress-v1"] (src/state/GameState.tsx)
 // and this module must never read or write that key. The Ver.2 key uses a
 // colon namespace so no prefix-based migration of Ver.1 can ever pick it up.
-// (T-03 in docs/jibun-choice-v2/OPEN_DECISIONS.md — adopted 2026-09-20.)
+// The key itself is still T-03 in docs/jibun-choice-v2/OPEN_DECISIONS.md and
+// has NOT been through a Human Product Decision — this is the implementation's
+// working choice, deliberately namespaced so no later decision is foreclosed.
 import { SPOT_IDS, type SpotId } from "../lunch/types";
 
 export const V2_STORAGE_KEY = "jibun-choice:v2:progress";

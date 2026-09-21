@@ -1,0 +1,31 @@
+{
+ "ran_at": "2026-09-21T12:34:38.507Z",
+ "commit": "cb55712d4d69063e0a374aa210b0c80994c2491d",
+ "checks": [
+  {
+   "script": "npx tsc -p tsconfig.app.json --noEmit",
+   "exit_code": 0,
+   "summary": ""
+  },
+  {
+   "script": "npm run lint",
+   "exit_code": 0,
+   "summary": "factory/harness/gameplay-qa-xray.mjs:88:13: warning eslint(no-unused-vars): Parameter 'rand' is declared but never used. Unused parameters should start with a '_'. help: Consider removing this parameter."
+  },
+  {
+   "script": "factory/harness/ver1-freeze-check.mjs",
+   "exit_code": 0,
+   "summary": "PASS: 20 file(s) under src/v2/ import no Ver.1 screens/q1/state/App"
+  },
+  {
+   "script": "factory/harness/gameplay-qa-v2-lunch-menu.mjs",
+   "exit_code": 0,
+   "summary": "51/51 checks passed"
+  },
+  {
+   "script": "factory/harness/v2-lunch-shots.mjs",
+   "exit_code": 0,
+   "summary": "{\"ok\":true,\"errors\":[],\"scrollW\":375,\"innerW\":375,\"visibleDevMarkers\":false,\"beadsMoved\":true,\"solved\":true,\"seed\":\"rebuild\"}"
+  }
+ ]
+}

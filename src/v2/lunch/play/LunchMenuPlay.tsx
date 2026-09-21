@@ -21,8 +21,8 @@ import "./lunchMenuPlay.css";
 import Art from "../Art";
 import { COPY } from "../copy";
 import {
-  AXES, DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, canSend, evaluate, newSession, place, relatedSet, remove, send, swap,
-  type Axis, type Dish, type Evaluation, type Session,
+  AXES, DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, bandOnTrack, canSend, evaluate, newSession, place, relatedSet, remove, send, swap,
+  type Axis, type Band, type Dish, type Evaluation, type Session,
 } from "./lunchMenuLogic";
 
 export interface LunchMenuPlayProps {
@@ -54,12 +54,17 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [shake, setShake] = useState<string | null>(null);
   const [pop, setPop] = useState<number | null>(null);
   const [arriving, setArriving] = useState<number | null>(null);
+  const [leavingSlot, setLeavingSlot] = useState<number | null>(null);
+  /** touching an empty recess calls the counter's attention rather than doing nothing */
+  const [calling, setCalling] = useState(false);
   const [fly, setFly] = useState<Fly | null>(null);
   const [flyGo, setFlyGo] = useState(false);
   const [sparks, setSparks] = useState<Spark[]>([]);
   const [motes, setMotes] = useState<Mote[]>([]);
   const [motesGo, setMotesGo] = useState(false);
   const [truck, setTruck] = useState<"away" | "arriving" | "parked">("away");
+  /** the trouble is announced once and then gets out of the way */
+  const [troubleShown, setTroubleShown] = useState(false);
   const [sending, setSending] = useState(false);
   const [settled, setSettled] = useState(false);
   /** bead positions actually drawn — they lag the model until the motes land */
@@ -78,8 +83,19 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [schoolArtOk, setSchoolArtOk] = useState(false);
 
   const ev = evaluate(s.tray);
-  const related = relatedSet(s.tray, ev);
-  const sendable = !sending && canSend(s);
+  // a menu that is not finished yet cannot be wrong, so nothing is judged and
+  // nothing is pointed at until the tray is full
+  const related = ev.complete ? relatedSet(s.tray, ev) : new Set<string>();
+  // The verdict is read off the beads WHERE THEY ARE DRAWN, never off the model
+  // directly: the picture and the rule can then never disagree, and the school
+  // cannot appear before the beads have finished rolling into their hollows.
+  const drawn = Object.fromEntries(AXES.map((a) => {
+    const [b0, b1] = bandOnTrack(a);
+    const at = shown[a];
+    return [a, at < b0 ? "low" : at > b1 ? "high" : "good"];
+  })) as Record<Axis, Band>;
+  const beadsSettled = ev.complete && ev.hasStaple && AXES.every((a) => drawn[a] === "good");
+  const sendable = !sending && beadsSettled && canSend(s);
   const dishName = (id: string) => COPY.play.dish[id] ?? COPY.play.dish.unknown;
 
   const fx = (fn: () => void, ms: number) => {
@@ -122,12 +138,17 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   useEffect(() => {
     const isViable = ev.viable;
     if (isViable && !prevViable.current) {
-      fx(() => { setSettled(true); fx(() => setSettled(false), 900); }, MOTE_MS);
+      fx(() => {
+        if (!evaluate(sessionRef.current.tray).viable) return; // it was broken again while we waited
+        setSettled(true);
+        fx(() => setSettled(false), 900);
+      }, MOTE_MS);
     }
     prevViable.current = isViable;
   }, [ev.viable]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const bump = (id: string) => { setShake(id); fx(() => setShake((cur) => (cur === id ? null : cur)), 420); };
+  const callDishes = () => { setCalling(true); fx(() => setCalling(false), 1500); };
 
   const flyDish = (id: string, slot: number, fromEl: HTMLElement) => {
     const root = rootRef.current;
@@ -158,8 +179,9 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const tapCandidate = (id: string, el: HTMLElement) => {
     if (sentRef.current || sending) return;
     const cur = sessionRef.current;
-    if (!cur.available[id]) { bump(id); setTruck("parked"); return; }
+    if (!cur.available[id]) { bump(id); return; }
     if (cur.tray.includes(id)) { bump(id); return; }
+    clearTrouble();
     const free = cur.tray.indexOf(null);
     if (free >= 0) {
       const r = place(cur, id);
@@ -173,11 +195,24 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     const course = DISH_BY_ID[id].course;
     const same = cur.tray.filter((d): d is string => !!d && DISH_BY_ID[d].course === course);
     if (same.length !== 1) { bump(id); return; }
-    const r = swap(cur, same[0], id);
-    if (!r.ok) { bump(id); return; }
-    sessionRef.current = r.session;
-    setS(r.session);
-    flyDish(id, r.slot, el);
+    const leaving = same[0];
+    const slot = cur.tray.indexOf(leaving);
+    // the dish that is making way lifts out first, so the exchange is visible
+    setLeavingSlot(slot);
+    fx(() => {
+      setLeavingSlot(null);
+      const r = swap(sessionRef.current, leaving, id);
+      if (!r.ok) { bump(id); return; }
+      sessionRef.current = r.session;
+      setS(r.session);
+      flyDish(id, r.slot, el);
+    }, 260);
+  };
+
+  /** the trouble has been dealt with: let the world move on */
+  const clearTrouble = () => {
+    setTroubleShown(false);
+    setTruck((cur) => (cur === "parked" ? "away" : cur));
   };
 
   const tapTrayDish = (id: string) => {
@@ -189,7 +224,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
 
   // the child's own commit — never a timer, never automatic
   const sendTray = () => {
-    if (sentRef.current || !canSend(sessionRef.current)) return;
+    if (sentRef.current || sending || !canSend(sessionRef.current)) return;
     const r = send(sessionRef.current);
     if (!r.ok) return;
     setSending(true);
@@ -201,8 +236,10 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         sessionRef.current = r.session;
         setS(r.session);
         setSending(false);
+        setTroubleShown(true);
         rollBeads();
       }, TRUCK_MS);
+      fx(() => setTroubleShown(false), TRUCK_MS + 4200);
       return;
     }
     sentRef.current = true;
@@ -237,9 +274,9 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       <div className={`lmp-truck st-${truck}`} aria-hidden="true">
         <Art src={assets?.truck} className="lmp-truck-art" fallback={<span className="lmp-truck-ph" />} />
       </div>
-      {s.eventDish && (
-        <p className="lmp-trouble" role="status">{COPY.play.notDelivered(lostName)}</p>
-      )}
+      <p className={`lmp-trouble ${troubleShown && s.eventDish ? "in" : ""}`} role="status" aria-live="polite">
+        {troubleShown && s.eventDish ? COPY.play.notDelivered(lostName) : ""}
+      </p>
 
       <div className="lmp-table">
         <div
@@ -259,13 +296,13 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                 <button
                   key={i}
                   type="button"
-                  className={`lmp-slot s${i} ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${arriving === i ? "arriving" : ""} ${id && related.has(id) ? "related" : ""}`}
+                  className={`lmp-slot s${i} ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${arriving === i ? "arriving" : ""} ${leavingSlot === i ? "leaving" : ""} ${id && related.has(id) ? "related" : ""}`}
                   style={{ left: `${SLOT_POS[i].x}%`, top: `${SLOT_POS[i].y}%` }}
                   aria-label={id ? dishName(id) : COPY.play.emptySlot}
                   data-slot-dish={id ?? undefined}
                   data-slot-index={i}
-                  disabled={!id || arriving === i}
-                  onClick={() => id && tapTrayDish(id)}
+                  disabled={arriving === i}
+                  onClick={() => (id ? tapTrayDish(id) : callDishes())}
                 >
                   {id && <DishFace dish={DISH_BY_ID[id]} src={assets?.dish?.[id]} />}
                 </button>
@@ -279,7 +316,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
           </div>
         </div>
 
-        <GaugeRack ev={ev} shown={shown} src={assets?.rack} onArt={setRackArtOk} hasArt={rackArtOk} />
+        <GaugeRack ev={ev} shown={shown} drawn={drawn} src={assets?.rack} onArt={setRackArtOk} hasArt={rackArtOk} />
       </div>
 
       {/* motion layer: the flying dish, its landing burst, and the motes going into the grooves */}
@@ -307,7 +344,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       {/* the serving counter: one pan per kind of dish, in serving order */}
       <div className="lmp-counter">
         {shelves.map(({ course, ids }) => (
-          <div key={course} className={`lmp-shelf course-${course}`}>
+          <div key={course} className={`lmp-shelf course-${course} ${course === "staple" && ev.complete && !ev.hasStaple ? "wanted" : ""}`}>
             {ids.map((id) => {
               const onTray = s.tray.includes(id);
               const gone = !s.available[id];
@@ -315,7 +352,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                 <button
                   key={id}
                   type="button"
-                  className={`lmp-cand ${onTray ? "on-tray" : ""} ${gone ? "gone" : ""} ${shake === id ? "shake" : ""} ${id === s.candidates[0] && ev.filled === 0 ? "invite" : ""}`}
+                  className={`lmp-cand ${onTray ? "on-tray" : ""} ${gone ? "gone" : ""} ${shake === id ? "shake" : ""} ${(calling && !onTray && !gone) || (id === s.candidates[0] && ev.filled === 0) ? "invite" : ""}`}
                   aria-label={gone ? COPY.play.dishGone(dishName(id)) : dishName(id)}
                   aria-pressed={onTray}
                   onClick={(e) => tapCandidate(id, e.currentTarget)}
@@ -340,27 +377,39 @@ function beadPositions(ev: Evaluation): Record<Axis, number> {
  * hollow in the middle. A bead that reaches the hollow settles into it; a bead
  * out on the shallow part keeps rocking. Nothing here is a bar or a percentage.
  * Exported for the QA harness. */
-export function GaugeRack({ ev, shown, src, onArt, hasArt }: {
-  ev: Evaluation; shown: Record<Axis, number>; src?: string; onArt?: (ok: boolean) => void; hasArt?: boolean;
+export function GaugeRack({ ev, shown, drawn, src, onArt, hasArt }: {
+  ev: Evaluation; shown: Record<Axis, number>; drawn: Record<Axis, Band>; src?: string; onArt?: (ok: boolean) => void; hasArt?: boolean;
 }) {
+  // while the tray is still being filled the beads only MOVE; nothing is judged,
+  // so a child's first dish can never look like a mistake
+  const judging = ev.complete;
   const ready = ev.filled > 0;
   return (
     <div className={`lmp-rack ${hasArt ? "has-art" : ""} ${ready ? "ready" : ""}`} role="group" aria-label={COPY.play.rack}>
       <Art src={src} className="lmp-rack-art" onState={onArt} fallback={null} />
       {AXES.map((a) => {
-        const r = ev.readings[a];
-        const pos = shown[a] ?? r.pos;
+        const pos = shown[a] ?? ev.readings[a].pos;
         return (
-          <div key={a} className={`lmp-groove ${a}`} style={{ top: `${GROOVE_Y[a]}%` }}>
-            <span className="lmp-groove-name">{COPY.play.axis[a]}</span>
+          <div
+            key={a}
+            className={`lmp-groove ${a}`}
+            style={{
+              top: `${GROOVE_Y[a]}%`,
+              // the hollow is the band, mapped onto the bead's travel — never hand-typed
+              ["--hollow-left" as string]: `${GROOVE.x0 + (GROOVE.x1 - GROOVE.x0) * bandOnTrack(a)[0]}%`,
+              ["--hollow-width" as string]: `${(GROOVE.x1 - GROOVE.x0) * (bandOnTrack(a)[1] - bandOnTrack(a)[0])}%`,
+            }}
+          >
+            <span className="lmp-groove-name" aria-hidden="true">{COPY.play.axis[a]}</span>
             <span className="lmp-groove-track" />
             <span className="lmp-groove-hollow" />
+            <span className="lmp-groove-lip" />
             <i
-              className={`lmp-bead band-${ready ? r.band : "idle"}`}
+              className={`lmp-bead band-${!ready ? "idle" : judging ? drawn[a] : "filling"}`}
               data-bead={a}
               style={{ left: `${GROOVE.x0 + (GROOVE.x1 - GROOVE.x0) * pos}%` }}
               role="img"
-              aria-label={`${COPY.play.axis[a]}：${ready ? COPY.play.band[r.band] : COPY.play.band.idle}`}
+              aria-label={`${COPY.play.axis[a]}：${judging ? COPY.play.band[drawn[a]] : COPY.play.band.idle}`}
             />
           </div>
         );

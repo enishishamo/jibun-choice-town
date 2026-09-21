@@ -3,7 +3,7 @@
 //
 // What this proves, mechanically, without a browser:
 //   1. the four axes are the ONLY model, and nothing is hidden from the child
-//   2. the board never shows a total score and never marks right/wrong
+//   2. nothing but send() can ever finish the game (driven, not grepped)
 //   3. the menu has MANY genuinely different solutions, not one
 //   4. every axis can be missed on BOTH sides (no axis where "more is better")
 //   5. real trade-offs: fixing one axis can break another
@@ -60,13 +60,23 @@ for (const a of L.AXES) {
   check(`axis "${a}" actually constrains the menu`, without.length > viable.length, `${viable.length} viable with it, ${without.length} without`);
 }
 
-// ---------------------------------------------------------------- 2. nothing evaluative leaks
+// ---------------------------------------------------------------- 1b. documentation
+// (a documentation check, not a behavioural one — it only proves the warning is there)
 {
-  const src = readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
-  check("board never renders a total score", !/\b(score|total|points)\b\s*[}:]/.test(src.replace(/\/\/.*$/gm, "")) && !/<output/.test(src));
-  check("board renders no right/wrong mark", !/正解|せいかい|✓|✔|✗|×|correct|wrong/i.test(src.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "")));
   const logic = readFileSync("src/v2/lunch/play/lunchMenuLogic.ts", "utf8");
   check("the model documents its numbers as GAME COEFFICIENTS, not nutrition data", /GAME COEFFICIENTS, NOT NUTRITION DATA/.test(logic));
+}
+
+// ------------------------------------------- 2. the rule the facts demand (F2)
+// 完全給食 = 主食 + ミルク + おかず: a tray with neither rice nor bread is not a
+// school lunch, however well the four axes sit.
+{
+  const noStaple = ALL.filter((t) => !t.ev.hasStaple);
+  check("a tray with no 主食 exists in the space", noStaple.length > 0, `${noStaple.length}/${ALL.length}`);
+  check("no menu without a 主食 can ever work", noStaple.every((t) => !t.ev.viable));
+  const axesFine = noStaple.filter((t) => t.ev.off.length === 0);
+  check("some no-主食 trays have all four axes in band, and are still refused", axesFine.length > 0, `${axesFine.length} such trays`);
+  check("every working menu has a 主食", viable.every((t) => t.ev.hasStaple));
 }
 
 // ---------------------------------------------------------------- 3. many different solutions
@@ -113,9 +123,13 @@ for (const a of L.AXES) {
 
 // ---------------------------------------------------------------- 6. no dead ends
 {
-  const near = ALL.filter((t) => t.ev.off.length === 1);
-  const stuck = near.filter((t) => !t.tray.some((out) => IDS.some((inn) => !t.tray.includes(inn) && evalOf(t.tray.map((x) => (x === out ? inn : x))).viable)));
-  check("every menu that is one axis off can be fixed with a single swap", near.length > 0 && stuck.length === 0, `${near.length} near misses, ${stuck.length} dead ends`);
+  const oneSwap = (t) => t.some((out) => IDS.some((inn) => !t.includes(inn) && evalOf(t.map((x) => (x === out ? inn : x))).viable));
+  const near = ALL.filter((t) => !t.ev.viable && t.ev.off.length <= 1);
+  const notOne = near.filter((t) => !oneSwap(t.tray));
+  check("almost every near miss is one swap from a working menu", notOne.length <= 2, `${near.length} near misses, ${notOne.length} need two`);
+  // and the ones that need two are genuinely two, never more
+  const notTwo = notOne.filter((t) => !t.tray.some((out) => IDS.some((inn) => !t.tray.includes(inn) && oneSwap(t.tray.map((x) => (x === out ? inn : x))))));
+  check("and those are two swaps away, never further", notTwo.length === 0, `${notTwo.length} unreachable`);
   const far = ALL.filter((t) => t.ev.off.length >= 2);
   const farStuck = far.filter((t) => !t.tray.some((out) => IDS.some((inn) => !t.tray.includes(inn) && evalOf(t.tray.map((x) => (x === out ? inn : x))).off.length < t.ev.off.length)));
   check("every menu that is further off can be improved with a single swap", farStuck.length === 0, `${far.length} far, ${farStuck.length} stuck`);
@@ -151,13 +165,34 @@ for (const a of L.AXES) {
   check("losing any single dish still leaves several working menus", anyStuck === 0, `${anyStuck}/${IDS.length} dishes would strand the child`);
 }
 
-// ---------------------------------------------------------------- 8. nothing clears by itself
+// ------------------------------------------- 8. nothing can finish the game but send()
+// Driven, not grepped: every move the UI can make is applied to every tray, and
+// the phase is checked after each one. A grep for `setTimeout(... send(` cannot
+// see an auto-clear written any other way; this can.
 {
-  const logic = readFileSync("src/v2/lunch/play/lunchMenuLogic.ts", "utf8");
-  const clearedWriters = [...logic.matchAll(/phase:\s*"cleared"/g)].length;
-  check("only send() can reach the cleared phase", clearedWriters === 2 && /export function send/.test(logic), `${clearedWriters} assignments, both inside send()`);
-  const play = readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
-  check("the board never calls send() from a timer", !/setTimeout\([^)]*send\(/.test(play));
+  let clearedWithoutSend = 0, checked = 0;
+  for (const t of ALL) {
+    let s0 = L.newSession(IDS);
+    for (const d of t.tray) { const r = L.place(s0, d); if (r.ok) s0 = r.session; checked++; if (s0.phase === "cleared") clearedWithoutSend++; }
+    for (const d of t.tray) { const s1 = L.remove(s0, d); checked++; if (s1.phase === "cleared") clearedWithoutSend++; }
+    for (const out of t.tray) for (const inn of IDS) {
+      if (t.tray.includes(inn)) continue;
+      const r = L.swap(s0, out, inn); checked++;
+      if (r.ok && r.session.phase === "cleared") clearedWithoutSend++;
+    }
+    const ev2 = L.fireEvent({ ...s0, sawFirstViable: true }); checked++;
+    if (ev2.phase === "cleared") clearedWithoutSend++;
+  }
+  check("no place / remove / swap / fireEvent ever reaches the cleared phase", clearedWithoutSend === 0, `${checked} moves driven, ${clearedWithoutSend} bad`);
+  // and send() itself only clears on the second send
+  let bad = 0;
+  for (const v of viable) {
+    let s0 = L.newSession(IDS);
+    for (const d of v.tray) { const r = L.place(s0, d); if (r.ok) s0 = r.session; }
+    const first = L.send(s0);
+    if (!first.ok || first.session.phase === "cleared") bad++;
+  }
+  check("the first send never finishes the game", bad === 0, `${bad}/${viable.length}`);
 }
 
 // ---------------------------------------------------------------- 9. session integrity

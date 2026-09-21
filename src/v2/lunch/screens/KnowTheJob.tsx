@@ -3,11 +3,10 @@
 // at the start, so the screen is a small world, not an article.
 // Content: Ver.1 src/data/content/schoolLunch.ts (frozen) + the Ver.2 facts set.
 import { useState } from "react";
-import Art from "../Art";
+import PlaceMark, { type PlaceId } from "../PlaceMark";
 import { COPY } from "../copy";
 
-export default function KnowTheJob({ scenes, onCareer, onNext }: {
-  scenes?: Partial<Record<string, string>>;
+export default function KnowTheJob({ onCareer, onNext }: {
   onCareer: () => void;
   onNext: () => void;
 }) {
@@ -20,6 +19,7 @@ export default function KnowTheJob({ scenes, onCareer, onNext }: {
   return (
     <section className="v2s v2s-know" aria-label={COPY.know.title}>
       <h1 className="v2s-know-title">{COPY.know.title}</h1>
+      <p className="v2s-know-hint">{COPY.know.hint}</p>
 
       <div className="v2s-scenes">
         {COPY.know.sides.map((side) => {
@@ -28,7 +28,7 @@ export default function KnowTheJob({ scenes, onCareer, onNext }: {
             <div key={side.id} className={`v2s-scene ${isOpen ? "open" : ""} ${seen.has(side.id) ? "seen" : ""}`}>
               <button type="button" className="v2s-scene-tap" aria-expanded={isOpen} onClick={() => touch(side.id)}>
                 <span className="v2s-scene-art">
-                  <Art src={scenes?.[side.id]} fallback={<span className={`v2s-scene-ph ph-${side.id}`} aria-hidden="true" />} />
+                  <PlaceMark id={side.id as PlaceId} className="v2s-scene-mark" />
                 </span>
                 <span className="v2s-scene-label">{side.label}</span>
               </button>

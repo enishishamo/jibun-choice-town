@@ -7,6 +7,7 @@
 // Strings come only from copy.ts.
 import { useEffect, useRef, useState } from "react";
 import Art from "../Art";
+import PlaceMark from "../PlaceMark";
 import { COPY } from "../copy";
 import { ROAD_IDS, SPOT_IDS } from "../types";
 import type { LunchWorldView, RoadId, RoadState, SpotId } from "../types";
@@ -22,34 +23,25 @@ export interface LunchWorldMapProps {
 
 /** Map coordinate space (viewBox units). The bento art is expected at this ratio. */
 const MAP_W = 375;
-const MAP_H = 560;
+const MAP_H = 700;
 
 /** Spot centers in map units — the single place to retune layout.
  * Supply-chain order: grow (TL) → carry (TR) → cook (BL) → serve (center); menu (BR). */
 const SPOT_POS: Record<SpotId, { x: number; y: number }> = {
-  grow: { x: 95, y: 190 },
-  carry: { x: 280, y: 190 },
-  cook: { x: 95, y: 450 },
-  menu: { x: 280, y: 450 },
-  serve: { x: 187, y: 320 },
+  grow: { x: 96, y: 250 },
+  carry: { x: 279, y: 250 },
+  cook: { x: 96, y: 560 },
+  menu: { x: 279, y: 560 },
+  serve: { x: 187, y: 405 },
 };
 
 /** Road paths (map units). Retune together with SPOT_POS so ends stay attached. */
 const ROAD_PATH: Record<RoadId, string> = {
-  "grow-carry": "M95,190 C140,170 235,170 280,190",
-  "carry-cook": "M280,190 C190,230 100,260 95,450",
-  "cook-serve": "M95,450 C120,400 150,360 187,320",
-  "menu-cook": "M280,450 C235,470 140,470 95,450",
-  "menu-serve": "M280,450 C260,400 220,350 187,320",
-};
-
-/** Clay tone per spot, used until the generated tile art loads (palette tokens only). */
-const SPOT_TONE: Record<SpotId, string> = {
-  grow: "var(--v2-fresh-green)",
-  carry: "var(--v2-sky-blue)",
-  cook: "var(--v2-deep-green)",
-  menu: "var(--v2-honey-yellow)",
-  serve: "var(--v2-soft-sky)",
+  "grow-carry": "M96,250 C140,226 235,226 279,250",
+  "carry-cook": "M279,250 C196,300 104,330 96,560",
+  "cook-serve": "M96,560 C122,500 152,448 187,405",
+  "menu-cook": "M279,560 C235,584 140,584 96,560",
+  "menu-serve": "M279,560 C258,500 220,445 187,405",
 };
 
 const pct = (v: number, total: number) => `${(v / total) * 100}%`;
@@ -88,10 +80,12 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
         className="lw-bento-img"
         fallback={
         <svg className="lw-bento" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
-          <rect className="lw-bento-lid" x="28" y="8" width="319" height="78" rx="18" />
-          <rect className="lw-bento-lid-inner" x="44" y="22" width="287" height="46" rx="12" />
-          <rect className="lw-bento-tray" x="16" y="96" width="343" height="456" rx="24" />
-          <rect className="lw-bento-tray-inner" x="32" y="112" width="311" height="424" rx="18" />
+          <rect className="lw-bento-shadow" x="22" y="130" width="331" height="558" rx="30" />
+          <rect className="lw-bento-lid" x="26" y="10" width="323" height="96" rx="22" />
+          <rect className="lw-bento-lid-inner" x="44" y="26" width="287" height="58" rx="15" />
+          <rect className="lw-bento-clasp" x="166" y="92" width="43" height="22" rx="9" />
+          <rect className="lw-bento-tray" x="14" y="122" width="347" height="560" rx="28" />
+          <rect className="lw-bento-tray-inner" x="30" y="138" width="315" height="528" rx="21" />
         </svg>
         }
       />
@@ -127,7 +121,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
             onClick={() => tap(id)}
           >
             <span className="lw-spot-body">
-              <Art src={art} className="lw-spot-img" fallback={<span className="lw-spot-shape" style={{ background: SPOT_TONE[id] }} />} />
+              <Art src={art} className="lw-spot-img" fallback={<PlaceMark id={id} className="lw-spot-mark" />} />
               {state === "trouble" && <span className="lw-spot-badge" />}
             </span>
             <span className={showLabels ? "lw-spot-label" : "lw-visually-hidden"} aria-hidden="true">

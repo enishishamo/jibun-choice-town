@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "status": "CODEX_ERROR",
+  "error": "codex exec exited 1: ther they break.\n\nOUTPUT FORMAT (mandatory): your ENTIRE final message must be ONE JSON object, no prose, no code fences, exactly this shape:\n{\"verdict\":\"PASS|FAIL|HUMAN_REQUIRED\",\"score\":0-100,\"blockers\":[string],\"high\":[string],\"medium\":[string],\"low\":[string],\"evidence\":[string],\"recommended_actions\":[string]}\nEach finding string: \"<file>:<line> — <title> — <why it is wrong> — <fix>\". blockers/high non-empty ⇒ verdict FAIL.\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:35 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 10:35 PM.\n",
+  "elapsed_sec": 4.257,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "ee36195bb4f95202bb5619f0652a8133731cbf3ea2bbd3b6223c87f028ee5496"
+}

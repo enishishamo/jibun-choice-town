@@ -6,12 +6,13 @@ import Art from "../Art";
 import { COPY } from "../copy";
 
 export default function JobReveal({ art, onNext }: { art?: string; onNext: () => void }) {
-  const [beat, setBeat] = useState(0);
+  const [beat, setBeat] = useState(-1);
+  // beat -1 -> the hook line, 1 -> the job name, 2 -> the line, 3 -> the way on
   useEffect(() => {
     const t = [
-      window.setTimeout(() => setBeat(1), 900),
-      window.setTimeout(() => setBeat(2), 2000),
-      window.setTimeout(() => setBeat(3), 2900),
+      window.setTimeout(() => setBeat(1), 800),
+      window.setTimeout(() => setBeat(2), 1700),
+      window.setTimeout(() => setBeat(3), 2300),
     ];
     return () => t.forEach(clearTimeout);
   }, []);
@@ -20,15 +21,14 @@ export default function JobReveal({ art, onNext }: { art?: string; onNext: () =>
       <div className="v2s-reveal-stage">
         <Art src={art} className="v2s-reveal-art" fallback={<span className="v2s-reveal-ph" aria-hidden="true" />} />
       </div>
-      <p className={`v2s-reveal-lead ${beat >= 0 ? "in" : ""}`}>{COPY.reveal.lead}</p>
-      <h1 className={`v2s-reveal-job ${beat >= 1 ? "in" : ""}`}>
-        {COPY.reveal.job}
-        <small>{COPY.reveal.note}</small>
-      </h1>
+      <p className="v2s-reveal-lead in">{COPY.reveal.lead}</p>
+      <h1 className={`v2s-reveal-job ${beat >= 1 ? "in" : ""}`}>{COPY.reveal.job}</h1>
       <p className={`v2s-reveal-line ${beat >= 2 ? "in" : ""}`}>{COPY.reveal.line}</p>
-      <button type="button" className={`v2s-btn v2s-reveal-next ${beat >= 3 ? "in" : ""}`} onClick={onNext} disabled={beat < 3}>
-        {COPY.reveal.next}
-      </button>
+      {beat >= 3 && (
+        <button type="button" className="v2s-btn v2s-reveal-next in" onClick={onNext}>
+          {COPY.reveal.next}
+        </button>
+      )}
     </section>
   );
 }

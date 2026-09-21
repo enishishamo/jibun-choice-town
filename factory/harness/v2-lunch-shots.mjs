@@ -10,6 +10,25 @@
 // Usage: npm run shots:v2-lunch [-- --base <url>] [-- --out <dir>]
 import puppeteer from "puppeteer-core";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { createServer } from "vite";
+import react from "@vitejs/plugin-react";
+import { tmpdir } from "node:os";
+
+// The allow-list of everything a child may ever read comes from copy.ts itself,
+// so a string invented in a component cannot slip past: anything rendered that
+// is not in here fails the run.
+const vite = await createServer({ configFile: false, plugins: [react()], server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: `${tmpdir()}/jc-vite-cache-v2-lunch` });
+const { COPY } = await vite.ssrLoadModule("/src/v2/lunch/copy.ts");
+await vite.close();
+const ALLOWED = new Set();
+const collect = (v) => {
+  if (typeof v === "string") ALLOWED.add(v.trim());
+  else if (typeof v === "function") { for (const n of ["さけのしおやき", "とりのからあげ", "X"]) collect(v(n)); }
+  else if (v && typeof v === "object") for (const x of Object.values(v)) collect(x);
+};
+collect(COPY);
+// multi-line copy is rendered as one node; index each line too
+for (const s of [...ALLOWED]) for (const line of s.split("\n")) ALLOWED.add(line.trim());
 
 const argOf = (n, d) => { const i = process.argv.indexOf(n); return i >= 0 ? process.argv[i + 1] : d; };
 const BASE = argOf("--base", "http://localhost:5177/jibun-choice-town/");
@@ -32,7 +51,36 @@ await page.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
 await page.reload({ waitUntil: "networkidle0" });
 
 const shots = [];
-const shot = async (name) => { const p = `${OUT}/${name}.png`; await page.screenshot({ path: p }); shots.push(p); console.log("shot", p); };
+const violations = [];
+let revealed = false; // the job name may not appear anywhere before CLEAR
+/** Every capture is also an assertion: no developer marker, no job name before
+ * the reveal, no digit on the board, and no string that is not in copy.ts. */
+const shot = async (name) => {
+  const p = `${OUT}/${name}.png`;
+  await page.screenshot({ path: p });
+  shots.push(p);
+  const seen = await page.evaluate(() => {
+    const texts = [];
+    const walk = (root) => {
+      const it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let n = it.nextNode(); n; n = it.nextNode()) { const t = n.textContent.trim(); if (t) texts.push(t); }
+    };
+    walk(document.body);
+    const board = document.querySelector(".lmp");
+    const boardText = board ? board.innerText : "";
+    const aria = [...document.querySelectorAll("[aria-label]")].map((e) => e.getAttribute("aria-label"));
+    return { texts, boardText, aria, body: document.body.innerText };
+  });
+  if (/TEMP_IMPLEMENTATION_ONLY|DESIGN_NEEDED|DN-\d+/.test(seen.body)) violations.push(`${name}: developer marker on screen`);
+  if (!revealed && /栄養教諭|栄養士|学校栄養職員/.test(seen.body)) violations.push(`${name}: the job is named before CLEAR`);
+  if (/[0-9０-９]/.test(seen.boardText)) violations.push(`${name}: a number is shown on the board — "${seen.boardText.replace(/\s+/g, " ").slice(0, 80)}"`);
+  for (const t of seen.texts) if (!ALLOWED.has(t)) violations.push(`${name}: text not in copy.ts — "${t}"`);
+  for (const a of seen.aria) {
+    const bare = a.replace(/（.*?）|：.*$/g, "").trim();
+    if (!ALLOWED.has(a) && !ALLOWED.has(bare)) violations.push(`${name}: aria-label not in copy.ts — "${a}"`);
+  }
+  console.log("shot", p);
+};
 /** tap by accessible name (exact, then prefix) — the flow must be reachable by an AT user too */
 const tap = async (label, settle = 260) => {
   let h = await page.$(`button[aria-label="${label}"]`);
@@ -94,7 +142,7 @@ await sleep(1200);
 await shot("10-event-after");
 
 // ── 07 the dish that did not arrive ──────────────────────────────────────
-await tap("さけのしおやき（とどかなかった）", 300);
+await tap("さけのしおやき（とどかなかった）", 140);
 await shot("11-unavailable-shake");
 
 // ── 08/09 rebuild: try the fried chicken, see it push two beads out, take it
@@ -112,6 +160,7 @@ await shot("14-delivering");
 await sleep(1400);
 
 // ── 11 JOB REVEAL ────────────────────────────────────────────────────────
+revealed = true; // from here on the job may be named
 await shot("15-job-reveal-lead");
 await sleep(2400);
 await shot("16-job-reveal");
@@ -139,6 +188,11 @@ await shot("22-world-return");
 await sleep(1200);
 await shot("23-next-trouble");
 
+// every <img> the flow rendered must be a real, loaded picture — a CSS fallback
+// carries no text and returns no 4xx, so the marker grep alone cannot see it
+const brokenImages = await page.evaluate(() =>
+  [...document.querySelectorAll("img")].filter((i) => !i.complete || i.naturalWidth === 0).map((i) => i.currentSrc || i.src),
+);
 const info = await page.evaluate(() => ({
   scrollW: document.documentElement.scrollWidth,
   innerW: window.innerWidth,
@@ -149,8 +203,8 @@ const info = await page.evaluate(() => ({
 const beadsMoved = JSON.stringify(before) !== JSON.stringify(after);
 const solved = (() => { try { return JSON.parse(info.progress)?.solved?.[0]?.spot === "menu"; } catch { return false; } })();
 const seed = (() => { try { return JSON.parse(info.progress)?.seeds?.["lunch:menu"]; } catch { return null; } })();
-const ok = errors.length === 0 && info.scrollW <= info.innerW && !info.markers && beadsMoved && solved && seed === "rebuild";
-writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), ok, shots, errors, beadsBefore: before, beadsAfter: after, ...info }, null, 1));
-console.log(JSON.stringify({ ok, errors, scrollW: info.scrollW, innerW: info.innerW, visibleDevMarkers: info.markers, beadsMoved, solved, seed }));
+const ok = errors.length === 0 && info.scrollW <= info.innerW && !info.markers && beadsMoved && solved && seed === "rebuild" && brokenImages.length === 0 && violations.length === 0;
+writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), ok, shots, errors, violations, brokenImages, beadsBefore: before, beadsAfter: after, ...info }, null, 1));
+console.log(JSON.stringify({ ok, errors, violations: violations.slice(0, 12), brokenImages, scrollW: info.scrollW, innerW: info.innerW, visibleDevMarkers: info.markers, beadsMoved, solved, seed }));
 await browser.close();
 process.exit(ok ? 0 : 1);

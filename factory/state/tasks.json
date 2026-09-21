@@ -1742,6 +1742,53 @@
           "human_decision": false
         }
       ]
+    },
+    "v2-lunch-nutrition-teacher-slice": {
+      "task_id": "v2-lunch-nutrition-teacher-slice",
+      "task_type": "game-content",
+      "status": "READY",
+      "producer": "claude-code-builder",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+      "qa_evidence_kind": "file",
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T12:33:28.744Z",
+      "updated_at": "2026-09-21T12:35:03.882Z",
+      "history": [
+        {
+          "at": "2026-09-21T12:33:28.745Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T12:35:03.881Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "cb55712d4d69063e0a374aa210b0c80994c2491d"
+        }
+      ]
     }
   }
 }

@@ -13,9 +13,13 @@
 //            single correct number.
 //            → the child balances exactly FOUR axes, and each axis has a
 //              GOOD BAND rather than a maximum. More is not better.
-//   F2/V-A1  完全給食 = 主食 + ミルク + おかず. Milk is part of the definition.
+//   F2/V-A1  完全給食 = 主食 + ミルク + おかず（学校給食法施行規則第1条の定義）.
 //            → milk occupies a fixed slot; it is never a choice and is never
-//              the thing that fails to arrive.
+//              the thing that fails to arrive, AND a tray with no 主食 at all is
+//              not a school lunch, however well the four axes sit. That is the
+//              one structural requirement besides the four axes; it is not a
+//              fifth gauge, and the child sees it as the bread-and-rice row
+//              asking to be used.
 //   F6       Real menu planning weighs nutrition together with 食材の重複,
 //            調理法, 旬, 価格, アレルギー, 作業効率...
 //            → the game shows only the four axes; the other considerations
@@ -72,6 +76,15 @@ export const FREE_SLOTS = 4;
  * (see factory/state/backlog/) — the core loop is complete at nine. */
 export const DEFAULT_CANDIDATES = DISHES.map((d) => d.id);
 
+/** Where the band sits inside the visible track, as a 0..1 sub-range. The CSS
+ * draws the hollow from exactly these numbers, so the picture can never drift
+ * from the rule. */
+export function bandOnTrack(a: Axis): [number, number] {
+  const [lo, hi] = BAND[a];
+  const [t0, t1] = TRACK[a];
+  return [(lo - t0) / (t1 - t0), (hi - t0) / (t1 - t0)];
+}
+
 /** The good band per axis, tuned by exhaustive search over all C(9,4)=126 menus
  * (see gameplay-qa-v2-lunch-menu.mjs, which re-proves every property below):
  *   19 viable menus in 8 genuinely different families,
@@ -85,13 +98,18 @@ export const BAND: Record<Axis, [number, number]> = {
   salt: [48, 70],
 };
 
-/** The visible track for each axis. The band is centred in it, so "ちょうどいい"
- * really reads as the middle of the track and both ends are reachable. */
+/** The visible track for each axis.
+ * The floor is the empty tray (milk alone) — the real start of the journey — so
+ * the very first dish already moves the bead instead of leaving it pinned
+ * against the wall. The ceiling is then mirrored about the middle of the band,
+ * so the band still sits exactly in the centre of the track and neither end of
+ * it means "better". */
 export const TRACK: Record<Axis, [number, number]> = Object.fromEntries(
   AXES.map((a) => {
     const [lo, hi] = BAND[a];
-    const pad = (hi - lo) * 0.7;
-    return [a, [lo - pad, hi + pad]];
+    const floor = MILK_FIXED ? MILK.axis[a] : 0;
+    const centre = (lo + hi) / 2;
+    return [a, [floor, centre + (centre - floor)]];
   }),
 ) as Record<Axis, [number, number]>;
 
@@ -108,7 +126,9 @@ export interface Evaluation {
   readings: Record<Axis, Reading>;
   filled: number;
   complete: boolean;
-  /** every axis inside its band — the menu works */
+  /** F2: 完全給食 needs a 主食. False while the tray has neither rice nor bread. */
+  hasStaple: boolean;
+  /** every axis inside its band AND a 主食 present — the menu works */
   viable: boolean;
   /** axes outside their band */
   off: Axis[];
@@ -134,8 +154,9 @@ export function evaluate(tray: Tray): Evaluation {
     };
   }
   const complete = filled === FREE_SLOTS;
+  const hasStaple = dishes.some((d) => d.course === "staple");
   const off = AXES.filter((a) => readings[a].band !== "good");
-  return { readings, filled, complete, viable: complete && off.length === 0, off };
+  return { readings, filled, complete, hasStaple, viable: complete && hasStaple && off.length === 0, off };
 }
 
 /** Which dishes on the tray push `axis` in `dir` the hardest. At most two, so a

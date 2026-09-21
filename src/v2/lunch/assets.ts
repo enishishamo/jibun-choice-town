@@ -11,14 +11,9 @@ export const LUNCH_ASSETS = {
   tray: `${BASE}tray.png`,
   truck: `${BASE}truck.png`,
   school: `${BASE}school.png`,
-  /** the counting rack the four beads roll along */
-  rack: `${BASE}gauge-rack.png`,
   dish: Object.fromEntries(DISH_IDS.map((id) => [id, `${BASE}dishes/${id}.png`])) as Record<string, string>,
-  /** 給食 WORLD MAP: the opened bento box and the five place tiles */
-  map: {
-    bento: `${BASE}map/bento.png`,
-    spot: { grow: `${BASE}map/grow.png`, cook: `${BASE}map/cook.png`, menu: `${BASE}map/menu.png`, carry: `${BASE}truck.png`, serve: `${BASE}school.png` },
-  },
-  /** KNOW THE JOB: the three places the job happens in */
-  scenes: { cook: `${BASE}scenes/kitchen.png`, teach: `${BASE}scenes/classroom.png`, talk: `${BASE}scenes/talk.png` },
+  /** 給食 WORLD MAP. Only the two places whose art exists are pictures; the rest
+   * are the clay place marks in PlaceMark.tsx until their tiles are generated
+   * (recorded as design_needed on the task, not silently referenced and missing). */
+  map: { spot: { carry: `${BASE}truck.png`, serve: `${BASE}school.png` } },
 };

@@ -40,7 +40,6 @@ export default function LunchWorldApp() {
     case "know":
       return (
         <KnowTheJob
-          scenes={LUNCH_ASSETS.scenes}
           onCareer={() => setScreen({ name: "career" })}
           onNext={() => setScreen({ name: "seed" })}
         />

@@ -8,13 +8,12 @@ export default function SeedPick({ onDone }: { onDone: (seedId: string) => void 
   return (
     <section className="v2s v2s-seed" aria-label={COPY.seed.question}>
       <h1 className="v2s-seed-q">{COPY.seed.question}</h1>
-      <div className="v2s-seed-list" role="radiogroup" aria-label={COPY.seed.question}>
+      <div className="v2s-seed-list">
         {COPY.seed.options.map((o, i) => (
           <button
             key={o.id}
             type="button"
-            role="radio"
-            aria-checked={picked === o.id}
+            aria-pressed={picked === o.id}
             className={`v2s-seed-opt ${picked === o.id ? "on" : ""}`}
             style={{ animationDelay: `${i * 90}ms` }}
             onClick={() => setPicked(o.id)}
@@ -24,7 +23,7 @@ export default function SeedPick({ onDone }: { onDone: (seedId: string) => void 
           </button>
         ))}
       </div>
-      <button type="button" className="v2s-btn" disabled={!picked} onClick={() => picked && onDone(picked)}>
+      <button type="button" className="v2s-btn" onClick={() => onDone(picked ?? "none")}>
         {COPY.seed.done}
       </button>
     </section>
