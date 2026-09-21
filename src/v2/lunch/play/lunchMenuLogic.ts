@@ -17,9 +17,12 @@
 //         CLEAR = 子どもが献立を校長先生に見せて決めてもらう操作（見せ方は DESIGN_NEEDED）。
 //   V-A8/9 予算・アレルギーは Lv1 で扱わない。
 // Every rule declares the dish attributes it reads; ALL of them must be in
-// VISIBLE_ATTRIBUTES (drawn on the dish itself) — no hidden answer. The
-// harness checks this mechanically. Penalty VALUES remain PROVISIONAL
-// (tuning), the rule SET is fact-grounded.
+// VISIBLE_ATTRIBUTES — no hidden answer. Since the 2026-09-21 spec the dish
+// art is a PURE visual asset: the attributes are made visible in the UI
+// layer instead (StatusLayer: three colour marks + one cue per rule, grains
+// flying from each dish into its colour marks, related dishes wobbling), and
+// the harness checks that every rule has a rendered cue. Penalty VALUES
+// remain PROVISIONAL (tuning), the rule SET is fact-grounded.
 
 export type Role = "staple" | "main" | "side" | "soup" | "extra" | "milk";
 export type Group = "red" | "yellow" | "green";
@@ -41,7 +44,7 @@ export interface Dish {
   fat: Level;
 }
 
-/** Attributes the board must show on every dish (DN-03 decides HOW). */
+/** Attributes whose consequences the UI layer must make visible (DN-04 decides HOW). */
 export const VISIBLE_ATTRIBUTES = ["role", "groups", "method", "ingredient", "salt", "fat"] as const;
 export type VisibleAttribute = (typeof VISIBLE_ATTRIBUTES)[number];
 
@@ -270,13 +273,14 @@ export function relatedDishes(h: Hit): string[] {
   return [...h.dishIds].sort((a, b) => weight(b) - weight(a)).slice(0, 2);
 }
 
-/** Union of related dishes over all hits, capped so the wobble never covers
- * every dish on the tray (spec §3: a hint, not a highlight of everything). */
+/** Union of related dishes over all hits, capped at TWO dishes in total
+ * (spec §3: a hint that never covers the tray and never singles out one
+ * dish as "the answer" when more than one is involved). */
+export const RELATED_CAP = 2;
 export function relatedSet(hits: Hit[]): Set<string> {
   const weight = new Map<string, number>();
   for (const h of hits) for (const id of relatedDishes(h)) weight.set(id, (weight.get(id) ?? 0) + h.points);
-  const cap = Math.max(1, FREE_SLOTS - 1);
-  return new Set([...weight.entries()].sort((a, b) => b[1] - a[1]).slice(0, cap).map(([id]) => id));
+  return new Set([...weight.entries()].sort((a, b) => b[1] - a[1]).slice(0, RELATED_CAP).map(([id]) => id));
 }
 
 // ---------------------------------------------------------------- analysis (QA)

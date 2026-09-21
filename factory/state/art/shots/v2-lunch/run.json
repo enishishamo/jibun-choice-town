@@ -1,0 +1,20 @@
+{
+ "at": "2026-09-21T01:00:29.960Z",
+ "shots": [
+  "factory/state/art/shots/v2-lunch/01-world-map.png",
+  "factory/state/art/shots/v2-lunch/02-play-empty.png",
+  "factory/state/art/shots/v2-lunch/03-first-complete-grains.png",
+  "factory/state/art/shots/v2-lunch/04-first-complete-status.png",
+  "factory/state/art/shots/v2-lunch/05-after-swap.png",
+  "factory/state/art/shots/v2-lunch/06-event-truck.png",
+  "factory/state/art/shots/v2-lunch/07-unavailable-shake.png",
+  "factory/state/art/shots/v2-lunch/08-deliver-ready.png",
+  "factory/state/art/shots/v2-lunch/09-delivering.png",
+  "factory/state/art/shots/v2-lunch/10-job-reveal.png",
+  "factory/state/art/shots/v2-lunch/11-world-return.png",
+  "factory/state/art/shots/v2-lunch/12-next-trouble.png"
+ ],
+ "errors": [],
+ "scrollW": 375,
+ "innerW": 375
+}

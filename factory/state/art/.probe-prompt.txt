@@ -1,0 +1,1 @@
+Create a simple probe image: a single soft matte red clay sphere centered on a FULLY TRANSPARENT background (PNG with alpha channel, no backdrop, no white square). Nothing else.

@@ -74,17 +74,19 @@
 }
 .lmp-slot.s0 { grid-area: s0; } .lmp-slot.s1 { grid-area: s1; } .lmp-slot.s2 { grid-area: s2; } .lmp-slot.s3 { grid-area: s3; }
 .lmp-slot.fixed { grid-area: milk; border-radius: 50%; align-self: center; aspect-ratio: 1; width: 100%; }
-.lmp-tray.has-art { background: transparent; box-shadow: none; }
+.lmp-tray.has-art { background: transparent; box-shadow: none; aspect-ratio: 768 / 397; }
+/* the tray art has transparent top/bottom margins: crop them (cover) so the layout has no dead band */
+.lmp-tray.has-art .lmp-tray-art { object-fit: cover; object-position: center; }
 /* with the real tray art the slots sit exactly in its recesses (centres measured
    from public/assets/v2/lunch/tray.png; retune here if the tray art changes) */
 .lmp-tray.has-art .lmp-slots { display: block; inset: 0; }
-.lmp-tray.has-art .lmp-slot { position: absolute; width: 25%; aspect-ratio: 1; min-height: 0; transform: translate(-50%, -50%); background: transparent; border-color: transparent; }
+.lmp-tray.has-art .lmp-slot { position: absolute; width: 24%; aspect-ratio: 1; min-height: 0; transform: translate(-50%, -50%); background: transparent; border-color: transparent; }
 .lmp-tray.has-art .lmp-slot:active { transform: translate(-50%, -50%) scale(0.94); }
-.lmp-tray.has-art .lmp-slot.s0 { left: 26%; top: 34%; }
-.lmp-tray.has-art .lmp-slot.s1 { left: 50%; top: 34%; }
-.lmp-tray.has-art .lmp-slot.s2 { left: 25%; top: 57%; }
-.lmp-tray.has-art .lmp-slot.s3 { left: 50%; top: 57%; }
-.lmp-tray.has-art .lmp-slot.fixed { left: 73%; top: 46%; width: 20%; align-self: auto; }
+.lmp-tray.has-art .lmp-slot.s0 { left: 22.5%; top: 23%; }
+.lmp-tray.has-art .lmp-slot.s1 { left: 50%; top: 23.5%; }
+.lmp-tray.has-art .lmp-slot.s2 { left: 21%; top: 60%; }
+.lmp-tray.has-art .lmp-slot.s3 { left: 50%; top: 61%; }
+.lmp-tray.has-art .lmp-slot.fixed { left: 77%; top: 43%; width: 20%; align-self: auto; }
 /* with real tray art the recess itself is the affordance: no drawn outline */
 .lmp-tray.has-art .lmp-slot.empty { border-color: transparent; }
 .lmp-tray.has-art .lmp-slot.pop { animation: lmp-pop-centered 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -119,8 +121,8 @@
 .lmp-groups, .lmp-marks { display: flex; gap: 8px; }
 .lmp-group {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 3px solid;
   box-sizing: border-box;
@@ -136,8 +138,8 @@
 .lmp-group.is-high { transform: scale(1.35); background: transparent; box-shadow: inset 0 0 0 3px currentColor; }
 .lmp-mark {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 5px;
   background: var(--v2-coral);
   animation: lmp-pop 0.3s ease;

@@ -18,7 +18,9 @@
 // Usage: node factory/harness/gameplay-qa-v2-lunch-menu.mjs
 import { createServer } from "vite";
 
-const vite = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" });
+import { tmpdir } from "node:os";
+const CACHE = `${tmpdir()}/jc-vite-cache-v2-lunch`; // write-free repo: Vite temp files go to the OS tmpdir
+const vite = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE });
 const L = await vite.ssrLoadModule("/src/v2/lunch/play/lunchMenuLogic.ts");
 await vite.close();
 
@@ -48,7 +50,7 @@ check("evaluate() reads no attribute outside VISIBLE_ATTRIBUTES (recorded)", hid
 //     not baked into dish art; the child sees each rule's effect in the status layer)
 const React = await import("react");
 const { renderToStaticMarkup } = await import("react-dom/server");
-const P = await (async () => { const v2 = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" }); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
+const P = await (async () => { const v2 = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE }); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
 // a tray that trips every rule at once: two staples (dup role + missing main/side/soup…), etc.
 const worst = { score: 0, complete: true, filled: 4, hits: Object.keys(L.RULES).map((r) => ({ rule: r, dishIds: [], detail: r === "group_low" ? "red" : r === "group_high" ? "yellow" : r, points: 1 })) };
 const html = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: worst, tray: ["rice", "bread", "rice", "bread"], changed: {} }));
@@ -151,8 +153,9 @@ check("cleared session is inert", !L.place(done, "bread").ok && L.remove(done, "
     if (r.length > 2 || (h.dishIds.length > 2 && r.length >= h.dishIds.length) || (h.dishIds.length > 0 && r.length === 0)) bad.push(`${h.rule}:${h.dishIds.join("+")}→${r.join("+")}`);
   }
   check("hints wobble at most two related dishes, never all, never zero", bad.length === 0, bad.slice(0, 3).join(" | "));
-  const overs = all.filter((t) => L.relatedSet(L.evaluate(t.tray).hits).size >= L.FREE_SLOTS);
-  check("the combined wobble set never covers the whole tray", overs.length === 0, `${overs.length} trays`);
+  const overs = all.filter((t) => L.relatedSet(L.evaluate(t.tray).hits).size > L.RELATED_CAP);
+  const empties = all.filter((t) => { const h = L.evaluate(t.tray).hits; return h.some((x) => x.dishIds.length) && L.relatedSet(h).size === 0; });
+  check("the combined wobble set is at most two dishes (never zero when dishes are involved)", overs.length === 0 && empties.length === 0, `${overs.length} over, ${empties.length} empty`);
 }
 
 // 7. bounds + facts

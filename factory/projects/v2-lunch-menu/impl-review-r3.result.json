@@ -1,6 +1,43 @@
 {
-  "ok": false,
-  "status": "CODEX_ERROR",
-  "error": "codex exec exited 1: .score < 90);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:89:    const better = Object.keys(a).filter((k) => (b[k] ?? 0) < a[k]);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:90:    const worse = Object.keys(b).filter((k) => (a[k] ?? 0) < b[k]);\nfactory/harness/gameplay-qa-v2-lunch-menu.mjs:143:check(\"all scores within 0..100\", all.every((t) => t.score >= 0 && t.score <= 100));\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 1:45 AM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 21st, 2026 1:45 AM.\ntokens used\n44,287\n",
-  "elapsed_sec": 27.348
+  "ok": true,
+  "status": "OK",
+  "label": "v2-lunch-impl-r3",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 58,
+    "blockers": [
+      "src/v2/lunch/play/LunchMenuPlay.tsx:300 — Visible attributes disappear with real art — DishFace renders either an image with alt=\"\" or a fallback shape; it renders no persistent role/group/method/ingredient/salt/fat overlay. Thus the evaluator’s decision inputs are hidden when generated art loads, contradicting VISIBLE_ATTRIBUTES and the stated DishFace-overlay fix — Render persistent, non-art-dependent visual marks for every evaluated attribute on each dish and verify them in both art and fallback modes."
+    ],
+    "high": [
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:65 — Harness proves the opposite of the visible-information contract — The SSR check renders DishFace only without src and merely asserts absence of data attributes; it never renders the real-art branch and never verifies that a child can see every attribute evaluate() reads. Proxy instrumentation proves only declared/read property names, not UI visibility — SSR-render DishFace with and without src, require identifiable visual cues for all VISIBLE_ATTRIBUTES, and map every rule read to those rendered cues.",
+      "factory/harness/ver1-freeze-check.mjs:45 — Freeze guard rejects the required Ver.2 assets — The diff includes all public/ files while excluding only src/v2, so newly generated public/assets/v2/lunch/* are reported as Ver.1 mutations; the supplied check currently fails on all 13 slice assets — Exclude public/assets/v2/** from the archive comparison while continuing to guard existing Ver.1 public assets."
+    ],
+    "medium": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:278 — Three dishes can wobble despite the ≤2 contract — relatedSet caps the union at FREE_SLOTS-1, i.e. three. The concrete tray rice+bread+salmon+karaage produces the wobble set bread+salmon+karaage — Cap the final union at two and add an exhaustive assertion that relatedSet.size <= 2.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:154 — Hint check permits the known three-dish violation — It checks only that the combined set is smaller than all four tray dishes, so a three-dish wobble passes despite the revised ≤2 requirement — Replace the condition with relatedSet(...).size <= 2 across all 126 trays.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:19 — QA harness is not independently runnable in the reviewed environment — Direct execution fails before any of the 23 checks because Vite attempts to write node_modules/.vite-temp; package.json also has no check:gameplay-v2-lunch-menu script — Use a write-free TypeScript loader or configured writable cache and register a stable npm script so CI can execute the contract checks."
+    ],
+    "low": [
+      "src/v2/index.css:2 — Header documentation is stale — It says the palette is still open and undefined, while lines 61–71 define the locked palette v1 — Update the comment to match the implemented design decision."
+    ],
+    "evidence": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:45 declares role, groups, method, ingredient, salt, and fat visible, while evaluate() reads them at lines 129–153.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:287-294 renders real art as an empty-alt img; lines 300–306 add only a role-shaped fallback and no attribute overlay.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:38-46 successfully records evaluate() property reads, but this establishes logic access rather than child-visible presentation.",
+      "The exhaustive logic probe found rice,bread,salmon,karaage yields relatedSet=[bread,salmon,karaage], concretely violating the two-dish limit.",
+      "Generated tray, truck, school, milk, and nine dish PNGs exist under public/assets/v2/lunch, and assets.ts maps them into the PLAY.",
+      "All inspected Ver.2 CSS colors use the eight --v2-* palette tokens or color-mix()/transparent.",
+      "progress.ts:27-44 rebuilds solved, seeds, and scores from validated nested values and uses the isolated jibun-choice:v2:progress key.",
+      "The freeze guard reported every public/assets/v2/lunch file as a failure, although its import scan found no Ver.1 screens/q1/state/App imports.",
+      "Build verification was inconclusive because the read-only environment prevented TypeScript from writing node_modules/.tmp/*.tsbuildinfo."
+    ],
+    "recommended_actions": [
+      "Implement persistent per-dish visual attribute cues that remain present over generated artwork; do not substitute post-result aggregate marks for visible decision inputs.",
+      "Strengthen the harness to inspect both DishFace branches and mechanically associate every VISIBLE_ATTRIBUTES entry with rendered, persistent UI.",
+      "Change relatedSet’s global cap to two and exhaustively test that invariant.",
+      "Repair the freeze-check public path exclusions and make the 23-check harness available through package.json and runnable without repository-local cache writes.",
+      "Re-run all 23 gameplay checks, the corrected freeze guard, type-check, and production build in a writable CI workspace."
+    ]
+  },
+  "elapsed_sec": 84.325
 }

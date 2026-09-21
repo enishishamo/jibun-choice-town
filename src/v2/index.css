@@ -1,7 +1,6 @@
 /* Ver.2 stylesheet — intentionally separate from src/index.css (Ver.1).
-   No palette or typography is defined yet: exact colors are OPEN (D-16) and
-   the display font is OPEN. Keep this file to layout-neutral scaffolding
-   until the Design Bible / Master Assets fix them. */
+   Colours: palette v1 tokens (--v2-*, VISUAL_TONE.md §3, LOCKED 2026-09-20)
+   defined at the bottom of this file. Typography is still OPEN. */
 * {
   box-sizing: border-box;
 }

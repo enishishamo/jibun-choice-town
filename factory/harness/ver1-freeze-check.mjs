@@ -2,7 +2,7 @@
 // Ver.1 freeze guard (2026-09-20, Ver.2 migration — docs/jibun-choice-v2/MIGRATION_PLAN.md).
 // Ver.2 is built inside the same repository under src/v2/ (T-01 = plan A),
 // so "Ver.1 is untouched" must be a mechanical check, not a promise:
-//   1. src/ and public/ (excluding src/v2/) are byte-identical to the
+//   1. src/ and public/ (excluding src/v2/ and public/assets/v2/) are byte-identical to the
 //      ver1-archive-2026-09-20 tag
 //   2. nothing under src/v2/ imports Ver.1 UI/state code (screens, q1,
 //      state, App, main, index.css). Read-only use of src/data and src/lib
@@ -42,7 +42,7 @@ let changed = "";
 try {
   changed = execFileSync(
     "git",
-    ["diff", "--name-only", TAG, "--", "src", "public", ":(exclude)src/v2"],
+    ["diff", "--name-only", TAG, "--", "src", "public", ":(exclude)src/v2", ":(exclude)public/assets/v2"],
     { cwd: ROOT, encoding: "utf8" },
   ).trim();
 } catch (e) {
@@ -53,7 +53,7 @@ if (changed) {
   failed = true;
   console.error(`FAIL: Ver.1 files differ from ${TAG}:\n${changed.split("\n").map((f) => "  - " + f).join("\n")}`);
 } else {
-  console.log(`PASS: src/ and public/ (excluding src/v2/) are identical to ${TAG}`);
+  console.log(`PASS: src/ and public/ (excluding src/v2/, public/assets/v2/) are identical to ${TAG}`);
 }
 
 // 2. src/v2 does not import Ver.1 UI/state

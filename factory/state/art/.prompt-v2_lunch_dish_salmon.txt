@@ -1,0 +1,29 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: one grilled salmon fillet (orange flesh, darker grilled skin on top) on a round white plate with a small lemon wedge and one green leaf. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.
+Role in game: こんだてPLAY の料理「さけのしおやき」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.
+Must include: grilled salmon fillet, lemon wedge, green leaf, white plate; one single dish only; transparent background
+Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 1:1 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Salmon skin, flesh, and leaf are rendered with realistic fine textures and glossy highlights; the references use softer, simplified matte clay surfaces.
+- Fix vs reference set: The pristine white studio background lacks the warm miniature-diorama environment and softly modeled depth seen throughout the reference set.
+- Fix vs reference set: The fish anatomy and surface detail are more food-photography-like than handcrafted, with highly defined scales, fat lines, and moist-looking flesh.
+- Fix vs reference set: Lighting is bright and neutral-white, while the references generally use warmer, softer directional illumination.
+- Fix vs reference set: The plate is very smooth and cleanly rendered, with less handmade irregularity than reference props and objects.
+- SERIES_STYLE_MATCH is below the mandatory 80 threshold: the asset reads as polished realistic 3D food rather than an object handmade for the same clay-diorama world.
+- The realistic salmon and leaf textures violate the required unified clay-material treatment, even though the composition and object identification are strong.
+- Reduce scale and flesh microdetail, remove wet gloss, simplify the leaf texture, introduce subtle hand-shaped irregularity, and use warmer soft lighting on a pale warm background.
