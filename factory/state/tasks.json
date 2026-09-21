@@ -1757,7 +1757,7 @@
       "producer": "claude-code-builder",
       "repair_count": 1,
       "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r4.result.json",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -1839,7 +1839,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T20:27:00.322Z",
+      "updated_at": "2026-09-21T20:41:58.478Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2092,6 +2092,21 @@
           "event": "release_commit_set",
           "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
           "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:41:58.479Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+          "score": 84,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2147,12 +2162,12 @@
       "status": "READY",
       "producer": "claude-code-builder",
       "repair_count": 0,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
-      "reviewer": null,
-      "review_independent": null,
+      "reviewer": "codex",
+      "review_independent": true,
       "qa_status": "PASS",
       "qa_evidence": "factory/state/qa/v2-lunch-qa-harness-hardening-r4.json",
       "qa_evidence_kind": "file",
@@ -2165,7 +2180,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T20:23:59.876Z",
-      "updated_at": "2026-09-21T20:27:00.426Z",
+      "updated_at": "2026-09-21T20:41:58.441Z",
       "history": [
         {
           "at": "2026-09-21T20:23:59.877Z",
@@ -2191,8 +2206,24 @@
           "event": "release_commit_set",
           "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
           "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:41:58.442Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+          "score": 84,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
         }
-      ]
+      ],
+      "review_mechanism": "factory/harness/codex-review.mjs"
     }
   }
 }
