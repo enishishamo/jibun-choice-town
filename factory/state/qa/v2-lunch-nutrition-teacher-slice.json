@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T21:04:33.127Z",
- "commit": "4310abeeb1e52953449c1631bafca639c4223b1d",
+ "ran_at": "2026-09-21T21:09:26.436Z",
+ "commit": "09e4235e21b7fcb776217ec7183415f14bffad25",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,7 +10,7 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/q1-pipeline.mjs:287:9: warning eslint(no-constant-condition): Unexpected constant condition help: Update the condition to not be constant, or remove the condition entirely"
+   "summary": "factory/projects/legacy-reach-mix/design/design-sim.mjs:282:178: warning oxc(erasing-op): Unexpected erasing operation. This expression will always evaluate to zero. help: This is most likely not the intended outcome. Consider removing the operation, or directly assigning zero to the variable"
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",

@@ -183,9 +183,26 @@ is a judgement that must be written down with its evidence (the score curve, whe
 findings landed, which are reproducible), not a quiet decision to run out of rounds.
 
 The r6 findings were closed anyway, because each was a few lines and because the
-audit should not depend on the app happening not to use canvas. But r7 is the last
-round that can be justified on quality grounds; beyond that the loop is enumerating an
-infinite set of ways hypothetical code could show a string.
+audit should not depend on the app happening not to use canvas. But r7 was named in
+advance as the last round justifiable on quality grounds; beyond that the loop would be
+enumerating an infinite set of ways hypothetical code could show a string.
+
+**r7 returned PASS, 94, with nothing at any severity** — the first PASS in seven
+rounds, and it landed on the round that had been declared the last one. That is a
+coincidence worth not over-reading: the prediction was about diminishing returns, not
+about when a PASS would arrive. What it does confirm is that the curve was read
+correctly. The reviewer's closing evidence includes the sentence the round was asked
+for: *no findings concern hypothetical canvas, shadow-DOM, form-control, marker,
+alt-text, or other channels absent from this slice.*
+
+Its one recommended action was environmental rather than a defect — the read-only
+review sandbox could not run Chrome or write TypeScript build info, so it asked for
+`build:v2` and `shots:v2-lunch` to be re-run somewhere writable. Both were, at the
+reviewed commit, and both passed. Worth noting for the next job: **the reviewer cannot
+execute the browser harness, so "the harness passes" is always the producer's claim,
+attested by the checked-in run record.** That asymmetry is the strongest remaining
+argument for keeping the mutation log — it is the only thing that makes the producer's
+claim falsifiable by someone else.
 
 ## 7. Promoted to canonical rules
 

@@ -1756,8 +1756,8 @@
       "status": "BLOCKED",
       "producer": "claude-code-builder",
       "repair_count": 1,
-      "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -1832,14 +1832,14 @@
         }
       ],
       "deploy_status": null,
-      "release_commit": "4310abeeb1e52953449c1631bafca639c4223b1d",
-      "blocked_reason": "独立レビューは r1..r5 まで実施済み（68→72→78→80→84、blocker は r2 以降ゼロ）。指摘はすべてQAハーネス側の穴で、毎回修正のうえ変異テストで落ちることを確認している（M1..M19）。それでも直近の r5 は FAIL 84 で、修正後の fresh re-review（r6）が未完了のため PASS とは記録しない。加えて can-deploy は (a) Product Identity impact=YES の人間承認が未取得、(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW、いずれも画面設計＝Design Owner 判断）でも拒否している。QAハーネス側の修正は別タスク v2-lunch-qa-harness-hardening-r4 に分けて記録（本タスクの repair 枠は使い切り済み）",
+      "release_commit": "09e4235e21b7fcb776217ec7183415f14bffad25",
+      "blocked_reason": "実装・検証は完了。独立レビューは7ラウンド（68→72→78→80→84→86→**94 PASS、指摘ゼロ**）、QA は tsc/lint/ver1-freeze/純ロジック54/実ブラウザ24state＋5サイズ掃引すべて PASS、変異テスト25件が全部名前つき assertion で落ちることを確認済み。残っているのは人間・Design Owner の判断のみ: (a) Ver.2 は core gameplay loop の変更なので product_identity_impact=YES、main 反映には明示的な Human 承認が必要（deploy-release-policy.md「HUMAN APPROVALが必要な変更」）。(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW）はいずれも画面設計・アート仕様で Design Owner 判断。(c) 別件 ver1-freeze-tag-vs-main-drift（main が凍結タグから Ver.1 83ファイル分ずれている）が未決着",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T21:04:51.995Z",
+      "updated_at": "2026-09-21T21:10:25.614Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2146,6 +2146,45 @@
           "event": "release_commit_set",
           "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
           "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:09:34.899Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+          "score": 94,
+          "high_count": 0,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "68e8a62d60c35f25d4edce8e9e44e10c8aa8787ace3a61e68df944a9141d0989"
+        },
+        {
+          "at": "2026-09-21T21:09:34.937Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:34.994Z",
+          "event": "release_commit_set",
+          "sha": "09e4235e21b7fcb776217ec7183415f14bffad25",
+          "given": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:10:25.615Z",
+          "event": "blocked",
+          "reason": "実装・検証は完了。独立レビューは7ラウンド（68→72→78→80→84→86→**94 PASS、指摘ゼロ**）、QA は tsc/lint/ver1-freeze/純ロジック54/実ブラウザ24state＋5サイズ掃引すべて PASS、変異テスト25件が全部名前つき assertion で落ちることを確認済み。残っているのは人間・Design Owner の判断のみ: (a) Ver.2 は core gameplay loop の変更なので product_identity_impact=YES、main 反映には明示的な Human 承認が必要（deploy-release-policy.md「HUMAN APPROVALが必要な変更」）。(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW）はいずれも画面設計・アート仕様で Design Owner 判断。(c) 別件 ver1-freeze-tag-vs-main-drift（main が凍結タグから Ver.1 83ファイル分ずれている）が未決着",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2198,11 +2237,11 @@
     "v2-lunch-qa-harness-hardening-r4": {
       "task_id": "v2-lunch-qa-harness-hardening-r4",
       "task_type": "qa-harness",
-      "status": "READY",
+      "status": "BLOCKED",
       "producer": "claude-code-builder",
       "repair_count": 0,
-      "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -2212,14 +2251,14 @@
       "qa_evidence_kind": "file",
       "design_needed": [],
       "deploy_status": null,
-      "release_commit": "4310abeeb1e52953449c1631bafca639c4223b1d",
-      "blocked_reason": null,
+      "release_commit": "09e4235e21b7fcb776217ec7183415f14bffad25",
+      "blocked_reason": "作業自体は完了（r7 PASS 94・指摘ゼロ、変異 M14..M25 で全ゲート検証済み）。それでも単独で deploy 可能にはしない: このタスクのコミットは v2/lunch-vertical-slice 上で栄養教諭スライス（product_identity_impact=YES、Human 承認待ち）のコミットと同じ列に並んでおり、impact=NONE のこのタスクが can-deploy を通ると、CI の release-gate-check から見て『同じ sha に対して通っているタスクがある』状態になり、Ver.2 の core gameplay loop を人間承認なしに main へ通す抜け道になる。スライスが Human 承認を得た時点で、両方まとめて解除する",
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T20:23:59.876Z",
-      "updated_at": "2026-09-21T21:04:52.088Z",
+      "updated_at": "2026-09-21T21:10:12.995Z",
       "history": [
         {
           "at": "2026-09-21T20:23:59.877Z",
@@ -2291,6 +2330,52 @@
           "event": "release_commit_set",
           "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
           "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:09:34.760Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+          "score": 94,
+          "high_count": 0,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "68e8a62d60c35f25d4edce8e9e44e10c8aa8787ace3a61e68df944a9141d0989"
+        },
+        {
+          "at": "2026-09-21T21:09:34.799Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:34.861Z",
+          "event": "release_commit_set",
+          "sha": "09e4235e21b7fcb776217ec7183415f14bffad25",
+          "given": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:44.372Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "RELEASED",
+          "note": "QAハーネス硬化タスク。r7 PASS 94 で指摘ゼロ。変異 M14..M25 で全ゲートが落ちることを確認済み"
+        },
+        {
+          "at": "2026-09-21T21:10:12.996Z",
+          "event": "blocked",
+          "reason": "作業自体は完了（r7 PASS 94・指摘ゼロ、変異 M14..M25 で全ゲート検証済み）。それでも単独で deploy 可能にはしない: このタスクのコミットは v2/lunch-vertical-slice 上で栄養教諭スライス（product_identity_impact=YES、Human 承認待ち）のコミットと同じ列に並んでおり、impact=NONE のこのタスクが can-deploy を通ると、CI の release-gate-check から見て『同じ sha に対して通っているタスクがある』状態になり、Ver.2 の core gameplay loop を人間承認なしに main へ通す抜け道になる。スライスが Human 承認を得た時点で、両方まとめて解除する",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"

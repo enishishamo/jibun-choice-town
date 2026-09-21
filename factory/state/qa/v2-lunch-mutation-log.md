@@ -38,7 +38,12 @@ and reverted; the source was restored from a copy taken before each mutation.
 | M24 | an open shadow root containing the score | every open root is kept at `attachShadow` time and walked with the document |
 | M25 | `aria-valuetext="100てん"` on an element with `role="meter"` | ARIA value attributes are collected with `alt` / `title` / `placeholder` |
 
-25 of 25 fail a named assertion. M5, M7, M8 were found by an independent review of the
+25 of 25 fail a named assertion. The round after M20–M25 landed (r7) returned
+**PASS 94 with no finding at any severity**, and its evidence records that nothing it
+looked at concerned a channel absent from the slice. That is the point these 25 rows
+exist to support: the reviewer cannot run the browser harness itself, so "the gate
+works" is always the producer's claim — the mutation log is what makes that claim
+falsifiable by someone else, one row at a time. M5, M7, M8 were found by an independent review of the
 *first* rebuilt harness; M9–M12 by the two rounds after that, M13 by the round
 after those, and M14–M16 by the closing round (r4 — FAIL 80, 0 blockers, 1 HIGH, 2
 MEDIUM, all three in the harness rather than in the game). Each round found
