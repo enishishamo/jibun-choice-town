@@ -6,7 +6,7 @@
   padding: 12px 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   background: var(--v2-warm-cream);
   color: var(--v2-deep-green);
   overflow: hidden;
@@ -85,7 +85,8 @@
 .lmp-tray.has-art .lmp-slot.s2 { left: 25%; top: 57%; }
 .lmp-tray.has-art .lmp-slot.s3 { left: 50%; top: 57%; }
 .lmp-tray.has-art .lmp-slot.fixed { left: 73%; top: 46%; width: 20%; align-self: auto; }
-.lmp-tray.has-art .lmp-slot.empty { border-color: color-mix(in srgb, var(--v2-deep-green) 10%, transparent); }
+/* with real tray art the recess itself is the affordance: no drawn outline */
+.lmp-tray.has-art .lmp-slot.empty { border-color: transparent; }
 .lmp-tray.has-art .lmp-slot.pop { animation: lmp-pop-centered 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .lmp-slot {
   border: 3px dashed color-mix(in srgb, var(--v2-deep-green) 15%, transparent);
@@ -105,11 +106,13 @@
 
 /* status layer (DN-04): three colour marks + rule marks; appears after the first full tray */
 .lmp-status {
+  width: min(100%, 343px);
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  min-height: 32px;
+  gap: 16px;
+  height: 36px;
   animation: lmp-fade 0.4s ease;
 }
 .lmp-status.pending { opacity: 0.45; }
@@ -170,17 +173,20 @@
   aspect-ratio: 1;
   border: 0;
   border-radius: 18px;
-  background: var(--v2-warm-cream);
-  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-deep-green) 10%, transparent);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--v2-warm-cream) 82%, var(--v2-warm-beige));
+  box-shadow: 0 3px 0 var(--v2-warm-beige);
   padding: 0;
   display: grid;
   place-items: center;
   min-height: 44px;
-  transition: transform 0.15s ease, opacity 0.2s ease, filter 0.2s ease;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 .lmp-cand:active { transform: scale(0.92); }
-.lmp-cand.on-tray { opacity: 0.25; }
-.lmp-cand.unavailable { filter: saturate(0.15); opacity: 0.6; }
+/* state is shown on the dish, the card surface stays intact */
+.lmp-cand.on-tray { background: color-mix(in srgb, var(--v2-warm-beige) 45%, var(--v2-warm-cream)); }
+.lmp-cand.on-tray .lmp-dish-art, .lmp-cand.on-tray .lmp-dish { opacity: 0.28; }
+.lmp-cand.unavailable .lmp-dish-art, .lmp-cand.unavailable .lmp-dish { filter: saturate(0.1) brightness(0.92); opacity: 0.8; }
 .lmp-cand.invite { animation: lmp-float 1.6s ease-in-out infinite; }
 .lmp-cand.shake { animation: lmp-shake 0.42s ease; }
 .lmp-badge { position: absolute; top: 6px; right: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--v2-coral); }
@@ -198,8 +204,8 @@
 .lmp-dish[data-dish="karaage"], .lmp-dish[data-dish="croquette"] { border-radius: 40% 60% 55% 45%; }
 .lmp-dish[data-dish="potato_salad"] { border-radius: 35%; }
 .lmp-dish[data-dish="corn_soup"] { background: var(--v2-soft-sky); }
-.lmp-dish-art { width: 92%; height: 92%; object-fit: contain; display: block; }
-.lmp-slot .lmp-dish-art { width: 96%; height: 96%; }
+.lmp-dish-art { width: 88%; height: 88%; object-fit: contain; object-position: center 55%; display: block; }
+.lmp-slot .lmp-dish-art { width: 96%; height: 96%; object-position: center; }
 
 /* EVENT truck */
 .lmp-truck { position: absolute; z-index: 2; top: 8px; left: -140px; width: 120px; height: 64px; transition: transform 0.7s cubic-bezier(0.22, 0.8, 0.3, 1); }

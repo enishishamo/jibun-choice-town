@@ -79,6 +79,19 @@ Human/GPT の最新仕様（2026-09-21）を反映。ロジック・事実・QA 
 | CLEAR | 「完成した給食を学校へ送り出す」世界内操作（トレーを上へスワイプ／学校をタップ）。校長確認は送り出し演出内の一拍（V-A5 を失わない） | `.lmp-school`（送り先）が成立時に現れる、`is-delivering` 演出＋ `lmp-stamp`（TEMP） |
 | 1PLAY で終了 | DAY 連続なし | 変更なし |
 
+### 【2026-09-21 実績】Autonomous Asset Production（Art Harness 自走）
+
+| 素材 | 経路 | 結果 |
+|---|---|---|
+| 料理 9 品＋牛乳 | `art-requests/dish-*.json` → art-loop（codex_imagegen + vision QA）→ postprocess → `public/assets/v2/lunch/dishes/*.png`（256²透過） | 9/10 QA PASS（min 76〜88）。bread は 3 回で 67 → 強化プロンプトで再試行 |
+| トレー（4 枠＋牛乳丸凹み） | 同上 → `tray.png`（768×576） | PASS 86。凹み中心を画像解析で計測しスロットを絶対配置 |
+| トラック／学校 | 同上 → `truck.png` / `school.png`（384×256） | PASS 86 / 88 |
+| 「届かなかった」状態 | 画像なし。CSS（desaturate + badge + shake） | — |
+| 状態 cue（三色の丸・マーク・粒の飛行・関係する皿の揺れ） | CSS/DOM 実装（palette v1）。GPT が見た目を上書き可能 | DN-04 は「実装済み・GPT 監修待ち」に更新 |
+| 相棒の反応ポーズ | **未制作**（Master PNG が未配置のため派生不可。別キャラで代替しない） | Human 配置待ち |
+
+Autonomous Execution regression を 1 件修復: `provider-status.json` の probe が 14 日で失効し art-loop が human_boundary に落ちていた → 実プローブ再実行（透過 PNG 生成を確認）。
+
 ### アセット再監査（この仕様変更で変わった点）
 - 料理 9 品＋牛乳: **属性の焼き込み不要**になった（純粋に「触りたくなる料理」でよい）。サイズ・状態差分（通常／トレー上／届かなかった）は従来どおり
 - **新規**: 状態 cue の見た目（三色の丸 3 状態、かぶり／しお／あぶら／種類のマーク 5 種、改善／悪化の脈動）— DN-04

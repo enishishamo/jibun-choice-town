@@ -1,0 +1,10 @@
+[2026-09-21T00:50:09.904Z] === dish-bread (v2_lunch_dish_bread) ===
+[2026-09-21T00:56:21.477Z] art-loop exit=0
+[v2_lunch_dish_bread] iteration 1: generating...
+[v2_lunch_dish_bread] QA FAIL (iter 1): SERIES_STYLE_MATCHが80未満 — 単体では明瞭で完成度も高いが、既存シリーズと並べると粘土小物ではなく写実寄りの食品CGに見える | パンの表面ディテールを減らし、焼き色をより均一かつ柔らかくして、指で成形したような丸みとマットな粘土質感を強める必要がある | 皿とパンを同じ手作り粘土素材に見せ、影をより柔らかくすればシリーズとの統一感が上がる
+[v2_lunch_dish_bread] iteration 2: generating...
+[v2_lunch_dish_bread] QA PASS (iter 2)
+
+
+[2026-09-21T00:56:22.105Z] postprocess exit=0 {"src_size": [1024, 1024], "alpha_corners": [255, 255, 255, 255], "keyed_white": true, "content_bbox": [79, 173, 947, 873], "ok": true, "out": "public/assets/v2/lunch/dishes/bread.png", "out_size": [256, 256], "content_fill": 0.568} 
+[2026-09-21T00:56:22.105Z] DONE 1/1

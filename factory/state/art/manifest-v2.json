@@ -3734,7 +3734,7 @@
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one soft golden-brown oval bread roll (koppe-pan) on a plain round white plate. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material. CRITICAL series-match fixes (from the art critic, 3 failed attempts): the bread and plate must read as HANDMADE MATTE CLAY, not a smooth 3D food render — visible soft fingerprint-like irregularities on the bun surface, no glossy highlights, slightly uneven plate rim, warm diagonal daylight from upper-left, colours a touch more muted/warm like the attached clay references.\nRole in game: こんだてPLAY の料理「パン」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: golden bread roll on a white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one soft golden-brown oval bread roll (koppe-pan) on a plain round white plate. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material. CRITICAL series-match fixes (from the art critic, 3 failed attempts): the bread and plate must read as HANDMADE MATTE CLAY, not a smooth 3D food render — visible soft fingerprint-like irregularities on the bun surface, no glossy highlights, slightly uneven plate rim, warm diagonal daylight from upper-left, colours a touch more muted/warm like the attached clay references.\nRole in game: こんだてPLAY の料理「パン」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: golden bread roll on a white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: パンの表面に細かなひび・気泡・焼きむらがあり、referenceの単純化されたマットな粘土造形より実物の食品CGに近い\n- Fix vs reference set: referenceの小物は丸く手成形したような形と均一な粘土質感が強いが、候補はパンだけ質感描写が精密で、皿との素材感にも差がある\n- Fix vs reference set: referenceは柔らかな斜光とジオラマらしい接地感がある一方、候補は白いスタジオ背景と強い商品写真風のライティングに見える\n- Fix vs reference set: referenceの食品類より彩度と明暗コントラストが高く、焼き色が写実的\n- SERIES_STYLE_MATCHが80未満 — 単体では明瞭で完成度も高いが、既存シリーズと並べると粘土小物ではなく写実寄りの食品CGに見える\n- パンの表面ディテールを減らし、焼き色をより均一かつ柔らかくして、指で成形したような丸みとマットな粘土質感を強める必要がある\n- 皿とパンを同じ手作り粘土素材に見せ、影をより柔らかくすればシリーズとの統一感が上がる\n- vision critic verdict: FAIL (MUST violation or unstated failure)",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -3746,35 +3746,34 @@
    ],
    "dimensions": "1024x1024",
    "aspect_ratio": 1,
-   "created_at": "2026-09-21T00:53:05.783Z",
-   "iteration": 1,
-   "qa_score": 73,
+   "created_at": "2026-09-21T00:56:21.470Z",
+   "iteration": 2,
+   "qa_score": 86,
    "qa_scores": {
-    "STYLE_CONSISTENCY": 73,
-    "COMPOSITION": 91,
-    "CROP_SAFETY": 94,
+    "STYLE_CONSISTENCY": 90,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 97,
     "READABILITY": 96,
-    "OBJECT_COMPLETENESS": 98,
+    "OBJECT_COMPLETENESS": 100,
     "CHARACTER_ANATOMY": 100,
-    "SERIES_CONSISTENCY": 74,
+    "SERIES_CONSISTENCY": 87,
     "BEFORE_AFTER_CONSISTENCY": 100,
     "JOB_ACCURACY": 100,
-    "MOBILE_USABILITY": 92,
-    "SERIES_STYLE_MATCH": 74,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 86,
     "CHARACTER_SERIES_MATCH": 100
    },
    "qa_issues": [
-    "SERIES_STYLE_MATCHが80未満 — 単体では明瞭で完成度も高いが、既存シリーズと並べると粘土小物ではなく写実寄りの食品CGに見える",
-    "パンの表面ディテールを減らし、焼き色をより均一かつ柔らかくして、指で成形したような丸みとマットな粘土質感を強める必要がある",
-    "皿とパンを同じ手作り粘土素材に見せ、影をより柔らかくすればシリーズとの統一感が上がる",
-    "vision critic verdict: FAIL (MUST violation or unstated failure)",
-    "SERIES_STYLE_MATCH below SERIES gate (80): 74"
+    "パンと皿は丸みのある粘土風で、暖色の焼き色、柔らかな斜光、簡略化された造形がシリーズ基準に適合している",
+    "文字・数字・ロゴ・透かしがなく、料理の属性をUI層に分離するmaster assetとして適切",
+    "対象物が中央に大きく収まり、外周余白も十分で、モバイル表示や切り抜きに強い",
+    "パンと皿が完全に画面内に収まり、形状の破綻や不自然な接触もない"
    ],
-   "file_hash": "4ed9ddb87bad",
+   "file_hash": "4db909869e1c",
    "used_by": [
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
-   "status": "qa_failed"
+   "status": "qa_passed"
   },
   {
    "asset_id": "v2_lunch_dish_salmon",
