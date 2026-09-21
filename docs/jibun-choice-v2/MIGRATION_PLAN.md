@@ -121,23 +121,35 @@ Ver.2 は Ver.1 を捨てて作り直すものではなく、**入口と PLAY �
 - **language-style / qa-rules / game-critic-v2**: 引き続き適用。ただし game-critic-v2 の採点軸に
   PLAY FIRST（説明画面なし・最初のタップで反応）が入っていない場合は、Ver.2 用に追記が必要（OPEN）。
 
-## 6. 次に着手できる最小タスク（実装はまだ開始しない）
+## 6. 進捗（2026-09-22 時点）
 
-**Step 0（2026-09-20 完了）**: Ver.1 凍結（`ver1-archive-2026-09-20` / `archive/ver1`）/ `v2/develop` /
-Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-freeze`）/
-Visual Reference 配置（`design/v2/reference/concept-board-2026-09-20.png`、Master ではない）。
-→ **Ver.2 移行準備は完了扱い。** 以降は Step 1 から。
+**Step 0（2026-09-20 完了）**: Ver.1 凍結（`ver1-archive-2026-09-20` / `archive/ver1`）/
+`v2/develop` / Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-freeze`）/
+Visual Reference 配置（Master ではない）。
 
-**Step 1（次）— 栄養・メニュー Ver.2 の「体験設計」**（コードを書かない。DESIGN_OWNERSHIP §3 の第 1 段）:
-1. NEEDS_VALIDATION V-01〜V-04 の事実確認（`jc-researcher` 相当の一次情報調査）
-2. 事実に基づく「体験」の設計: 何を触る／何が即座に変わる／スコアの意味（見せ方は GPT Screen Design）
-3. Lv1（栄養のみ）の最小仕様を `factory/projects/v2-lunch-menu/design.md` として作成
-4. `jc-critic` 相当の独立レビュー（PLAY FIRST 規約・principles.md BLOCKER）
-5. → **GPT Screen Design / Assets → Human Approval → Master**（Claude Code はここで待つ）
+**Step 1（2026-09-21 完了）— 栄養・メニューの体験設計**:
+一次情報の再調査（`facts/research-2026-09-21.md` F1〜F8。既存 research.md の誤り 4 件を訂正）、
+LEGACY INVENTORY（`legacy-inventory.md`）、仕様の正本
+（`factory/projects/v2-lunch-menu/nutrition-teacher-slice.md`）、独立レビュー。
 
-**Step 2 以降**: Claude Code Implementation（承認済み design のみ、`src/v2/games/lunch-menu/`）→
-Screenshot（375px）→ GPT / Codex Visual QA → 修正 → Human Approval → 子どもテスト → 改善 → 次ゲーム（候補順は OPEN）。
-Human Approval 前に完成 UI を独自設計しない。
+**Step 2（2026-09-22 実装済み・未承認）— 栄養教諭 Job Vertical Slice**:
+`src/v2/lunch/` に ENTRY → PLAY → EVENT → CLEAR → JOB REVEAL → KNOW THE JOB →
+CAREER PATH → 好きの種 → WORLD RETURN が通っている。ブランチ
+`v2/lunch-vertical-slice`。`main` にも公開先にも一切反映していない。
+
+- 機械検証: `npm run qa:v2-lunch`（54）/ `npm run shots:v2-lunch`（24 state ＋ 5 画面サイズ掃引）/
+  `check:ver1-freeze` / tsc / lint —— すべて PASS。変異テスト 25 件が全部落ちることを確認済み
+  （`factory/state/qa/v2-lunch-mutation-log.md`）。
+- 独立レビュー: `codex-review.mjs` を 7 ラウンド。blocker は r1 以降ゼロ、
+  ゲーム側の指摘は r3 以降ゼロ。残る指摘は QA ハーネス側のみ。
+- **残っているのは人間・Design Owner の判断だけ**:
+  (a) Ver.2 は core gameplay loop の変更なので `main` 反映には Human 承認が必要（§5）、
+  (b) 未解決 DESIGN_NEEDED 5 件（KNOW / CAREER / 好きの種 の画面設計、MAP の地面、板の窪み）、
+  (c) `main` が凍結タグから Ver.1 83 ファイル分ずれている件（台帳
+  `ver1-freeze-tag-vs-main-drift`、HUMAN_DECISION_REQUIRED）。
+
+**Step 3（次）**: 上記 (a)(b)(c) の判断のあと、子どもテスト → 改善 → 次の職業。
+次の職業の候補順は OPEN。**1 職業ずつ**は変えない。
 
 ## 7. 今回やらなかったこと（意図的）
 
