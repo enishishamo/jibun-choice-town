@@ -191,6 +191,32 @@ await shot("22-world-return");
 await sleep(1200);
 await shot("23-next-trouble");
 
+// ── no control may steal a tap meant for another ─────────────────────────
+//    (a dish's picture is allowed to overflow its recess; its touch area is not)
+const tapOwnership = await page.evaluate(() => {
+  const wrong = [];
+  const boxes = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
+  for (const el of boxes) {
+    const b = el.getBoundingClientRect();
+    if (b.width === 0) continue;
+    for (const [x, y] of [[b.left + 4, b.top + 4], [b.right - 4, b.top + 4], [b.left + 4, b.bottom - 4], [b.right - 4, b.bottom - 4], [b.left + b.width / 2, b.top + b.height / 2]]) {
+      const owner = document.elementFromPoint(x, y)?.closest(".lmp-slot, .lmp-school, .lmp-cand");
+      if (owner && owner !== el) wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${owner.getAttribute("aria-label")}`);
+    }
+  }
+  // and no two touch areas may intersect at all
+  const overlaps = [];
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i].getBoundingClientRect(), c = boxes[j].getBoundingClientRect();
+    if (a.width === 0 || c.width === 0) continue;
+    const w = Math.min(a.right, c.right) - Math.max(a.left, c.left), h = Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top);
+    if (w > 0 && h > 0) overlaps.push(`${boxes[i].getAttribute("aria-label")} x ${boxes[j].getAttribute("aria-label")}: ${Math.round(w)}x${Math.round(h)}`);
+  }
+  return { wrong, overlaps };
+});
+for (const w of tapOwnership.wrong) violations.push(`tap ownership: ${w}`);
+for (const o of tapOwnership.overlaps) violations.push(`touch areas overlap: ${o}`);
+
 // ── the one structural rule besides the four axes: a lunch needs a 主食.
 //    Played on a fresh visit so the state is unambiguous.
 await tap("こんだてを考える", 700);

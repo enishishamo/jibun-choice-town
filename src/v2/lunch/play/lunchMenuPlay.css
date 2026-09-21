@@ -160,8 +160,9 @@
 .lmp-slot.leaving .lmp-dish-art, .lmp-slot.leaving .lmp-dish { animation: lmp-leave 0.26s ease-in forwards; }
 .lmp-slot.related .lmp-dish-art, .lmp-slot.related .lmp-dish { animation: lmp-wobble 2.2s ease-in-out infinite; }
 .lmp-dish-art { width: 96%; height: 96%; object-fit: contain; display: block; }
-/* the food may overflow its (smaller) hit box — only the touch target is bounded */
-.lmp-slot .lmp-dish-art { width: 100%; height: 148%; }
+/* the food may overflow its (smaller) hit box, but the overflow must not be
+   touchable: otherwise one dish's picture steals taps meant for its neighbour */
+.lmp-slot .lmp-dish-art { width: 100%; height: 148%; pointer-events: none; }
 .lmp-slot.fixed .lmp-dish-art { height: 150%; }
 
 /* ── the counting rack: four channels carved into one block ──
