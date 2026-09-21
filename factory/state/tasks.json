@@ -1757,7 +1757,7 @@
       "producer": "claude-code-builder",
       "repair_count": 1,
       "review_status": "FAIL",
-      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r2.result.json",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r3.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
       "reviewer": "codex",
@@ -1823,7 +1823,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T14:15:56.163Z",
+      "updated_at": "2026-09-21T14:30:11.674Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -1950,6 +1950,21 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "4e2177027941459ff593744961481882c55b7b3e942afb7b501c9dc69ad1db2a"
+        },
+        {
+          "at": "2026-09-21T14:30:11.675Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r3.result.json",
+          "score": 78,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "7b90fcc44c91512bc79edd10490dc36f99b8d5bedc773118c61bfd5139bcd699"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"

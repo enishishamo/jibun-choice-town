@@ -25,8 +25,11 @@ and reverted; the source was restored from a copy taken before each mutation.
 | M11 | `content: "100てん"` on a pseudo-element | `::before`/`::after` content is recorded for every element on every mutation |
 | M12 | a transparent overlay over the whole board that swallows every tap | tap ownership: every sampled point inside a live control must resolve to it, something inside it, or a container around it |
 
-12 of 12 fail a named assertion. M5, M7, M8 were found by an independent review of the
-*first* rebuilt harness; M9–M12 by two later rounds of the same review. Each round found
+| M13 | a container overlay that receives the tap instead of the control | tap ownership: only the control or something inside it counts |
+
+13 of 13 fail a named assertion. M5, M7, M8 were found by an independent review of the
+*first* rebuilt harness; M9–M12 by the two rounds after that, and M13 by the round
+after those. Each round found
 its holes in the gate rather than in the game, which is the point of keeping the reviewer
 in a separate context.
 
