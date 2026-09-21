@@ -53,8 +53,11 @@ header says so. A child never sees a number, and neither does anything else.
 
 - 4 free slots + a fixed milk slot; 9 candidate dishes (expanding the pool to 15–20 is
   NEXT ITERATION, recorded in the backlog — the core loop is complete at nine).
-- Every dish moves all four axes. Each axis has a good band, and the visible track is
-  the band padded by 0.7× on each side, so the band is literally the middle of the track.
+- Every dish moves all four axes. Each axis has a good band. The visible track starts
+  at the empty tray (milk alone) — the real start of the journey, so the very first
+  dish already moves every bead — and its far end is mirrored about the middle of the
+  band, so the band still sits exactly in the centre of the track and neither end of it
+  means "better".
 - **Tuned by exhaustive search over all C(9,4)=126 menus**, re-proved on every run by
   `npm run qa:v2-lunch`:
 
@@ -101,8 +104,9 @@ the counting rack / the serving counter.
 - Placing a dish sends motes from it into the four grooves; the beads move **when the
   motes arrive**, never before, so the cause is visible.
 - The counter is one serving pan per kind of dish, in serving order (主食→主菜→副菜→汁物).
-  A dish on the tray leaves an empty place in its pan — no tick. A dish that did not
-  arrive stays visible, grey, with a coral dot, and shakes when touched.
+  A dish on the tray leaves an empty place in its pan — no tick, because a tick would
+  read as "correct". A dish that did not arrive is not there either: only a faint
+  memory of it over its empty place, and it shakes when touched. No badges anywhere.
 - The only sentence the game says before the job is revealed is the delivery trouble.
 
 ## 5. Where the Ver.1 assets went
