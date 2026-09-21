@@ -2,9 +2,13 @@
 
 This is a review of a REBUILT slice at commit HEAD of branch v2/lunch-vertical-slice. The earlier design (three 三色食品群 baskets, an 8-rule penalty score, a 校長 stamp, TEMP/DESIGN_NEEDED screens in the flow) has been removed entirely. Review what is there now, on its own terms.
 
-FIVE independent reviews already ran (four agent reviews and one earlier round of this same Codex review, which returned FAIL 68 with 0 blockers and 3 HIGH, all of them holes in the QA harness itself). Their findings were repaired. This is the FRESH RE-REVIEW after that repair.
+SIX independent reviews already ran (four agent reviews and one earlier round of this same Codex review, which returned FAIL 68 with 0 blockers and 3 HIGH, all of them holes in the QA harness itself). Their findings were repaired. This is the FRESH RE-REVIEW after that repair.
 
-The three HIGH findings of the previous Codex round and what the repair claims:
+The most recent Codex round returned FAIL 72 with 0 blockers and 2 HIGH, both again holes in the QA harness, and both are now repaired and mutation-tested:
+A. the tap-ownership check passed when elementFromPoint returned something outside its selector set or null, so a transparent overlay swallowing every tap would pass. It now requires each sampled point inside a live control to resolve to that control, something inside it, or a container that contains it; a sibling on top, or nothing at all, is a violation. Points are sampled at 25%/75%/centre rather than at the square corners of a rounded control. Verified by making .lmp-motion opaque to pointers: caught by name.
+B. the visible-text audit never looked at CSS generated content, so `content: "100てん"` on a pseudo-element would show a score invisibly to every check. ::before/::after content is now recorded for every element on every mutation and run through the same digit and copy.ts allow-list rules. Verified by adding such a rule: caught.
+
+The three HIGH findings of the round before that, and what the repair claims:
 1. the touch-geometry assertion ran after the flow had left the PLAY board, so it checked an empty page and passed vacuously. It now runs while the board is mounted, in two states (empty tray, and tray full with the school offered), and fails itself if fewer than 10 controls were on screen.
 2. the digit prohibition ignored accessible names, so a score could hide in an aria-label inside .lmp, and the aria allow-list stripped everything after 「：」. Board-scoped aria-labels are now included in the digit check, the allow-list is expanded from copy.ts's own values, and a composed label is accepted only as 「<allowed>（<allowed>）」 or 「<allowed>：<allowed>」.
 3. a transient pre-CLEAR job-name flash was not detected. The observer now records everything rendered WHILE THE BOARD IS MOUNTED and fails if a job name appears in that set — it no longer depends on a flag the harness sets.

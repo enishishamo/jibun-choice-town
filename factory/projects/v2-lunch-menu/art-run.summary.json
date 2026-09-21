@@ -153,5 +153,36 @@
    ],
    "content_fill": 0.695
   }
+ },
+ {
+  "name": "scene-kitchen",
+  "ok": true,
+  "loop_exit": 1,
+  "post": {
+   "src_size": [
+    900,
+    600
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    90,
+    11,
+    785,
+    537
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/scenes/kitchen.png",
+   "out_size": [
+    384,
+    256
+   ],
+   "content_fill": 0.621
+  }
  }
 ]
