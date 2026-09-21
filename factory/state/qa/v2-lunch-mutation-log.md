@@ -23,9 +23,8 @@ and reverted; the source was restored from a copy taken before each mutation.
 | M9 | the score hidden in an `aria-label` inside the board | board-scoped aria-labels are included in the digit check |
 | M10 | the job name flashed on the board before CLEAR | everything rendered *while the board is mounted* is recorded and checked for the job name |
 | M11 | `content: "100てん"` on a pseudo-element | `::before`/`::after` content is recorded for every element on every mutation |
-| M12 | a transparent overlay over the whole board that swallows every tap | tap ownership: every sampled point inside a live control must resolve to it, something inside it, or a container around it |
-
-| M13 | a container overlay that receives the tap instead of the control | tap ownership: only the control or something inside it counts |
+| M12 | a transparent overlay over the whole board that swallows every tap | tap ownership |
+| M13 | a container that receives the tap instead of the control it wraps | tap ownership: only the control itself or something inside it counts, because a tap on a container never reaches the control's handler |
 
 13 of 13 fail a named assertion. M5, M7, M8 were found by an independent review of the
 *first* rebuilt harness; M9–M12 by the two rounds after that, and M13 by the round

@@ -2,9 +2,16 @@
 
 This is a review of a REBUILT slice at commit HEAD of branch v2/lunch-vertical-slice. The earlier design (three 三色食品群 baskets, an 8-rule penalty score, a 校長 stamp, TEMP/DESIGN_NEEDED screens in the flow) has been removed entirely. Review what is there now, on its own terms.
 
-SIX independent reviews already ran (four agent reviews and one earlier round of this same Codex review, which returned FAIL 68 with 0 blockers and 3 HIGH, all of them holes in the QA harness itself). Their findings were repaired. This is the FRESH RE-REVIEW after that repair.
+SEVEN independent reviews already ran (four agent reviews and one earlier round of this same Codex review, which returned FAIL 68 with 0 blockers and 3 HIGH, all of them holes in the QA harness itself). Their findings were repaired. This is the FRESH RE-REVIEW after that repair.
 
-The most recent Codex round returned FAIL 72 with 0 blockers and 2 HIGH, both again holes in the QA harness, and both are now repaired and mutation-tested:
+The most recent Codex round returned FAIL 78 with 0 blockers, 1 HIGH and 3 MEDIUM, and all four are now repaired and, where applicable, mutation-tested:
+- tap ownership accepted a hit on an ancestor/container, but a tap on a container never reaches the control's handler. It now accepts only the control itself or a descendant. Verified by wrapping the board in a tap-receiving container: caught.
+- the touch check never asserted a minimum target size. It now fails any live control below 44x44.
+- `swap()` had no `phase === "cleared"` guard while `place()` and `remove()` did. Added.
+- `prefers-reduced-motion` was never exercised. The run now includes a reduced-motion pass that plays the menu to a sendable state and asserts the flow completes, that nothing on the board is still animating, and that there are no console errors.
+Also: the short-screen media queries sat mid-file and lost to later base rules; moved to the end. 320x568, 375x667, 375x812, 390x844 and 430x932 now all fit with no vertical scroll, all nine dishes on screen, minimum touch target 44px.
+
+The round before that returned FAIL 72 with 0 blockers and 2 HIGH, both again holes in the QA harness, and both are now repaired and mutation-tested:
 A. the tap-ownership check passed when elementFromPoint returned something outside its selector set or null, so a transparent overlay swallowing every tap would pass. It now requires each sampled point inside a live control to resolve to that control, something inside it, or a container that contains it; a sibling on top, or nothing at all, is a violation. Points are sampled at 25%/75%/centre rather than at the square corners of a rounded control. Verified by making .lmp-motion opaque to pointers: caught by name.
 B. the visible-text audit never looked at CSS generated content, so `content: "100てん"` on a pseudo-element would show a score invisibly to every check. ::before/::after content is now recorded for every element on every mutation and run through the same digit and copy.ts allow-list rules. Verified by adding such a rule: caught.
 

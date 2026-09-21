@@ -184,5 +184,36 @@
    ],
    "content_fill": 0.621
   }
+ },
+ {
+  "name": "scene-classroom",
+  "ok": true,
+  "loop_exit": 1,
+  "post": {
+   "src_size": [
+    900,
+    600
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    80,
+    11,
+    841,
+    567
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/scenes/classroom.png",
+   "out_size": [
+    384,
+    256
+   ],
+   "content_fill": 0.643
+  }
  }
 ]

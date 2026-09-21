@@ -1,0 +1,19 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: a miniature quiet corner diorama with no people in it: one small round warm wooden table with two small wooden chairs facing each other across it, and a single sheet of blank pale cream paper lying flat on the table top. Calm, warm and simple, nothing else on the table. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: こんだてPLAY の「相談する場所」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・部屋・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。空であること・人がいないことは欠陥ではなく要件
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — one little table with two chairs — not a room interior: no walls, no ceiling, no floor plane. The sheet of paper on the table is completely BLANK: plain pale cream paper, no writing, no letters, no numbers, no ruled lines. No table-cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, warm and calm, bright but not neon.
+Must include: one small round table; two chairs facing each other; one blank sheet of paper on the table; no people anywhere; transparent background
+Must NOT include: readable text; letters or numbers; writing or marks on the paper; logos; attribute marks, icons, badges or symbols; walls, ceiling, windows or a room interior; hands or people; cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 3:2 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.
