@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T13:03:47.602Z",
- "commit": "08de96a762dc4c2405c1713f54c712b3ac16b21e",
+ "ran_at": "2026-09-21T13:22:48.810Z",
+ "commit": "0384ce6a6f6d9470542fb0539336cbc483c228eb",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,12 +10,12 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/q1-pipeline.mjs:287:9: warning eslint(no-constant-condition): Unexpected constant condition help: Update the condition to not be constant, or remove the condition entirely"
+   "summary": "factory/harness/gameplay-qa-zoo.mjs:9:77: warning eslint(no-unused-vars): Identifier 'planValue' is imported but never used. help: Consider removing this import."
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",
    "exit_code": 0,
-   "summary": "PASS: 21 file(s) under src/v2/ import no Ver.1 screens/q1/state/App"
+   "summary": "PASS: 22 file(s) under src/v2/ import no Ver.1 screens/q1/state/App"
   },
   {
    "script": "factory/harness/gameplay-qa-v2-lunch-menu.mjs",

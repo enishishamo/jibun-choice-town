@@ -1,5 +1,5 @@
 {
- "at": "2026-09-21T13:21:18.877Z",
+ "at": "2026-09-21T13:22:48.697Z",
  "ok": true,
  "shots": [
   "factory/state/art/shots/v2-lunch/01-world-map.png",
@@ -68,6 +68,6 @@
  ],
  "scrollW": 375,
  "innerW": 375,
- "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T13:21:12.565Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
+ "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T13:22:42.432Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
  "markers": false
 }
