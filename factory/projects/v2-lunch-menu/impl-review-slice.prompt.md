@@ -2,6 +2,14 @@
 
 This is a review of a REBUILT slice at commit HEAD of branch v2/lunch-vertical-slice. The earlier design (three 三色食品群 baskets, an 8-rule penalty score, a 校長 stamp, TEMP/DESIGN_NEEDED screens in the flow) has been removed entirely. Review what is there now, on its own terms.
 
+FIVE independent reviews already ran (four agent reviews and one earlier round of this same Codex review, which returned FAIL 68 with 0 blockers and 3 HIGH, all of them holes in the QA harness itself). Their findings were repaired. This is the FRESH RE-REVIEW after that repair.
+
+The three HIGH findings of the previous Codex round and what the repair claims:
+1. the touch-geometry assertion ran after the flow had left the PLAY board, so it checked an empty page and passed vacuously. It now runs while the board is mounted, in two states (empty tray, and tray full with the school offered), and fails itself if fewer than 10 controls were on screen.
+2. the digit prohibition ignored accessible names, so a score could hide in an aria-label inside .lmp, and the aria allow-list stripped everything after 「：」. Board-scoped aria-labels are now included in the digit check, the allow-list is expanded from copy.ts's own values, and a composed label is accepted only as 「<allowed>（<allowed>）」 or 「<allowed>：<allowed>」.
+3. a transient pre-CLEAR job-name flash was not detected. The observer now records everything rendered WHILE THE BOARD IS MOUNTED and fails if a job name appears in that set — it no longer depends on a flag the harness sets.
+Verify all three, and re-run your own mutation test.
+
 Four independent agent reviews already ran and their findings were repaired. Do not assume they were right and do not assume the repairs hold — verify. In particular they found, and the repair claims to have closed:
 - the QA harness passed deliberately-wrong implementations (a rendered score, a right/wrong verdict, an aptitude verdict about the child, an auto-clear inside place(), an auto-send from a timer, a score that flashes only during the 380ms dish flight, a verdict shown only during the 900ms settle window). The harness now (a) drives place/remove/swap/fireEvent over all 126 trays asserting the cleared phase is unreachable, (b) sits idle for 3.5s on a sendable tray asserting the phase does not advance, and (c) accumulates every text node and aria-label ever rendered via a MutationObserver and asserts no digit appears inside .lmp and every string is present verbatim in src/v2/lunch/copy.ts. **Re-run the mutation test yourself** on a scratch copy (git worktree, /tmp) and report which wrong implementations the harness now catches and which it still misses.
 - the school's touch area overlapped the tray dishes, so reaching for a dish could irreversibly send the lunch; tray recesses overlapped each other. The shots harness now asserts no two touch areas intersect and that every corner and centre of every control resolves to itself.

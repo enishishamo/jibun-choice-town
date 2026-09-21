@@ -91,5 +91,36 @@
    ],
    "content_fill": 0.591
   }
+ },
+ {
+  "name": "map-cook",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1024,
+    1024
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    46,
+    70,
+    987,
+    956
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/map/cook.png",
+   "out_size": [
+    256,
+    256
+   ],
+   "content_fill": 0.663
+  }
  }
 ]

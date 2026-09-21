@@ -53,13 +53,34 @@ text.** Concretely, for a game:
   one so nobody mistakes it for a gate.
 
 The rebuilt harness now drives 126 trays through place/remove/swap/fireEvent and
-asserts the cleared phase is unreachable, and the screenshot harness asserts, on every
-one of its 23 captured states, that no developer marker is on screen, that the job
-name does not appear before CLEAR, that no digit appears on the board, that every
-rendered string and aria-label is in `copy.ts`, and that no image failed to load.
-That last one also closes a second hole: a missing picture used to fall back to a CSS
-shape silently, with no 4xx and no text, so the run reported `ok: true` with seven
-assets missing.
+asserts the cleared phase is unreachable, and the screenshot harness asserts the same
+kind of thing in the browser. That last one also closed a second hole: a missing
+picture used to fall back to a CSS shape silently, with no 4xx and no text, so the run
+reported `ok: true` with seven assets missing.
+
+**And then the rebuilt harness was itself found wanting, twice.** A fresh independent
+review mutated the board again and showed that the new checks still passed a game that
+sends itself on a timer, a score that flashes only during the 380ms dish flight, and a
+verdict shown only during the 900ms settle window — because the browser harness
+performed the gesture itself, and because it only looked at 23 quiescent moments. A
+second round then found that the touch-geometry assertion ran *after* the flow had left
+the board, so it inspected an empty page and passed vacuously, that the no-number rule
+never looked at accessible names, and that a job name flashed during play would not be
+caught.
+
+Three further rules come out of that, and they are the ones worth keeping:
+
+- **A check that samples cannot see what happens between the samples.** Accumulate
+  continuously (a `MutationObserver` over the whole run) and assert over everything that
+  was ever rendered, not over screenshots.
+- **A driven test cannot prove that nothing happens on its own.** If the harness
+  performs the gesture, add an explicit idle window and assert that nothing advances.
+- **A check must fail when it had nothing to check.** The vacuous geometry assertion
+  looked identical to a passing one. Every such check now counts its subjects and fails
+  itself if the count is implausible.
+
+All of these were verified by mutation: seven deliberately-wrong implementations were
+written, and each is now caught by a named assertion.
 
 ## 3. Why Ver.1 knowledge nearly disappeared
 

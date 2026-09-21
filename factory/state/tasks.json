@@ -1756,12 +1756,12 @@
       "status": "REPAIR",
       "producer": "claude-code-builder",
       "repair_count": 1,
-      "review_status": null,
-      "review_evidence": null,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice.result.json",
       "review_required": true,
       "review_required_waiver_reason": null,
-      "reviewer": null,
-      "review_independent": null,
+      "reviewer": "codex",
+      "review_independent": true,
       "qa_status": "PASS",
       "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
       "qa_evidence_kind": "file",
@@ -1823,7 +1823,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T13:17:47.499Z",
+      "updated_at": "2026-09-21T14:00:23.873Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -1920,8 +1920,24 @@
           "resolved_at": null,
           "approval": null,
           "status_unchanged": "REPAIR"
+        },
+        {
+          "at": "2026-09-21T14:00:23.874Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice.result.json",
+          "score": 68,
+          "high_count": 3,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "e98188300f8ef3c78a14edf2d6370649c0f3105d68d3647249aadeedb8d58809"
         }
-      ]
+      ],
+      "review_mechanism": "factory/harness/codex-review.mjs"
     },
     "ver1-freeze-tag-vs-main-drift": {
       "task_id": "ver1-freeze-tag-vs-main-drift",
