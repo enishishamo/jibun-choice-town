@@ -12,4 +12,6 @@ export const LUNCH_ASSETS = {
   truck: `${BASE}truck.png`,
   school: `${BASE}school.png`,
   dish: Object.fromEntries(DISH_IDS.map((id) => [id, `${BASE}dishes/${id}.png`])) as Record<string, string>,
+  // the three baskets on the table that the dishes fill (status layer, GPT Visual Review 2026-09-21)
+  basket: { red: `${BASE}baskets/red.png`, yellow: `${BASE}baskets/yellow.png`, green: `${BASE}baskets/green.png` },
 };

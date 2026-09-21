@@ -1,10 +1,13 @@
 {
- "at": "2026-09-21T01:00:29.960Z",
+ "at": "2026-09-21T02:21:51.427Z",
  "shots": [
   "factory/state/art/shots/v2-lunch/01-world-map.png",
   "factory/state/art/shots/v2-lunch/02-play-empty.png",
+  "factory/state/art/shots/v2-lunch/02b-one-placed-flying.png",
+  "factory/state/art/shots/v2-lunch/02c-one-placed-landed.png",
   "factory/state/art/shots/v2-lunch/03-first-complete-grains.png",
   "factory/state/art/shots/v2-lunch/04-first-complete-status.png",
+  "factory/state/art/shots/v2-lunch/04b-removed-one.png",
   "factory/state/art/shots/v2-lunch/05-after-swap.png",
   "factory/state/art/shots/v2-lunch/06-event-truck.png",
   "factory/state/art/shots/v2-lunch/07-unavailable-shake.png",

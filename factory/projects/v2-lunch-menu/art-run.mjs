@@ -11,12 +11,13 @@ const RAW = "factory/state/art/generated/v2-lunch";
 mkdirSync(`${ROOT}${RAW}`, { recursive: true });
 const log = (m) => { const line = `[${new Date().toISOString()}] ${m}\n`; appendFileSync(`${ROOT}${LOG}`, line); process.stdout.write(line); };
 const only = process.argv.slice(2);
-const MASTER = { dish: [256, 256], tray: [768, 576], truck: [384, 256], school: [384, 256] };
-const reqs = (only.length ? only : ["dish-rice", "dish-bread", "dish-salmon", "dish-karaage", "dish-croquette", "dish-gomaae", "dish-potato_salad", "dish-miso_soup", "dish-corn_soup", "dish-milk", "tray", "truck", "school"]);
+const MASTER = { dish: [256, 256], basket: [256, 256], tray: [768, 576], truck: [384, 256], school: [384, 256] };
+const reqs = (only.length ? only : ["dish-rice", "dish-bread", "dish-salmon", "dish-karaage", "dish-croquette", "dish-gomaae", "dish-potato_salad", "dish-miso_soup", "dish-corn_soup", "dish-milk", "tray", "truck", "school", "basket-red", "basket-yellow", "basket-green"]);
 const summary = [];
 for (const name of reqs) {
   const req = JSON.parse(readFileSync(`${ROOT}${DIR}/${name}.json`, "utf8"));
-  const kind = name.startsWith("dish-") ? "dish" : name;
+  const kind = name.startsWith("dish-") ? "dish" : name.startsWith("basket-") ? "basket" : name;
+  mkdirSync(`${ROOT}${RAW}/${req.filename.replace(/[^/]*$/, "")}`, { recursive: true });
   log(`=== ${name} (${req.asset_id}) ===`);
   const r = spawnSync("node", ["factory/harness/art/art-loop.mjs", "run", "--request", `${DIR}/${name}.json`], { cwd: ROOT, encoding: "utf8", timeout: 40 * 60 * 1000 });
   log(`art-loop exit=${r.status}\n${(r.stdout || "").slice(-1500)}\n${(r.stderr || "").slice(-600)}`);

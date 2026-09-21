@@ -53,7 +53,8 @@ provenance: `factory/state/art/manifest-v2.json`（asset_id `v2_lunch_*`）、ra
 | 領域 | 状態 |
 |---|---|
 | 料理 9 品＋牛乳・トレー・トラック・学校 | **生成済み・Art QA PASS**（`public/assets/v2/lunch/`、Visual Reference 準拠） |
-| PLAY のレイアウト・状態 cue（三色の丸／マーク／粒／揺れ）・送り出し演出 | 実装済み（palette v1 の CSS/DOM）。in-context Art QA PASS。GPT の監修・上書き待ち（DN-04 / DN-05 / DN-07） |
+| PLAY のレイアウト（上の帯／トレー＋かご／種類ごと 4 段の配膳台）・置く動き（浮く→飛ぶ→着地→burst）・状態 cue（かごに粒がたまる／トレー上の しお・あぶら・かぶり・たりない）・送り出し演出 | GPT Visual Review（2026-09-21）対応済み（`experience-design-proposal.md` §3'''）。palette v1 の CSS/DOM。GPT の監修・上書き待ち（DN-04 / DN-05 / DN-07） |
+| かご 3 つ（赤・黄・緑の仲間） | `art-requests/basket-*.json` から生成（`public/assets/v2/lunch/baskets/`）。未生成のときは TEMP 図形にフォールバック |
 | JOB REVEAL・好きの種の画面 | TEMP（文言は copy.ts、visual は DN-08 / DN-09） |
 | 給食 WORLD MAP | TEMP 図形（弁当箱・スポット・道は別途「全体MAP との空間連続性」設計後に生成、DN-10） |
 | 相棒の反応ポーズ | 未制作（Master PNG 未配置。別キャラで代替しない） |

@@ -27,7 +27,7 @@ await page.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
 await page.reload({ waitUntil: "networkidle0" });
 const shots = [];
 const shot = async (name) => { const p = `${OUT}/${name}.png`; await page.screenshot({ path: p }); shots.push(p); console.log("shot", p); };
-const tap = async (label) => {
+const tap = async (label, settle = 220) => {
   let h = await page.$(`button[aria-label="${label}"]`);
   if (!h) {
     // buttons whose accessible name is their text (JOB REVEAL / 好きの種)
@@ -36,21 +36,29 @@ const tap = async (label) => {
   }
   if (!h) throw new Error(`no button ${label}`);
   await h.tap();
-  await sleep(220);
+  await sleep(settle);
 };
 
+// GPT Visual Review 2026-09-21 asks for exactly these five moments (R1–R5) plus the
+// rest of the flow; taps are real, timings sit right after each reaction starts.
 await shot("01-world-map");
 await tap("こんだてを考える"); await sleep(600);
-await shot("02-play-empty");
-for (const d of ["ごはん", "とりのからあげ", "ポテトサラダ", "コーンスープ"]) await tap(d);
-await sleep(350);
-await shot("03-first-complete-grains");
-await sleep(1200);
-await shot("04-first-complete-status");
-await tap("コーンスープ"); await tap("とうふのみそしる"); await sleep(400);
-await shot("05-after-swap");
-await sleep(2200);
-await shot("06-event-truck");
+await shot("02-play-empty");                                   // R1 開始直後
+await tap("ごはん", 150);
+await shot("02b-one-placed-flying");                           // R2 1品置いた瞬間（飛んでいる途中）
+await sleep(330);
+await shot("02c-one-placed-landed");                           // R2 着地・粒
+for (const d of ["とりのからあげ", "ポテトサラダ", "コーンスープ"]) await tap(d);
+await sleep(700);
+await shot("03-first-complete-grains");                        // R3 4品完成、粒が飛ぶ途中
+await sleep(1300);
+await shot("04-first-complete-status");                        // R3 4品完成、状態 cue が出た直後
+await tap("コーンスープ"); await sleep(300);
+await shot("04b-removed-one");
+await tap("とうふのみそしる"); await sleep(1000);
+await shot("05-after-swap");                                   // R4 1品交換して状態が変わった直後
+await sleep(1600);
+await shot("06-event-truck");                                  // R5 EVENT 発生直後
 await tap("とりのからあげ（とどかなかった）"); await sleep(250);
 await shot("07-unavailable-shake");
 await tap("さけのしおやき"); await sleep(600);
