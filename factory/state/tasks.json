@@ -1915,6 +1915,51 @@
           "status_unchanged": "REPAIR"
         }
       ]
+    },
+    "ver1-freeze-tag-vs-main-drift": {
+      "task_id": "ver1-freeze-tag-vs-main-drift",
+      "task_type": "factory-integrity",
+      "status": "HUMAN_DECISION_REQUIRED",
+      "producer": "claude-code-builder",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "main が凍結タグ ver1-archive-2026-09-20 から Ver.1 の 83 ファイル分ずれている（タグは main の祖先ではない）。凍結ガード check:ver1-freeze は作業ツリーをタグと比較するため、タグ基準のブランチでは PASS するが、そのブランチを main へマージすると main 側の Ver.1 改善（f71d042 / 3df51c8 / 805977e / acdf316 / 49dcf4c / 1847d29 系）と衝突・巻き戻りが起きうる。どちらを Ver.1 の正とするか（タグを打ち直すか、main を正として凍結基準を更新するか）は Human 判断。2026-09-21 の栄養教諭スライス作業中に発見。当該スライス自体は Ver.1 パスを一切変更していない",
+      "human_decision_required": true,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T13:29:15.057Z",
+      "updated_at": "2026-09-21T13:29:15.101Z",
+      "history": [
+        {
+          "at": "2026-09-21T13:29:15.058Z",
+          "event": "created",
+          "type": "factory-integrity",
+          "identityImpact": "NONE",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T13:29:15.102Z",
+          "event": "blocked",
+          "reason": "main が凍結タグ ver1-archive-2026-09-20 から Ver.1 の 83 ファイル分ずれている（タグは main の祖先ではない）。凍結ガード check:ver1-freeze は作業ツリーをタグと比較するため、タグ基準のブランチでは PASS するが、そのブランチを main へマージすると main 側の Ver.1 改善（f71d042 / 3df51c8 / 805977e / acdf316 / 49dcf4c / 1847d29 系）と衝突・巻き戻りが起きうる。どちらを Ver.1 の正とするか（タグを打ち直すか、main を正として凍結基準を更新するか）は Human 判断。2026-09-21 の栄養教諭スライス作業中に発見。当該スライス自体は Ver.1 パスを一切変更していない",
+          "human_decision": true,
+          "design_needed": false,
+          "status": "HUMAN_DECISION_REQUIRED"
+        }
+      ]
     }
   }
 }
