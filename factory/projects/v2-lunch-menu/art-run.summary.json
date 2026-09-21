@@ -1,12 +1,12 @@
 [
  {
-  "name": "basket-red",
+  "name": "gauge-rack",
   "ok": true,
-  "loop_exit": 0,
+  "loop_exit": 1,
   "post": {
    "src_size": [
-    1024,
-    1024
+    1200,
+    800
    ],
    "alpha_corners": [
     255,
@@ -16,80 +16,18 @@
    ],
    "keyed_white": true,
    "content_bbox": [
-    60,
-    218,
-    965,
-    843
+    30,
+    182,
+    1172,
+    636
    ],
    "ok": true,
-   "out": "public/assets/v2/lunch/baskets/red.png",
+   "out": "public/assets/v2/lunch/gauge-rack.png",
    "out_size": [
-    256,
+    768,
     256
    ],
-   "content_fill": 0.489
-  }
- },
- {
-  "name": "basket-yellow",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1024,
-    1024
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    67,
-    214,
-    961,
-    830
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/baskets/yellow.png",
-   "out_size": [
-    256,
-    256
-   ],
-   "content_fill": 0.486
-  }
- },
- {
-  "name": "basket-green",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1024,
-    1024
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    65,
-    208,
-    963,
-    819
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/baskets/green.png",
-   "out_size": [
-    256,
-    256
-   ],
-   "content_fill": 0.479
+   "content_fill": 0.592
   }
  }
 ]

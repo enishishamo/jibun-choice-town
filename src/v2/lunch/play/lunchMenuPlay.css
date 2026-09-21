@@ -203,7 +203,7 @@
 /* the shallow channel: a cut into the block, so it is darker than the face */
 .lmp-groove-track {
   position: absolute;
-  left: 35.5%; right: 0;
+  left: var(--groove-left); right: 0;
   top: 50%;
   height: 16px;
   margin-top: -8px;

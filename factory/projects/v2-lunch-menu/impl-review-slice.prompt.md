@@ -1,6 +1,12 @@
 # Independent implementation review — Ver.2 栄養教諭 Job Vertical Slice (rebuilt)
 
-This is a fresh review of a REBUILT slice, not an iteration on the previous one. The earlier design (three 三色食品群 baskets, an 8-rule penalty score, a 校長 stamp, TEMP/DESIGN_NEEDED screens in the flow) has been removed entirely. Review what is there now, on its own terms.
+This is a review of a REBUILT slice at commit HEAD of branch v2/lunch-vertical-slice. The earlier design (three 三色食品群 baskets, an 8-rule penalty score, a 校長 stamp, TEMP/DESIGN_NEEDED screens in the flow) has been removed entirely. Review what is there now, on its own terms.
+
+Four independent agent reviews already ran and their findings were repaired. Do not assume they were right and do not assume the repairs hold — verify. In particular they found, and the repair claims to have closed:
+- the QA harness passed deliberately-wrong implementations (a rendered score, a right/wrong verdict, an aptitude verdict about the child, an auto-clear inside place(), an auto-send from a timer, a score that flashes only during the 380ms dish flight, a verdict shown only during the 900ms settle window). The harness now (a) drives place/remove/swap/fireEvent over all 126 trays asserting the cleared phase is unreachable, (b) sits idle for 3.5s on a sendable tray asserting the phase does not advance, and (c) accumulates every text node and aria-label ever rendered via a MutationObserver and asserts no digit appears inside .lmp and every string is present verbatim in src/v2/lunch/copy.ts. **Re-run the mutation test yourself** on a scratch copy (git worktree, /tmp) and report which wrong implementations the harness now catches and which it still misses.
+- the school's touch area overlapped the tray dishes, so reaching for a dish could irreversibly send the lunch; tray recesses overlapped each other. The shots harness now asserts no two touch areas intersect and that every corner and centre of every control resolves to itself.
+- a quick second tap on a full tray refused a legal dish with the same shake used for "this dish did not arrive".
+- 完全給食 = 主食 + ミルク + おかず: a tray with no rice and no bread is now refused however well the four axes sit.
 
 ## What the slice is
 

@@ -4428,23 +4428,15 @@
    "filename": "gauge-rack.png",
    "world": "lunch-v2",
    "purpose": "こんだてPLAY の状態 cue。4 本の溝に粒が転がって集まり、溝の中央のくぼみに収まると「ちょうどいい」が体で分かる物理的な道具。図表ではなく、机の上に置かれた木の道具として読めること",
-   "source_type": "generated",
+   "source_type": "codex_imagegen",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "qa_failed",
-   "iteration": 1,
+   "status": "generation_failed",
+   "iteration": 2,
    "qa_issues": [
-    "No particles are shown rolling through or gathered in the four central recesses, so the intended physical cue of reaching “just right” is not visually explained.",
-    "The rack floats against a white background instead of reading as a wooden tool placed on a desk, contrary to the stated presentation purpose.",
-    "The four long grooves and shallow central depressions are visible, but their function is ambiguous without particles or a restrained tabletop context.",
-    "The very pale background and similarly light object reduce edge separation, especially at mobile size.",
-    "The polished, uniform render lacks enough handmade clay irregularity to convincingly match the reference assets.",
-    "vision critic verdict: FAIL (MUST violation or unstated failure)",
-    "READABILITY below threshold: 67",
-    "JOB_ACCURACY below threshold: 58",
-    "SERIES_STYLE_MATCH below SERIES gate (80): 74"
+    "generator reported failure: Image generated and saved, but the built-in tool baked the transparency checkerboard into an opaque RGB PNG instead of producing alpha transparency."
    ],
-   "created_at": "2026-09-21T13:41:34.783Z",
+   "created_at": "2026-09-21T13:44:00.263Z",
    "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a wide, shallow counting rack made of warm beige clay-wood, like a simple abacus frame or a wooden tray of grooves, standing on a low rim so it reads as a real physical object resting on a table. FOUR parallel horizontal grooves are carved into its top surface, evenly spaced one above the other, each groove running the full width of the rack; every groove is a smooth shallow channel that a small ball could roll along. In the MIDDLE of each of the four grooves the channel is carved noticeably DEEPER and slightly WIDER — a clearly visible resting hollow at the centre of every groove, obviously deeper than the shallower ends of the same groove. The rack is EMPTY: nothing rests in the grooves. Warm beige and cream matte clay-wood, soft rounded edges, handmade toy feeling. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set and the cream lunch tray.\nRole in game: こんだてPLAY の状態 cue。4 本の溝に粒が転がって集まり、溝の中央のくぼみに収まると「ちょうどいい」が体で分かる物理的な道具。図表ではなく、机の上に置かれた木の道具として読めること\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the rack centered and spanning about 80% of the frame width with even margins (at least 10% on every side). The rack is WIDE and SHALLOW — a long low object, roughly three times wider than it is deep — so its four grooves are seen clearly from above-front and run horizontally across the full width of the rack. The rack is completely EMPTY. No table, no cloth, no shadow plate: the rack floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the grooves. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one wide shallow wooden clay rack seen from above-front; exactly four parallel horizontal grooves running the full width, evenly spaced; a visibly deeper and slightly wider resting hollow at the centre of each of the four grooves; completely empty grooves with no balls or markers; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges, symbols, labels, scale marks or tick marks; balls, beads, counters, markers or anything resting in the grooves; a chart, graph, bar meter, progress bar or any diagram-like flat graphic; wires, rods or strings across the frame; hands or people; table, cloth, background, backdrop or drop shadow outside the rack; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the rack.",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",

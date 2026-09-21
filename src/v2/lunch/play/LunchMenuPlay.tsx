@@ -374,7 +374,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                 <button
                   key={id}
                   type="button"
-                  className={`lmp-cand ${onTray ? "on-tray" : ""} ${gone ? "gone" : ""} ${shake === id ? "shake" : ""} ${(calling && !onTray && !gone) || (id === s.candidates[0] && ev.filled === 0) ? "invite" : ""}`}
+                  className={`lmp-cand ${onTray ? "on-tray" : ""} ${gone ? "gone" : ""} ${shake === id ? "shake" : ""} ${(calling && !onTray && !gone && !s.tray.some((d) => d && DISH_BY_ID[d].course === course)) || (id === s.candidates[0] && ev.filled === 0) ? "invite" : ""}`}
                   aria-label={gone ? COPY.play.dishGone(dishName(id)) : dishName(id)}
                   aria-pressed={onTray}
                   onClick={(e) => tapCandidate(id, e.currentTarget)}
@@ -416,6 +416,7 @@ export function GaugeRack({ ev, shown, drawn, struck }: {
             className={`lmp-groove ${a}`}
             style={{
               top: `${GROOVE_Y[a]}%`,
+              ["--groove-left" as string]: `${GROOVE.x0 - 2.5}%`,
               // the hollow is the band, mapped onto the bead's travel — never hand-typed
               ["--hollow-left" as string]: `${GROOVE.x0 + (GROOVE.x1 - GROOVE.x0) * bandOnTrack(a)[0]}%`,
               ["--hollow-width" as string]: `${(GROOVE.x1 - GROOVE.x0) * (bandOnTrack(a)[1] - bandOnTrack(a)[0])}%`,

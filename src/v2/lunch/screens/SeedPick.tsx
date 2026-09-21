@@ -9,8 +9,8 @@ export default function SeedPick({ onDone }: { onDone: (seedId: string) => void 
   const [picked, setPicked] = useState<string | null>(null);
   return (
     <section ref={focusRef} tabIndex={-1} className="v2s v2s-seed" aria-label={COPY.seed.question}>
-      <h1 className="v2s-seed-q">{COPY.seed.question}</h1>
-      <div className="v2s-seed-list">
+      <h1 className="v2s-seed-q" id="v2s-seed-q">{COPY.seed.question}</h1>
+      <div className="v2s-seed-list" role="group" aria-labelledby="v2s-seed-q">
         {COPY.seed.options.map((o, i) => (
           <button
             key={o.id}
