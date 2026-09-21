@@ -78,6 +78,15 @@ await page.evaluateOnNewDocument(() => {
         if (board && board.contains(e)) window.__seen.board.add(t);
       }
     }
+    // a form control shows its VALUE, which is neither a text node nor generated
+    // content: `<input value="100てん" readonly>` would otherwise be a score the
+    // audit never looks at
+    for (const e of document.querySelectorAll("input, textarea, select, output, [contenteditable]")) {
+      const v = String(e.value ?? e.textContent ?? "").trim();
+      if (!v) continue;
+      window.__seen.all.add(v); before.add(v);
+      if (board && board.contains(e)) window.__seen.board.add(v);
+    }
     for (const e of document.querySelectorAll("[aria-label]")) {
       const a = e.getAttribute("aria-label");
       window.__seen.aria.add(a);
@@ -93,7 +102,7 @@ await page.evaluateOnNewDocument(() => {
     // `.lmp.is-settled::before { content: "100てん" }` appears and disappears
     // through a CLASS change alone, with no node added and no text edited, so an
     // aria-only filter would never re-scan while it is on screen.
-    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label", "class", "style"] });
+    new MutationObserver(record).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-label", "class", "style", "value"] });
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
@@ -123,7 +132,13 @@ const shot = async (name) => {
     };
     walk(document.body);
     const board = document.querySelector(".lmp");
-    const boardText = board ? board.innerText : "";
+    // innerText does not include what a form control displays
+    const vals = [...document.querySelectorAll("input, textarea, select, output, [contenteditable]")]
+      .map((e) => String(e.value ?? e.textContent ?? "").trim()).filter(Boolean);
+    texts.push(...vals);
+    const inBoard = board ? [...board.querySelectorAll("input, textarea, select, output, [contenteditable]")]
+      .map((e) => String(e.value ?? e.textContent ?? "").trim()).filter(Boolean) : [];
+    const boardText = board ? `${board.innerText} ${inBoard.join(" ")}` : "";
     const aria = [...document.querySelectorAll("[aria-label]")].map((e) => e.getAttribute("aria-label"));
     return { texts, boardText, aria, body: document.body.innerText };
   });
@@ -317,7 +332,38 @@ for (const [w, h] of [[320, 568], [375, 667], [375, 812], [390, 844], [430, 932]
         .map((e) => e.getAttribute("aria-label"));
       return { scrollW: de.scrollWidth, scrollH: de.scrollHeight, innerW: innerWidth, innerH: innerHeight, dishes: cands.length, offscreen };
     });
+    // The rack is the only thing on the board that has to be read rather than
+    // touched, so it needs its own geometry check: four channels that tile the
+    // block. A part of one channel drawn over another channel's name is how the
+    // rack looked at 320x568 before this check existed.
+    const rack = await vp.evaluate(() => {
+      const r = document.querySelector(".lmp-rack");
+      if (!r) return null;
+      const rb = r.getBoundingClientRect();
+      const rows = [...document.querySelectorAll(".lmp-groove")].map((g) => ({
+        axis: [...g.classList].find((c) => c !== "lmp-groove"),
+        name: g.querySelector(".lmp-groove-name")?.getBoundingClientRect().toJSON(),
+        parts: ["-track", "-hollow", "-lip"].map((s) => g.querySelector(`.lmp-groove${s}`)?.getBoundingClientRect().toJSON())
+          .concat([g.querySelector(".lmp-bead")?.getBoundingClientRect().toJSON()]).filter(Boolean),
+      }));
+      const hit = (a, b) => a && b && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0.5
+        && Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0.5;
+      const bad = [];
+      for (const row of rows) {
+        for (const other of rows) {
+          if (other === row) continue;
+          for (const p of other.parts) if (hit(row.name, p)) bad.push(`${other.axis} covers the ${row.axis} name`);
+        }
+        for (const p of row.parts) {
+          if (p.top < rb.top - 0.5 || p.bottom > rb.bottom + 0.5) bad.push(`${row.axis} is drawn outside the block`);
+        }
+        if (row.name && (row.name.top < rb.top - 0.5 || row.name.bottom > rb.bottom + 0.5)) bad.push(`the ${row.axis} name is drawn outside the block`);
+      }
+      return { rows: rows.length, bad: [...new Set(bad)] };
+    });
     const at = `${w}x${h}, ${label}`;
+    if (!rack || rack.rows !== 4) flag(`${at}: the rack has ${rack ? rack.rows : "no"} channels, expected 4`);
+    else for (const b of rack.bad) flag(`rack at "${at}": ${b}`);
     if (fit.scrollW > fit.innerW) flag(`${at}: the page scrolls sideways (${fit.scrollW} > ${fit.innerW})`);
     if (fit.scrollH > fit.innerH + 1) flag(`${at}: the board does not fit vertically (${fit.scrollH} > ${fit.innerH})`);
     if (fit.dishes !== 9) flag(`${at}: ${fit.dishes} dishes on the counter, expected 9`);

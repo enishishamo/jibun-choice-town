@@ -174,7 +174,12 @@
               inset 0 2px 0 color-mix(in srgb, var(--v2-warm-cream) 80%, transparent);
 }
 
-.lmp-groove { position: absolute; left: 0; right: 0; height: 30px; margin-top: -15px; display: block; }
+/* Each groove box IS the row pitch: GROOVE_Y steps by 21.5% of the block, so a
+   21.5%-tall row centred on it tiles the block exactly and nothing a groove
+   draws can reach into its neighbour. Everything inside is then a fraction of
+   that row rather than a pixel height, so a shorter block on a small phone
+   shrinks the channels instead of stacking them on top of each other's labels. */
+.lmp-groove { position: absolute; left: 0; right: 0; height: 21.5%; transform: translateY(-50%); display: block; }
 .lmp-groove-name {
   position: absolute;
   left: 2.5%;
@@ -192,9 +197,8 @@
 .lmp-groove-track {
   position: absolute;
   left: var(--groove-left); right: 0;
-  top: 50%;
-  height: 16px;
-  margin-top: -8px;
+  top: 25.5%;
+  height: 49%;
   border-radius: 8px 0 0 8px;
   background: color-mix(in srgb, var(--v2-warm-beige) 62%, var(--v2-deep-green));
   box-shadow: inset 0 5px 5px -1px color-mix(in srgb, var(--v2-deep-green) 62%, transparent),
@@ -204,9 +208,8 @@
 .lmp-groove-hollow {
   position: absolute;
   left: var(--hollow-left); width: var(--hollow-width);
-  top: 50%;
-  height: 30px;
-  margin-top: -15px;
+  top: 5%;
+  height: 90%;
   border-radius: 50%;
   background: radial-gradient(ellipse at 50% 28%, color-mix(in srgb, var(--v2-deep-green) 72%, var(--v2-warm-beige)), color-mix(in srgb, var(--v2-deep-green) 48%, var(--v2-warm-beige)) 78%);
   box-shadow: inset 0 8px 9px color-mix(in srgb, var(--v2-deep-green) 72%, transparent),
@@ -217,9 +220,11 @@
 .lmp-groove-lip {
   position: absolute;
   left: 0; right: 0;
-  top: 50%;
-  margin-top: 6px;
-  height: 22px;
+  /* far enough to cover a bead that has dropped into the hollow, and no
+     further: the next channel's name starts at 162% of this row, so the lip
+     stops just short of it instead of sitting on top of it as it used to */
+  top: 62%;
+  height: 48%;
   background: var(--v2-warm-beige);
   z-index: 2;
 }
@@ -246,12 +251,14 @@
 /* dropped into the hollow: it sits low, the near lip covers more of it, it is in
    the hollow's shade, and it does not move at all */
 .lmp-bead.band-good {
-  transform: translateY(5px) scale(0.98);
+  /* a share of the bead, not 5px: the bead shrinks on a small phone and a
+     fixed drop would push it out from under the lip */
+  transform: translateY(19%) scale(0.98);
   filter: brightness(0.88) saturate(1.08);
 }
 /* stuck up on the shallow part: it rides high above the lip and keeps rocking */
 .lmp-bead.band-low, .lmp-bead.band-high {
-  transform: translateY(-4px);
+  transform: translateY(-15%);
   filter: brightness(1.04) drop-shadow(0 5px 3px color-mix(in srgb, var(--v2-deep-green) 34%, transparent));
   animation: lmp-rock 1.5s ease-in-out infinite;
 }
@@ -418,7 +425,7 @@
   .lmp-trouble { top: calc(44px + env(safe-area-inset-top)); font-size: 14px; }
   .lmp-tray { width: min(100%, 296px); }
   .lmp-rack { width: min(100%, 296px); height: 112px; margin-top: 6px; }
-  .lmp-bead { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+  .lmp-bead { width: 20px; height: 20px; margin: -10px 0 0 -10px; }
   .lmp-counter { gap: 2px; padding: 6px 12px 4px; }
   .lmp-cand { width: clamp(62px, 21vw, 80px); height: 56px; }
   .lmp-empty-spot { width: 42px; height: 42px; }
@@ -431,10 +438,8 @@
   .lmp-trouble { top: calc(32px + env(safe-area-inset-top)); font-size: 13px; padding: 5px 11px; }
   .lmp-tray { width: min(100%, 258px); }
   .lmp-rack { width: min(100%, 258px); height: 92px; margin-top: 4px; border-radius: 16px; }
-  .lmp-bead { width: 19px; height: 19px; margin: -9.5px 0 0 -9.5px; }
-  .lmp-groove { height: 22px; margin-top: -11px; }
+  .lmp-bead { width: 16px; height: 16px; margin: -8px 0 0 -8px; }
   .lmp-groove-name { font-size: 10px; }
-  .lmp-groove-lip { margin-top: 5px; height: 17px; }
   .lmp-counter { gap: 1px; padding: 4px 10px 2px; }
   .lmp-cand { width: clamp(56px, 20vw, 70px); height: 46px; }
   .lmp-empty-spot { width: 36px; height: 36px; }

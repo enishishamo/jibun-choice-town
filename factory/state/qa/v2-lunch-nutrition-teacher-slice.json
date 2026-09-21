@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T20:27:00.194Z",
- "commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
+ "ran_at": "2026-09-21T20:39:43.124Z",
+ "commit": "2aeaeb65f2d2c029ab77773426bda92bfb6bb41a",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,7 +10,7 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/flows/river-flow.mjs:107:9: warning eslint(no-unused-vars): Variable 'air' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration."
+   "summary": "factory/harness/flows/port-flow.mjs:57:13: warning eslint(no-unused-vars): Variable 'cols' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration."
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",

@@ -29,8 +29,10 @@ and reverted; the source was restored from a copy taken before each mutation.
 | M15 | the school cannot be touched when motion is reduced, so the journey stops after the tray is built | the reduced-motion pass now drives both sends: "the first send did not produce a delivery trouble" and "the second send did not reach the job reveal" |
 | M16 | the small-screen minimum touch target is removed | the five-viewport sweep: six controls under 44×44 at 320×568 |
 | M17 | `content: "100てん"` gated on the bead's own band class — the pure form of the r4 finding | same as M14 |
+| M18 | the near lip reaches past its own channel and sits on the next channel's name | the rack check in the viewport sweep: "energy covers the protein name" |
+| M19 | a score displayed as a form control's value (`<input readOnly value="100てん">`) | form-control values are collected in both `record()` and `shot()`; the digit rule and the allow-list both fire |
 
-17 of 17 fail a named assertion. M5, M7, M8 were found by an independent review of the
+19 of 19 fail a named assertion. M5, M7, M8 were found by an independent review of the
 *first* rebuilt harness; M9–M12 by the two rounds after that, M13 by the round
 after those, and M14–M16 by the closing round (r4 — FAIL 80, 0 blockers, 1 HIGH, 2
 MEDIUM, all three in the harness rather than in the game). Each round found
@@ -51,6 +53,35 @@ element on the page. The filter was never the binding constraint.
 coincidence of React's render batching, and widening the filter costs one run of an
 already-cheap scan. Recorded here so nobody later "discovers" that M14 passes without
 the fix and concludes the fix was pointless — it was insurance, not a repair.
+
+## The r5 round, and what looking at 320×568 found that no check had
+
+r5 returned FAIL 84 with one HIGH, again in the harness: the visible-text audit
+collected text nodes, aria-labels and generated content, but never a form control's
+**value**, so `<input readOnly value="100てん">` on the board would have been a score
+nothing looked at. Real, concrete, reproducible — M19.
+
+Separately, and not from any review: opening 320×568 by hand showed the counting rack
+badly broken. The four channels were 22px tall on a 19.8px row pitch, each near lip
+ran 22px past its own centre, and each hollow was 30px tall, so every channel was
+drawn across the next channel's name. Three of the four labels were unreadable. The
+new five-viewport sweep did not catch it, because it checked overflow and touch
+targets — nothing the child *reads*.
+
+Two things came out of that:
+
+- the rack is now derived instead of hand-tuned. Each groove box **is** the row pitch
+  (`GROOVE_Y` steps by 21.5%), and every part inside it is a fraction of that row, so
+  a shorter block shrinks the channels instead of stacking them. The three
+  breakpoint-specific groove heights are gone; the bead's sink and rise are shares of
+  the bead, not pixels.
+- the sweep now checks the rack at every viewport: no channel's parts may touch
+  another channel's name, and nothing may be drawn outside the block (M18).
+
+The lesson is the same one as M16 and worth writing down once more: **a check that
+only measures what can be touched cannot see what cannot be read.** Both failures were
+visible in one glance at the smallest supported phone, and both survived four
+independent reviews that never opened it.
 
 ## What M16 found in the game, not in the gate
 
