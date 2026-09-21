@@ -28,6 +28,20 @@ npm run check:ver1-freeze                            # Ver.1 不変・Ver.1 impo
 npx tsc -p tsconfig.app.json --noEmit && npx oxlint src/v2
 ```
 
+## Asset pipeline（自走、2026-09-21）
+
+```
+factory/projects/v2-lunch-menu/art-requests/*.json   承認済み Visual Direction から起こした 13 件
+  → node factory/projects/v2-lunch-menu/art-run.mjs  直列: art-loop（生成→vision QA→再生成≤3）
+  → factory/harness/art/asset-postprocess.py         alpha 検証/白背景キー/トリム/master 256
+  → public/assets/v2/lunch/{dishes/*.png,tray.png,truck.png,school.png}
+  → src/v2/lunch/assets.ts                           <Art> が読み込み失敗時は placeholder に戻る
+  → node factory/harness/v2-lunch-shots.mjs          375×812 実操作 12 state のスクリーンショット
+  → node factory/harness/art/art-qa.mjs presentation  in-context QA
+```
+provenance: `factory/state/art/manifest-v2.json`（asset_id `v2_lunch_*`）、raw 生成物: `factory/state/art/generated/v2-lunch/`。
+「届かなかった」状態は画像を作らず CSS（desaturate + badge + shake）。
+
 ## GPT Screen Design / Assets の受け口（asset slots）
 
 - `LunchWorldMap` props `assets.bento` / `assets.spot[id]`（`world/README.md` 参照）

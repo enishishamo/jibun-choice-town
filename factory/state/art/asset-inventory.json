@@ -1,12 +1,12 @@
 {
  "note": "Mechanical asset inventory (Stage 6). Regenerate: node factory/harness/art/asset-inventory.mjs",
- "generated_at": "2026-09-02T15:02:26.961Z",
+ "generated_at": "2026-09-21T00:54:11.563Z",
  "totals": {
-  "assets": 161,
-  "orphans": 42,
+  "assets": 209,
+  "orphans": 62,
   "duplicates_groups": 0,
-  "oversized": 8,
-  "total_bytes": 33279677
+  "oversized": 32,
+  "total_bytes": 88561759
  },
  "duplicate_groups": [],
  "missing_references": [],
@@ -189,6 +189,74 @@
    "quality_flags": []
   },
   {
+   "asset_id": "public_assets_districts_forest_district_png",
+   "path": "public/assets/districts/forest-district.png",
+   "world": "districts",
+   "format": "png",
+   "width": 1536,
+   "height": 1024,
+   "aspect_ratio": 1.5,
+   "file_size": 2608404,
+   "referenced_by": [],
+   "hash": "29f901aea826",
+   "likely_reusable": false,
+   "quality_flags": [
+    "oversized",
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_districts_harbor_district_png",
+   "path": "public/assets/districts/harbor-district.png",
+   "world": "districts",
+   "format": "png",
+   "width": 1536,
+   "height": 1024,
+   "aspect_ratio": 1.5,
+   "file_size": 2366075,
+   "referenced_by": [],
+   "hash": "162e7ff7631e",
+   "likely_reusable": false,
+   "quality_flags": [
+    "oversized",
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_districts_hill_district_png",
+   "path": "public/assets/districts/hill-district.png",
+   "world": "districts",
+   "format": "png",
+   "width": 1536,
+   "height": 1024,
+   "aspect_ratio": 1.5,
+   "file_size": 2473848,
+   "referenced_by": [],
+   "hash": "25dddd08af3b",
+   "likely_reusable": false,
+   "quality_flags": [
+    "oversized",
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_districts_station_district_png",
+   "path": "public/assets/districts/station-district.png",
+   "world": "districts",
+   "format": "png",
+   "width": 1536,
+   "height": 1024,
+   "aspect_ratio": 1.5,
+   "file_size": 2471655,
+   "referenced_by": [],
+   "hash": "3ac0b2250855",
+   "likely_reusable": false,
+   "quality_flags": [
+    "oversized",
+    "orphan"
+   ]
+  },
+  {
    "asset_id": "public_assets_event_a_dancer_png",
    "path": "public/assets/event/a_dancer.png",
    "world": "event",
@@ -198,8 +266,8 @@
    "aspect_ratio": 0.847,
    "file_size": 31290,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/TimetableGame.tsx"
+    "src/q1/TimetableGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "84c50decc27f",
    "likely_reusable": true,
@@ -215,8 +283,8 @@
    "aspect_ratio": 0.628,
    "file_size": 30198,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/TimetableGame.tsx"
+    "src/q1/TimetableGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "d2fa36823d72",
    "likely_reusable": true,
@@ -232,8 +300,8 @@
    "aspect_ratio": 0.728,
    "file_size": 33912,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/TimetableGame.tsx"
+    "src/q1/TimetableGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "c0f00876eabc",
    "likely_reusable": true,
@@ -266,8 +334,8 @@
    "aspect_ratio": 0.635,
    "file_size": 28700,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/TimetableGame.tsx"
+    "src/q1/TimetableGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "fe85aae7e636",
    "likely_reusable": true,
@@ -314,12 +382,12 @@
    "height": 162,
    "aspect_ratio": 1.481,
    "file_size": 79742,
-   "referenced_by": [
-    "src/q1/PromoGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "f66fbd305743",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_event_m_flyer_png",
@@ -330,12 +398,12 @@
    "height": 257,
    "aspect_ratio": 0.934,
    "file_size": 92042,
-   "referenced_by": [
-    "src/q1/PromoGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "2e61ed560b42",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_event_m_mail_png",
@@ -346,12 +414,12 @@
    "height": 330,
    "aspect_ratio": 0.697,
    "file_size": 146098,
-   "referenced_by": [
-    "src/q1/PromoGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "d7e03e85c11e",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_event_m_poster_png",
@@ -379,8 +447,7 @@
    "aspect_ratio": 0.561,
    "file_size": 180633,
    "referenced_by": [
-    "src/data/content/townEvent.ts",
-    "src/q1/PromoGame.tsx"
+    "src/data/content/townEvent.ts"
    ],
    "hash": "d650e9e88bf7",
    "likely_reusable": true,
@@ -411,12 +478,12 @@
    "height": 356,
    "aspect_ratio": 0.674,
    "file_size": 161953,
-   "referenced_by": [
-    "src/q1/PromoGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "6e2534df7e0a",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_event_m_web_png",
@@ -427,12 +494,12 @@
    "height": 205,
    "aspect_ratio": 1.171,
    "file_size": 94544,
-   "referenced_by": [
-    "src/q1/PromoGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "4be9453e90b0",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_event_p_bar_png",
@@ -476,8 +543,8 @@
    "aspect_ratio": 0.889,
    "file_size": 80962,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/VenueLayoutGame.tsx"
+    "src/q1/VenueLayoutGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "bc39c15a50c3",
    "likely_reusable": true,
@@ -493,8 +560,8 @@
    "aspect_ratio": 0.917,
    "file_size": 77438,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx",
-    "src/q1/VenueLayoutGame.tsx"
+    "src/q1/VenueLayoutGame.tsx",
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "7bd8cfb8a03a",
    "likely_reusable": true,
@@ -543,7 +610,7 @@
    "aspect_ratio": 0.429,
    "file_size": 23138,
    "referenced_by": [
-    "src/q1/PlanEventGame.tsx"
+    "src/q1/planEventLogic.ts"
    ],
    "hash": "bf671f391077",
    "likely_reusable": true,
@@ -1005,6 +1072,74 @@
    "quality_flags": []
   },
   {
+   "asset_id": "public_assets_forest_ba_after_png",
+   "path": "public/assets/forest/ba-after.png",
+   "world": "forest",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1771045,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "000368edc980",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_forest_ba_before_png",
+   "path": "public/assets/forest/ba-before.png",
+   "world": "forest",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1573311,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "4caeff5a7fdc",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_forest_scene_forest_png",
+   "path": "public/assets/forest/scene-forest.png",
+   "world": "forest",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1852850,
+   "referenced_by": [
+    "src/data/content/forest.ts"
+   ],
+   "hash": "b779c0943d54",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
    "asset_id": "public_assets_heat_after_mist_png",
    "path": "public/assets/heat/after-mist.png",
    "world": "heat",
@@ -1392,6 +1527,24 @@
    "quality_flags": []
   },
   {
+   "asset_id": "public_assets_heat_place_leak_png",
+   "path": "public/assets/heat/place-leak.png",
+   "world": "heat",
+   "format": "png",
+   "width": 1200,
+   "height": 900,
+   "aspect_ratio": 1.333,
+   "file_size": 1673864,
+   "referenced_by": [
+    "src/data/content/extremeHeat.ts"
+   ],
+   "hash": "4bc7adb6a661",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
    "asset_id": "public_assets_heat_place_park_png",
    "path": "public/assets/heat/place-park.png",
    "world": "heat",
@@ -1657,13 +1810,12 @@
    "height": 800,
    "aspect_ratio": 1.25,
    "file_size": 181443,
-   "referenced_by": [
-    "src/data/content/schoolLunch.ts",
-    "src/q1/LogisticsGame.tsx"
-   ],
+   "referenced_by": [],
    "hash": "174b0296c797",
-   "likely_reusable": true,
-   "quality_flags": []
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_kyushoku_delivery_check_jpg",
@@ -1675,7 +1827,7 @@
    "aspect_ratio": 0.8,
    "file_size": 201642,
    "referenced_by": [
-    "src/q1/LogisticsGame.tsx"
+    "src/data/content/schoolLunch.ts"
    ],
    "hash": "ed41d3b391a7",
    "likely_reusable": true,
@@ -1691,8 +1843,7 @@
    "aspect_ratio": 0.667,
    "file_size": 324295,
    "referenced_by": [
-    "src/data/content/schoolLunch.ts",
-    "src/q1/FarmGame.tsx"
+    "src/data/content/schoolLunch.ts"
    ],
    "hash": "1441a5a34602",
    "likely_reusable": true,
@@ -1762,6 +1913,154 @@
    "hash": "dd3f87f50018",
    "likely_reusable": true,
    "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_library_ba_after_png",
+   "path": "public/assets/library/ba-after.png",
+   "world": "library",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1664227,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "36ad61769ac6",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_library_ba_before_png",
+   "path": "public/assets/library/ba-before.png",
+   "world": "library",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1557607,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "a70c1ed3fae0",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_library_scene_library_png",
+   "path": "public/assets/library/scene-library.png",
+   "world": "library",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1604878,
+   "referenced_by": [
+    "src/data/content/library.ts"
+   ],
+   "hash": "1e2f070037fb",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_map_thumb_forest_district_png",
+   "path": "public/assets/map-thumb/forest-district.png",
+   "world": "map-thumb",
+   "format": "png",
+   "width": 640,
+   "height": 426,
+   "aspect_ratio": 1.502,
+   "file_size": 454738,
+   "referenced_by": [],
+   "hash": "e4c33ef0eae6",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_map_thumb_harbor_district_png",
+   "path": "public/assets/map-thumb/harbor-district.png",
+   "world": "map-thumb",
+   "format": "png",
+   "width": 640,
+   "height": 426,
+   "aspect_ratio": 1.502,
+   "file_size": 394770,
+   "referenced_by": [],
+   "hash": "d450c73ba972",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_map_thumb_hill_district_png",
+   "path": "public/assets/map-thumb/hill-district.png",
+   "world": "map-thumb",
+   "format": "png",
+   "width": 640,
+   "height": 426,
+   "aspect_ratio": 1.502,
+   "file_size": 418750,
+   "referenced_by": [],
+   "hash": "1031228270c9",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_map_thumb_station_district_png",
+   "path": "public/assets/map-thumb/station-district.png",
+   "world": "map-thumb",
+   "format": "png",
+   "width": 640,
+   "height": 426,
+   "aspect_ratio": 1.502,
+   "file_size": 430272,
+   "referenced_by": [],
+   "hash": "e02414d433e7",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_map_thumb_town_hero_png",
+   "path": "public/assets/map-thumb/town-hero.png",
+   "world": "map-thumb",
+   "format": "png",
+   "width": 640,
+   "height": 426,
+   "aspect_ratio": 1.502,
+   "file_size": 578196,
+   "referenced_by": [],
+   "hash": "ef93a8a68766",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
   },
   {
    "asset_id": "public_assets_medical_back_home_jpg",
@@ -1871,8 +2170,8 @@
    "referenced_by": [
     "src/data/content/medical.ts",
     "src/data/content/priceHike.ts",
-    "src/q1/DiagnoseGame.tsx",
-    "src/q1/RxCheckGame.tsx"
+    "src/q1/clueJoinLogic.ts",
+    "src/q1/rxCheckLogic.ts"
    ],
    "hash": "53fc886d026e",
    "likely_reusable": true,
@@ -2087,6 +2386,74 @@
    "quality_flags": []
   },
   {
+   "asset_id": "public_assets_port_ba_after_png",
+   "path": "public/assets/port/ba-after.png",
+   "world": "port",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1744665,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "0c68d9f5f33d",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_port_ba_before_png",
+   "path": "public/assets/port/ba-before.png",
+   "world": "port",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1587286,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "4552df5f6245",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_port_scene_port_png",
+   "path": "public/assets/port/scene-port.png",
+   "world": "port",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1710814,
+   "referenced_by": [
+    "src/data/content/port.ts"
+   ],
+   "hash": "ea7bd7206a51",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
    "asset_id": "public_assets_price_factory_jpg",
    "path": "public/assets/price/factory.jpg",
    "world": "price",
@@ -2096,8 +2463,7 @@
    "aspect_ratio": 0.75,
    "file_size": 262356,
    "referenced_by": [
-    "src/data/content/priceHike.ts",
-    "src/q1/WaterGame.tsx"
+    "src/data/content/priceHike.ts"
    ],
    "hash": "3386ad3cad6d",
    "likely_reusable": true,
@@ -2115,8 +2481,8 @@
    "referenced_by": [
     "src/data/content/medical.ts",
     "src/data/content/priceHike.ts",
-    "src/q1/DiagnoseGame.tsx",
-    "src/q1/RxCheckGame.tsx"
+    "src/q1/clueJoinLogic.ts",
+    "src/q1/rxCheckLogic.ts"
    ],
    "hash": "e4ffd87b4457",
    "likely_reusable": true,
@@ -2165,7 +2531,7 @@
    "file_size": 243036,
    "referenced_by": [
     "src/data/content/priceHike.ts",
-    "src/q1/LifePlanGame.tsx"
+    "src/q1/lifePlanLogic.ts"
    ],
    "hash": "3c79f4f99fb2",
    "likely_reusable": true,
@@ -2186,6 +2552,72 @@
    "hash": "f107df031485",
    "likely_reusable": true,
    "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_river_ba_after_png",
+   "path": "public/assets/river/ba-after.png",
+   "world": "river",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1720355,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "5ec5438b935f",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_river_ba_before_png",
+   "path": "public/assets/river/ba-before.png",
+   "world": "river",
+   "format": "png",
+   "width": 1248,
+   "height": 832,
+   "aspect_ratio": 1.5,
+   "file_size": 1480671,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "e35fc69ec5b8",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_river_scene_river_png",
+   "path": "public/assets/river/scene-river.png",
+   "world": "river",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1769411,
+   "referenced_by": [
+    "src/data/content/river.ts"
+   ],
+   "hash": "aa7e578b9ed8",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
   },
   {
    "asset_id": "public_assets_schooltrip_school_trip_bus_manager_jpg",
@@ -2309,7 +2741,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1314926,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],
@@ -2327,7 +2764,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1293946,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],
@@ -2350,6 +2792,74 @@
    "hash": "c313fd1e5e36",
    "likely_reusable": true,
    "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_studio_ba_after_png",
+   "path": "public/assets/studio/ba-after.png",
+   "world": "studio",
+   "format": "png",
+   "width": 1280,
+   "height": 852,
+   "aspect_ratio": 1.502,
+   "file_size": 1610662,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "6d56a960add4",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_studio_ba_before_png",
+   "path": "public/assets/studio/ba-before.png",
+   "world": "studio",
+   "format": "png",
+   "width": 1280,
+   "height": 853,
+   "aspect_ratio": 1.501,
+   "file_size": 1544664,
+   "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
+    "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
+    "src/data/content/waste.ts",
+    "src/data/content/zoo.ts"
+   ],
+   "hash": "cc09952fc6ed",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_studio_scene_studio_png",
+   "path": "public/assets/studio/scene-studio.png",
+   "world": "studio",
+   "format": "png",
+   "width": 1280,
+   "height": 852,
+   "aspect_ratio": 1.502,
+   "file_size": 1642028,
+   "referenced_by": [
+    "src/data/content/studio.ts"
+   ],
+   "hash": "32db1bc39838",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
   },
   {
    "asset_id": "public_assets_tool_kama_png",
@@ -2442,13 +2952,12 @@
    "height": 1024,
    "aspect_ratio": 1.5,
    "file_size": 3039368,
-   "referenced_by": [
-    "src/screens/HomeScreen.tsx"
-   ],
+   "referenced_by": [],
    "hash": "0e3ed39d0af9",
-   "likely_reusable": true,
+   "likely_reusable": false,
    "quality_flags": [
-    "oversized"
+    "oversized",
+    "orphan"
    ]
   },
   {
@@ -2459,9 +2968,9 @@
    "width": 116,
    "height": 74,
    "aspect_ratio": 1.568,
-   "file_size": 8749,
+   "file_size": 9831,
    "referenced_by": [],
-   "hash": "59875fa41e54",
+   "hash": "662696c5161d",
    "likely_reusable": false,
    "quality_flags": [
     "orphan"
@@ -2475,14 +2984,13 @@
    "width": 54,
    "height": 62,
    "aspect_ratio": 0.871,
-   "file_size": 5287,
+   "file_size": 6064,
    "referenced_by": [
     "src/screens/AreaScreen.tsx",
-    "src/screens/HomeScreen.tsx",
     "src/screens/Q1Screen.tsx",
     "index.html"
    ],
-   "hash": "a02fdba6368e",
+   "hash": "cc8bda1abe45",
    "likely_reusable": true,
    "quality_flags": [
     "tiny"
@@ -2496,13 +3004,12 @@
    "width": 79,
    "height": 59,
    "aspect_ratio": 1.339,
-   "file_size": 7246,
+   "file_size": 8266,
    "referenced_by": [
     "src/index.css",
-    "src/screens/HomeScreen.tsx",
     "src/screens/Q1Screen.tsx"
    ],
-   "hash": "295a3eb98a28",
+   "hash": "20c7ec914656",
    "likely_reusable": true,
    "quality_flags": [
     "tiny"
@@ -2516,11 +3023,11 @@
    "width": 72,
    "height": 65,
    "aspect_ratio": 1.108,
-   "file_size": 6422,
+   "file_size": 7318,
    "referenced_by": [
     "src/screens/Q1Screen.tsx"
    ],
-   "hash": "451255535a5c",
+   "hash": "a6df5f2b1415",
    "likely_reusable": true,
    "quality_flags": []
   },
@@ -2532,14 +3039,250 @@
    "width": 92,
    "height": 49,
    "aspect_ratio": 1.878,
-   "file_size": 7064,
+   "file_size": 7977,
    "referenced_by": [],
-   "hash": "81adf33ebdcd",
+   "hash": "397ea4e07d3b",
    "likely_reusable": false,
    "quality_flags": [
     "orphan",
     "tiny"
    ]
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_bread_png",
+   "path": "public/assets/v2/lunch/dishes/bread.png",
+   "world": "shared",
+   "format": "png",
+   "width": 1024,
+   "height": 1024,
+   "aspect_ratio": 1,
+   "file_size": 1080899,
+   "referenced_by": [
+    "src/q1/logisticsLogic.ts",
+    "src/q1/tenantMatchLogic.ts",
+    "src/q1/zooLogic.ts",
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "4ed9ddb87bad",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_corn_soup_png",
+   "path": "public/assets/v2/lunch/dishes/corn_soup.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 44118,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "ac3b76be0eb5",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_croquette_png",
+   "path": "public/assets/v2/lunch/dishes/croquette.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 77417,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "c2be0de22240",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_gomaae_png",
+   "path": "public/assets/v2/lunch/dishes/gomaae.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 64579,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts"
+   ],
+   "hash": "56aa37b34486",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_karaage_png",
+   "path": "public/assets/v2/lunch/dishes/karaage.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 73014,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "bbd8f72c0ed7",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_milk_png",
+   "path": "public/assets/v2/lunch/dishes/milk.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 47102,
+   "referenced_by": [
+    "src/q1/logisticsLogic.ts",
+    "src/q1/recipeLogic.ts",
+    "src/q1/zooLogic.ts",
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts"
+   ],
+   "hash": "986d07a3831a",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_miso_soup_png",
+   "path": "public/assets/v2/lunch/dishes/miso_soup.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 68508,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts"
+   ],
+   "hash": "204dc76d7a2a",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_potato_salad_png",
+   "path": "public/assets/v2/lunch/dishes/potato_salad.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 74789,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "feedbf9b9cc9",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_rice_png",
+   "path": "public/assets/v2/lunch/dishes/rice.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 55903,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts"
+   ],
+   "hash": "b4759923e9c2",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_dishes_salmon_png",
+   "path": "public/assets/v2/lunch/dishes/salmon.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 65129,
+   "referenced_by": [
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuLogic.ts"
+   ],
+   "hash": "316dd96fcffe",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_school_png",
+   "path": "public/assets/v2/lunch/school.png",
+   "world": "shared",
+   "format": "png",
+   "width": 384,
+   "height": 256,
+   "aspect_ratio": 1.5,
+   "file_size": 122199,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/v2/lunch/README.md",
+    "src/v2/lunch/assets.ts"
+   ],
+   "hash": "d8862c9a0e60",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_tray_png",
+   "path": "public/assets/v2/lunch/tray.png",
+   "world": "shared",
+   "format": "png",
+   "width": 768,
+   "height": 576,
+   "aspect_ratio": 1.333,
+   "file_size": 302862,
+   "referenced_by": [
+    "src/v2/lunch/README.md",
+    "src/v2/lunch/assets.ts",
+    "src/v2/lunch/play/lunchMenuPlay.css"
+   ],
+   "hash": "9f5f54ba3489",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_truck_png",
+   "path": "public/assets/v2/lunch/truck.png",
+   "world": "shared",
+   "format": "png",
+   "width": 384,
+   "height": 256,
+   "aspect_ratio": 1.5,
+   "file_size": 99880,
+   "referenced_by": [
+    "src/data/content/schoolLunch.ts",
+    "src/q1/CurbCheckGame.tsx",
+    "src/v2/lunch/README.md",
+    "src/v2/lunch/assets.ts"
+   ],
+   "hash": "3e70184f695d",
+   "likely_reusable": true,
+   "quality_flags": []
   },
   {
    "asset_id": "public_assets_waste_ba_after_png",
@@ -2551,7 +3294,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1847038,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],
@@ -2571,7 +3319,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1898357,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],
@@ -2600,6 +3353,180 @@
    ]
   },
   {
+   "asset_id": "public_assets_world_continuous_world_png",
+   "path": "public/assets/world/continuous-world.png",
+   "world": "world",
+   "format": "png",
+   "width": 1774,
+   "height": 887,
+   "aspect_ratio": 2,
+   "file_size": 2855809,
+   "referenced_by": [
+    "src/data/districts.ts",
+    "src/lib/homeVisual.ts",
+    "src/screens/WorldMapScreen.tsx"
+   ],
+   "hash": "8925e1c727b7",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_forest_river_crop_png",
+   "path": "public/assets/world/forest-river-crop.png",
+   "world": "world",
+   "format": "png",
+   "width": 700,
+   "height": 380,
+   "aspect_ratio": 1.842,
+   "file_size": 553253,
+   "referenced_by": [],
+   "hash": "a74815c3d4fb",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_harbor_crop_png",
+   "path": "public/assets/world/harbor-crop.png",
+   "world": "world",
+   "format": "png",
+   "width": 700,
+   "height": 380,
+   "aspect_ratio": 1.842,
+   "file_size": 520734,
+   "referenced_by": [],
+   "hash": "35d531ec5d4d",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_home_adventure_png",
+   "path": "public/assets/world/home-adventure.png",
+   "world": "world",
+   "format": "png",
+   "width": 1149,
+   "height": 1368,
+   "aspect_ratio": 0.84,
+   "file_size": 2211015,
+   "referenced_by": [
+    "src/lib/homeVisual.ts"
+   ],
+   "hash": "38de87e1bef7",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_home_child_watching_v2_png",
+   "path": "public/assets/world/home-child-watching-v2.png",
+   "world": "world",
+   "format": "png",
+   "width": 711,
+   "height": 1536,
+   "aspect_ratio": 0.463,
+   "file_size": 1440944,
+   "referenced_by": [
+    "src/index.css",
+    "src/lib/homeVisual.ts"
+   ],
+   "hash": "34fa518bbff0",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_world_home_child_watching_png",
+   "path": "public/assets/world/home-child-watching.png",
+   "world": "world",
+   "format": "png",
+   "width": 1149,
+   "height": 1368,
+   "aspect_ratio": 0.84,
+   "file_size": 1895794,
+   "referenced_by": [
+    "src/lib/homeVisual.ts",
+    "src/screens/HomeScreen.tsx"
+   ],
+   "hash": "9d4e072cf5f2",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_home_incident_png",
+   "path": "public/assets/world/home-incident.png",
+   "world": "world",
+   "format": "png",
+   "width": 1149,
+   "height": 1368,
+   "aspect_ratio": 0.84,
+   "file_size": 2127398,
+   "referenced_by": [
+    "src/lib/homeVisual.ts"
+   ],
+   "hash": "cb3f2911f4bf",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_home_town_png",
+   "path": "public/assets/world/home-town.png",
+   "world": "world",
+   "format": "png",
+   "width": 1149,
+   "height": 1368,
+   "aspect_ratio": 0.84,
+   "file_size": 1729373,
+   "referenced_by": [
+    "src/lib/homeVisual.ts"
+   ],
+   "hash": "199026baae0c",
+   "likely_reusable": true,
+   "quality_flags": [
+    "oversized"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_station_crop_png",
+   "path": "public/assets/world/station-crop.png",
+   "world": "world",
+   "format": "png",
+   "width": 700,
+   "height": 380,
+   "aspect_ratio": 1.842,
+   "file_size": 517844,
+   "referenced_by": [],
+   "hash": "5e30c5e31115",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
+   "asset_id": "public_assets_world_town_center_crop_png",
+   "path": "public/assets/world/town-center-crop.png",
+   "world": "world",
+   "format": "png",
+   "width": 760,
+   "height": 330,
+   "aspect_ratio": 2.303,
+   "file_size": 543785,
+   "referenced_by": [],
+   "hash": "bcabd4369948",
+   "likely_reusable": false,
+   "quality_flags": [
+    "orphan"
+   ]
+  },
+  {
    "asset_id": "public_assets_zoo_ba_after_png",
    "path": "public/assets/zoo/ba-after.png",
    "world": "zoo",
@@ -2609,7 +3536,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1846784,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],
@@ -2629,7 +3561,12 @@
    "aspect_ratio": 1.333,
    "file_size": 1868942,
    "referenced_by": [
+    "src/data/content/forest.ts",
+    "src/data/content/library.ts",
+    "src/data/content/port.ts",
+    "src/data/content/river.ts",
     "src/data/content/shopOpening.ts",
+    "src/data/content/studio.ts",
     "src/data/content/waste.ts",
     "src/data/content/zoo.ts"
    ],

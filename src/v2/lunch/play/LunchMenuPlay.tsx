@@ -79,6 +79,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const sessionRef = useRef<Session>(s);
   sessionRef.current = s;
   const [trayArtOk, setTrayArtOk] = useState(false);
+  const [schoolArtOk, setSchoolArtOk] = useState(false);
 
   const ev = evaluate(s.tray);
   const related = relatedSet(ev.hits);
@@ -190,12 +191,12 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       {/* the school — appears as a destination once the lunch can be sent off */}
       <button
         type="button"
-        className={`lmp-school ${commitReady ? "ready" : ""} ${delivering ? "stamped" : ""}`}
+        className={`lmp-school ${commitReady ? "ready" : ""} ${delivering ? "stamped" : ""} ${schoolArtOk ? "has-art" : ""}`}
         aria-label={COPY.play.deliver}
         disabled={!commitReady}
         onClick={deliver}
       >
-        <Art src={assets?.school} className="lmp-school-art" fallback={<span className="lmp-ph lmp-ph-school">{COPY.dev.tag}</span>} />
+        <Art src={assets?.school} className="lmp-school-art" onState={setSchoolArtOk} fallback={<span className="lmp-ph lmp-ph-school">{COPY.dev.tag}</span>} />
         {delivering && <span className="lmp-stamp lmp-ph">{COPY.dev.stamp}</span>}
       </button>
 

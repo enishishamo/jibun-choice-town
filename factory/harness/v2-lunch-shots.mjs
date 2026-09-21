@@ -21,6 +21,7 @@ await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2, isMobile
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+page.on("response", (r) => { if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`); });
 await page.goto(`${BASE}v2.html#lunch`, { waitUntil: "networkidle0" });
 await page.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
 await page.reload({ waitUntil: "networkidle0" });

@@ -3681,6 +3681,605 @@
     "src/data/content/river.ts"
    ],
    "status": "qa_passed_in_context"
+  },
+  {
+   "asset_id": "v2_lunch_dish_rice",
+   "filename": "rice.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「ごはん」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small round white ceramic rice bowl with a tiny blue flower pattern near the rim, filled with a soft mound of white cooked rice (individual rounded grains suggested, not photoreal). Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「ごはん」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: white rice in a white bowl with small blue flowers; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-20T23:51:17.472Z",
+   "iteration": 1,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 97,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 100,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "米粒の均一な光沢と細かな粒表現が、小型表示では白い塊にまとまって見えやすく、シリーズ特有の素朴な粘土細工感をわずかに弱める"
+   ],
+   "file_hash": "6a6a5de53c87",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_bread",
+   "filename": "bread.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「パン」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one soft golden-brown oval bread roll (koppe-pan) on a plain round white plate. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material. CRITICAL series-match fixes (from the art critic, 3 failed attempts): the bread and plate must read as HANDMADE MATTE CLAY, not a smooth 3D food render — visible soft fingerprint-like irregularities on the bun surface, no glossy highlights, slightly uneven plate rim, warm diagonal daylight from upper-left, colours a touch more muted/warm like the attached clay references.\nRole in game: こんだてPLAY の料理「パン」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: golden bread roll on a white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg",
+    "public/assets/v2/lunch/dishes/rice.png",
+    "public/assets/v2/lunch/dishes/karaage.png"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:53:05.783Z",
+   "iteration": 1,
+   "qa_score": 73,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 73,
+    "COMPOSITION": 91,
+    "CROP_SAFETY": 94,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 74,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 100,
+    "MOBILE_USABILITY": 92,
+    "SERIES_STYLE_MATCH": 74,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "SERIES_STYLE_MATCHが80未満 — 単体では明瞭で完成度も高いが、既存シリーズと並べると粘土小物ではなく写実寄りの食品CGに見える",
+    "パンの表面ディテールを減らし、焼き色をより均一かつ柔らかくして、指で成形したような丸みとマットな粘土質感を強める必要がある",
+    "皿とパンを同じ手作り粘土素材に見せ、影をより柔らかくすればシリーズとの統一感が上がる",
+    "vision critic verdict: FAIL (MUST violation or unstated failure)",
+    "SERIES_STYLE_MATCH below SERIES gate (80): 74"
+   ],
+   "file_hash": "4ed9ddb87bad",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_failed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_salmon",
+   "filename": "salmon.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「さけのしおやき」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one grilled salmon fillet (orange flesh, darker grilled skin on top) on a round white plate with a small lemon wedge and one green leaf. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「さけのしおやき」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: grilled salmon fillet, lemon wedge, green leaf, white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: Salmon skin, flesh, and leaf are rendered with realistic fine textures and glossy highlights; the references use softer, simplified matte clay surfaces.\n- Fix vs reference set: The pristine white studio background lacks the warm miniature-diorama environment and softly modeled depth seen throughout the reference set.\n- Fix vs reference set: The fish anatomy and surface detail are more food-photography-like than handcrafted, with highly defined scales, fat lines, and moist-looking flesh.\n- Fix vs reference set: Lighting is bright and neutral-white, while the references generally use warmer, softer directional illumination.\n- Fix vs reference set: The plate is very smooth and cleanly rendered, with less handmade irregularity than reference props and objects.\n- SERIES_STYLE_MATCH is below the mandatory 80 threshold: the asset reads as polished realistic 3D food rather than an object handmade for the same clay-diorama world.\n- The realistic salmon and leaf textures violate the required unified clay-material treatment, even though the composition and object identification are strong.\n- Reduce scale and flesh microdetail, remove wet gloss, simplify the leaf texture, introduce subtle hand-shaped irregularity, and use warmer soft lighting on a pale warm background.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:09:44.512Z",
+   "iteration": 3,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 89,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 97,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 88,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 98,
+    "MOBILE_USABILITY": 96,
+    "SERIES_STYLE_MATCH": 86,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "純白背景がシリーズ特有の暖かな世界観を弱めるため、薄いクリーム色へ寄せると統一感が高まる",
+    "鮭の彩度と表面の均一さを少し抑え、手成形らしい微細な揺らぎを加えるとreference assetsへより近づく"
+   ],
+   "file_hash": "3ddba02ad6fa",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_karaage",
+   "filename": "karaage.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「とりのからあげ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: four golden-brown fried chicken pieces (karaage) on a round white plate with a small green lettuce leaf and one cherry tomato. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「とりのからあげ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: fried chicken pieces, lettuce, cherry tomato, white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:12:10.504Z",
+   "iteration": 1,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 90,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 97,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 98,
+    "MOBILE_USABILITY": 96,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "衣の表面ディテールを少し整理し、光沢を弱めると既存シリーズのマットな粘土質感にさらに近づく",
+    "重要な料理要素は中央70%以内に収まり、皿・からあげ・付け合わせにも欠損や危険な見切れがない",
+    "文字・数字・ロゴ・人物・写実素材の混在はなく、料理マスター素材として明瞭に機能する"
+   ],
+   "file_hash": "5e3dabd3b6f6",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_croquette",
+   "filename": "croquette.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「コロッケ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: one oval golden breaded croquette on a round white plate with a small pile of shredded pale-green cabbage, one cherry tomato and one broccoli floret. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「コロッケ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: croquette, shredded cabbage, cherry tomato, broccoli, white plate; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:15:17.045Z",
+   "iteration": 1,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 86,
+    "COMPOSITION": 92,
+    "CROP_SAFETY": 94,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 85,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 97,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "コロッケ、皿、付け合わせがすべて明瞭で欠損や危険な見切れがなく、料理単体のmaster assetとして読みやすい",
+    "文字・数字・ロゴ・人物・写実素材の混在はなく、純粋なvisualという用途要件を満たす",
+    "シリーズとの差はあるものの、丸い造形、クレイ素材、暖色中心の配色、簡略化された食材表現は参照セットの世界観に十分収まる"
+   ],
+   "file_hash": "88e1478ac14f",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_gomaae",
+   "filename": "gomaae.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「やさいのごまあえ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small fluted white bowl of dark-green spinach and thin orange carrot strips dressed with sesame seeds (gomaae). Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「やさいのごまあえ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: green spinach and carrot strips with sesame in a fluted white bowl; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 野菜の表面が濡れた実物のように強く光り、reference setのマットで指跡を感じる粘土質感より写実的\n- Fix vs reference set: 葉や茎の細かな皺・筋・不均一な曲がりが精密すぎ、referenceの丸く簡略化された造形言語と異なる\n- Fix vs reference set: 器が光沢の強い陶器として見え、reference内の小物に共通する柔らかなクレイ素材感から外れる\n- Fix vs reference set: 純白の高キーな商品撮影風背景と均一な照明で、referenceの暖色系の柔らかな斜光・ミニチュア撮影感が弱い\n- Fix vs reference set: ゴマ粒が非常に小さく写実的で、シリーズの玩具的なスケール感・形状の単純化と一致しない\n- 料理内容と単体アセットとしての構図は明快だが、食材の湿った艶と精密な表面表現がフォトリアル寄りで、同じ粘土世界の小物に見えにくい\n- シリーズ必須ゲートのSERIES_STYLE_MATCHが80未満。野菜と器をより丸く単純化し、艶を抑えたマットな手作り粘土質感、暖かい斜光、わずかな造形の揺らぎへ寄せる必要がある\n- 白背景はtool/object用途として許容されるが、現状はEC商品写真のように無機質。ごく薄い暖色背景と柔らかな接地影があるとreference setとの一体感が増す",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:21:33.585Z",
+   "iteration": 2,
+   "qa_score": 76,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 86,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 98,
+    "READABILITY": 91,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 85,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 76,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "ごまが大粒の楕円形で落花生や豆のように見えるため、「ごまあえ」としての料理識別精度が下がる",
+    "葉物が肉厚なさや・ピーマン片のようにも見え、ほうれん草などの青菜としてやや判別しにくい",
+    "器と料理の輪郭、中央配置、余白は明瞭で、モバイル縮小時にも主役が崩れにくい"
+   ],
+   "file_hash": "6905b5573d22",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_potato_salad",
+   "filename": "potato_salad.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「ポテトサラダ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small round white bowl of creamy potato salad with small green cucumber slices and orange carrot bits. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「ポテトサラダ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: creamy potato salad with cucumber and carrot in a white bowl; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:23:54.997Z",
+   "iteration": 1,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 92,
+    "CROP_SAFETY": 97,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 87,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "料理単体として中央に大きく配置され、外周余白も十分で、モバイル表示やUI合成に適している",
+    "文字・数字・ロゴ・透かしがなく、料理の属性をUI層で扱うmaster assetとして適切",
+    "きゅうり、にんじん、じゃがいもが簡潔に識別でき、ポテトサラダとしての可読性が高い",
+    "わずかに実食品風の質感があるものの、丸い造形、マットな器、暖色系の柔らかな表現はreference setの粘土世界に許容範囲で一致する"
+   ],
+   "file_hash": "ca23cd4f0750",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_miso_soup",
+   "filename": "miso_soup.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「とうふのみそしる」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a dark reddish-brown lacquer soup bowl of miso soup with small white tofu cubes, dark green wakame pieces and a few chopped green onions. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「とうふのみそしる」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: miso soup with tofu cubes and wakame in a dark brown lacquer bowl; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:26:17.142Z",
+   "iteration": 1,
+   "qa_score": 82,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 84,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 94,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 98,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 84,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 97,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 82,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "料理単体として明瞭で、器と具材は欠けず、中央配置と余白もモバイル表示に適している",
+    "文字・数字・ロゴ・透かしはなく、純粋な料理master assetという用途に適合している",
+    "シリーズ境界に近い質感差はあるが、丸み、簡略化、暖色、粘土製の器、玩具的な造形により同一世界として許容できる"
+   ],
+   "file_hash": "8683cd9b9eda",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_corn_soup",
+   "filename": "corn_soup.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「コーンスープ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a white ceramic soup cup with two small handles, filled with pale yellow corn soup with yellow corn kernels and a few tiny green herb bits. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「コーンスープ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: yellow corn soup in a white two-handled cup; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:28:33.076Z",
+   "iteration": 1,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 98,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 87,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 86,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "白い器と白背景の明度が近く、縮小表示では上縁と取っ手の輪郭がわずかに埋もれやすい",
+    "スープとコーンの強いハイライトを少し抑え、器にごく軽い粘土の成形ムラを加えるとシリーズの素材感へさらに近づく"
+   ],
+   "file_hash": "17c03dbd143a",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_dish_milk",
+   "filename": "milk.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の料理「ぎゅうにゅう」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small white milk carton (gable-top) with a simple blue cow face illustration and blue band on the front, standing upright, with NO letters or text anywhere on it. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.\nRole in game: こんだてPLAY の料理「ぎゅうにゅう」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: white milk carton with blue cow mark, no text; one single dish only; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 1:1 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は基準画像より陰影と表面が均一で、手作り粘土の細かな不均一さがやや弱い\n- Fix vs reference set: 白いスタジオ背景と中央配置は単体素材として適切だが、基準画像の小物より少し製品CG的で整いすぎている\n- 牛の顔の記号が本体に焼き込まれている — このmaster assetでは属性・記号をUI層で扱う指定に反する\n- 青い帯と牛マークがパッケージデザインとして強く、純粋な料理オブジェクトより架空ブランド商品に見えやすい\n- vision critic verdict: FAIL (MUST violation or unstated failure)",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1024x1024",
+   "aspect_ratio": 1,
+   "created_at": "2026-09-21T00:34:34.440Z",
+   "iteration": 2,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 96,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "牛乳パックとして明瞭で、文字・数字・ロゴを使わず形状と青い帯だけで識別できている",
+    "単体オブジェクト用途に適した十分な余白があり、全体が中央70%付近に収まっていてモバイル表示やクロップに強い",
+    "わずかな素材感の差はあるが、丸い造形、淡い暖色、簡略化された形、クレイ質感は既存シリーズと十分に整合する"
+   ],
+   "file_hash": "3dc198fff923",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_tray",
+   "filename": "tray.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY のトレー（4 枠＋牛乳枠）。料理 master をこの上に重ねる",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: an empty pale cream plastic school-lunch tray seen from the same 35-degree camera as the dishes: a rounded rectangle with a raised rim, four shallow compartments in a 2x2 layout on the left/center and one round cup recess on the right (matching the tray in the approved reference), matte plastic-like clay surface. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY のトレー（4 枠＋牛乳枠）。料理 master をこの上に重ねる\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: empty cream lunch tray with four square recesses and one round recess; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 4:3 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 参照画像の手作り粘土らしい微細な凹凸に比べ、トレー表面が均一で光沢が強く、成形プラスチック製品に見える\n- Fix vs reference set: 参照画像は背景まで同一のクレイ世界として構成されているが、候補は透明表現ではなく市松模様が画像内に焼き込まれて見え、ゲーム画面へ自然に合成できない\n- Fix vs reference set: 参照画像の柔らかな斜光と立体的な陰影に対し、候補は正面寄りの均一照明で、ミニチュア・ジオラマ感が弱い\n- 市松模様が実際の透明背景ではなく画像内容として表示されているように見える — 料理素材を重ねる用途では背景が露出し、完成画面を壊す\n- 表面が滑らかで艶のある樹脂質に寄っている — 同シリーズのマットで手作り感のある粘土素材と並べると質感差が目立つ\n- トレー外周の余白と中央配置は安全で、4つの料理枠と牛乳用の円形枠も明瞭だが、右側の広い空き領域の用途が視覚的に曖昧\n- vision critic verdict: FAIL (MUST violation or unstated failure)\n- SERIES_STYLE_MATCH below SERIES gate (80): 77",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "1200x900",
+   "aspect_ratio": 1.333,
+   "created_at": "2026-09-21T00:40:08.443Z",
+   "iteration": 2,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 96,
+    "CROP_SAFETY": 94,
+    "READABILITY": 92,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 90,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 86,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "The stated milk compartment reads visually as a round bowl recess rather than an obvious space for a milk carton, which may make the intended placement less intuitive.",
+    "The tray and background are both very light, so the outer silhouette and shallow compartment edges may lose definition on small mobile screens.",
+    "Confirm that the white area is transparent in the production asset; an opaque white rectangle would limit clean layering within the game UI."
+   ],
+   "file_hash": "22e26caa97eb",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_truck",
+   "filename": "truck.png",
+   "world": "lunch-v2",
+   "purpose": "EVENT（食材が届かない）でトラックが現れる演出",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small friendly delivery truck (light blue cab, white box body with a simple green leaf mark, no text) seen from the side-front at the same 35-degree camera, matte clay toy style, wheels visible, slightly tilted as if it just hit a bump. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: EVENT（食材が届かない）でトラックが現れる演出\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: light-blue small delivery truck with white box body, side view, no text; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "900x600",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-21T00:43:36.807Z",
+   "iteration": 1,
+   "qa_score": 86,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 92,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 98,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 91,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 86,
+    "MOBILE_USABILITY": 96,
+    "SERIES_STYLE_MATCH": 90,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "The plain cargo box does not visually communicate food or school-lunch delivery on its own; contextual UI or surrounding scene elements will need to establish that meaning.",
+    "If this is intended as the complete place image rather than an overlay object, it lacks the pulled-back environment required for a place scene."
+   ],
+   "file_hash": "2152c7307c36",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_school",
+   "filename": "school.png",
+   "world": "lunch-v2",
+   "purpose": "CLEAR（完成した給食を学校へ送り出す）の送り先",
+   "source_type": "generated",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a small cream-and-terracotta elementary school building with a clock tower, seen from the front at the same 35-degree camera, matte clay miniature, a tiny open front door, no text or signs. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: CLEAR（完成した給食を学校へ送り出す）の送り先\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.\nMust include: small school building with clock tower, front view, no text; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 白いスタジオ背景の建物単体で、参照の場所画像にある街並み・植栽・地面を含むミニチュアジオラマ感が不足している\n- Fix vs reference set: 壁や屋根の表面が均質で滑らかすぎ、参照画像の手作り粘土らしい微細な凹凸や造形跡が弱い\n- Fix vs reference set: 参照の街・屋外シーンより光が平坦で影が薄く、柔らかな斜光による立体感と暖かさが不足している\n- Fix vs reference set: 背景情報と奥行きがなく、同じ世界に存在する学校というより商品撮影された建物模型に見える\n- Fix vs reference set: 参照画像より彩度と色の変化が控えめで、シリーズ特有の明るく豊かな街の配色から外れている\n- place用途なのに校舎単体の白背景で、給食を送り届ける場所としての到着感や周辺環境が伝わりにくい\n- SERIES_STYLE_MATCHが80未満で、参照セットと並べた際に同一作品・同一世界として成立しない\n- 中央配置と外周余白は安全だが、モバイル表示では横長の校舎が縮小され、入口などの意味要素が小さくなりやすい",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/kyushoku/classroom_lunch.jpg"
+   ],
+   "dimensions": "900x600",
+   "aspect_ratio": 1.5,
+   "created_at": "2026-09-21T00:49:07.491Z",
+   "iteration": 2,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 90,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 94,
+    "READABILITY": 96,
+    "OBJECT_COMPLETENESS": 97,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 89,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 94,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "qa_issues": [
+    "学校、校門、校庭、遊具が一目で判別でき、給食の送り先としての役割は明確",
+    "中央配置と十分な外周余白により、モバイルで端がトリミングされても学校という意味が壊れにくい",
+    "読める文字・数字・ロゴはなく、契約上の禁止事項には抵触しない",
+    "場所アセットとしては周辺環境が省略されているため、参照の街中に存在する学校より孤立した展示模型に見える"
+   ],
+   "file_hash": "9d1e7debb2da",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ],
+   "status": "qa_passed"
   }
  ]
 }

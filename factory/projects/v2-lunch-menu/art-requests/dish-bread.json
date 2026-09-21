@@ -22,13 +22,15 @@
  "character_constraints": "no characters at all",
  "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
  "reference_assets": [
-  "public/assets/kyushoku/classroom_lunch.jpg"
+  "public/assets/kyushoku/classroom_lunch.jpg",
+  "public/assets/v2/lunch/dishes/rice.png",
+  "public/assets/v2/lunch/dishes/karaage.png"
  ],
  "used_by": [
   "src/v2/lunch/play/LunchMenuPlay.tsx"
  ],
  "purpose": "こんだてPLAY の料理「パン」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）",
- "scene": "one soft golden-brown oval bread roll (koppe-pan) on a plain round white plate. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.",
+ "scene": "one soft golden-brown oval bread roll (koppe-pan) on a plain round white plate. Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material. CRITICAL series-match fixes (from the art critic, 3 failed attempts): the bread and plate must read as HANDMADE MATTE CLAY, not a smooth 3D food render — visible soft fingerprint-like irregularities on the bun surface, no glossy highlights, slightly uneven plate rim, warm diagonal daylight from upper-left, colours a touch more muted/warm like the attached clay references.",
  "required_objects": [
   "golden bread roll on a white plate",
   "one single dish only",
