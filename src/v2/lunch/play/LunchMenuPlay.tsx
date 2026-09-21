@@ -87,7 +87,7 @@ function groupCounts(tray: Tray): Record<Group, number> {
 }
 
 interface Grain { id: number; g: Group; x0: number; y0: number; x1: number; y1: number; delay: number }
-interface Fly { id: string; x0: number; y0: number; w0: number; x1: number; y1: number; w1: number }
+interface Fly { seq: number; id: string; x0: number; y0: number; w0: number; x1: number; y1: number; w1: number }
 interface Spark { id: number; x: number; y: number; a: number }
 
 export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps) {
@@ -215,12 +215,13 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
     const from = (el.querySelector(".lmp-dish-art, .lmp-dish") ?? el).getBoundingClientRect();
     const to = rootRef.current?.querySelector<HTMLElement>(`[data-slot-index="${r.slot}"]`)?.getBoundingClientRect();
     if (rb && to) {
-      setFly({ id, x0: from.left - rb.left, y0: from.top - rb.top, w0: from.width, x1: to.left - rb.left, y1: to.top - rb.top, w1: to.width });
+      const mine = ++seq.current; // a later tap replaces the clone; only the latest flight clears it
+      setFly({ seq: mine, id, x0: from.left - rb.left, y0: from.top - rb.top, w0: from.width, x1: to.left - rb.left, y1: to.top - rb.top, w1: to.width });
       setFlyGo(false);
       setArriving(r.slot);
       fx(() => setFlyGo(true), 20);
       fx(() => {
-        setFly(null);
+        setFly((cur) => (cur && cur.seq === mine ? null : cur));
         setArriving((cur) => (cur === r.slot ? null : cur));
         setPop(r.slot);
         const cx = to.left - rb.left + to.width / 2, cy = to.top - rb.top + to.height / 2;
@@ -422,11 +423,11 @@ export function StatusLayer({ ev, tray, changed, basketArt }: { ev: Evaluation; 
   return (
     <div className={`lmp-status ${ev.complete ? "" : "pending"}`} role="group" aria-label={COPY.play.status.title} data-tray={tray.join(",")}>
       {/* cues that happen on the tray, at the dishes they concern */}
-      <div className="lmp-fx" aria-hidden="true">
+      <div className="lmp-fx">
         {/* under the dishes: the oil puddle leaking from under the fatty dish's plate */}
         {trayHits.filter((h) => h.rule === "fat_over").map((h, i) => {
           const p = relatedDishes(h)[0] ? slotPos(tray, relatedDishes(h)[0]) : GHOST_POS;
-          return <b key={`puddle-${i}`} className="lmp-puddle" style={{ left: `${p.x}%`, top: `${p.y}%` }} />;
+          return <b key={`puddle-${i}`} className="lmp-puddle" aria-hidden="true" style={{ left: `${p.x}%`, top: `${p.y}%` }} />;
         })}
         {trayHits.map((h, i) => {
           const ids = relatedDishes(h);
