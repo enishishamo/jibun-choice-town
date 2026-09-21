@@ -1,0 +1,36 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 96,
+  "SUBJECT_OCCLUSION": 94,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 96,
+  "CONTAINER_FIT": 88,
+  "BACKGROUND_EDGE_QUALITY": 92,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 68,
+  "MOBILE_CROP": 82,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 72
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "Visible TEMP labels make the map read as unfinished scaffolding.",
+  "The blank top capsule has no visible content and feels like an unpopulated placeholder.",
+  "The composition leaves a very large empty region below the map panel on mobile.",
+  "Map-node labels have weak contrast and inconsistent placement, reducing the cohesion of the placeholder presentation.",
+  "The orange marker overlaps the blue node without a clearly integrated attachment or shadow treatment."
+ ],
+ "issues": [
+  "11-world-return/map panel — placeholder nodes and TEMP labels visibly advertise unfinished asset integration — replace them with final map artwork or use polished neutral skeletons without debug text.",
+  "11-world-return/top capsule — large framed region is completely empty — populate it with the intended title/status content or collapse the container until content exists.",
+  "11-world-return/mobile page — map content occupies only the upper portion of the viewport, leaving excessive blank space below — size the screen wrapper to the viewport or vertically balance the map panel.",
+  "11-world-return/node labels — pale TEMP text has low contrast and inconsistent alignment across nodes — center labels consistently and apply an accessible shared text style.",
+  "11-world-return/blue node marker — orange marker sits partly over the node with a harsh, isolated outline — anchor it with consistent inset, masking, border, and shadow rules.",
+  "VISUAL_INTEGRATION below threshold: 68",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 72",
+  "presentation critic verdict: FAIL"
+ ]
+}

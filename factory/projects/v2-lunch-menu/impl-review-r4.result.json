@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "status": "CODEX_ERROR",
+  "error": "codex exec exited 1: ch/copy.ts:76:      cook: \"つくる\",\nsrc/v2/lunch/copy.ts:77:      menu: \"こんだてを考える\",\nsrc/v2/lunch/copy.ts:78:      serve: \"とどける\",\nsrc/v2/lunch/types.ts:14: * animates only the menu→serve segment \"一部分進む\" after the menu PLAY. */\nsrc/v2/lunch/types.ts:22:  /** which spot should play its \"異変が起きた\" entrance animation on mount */\nsrc/v2/lunch/world/LunchWorldMap.tsx:121:            aria-label={COPY.world.spotLabel[id]}\n\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 12:31 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 12:31 PM.\ntokens used\n61,803\n",
+  "elapsed_sec": 51.905
+}

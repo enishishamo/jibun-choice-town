@@ -418,3 +418,10 @@
 {"ts":"2026-09-21T00:54:43.747Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/08-deliver-ready.png"],"exit":0}
 {"ts":"2026-09-21T00:55:58.038Z","tool":"art-provider","mode":"imagegen","out":"public/assets/v2/lunch/dishes/bread.png","exit":0}
 {"ts":"2026-09-21T00:56:21.439Z","tool":"art-qa","mode":"vision-critic","files":["public/assets/v2/lunch/dishes/bread.png"],"exit":0}
+{"ts":"2026-09-21T00:57:37.504Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/04-first-complete-status.png"],"exit":0}
+{"ts":"2026-09-21T00:57:51.765Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/08-deliver-ready.png"],"exit":0}
+{"ts":"2026-09-21T00:58:56.601Z","tool":"codex-review","label":"v2-lunch-impl-r3","prompt_file":"factory/projects/v2-lunch-menu/impl-review-r3.prompt.md","status":"OK","verdict":"FAIL","elapsed_sec":84.325}
+{"ts":"2026-09-21T01:01:35.950Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/04-first-complete-status.png"],"exit":0}
+{"ts":"2026-09-21T01:01:58.375Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/08-deliver-ready.png"],"exit":0}
+{"ts":"2026-09-21T01:02:12.184Z","tool":"codex-review","label":"v2-lunch-impl-r4","prompt_file":"factory/projects/v2-lunch-menu/impl-review-r4.prompt.md","status":"CODEX_ERROR","verdict":null,"elapsed_sec":51.905}
+{"ts":"2026-09-21T01:02:19.812Z","tool":"art-qa","mode":"presentation-critic","files":["factory/state/art/shots/v2-lunch/11-world-return.png"],"exit":0}
