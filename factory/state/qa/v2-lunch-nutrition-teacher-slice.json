@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T13:59:51.399Z",
- "commit": "1f0f25b1bfad4c8ce022a79cd758640af20c2781",
+ "ran_at": "2026-09-21T14:17:20.668Z",
+ "commit": "728b64544eb6ed57347cd68c075f7b7d08911275",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,7 +10,7 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/gameplay-qa-reach-mix.mjs:11:70: warning eslint(no-unused-vars): Identifier 'planFit' is imported but never used. help: Consider removing this import."
+   "summary": "factory/harness/flows/river-flow.mjs:107:9: warning eslint(no-unused-vars): Variable 'air' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration."
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",
