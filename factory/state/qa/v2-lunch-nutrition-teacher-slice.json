@@ -1,6 +1,6 @@
 {
- "ran_at": "2026-09-21T14:17:20.668Z",
- "commit": "728b64544eb6ed57347cd68c075f7b7d08911275",
+ "ran_at": "2026-09-21T14:29:38.650Z",
+ "commit": "ed5762a5c2a7a7c51c9d6af3b604e9e81bffa789",
  "checks": [
   {
    "script": "npx tsc -p tsconfig.app.json --noEmit",
@@ -10,7 +10,7 @@
   {
    "script": "npm run lint",
    "exit_code": 0,
-   "summary": "factory/harness/flows/river-flow.mjs:107:9: warning eslint(no-unused-vars): Variable 'air' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration."
+   "summary": "factory/projects/legacy-reach-mix/design/design-sim.mjs:282:178: warning oxc(erasing-op): Unexpected erasing operation. This expression will always evaluate to zero. help: This is most likely not the intended outcome. Consider removing the operation, or directly assigning zero to the variable"
   },
   {
    "script": "factory/harness/ver1-freeze-check.mjs",
