@@ -2,7 +2,7 @@
  "asset_id": "v2_lunch_scene_talk",
  "filename": "scenes/talk.png",
  "world": "lunch-v2",
- "use": "place",
+ "use": "prop",
  "aspect_ratio": "3:2",
  "size": "900x600",
  "transparent_background": true,

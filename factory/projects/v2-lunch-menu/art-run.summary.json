@@ -2,7 +2,7 @@
  {
   "name": "gauge-rack",
   "ok": true,
-  "loop_exit": 1,
+  "loop_exit": 0,
   "post": {
    "src_size": [
     1200,
@@ -16,10 +16,10 @@
    ],
    "keyed_white": true,
    "content_bbox": [
-    30,
-    182,
-    1172,
-    636
+    45,
+    187,
+    1159,
+    629
    ],
    "ok": true,
    "out": "public/assets/v2/lunch/gauge-rack.png",
@@ -27,193 +27,7 @@
     768,
     256
    ],
-   "content_fill": 0.592
-  }
- },
- {
-  "name": "map-bento",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1200,
-    900
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    184,
-    35,
-    1016,
-    855
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/map/bento.png",
-   "out_size": [
-    768,
-    576
-   ],
-   "content_fill": 0.537
-  }
- },
- {
-  "name": "map-grow",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1024,
-    1024
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    74,
-    158,
-    958,
-    896
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/map/grow.png",
-   "out_size": [
-    256,
-    256
-   ],
-   "content_fill": 0.591
-  }
- },
- {
-  "name": "map-cook",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1024,
-    1024
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    46,
-    70,
-    987,
-    956
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/map/cook.png",
-   "out_size": [
-    256,
-    256
-   ],
-   "content_fill": 0.663
-  }
- },
- {
-  "name": "map-menu",
-  "ok": true,
-  "loop_exit": 0,
-  "post": {
-   "src_size": [
-    1024,
-    1024
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    137,
-    160,
-    891,
-    902
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/map/menu.png",
-   "out_size": [
-    256,
-    256
-   ],
-   "content_fill": 0.695
-  }
- },
- {
-  "name": "scene-kitchen",
-  "ok": true,
-  "loop_exit": 1,
-  "post": {
-   "src_size": [
-    900,
-    600
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    90,
-    11,
-    785,
-    537
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/scenes/kitchen.png",
-   "out_size": [
-    384,
-    256
-   ],
-   "content_fill": 0.621
-  }
- },
- {
-  "name": "scene-classroom",
-  "ok": true,
-  "loop_exit": 1,
-  "post": {
-   "src_size": [
-    900,
-    600
-   ],
-   "alpha_corners": [
-    255,
-    255,
-    255,
-    255
-   ],
-   "keyed_white": true,
-   "content_bbox": [
-    80,
-    11,
-    841,
-    567
-   ],
-   "ok": true,
-   "out": "public/assets/v2/lunch/scenes/classroom.png",
-   "out_size": [
-    384,
-    256
-   ],
-   "content_fill": 0.643
+   "content_fill": 0.593
   }
  }
 ]

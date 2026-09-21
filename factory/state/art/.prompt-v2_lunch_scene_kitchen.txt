@@ -9,21 +9,11 @@ buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplifie
 NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
 NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
 Keep every important element inside the central 70% (mobile crop safety).
-Scene: a miniature school kitchen diorama with no people in it: two large rounded stainless-steel cooking pots standing on a low pale counter, a neat stack of cream serving containers beside them, and a small wheeled cart standing next to the counter. Soft matte metal rendered as clay, warm cream and beige counter. Same matte clay / miniature toy material, same lighting and same warm palette as the delivery truck and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
-Role in game: こんだてPLAY の「調理場」の場面カット。誰がどこで作っているかを一目で伝える小さなジオラマ
+Scene: a miniature school kitchen diorama with no people in it: two large rounded stainless-steel cooking pots standing on a low pale counter, a neat stack of cream serving containers beside them, and a small wheeled cart standing next to the counter. Soft matte metal rendered as clay, warm cream and beige counter. The material must be the SAME matte hand-pressed clay as the attached approved kitchen tile and the cream lunch tray — hand-formed clay pots with soft rounded edges, never realistic brushed steel, never photographic reflections. Same lighting and same warm palette as the delivery truck and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: こんだてPLAY の「調理場」を表す小さな調理道具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く道具だけで正しい。人がいないこと・部屋がないことは欠陥ではなく要件
 Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a handful of miniature objects standing together — not a room interior: no walls, no ceiling, no floor plane. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.
 Must include: two large pots on a counter; a stack of serving containers; one small wheeled cart; no people anywhere; transparent background
 Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge
 Characters: no characters at all
 Aspect ratio: 3:2 (compose for this frame).
 Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: 候補は白背景の商品カタログ風レンダーで、参照画像の生活感ある箱庭ジオラマや物語場面としての奥行きがない
-- Fix vs reference set: 表面が均一で滑らかなプラスチック／量産玩具寄りで、参照画像にある柔らかな手作り粘土の凹凸や温かい素材感が弱い
-- Fix vs reference set: 照明が白くニュートラルなスタジオ光で、参照画像の暖色系の柔らかな斜光と色温度から外れている
-- Fix vs reference set: 青・黄・銀を中心とした彩度と材質分離が硬く、参照画像の暖かな色調と全要素が同じ粘土世界に属する一体感が弱い
-- Fix vs reference set: カメラが単体オブジェクトを切り抜くプロダクト撮影風で、参照のplace／workplace画像にある室内背景、作業者、前景・中景・後景の構成がない
-- Fix vs reference set: 金属鍋や天板の写実的な光沢が強く、参照画像のマットで丸みのあるクレイ表現よりCG製品モデルに見える
-- 用途は「調理場」のplace場面カットだが、調理員も学校厨房の空間も描かれておらず、「誰がどこで作っているか」を一目で伝えられない
-- 主役が調理台と配膳カートだけで、場所シーンではなくtool/object素材に見える

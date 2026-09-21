@@ -4427,44 +4427,48 @@
    "asset_id": "v2_lunch_gauge_rack",
    "filename": "gauge-rack.png",
    "world": "lunch-v2",
-   "purpose": "こんだてPLAY の状態 cue。4 本の溝に粒が転がって集まり、溝の中央のくぼみに収まると「ちょうどいい」が体で分かる物理的な道具。図表ではなく、机の上に置かれた木の道具として読めること",
-   "source_type": "codex_imagegen",
+   "purpose": "こんだてPLAY の状態 cue に使う「空の木の道具」そのものの master asset（純粋な visual）。粒・目盛り・数字・机・人物は仕様として意図的に描かない — 粒は実行時に UI 層がこの画像の上に重ねる。溝が空であること・机や背景がないことは欠陥ではなく要件。背景は生成時点では平らな純白 #FFFFFF でよく、後段の asset-postprocess が白を抜いて透過 PNG にするので、白背景であることは不具合ではない（他の承認済み素材もすべて同じ経路）。求めるのは、4 本の溝と溝ごとの中央の深いくぼみが一目で分かる、手作りの木の道具に見えること",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
-   "iteration": 2,
+   "status": "qa_passed",
+   "iteration": 1,
    "qa_issues": [
-    "generator reported failure: Image generated and saved, but the built-in tool baked the transparency checkerboard into an opaque RGB PNG instead of producing alpha transparency."
+    "4本の溝と各溝中央の深いくぼみは明確で、空の状態も一目で理解できる",
+    "文字・数字・ロゴ・人物・粒・机はなく、用途仕様に適合している",
+    "純白背景は後処理前の仕様として許容され、外周余白と中央配置も十分に安全",
+    "シリーズらしさをさらに強めるなら、表面の均一な光沢を抑え、粘土を手で成形したような微細な揺らぎとマットな質感を少し加える余地がある"
    ],
-   "created_at": "2026-09-21T13:44:00.263Z",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a wide, shallow counting rack made of warm beige clay-wood, like a simple abacus frame or a wooden tray of grooves, standing on a low rim so it reads as a real physical object resting on a table. FOUR parallel horizontal grooves are carved into its top surface, evenly spaced one above the other, each groove running the full width of the rack; every groove is a smooth shallow channel that a small ball could roll along. In the MIDDLE of each of the four grooves the channel is carved noticeably DEEPER and slightly WIDER — a clearly visible resting hollow at the centre of every groove, obviously deeper than the shallower ends of the same groove. The rack is EMPTY: nothing rests in the grooves. Warm beige and cream matte clay-wood, soft rounded edges, handmade toy feeling. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set and the cream lunch tray.\nRole in game: こんだてPLAY の状態 cue。4 本の溝に粒が転がって集まり、溝の中央のくぼみに収まると「ちょうどいい」が体で分かる物理的な道具。図表ではなく、机の上に置かれた木の道具として読めること\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the rack centered and spanning about 80% of the frame width with even margins (at least 10% on every side). The rack is WIDE and SHALLOW — a long low object, roughly three times wider than it is deep — so its four grooves are seen clearly from above-front and run horizontally across the full width of the rack. The rack is completely EMPTY. No table, no cloth, no shadow plate: the rack floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the grooves. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one wide shallow wooden clay rack seen from above-front; exactly four parallel horizontal grooves running the full width, evenly spaced; a visibly deeper and slightly wider resting hollow at the centre of each of the four grooves; completely empty grooves with no balls or markers; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges, symbols, labels, scale marks or tick marks; balls, beads, counters, markers or anything resting in the grooves; a chart, graph, bar meter, progress bar or any diagram-like flat graphic; wires, rods or strings across the frame; hands or people; table, cloth, background, backdrop or drop shadow outside the rack; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the rack.",
+   "created_at": "2026-09-21T19:45:18.647Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a wide, shallow counting rack made of warm beige clay-wood, like a simple abacus frame or a wooden tray of grooves, standing on a low rim so it reads as a real physical object resting on a table. FOUR parallel horizontal grooves are carved into its top surface, evenly spaced one above the other, each groove running the full width of the rack; every groove is a smooth shallow channel that a small ball could roll along. In the MIDDLE of each of the four grooves the channel is carved noticeably DEEPER and slightly WIDER — a clearly visible rounded resting hollow at the centre of every groove, with a distinctly darker warm-brown soft shadow pooled inside it — clearly darker than anywhere else on the rack — so it reads unmistakably as a real deep dent that is obviously deeper than the shallower ends of the same groove. The rack is EMPTY: nothing rests in the grooves. The material is the SAME matte hand-pressed clay as the cream lunch tray and the open lunch box — warm honey-beige and cream clay-wood with visible soft thumb-smoothed surface and gentle hand-painted wood-grain streaks running along the length of the rack, the rim a slightly deeper warm brown than the top face so the object reads as a wooden tool, never smooth plastic, never sandy foam, never varnished furniture wood. Soft rounded edges, handmade toy feeling. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set and the cream lunch tray.\nRole in game: こんだてPLAY の状態 cue に使う「空の木の道具」そのものの master asset（純粋な visual）。粒・目盛り・数字・机・人物は仕様として意図的に描かない — 粒は実行時に UI 層がこの画像の上に重ねる。溝が空であること・机や背景がないことは欠陥ではなく要件。背景は生成時点では平らな純白 #FFFFFF でよく、後段の asset-postprocess が白を抜いて透過 PNG にするので、白背景であることは不具合ではない（他の承認済み素材もすべて同じ経路）。求めるのは、4 本の溝と溝ごとの中央の深いくぼみが一目で分かる、手作りの木の道具に見えること\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the rack centered and spanning about 80% of the frame width with even margins (at least 10% on every side). The rack is WIDE and SHALLOW — a long low object, roughly three times wider than it is deep — so its four grooves are seen clearly from above-front and run horizontally across the full width of the rack. The rack is completely EMPTY. No table, no cloth, no shadow plate: the rack sits alone on a flat pure white #FFFFFF backdrop (the pipeline removes the white afterwards). Soft warm daylight from the upper-left, soft short shadow only inside the grooves. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one wide shallow wooden clay rack seen from above-front; exactly four parallel horizontal grooves running the full width, evenly spaced; a visibly deeper and slightly wider resting hollow at the centre of each of the four grooves; completely empty grooves with no balls or markers\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges, symbols, labels, scale marks or tick marks; balls, beads, counters, markers or anything resting in the grooves; a chart, graph, bar meter, progress bar or any diagram-like flat graphic; wires, rods or strings across the frame; hands or people; table, cloth, background, backdrop or drop shadow outside the rack; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the rack. A white backdrop is CORRECT and expected: the pipeline keys the white out afterwards. Do NOT attempt to output an alpha channel, and never draw a transparency checkerboard.",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
     "public/assets/town-hero.png",
     "public/assets/price/shop.jpg",
     "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/map/bento.png",
     "public/assets/v2/lunch/dishes/rice.png",
     "public/assets/v2/lunch/baskets/red.png"
    ],
    "dimensions": "1200x800",
    "aspect_ratio": 1.5,
-   "qa_score": 58,
+   "qa_score": 84,
    "qa_scores": {
-    "STYLE_CONSISTENCY": 74,
-    "COMPOSITION": 86,
-    "CROP_SAFETY": 94,
-    "READABILITY": 67,
-    "OBJECT_COMPLETENESS": 78,
+    "STYLE_CONSISTENCY": 88,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 95,
+    "OBJECT_COMPLETENESS": 100,
     "CHARACTER_ANATOMY": 100,
-    "SERIES_CONSISTENCY": 74,
+    "SERIES_CONSISTENCY": 86,
     "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 58,
-    "MOBILE_USABILITY": 83,
-    "SERIES_STYLE_MATCH": 74,
+    "JOB_ACCURACY": 98,
+    "MOBILE_USABILITY": 92,
+    "SERIES_STYLE_MATCH": 84,
     "CHARACTER_SERIES_MATCH": 100
    },
-   "file_hash": "290091871b9e",
+   "file_hash": "96522e5a2b42",
    "used_by": [
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ]
@@ -4662,64 +4666,61 @@
    "asset_id": "v2_lunch_scene_kitchen",
    "filename": "scenes/kitchen.png",
    "world": "lunch-v2",
-   "purpose": "こんだてPLAY の「調理場」の場面カット。誰がどこで作っているかを一目で伝える小さなジオラマ",
+   "purpose": "こんだてPLAY の「調理場」を表す小さな調理道具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く道具だけで正しい。人がいないこと・部屋がないことは欠陥ではなく要件",
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature school kitchen diorama with no people in it: two large rounded stainless-steel cooking pots standing on a low pale counter, a neat stack of cream serving containers beside them, and a small wheeled cart standing next to the counter. Soft matte metal rendered as clay, warm cream and beige counter. Same matte clay / miniature toy material, same lighting and same warm palette as the delivery truck and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の「調理場」の場面カット。誰がどこで作っているかを一目で伝える小さなジオラマ\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a handful of miniature objects standing together — not a room interior: no walls, no ceiling, no floor plane. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: two large pots on a counter; a stack of serving containers; one small wheeled cart; no people anywhere; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 候補は白背景の商品カタログ風レンダーで、参照画像の生活感ある箱庭ジオラマや物語場面としての奥行きがない\n- Fix vs reference set: 表面が均一で滑らかなプラスチック／量産玩具寄りで、参照画像にある柔らかな手作り粘土の凹凸や温かい素材感が弱い\n- Fix vs reference set: 照明が白くニュートラルなスタジオ光で、参照画像の暖色系の柔らかな斜光と色温度から外れている\n- Fix vs reference set: 青・黄・銀を中心とした彩度と材質分離が硬く、参照画像の暖かな色調と全要素が同じ粘土世界に属する一体感が弱い\n- Fix vs reference set: カメラが単体オブジェクトを切り抜くプロダクト撮影風で、参照のplace／workplace画像にある室内背景、作業者、前景・中景・後景の構成がない\n- Fix vs reference set: 金属鍋や天板の写実的な光沢が強く、参照画像のマットで丸みのあるクレイ表現よりCG製品モデルに見える\n- 用途は「調理場」のplace場面カットだが、調理員も学校厨房の空間も描かれておらず、「誰がどこで作っているか」を一目で伝えられない\n- 主役が調理台と配膳カートだけで、場所シーンではなくtool/object素材に見える",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature school kitchen diorama with no people in it: two large rounded stainless-steel cooking pots standing on a low pale counter, a neat stack of cream serving containers beside them, and a small wheeled cart standing next to the counter. Soft matte metal rendered as clay, warm cream and beige counter. The material must be the SAME matte hand-pressed clay as the attached approved kitchen tile and the cream lunch tray — hand-formed clay pots with soft rounded edges, never realistic brushed steel, never photographic reflections. Same lighting and same warm palette as the delivery truck and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の「調理場」を表す小さな調理道具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く道具だけで正しい。人がいないこと・部屋がないことは欠陥ではなく要件\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a handful of miniature objects standing together — not a room interior: no walls, no ceiling, no floor plane. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: two large pots on a counter; a stack of serving containers; one small wheeled cart; no people anywhere; transparent background\nMust NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
     "public/assets/town-hero.png",
     "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/map/cook.png",
     "public/assets/v2/lunch/tray.png",
     "public/assets/v2/lunch/truck.png",
     "public/assets/v2/lunch/dishes/miso_soup.png"
    ],
    "dimensions": "900x600",
    "aspect_ratio": 1.5,
-   "created_at": "2026-09-21T14:17:55.593Z",
-   "iteration": 3,
-   "qa_score": 58,
+   "created_at": "2026-09-21T19:10:08.944Z",
+   "iteration": 1,
+   "qa_score": 88,
    "qa_scores": {
-    "STYLE_CONSISTENCY": 76,
-    "COMPOSITION": 80,
-    "CROP_SAFETY": 92,
-    "READABILITY": 88,
-    "OBJECT_COMPLETENESS": 86,
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 93,
+    "CROP_SAFETY": 96,
+    "READABILITY": 94,
+    "OBJECT_COMPLETENESS": 98,
     "CHARACTER_ANATOMY": 100,
-    "SERIES_CONSISTENCY": 74,
+    "SERIES_CONSISTENCY": 89,
     "BEFORE_AFTER_CONSISTENCY": 100,
-    "JOB_ACCURACY": 58,
-    "MOBILE_USABILITY": 90,
-    "SERIES_STYLE_MATCH": 74,
+    "JOB_ACCURACY": 95,
+    "MOBILE_USABILITY": 94,
+    "SERIES_STYLE_MATCH": 88,
     "CHARACTER_SERIES_MATCH": 100
    },
    "qa_issues": [
-    "No cook or other person is present, so the stated purpose of communicating who prepares the meals is not fulfilled.",
-    "The image shows serving equipment rather than a recognizable cooking workplace; walls, work surfaces, appliances, ingredient-preparation areas, and broader kitchen context are absent.",
-    "As a place asset, it reads as a cutout collection of objects instead of a small kitchen diorama.",
-    "The pure white background makes the asset visually inconsistent beside the reference place and workplace scenes.",
-    "SERIES_STYLE_MATCH is below the mandatory 80-point gate.",
-    "vision critic verdict: FAIL (MUST violation or unstated failure)",
-    "JOB_ACCURACY below threshold: 58",
-    "SERIES_STYLE_MATCH below SERIES gate (80): 74"
+    "調理場を鍋・配膳トレー・運搬ワゴンだけで明快に表現できており、人物や室内背景がない点は用途要件に適合する",
+    "主要物は中央70%付近に収まり、外周にも十分な余白があるため、モバイル表示やUI重ね合わせに強い",
+    "文字・数字・ロゴ・透かしはなく、道具の欠損や不自然な形状も見られない",
+    "シリーズとの一致度をさらに高めるなら、粘土表面のわずかな手作りムラ、柔らかな接地影、青や緑の小さな差し色を追加するとよい"
    ],
-   "file_hash": "62dd8940cc0d",
+   "file_hash": "f6a8c9049fcc",
    "used_by": [
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
-   "status": "qa_failed"
+   "status": "qa_passed"
   },
   {
    "asset_id": "v2_lunch_scene_classroom",
    "filename": "scenes/classroom.png",
    "world": "lunch-v2",
-   "purpose": "こんだてPLAY の「教室」の場面カット。作った給食が誰のところへ届くのかを一目で伝える小さなジオラマ",
+   "purpose": "こんだてPLAY の「教室」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。人がいないこと・黒板が真っ白（無記入）なことは欠陥ではなく要件。机 2 台に対して椅子 1 脚という構成も仕様どおりで、椅子を足す必要はない",
    "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature classroom diorama with no people in it: one small blackboard with a warm wooden frame and a completely blank flat dark green surface standing at the back, two small wooden school desks in front of it with a pale cream lunch tray set on each desk, and one small wooden chair beside them. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の「教室」の場面カット。作った給食が誰のところへ届くのかを一目で伝える小さなジオラマ\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a blackboard standing behind a couple of desks — not a room interior: no side walls, no ceiling, no floor plane. The blackboard surface is COMPLETELY BLANK: one flat dark green board, no writing, no letters, no numbers, no chalk marks, no smudges that could read as text. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one blackboard with a completely blank surface and no writing; two small desks with a lunch tray on each; one chair; no people anywhere; transparent background\nMust NOT include: readable text; letters or numbers; writing, chalk marks or smudges on the blackboard; logos; attribute marks, icons, badges or symbols; side walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.\n\nPREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:\n- Fix vs reference set: 白いスタジオ背景の単体オブジェクト写真に見え、参照の教室・職場シーンにある空間的なミニチュアジオラマ感が弱い\n- Fix vs reference set: 机・椅子・黒板の表面が均一で滑らかかつ光沢が強く、参照のマットで手練り感のある粘土質感よりプラスチック玩具に近い\n- Fix vs reference set: 参照の場面カットより背景情報と生活感が大幅に少なく、同じ街の学校内という世界のつながりが伝わりにくい\n- Fix vs reference set: 黒板、机、椅子の縮尺関係がやや不自然で、特に椅子が机に対して小さく見える\n- Fix vs reference set: 参照シーンの柔らかな斜光と奥行きに比べ、影が薄く、白背景への切り抜きレンダー感が強い\n- 空の給食トレーだけで児童や配膳物が存在しないため、『作った給食が誰のところへ届くのか』を一目で伝えられない\n- 教室を示す要素が机2台・椅子1脚・黒板だけで、場所シーンとして必要な文脈と情報量が不足している\n- 机が2台あるのに椅子が1脚しかなく、場面として未完成に見える",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature classroom diorama with no people in it: one small blackboard with a warm wooden frame and a completely blank flat dark green surface standing at the back, two small wooden school desks in front of it with a pale cream lunch tray set on each desk, and one small wooden chair beside them. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の「教室」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。人がいないこと・黒板が真っ白（無記入）なことは欠陥ではなく要件。机 2 台に対して椅子 1 脚という構成も仕様どおりで、椅子を足す必要はない\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a blackboard standing behind a couple of desks — not a room interior: no side walls, no ceiling, no floor plane. The blackboard surface is COMPLETELY BLANK: one flat dark green board, no writing, no letters, no numbers, no chalk marks, no smudges that could read as text. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.\nMust include: one blackboard with a completely blank surface and no writing; two small desks with a lunch tray on each; one chair; no people anywhere; transparent background\nMust NOT include: readable text; letters or numbers; writing, chalk marks or smudges on the blackboard; logos; attribute marks, icons, badges or symbols; side walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.",
    "reference_assets": [
     "public/assets/kyushoku/farmer_char.png",
     "public/assets/schooltrip/school-trip-teacher.jpg",
@@ -4731,33 +4732,81 @@
    ],
    "dimensions": "900x600",
    "aspect_ratio": 1.5,
-   "created_at": "2026-09-21T14:30:29.103Z",
-   "iteration": 3,
-   "qa_score": null,
-   "qa_scores": null,
+   "created_at": "2026-09-21T19:14:19.939Z",
+   "iteration": 1,
+   "qa_score": 88,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 91,
+    "COMPOSITION": 94,
+    "CROP_SAFETY": 96,
+    "READABILITY": 95,
+    "OBJECT_COMPLETENESS": 100,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 91,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 97,
+    "MOBILE_USABILITY": 95,
+    "SERIES_STYLE_MATCH": 88,
+    "CHARACTER_SERIES_MATCH": 100
+   },
    "qa_issues": [
-    "VISION_QA_UNAVAILABLE: vision critic codex exec exited 1"
+    "粘土の手作り感を決める微細な凹凸が弱く、一部の家具表面が量産プラスチックのように見える — シリーズ固有のクレイ質感がわずかに薄れる",
+    "椅子が右端寄りだが十分な余白があり、主要要素はすべて完全に収まっているため実用上のクロップ問題はない"
    ],
-   "file_hash": "4f64b9c11029",
+   "file_hash": "eb7f74fc83a6",
    "used_by": [
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
-   "status": "qa_failed"
+   "status": "qa_passed"
   },
   {
    "asset_id": "v2_lunch_scene_talk",
    "filename": "scenes/talk.png",
    "world": "lunch-v2",
    "purpose": "こんだてPLAY の「相談する場所」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・部屋・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。空であること・人がいないことは欠陥ではなく要件",
-   "source_type": "codex_imagegen",
+   "source_type": "generated",
    "provider": "codex_imagegen",
    "extra_cost_status": "subscription_included_confirmed",
-   "status": "generation_failed",
+   "status": "qa_passed",
    "iteration": 1,
    "qa_issues": [
-    "codex exec exited 1"
+    "椅子2脚と丸テーブル、中央の相談用紙という構成が明快で、人物や室内を描かないmaster assetの用途に適合している",
+    "すべての家具が十分な余白内に収まり、縮小表示やモバイル上でもシルエットと用途を判別できる",
+    "紙に読める文字・数字・ロゴはなく、UI文字を重ねる仕様を妨げない",
+    "木目と光沢をもう少し抑え、表面をreference set同様の柔らかなマット粘土に寄せるとシリーズ統一感がさらに高まる"
    ],
-   "created_at": "2026-09-21T14:30:41.679Z"
+   "created_at": "2026-09-21T19:18:10.431Z",
+   "prompt": "MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series\n(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character\nproportions and face/eye simplification, same lighting, saturation, depth and diorama\ncamera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.\nRounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,\nbright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids\naged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,\nbuildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.\nNO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.\nNO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.\nKeep every important element inside the central 70% (mobile crop safety).\nScene: a miniature quiet corner diorama with no people in it: one small round warm wooden table with two small wooden chairs facing each other across it, and a single sheet of blank pale cream paper lying flat on the table top. Calm, warm and simple, nothing else on the table. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.\nRole in game: こんだてPLAY の「相談する場所」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・部屋・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。空であること・人がいないことは欠陥ではなく要件\nCamera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — one little table with two chairs — not a room interior: no walls, no ceiling, no floor plane. The sheet of paper on the table is completely BLANK: plain pale cream paper, no writing, no letters, no numbers, no ruled lines. No table-cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, warm and calm, bright but not neon.\nMust include: one small round table; two chairs facing each other; one blank sheet of paper on the table; no people anywhere; transparent background\nMust NOT include: readable text; letters or numbers; writing or marks on the paper; logos; attribute marks, icons, badges or symbols; walls, ceiling, windows or a room interior; hands or people; cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge\nCharacters: no characters at all\nAspect ratio: 3:2 (compose for this frame).\nBackground: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.",
+   "reference_assets": [
+    "public/assets/kyushoku/farmer_char.png",
+    "public/assets/schooltrip/school-trip-teacher.jpg",
+    "public/assets/town-hero.png",
+    "public/assets/price/shop.jpg",
+    "public/assets/v2/lunch/tray.png",
+    "public/assets/v2/lunch/school.png",
+    "public/assets/v2/lunch/dishes/corn_soup.png"
+   ],
+   "dimensions": "900x600",
+   "aspect_ratio": 1.5,
+   "qa_score": 84,
+   "qa_scores": {
+    "STYLE_CONSISTENCY": 86,
+    "COMPOSITION": 90,
+    "CROP_SAFETY": 96,
+    "READABILITY": 93,
+    "OBJECT_COMPLETENESS": 96,
+    "CHARACTER_ANATOMY": 100,
+    "SERIES_CONSISTENCY": 85,
+    "BEFORE_AFTER_CONSISTENCY": 100,
+    "JOB_ACCURACY": 92,
+    "MOBILE_USABILITY": 91,
+    "SERIES_STYLE_MATCH": 84,
+    "CHARACTER_SERIES_MATCH": 100
+   },
+   "file_hash": "200468d15f05",
+   "used_by": [
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
+   ]
   }
  ]
 }

@@ -10,20 +10,10 @@ NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the
 NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
 Keep every important element inside the central 70% (mobile crop safety).
 Scene: a miniature classroom diorama with no people in it: one small blackboard with a warm wooden frame and a completely blank flat dark green surface standing at the back, two small wooden school desks in front of it with a pale cream lunch tray set on each desk, and one small wooden chair beside them. Same matte clay / miniature toy material, same lighting and same warm palette as the school building and the cream lunch tray. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
-Role in game: こんだてPLAY の「教室」の場面カット。作った給食が誰のところへ届くのかを一目で伝える小さなジオラマ
+Role in game: こんだてPLAY の「教室」を表す小さな家具ジオラマの master asset（純粋な visual）。人物・壁・床・背景は仕様として意図的に描かない — 登場人物も文字も UI 層が上に重ねるので、この画像は透過背景に浮く家具だけで正しい。人がいないこと・黒板が真っ白（無記入）なことは欠陥ではなく要件。机 2 台に対して椅子 1 脚という構成も仕様どおりで、椅子を足す必要はない
 Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a blackboard standing behind a couple of desks — not a room interior: no side walls, no ceiling, no floor plane. The blackboard surface is COMPLETELY BLANK: one flat dark green board, no writing, no letters, no numbers, no chalk marks, no smudges that could read as text. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.
 Must include: one blackboard with a completely blank surface and no writing; two small desks with a lunch tray on each; one chair; no people anywhere; transparent background
 Must NOT include: readable text; letters or numbers; writing, chalk marks or smudges on the blackboard; logos; attribute marks, icons, badges or symbols; side walls, ceiling, windows or a room interior; hands or people; table, cloth, background, backdrop or drop shadow outside the diorama; photorealistic rendering; elements touching the image edge
 Characters: no characters at all
 Aspect ratio: 3:2 (compose for this frame).
 Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.
-
-PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
-- Fix vs reference set: 白いスタジオ背景の単体オブジェクト写真に見え、参照の教室・職場シーンにある空間的なミニチュアジオラマ感が弱い
-- Fix vs reference set: 机・椅子・黒板の表面が均一で滑らかかつ光沢が強く、参照のマットで手練り感のある粘土質感よりプラスチック玩具に近い
-- Fix vs reference set: 参照の場面カットより背景情報と生活感が大幅に少なく、同じ街の学校内という世界のつながりが伝わりにくい
-- Fix vs reference set: 黒板、机、椅子の縮尺関係がやや不自然で、特に椅子が机に対して小さく見える
-- Fix vs reference set: 参照シーンの柔らかな斜光と奥行きに比べ、影が薄く、白背景への切り抜きレンダー感が強い
-- 空の給食トレーだけで児童や配膳物が存在しないため、『作った給食が誰のところへ届くのか』を一目で伝えられない
-- 教室を示す要素が机2台・椅子1脚・黒板だけで、場所シーンとして必要な文脈と情報量が不足している
-- 机が2台あるのに椅子が1脚しかなく、場面として未完成に見える
