@@ -66,6 +66,18 @@ await page.evaluateOnNewDocument(() => {
     push(document.body, before);
     const board = document.querySelector(".lmp");
     push(board, window.__seen.board);
+    // ::before / ::after content is on screen but is not a text node: a score
+    // written as `content: "100てん"` would otherwise never be looked at
+    for (const e of document.querySelectorAll("*")) {
+      for (const which of ["::before", "::after"]) {
+        const c = getComputedStyle(e, which).content;
+        if (!c || c === "none" || c === "normal") continue;
+        const t = c.replace(/^["']|["']$/g, "").trim();
+        if (!t || t === "\"\"") continue;
+        window.__seen.all.add(t); before.add(t);
+        if (board && board.contains(e)) window.__seen.board.add(t);
+      }
+    }
     for (const e of document.querySelectorAll("[aria-label]")) {
       const a = e.getAttribute("aria-label");
       window.__seen.aria.add(a);
@@ -89,6 +101,9 @@ await page.reload({ waitUntil: "networkidle0" });
 
 const shots = [];
 const violations = [];
+// report each violation the moment it is found: if the run later throws (a
+// tap-stealing overlay makes a button unreachable, say), the findings are not lost
+const flag = (m) => { violations.push(m); console.error("VIOLATION:", m); };
 let revealed = false; // the job name may not appear anywhere before CLEAR
 /** Every capture is also an assertion: no developer marker, no job name before
  * the reveal, no digit on the board, and no string that is not in copy.ts. */
@@ -108,13 +123,13 @@ const shot = async (name) => {
     const aria = [...document.querySelectorAll("[aria-label]")].map((e) => e.getAttribute("aria-label"));
     return { texts, boardText, aria, body: document.body.innerText };
   });
-  if (/TEMP_IMPLEMENTATION_ONLY|DESIGN_NEEDED|DN-\d+/.test(seen.body)) violations.push(`${name}: developer marker on screen`);
-  if (!revealed && /栄養教諭|栄養士|学校栄養職員/.test(seen.body)) violations.push(`${name}: the job is named before CLEAR`);
-  if (/[0-9０-９]/.test(seen.boardText)) violations.push(`${name}: a number is shown on the board — "${seen.boardText.replace(/\s+/g, " ").slice(0, 80)}"`);
-  for (const t of seen.texts) if (!ALLOWED.has(t)) violations.push(`${name}: text not in copy.ts — "${t}"`);
+  if (/TEMP_IMPLEMENTATION_ONLY|DESIGN_NEEDED|DN-\d+/.test(seen.body)) flag(`${name}: developer marker on screen`);
+  if (!revealed && /栄養教諭|栄養士|学校栄養職員/.test(seen.body)) flag(`${name}: the job is named before CLEAR`);
+  if (/[0-9０-９]/.test(seen.boardText)) flag(`${name}: a number is shown on the board — "${seen.boardText.replace(/\s+/g, " ").slice(0, 80)}"`);
+  for (const t of seen.texts) if (!ALLOWED.has(t)) flag(`${name}: text not in copy.ts — "${t}"`);
   for (const a of seen.aria) {
     const bare = a.replace(/（.*?）|：.*$/g, "").trim();
-    if (!ALLOWED.has(a) && !ALLOWED.has(bare)) violations.push(`${name}: aria-label not in copy.ts — "${a}"`);
+    if (!ALLOWED.has(a) && !ALLOWED.has(bare)) flag(`${name}: aria-label not in copy.ts — "${a}"`);
   }
   console.log("shot", p);
 };
@@ -147,13 +162,28 @@ const beads = () => page.$$eval(".lmp-bead", (bs) => bs.map((b) => ({ axis: b.ge
 const checkTouchGeometry = async (where) => {
   const r = await page.evaluate(() => {
   const wrong = [];
-  const boxes = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
+  const all = [...document.querySelectorAll(".lmp-slot, .lmp-school, .lmp-cand")];
+  // a control that is deliberately not touchable (disabled, or pointer-events:none)
+  // is not expected to own the pixels it is drawn on
+  const boxes = all.filter((el) => !el.disabled && getComputedStyle(el).pointerEvents !== "none");
   for (const el of boxes) {
     const b = el.getBoundingClientRect();
     if (b.width === 0) continue;
-    for (const [x, y] of [[b.left + 4, b.top + 4], [b.right - 4, b.top + 4], [b.left + 4, b.bottom - 4], [b.right - 4, b.bottom - 4], [b.left + b.width / 2, b.top + b.height / 2]]) {
-      const owner = document.elementFromPoint(x, y)?.closest(".lmp-slot, .lmp-school, .lmp-cand");
-      if (owner && owner !== el) wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${owner.getAttribute("aria-label")}`);
+    // sampled inside the rounded shape, not at the square corners, which a
+    // rounded control legitimately does not occupy
+    const px = (fx, fy) => [b.left + b.width * fx, b.top + b.height * fy];
+    for (const [x, y] of [px(0.25, 0.25), px(0.75, 0.25), px(0.25, 0.75), px(0.75, 0.75), px(0.5, 0.5)]) {
+      if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) { wrong.push(`${el.getAttribute("aria-label")} is drawn partly outside the viewport @${Math.round(x)},${Math.round(y)}`); continue; }
+      const hit = document.elementFromPoint(x, y);
+      // the point must land on this control or something inside it. Another
+      // control, a transparent overlay, or nothing at all all mean the same
+      // thing: the child cannot touch it where they can see it.
+      // this control, something inside it, or a container it sits in are all
+      // fine; a SIBLING on top of it is an overlay that swallows the tap
+      if (!(hit && (hit === el || el.contains(hit) || hit.contains(el)))) {
+        const other = hit && hit.closest ? hit.closest(".lmp-slot, .lmp-school, .lmp-cand") : null;
+        wrong.push(`${el.getAttribute("aria-label")} @${Math.round(x)},${Math.round(y)} -> ${other ? other.getAttribute("aria-label") : hit ? (hit.className || hit.tagName) : "nothing"}`);
+      }
     }
   }
   // and no two touch areas may intersect at all
@@ -167,9 +197,9 @@ const checkTouchGeometry = async (where) => {
   return { wrong, overlaps, counted: boxes.filter((b) => b.getBoundingClientRect().width > 0).length };
   });
   // a geometry check that found nothing to check has proved nothing
-  if (r.counted < 10) violations.push(`touch geometry at "${where}": only ${r.counted} controls were on screen — the check was vacuous`);
-  for (const w of r.wrong) violations.push(`tap ownership at "${where}": ${w}`);
-  for (const o of r.overlaps) violations.push(`touch areas overlap at "${where}": ${o}`);
+  if (r.counted < 10) flag(`touch geometry at "${where}": only ${r.counted} controls were on screen — the check was vacuous`);
+  for (const w of r.wrong) flag(`tap ownership at "${where}": ${w}`);
+  for (const o of r.overlaps) flag(`touch areas overlap at "${where}": ${o}`);
 };
 
 
@@ -190,7 +220,7 @@ await checkTouchGeometry("play, empty tray");
     for (const a of await page.$$eval(".lmp-bead.struck", (bs) => bs.map((b) => b.getAttribute("data-bead")))) everStruck.add(a);
     await sleep(50);
   }
-  if (everStruck.size !== 4) violations.push(`only ${everStruck.size}/4 beads answered the first dish (${[...everStruck].join(",")})`);
+  if (everStruck.size !== 4) flag(`only ${everStruck.size}/4 beads answered the first dish (${[...everStruck].join(",")})`);
   await sleep(300);
 }
 await shot("03-one-placed");
@@ -224,7 +254,7 @@ await checkTouchGeometry("play, tray full and the school offered");
   await sleep(3500);
   const after = await page.evaluate(() => ({ cls: document.querySelector(".lmp")?.className ?? "", left: !document.querySelector(".lmp") }));
   if (after.left || !/phase-build/.test(after.cls) || before !== after.cls) {
-    violations.push(`the game advanced with no input: "${before}" -> "${after.cls}"${after.left ? " (left the board entirely)" : ""}`);
+    flag(`the game advanced with no input: "${before}" -> "${after.cls}"${after.left ? " (left the board entirely)" : ""}`);
   }
 }
 
@@ -294,7 +324,7 @@ const noStaple = await page.evaluate(() => ({
   schoolOffered: !!document.querySelector(".lmp-school.ready"),
 }));
 if (!noStaple.stapleShelfAsks || noStaple.schoolOffered) {
-  violations.push(`24-no-staple: a tray with no 主食 must not be sendable and the 主食 pan must ask — got ${JSON.stringify(noStaple)}`);
+  flag(`24-no-staple: a tray with no 主食 must not be sendable and the 主食 pan must ask — got ${JSON.stringify(noStaple)}`);
 }
 
 // ── the accumulated record, not the snapshots ────────────────────────────
@@ -305,8 +335,8 @@ const seen = await page.evaluate(() => ({
   aria: [...window.__seen.aria],
   duringPlay: [...window.__seen.duringPlay],
 }));
-for (const t of [...seen.board, ...seen.boardAria]) if (/[0-9０-９]/.test(t)) violations.push(`a number was shown on the board at some point — "${t}"`);
-for (const t of seen.all) if (!ALLOWED.has(t)) violations.push(`text rendered at some point is not in copy.ts — "${t}"`);
+for (const t of [...seen.board, ...seen.boardAria]) if (/[0-9０-９]/.test(t)) flag(`a number was shown on the board at some point — "${t}"`);
+for (const t of seen.all) if (!ALLOWED.has(t)) flag(`text rendered at some point is not in copy.ts — "${t}"`);
 for (const a of seen.aria) {
   if (ALLOWED.has(a)) continue; // the exact string copy.ts produces
   // otherwise it may only be two allowed pieces joined by the slice's own two shapes,
@@ -314,11 +344,11 @@ for (const a of seen.aria) {
   const bare = a.replace(/（[^）]*）$/, "").replace(/：[^：]*$/, "").trim();
   const suffix = ((a.match(/（([^）]*)）$/)?.[1] ?? "") + (a.match(/：(.*)$/)?.[1] ?? "")).trim();
   if (!(suffix && ALLOWED.has(bare) && ALLOWED.has(suffix))) {
-    violations.push(`aria-label rendered at some point is not in copy.ts — "${a}"`);
+    flag(`aria-label rendered at some point is not in copy.ts — "${a}"`);
   }
 }
 // the job may not be named anywhere while the child is still playing
-for (const t of seen.duringPlay) if (/栄養教諭|学校栄養職員|栄養士/.test(t)) violations.push(`the job was named while the board was still on screen — "${t}"`);
+for (const t of seen.duringPlay) if (/栄養教諭|学校栄養職員|栄養士/.test(t)) flag(`the job was named while the board was still on screen — "${t}"`);
 
 // every <img> the flow rendered must be a real, loaded picture — a CSS fallback
 // carries no text and returns no 4xx, so the marker grep alone cannot see it

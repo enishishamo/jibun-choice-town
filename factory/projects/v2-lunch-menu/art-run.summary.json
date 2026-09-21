@@ -122,5 +122,36 @@
    ],
    "content_fill": 0.663
   }
+ },
+ {
+  "name": "map-menu",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1024,
+    1024
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    137,
+    160,
+    891,
+    902
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/map/menu.png",
+   "out_size": [
+    256,
+    256
+   ],
+   "content_fill": 0.695
+  }
  }
 ]
