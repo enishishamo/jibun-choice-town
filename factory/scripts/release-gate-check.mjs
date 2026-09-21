@@ -18,13 +18,18 @@
 
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..", "..");
 const TASK_STATE = join(ROOT, "factory", "harness", "task-state.mjs");
-const TASKS_JSON = join(ROOT, "factory", "state", "tasks.json");
+// JC_TASKS_PATH mirrors task-state.mjs's own override so
+// factory/harness/factory-self-test.mjs can exercise this gate against a
+// scratch ledger instead of the real one. CI never sets it.
+const TASKS_JSON = process.env.JC_TASKS_PATH
+  ? resolve(process.env.JC_TASKS_PATH)
+  : join(ROOT, "factory", "state", "tasks.json");
 
 const args = process.argv.slice(2);
 function flag(name, dflt) {
@@ -70,57 +75,88 @@ if (!resolvesToCommit(base)) {
   }
 }
 
-const diff = run("git", ["diff", "--name-only", base, head]);
-if (diff.status !== 0) {
-  console.error(`FAIL: git diff --name-only ${base} ${head} failed:\n${diff.stderr}`);
+// 2026-09-21 (R4 — the fail-open this script still had): the previous rule
+// accepted ANY task whose release_commit was an ANCESTOR of head. In a repo
+// with a long history that is almost always satisfiable by some old released
+// task, so a brand-new, ungated src/ commit rode in under a gate that had
+// been passed for an unrelated commit months earlier. The rule is now
+// per-commit: every commit in base..head that touches src/ or public/ must
+// have its OWN task whose release_commit is EXACTLY that sha and which
+// passes can-deploy.
+//
+// Workflow this implies (and it is a normal one): commit the app change
+// (sha X) -> run the gate locally -> `set-release-commit <task> X` -> commit
+// the ledger update. That second commit touches only factory/, so it needs
+// no gate of its own, and X is covered by an exact match.
+const revList = run("git", ["rev-list", "--reverse", `${base}..${head}`]);
+if (revList.status !== 0) {
+  console.error(`FAIL: git rev-list ${base}..${head} failed:\n${revList.stderr}`);
   process.exit(1);
 }
-const changedFiles = diff.stdout.split("\n").filter(Boolean);
-const appChanged = changedFiles.some((f) => f.startsWith("src/") || f.startsWith("public/"));
+const commits = revList.stdout.split("\n").filter(Boolean);
 
 console.log(`release-gate-check: base=${base} head=${head}`);
-console.log(`changed files: ${changedFiles.length}`);
-if (!appChanged) {
-  console.log("PASS: no changes under src/ or public/ in this push — release gate does not apply (docs/factory-only change).");
+console.log(`commits in range: ${commits.length}`);
+
+// Which commits actually touch app code? (`git show --name-only` on a merge
+// commit prints nothing by default; -m --first-parent makes merges report
+// the files they bring in, so a merge cannot smuggle an unchecked change.)
+const appCommits = [];
+for (const c of commits) {
+  const r = run("git", ["show", "--name-only", "--format=", "-m", "--first-parent", c]);
+  if (r.status !== 0) {
+    console.error(`FAIL: could not list files of ${c}:\n${r.stderr}`);
+    process.exit(1);
+  }
+  const files = [...new Set(r.stdout.split("\n").filter(Boolean))];
+  if (files.some((f) => f.startsWith("src/") || f.startsWith("public/"))) {
+    appCommits.push({ sha: c, files: files.filter((f) => f.startsWith("src/") || f.startsWith("public/")) });
+  }
+}
+
+if (appCommits.length === 0) {
+  console.log("PASS: no commit in this range touches src/ or public/ — release gate does not apply (docs/factory-only change).");
   process.exit(0);
 }
 
-console.log("This push changes src/ and/or public/ — a gated task record is required.");
+console.log(`${appCommits.length} commit(s) change src/ and/or public/ — each needs its own gated task record.`);
 if (!existsSync(TASKS_JSON)) {
   console.error(`FAIL: ${TASKS_JSON} does not exist. An app-code change must be recorded against a task in the ledger (factory/harness/task-state.mjs create ...) before it can deploy.`);
   process.exit(1);
 }
 
 const tasks = JSON.parse(readFileSync(TASKS_JSON, "utf8")).tasks ?? {};
-// A task's release_commit cannot literally equal the commit that RECORDS
-// it (the sha isn't known until after that commit is made — recording it
-// requires a follow-up commit, e.g. "set release_commit" bookkeeping).
-// So this accepts release_commit == head OR release_commit being an
-// ANCESTOR of head — i.e. the gated commit is somewhere in what's being
-// pushed, not necessarily the exact tip. Still fail-closed: an
-// unreferenced app change anywhere in the range is refused.
-function isAncestorOrSelf(candidate, of) {
-  if (candidate === of) return true;
-  if (!resolvesToCommit(candidate)) return false;
-  return run("git", ["merge-base", "--is-ancestor", candidate, of]).status === 0;
-}
-const matches = Object.values(tasks).filter((t) => t.release_commit && isAncestorOrSelf(t.release_commit, head));
-if (matches.length === 0) {
-  console.error(`FAIL: no task in ${TASKS_JSON} has a release_commit that is ${head} or an ancestor of it. Record the release (factory/harness/task-state.mjs set-release-commit <task_id> <sha>) after the gate passes locally, and commit the updated tasks.json in the SAME push.`);
-  process.exit(1);
-}
-
-let allOk = true;
-for (const t of matches) {
-  const r = run("node", [TASK_STATE, "can-deploy", t.task_id]);
-  console.log(`--- can-deploy ${t.task_id} ---`);
-  console.log(r.stdout.trim());
-  if (r.status !== 0) allOk = false;
+const uncovered = [];
+const failedGate = [];
+const checked = new Set();
+for (const { sha, files } of appCommits) {
+  const owners = Object.values(tasks).filter((t) => t.release_commit === sha);
+  if (owners.length === 0) {
+    uncovered.push({ sha, files });
+    continue;
+  }
+  for (const t of owners) {
+    if (checked.has(t.task_id)) continue;
+    checked.add(t.task_id);
+    const r = run("node", [TASK_STATE, "can-deploy", t.task_id]);
+    console.log(`--- can-deploy ${t.task_id} (release_commit ${sha.slice(0, 8)}) ---`);
+    console.log(r.stdout.trim());
+    if (r.status !== 0) failedGate.push({ sha, task_id: t.task_id });
+  }
 }
 
-if (!allOk) {
-  console.error("FAIL: at least one task referencing this commit does not pass can-deploy. Blocking deploy.");
-  process.exit(1);
+if (uncovered.length > 0) {
+  console.error(`FAIL: ${uncovered.length} commit(s) touch src/ or public/ with NO task in ${TASKS_JSON} whose release_commit is exactly that sha:`);
+  for (const u of uncovered) {
+    console.error(`  - ${u.sha}  (${u.files.slice(0, 5).join(", ")}${u.files.length > 5 ? `, +${u.files.length - 5} more` : ""})`);
+  }
+  console.error("Record each one: node factory/harness/task-state.mjs set-release-commit <task_id> <sha>, then commit the updated tasks.json (a factory-only commit, so it needs no gate itself).");
 }
-console.log(`PASS: ${matches.length} task(s) referencing ${head} all pass can-deploy.`);
+if (failedGate.length > 0) {
+  console.error(`FAIL: ${failedGate.length} commit(s) have a task record that does NOT pass can-deploy:`);
+  for (const f of failedGate) console.error(`  - ${f.sha} -> ${f.task_id}`);
+}
+if (uncovered.length > 0 || failedGate.length > 0) process.exit(1);
+
+console.log(`PASS: all ${appCommits.length} app-touching commit(s) in ${base}..${head} are covered by a task that passes can-deploy.`);
 process.exit(0);

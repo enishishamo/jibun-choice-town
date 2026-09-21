@@ -4422,6 +4422,66 @@
     "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
    "status": "qa_passed"
+  },
+  {
+   "asset_id": "v2_lunch_gauge_rack",
+   "filename": "gauge-rack.png",
+   "world": "lunch-v2",
+   "purpose": "こんだてPLAY の状態 cue。4 本の溝に粒が転がって集まり、溝の中央のくぼみに収まると「ちょうどいい」が体で分かる物理的な道具。図表ではなく、机の上に置かれた木の道具として読めること",
+   "source_type": "codex_imagegen",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "status": "generation_failed",
+   "iteration": 1,
+   "qa_issues": [
+    "codex exec exited 1"
+   ],
+   "created_at": "2026-09-21T12:14:03.373Z"
+  },
+  {
+   "asset_id": "v2_lunch_map_bento",
+   "filename": "map/bento.png",
+   "world": "lunch-v2",
+   "purpose": "給食 WORLD の WORLD MAP の地面。開いた弁当箱の中に小さな町（畑・調理場・こんだて机）が置かれる土台なので、内側は完全に空で平ら",
+   "source_type": "codex_imagegen",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "status": "generation_failed",
+   "iteration": 1,
+   "qa_issues": [
+    "codex exec exited 1"
+   ],
+   "created_at": "2026-09-21T12:14:13.119Z"
+  },
+  {
+   "asset_id": "v2_lunch_map_grow",
+   "filename": "map/grow.png",
+   "world": "lunch-v2",
+   "purpose": "給食 WORLD MAP の「そだてる」タイル。弁当箱の中に置かれる小さな畑のジオラマ 1 個",
+   "source_type": "codex_imagegen",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "status": "generation_failed",
+   "iteration": 1,
+   "qa_issues": [
+    "codex exec exited 1"
+   ],
+   "created_at": "2026-09-21T12:14:23.712Z"
+  },
+  {
+   "asset_id": "v2_lunch_map_cook",
+   "filename": "map/cook.png",
+   "world": "lunch-v2",
+   "purpose": "給食 WORLD MAP の「つくる」タイル。弁当箱の中に置かれる小さな給食調理場のジオラマ 1 個",
+   "source_type": "codex_imagegen",
+   "provider": "codex_imagegen",
+   "extra_cost_status": "subscription_included_confirmed",
+   "status": "generation_failed",
+   "iteration": 1,
+   "qa_issues": [
+    "codex exec exited 1"
+   ],
+   "created_at": "2026-09-21T12:14:39.553Z"
   }
  ]
 }

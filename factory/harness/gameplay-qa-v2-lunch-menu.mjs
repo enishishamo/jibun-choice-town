@@ -1,177 +1,217 @@
 #!/usr/bin/env node
-// Gameplay QA for the Ver.2 こんだて PLAY (src/v2/lunch/play/lunchMenuLogic.ts).
-// Pure-logic, no browser. Proves the design contract mechanically — and, per
-// the r1 independent review, does so against the whole state space rather
-// than one hand-picked path:
-//   1. no hidden answer: every attribute a rule reads is in VISIBLE_ATTRIBUTES
-//   2. many valid high solutions; the top solutions are not one dish set
-//   3. from EVERY mediocre full tray (score < 90) a single swap improves it
-//   4. genuine trade-off: there exist swaps where one rule axis improves while
-//      a DIFFERENT axis worsens (not just "some swap lowers the score")
-//   5. EVENT recovery, exhaustively: for EVERY full tray of the default
-//      candidates, firing the event leaves ≥1 way to re-complete the tray
-//      with available dishes (child can never get stuck); report how often a
-//      recovery to ≥ pre-event score exists
-//   6. commit gating: never before the event; never with an unavailable dish;
-//      fireEvent refuses ingredients not on the tray; cleared session is inert
-//   7. scores within 0..100; every rule carries a fact reference
-// Usage: node factory/harness/gameplay-qa-v2-lunch-menu.mjs
+// Pure-logic QA for the Ver.2 給食 WORLD「こんだてを考える」(栄養教諭 job vertical slice).
+//
+// What this proves, mechanically, without a browser:
+//   1. the four axes are the ONLY model, and nothing is hidden from the child
+//   2. the board never shows a total score and never marks right/wrong
+//   3. the menu has MANY genuinely different solutions, not one
+//   4. every axis can be missed on BOTH sides (no axis where "more is better")
+//   5. real trade-offs: fixing one axis can break another
+//   6. no dead ends: every near-miss menu is one swap from a working one
+//   7. the EVENT always removes a dish the child was using, never milk,
+//      and always leaves several different ways to recover
+//   8. nothing clears by itself: only send() ever reaches "cleared"
+//   9. session integrity under swap/remove/replay
+// Usage: npm run qa:v2-lunch
 import { createServer } from "vite";
 import react from "@vitejs/plugin-react";
-
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-const CACHE = `${tmpdir()}/jc-vite-cache-v2-lunch`; // write-free repo: Vite temp files go to the OS tmpdir
-// configFile:false — loading vite.config.ts would bundle it into node_modules/.vite-temp (a repo write,
-// EPERM in a read-only sandbox); the harness only needs the react plugin inline.
+
+const CACHE = `${tmpdir()}/jc-vite-cache-v2-lunch`;
+// configFile:false — loading vite.config.ts would bundle it into node_modules/.vite-temp,
+// i.e. a repo write, which fails in a read-only sandbox. The harness only needs react.
 const VITE = { configFile: false, plugins: [react()], server: { middlewareMode: true }, appType: "custom", logLevel: "error", cacheDir: CACHE };
-const vite = await createServer(VITE);
-const L = await vite.ssrLoadModule("/src/v2/lunch/play/lunchMenuLogic.ts");
-await vite.close();
+const load = async (p) => { const v = await createServer(VITE); const m = await v.ssrLoadModule(p); await v.close(); return m; };
+
+const L = await load("/src/v2/lunch/play/lunchMenuLogic.ts");
 
 const results = [];
 const check = (name, ok, detail = "") => { results.push({ name, ok }); console.log(`${ok ? "PASS" : "FAIL"}: ${name}${detail ? " — " + detail : ""}`); };
-const cands = L.DEFAULT_CANDIDATES;
-const all = L.enumerateTrays(cands);
+const info = (name, detail) => console.log(`INFO: ${name} — ${detail}`);
 
-// 1. visible attributes — three independent angles
-// (a) declarations
-const hiddenUse = Object.values(L.RULES).flatMap((r) => r.uses.filter((u) => !L.VISIBLE_ATTRIBUTES.includes(u)).map((u) => `${r.id}:${u}`));
-check("every rule declares only VISIBLE_ATTRIBUTES", hiddenUse.length === 0, hiddenUse.join(", "));
-const missingAttr = L.DISHES.flatMap((d) => L.VISIBLE_ATTRIBUTES.filter((a) => d[a] === undefined).map((a) => `${d.id}.${a}`));
-check("every dish defines every visible attribute", missingAttr.length === 0, missingAttr.join(", "));
-// (b) what evaluate() ACTUALLY reads: wrap every dish in a recording Proxy and
-// run the whole enumeration — any property outside VISIBLE ∪ {id} is a hidden read
-const touched = new Set();
-const originals = { ...L.DISH_BY_ID };
-for (const [id, d] of Object.entries(originals)) {
-  L.DISH_BY_ID[id] = new Proxy(d, { get(t, k) { if (typeof k === "string") touched.add(k); return t[k]; } });
-}
-L.enumerateTrays(cands);
-for (const [id, d] of Object.entries(originals)) L.DISH_BY_ID[id] = d;
-const hiddenReads = [...touched].filter((k) => k !== "id" && !L.VISIBLE_ATTRIBUTES.includes(k));
-check("evaluate() reads no attribute outside VISIBLE_ATTRIBUTES (recorded)", hiddenReads.length === 0, `read: ${[...touched].join(", ")}`);
-// (c) the UI layer shows a consequence cue for EVERY rule (spec 2026-09-21: attributes are
-//     not baked into dish art; the child sees each rule's effect in the status layer)
-const React = await import("react");
-const { renderToStaticMarkup } = await import("react-dom/server");
-const P = await (async () => { const v2 = await createServer(VITE); const m = await v2.ssrLoadModule("/src/v2/lunch/play/LunchMenuPlay.tsx"); await v2.close(); return m; })();
-// contract-level witnesses: for every rule, a VALID enumerated tray whose real evaluate() hits it,
-// rendered through StatusLayer with that real evaluation (no fabricated hits)
-const witness = {};
-for (const t of all) for (const h of L.evaluate(t.tray).hits) witness[h.rule] ??= t.tray;
-const noWitness = Object.keys(L.RULES).filter((r) => !witness[r]);
-check("every rule is reachable from a valid tray of the default candidates", noWitness.length === 0, noWitness.join(", "));
-const noCue = Object.keys(L.RULES).filter((r) => {
-  if (!witness[r]) return true;
-  const html = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: L.evaluate(witness[r]), tray: witness[r], changed: {} }));
-  return !html.includes(`data-cue="${r}"`);
-});
-check("StatusLayer renders a cue for every rule from its real evaluation", noCue.length === 0, noCue.join(", "));
-const clean = all.find((t) => t.score === 100)?.tray ?? [];
-const okEval = L.evaluate(clean);
-const htmlOk = renderToStaticMarkup(React.createElement(P.StatusLayer, { ev: okEval, tray: clean, changed: {} }));
-check("StatusLayer shows the three colour marks on a clean tray, no rule marks", ["red", "yellow", "green"].every((g) => htmlOk.includes(`data-cue="group:${g}"`)) && !/lmp-mark /.test(htmlOk));
-// (d) no total score reaches the child (spec 2026-09-21 §1): the board never renders ev.score
-const src = (await import("node:fs")).readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
-check("board never renders the total score", !/\{\s*(ev|shown)\.score|<output/.test(src) && !/\{shown/.test(src));
-// (e) dish art carries no game attribute (pure visual asset)
-const dishHtml = renderToStaticMarkup(React.createElement(P.DishFace, { dish: L.DISHES[0] }));
-check("DishFace is a pure visual (no attribute data)", !/data-(attr|ingredient|method|role)=/.test(dishHtml));
+const IDS = L.DEFAULT_CANDIDATES;
+const ALL = L.enumerateTrays(IDS);
+const viable = ALL.filter((t) => t.ev.viable);
+const key = (t) => [...t].sort().join(",");
+const byKey = new Map(ALL.map((t) => [key(t.tray), t]));
+const evalOf = (tray) => byKey.get(key(tray)).ev;
 
-// 2. solutions
-const high = all.filter((t) => t.score >= 95);
-check("≥3 trays score 95+", high.length >= 3, `${high.length}/${all.length} (max ${Math.max(...all.map((t) => t.score))})`);
-const sorted = [...all].sort((a, b) => b.score - a.score);
-const diff = (a, b) => a.filter((x) => !b.includes(x)).length;
-check("top solutions are not one set", sorted.slice(0, 8).some((t) => t.score >= 95 && diff(t.tray, sorted[0].tray) >= 2));
-
-// 3. improvement from every mediocre tray
-const swapsOf = (tray) => {
-  const out = [];
-  for (let i = 0; i < tray.length; i++) for (const c of cands) { if (tray.includes(c)) continue; const t = [...tray]; t[i] = c; out.push(t); }
-  return out;
-};
-const mediocre = all.filter((t) => t.score < 90);
-const stuck = mediocre.filter((t) => !swapsOf(t.tray).some((s) => L.evaluate(s).score > t.score));
-check("every mediocre tray (<90) improves with one swap", mediocre.length > 0 && stuck.length === 0, `${mediocre.length} mediocre trays, ${stuck.length} dead ends`);
-
-// 4. cross-axis trade-off
-const axes = (tray) => { const m = {}; for (const h of L.evaluate(tray).hits) m[h.rule] = (m[h.rule] ?? 0) + h.points; return m; };
-let tradeoff = null;
-outer: for (const t of all) {
-  const a = axes(t.tray);
-  for (const s of swapsOf(t.tray)) {
-    const b = axes(s);
-    const better = Object.keys(a).filter((k) => (b[k] ?? 0) < a[k]);
-    const worse = Object.keys(b).filter((k) => (a[k] ?? 0) < b[k]);
-    if (better.length && worse.length && !better.some((k) => worse.includes(k))) { tradeoff = { from: t.tray, to: s, better, worse }; break outer; }
-  }
-}
-check("a swap exists that fixes one axis and breaks another", !!tradeoff, tradeoff ? `${tradeoff.better.join("/")} ↑ vs ${tradeoff.worse.join("/")} ↓` : "");
-
-// 5. exhaustive EVENT recovery
-let noRecovery = 0, geqPre = 0, evented = 0;
-for (const t of all) {
-  // reach an event-ready session legitimately: build, remove one, put it back
-  let s = L.newSession();
-  for (const d of t.tray) { const r = L.place(s, d); if (r.ok) s = r.session; }
-  s = L.remove(s, t.tray[0]);
-  const back = L.place(s, t.tray[0]); s = back.ok ? back.session : s;
-  if (!L.eventReady(s)) { noRecovery++; continue; }
-  const pre = L.evaluate(s.tray).score;
-  const e = L.fireEvent(s);
-  if (e.phase !== "rebuild") { noRecovery++; continue; }
-  evented++;
-  const empties = e.tray.filter((d) => d === null).length;
-  const free = cands.filter((c) => e.available[c] && !e.tray.includes(c));
-  // fill the empty slots with every combination of free dishes
-  let best = -1;
-  const fill = (start, tray, k) => {
-    if (k === 0) { best = Math.max(best, L.evaluate(tray).score); return; }
-    for (let i = start; i < free.length; i++) { const idx = tray.indexOf(null); const nt = [...tray]; nt[idx] = free[i]; fill(i + 1, nt, k - 1); }
-  };
-  if (free.length >= empties) fill(0, e.tray, empties);
-  if (best < 0) noRecovery++; else if (best >= pre) geqPre++;
-}
-check("after the EVENT every tray can be re-completed (never stuck)", noRecovery === 0, `${evented} evented trays, ${noRecovery} stuck`);
-console.log(`INFO: recovery to ≥ pre-event score exists in ${geqPre}/${evented} trays`);
-
-// 6. gating
-let s = L.newSession();
-for (const d of ["rice", "karaage", "gomaae", "corn_soup"]) { const r = L.place(s, d); if (r.ok) s = r.session; }
-check("commit blocked before the event", !L.canCommit(s));
-check("event not ready before a re-arrangement", !L.eventReady(s));
-check("fireEvent refuses an ingredient not on the tray", L.fireEvent(s, "seaweed") === s);
-s = L.remove(s, "corn_soup"); const p = L.place(s, "miso_soup"); s = p.ok ? p.session : s;
-check("event ready after first result + one swap", L.eventReady(s));
-const pre = L.evaluate(s.tray).score;
-s = L.fireEvent(s);
-check("event removed a used ingredient", s.eventIngredient === "chicken" && !s.tray.includes("karaage") && s.available.karaage === false, `ingredient ${s.eventIngredient}`);
-check("unavailable dish cannot be placed", !L.place(s, "karaage").ok);
-check("commit blocked while tray incomplete", !L.canCommit(s));
-const rec = L.place(s, "salmon"); s = rec.ok ? rec.session : s;
-check("commit allowed after rebuild", L.canCommit(s), `pre ${pre} → ${L.evaluate(s.tray).score}`);
-const done = L.commit(s);
-check("commit records score and phase", done.phase === "cleared" && typeof done.committedScore === "number");
-check("cleared session is inert", !L.place(done, "bread").ok && L.remove(done, "rice") === done && L.commit(done) === done);
-
-// 6b. hint structure (spec 2026-09-21 §3): related dishes are ≤2, never all when a rule
-//     involves 3+ dishes, and never empty when the rule names dishes
+// ---------------------------------------------------------------- 1. model shape
+check("exactly four axes", L.AXES.length === 4 && ["energy", "protein", "fat", "salt"].every((a) => L.AXES.includes(a)), L.AXES.join("/"));
+check("every dish defines every axis", L.DISHES.concat([L.MILK]).every((d) => L.AXES.every((a) => typeof d.axis[a] === "number")));
+check("nine candidate dishes + fixed milk", IDS.length === 9 && L.MILK_FIXED && L.MILK.id === "milk" && !IDS.includes("milk"), `${IDS.length} candidates`);
+check("four free slots", L.FREE_SLOTS === 4);
+// no hidden attribute: evaluate() may only read `axis` and `id`
 {
-  let bad = [];
-  for (const t of all) for (const h of L.evaluate(t.tray).hits) {
-    const r = L.relatedDishes(h);
-    if (r.length > 2 || (h.dishIds.length > 2 && r.length >= h.dishIds.length) || (h.dishIds.length > 0 && r.length === 0)) bad.push(`${h.rule}:${h.dishIds.join("+")}→${r.join("+")}`);
-  }
-  check("hints wobble at most two related dishes, never all, never zero", bad.length === 0, bad.slice(0, 3).join(" | "));
-  const overs = all.filter((t) => L.relatedSet(L.evaluate(t.tray).hits).size > L.RELATED_CAP);
-  const empties = all.filter((t) => { const h = L.evaluate(t.tray).hits; return h.some((x) => x.dishIds.length) && L.relatedSet(h).size === 0; });
-  check("the combined wobble set is at most two dishes (never zero when dishes are involved)", overs.length === 0 && empties.length === 0, `${overs.length} over, ${empties.length} empty`);
+  const seen = new Set();
+  const spy = L.DISHES.map((d) => new Proxy(d, { get(t, p) { seen.add(String(p)); return t[p]; } }));
+  const byId = Object.fromEntries(spy.map((d) => [d.id, d]));
+  const orig = { ...L.DISH_BY_ID };
+  Object.assign(L.DISH_BY_ID, byId);
+  for (const t of ALL) L.evaluate(t.tray);
+  Object.assign(L.DISH_BY_ID, orig);
+  const extra = [...seen].filter((p) => !["axis", "id", "course"].includes(p));
+  check("evaluate() reads no attribute outside axis/id/course (recorded)", extra.length === 0, `read: ${[...seen].join(", ")}`);
+}
+// every axis contributes: removing an axis from the model must change which menus work
+for (const a of L.AXES) {
+  const without = ALL.filter((t) => L.AXES.filter((x) => x !== a).every((x) => t.ev.readings[x].band === "good"));
+  check(`axis "${a}" actually constrains the menu`, without.length > viable.length, `${viable.length} viable with it, ${without.length} without`);
 }
 
-// 7. bounds + facts
-check("all scores within 0..100", all.every((t) => t.score >= 0 && t.score <= 100));
-check("every rule has a fact reference", Object.values(L.RULES).every((r) => /^V-A\d$/.test(r.fact)));
+// ---------------------------------------------------------------- 2. nothing evaluative leaks
+{
+  const src = readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
+  check("board never renders a total score", !/\b(score|total|points)\b\s*[}:]/.test(src.replace(/\/\/.*$/gm, "")) && !/<output/.test(src));
+  check("board renders no right/wrong mark", !/正解|せいかい|✓|✔|✗|×|correct|wrong/i.test(src.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "")));
+  const logic = readFileSync("src/v2/lunch/play/lunchMenuLogic.ts", "utf8");
+  check("the model documents its numbers as GAME COEFFICIENTS, not nutrition data", /GAME COEFFICIENTS, NOT NUTRITION DATA/.test(logic));
+}
+
+// ---------------------------------------------------------------- 3. many different solutions
+check("several menus work", viable.length >= 10 && viable.length <= 30, `${viable.length}/${ALL.length} (${Math.round((viable.length / ALL.length) * 100)}%)`);
+check("but most menus do not", viable.length / ALL.length < 0.3, `${Math.round((viable.length / ALL.length) * 100)}% viable`);
+{
+  const diff = (a, b) => a.filter((x) => !b.includes(x)).length;
+  const fam = [];
+  for (const v of viable) if (!fam.some((f) => diff(v.tray, f) < 2)) fam.push(v.tray);
+  check("working menus form several genuinely different families", fam.length >= 6, `${fam.length} families: ${fam.map((f) => f.join("+")).join(" | ")}`);
+  // no single dish is in every solution (no mandatory "answer" dish)
+  const always = IDS.filter((id) => viable.every((v) => v.tray.includes(id)));
+  check("no dish appears in every working menu", always.length === 0, always.join(", ") || "none");
+}
+
+// ---------------------------------------------------------------- 4. both-sided axes
+for (const a of L.AXES) {
+  const low = ALL.some((t) => t.ev.readings[a].band === "low");
+  const high = ALL.some((t) => t.ev.readings[a].band === "high");
+  check(`axis "${a}" can be both too little and too much`, low && high, `low ${low}, high ${high}`);
+}
+// the band sits inside the visible track, so "good" really is the middle
+for (const a of L.AXES) {
+  const [t0, t1] = L.TRACK[a], [b0, b1] = L.BAND[a];
+  const mid = ((b0 + b1) / 2 - t0) / (t1 - t0);
+  check(`axis "${a}" band is centred in its track`, b0 > t0 && b1 < t1 && Math.abs(mid - 0.5) < 0.02, `band centre at ${(mid * 100).toFixed(0)}% of the track`);
+}
+
+// ---------------------------------------------------------------- 5. trade-offs
+{
+  let example = null;
+  for (const t of ALL) {
+    if (t.ev.viable || t.ev.off.length !== 1) continue;
+    const bad = t.ev.off[0];
+    for (const out of t.tray) for (const inn of IDS) {
+      if (t.tray.includes(inn)) continue;
+      const next = evalOf(t.tray.map((x) => (x === out ? inn : x)));
+      if (next.readings[bad].band === "good" && next.off.length > 0) { example = `${t.tray.join("+")}: ${out}→${inn} fixes ${bad} but breaks ${next.off.join("/")}`; break; }
+    }
+    if (example) break;
+  }
+  check("a swap exists that fixes one axis and breaks another", !!example, example ?? "NONE");
+}
+
+// ---------------------------------------------------------------- 6. no dead ends
+{
+  const near = ALL.filter((t) => t.ev.off.length === 1);
+  const stuck = near.filter((t) => !t.tray.some((out) => IDS.some((inn) => !t.tray.includes(inn) && evalOf(t.tray.map((x) => (x === out ? inn : x))).viable)));
+  check("every menu that is one axis off can be fixed with a single swap", near.length > 0 && stuck.length === 0, `${near.length} near misses, ${stuck.length} dead ends`);
+  const far = ALL.filter((t) => t.ev.off.length >= 2);
+  const farStuck = far.filter((t) => !t.tray.some((out) => IDS.some((inn) => !t.tray.includes(inn) && evalOf(t.tray.map((x) => (x === out ? inn : x))).off.length < t.ev.off.length)));
+  check("every menu that is further off can be improved with a single swap", farStuck.length === 0, `${far.length} far, ${farStuck.length} stuck`);
+}
+
+// ---------------------------------------------------------------- 7. the EVENT
+{
+  let noTarget = 0, milkTarget = 0, notOnTray = 0, minRec = Infinity, worst = "";
+  const targets = new Set();
+  for (const v of viable) {
+    const s0 = { ...L.newSession(IDS), tray: [...v.tray], sawFirstViable: true };
+    const target = L.pickEventDish(s0);
+    if (!target) { noTarget++; continue; }
+    if (target === "milk") milkTarget++;
+    if (!v.tray.includes(target)) notOnTray++;
+    targets.add(target);
+    const after = L.fireEvent(s0, target);
+    const rec = L.viableMenus(after).length;
+    if (rec < minRec) { minRec = rec; worst = `${v.tray.join("+")} -${target} → ${rec}`; }
+  }
+  check("the EVENT always has a target", noTarget === 0, `${noTarget} menus with no target`);
+  check("the EVENT never takes the milk", milkTarget === 0);
+  check("the EVENT always takes a dish the child is using", notOnTray === 0);
+  check("after the EVENT there are always several different ways to rebuild", minRec >= L.MIN_RECOVERIES, `worst case ${worst}`);
+  check("different menus lose different dishes", targets.size >= 3, `${targets.size} distinct EVENT dishes: ${[...targets].join(", ")}`);
+  // exhaustive: for EVERY menu (not just viable ones) removing ANY of its dishes still leaves a way out
+  let anyStuck = 0;
+  for (const id of IDS) {
+    const s = L.newSession(IDS);
+    s.available[id] = false;
+    if (L.viableMenus(s).length < L.MIN_RECOVERIES) anyStuck++;
+  }
+  check("losing any single dish still leaves several working menus", anyStuck === 0, `${anyStuck}/${IDS.length} dishes would strand the child`);
+}
+
+// ---------------------------------------------------------------- 8. nothing clears by itself
+{
+  const logic = readFileSync("src/v2/lunch/play/lunchMenuLogic.ts", "utf8");
+  const clearedWriters = [...logic.matchAll(/phase:\s*"cleared"/g)].length;
+  check("only send() can reach the cleared phase", clearedWriters === 2 && /export function send/.test(logic), `${clearedWriters} assignments, both inside send()`);
+  const play = readFileSync("src/v2/lunch/play/LunchMenuPlay.tsx", "utf8");
+  check("the board never calls send() from a timer", !/setTimeout\([^)]*send\(/.test(play));
+}
+
+// ---------------------------------------------------------------- 9. session integrity
+{
+  let s = L.newSession(IDS);
+  check("empty tray is not sendable", !L.canSend(s));
+  check("empty tray shows no bands as complete", !L.evaluate(s.tray).complete);
+  const menu = viable[0].tray;
+  for (const d of menu) { const r = L.place(s, d); s = r.ok ? r.session : s; }
+  check("a working menu becomes sendable", L.canSend(s) && s.phase === "build", menu.join("+"));
+  check("placing the same dish twice is refused", !L.place(s, menu[0]).ok);
+  check("a fifth dish is refused (tray full)", L.place(s, IDS.find((i) => !menu.includes(i))).reason === "full");
+  check("sawFirstViable is recorded", s.sawFirstViable);
+
+  const sent = L.send(s);
+  check("the first send is intercepted, not delivered", sent.ok && sent.outcome === "intercepted" && sent.session.phase === "rebuild");
+  s = sent.session;
+  const gone = s.eventDish;
+  check("the lost dish left the tray and the counter", !s.tray.includes(gone) && s.available[gone] === false, `lost ${gone}`);
+  check("the lost dish cannot be placed again", L.place(s, gone).reason === "unavailable");
+  check("an incomplete tray cannot be sent", !L.canSend(s));
+
+  const rebuilt = L.viableMenus(s)[0];
+  let s2 = L.newSession(IDS);
+  s2 = { ...s2, available: { ...s.available }, phase: "rebuild", sawFirstViable: true, eventDish: gone };
+  for (const d of rebuilt) { const r = L.place(s2, d); s2 = r.ok ? r.session : s2; }
+  check("a rebuilt working menu is sendable", L.canSend(s2), rebuilt.join("+"));
+  const done = L.send(s2);
+  check("the second send delivers", done.ok && done.outcome === "delivered" && done.session.phase === "cleared");
+  const cleared = done.session;
+  check("a cleared session is inert", !L.place(cleared, IDS[0]).ok && L.remove(cleared, rebuilt[0]) === cleared && !L.send(cleared).ok);
+
+  // swap keeps the slot, so the tray never reshuffles under the child's finger
+  let s3 = L.newSession(IDS);
+  for (const d of menu) { const r = L.place(s3, d); s3 = r.ok ? r.session : s3; }
+  const other = IDS.find((i) => !menu.includes(i));
+  const sw = L.swap(s3, menu[1], other);
+  check("swap replaces in place", sw.ok && sw.session.tray[1] === other && sw.session.tray[0] === menu[0]);
+  check("swap refuses an unavailable dish", !L.swap({ ...s3, available: { ...s3.available, [other]: false } }, menu[1], other).ok);
+}
+
+// ---------------------------------------------------------------- 10. hints
+{
+  let over = 0, empty = 0;
+  for (const t of ALL) {
+    const set = L.relatedSet(t.tray, t.ev);
+    if (set.size > L.RELATED_CAP) over++;
+    if (t.ev.off.length && set.size === 0) empty++;
+    if (set.size === t.tray.length && t.ev.off.length) over++;
+  }
+  check("hints never point at more than two dishes and never at none", over === 0 && empty === 0, `${over} over, ${empty} empty`);
+}
+
+info("balance", `${viable.length} working menus of ${ALL.length}`);
 
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length}/${results.length} checks passed`);

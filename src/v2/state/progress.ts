@@ -13,11 +13,9 @@ export interface V2Progress {
   solved: { world: "lunch"; spot: SpotId; at: string }[];
   /** 好きの種: the one 行為 the child picked after a PLAY, keyed by world:spot */
   seeds: Record<string, string>;
-  /** committed scores per PLAY, most recent last (for AGAIN comparisons; never a label) */
-  scores: Record<string, number[]>;
 }
 
-const EMPTY: V2Progress = { version: 1, solved: [], seeds: {}, scores: {} };
+const EMPTY: V2Progress = { version: 1, solved: [], seeds: {} };
 
 const isSpot = (x: unknown): x is SpotId => typeof x === "string" && (SPOT_IDS as string[]).includes(x);
 const isRecord = (x: unknown): x is Record<string, unknown> => !!x && typeof x === "object" && !Array.isArray(x);
@@ -35,13 +33,9 @@ export function normalizeProgress(raw: unknown): V2Progress {
     : [];
   const seeds: Record<string, string> = {};
   if (isRecord(raw.seeds)) for (const [k, v] of Object.entries(raw.seeds)) if (typeof v === "string") seeds[k] = v;
-  const scores: Record<string, number[]> = {};
-  if (isRecord(raw.scores)) {
-    for (const [k, v] of Object.entries(raw.scores)) {
-      if (Array.isArray(v)) scores[k] = v.filter((n): n is number => typeof n === "number" && Number.isFinite(n));
-    }
-  }
-  return { version: 1, solved, seeds, scores };
+  // Anything else a previous build wrote (e.g. the old per-play `scores`) is
+  // dropped on purpose: the game keeps no score, so none is persisted.
+  return { version: 1, solved, seeds };
 }
 
 export function loadProgress(): V2Progress {
@@ -66,12 +60,10 @@ export function isSolved(p: V2Progress, spot: SpotId): boolean {
   return p.solved.some((s) => s.world === "lunch" && s.spot === spot);
 }
 
-export function markSolved(p: V2Progress, spot: SpotId, score: number): V2Progress {
-  const key = `lunch:${spot}`;
+export function markSolved(p: V2Progress, spot: SpotId): V2Progress {
   return {
     ...p,
     solved: isSolved(p, spot) ? p.solved : [...p.solved, { world: "lunch", spot, at: new Date().toISOString() }],
-    scores: { ...p.scores, [key]: [...(p.scores[key] ?? []), score] },
   };
 }
 

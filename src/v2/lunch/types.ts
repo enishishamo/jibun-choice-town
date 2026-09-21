@@ -29,4 +29,6 @@ export type LunchScreen =
   | { name: "world" }
   | { name: "play"; spot: "menu" }
   | { name: "reveal" }
+  | { name: "know" }
+  | { name: "career" }
   | { name: "seed" };

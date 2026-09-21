@@ -170,6 +170,15 @@ whoever happens to remember. A human can explicitly reset a task for a
 new iteration (`reset-iteration --reason "..."`) when a new spec changes
 things; the reset is logged, never silent.
 
+A missing approved design is recorded as data, not as a stop:
+`design-needed <task_id> --add <DN-id> --where <file:line>` never changes
+the task's status (work continues; it only blocks deploy), while
+`block <task_id> --design-needed --reason "..."` parks a task in
+`DESIGN_BLOCKED` — which is a Design-Owner wait, not a generic `BLOCKED`.
+What the ledger enforces mechanically is proven end-to-end by
+`npm run selftest:factory` (`factory/harness/factory-self-test.mjs`,
+scratch ledger only); run it after changing any gate.
+
 ## 6. Deploy Policy (canonical: `factory/rules/deploy-release-policy.md`)
 
 Within Human-approved product direction, routine changes (bug fixes, UI
@@ -181,8 +190,9 @@ status, required review evidence, and Product Identity impact
 recorded human approval, never just a QA pass). CI
 (`.github/workflows/deploy.yml`) also runs
 `factory/scripts/release-gate-check.mjs` before deploying any commit that
-touches `src/` or `public/`, and fails the workflow (no deploy) if no
-passing gated task references that commit. Product Identity Gate items
+touches `src/` or `public/`, and fails the workflow (no deploy) unless
+**every** such commit in the push has a task whose `release_commit` is
+exactly that sha and which passes `can-deploy`. Product Identity Gate items
 (§1) are categorically excluded from auto-deploy regardless of QA status.
 
 ## 7. Two-track model
@@ -201,4 +211,6 @@ replaced, by `deploy-release-policy.md` — see §2).
 - Never force-push, never rewrite published git history.
 - Read `factory/state/blocked-queue.md` before starting new Continuous
   Product Loop work — don't re-attempt a task parked there without a
-  recorded Human Decision.
+  recorded Human Decision. That file is **generated** from the ledger
+  (`npm run queue:blocked`); never hand-edit it — change the task's state
+  instead.

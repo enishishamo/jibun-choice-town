@@ -1,0 +1,41 @@
+{
+ "asset_id": "v2_lunch_scene_kitchen",
+ "filename": "scenes/kitchen.png",
+ "world": "lunch-v2",
+ "use": "place",
+ "aspect_ratio": "3:2",
+ "size": "900x600",
+ "transparent_background": true,
+ "composition": "ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the diorama centered and filling about 75% of the frame with even margins (at least 12% on every side). It is a small compact diorama group — a handful of miniature objects standing together — not a room interior: no walls, no ceiling, no floor plane. No table, no cloth, no shadow plate: the diorama floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadows only within the objects. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.",
+ "forbidden_objects": [
+  "readable text",
+  "letters or numbers",
+  "logos",
+  "attribute marks, icons, badges or symbols",
+  "walls, ceiling, windows or a room interior",
+  "hands or people",
+  "table, cloth, background, backdrop or drop shadow outside the diorama",
+  "photorealistic rendering",
+  "elements touching the image edge"
+ ],
+ "character_constraints": "no characters at all",
+ "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the diorama.",
+ "reference_assets": [
+  "public/assets/v2/lunch/tray.png",
+  "public/assets/v2/lunch/truck.png",
+  "public/assets/v2/lunch/dishes/miso_soup.png"
+ ],
+ "used_by": [
+  "src/v2/lunch/play/LunchMenuPlay.tsx"
+ ],
+ "purpose": "こんだてPLAY の「調理場」の場面カット。誰がどこで作っているかを一目で伝える小さなジオラマ",
+ "scene": "a miniature school kitchen diorama with no people in it: two large rounded stainless-steel cooking pots standing on a low pale counter, a neat stack of cream serving containers beside them, and a small wheeled cart standing next to the counter. Soft matte metal rendered as clay, warm cream and beige counter. Same matte clay / miniature toy material, same lighting and same warm palette as the delivery truck and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
+ "required_objects": [
+  "two large pots on a counter",
+  "a stack of serving containers",
+  "one small wheeled cart",
+  "no people anywhere",
+  "transparent background"
+ ],
+ "output_path": "public/assets/v2/lunch/scenes/kitchen.png"
+}

@@ -1,14 +1,31 @@
-# Blocked Queue — HUMAN_DECISION_REQUIRED task一覧
+<!-- GENERATED FILE — DO NOT EDIT BY HAND. -->
+<!-- Regenerate with: node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md -->
 
-`factory/rules/autonomous-execution.md`のWIP LIMIT明確化（2026-09-06）に
-基づく。ここに載る項目はHuman Decisionが下りるまで、Continuous Product
-Loopから自動で再着手しない（重複したindependent reviewを繰り返さない）。
-Human Decisionが出たら該当項目を削除し、通常のbacklog/実装フローへ戻す。
+# Blocked Queue（自動生成）
 
-## Items
+このファイルは `factory/state/tasks.json`（唯一の task 台帳）から機械的に
+生成される。手で編集しても次の生成で消える。内容を変えたいときは台帳側を
+変える（`block` / `set-status` / `reset-iteration`）。
 
-| id | 内容 | blocked理由 | 詳細 | blocked日 |
-|---|---|---|---|---|
-| q1-improve-lab-check | 臨床検査技師編（lab_check、GQ18→GQ57への改善試行）。AUTO REPAIR 1回を使い切っても独立Codexレビューが2回連続FAIL。残るHIGHは選択肢名自体が症例を読まずとも正解を教えてしまう構造的問題で、cosmeticな修正では直らない。 | ESCALATION条件#9（Repairしてもrelease threshold未達） | `factory/projects/q1-improve-lab-check/redesign-proposals.md` | 2026-09-06 |
+```
+node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md
+```
 
-新しい項目を追加する際は同じ表形式に揃える。
+生成時刻: 2026-09-21T12:15:14.479Z / 対象 7 件
+
+`BLOCKED` / `HUMAN_DECISION_REQUIRED` は Human Decision が下りるまで
+Continuous Product Loop から自動で再着手しない。`DESIGN_BLOCKED` は
+**Design Owner（GPT）の設計待ち**であって generic BLOCKED ではない —
+同じ task の他の作業や、他 task の進行を止める理由にはならない
+（`factory/rules/autonomous-execution.md` WIP LIMIT / R1）。
+
+| id | status | type | 理由 | 未解決 DESIGN_NEEDED | 更新 |
+|---|---|---|---|---|---|
+| q1-improve-bus-ops | BLOCKED | game-content | Q1 First-Play Standard V1 §3 BLOCKER項目（C不要で攻略可能）に該当し続け、既定のAuto Repair上限（1回）を超過。数値バランス/ゲームデザインの人間判断が必要 | - | 2026-09-07 |
+| q1-improve-lab-check | BLOCKED | game-content | Q1 First-Play Standard V1 BLOCKER-list item 5 (UI/choice自体が答えを漏らす) still applies after 1 auto-repair attempt (repair_count=1, cap reached): src/q1/labCheckLogic.ts's TESTS[].hint for cells/fire uses disease-pathology-specific language ("ばい菌などとたたかう", "炎症が起きていないか") while the distractor (kidney/creatinine) uses routine/general-checkup language ("からだ全体の調子をみるために、いつもチェックしておく目安") -- round4-review.result.json found this lets a first-time player win by noticing which 2 of 3 hints 'sound disease-specific' vs 'sound routine', without ever connecting any of them to THIS patient's actual symptoms (fever/cough/breathlessness, already restated in-scene per an earlier repair). This is the third distinct shape of the same underlying defect (round1: name+hint both disease-specific vs unrelated; round2: names equalized but hints made circular vs organ-specific; round4/this round: names equalized AND hint-purpose restored, but hint CLINICAL REGISTER still asymmetric). Already fixed and confirmed by round4 review: the separate mid-selection label/off-color leak (LabCheckGame.tsx run-step now shows only neutral name+raw value until both picks are locked in) and the TEXT_ONLY_CONSEQUENCE finding is explicitly confirmed non-blocking per clue_board's established precedent (factory/state/experience-backlog.json WEAK_WORLD_FEEDBACK). Needs a Human Product/Game-Design call on how to phrase all three tests at genuinely comparable clinical register (all 'routine-sounding' or all 'investigative-sounding') so the choice requires reading the patient's specific complaint rather than pattern-matching hint tone -- this is a wording/game-design judgment call I've now missed twice in different directions, past this task's 1 allowed auto-repair. | - | 2026-09-07 |
+| q1-improve-line-debug | BLOCKED | game-content | After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 2 genuine HIGH per Q1 First-Play Standard V1 Gate C/D/E: (1) the task-bar header displays totals computed directly from the bottleneck station's own row (steps[4]) from the very start of the game, before any diagnosis -- since this equals s5's exact rate/stop/loss, a player can just open stations one by one and find the one whose numbers MATCH the already-visible header, without any real comparison. Also stop/queue remain single-field-sufficient (only loss was made comparable-but-lesser for s6 in round 2). (2) more fundamentally, the 3 tweak options (guide/speed/switch) have NO distinguishing data in the game at all -- nothing observable tells the player WHICH of the 3 candidate causes matches this case; 'guide' is simply hardcoded as correct with no in-game evidence pointing to it, making the D (tweak choice) a content-blind guess dressed up as data-driven judgment, not a real application of C. Fix (1) is a mechanical bug (compute genuine line-wide aggregate totals -- e.g. sums across all stations -- instead of quoting one station's row) I could fix quickly, but fix (2) requires real game-design work: inventing an actual observable signal (e.g. a secondary data field, or a symptom pattern) that lets a player derive which of the 3 tweaks the case data supports, which is a genuine design judgment call beyond a mechanical correction. Needs Human game-design input on what that signal should be, matching lab_check's precedent for this exact class of escalation. | - | 2026-09-07 |
+| q1-improve-power | BLOCKED | game-content | Q1 First-Play Standard V1 Gate F/HONEST OUTCOME（表示と実際の判定の矛盾）に該当し続け、既定のAuto Repair上限（1回）を超過。表示ロジック設計の人間判断が必要 | - | 2026-09-07 |
+| q1-improve-safety-plan | BLOCKED | game-content | Q1 First-Play Standard V1 Gate C/D（月組の配慮情報がゲーム内のどの役割とも因果的に結びつかない）に該当し続け、既定のAuto Repair上限（1回）を超過。新しい役割/仕組みの追加を要するゲームデザイン人間判断が必要 | - | 2026-09-07 |
+| q1-improve-timetable | BLOCKED | game-content | After 1 auto-repair (repair_count=1, cap reached), 0 blockers remain but 1 genuine HIGH per Q1 First-Play Standard V1 Gate C/D (explicitly on the BLOCKER-adjacent list: 'can clear without using C'): from the declared initial (all-5-acts, already-overflowing) lineup, removing ANY SINGLE arbitrary optional act (no reordering, no reading the changeover rule card, no understanding of stage-setup grouping) always succeeds -- round4-review's own arithmetic confirms all 5 single-act cuts (with the untouched declared order) finish under the 13:40 deadline. This is a genuine, non-overridable content-independent shortcut: a first-time player can win by deleting literally any one row without ever engaging with the job-specific C (changeover/setup-type reasoning) the game exists to teach. Fixing this requires either a further numeric rebalance (harder to get right without ALSO reopening the 'no ordering ever fits' failure mode from round 1, given only 5 acts/2 setup categories to work with) or a structural change (e.g. requiring an explicit reorder step, or making at least one arbitrary single-cut also fail) -- both are real game-design judgment calls beyond this task's already-used 1 auto-repair. | - | 2026-09-07 |
+| v2-lunch-vertical-slice | BLOCKED | game-content | 2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched. | - | 2026-09-21 |
+

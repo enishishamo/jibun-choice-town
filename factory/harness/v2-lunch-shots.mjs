@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-// In-context screenshots of the Ver.2 こんだてPLAY vertical slice at 375×812 (real
-// Chrome via puppeteer-core, same pattern as map-repair-shots.mjs). Drives the
-// flow with REAL taps and saves one PNG per key state so the Art QA
-// presentation mode (art-qa.mjs presentation) and a human can judge how the
-// generated assets look INSIDE the app (crop, scale, background remnants).
-// Usage: node factory/harness/v2-lunch-shots.mjs [--base http://localhost:5177/jibun-choice-town/] [--out factory/state/art/shots/v2-lunch]
+// Real-device-shaped playthrough of the Ver.2 栄養教諭 Job Vertical Slice at
+// 375x812 (real Chrome via puppeteer-core), driven by REAL taps and gestures.
+// Captures the 16 states the Visual Review asks for, and fails on any console
+// error, page error, 4xx/5xx or horizontal overflow.
+//
+// The play path is not arbitrary: it is the sequence the pure-logic harness
+// proves exists — a menu that is one axis off, a single swap that fixes it, a
+// delivery trouble with several ways back, and a different menu to recover.
+// Usage: npm run shots:v2-lunch [-- --base <url>] [-- --out <dir>]
 import puppeteer from "puppeteer-core";
 import { mkdirSync, writeFileSync } from "node:fs";
 
@@ -19,63 +22,135 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 const page = await browser.newPage();
 await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 const errors = [];
-page.on("pageerror", (e) => errors.push(String(e)));
-page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+page.on("pageerror", (e) => errors.push(`pageerror: ${String(e)}`));
+page.on("console", (m) => { if (m.type() === "error") errors.push(`console: ${m.text()}`); });
 page.on("response", (r) => { if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`); });
-await page.goto(`${BASE}v2.html#lunch`, { waitUntil: "networkidle0" });
+page.on("requestfailed", (r) => errors.push(`requestfailed: ${r.url()} ${r.failure()?.errorText ?? ""}`));
+
+await page.goto(`${BASE}v2.html`, { waitUntil: "networkidle0" });
 await page.evaluate(() => localStorage.removeItem("jibun-choice:v2:progress"));
 await page.reload({ waitUntil: "networkidle0" });
+
 const shots = [];
 const shot = async (name) => { const p = `${OUT}/${name}.png`; await page.screenshot({ path: p }); shots.push(p); console.log("shot", p); };
-const tap = async (label, settle = 220) => {
+/** tap by accessible name (exact, then prefix) — the flow must be reachable by an AT user too */
+const tap = async (label, settle = 260) => {
   let h = await page.$(`button[aria-label="${label}"]`);
   if (!h) {
-    // buttons whose accessible name is their text (JOB REVEAL / 好きの種)
-    const hs = await page.$$("button");
-    for (const b of hs) { if ((await b.evaluate((e) => e.textContent.trim())).includes(label)) { h = b; break; } }
+    for (const b of await page.$$("button")) {
+      const [al, txt] = await b.evaluate((e) => [e.getAttribute("aria-label") ?? "", e.textContent.trim()]);
+      if (al === label || al.startsWith(label) || txt === label || txt.startsWith(label)) { h = b; break; }
+    }
   }
-  if (!h) throw new Error(`no button ${label}`);
+  if (!h) throw new Error(`no button for "${label}"`);
   await h.tap();
   await sleep(settle);
 };
+/** swipe the tray upward — the in-world way to send the lunch off */
+const swipeTrayUp = async () => {
+  const box = await (await page.$(".lmp-tray")).boundingBox();
+  const cx = Math.round(box.x + box.width / 2), cy = Math.round(box.y + box.height / 2);
+  await page.touchscreen.touchStart(cx, cy);
+  await page.touchscreen.touchMove(cx, cy - 40);
+  await page.touchscreen.touchMove(cx, cy - 90);
+  await page.touchscreen.touchEnd();
+};
+const beads = () => page.$$eval(".lmp-bead", (bs) => bs.map((b) => ({ axis: b.getAttribute("data-bead"), band: [...b.classList].find((c) => c.startsWith("band-")) })));
 
-// GPT Visual Review 2026-09-21 asks for exactly these five moments (R1–R5) plus the
-// rest of the flow; taps are real, timings sit right after each reaction starts.
+// ── 01 START ─────────────────────────────────────────────────────────────
 await shot("01-world-map");
-await tap("こんだてを考える"); await sleep(600);
-await shot("02-play-empty");                                   // R1 開始直後
-await tap("ごはん", 150);
-await shot("02b-one-placed-flying");                           // R2 1品置いた瞬間（飛んでいる途中）
-await sleep(330);
-await shot("02c-one-placed-landed");                           // R2 着地・粒
-for (const d of ["とりのからあげ", "ポテトサラダ"]) await tap(d);
-await tap("コーンスープ", 0);
-// bits leave the dishes FLY_MS+360 ms after the last tap and fly for 700 ms: shoot inside that window
-await page.waitForSelector(".lmp-grain", { timeout: 3000 });
-await sleep(260);
-await shot("03-first-complete-grains");                        // R3 4品完成、粒が飛ぶ途中
-await sleep(1300);
-await shot("04-first-complete-status");                        // R3 4品完成、状態 cue が出た直後
-await tap("コーンスープ"); await sleep(300);
-await shot("04b-removed-one");
-await tap("とうふのみそしる"); await sleep(1000);
-await shot("05-after-swap");                                   // R4 1品交換して状態が変わった直後
-await sleep(1600);
-await shot("06-event-truck");                                  // R5 EVENT 発生直後
-await tap("とりのからあげ（とどかなかった）"); await sleep(250);
-await shot("07-unavailable-shake");
-await tap("さけのしおやき"); await sleep(600);
-await shot("08-deliver-ready");
-await tap("がっこうへ とどける"); await sleep(900);
-await shot("09-delivering");
+await tap("こんだてを考える", 700);
+await shot("02-play-start");
+
+// ── 02 one or two dishes placed ──────────────────────────────────────────
+await tap("パン", 700);
+await shot("03-one-placed");
+await tap("さけのしおやき", 700);
+await shot("04-two-placed");
+
+// ── 03 four dishes, one axis still off ───────────────────────────────────
+await tap("やさいのごまあえ");
+await tap("ごはん", 1400);
+await shot("05-four-placed");
+const before = await beads();
+
+// ── 04 swapping one dish while watching the beads ────────────────────────
+// two staples is too much energy: take the rice back off the tray and put a
+// side dish in instead (tapping a dish on the tray returns it to the counter)
+await tap("ごはん", 600);
+await shot("06-swapping");
+await tap("ポテトサラダ", 1600);
+await shot("07-after-swap");
+const after = await beads();
+
+// ── 05 the first "it came together" ──────────────────────────────────────
+await shot("08-settled");
+
+// ── 06 EVENT: the first send is intercepted ──────────────────────────────
+await swipeTrayUp();
+await sleep(900);
+await shot("09-event-truck");
 await sleep(1200);
-await shot("10-job-reveal");
-await tap("つぎへ"); await sleep(500);
-await tap("なおしてみる"); await tap("ちずへ"); await sleep(900);
-await shot("11-world-return");
+await shot("10-event-after");
+
+// ── 07 the dish that did not arrive ──────────────────────────────────────
+await tap("さけのしおやき（とどかなかった）", 300);
+await shot("11-unavailable-shake");
+
+// ── 08/09 rebuild: try the fried chicken, see it push two beads out, take it
+//    back off and try the soup instead ─────────────────────────────────────
+await tap("とりのからあげ", 1500);
+await shot("12-rebuilding");
+await tap("とりのからあげ", 600); // now on the tray: tapping it returns it to the counter
+await tap("とうふのみそしる", 1600);
+await shot("13-rebuilt");
+
+// ── 10 the lunch reaches the school ──────────────────────────────────────
+await swipeTrayUp();
+await sleep(800);
+await shot("14-delivering");
+await sleep(1400);
+
+// ── 11 JOB REVEAL ────────────────────────────────────────────────────────
+await shot("15-job-reveal-lead");
+await sleep(2400);
+await shot("16-job-reveal");
+
+// ── 12/13 KNOW THE JOB ───────────────────────────────────────────────────
+await tap("この仕事を のぞいてみる", 700);
+await shot("17-know-the-job");
+await tap("給食をつくる", 500);
+await shot("18-know-scene-open");
+
+// ── 14 CAREER PATH ───────────────────────────────────────────────────────
+await tap("どうやって なる？", 700);
+await shot("19-career-path");
+await tap("もどる", 600);
+
+// ── 15 好きの種 ───────────────────────────────────────────────────────────
+await tap("つぎへ", 700);
+await shot("20-seed");
+await tap("予定が変わって考え直す", 400);
+await shot("21-seed-picked");
+
+// ── 16 WORLD RETURN ──────────────────────────────────────────────────────
+await tap("ちずへ", 1200);
+await shot("22-world-return");
 await sleep(1200);
-await shot("12-next-trouble");
-const info = await page.evaluate(() => ({ scrollW: document.documentElement.scrollWidth, innerW: window.innerWidth }));
-writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), shots, errors, ...info }, null, 1));
-console.log(JSON.stringify({ ok: errors.length === 0 && info.scrollW <= info.innerW, errors, ...info }));
+await shot("23-next-trouble");
+
+const info = await page.evaluate(() => ({
+  scrollW: document.documentElement.scrollWidth,
+  innerW: window.innerWidth,
+  progress: localStorage.getItem("jibun-choice:v2:progress"),
+  // no developer marker may be visible anywhere in the finished flow
+  markers: /TEMP_IMPLEMENTATION_ONLY|DESIGN_NEEDED|DN-\d+/.test(document.body.innerText),
+}));
+const beadsMoved = JSON.stringify(before) !== JSON.stringify(after);
+const solved = (() => { try { return JSON.parse(info.progress)?.solved?.[0]?.spot === "menu"; } catch { return false; } })();
+const seed = (() => { try { return JSON.parse(info.progress)?.seeds?.["lunch:menu"]; } catch { return null; } })();
+const ok = errors.length === 0 && info.scrollW <= info.innerW && !info.markers && beadsMoved && solved && seed === "rebuild";
+writeFileSync(`${OUT}/run.json`, JSON.stringify({ at: new Date().toISOString(), ok, shots, errors, beadsBefore: before, beadsAfter: after, ...info }, null, 1));
+console.log(JSON.stringify({ ok, errors, scrollW: info.scrollW, innerW: info.innerW, visibleDevMarkers: info.markers, beadsMoved, solved, seed }));
 await browser.close();
+process.exit(ok ? 0 : 1);

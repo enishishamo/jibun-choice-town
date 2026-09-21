@@ -19,6 +19,7 @@
 // Rule enforced here: blockers/high non-empty => verdict downgraded to FAIL.
 
 import { spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { appendFileSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -48,7 +49,25 @@ if (!promptFile) {
   process.exit(2);
 }
 
+// 2026-09-21 (R3, role separation): every result this script writes carries a
+// provenance stamp, so review-evidence.mjs can tell a real codex-review run
+// from a hand-written JSON with the right fields. The prompt hash pins WHICH
+// prompt was reviewed (a prompt edited after the fact no longer matches).
+const REVIEW_MECHANISM = "factory/harness/codex-review.mjs";
+function stampProvenance(result) {
+  result.review_mechanism = REVIEW_MECHANISM;
+  result.reviewer = "codex";
+  result.prompt_file = promptFile;
+  try {
+    result.prompt_sha256 = createHash("sha256").update(readFileSync(promptFile)).digest("hex");
+  } catch {
+    result.prompt_sha256 = null; // prompt file vanished mid-run; never fail the review over the stamp
+  }
+  return result;
+}
+
 function emit(result) {
+  stampProvenance(result);
   try {
     appendFileSync(ROUTING_LOG, JSON.stringify({ ts: new Date().toISOString(), tool: "codex-review", label, prompt_file: promptFile, status: arguments[0]?.status ?? (arguments[0]?.ok ? "OK" : "?"), verdict: arguments[0]?.verdict?.verdict ?? null, elapsed_sec: arguments[0]?.elapsed_sec ?? null }) + "\n");
   } catch { /* logging must never break the review */ }

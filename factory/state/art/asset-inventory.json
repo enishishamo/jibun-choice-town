@@ -1,12 +1,12 @@
 {
  "note": "Mechanical asset inventory (Stage 6). Regenerate: node factory/harness/art/asset-inventory.mjs",
- "generated_at": "2026-09-21T00:54:11.563Z",
+ "generated_at": "2026-09-21T12:15:08.259Z",
  "totals": {
-  "assets": 209,
+  "assets": 212,
   "orphans": 62,
   "duplicates_groups": 0,
   "oversized": 32,
-  "total_bytes": 88561759
+  "total_bytes": 87800305
  },
  "duplicate_groups": [],
  "missing_references": [],
@@ -3049,23 +3049,75 @@
    ]
   },
   {
+   "asset_id": "public_assets_v2_lunch_baskets_green_png",
+   "path": "public/assets/v2/lunch/baskets/green.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 58807,
+   "referenced_by": [
+    "src/q1/PowerGame.tsx",
+    "src/q1/powerLogic.ts",
+    "src/v2/lunch/assets.ts"
+   ],
+   "hash": "b3ff4ef23c45",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_baskets_red_png",
+   "path": "public/assets/v2/lunch/baskets/red.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 57732,
+   "referenced_by": [
+    "src/q1/powerLogic.ts",
+    "src/v2/lunch/assets.ts"
+   ],
+   "hash": "7dcf3df3941e",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
+   "asset_id": "public_assets_v2_lunch_baskets_yellow_png",
+   "path": "public/assets/v2/lunch/baskets/yellow.png",
+   "world": "shared",
+   "format": "png",
+   "width": 256,
+   "height": 256,
+   "aspect_ratio": 1,
+   "file_size": 59675,
+   "referenced_by": [
+    "src/q1/PowerGame.tsx",
+    "src/q1/powerLogic.ts",
+    "src/v2/lunch/assets.ts"
+   ],
+   "hash": "4b6a24d2f326",
+   "likely_reusable": true,
+   "quality_flags": []
+  },
+  {
    "asset_id": "public_assets_v2_lunch_dishes_bread_png",
    "path": "public/assets/v2/lunch/dishes/bread.png",
    "world": "shared",
    "format": "png",
-   "width": 1024,
-   "height": 1024,
+   "width": 256,
+   "height": 256,
    "aspect_ratio": 1,
-   "file_size": 1080899,
+   "file_size": 61943,
    "referenced_by": [
     "src/q1/logisticsLogic.ts",
     "src/q1/tenantMatchLogic.ts",
     "src/q1/zooLogic.ts",
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuLogic.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/lunchMenuLogic.ts"
    ],
-   "hash": "4ed9ddb87bad",
+   "hash": "f121822d6ec2",
    "likely_reusable": true,
    "quality_flags": []
   },
@@ -3080,8 +3132,7 @@
    "file_size": 44118,
    "referenced_by": [
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuLogic.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/lunchMenuLogic.ts"
    ],
    "hash": "ac3b76be0eb5",
    "likely_reusable": true,
@@ -3098,8 +3149,7 @@
    "file_size": 77417,
    "referenced_by": [
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuLogic.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/lunchMenuLogic.ts"
    ],
    "hash": "c2be0de22240",
    "likely_reusable": true,
@@ -3133,8 +3183,7 @@
    "file_size": 73014,
    "referenced_by": [
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuLogic.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/lunchMenuLogic.ts"
    ],
    "hash": "bbd8f72c0ed7",
    "likely_reusable": true,
@@ -3188,8 +3237,7 @@
    "file_size": 74789,
    "referenced_by": [
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuLogic.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/lunchMenuLogic.ts"
    ],
    "hash": "feedbf9b9cc9",
    "likely_reusable": true,
@@ -3255,13 +3303,13 @@
    "width": 768,
    "height": 576,
    "aspect_ratio": 1.333,
-   "file_size": 302862,
+   "file_size": 384150,
    "referenced_by": [
     "src/v2/lunch/README.md",
     "src/v2/lunch/assets.ts",
-    "src/v2/lunch/play/lunchMenuPlay.css"
+    "src/v2/lunch/play/LunchMenuPlay.tsx"
    ],
-   "hash": "9f5f54ba3489",
+   "hash": "ee51a96262ef",
    "likely_reusable": true,
    "quality_flags": []
   },

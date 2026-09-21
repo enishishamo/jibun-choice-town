@@ -1,51 +1,221 @@
-/* JOB REVEAL / 好きの種 — TEMP_IMPLEMENTATION_ONLY. Palette v1 tokens only. */
-.lsc {
+/* Post-CLEAR screens of the 栄養教諭 slice: JOB REVEAL / KNOW THE JOB /
+   CAREER PATH / 好きの種. Palette v1 tokens only; translucency only via
+   color-mix() of a token. Same clay materiality as the board: things sit on a
+   surface and cast a contact shadow, nothing floats in a white card. */
+.v2s {
+  position: relative;
   min-height: 100dvh;
-  padding: 16px;
+  padding: 26px 20px max(22px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   background: var(--v2-warm-cream);
-  animation: lsc-in 0.35s ease;
+  color: var(--v2-deep-green);
+  text-align: center;
+  overflow-x: hidden;
 }
-.lsc-visual {
-  width: min(100%, 300px);
-  aspect-ratio: 1;
-  border-radius: 28px;
-  background: var(--v2-soft-sky);
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-}
-.lsc-lead { margin: 8px 0 0; font-size: 16px; text-align: center; }
-.lsc-line { margin: 0; font-size: 18px; text-align: center; line-height: 1.6; }
-.lsc-job { margin: 0; font-size: 24px; text-align: center; color: var(--v2-deep-green); }
-.lsc-next {
-  margin-top: auto;
-  min-width: 160px;
-  min-height: 48px;
+
+/* the one button shape the slice uses */
+.v2s-btn {
   border: 0;
   border-radius: 999px;
-  background: var(--v2-coral);
+  padding: 14px 30px;
+  min-height: 48px;
+  background: var(--v2-fresh-green);
   color: var(--v2-warm-cream);
   font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 55%, transparent);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
 }
-.lsc-next:disabled { opacity: 0.35; }
-.lsc-seeds { display: flex; flex-direction: column; gap: 12px; width: min(100%, 320px); }
-.lsc-seed-btn {
+.v2s-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--v2-deep-green) 55%, transparent); }
+.v2s-btn:disabled { opacity: 0.4; box-shadow: none; }
+.v2s-btn-quiet {
+  background: color-mix(in srgb, var(--v2-warm-beige) 80%, var(--v2-warm-cream));
+  color: var(--v2-deep-green);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 18%, transparent);
+}
+
+/* ── JOB REVEAL ── */
+.v2s-reveal { justify-content: center; gap: 10px; }
+.v2s-reveal-stage { width: 210px; height: 128px; position: relative; margin-bottom: 4px; animation: v2s-land 0.8s cubic-bezier(0.3, 1.3, 0.5, 1) both; }
+.v2s-reveal-stage::after {
+  content: "";
+  position: absolute;
+  left: 12%; right: 12%; bottom: 2px;
+  height: 14px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
+  filter: blur(2px);
+}
+.v2s-reveal-art { position: relative; width: 100%; height: 100%; object-fit: contain; }
+.v2s-reveal-ph {
+  position: relative; display: block; width: 70%; height: 74%; margin: 10% auto 0;
+  border-radius: 18px 18px 6px 6px;
+  background: var(--v2-warm-beige);
+}
+.v2s-reveal-lead, .v2s-reveal-job, .v2s-reveal-line, .v2s-reveal-next { opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.3, 1.2, 0.5, 1); }
+.v2s-reveal-lead.in, .v2s-reveal-job.in, .v2s-reveal-line.in, .v2s-reveal-next.in { opacity: 1; transform: none; }
+.v2s-reveal-lead { margin: 0; font-size: 16px; font-weight: 700; color: color-mix(in srgb, var(--v2-deep-green) 72%, var(--v2-warm-beige)); }
+.v2s-reveal-job { margin: 2px 0 0; font-size: 34px; line-height: 1.2; letter-spacing: 0.02em; }
+.v2s-reveal-job small { display: block; margin-top: 6px; font-size: 12px; font-weight: 400; color: color-mix(in srgb, var(--v2-deep-green) 60%, var(--v2-warm-beige)); }
+.v2s-reveal-line { margin: 4px 0 8px; font-size: 15px; line-height: 1.7; white-space: pre-line; }
+
+/* ── KNOW THE JOB ── */
+.v2s-know { justify-content: flex-start; gap: 12px; }
+.v2s-know-title { margin: 0; font-size: 24px; }
+.v2s-scenes { width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 9px; }
+.v2s-scene {
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 46%, var(--v2-warm-cream));
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--v2-warm-cream) 70%, transparent);
+  overflow: hidden;
+  transition: background 0.25s ease;
+}
+.v2s-scene.open { background: color-mix(in srgb, var(--v2-warm-beige) 72%, var(--v2-warm-cream)); }
+.v2s-scene-tap {
+  width: 100%;
+  min-height: 84px;
+  border: 0;
+  background: transparent;
+  padding: 8px 14px 8px 8px;
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 56px;
-  border: 3px solid transparent;
-  border-radius: 20px;
-  background: var(--v2-warm-cream);
-  padding: 8px 14px;
-  font-size: 16px;
   text-align: left;
-  color: var(--v2-deep-green);
+  color: inherit;
 }
-.lsc-seed-btn.on { border-color: var(--v2-honey-yellow); }
-.lsc-seed-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--v2-soft-sky); display: grid; place-items: center; font-size: 9px; }
-@keyframes lsc-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.v2s-scene-tap:active { transform: scale(0.985); }
+.v2s-scene-art { position: relative; flex: none; width: 104px; height: 70px; display: grid; place-items: center; }
+.v2s-scene-art::after {
+  content: "";
+  position: absolute;
+  left: 14%; right: 14%; bottom: 3px;
+  height: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--v2-deep-green) 11%, transparent);
+  filter: blur(1px);
+}
+.v2s-scene-art img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+/* placeholder shapes, only until the scene art loads */
+.v2s-scene-ph { position: relative; display: block; width: 72%; height: 68%; border-radius: 12px; background: var(--v2-warm-beige); }
+.v2s-scene-ph.ph-cook { border-radius: 40% 40% 16px 16px; background: var(--v2-soft-sky); }
+.v2s-scene-ph.ph-teach { border-radius: 8px; background: var(--v2-fresh-green); }
+.v2s-scene-ph.ph-talk { border-radius: 50%; background: var(--v2-honey-yellow); }
+.v2s-scene-label { font-size: 17px; font-weight: 700; }
+/* a touched place stays marked as visited, without a tick */
+.v2s-scene.seen .v2s-scene-label { color: color-mix(in srgb, var(--v2-deep-green) 74%, var(--v2-warm-beige)); }
+.v2s-scene-line {
+  margin: 0;
+  padding: 0 16px 14px;
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: left;
+  animation: v2s-open 0.3s ease both;
+}
+
+.v2s-day { width: 100%; max-width: 340px; padding: 6px 6px 2px; }
+.v2s-day-title { display: block; text-align: left; font-size: 12px; font-weight: 700; color: color-mix(in srgb, var(--v2-deep-green) 62%, var(--v2-warm-beige)); margin-bottom: 8px; }
+.v2s-day-steps { list-style: none; margin: 0; padding: 0 0 0 4px; display: flex; flex-direction: column; gap: 2px; }
+.v2s-day-steps li {
+  position: relative;
+  padding: 5px 0 5px 26px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: left;
+  animation: v2s-rise 0.4s ease both;
+}
+.v2s-day-steps li::before {
+  content: "";
+  position: absolute;
+  top: 9px; left: 0;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--v2-honey-yellow);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--v2-deep-green) 16%, transparent);
+}
+.v2s-day-steps li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 23px; left: 5px;
+  width: 3px; bottom: -2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--v2-honey-yellow) 55%, var(--v2-warm-cream));
+}
+.v2s-know-foot { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* ── CAREER PATH ── */
+.v2s-career { justify-content: center; gap: 16px; }
+.v2s-career-title { margin: 0; font-size: 22px; }
+.v2s-steps { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 6px; }
+.v2s-step { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 8px 0 8px 4px; text-align: left; animation: v2s-rise 0.45s ease both; }
+.v2s-step-stone {
+  flex: none;
+  width: 30px; height: 30px;
+  border-radius: 12px 12px 14px 14px;
+  background: var(--v2-warm-beige);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-deep-green) 16%, transparent);
+}
+.v2s-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 18px; top: 42px;
+  width: 3px; height: 18px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 70%, var(--v2-deep-green));
+  opacity: 0.5;
+}
+.v2s-step-body b { display: block; font-size: 16px; margin-bottom: 2px; }
+.v2s-step-body span { font-size: 13px; line-height: 1.7; }
+.v2s-notes { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 8px; }
+.v2s-notes p {
+  margin: 0;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--v2-honey-yellow) 26%, var(--v2-warm-cream));
+  font-size: 12.5px;
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* ── 好きの種 ── */
+.v2s-seed { justify-content: center; gap: 18px; }
+.v2s-seed-q { margin: 0; font-size: 21px; }
+.v2s-seed-list { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 10px; }
+.v2s-seed-opt {
+  position: relative;
+  min-height: 60px;
+  border: 0;
+  border-radius: 18px;
+  padding: 16px 18px 16px 54px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 52%, var(--v2-warm-cream));
+  color: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  text-align: left;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
+  animation: v2s-rise 0.4s ease both;
+  transition: background 0.2s ease, transform 0.14s ease;
+}
+.v2s-seed-opt:active { transform: translateY(2px); }
+.v2s-seed-opt.on { background: color-mix(in srgb, var(--v2-fresh-green) 28%, var(--v2-warm-cream)); }
+.v2s-seed-sprout {
+  position: absolute;
+  left: 19px; top: 50%;
+  width: 18px; height: 18px;
+  margin-top: -9px;
+  border-radius: 50% 4px 50% 50%;
+  background: var(--v2-warm-beige);
+  transition: background 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+.v2s-seed-opt.on .v2s-seed-sprout { background: var(--v2-fresh-green); transform: scale(1.18) rotate(-12deg); }
+
+@keyframes v2s-land { from { opacity: 0; transform: translateY(-26px) scale(0.92); } to { opacity: 1; transform: none; } }
+@keyframes v2s-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes v2s-open { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 200px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2s-reveal-stage, .v2s-day-steps li, .v2s-step, .v2s-seed-opt, .v2s-scene-line { animation: none; }
+  .v2s-reveal-lead, .v2s-reveal-job, .v2s-reveal-line, .v2s-reveal-next { transition: none; }
+}

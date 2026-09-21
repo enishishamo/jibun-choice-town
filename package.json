@@ -10,7 +10,10 @@
     "check:ver1-freeze": "node factory/harness/ver1-freeze-check.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
+    "queue:blocked": "node factory/harness/task-state.mjs list --status BLOCKED,DESIGN_BLOCKED,HUMAN_DECISION_REQUIRED --markdown > factory/state/blocked-queue.md",
+    "qa:all": "node factory/harness/verify.mjs --suites 'gameplay-qa-*.mjs'",
     "qa:v2-lunch": "node factory/harness/gameplay-qa-v2-lunch-menu.mjs",
+    "selftest:factory": "node factory/harness/factory-self-test.mjs",
     "shots:v2-lunch": "node factory/harness/v2-lunch-shots.mjs"
   },
   "dependencies": {

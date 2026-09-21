@@ -1,0 +1,41 @@
+{
+ "asset_id": "v2_lunch_map_bento",
+ "filename": "map/bento.png",
+ "world": "lunch-v2",
+ "use": "place",
+ "aspect_ratio": "4:3",
+ "size": "1200x900",
+ "transparent_background": true,
+ "composition": "ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the lunch box centered and filling about 75% of the frame with even margins (at least 12% on every side). The open box is the GROUND on which a miniature town will be placed later, so the whole pale cream interior must stay EMPTY, smooth, evenly lit and uncluttered — clear flat space with no food, no dividers, no pattern, no clutter. No table, no cloth, no shadow plate: the lunch box floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the box. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.",
+ "forbidden_objects": [
+  "readable text",
+  "letters or numbers",
+  "logos",
+  "attribute marks, icons, badges or symbols",
+  "food, rice, or anything placed inside the box",
+  "compartment dividers, inner trays or patterned lining",
+  "hands or people",
+  "chopsticks or cutlery",
+  "table, cloth, background, backdrop or drop shadow outside the lunch box",
+  "photorealistic rendering",
+  "elements touching the image edge"
+ ],
+ "character_constraints": "no characters at all",
+ "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the lunch box.",
+ "reference_assets": [
+  "public/assets/v2/lunch/tray.png",
+  "public/assets/v2/lunch/dishes/rice.png",
+  "public/assets/v2/lunch/school.png"
+ ],
+ "used_by": [
+  "src/v2/lunch/play/LunchMenuPlay.tsx"
+ ],
+ "purpose": "給食 WORLD の WORLD MAP の地面。開いた弁当箱の中に小さな町（畑・調理場・こんだて机）が置かれる土台なので、内側は完全に空で平ら",
+ "scene": "one OPEN school lunch box (弁当箱) seen from the same 35-degree above-front camera as the tray: a rounded rectangular box with a warm coral-red lid hinged open and standing up behind it, and a pale warm cream interior that is completely EMPTY, smooth and flat, like a shallow empty clay dish waiting to hold a miniature town. Same matte clay / miniature toy material, same lighting and same warm palette as the cream lunch tray and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
+ "required_objects": [
+  "one open lunch box with a coral-red lid hinged open behind it",
+  "a completely empty, smooth, evenly lit pale cream interior with clear flat space",
+  "transparent background"
+ ],
+ "output_path": "public/assets/v2/lunch/map/bento.png"
+}

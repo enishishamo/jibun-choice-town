@@ -11,7 +11,15 @@ const RAW = "factory/state/art/generated/v2-lunch";
 mkdirSync(`${ROOT}${RAW}`, { recursive: true });
 const log = (m) => { const line = `[${new Date().toISOString()}] ${m}\n`; appendFileSync(`${ROOT}${LOG}`, line); process.stdout.write(line); };
 const only = process.argv.slice(2);
-const MASTER = { dish: [256, 256], basket: [256, 256], tray: [768, 576], truck: [384, 256], school: [384, 256] };
+const MASTER = {
+  dish: [256, 256], basket: [256, 256], tray: [768, 576], truck: [384, 256], school: [384, 256],
+  // Ver.2 redesign batch: WORLD MAP ground + diorama tiles, counting rack, place scenes.
+  // Keyed by the full request name (the `kind` fallback below), because the map-*
+  // requests do NOT share one master size (bento is the ground, the rest are tiles).
+  "map-bento": [768, 576], "map-grow": [256, 256], "map-cook": [256, 256], "map-menu": [256, 256],
+  "gauge-rack": [768, 256],
+  "scene-kitchen": [384, 256], "scene-classroom": [384, 256], "scene-talk": [384, 256],
+};
 const reqs = (only.length ? only : ["dish-rice", "dish-bread", "dish-salmon", "dish-karaage", "dish-croquette", "dish-gomaae", "dish-potato_salad", "dish-miso_soup", "dish-corn_soup", "dish-milk", "tray", "truck", "school", "basket-red", "basket-yellow", "basket-green"]);
 const summary = [];
 for (const name of reqs) {

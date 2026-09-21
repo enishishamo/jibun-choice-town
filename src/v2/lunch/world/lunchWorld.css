@@ -1,13 +1,22 @@
-/* 給食 WORLD MAP — TEMP_IMPLEMENTATION_ONLY placeholder visuals.
+/* 給食 WORLD MAP — the opened bento box and its five places.
    Colors: palette v1 tokens only (--v2-*, defined in src/v2/index.css).
    Flat fills; translucency only via color-mix of a palette token. */
 
+/* the whole screen IS the world: the bento fills the viewport, centred, keeping
+   its 375x560 proportions on any phone. Nothing else shares the screen. */
+.lw-world {
+  min-height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  background: var(--v2-warm-cream);
+  box-sizing: border-box;
+}
 .lw-map {
   position: relative;
-  width: 100%;
-  max-width: 480px;
+  width: min(100%, 480px, calc((100dvh - 24px) * 375 / 560));
   margin: 0 auto;
-  overflow: hidden;
+  overflow: visible;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -30,14 +39,6 @@
 .lw-bento-lid-inner,
 .lw-bento-tray-inner { fill: var(--v2-warm-cream); }
 
-.lw-temp-tag {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  fill: var(--v2-coral);
-  color: var(--v2-coral);
-  pointer-events: none;
-}
 
 /* ---- Layer 2: roads (pathLength=100 on every path) ---- */
 .lw-roads { pointer-events: none; }
@@ -119,22 +120,14 @@
 }
 
 .lw-spot-shape { display: block; box-shadow: 0 2px 4px color-mix(in srgb, var(--v2-deep-green) 14%, transparent); }
-.lw-spot-shape .lw-temp-tag { position: absolute; right: 10%; bottom: 12%; }
-.lw-spot-img { object-fit: contain; border-radius: 0; }
-
-.lw-spot-label {
-  font-size: 12px;
-  line-height: 1.2;
-  color: var(--v2-deep-green);
-}
-
+.lw-spot-shape 
 /* muted: unplayed, desaturated, no motion */
 .lw-spot.is-muted {
   filter: saturate(0.25);
   opacity: 0.55;
 }
 
-/* trouble: visible 異変 — slightly larger, gentle bob, coral badge (marker art DESIGN_NEEDED) */
+/* trouble: the visible 異変 — slightly larger, a gentle bob and a coral badge */
 .lw-spot.is-trouble { transform: translate(-50%, -50%) scale(1.08); }
 .lw-spot.is-trouble .lw-spot-body { animation: lw-bob 1.6s ease-in-out infinite; }
 

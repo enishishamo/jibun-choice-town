@@ -1,10 +1,12 @@
 // 給食 WORLD MAP — the opened bento box with 5 spots (WORLD_DESIGN.md §3/§4).
 //
-// TEMP_IMPLEMENTATION_ONLY: every shape drawn here (bento box, spot discs,
-// trouble badge, roads, solved ring) is a placeholder so the flow can be
-// exercised. Real art is DESIGN_NEEDED and drops in through `assets` without
-// code changes (see README.md in this folder). Strings come only from copy.ts.
+// The bento box and the spot tiles are drawn as clay objects in CSS/SVG and are
+// replaced 1:1 by the generated art through `assets` when it is present — the
+// geometry (SPOT_POS, ROAD_PATH) is the same either way, so nothing shifts.
+// Labels stay hidden (PLAY FIRST); they exist only for assistive technology.
+// Strings come only from copy.ts.
 import { useEffect, useRef, useState } from "react";
+import Art from "../Art";
 import { COPY } from "../copy";
 import { ROAD_IDS, SPOT_IDS } from "../types";
 import type { LunchWorldView, RoadId, RoadState, SpotId } from "../types";
@@ -41,7 +43,7 @@ const ROAD_PATH: Record<RoadId, string> = {
   "menu-serve": "M280,450 C260,400 220,350 187,320",
 };
 
-/** Placeholder disc colors per spot (palette tokens only; TEMP). */
+/** Clay tone per spot, used until the generated tile art loads (palette tokens only). */
 const SPOT_TONE: Record<SpotId, string> = {
   grow: "var(--v2-fresh-green)",
   carry: "var(--v2-sky-blue)",
@@ -66,8 +68,8 @@ function Road({ id, state }: { id: RoadId; state: RoadState }) {
 }
 
 export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = false }: LunchWorldMapProps) {
-  // every tap reacts (touch → react): non-playable spots get a short nudge
-  // (placeholder motion; the approved reaction is DESIGN_NEEDED DN-12)
+  // every tap reacts (touch → react): a place that has no PLAY yet still nudges,
+  // so the child never touches something that seems broken
   const [nudged, setNudged] = useState<SpotId | null>(null);
   const nudgeTimer = useRef<number | null>(null);
   useEffect(() => () => { if (nudgeTimer.current !== null) clearTimeout(nudgeTimer.current); }, []);
@@ -78,19 +80,21 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
     onTapSpot(id);
   };
   return (
-    <div className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
+    <div className="lw-world">
+    <div className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }} role="group" aria-label={COPY.world.title}>
       {/* Layer 1: bento box frame (open lid at top, tray body below) */}
-      {assets?.bento ? (
-        <img className="lw-bento-img" src={assets.bento} alt="" draggable={false} />
-      ) : (
+      <Art
+        src={assets?.bento}
+        className="lw-bento-img"
+        fallback={
         <svg className="lw-bento" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
           <rect className="lw-bento-lid" x="28" y="8" width="319" height="78" rx="18" />
           <rect className="lw-bento-lid-inner" x="44" y="22" width="287" height="46" rx="12" />
           <rect className="lw-bento-tray" x="16" y="96" width="343" height="456" rx="24" />
           <rect className="lw-bento-tray-inner" x="32" y="112" width="311" height="424" rx="18" />
-          <text className="lw-temp-tag" x="40" y="130">{COPY.dev.tag}</text>
         </svg>
-      )}
+        }
+      />
 
       {/* Layer 2: roads */}
       <svg className="lw-roads" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
@@ -118,27 +122,21 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
             type="button"
             className={cls}
             data-spot={id}
-            aria-label={COPY.world.spotLabel[id]}
+            aria-label={`${COPY.world.spot[id]}（${COPY.world.state[state]}）`}
             style={{ left: pct(SPOT_POS[id].x, MAP_W), top: pct(SPOT_POS[id].y, MAP_H) }}
             onClick={() => tap(id)}
           >
             <span className="lw-spot-body">
-              {art ? (
-                <img className="lw-spot-img" src={art} alt="" draggable={false} />
-              ) : (
-                <span className="lw-spot-shape" style={{ background: SPOT_TONE[id] }}>
-                  {/* TEMP marker, not user copy: flags the placeholder shape as non-final art */}
-                  <span className="lw-temp-tag">{COPY.dev.tag}</span>
-                </span>
-              )}
+              <Art src={art} className="lw-spot-img" fallback={<span className="lw-spot-shape" style={{ background: SPOT_TONE[id] }} />} />
               {state === "trouble" && <span className="lw-spot-badge" />}
             </span>
             <span className={showLabels ? "lw-spot-label" : "lw-visually-hidden"} aria-hidden="true">
-              {COPY.world.spotLabel[id]}
+              {COPY.world.spot[id]}
             </span>
           </button>
         );
       })}
+    </div>
     </div>
   );
 }

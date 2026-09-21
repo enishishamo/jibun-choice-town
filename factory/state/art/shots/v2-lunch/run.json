@@ -1,23 +1,70 @@
 {
- "at": "2026-09-21T03:58:10.728Z",
+ "at": "2026-09-21T12:31:26.612Z",
+ "ok": true,
  "shots": [
   "factory/state/art/shots/v2-lunch/01-world-map.png",
-  "factory/state/art/shots/v2-lunch/02-play-empty.png",
-  "factory/state/art/shots/v2-lunch/02b-one-placed-flying.png",
-  "factory/state/art/shots/v2-lunch/02c-one-placed-landed.png",
-  "factory/state/art/shots/v2-lunch/03-first-complete-grains.png",
-  "factory/state/art/shots/v2-lunch/04-first-complete-status.png",
-  "factory/state/art/shots/v2-lunch/04b-removed-one.png",
-  "factory/state/art/shots/v2-lunch/05-after-swap.png",
-  "factory/state/art/shots/v2-lunch/06-event-truck.png",
-  "factory/state/art/shots/v2-lunch/07-unavailable-shake.png",
-  "factory/state/art/shots/v2-lunch/08-deliver-ready.png",
-  "factory/state/art/shots/v2-lunch/09-delivering.png",
-  "factory/state/art/shots/v2-lunch/10-job-reveal.png",
-  "factory/state/art/shots/v2-lunch/11-world-return.png",
-  "factory/state/art/shots/v2-lunch/12-next-trouble.png"
+  "factory/state/art/shots/v2-lunch/02-play-start.png",
+  "factory/state/art/shots/v2-lunch/03-one-placed.png",
+  "factory/state/art/shots/v2-lunch/04-two-placed.png",
+  "factory/state/art/shots/v2-lunch/05-four-placed.png",
+  "factory/state/art/shots/v2-lunch/06-swapping.png",
+  "factory/state/art/shots/v2-lunch/07-after-swap.png",
+  "factory/state/art/shots/v2-lunch/08-settled.png",
+  "factory/state/art/shots/v2-lunch/09-event-truck.png",
+  "factory/state/art/shots/v2-lunch/10-event-after.png",
+  "factory/state/art/shots/v2-lunch/11-unavailable-shake.png",
+  "factory/state/art/shots/v2-lunch/12-rebuilding.png",
+  "factory/state/art/shots/v2-lunch/13-rebuilt.png",
+  "factory/state/art/shots/v2-lunch/14-delivering.png",
+  "factory/state/art/shots/v2-lunch/15-job-reveal-lead.png",
+  "factory/state/art/shots/v2-lunch/16-job-reveal.png",
+  "factory/state/art/shots/v2-lunch/17-know-the-job.png",
+  "factory/state/art/shots/v2-lunch/18-know-scene-open.png",
+  "factory/state/art/shots/v2-lunch/19-career-path.png",
+  "factory/state/art/shots/v2-lunch/20-seed.png",
+  "factory/state/art/shots/v2-lunch/21-seed-picked.png",
+  "factory/state/art/shots/v2-lunch/22-world-return.png",
+  "factory/state/art/shots/v2-lunch/23-next-trouble.png"
  ],
  "errors": [],
+ "beadsBefore": [
+  {
+   "axis": "energy",
+   "band": "band-high"
+  },
+  {
+   "axis": "protein",
+   "band": "band-good"
+  },
+  {
+   "axis": "fat",
+   "band": "band-good"
+  },
+  {
+   "axis": "salt",
+   "band": "band-good"
+  }
+ ],
+ "beadsAfter": [
+  {
+   "axis": "energy",
+   "band": "band-good"
+  },
+  {
+   "axis": "protein",
+   "band": "band-good"
+  },
+  {
+   "axis": "fat",
+   "band": "band-good"
+  },
+  {
+   "axis": "salt",
+   "band": "band-good"
+  }
+ ],
  "scrollW": 375,
- "innerW": 375
+ "innerW": 375,
+ "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T12:31:24.038Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
+ "markers": false
 }

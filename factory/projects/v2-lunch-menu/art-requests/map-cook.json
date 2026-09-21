@@ -1,0 +1,41 @@
+{
+ "asset_id": "v2_lunch_map_cook",
+ "filename": "map/cook.png",
+ "world": "lunch-v2",
+ "use": "place",
+ "aspect_ratio": "1:1",
+ "size": "1024x1024",
+ "transparent_background": true,
+ "composition": "ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the tile centered and filling about 70% of the square with even margins (at least 14% on every side). It is ONE single small diorama tile that will be placed inside an open lunch box, so it must read as one compact object on its own little round base, not as a kitchen interior. No table, no cloth, no shadow plate: the tile floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only within the tile. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.",
+ "forbidden_objects": [
+  "readable text",
+  "letters or numbers",
+  "logos",
+  "attribute marks, icons, badges or symbols",
+  "walls, room, floor tiles or kitchen interior around the tile",
+  "food inside the pot",
+  "hands or people",
+  "table, cloth, background, backdrop or drop shadow outside the tile",
+  "photorealistic rendering",
+  "elements touching the image edge"
+ ],
+ "character_constraints": "no characters at all",
+ "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the tile.",
+ "reference_assets": [
+  "public/assets/v2/lunch/school.png",
+  "public/assets/v2/lunch/tray.png",
+  "public/assets/v2/lunch/dishes/miso_soup.png"
+ ],
+ "used_by": [
+  "src/v2/lunch/play/LunchMenuPlay.tsx"
+ ],
+ "purpose": "給食 WORLD MAP の「つくる」タイル。弁当箱の中に置かれる小さな給食調理場のジオラマ 1 個",
+ "scene": "a miniature school-kitchen tile as a single diorama piece, built on a small round clay base exactly like the round base under the approved school building: one large rounded stainless-steel cooking pot standing on a low sturdy stand, with one big wooden paddle resting across the rim of the pot. Soft matte metal rendered as clay, warm wooden paddle. Same matte clay / miniature toy material, same lighting and same warm palette as the school tile and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
+ "required_objects": [
+  "one large stainless cooking pot on a low stand",
+  "one big wooden paddle resting across the pot",
+  "one small round clay base under the whole tile",
+  "transparent background"
+ ],
+ "output_path": "public/assets/v2/lunch/map/cook.png"
+}
