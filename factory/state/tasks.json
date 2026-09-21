@@ -1832,14 +1832,14 @@
         }
       ],
       "deploy_status": null,
-      "release_commit": "506de326b720ce83b08f2f3a714b0ec4809dae27",
+      "release_commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
       "blocked_reason": "最後の独立再レビュー（r4）が Codex usage limit で実行できなかった。有効な最新レビューは r3 = FAIL 78（blocker 0 / high 1 / medium 3）で、その指摘はすべて修正済み（コミット 8b03691 ほか）だが、修正後の fresh re-review が未実施のため PASS とは記録しない。quota 回復後に factory/projects/v2-lunch-menu/impl-review-slice.prompt.md で再実行し、set-review すること。なお can-deploy は他に Product Identity 未承認と design_needed 6件でも拒否しており、これらは Human/Design Owner の判断",
       "human_decision_required": false,
       "product_identity_impact": "YES",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T20:05:47.833Z",
+      "updated_at": "2026-09-21T20:27:00.322Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -2076,6 +2076,22 @@
           "review_independent": true,
           "review_mechanism": "factory/harness/codex-review.mjs",
           "prompt_sha256": "64d812eadab27e2168357b94fee3c5eaef4ab21297ee2ddc325765318d53e44e"
+        },
+        {
+          "at": "2026-09-21T20:27:00.241Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:27:00.323Z",
+          "event": "release_commit_set",
+          "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
+          "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
         }
       ],
       "review_mechanism": "factory/harness/codex-review.mjs"
@@ -2137,19 +2153,19 @@
       "review_required_waiver_reason": null,
       "reviewer": null,
       "review_independent": null,
-      "qa_status": null,
-      "qa_evidence": null,
-      "qa_evidence_kind": null,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/state/qa/v2-lunch-qa-harness-hardening-r4.json",
+      "qa_evidence_kind": "file",
       "design_needed": [],
       "deploy_status": null,
-      "release_commit": null,
+      "release_commit": "1adf86d6b1772b47063512b8bef66cde830450b0",
       "blocked_reason": null,
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T20:23:59.876Z",
-      "updated_at": "2026-09-21T20:23:59.877Z",
+      "updated_at": "2026-09-21T20:27:00.426Z",
       "history": [
         {
           "at": "2026-09-21T20:23:59.877Z",
@@ -2159,6 +2175,22 @@
           "producer": "claude-code-builder",
           "review_required": true,
           "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T20:27:00.359Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-qa-harness-hardening-r4.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:27:00.426Z",
+          "event": "release_commit_set",
+          "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
+          "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
         }
       ]
     }

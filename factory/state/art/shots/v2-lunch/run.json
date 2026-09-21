@@ -1,6 +1,6 @@
 {
- "at": "2026-09-21T20:23:37.928Z",
- "ok": false,
+ "at": "2026-09-21T20:27:00.078Z",
+ "ok": true,
  "shots": [
   "factory/state/art/shots/v2-lunch/01-world-map.png",
   "factory/state/art/shots/v2-lunch/02-play-start.png",
@@ -28,10 +28,7 @@
   "factory/state/art/shots/v2-lunch/24-no-staple.png"
  ],
  "errors": [],
- "violations": [
-  "a number was shown on the board at some point — \"100てん\"",
-  "text rendered at some point is not in copy.ts — \"100てん\""
- ],
+ "violations": [],
  "brokenImages": [],
  "everRendered": {
   "board": [
@@ -39,7 +36,6 @@
    "たんぱく質",
    "あぶら",
    "塩分",
-   "100てん",
    "さけのしおやきが とどかない！"
   ],
   "boardAria": [
@@ -93,7 +89,6 @@
    "たんぱく質",
    "あぶら",
    "塩分",
-   "100てん",
    "さけのしおやきが とどかない！",
    "いまやってたこと、じつは仕事。",
    "栄養教諭",
@@ -209,7 +204,6 @@
    "パン（おぼんから もどす）",
    "さけのしおやき（おぼんから もどす）",
    "やさいのごまあえ（おぼんから もどす）",
-   "100てん",
    "ごはん（おぼんから もどす）",
    "エネルギー：すこし たりない",
    "たんぱく質：ちょうどいい",
@@ -266,6 +260,6 @@
  ],
  "scrollW": 375,
  "innerW": 375,
- "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T20:23:31.580Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
+ "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T20:26:53.728Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
  "markers": false
 }

@@ -124,6 +124,38 @@ art gaps, the Product Identity approval for a core-loop change, and the OPEN ite
 claiming one. The target for the next job is the same: **zero mid-flight, one batch at
 the end.**
 
+## 6b. The r4 round (2026-09-22): "we checked it" is not a check
+
+r4 returned FAIL 80 with no blockers and nothing wrong in the game. Its three
+findings were all in the harness again, and the most useful one was the dullest:
+the harness *claimed* five phone sizes were covered and actually ran one. Earlier
+rounds had opened the other four by hand, looked at them, and written down that they
+fitted. The first time the sweep ran as an assertion it failed — at 320×568 the tray
+recesses were 61×43 and the milk recess 52×40, under the 44×44 minimum that the same
+harness enforced at 375×812.
+
+Nothing had regressed. The defect had been there all along, on the smallest phone the
+slice claims to support, and four independent reviews plus a manual pass had missed it
+because looking at a screenshot does not measure anything.
+
+The rule that follows is narrow and worth keeping: **a viewport, a media setting or a
+locale that the product claims to support is a parameter of the test run, never a
+sentence in a report.** If a round-trip cannot afford to run all of them, the claim
+should be narrowed, not asserted.
+
+Second lesson from the same round, about reviewers rather than about tests. r4's only
+HIGH did not reproduce: two separate mutations that should have exploited it were
+caught by the unfixed harness. The finding was sound as reasoning and wrong as fact.
+It was still worth acting on, because the check had been passing by coincidence
+(React never changes a class here without also mutating nodes, which is what actually
+triggered the re-scan) and a check that passes by coincidence is not a check. What
+mattered was recording *that* — a later reader who re-runs M14 without the fix will see
+it pass and would otherwise conclude the repair was theatre.
+
+**A finding that does not reproduce is not automatically wrong, and a repair applied to
+a non-reproducing finding must say so in the log.** Both halves of that are needed:
+the first stops reviewers being dismissed, the second stops the record becoming fiction.
+
 ## 7. Promoted to canonical rules
 
 | Rule | Where |
@@ -132,6 +164,8 @@ the end.**
 | A screenshot run asserts every state (markers, forbidden content, rendered-string allow-list, image load), not just the last one | `factory/rules/qa-rules.md` |
 | `DESIGN_NEEDED` is a queued item that does not stop unrelated work; only an explicit block sets `DESIGN_BLOCKED` | `factory/harness/task-state.mjs` (mechanical) + `CLAUDE.md` §5 |
 | A Ver.2 job slice starts with a legacy inventory; a DROP needs a written reason | `docs/jibun-choice-v2/MIGRATION_PLAN.md` |
+| A supported viewport / media setting is a parameter of the test run, never a sentence in a report | `factory/rules/qa-rules.md` |
+| A reviewer finding that does not reproduce is recorded as such, and any repair made anyway says why | `factory/rules/qa-rules.md` |
 
 Not promoted (one-offs): the specific gauge geometry, the specific dish coefficients,
 the Codex quota collision between image generation and review.
