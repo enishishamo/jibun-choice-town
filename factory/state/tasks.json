@@ -1746,9 +1746,9 @@
     "v2-lunch-nutrition-teacher-slice": {
       "task_id": "v2-lunch-nutrition-teacher-slice",
       "task_type": "game-content",
-      "status": "READY",
+      "status": "REPAIR",
       "producer": "claude-code-builder",
-      "repair_count": 0,
+      "repair_count": 1,
       "review_status": null,
       "review_evidence": null,
       "review_required": true,
@@ -1758,7 +1758,32 @@
       "qa_status": "PASS",
       "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
       "qa_evidence_kind": "file",
-      "design_needed": [],
+      "design_needed": [
+        {
+          "id": "DN-RACK",
+          "where": "src/v2/lunch/play/lunchMenuPlay.css:.lmp-rack",
+          "note": "生成待ち: 木の板に4本の溝と中央の窪み（public/assets/v2/lunch/gauge-rack.png）。現状は同じ形をCSSで描いている",
+          "added_at": "2026-09-21T13:02:47.346Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-MAPTILES",
+          "where": "src/v2/lunch/PlaceMark.tsx",
+          "note": "生成待ち: 弁当箱の地面と そだてる/つくる/こんだて のタイル。truck.png/school.png と同じカメラ・光・接地影で揃える",
+          "added_at": "2026-09-21T13:02:47.387Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-SCENES",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "生成待ち: 給食室／教室／相談の3場面。同じ枠・同じ比率・同じカメラ",
+          "added_at": "2026-09-21T13:02:47.432Z",
+          "resolved_at": null,
+          "approval": null
+        }
+      ],
       "deploy_status": null,
       "release_commit": null,
       "blocked_reason": null,
@@ -1767,7 +1792,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-21T12:33:28.744Z",
-      "updated_at": "2026-09-21T12:35:03.882Z",
+      "updated_at": "2026-09-21T13:03:13.364Z",
       "history": [
         {
           "at": "2026-09-21T12:33:28.745Z",
@@ -1787,6 +1812,44 @@
           "checks": 5,
           "all_zero": true,
           "commit": "cb55712d4d69063e0a374aa210b0c80994c2491d"
+        },
+        {
+          "at": "2026-09-21T13:02:47.347Z",
+          "event": "design_needed_added",
+          "id": "DN-RACK",
+          "where": "src/v2/lunch/play/lunchMenuPlay.css:.lmp-rack",
+          "note": "生成待ち: 木の板に4本の溝と中央の窪み（public/assets/v2/lunch/gauge-rack.png）。現状は同じ形をCSSで描いている",
+          "added_at": "2026-09-21T13:02:47.346Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:02:47.388Z",
+          "event": "design_needed_added",
+          "id": "DN-MAPTILES",
+          "where": "src/v2/lunch/PlaceMark.tsx",
+          "note": "生成待ち: 弁当箱の地面と そだてる/つくる/こんだて のタイル。truck.png/school.png と同じカメラ・光・接地影で揃える",
+          "added_at": "2026-09-21T13:02:47.387Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:02:47.433Z",
+          "event": "design_needed_added",
+          "id": "DN-SCENES",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "生成待ち: 給食室／教室／相談の3場面。同じ枠・同じ比率・同じカメラ",
+          "added_at": "2026-09-21T13:02:47.432Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:03:13.364Z",
+          "event": "repair_granted",
+          "repair_count": 1
         }
       ]
     }

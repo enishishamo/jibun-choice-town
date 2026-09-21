@@ -82,6 +82,31 @@ Ver.2 が「1 ゲーム完成 → テスト」の段階に入った時点で決�
 - Ver.2 の公開導線には未改修ゲームを大量に並べない。
 - 既存ゲームは削除せず `archive/ver1` と `src/q1/` に残す。
 
+### 1 職業の完成 = Job Vertical Slice（2026-09-21 追加）
+
+「1 ゲーム完成」ではなく、次が全部通って初めて 1 職業が完成とする。
+
+```
+ENTRY → PLAY → EVENT → CLEAR → JOB REVEAL → KNOW THE JOB
+      → CAREER PATH → 好きの種 → WORLD RETURN
+```
+
+PLAY だけ、あるいは JOB REVEAL を仮画面にしたまま完成扱いにしない。開発者向け表示
+（`TEMP_IMPLEMENTATION_ONLY` / `DESIGN_NEEDED` / `DN-nn`）が子どもの導線に残ってい
+る状態も完成ではない（`task-state.mjs can-deploy` が機械的に拒否する）。
+実例と経緯: `factory/projects/v2-lunch-menu/nutrition-teacher-slice.md`。
+
+### 着手時に必ず行うこと: LEGACY INVENTORY（2026-09-21 追加）
+
+Ver.2 は Ver.1 を捨てて作り直すものではなく、**入口と PLAY を作り直し、その裏の
+職業理解・事実・調査結果は継承する**もの。新しい職業に着手する前に、repo 全体から
+その職業に関わる Ver.1 資産（職業紹介・1日の流れ・なり方・career path・copy・
+ゲームロジック・画像・QA/批評記録・ユーザーテスト記録）を洗い出し、
+**KEEP / UPGRADE / REPLACE / DROP** を 1 件ずつ判断して書き残す。**DROP には必ず
+理由を書く。**「Ver.2 を作ったら昔あったものが消えていた」を仕組みで防ぐ。
+
+雛形: `factory/projects/v2-lunch-menu/legacy-inventory.md`。
+
 ## 5. Factory ルールとの接続
 
 - **Product Identity Gate**: Ver.2 の相棒・ループ・アイテム・ノートは Human Decision 済み

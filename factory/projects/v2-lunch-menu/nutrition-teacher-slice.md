@@ -60,14 +60,18 @@ header says so. A child never sees a number, and neither does anything else.
 
 | Property | Value |
 |---|---|
-| menus that work | 19 of 126 (15%) |
-| genuinely different families (≥2 dishes apart) | 8 |
+| menus that work | 16 of 126 (13%) |
+| genuinely different families (≥2 dishes apart) | 7 |
 | dishes that appear in every solution | 0 |
 | axes that can be missed on both sides | 4 of 4 |
-| menus one axis off that a single swap fixes | all 41 |
-| menus further off that a single swap improves | all 66 |
+| near misses one swap from a working menu | 42 of 44 (the other 2 are exactly two swaps) |
+| menus further off that a single swap improves | all |
 | working menus left when any one dish fails to arrive | ≥ 6 |
 | distinct dishes the EVENT can take | 5 |
+
+Besides the four axes there is exactly one structural rule, and it comes from F2:
+**a tray with no 主食 is not a school lunch**, however well the axes sit. It is not a
+fifth gauge — the child meets it as the rice-and-bread pan asking to be used.
 
 - **EVENT**: on the child's first send, the delivery trouble takes the dish on the tray
   that is carrying the most weight, among those whose loss still leaves at least
@@ -83,9 +87,17 @@ the counting rack / the serving counter.
 
 - **The rack is an object, not a chart.** One block with four grooves carved in it; the
   middle of each groove is carved deeper. A clay bead rolls along the groove and can
-  only come to rest in the hollow. Out on the shallow part it sits higher, casts a longer
-  shadow and keeps rocking. **The bead never changes colour** — a colour change would
-  read as right/wrong, which the contract forbids.
+  only come to rest in the hollow — the wood in front of the groove covers its lower
+  edge, so the ball is visibly *inside* the channel rather than riding on a track. Out
+  on the shallow part it sits high, fully visible, and keeps rocking. **The bead never
+  changes colour** — a colour change would read as right/wrong, which the contract
+  forbids. The hollow's position and width are computed at runtime from `TRACK`, so the
+  picture cannot drift from the rule.
+- **An unfinished tray is never judged.** While the tray is filling, the beads only
+  move; nothing rocks, nothing is pointed at, nothing can read as a mistake. The
+  verdict appears only when the tray is full — and it is read off the beads *where they
+  are drawn*, not off the model, so the school can never appear before the beads have
+  finished rolling.
 - Placing a dish sends motes from it into the four grooves; the beads move **when the
   motes arrive**, never before, so the cause is visible.
 - The counter is one serving pan per kind of dish, in serving order (主食→主菜→副菜→汁物).
