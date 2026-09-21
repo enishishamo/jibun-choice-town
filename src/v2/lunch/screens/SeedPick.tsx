@@ -2,11 +2,13 @@
 // never as a verdict about the child. Nothing here is scored or classified.
 import { useState } from "react";
 import { COPY } from "../copy";
+import { useScreenFocus } from "../useScreenFocus";
 
 export default function SeedPick({ onDone }: { onDone: (seedId: string) => void }) {
+  const focusRef = useScreenFocus<HTMLElement>();
   const [picked, setPicked] = useState<string | null>(null);
   return (
-    <section className="v2s v2s-seed" aria-label={COPY.seed.question}>
+    <section ref={focusRef} tabIndex={-1} className="v2s v2s-seed" aria-label={COPY.seed.question}>
       <h1 className="v2s-seed-q">{COPY.seed.question}</h1>
       <div className="v2s-seed-list">
         {COPY.seed.options.map((o, i) => (

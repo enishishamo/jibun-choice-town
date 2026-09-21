@@ -22,11 +22,11 @@
   border-radius: 999px;
   padding: 14px 30px;
   min-height: 48px;
-  background: var(--v2-fresh-green);
+  background: var(--v2-deep-green);
   color: var(--v2-warm-cream);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 55%, transparent);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 72%, transparent);
   transition: transform 0.14s ease, box-shadow 0.14s ease;
 }
 .v2s-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--v2-deep-green) 55%, transparent); }
@@ -228,6 +228,17 @@
 @keyframes v2s-land { from { opacity: 0; transform: translateY(-26px) scale(0.92); } to { opacity: 1; transform: none; } }
 @keyframes v2s-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes v2s-open { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 200px; } }
+
+@media (max-height: 700px) {
+  .v2s { padding-top: 14px; gap: 8px; }
+  .v2s-know { gap: 7px; }
+  .v2s-scene-tap { min-height: 66px; }
+  .v2s-scene-art { width: 84px; height: 56px; }
+  .v2s-day { padding-top: 0; }
+  .v2s-day-steps li { padding: 3px 0 3px 24px; font-size: 12.5px; }
+  .v2s-reveal-stage { width: 168px; height: 100px; }
+  .v2s-reveal-job { font-size: 28px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .v2s-reveal-stage, .v2s-day-steps li, .v2s-step, .v2s-seed-opt, .v2s-scene-line { animation: none; }

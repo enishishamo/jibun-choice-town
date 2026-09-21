@@ -23,7 +23,10 @@ await vite.close();
 const ALLOWED = new Set();
 const collect = (v) => {
   if (typeof v === "string") ALLOWED.add(v.trim());
-  else if (typeof v === "function") { for (const n of ["さけのしおやき", "とりのからあげ", "X"]) collect(v(n)); }
+  else if (typeof v === "function") {
+    for (const n of ["さけのしおやき", "とりのからあげ", "ごはん", "パン", "やさいのごまあえ", "ポテトサラダ", "とうふのみそしる", "コーンスープ", "コロッケ", "ぎゅうにゅう", "りょうり"]) collect(v(n));
+    for (let i = 1; i <= 6; i++) collect(v(i));
+  }
   else if (v && typeof v === "object") for (const x of Object.values(v)) collect(x);
 };
 collect(COPY);
@@ -125,7 +128,7 @@ const before = await beads();
 // ── 04 swapping one dish while watching the beads ────────────────────────
 // two staples is too much energy: take the rice back off the tray and put a
 // side dish in instead (tapping a dish on the tray returns it to the counter)
-await tap("ごはん", 600);
+await tap("ごはん（おぼんから もどす）", 600);
 await shot("06-swapping");
 await tap("ポテトサラダ", 1600);
 await shot("07-after-swap");
@@ -149,7 +152,7 @@ await shot("11-unavailable-shake");
 //    back off and try the soup instead ─────────────────────────────────────
 await tap("とりのからあげ", 1500);
 await shot("12-rebuilding");
-await tap("とりのからあげ", 600); // now on the tray: tapping it returns it to the counter
+await tap("とりのからあげ（おぼんから もどす）", 600); // on the tray: tapping it sends it back
 await tap("とうふのみそしる", 1600);
 await shot("13-rebuilt");
 
@@ -187,6 +190,20 @@ await tap("ちずへ", 1200);
 await shot("22-world-return");
 await sleep(1200);
 await shot("23-next-trouble");
+
+// ── the one structural rule besides the four axes: a lunch needs a 主食.
+//    Played on a fresh visit so the state is unambiguous.
+await tap("こんだてを考える", 700);
+for (const d of ["さけのしおやき", "やさいのごまあえ", "ポテトサラダ", "とうふのみそしる"]) await tap(d);
+await sleep(1500);
+await shot("24-no-staple");
+const noStaple = await page.evaluate(() => ({
+  stapleShelfAsks: !!document.querySelector(".lmp-shelf.wanted"),
+  schoolOffered: !!document.querySelector(".lmp-school.ready"),
+}));
+if (!noStaple.stapleShelfAsks || noStaple.schoolOffered) {
+  violations.push(`24-no-staple: a tray with no 主食 must not be sendable and the 主食 pan must ask — got ${JSON.stringify(noStaple)}`);
+}
 
 // every <img> the flow rendered must be a real, loaded picture — a CSS fallback
 // carries no text and returns no 4xx, so the marker grep alone cannot see it

@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import "./lunchMenuPlay.css";
 import Art from "../Art";
 import { COPY } from "../copy";
+import { useScreenFocus } from "../useScreenFocus";
 import {
   AXES, DISH_BY_ID, FREE_SLOTS, MILK, MILK_FIXED, bandOnTrack, canSend, evaluate, newSession, place, relatedSet, remove, send, swap,
   type Axis, type Band, type Dish, type Evaluation, type Session,
@@ -69,7 +70,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   const [settled, setSettled] = useState(false);
   /** bead positions actually drawn — they lag the model until the motes land */
   const [shown, setShown] = useState<Record<Axis, number>>(() => beadPositions(evaluate([null, null, null, null])));
-  const rootRef = useRef<HTMLElement>(null);
+  const rootRef = useScreenFocus<HTMLElement>();
   const fxTimers = useRef<Set<number>>(new Set());
   const seq = useRef(0);
   const flightSeq = useRef(0);
@@ -148,7 +149,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   }, [ev.viable]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const bump = (id: string) => { setShake(id); fx(() => setShake((cur) => (cur === id ? null : cur)), 420); };
-  const callDishes = () => { setCalling(true); fx(() => setCalling(false), 1500); };
+  const callDishes = () => { setCalling(true); fx(() => setCalling(false), 2200); };
 
   const flyDish = (id: string, slot: number, fromEl: HTMLElement) => {
     const root = rootRef.current;
@@ -239,7 +240,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
         setTroubleShown(true);
         rollBeads();
       }, TRUCK_MS);
-      fx(() => setTroubleShown(false), TRUCK_MS + 4200);
+
       return;
     }
     sentRef.current = true;
@@ -254,6 +255,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
   return (
     <section
       ref={rootRef}
+      tabIndex={-1}
       className={`lmp ${sending && sentRef.current ? "is-delivering" : ""} ${settled ? "is-settled" : ""} phase-${s.phase}`}
       aria-label={COPY.play.title}
     >
@@ -277,6 +279,8 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
       <p className={`lmp-trouble ${troubleShown && s.eventDish ? "in" : ""}`} role="status" aria-live="polite">
         {troubleShown && s.eventDish ? COPY.play.notDelivered(lostName) : ""}
       </p>
+      {/* spoken only: what touching an empty recess just did */}
+      <p className="lmp-sr" role="status" aria-live="polite">{calling ? COPY.play.calling : ""}</p>
 
       <div className="lmp-table">
         <div
@@ -298,7 +302,7 @@ export default function LunchMenuPlay({ onCleared, assets }: LunchMenuPlayProps)
                   type="button"
                   className={`lmp-slot s${i} ${id ? "filled" : "empty"} ${pop === i ? "pop" : ""} ${arriving === i ? "arriving" : ""} ${leavingSlot === i ? "leaving" : ""} ${id && related.has(id) ? "related" : ""}`}
                   style={{ left: `${SLOT_POS[i].x}%`, top: `${SLOT_POS[i].y}%` }}
-                  aria-label={id ? dishName(id) : COPY.play.emptySlot}
+                  aria-label={id ? COPY.play.onTray(dishName(id)) : COPY.play.emptySlot(i + 1)}
                   data-slot-dish={id ?? undefined}
                   data-slot-index={i}
                   disabled={arriving === i}

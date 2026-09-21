@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import Art from "../Art";
 import PlaceMark from "../PlaceMark";
 import { COPY } from "../copy";
+import { useScreenFocus } from "../useScreenFocus";
 import { ROAD_IDS, SPOT_IDS } from "../types";
 import type { LunchWorldView, RoadId, RoadState, SpotId } from "../types";
 import "./lunchWorld.css";
@@ -62,6 +63,7 @@ function Road({ id, state }: { id: RoadId; state: RoadState }) {
 export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = false }: LunchWorldMapProps) {
   // every tap reacts (touch → react): a place that has no PLAY yet still nudges,
   // so the child never touches something that seems broken
+  const focusRef = useScreenFocus<HTMLDivElement>();
   const [nudged, setNudged] = useState<SpotId | null>(null);
   const nudgeTimer = useRef<number | null>(null);
   useEffect(() => () => { if (nudgeTimer.current !== null) clearTimeout(nudgeTimer.current); }, []);
@@ -72,7 +74,7 @@ export default function LunchWorldMap({ view, onTapSpot, assets, showLabels = fa
     onTapSpot(id);
   };
   return (
-    <div className="lw-world">
+    <div ref={focusRef} tabIndex={-1} className="lw-world">
     <div className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }} role="group" aria-label={COPY.world.title}>
       {/* Layer 1: bento box frame (open lid at top, tray body below) */}
       <Art

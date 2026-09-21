@@ -5,11 +5,13 @@
 import { useState } from "react";
 import PlaceMark, { type PlaceId } from "../PlaceMark";
 import { COPY } from "../copy";
+import { useScreenFocus } from "../useScreenFocus";
 
 export default function KnowTheJob({ onCareer, onNext }: {
   onCareer: () => void;
   onNext: () => void;
 }) {
+  const focusRef = useScreenFocus<HTMLElement>();
   const [open, setOpen] = useState<string | null>(null);
   const [seen, setSeen] = useState<Set<string>>(() => new Set());
   const touch = (id: string) => {
@@ -17,7 +19,7 @@ export default function KnowTheJob({ onCareer, onNext }: {
     setSeen((cur) => new Set(cur).add(id));
   };
   return (
-    <section className="v2s v2s-know" aria-label={COPY.know.title}>
+    <section ref={focusRef} tabIndex={-1} className="v2s v2s-know" aria-label={COPY.know.title}>
       <h1 className="v2s-know-title">{COPY.know.title}</h1>
       <p className="v2s-know-hint">{COPY.know.hint}</p>
 
@@ -26,13 +28,13 @@ export default function KnowTheJob({ onCareer, onNext }: {
           const isOpen = open === side.id;
           return (
             <div key={side.id} className={`v2s-scene ${isOpen ? "open" : ""} ${seen.has(side.id) ? "seen" : ""}`}>
-              <button type="button" className="v2s-scene-tap" aria-expanded={isOpen} onClick={() => touch(side.id)}>
+              <button type="button" className="v2s-scene-tap" aria-expanded={isOpen} aria-controls={`v2s-scene-${side.id}`} onClick={() => touch(side.id)}>
                 <span className="v2s-scene-art">
                   <PlaceMark id={side.id as PlaceId} className="v2s-scene-mark" />
                 </span>
                 <span className="v2s-scene-label">{side.label}</span>
               </button>
-              {isOpen && <p className="v2s-scene-line">{side.line}</p>}
+              {isOpen && <p className="v2s-scene-line" id={`v2s-scene-${side.id}`}>{side.line}</p>}
             </div>
           );
         })}

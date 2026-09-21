@@ -24,8 +24,10 @@ export const COPY = {
     rack: "こんだての ようす", // aria
     send: "がっこうへ おくる", // aria of the school
     milk: "ぎゅうにゅう", // aria — V-A1 fixed slot
-    emptySlot: "あいている ところ", // aria
-    axis: { energy: "エネルギー", protein: "たんぱく質", fat: "しぼう", salt: "塩分" } as Record<string, string>,
+    emptySlot: (n: number) => `${n}ばんめの あいている ところ`, // aria
+    onTray: (name: string) => `${name}（おぼんから もどす）`, // aria
+    calling: "りょうりを えらんでね", // aria live, when an empty recess is touched
+    axis: { energy: "エネルギー", protein: "たんぱく質", fat: "あぶら", salt: "塩分" } as Record<string, string>,
     // aria only — on screen this is the bead's position, never a word
     band: { low: "すこし たりない", good: "ちょうどいい", high: "すこし おおい", idle: "まだ" } as Record<string, string>,
     notDelivered: (name: string) => `${name}が とどかない！`,

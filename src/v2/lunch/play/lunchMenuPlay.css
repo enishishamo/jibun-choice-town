@@ -8,13 +8,17 @@
   display: flex;
   flex-direction: column;
   background: linear-gradient(180deg,
-    color-mix(in srgb, var(--v2-soft-sky) 78%, var(--v2-warm-cream)) 0%,
-    color-mix(in srgb, var(--v2-soft-sky) 34%, var(--v2-warm-cream)) 30%,
-    var(--v2-warm-cream) 52%);
+    var(--v2-sky-blue) 0%,
+    color-mix(in srgb, var(--v2-sky-blue) 55%, var(--v2-soft-sky)) 12%,
+    color-mix(in srgb, var(--v2-soft-sky) 62%, var(--v2-warm-cream)) 30%,
+    var(--v2-warm-cream) 50%);
   color: var(--v2-deep-green);
   overflow: hidden;
   touch-action: pan-y;
 }
+
+/* spoken to assistive technology only */
+.lmp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ── the band above the tray: where the truck comes and the school appears ── */
 .lmp-school {
@@ -22,9 +26,9 @@
   z-index: 3;
   left: 50%;
   top: max(2px, env(safe-area-inset-top));
-  width: 152px;
-  height: 86px;
-  margin-left: -76px;
+  width: 146px;
+  height: 76px;
+  margin-left: -73px;
   border: 0;
   background: transparent;
   padding: 0;
@@ -63,8 +67,8 @@
   padding: 7px 15px;
   border-radius: 999px;
   background: var(--v2-warm-cream);
-  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-coral) 40%, transparent);
-  color: var(--v2-coral);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-coral) 55%, transparent), inset 0 0 0 2px color-mix(in srgb, var(--v2-coral) 75%, transparent);
+  color: var(--v2-deep-green);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
@@ -73,7 +77,21 @@
 .lmp-trouble.in { opacity: 1; animation: lmp-drop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1); }
 
 /* ── the table: tray, then the counting rack in front of it ── */
-.lmp-table { padding: calc(84px + env(safe-area-inset-top)) 16px 0; }
+/* the band above the tray is taller than the school, so no part of the send
+   target can ever sit over a dish the child is reaching for */
+.lmp-table { padding: calc(92px + env(safe-area-inset-top)) 16px 0; }
+@media (max-height: 700px) {
+  .lmp-table { padding-top: calc(72px + env(safe-area-inset-top)); }
+  .lmp-school { height: 62px; width: 118px; margin-left: -59px; }
+  .lmp-truck { width: 92px; height: 50px; }
+  .lmp-tray { width: min(100%, 300px); }
+  .lmp-rack { width: min(100%, 300px); height: 118px; margin-top: 6px; }
+  .lmp-bead { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+  .lmp-counter { gap: 2px; padding: 6px 12px 4px; }
+  .lmp-cand { width: clamp(64px, 21vw, 82px); height: 58px; }
+  .lmp-empty-spot { width: 44px; height: 44px; }
+  .lmp-groove-name { font-size: 11px; }
+}
 .lmp-tray {
   position: relative;
   margin: 0 auto;
@@ -109,7 +127,10 @@
 .lmp-slot {
   position: absolute;
   width: 24%;
-  aspect-ratio: 1;
+  /* bounded by the row pitch (SLOT_POS rows are 37% of the tray apart) so two
+     recesses can never share a pixel — tapping one dish cannot remove another */
+  height: 33%;
+  overflow: visible;
   transform: translate(-50%, -50%);
   border: 3px dashed color-mix(in srgb, var(--v2-deep-green) 14%, transparent);
   border-radius: 20px;
@@ -128,7 +149,7 @@
   background: color-mix(in srgb, var(--v2-honey-yellow) 40%, transparent);
   animation: lmp-await 2s ease-in-out infinite;
 }
-.lmp-slot.fixed { width: 20%; border-radius: 50%; background: color-mix(in srgb, var(--v2-soft-sky) 55%, transparent); }
+.lmp-slot.fixed { width: 20%; height: 30%; border-radius: 50%; background: color-mix(in srgb, var(--v2-soft-sky) 55%, transparent); }
 .lmp-slot.filled { border-color: transparent; background: transparent; }
 /* with the real tray art the recess itself is the affordance — no drawn outline */
 .lmp-tray.has-art .lmp-slot { background: transparent; border-color: transparent; }
@@ -139,6 +160,9 @@
 .lmp-slot.leaving .lmp-dish-art, .lmp-slot.leaving .lmp-dish { animation: lmp-leave 0.26s ease-in forwards; }
 .lmp-slot.related .lmp-dish-art, .lmp-slot.related .lmp-dish { animation: lmp-wobble 2.2s ease-in-out infinite; }
 .lmp-dish-art { width: 96%; height: 96%; object-fit: contain; display: block; }
+/* the food may overflow its (smaller) hit box — only the touch target is bounded */
+.lmp-slot .lmp-dish-art { width: 100%; height: 148%; }
+.lmp-slot.fixed .lmp-dish-art { height: 150%; }
 
 /* ── the counting rack: four channels carved into one block ──
    The bead travels 38%..93% of the rack (GROOVE in LunchMenuPlay.tsx). The good
@@ -180,25 +204,26 @@
 /* the shallow channel: a cut into the block, so it is darker than the face */
 .lmp-groove-track {
   position: absolute;
-  left: 35.5%; right: 4%;
+  left: 35.5%; right: 0;
   top: 50%;
-  height: 15px;
-  margin-top: -7.5px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--v2-deep-green) 15%, var(--v2-warm-beige));
-  box-shadow: inset 0 4px 4px color-mix(in srgb, var(--v2-deep-green) 42%, transparent);
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 8px 0 0 8px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 62%, var(--v2-deep-green));
+  box-shadow: inset 0 5px 5px -1px color-mix(in srgb, var(--v2-deep-green) 62%, transparent),
+              inset 3px 0 4px -2px color-mix(in srgb, var(--v2-deep-green) 45%, transparent);
 }
 /* the hollow: cut deeper and wider, the one place a bead can come to rest */
 .lmp-groove-hollow {
   position: absolute;
   left: var(--hollow-left); width: var(--hollow-width);
   top: 50%;
-  height: 26px;
-  margin-top: -13px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--v2-deep-green) 32%, var(--v2-warm-beige));
-  box-shadow: inset 0 7px 8px color-mix(in srgb, var(--v2-deep-green) 62%, transparent),
-              0 1px 0 color-mix(in srgb, var(--v2-warm-cream) 55%, transparent);
+  height: 30px;
+  margin-top: -15px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 28%, color-mix(in srgb, var(--v2-deep-green) 72%, var(--v2-warm-beige)), color-mix(in srgb, var(--v2-deep-green) 48%, var(--v2-warm-beige)) 78%);
+  box-shadow: inset 0 8px 9px color-mix(in srgb, var(--v2-deep-green) 72%, transparent),
+              inset 0 -3px 0 color-mix(in srgb, var(--v2-warm-cream) 45%, transparent);
 }
 /* the near lip of the channel, drawn OVER the bead: this is what makes the ball
    sit inside the wood instead of on top of a track */
@@ -227,12 +252,11 @@
   background: radial-gradient(circle at 34% 26%, color-mix(in srgb, var(--v2-warm-cream) 62%, var(--v2-coral)), var(--v2-coral) 58%, color-mix(in srgb, var(--v2-coral) 66%, var(--v2-deep-green)));
   transition: left 0.5s cubic-bezier(0.32, 1.25, 0.5, 1), transform 0.35s cubic-bezier(0.3, 1.3, 0.5, 1), filter 0.3s ease;
 }
-/* the tray is still being filled: plain clay, moving but never judged */
+/* the tray is still being filled: the SAME clay ball, simply resting shallow.
+   The colour never changes for the whole game — a colour change on judgement
+   would read as "you got it wrong", which is exactly what must not happen. */
 .lmp-bead.band-filling,
-.lmp-bead.band-idle {
-  background: radial-gradient(circle at 34% 26%, color-mix(in srgb, var(--v2-warm-cream) 74%, var(--v2-warm-beige)), var(--v2-warm-beige) 60%, color-mix(in srgb, var(--v2-warm-beige) 66%, var(--v2-deep-green)));
-  transform: translateY(1px) scale(0.92);
-}
+.lmp-bead.band-idle { transform: translateY(0) scale(0.96); }
 /* dropped into the hollow: it sits low, the near lip covers more of it, it is in
    the hollow's shade, and it does not move at all */
 .lmp-bead.band-good {
@@ -337,17 +361,21 @@
   box-shadow: inset 0 3px 4px color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
 }
 /* did not arrive: the dish is still there but grey, and it shakes when touched */
-/* did not arrive: it is not here — only the memory of it, over its empty place */
-.lmp-cand.gone .lmp-dish-art, .lmp-cand.gone .lmp-dish { filter: saturate(0.45); opacity: 0.3; }
+/* did not arrive: the crate it should have come in is still shut. Distinct from
+   an empty place left by a dish that is simply on the tray. */
+.lmp-cand.gone .lmp-dish-art, .lmp-cand.gone .lmp-dish { filter: saturate(0.5); opacity: 0.22; }
 .lmp-cand.gone::after {
   content: "";
   position: absolute;
   left: 50%; top: 50%;
-  width: 58px; height: 58px;
-  margin: -29px 0 0 -29px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--v2-warm-beige) 86%, var(--v2-warm-cream));
-  box-shadow: inset 0 3px 4px color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
+  width: 60px; height: 46px;
+  margin: -23px 0 0 -30px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(135deg,
+    color-mix(in srgb, var(--v2-warm-beige) 78%, var(--v2-deep-green)) 0 7px,
+    color-mix(in srgb, var(--v2-warm-beige) 92%, var(--v2-deep-green)) 7px 14px);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--v2-warm-beige) 55%, var(--v2-deep-green)),
+              0 2px 0 color-mix(in srgb, var(--v2-deep-green) 18%, transparent);
   z-index: -1;
 }
 .lmp-cand.invite { animation: lmp-float 1.6s ease-in-out infinite; }
@@ -356,6 +384,9 @@
 .lmp-shelf.wanted .lmp-cand:not(.on-tray):not(.gone) { animation: lmp-float 1.6s ease-in-out infinite; }
 .lmp-cand.shake { animation: lmp-shake 0.42s ease; }
 .lmp.is-delivering .lmp-counter { opacity: 0.35; transition: opacity 0.4s ease; }
+/* the destination must stay on screen while the lunch travels to it */
+.lmp.is-delivering .lmp-school { opacity: 1; transform: none; animation: lmp-receive 1.3s ease-in-out; }
+@keyframes lmp-receive { 0%, 55% { transform: none; } 72% { transform: translateY(5px) scale(1.06); } 100% { transform: none; } }
 
 /* dish placeholder, only until the art loads */
 .lmp-dish { display: block; width: 72%; aspect-ratio: 1; border-radius: 50%; background: var(--v2-soft-sky); }
@@ -372,7 +403,7 @@
 @keyframes lmp-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7px) rotate(-3deg); } 40% { transform: translateX(6px) rotate(3deg); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
 @keyframes lmp-gatan { 0%, 100% { transform: translateX(158px) rotate(0); } 30% { transform: translateX(158px) translateY(-6px) rotate(-4deg); } 60% { transform: translateX(158px) translateY(2px) rotate(3deg); } }
 @keyframes lmp-settle { 0% { transform: translateY(-4px); } 45% { transform: translateY(5px) scale(0.985); } 100% { transform: translateY(-4px); } }
-@keyframes lmp-deliver { 0% { transform: translateY(-4px); } 22% { transform: translateY(7px) scale(0.98); } 100% { transform: translateY(-190px) scale(0.5); opacity: 0.55; } }
+@keyframes lmp-deliver { 0% { transform: translateY(-4px); } 22% { transform: translateY(7px) scale(0.98); } 100% { transform: translateY(-104px) scale(0.42); opacity: 0.35; } }
 @keyframes lmp-spark { from { transform: rotate(var(--a)) translateX(6px) scale(1); opacity: 1; } to { transform: rotate(var(--a)) translateX(40px) scale(0.3); opacity: 0; } }
 @keyframes lmp-rock { 0%, 100% { transform: translateY(-4px) rotate(-8deg); } 50% { transform: translateY(-6px) rotate(8deg); } }
 @keyframes lmp-await { 0%, 100% { opacity: 0.18; transform: scale(0.82); } 50% { opacity: 0.5; transform: scale(1); } }
@@ -385,6 +416,6 @@
   .lmp-cand.invite, .lmp-shelf.wanted .lmp-cand, .lmp-school.ready, .lmp-slot.empty::after, .lmp-slot.pop, .lmp-slot.related .lmp-dish, .lmp-slot.related .lmp-dish-art,
   .lmp-truck.st-arriving, .lmp.is-delivering .lmp-tray, .lmp.is-settled .lmp-tray, .lmp-tray.can-send, .lmp-tray.can-send::after, .lmp-spark, .lmp-bead.band-low,
   .lmp-bead.band-high, .lmp-trouble, .lmp-cand.shake { animation: none; }
-  .lmp-fly, .lmp-mote, .lmp-bead { transition: none; }
+  .lmp-fly, .lmp-mote, .lmp-bead, .lmp-truck { transition: none; }
   .lmp.is-delivering .lmp-tray { opacity: 0.55; }
 }

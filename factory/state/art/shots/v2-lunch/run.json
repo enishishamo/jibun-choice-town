@@ -1,5 +1,5 @@
 {
- "at": "2026-09-21T13:03:47.482Z",
+ "at": "2026-09-21T13:16:40.604Z",
  "ok": true,
  "shots": [
   "factory/state/art/shots/v2-lunch/01-world-map.png",
@@ -24,7 +24,8 @@
   "factory/state/art/shots/v2-lunch/20-seed.png",
   "factory/state/art/shots/v2-lunch/21-seed-picked.png",
   "factory/state/art/shots/v2-lunch/22-world-return.png",
-  "factory/state/art/shots/v2-lunch/23-next-trouble.png"
+  "factory/state/art/shots/v2-lunch/23-next-trouble.png",
+  "factory/state/art/shots/v2-lunch/24-no-staple.png"
  ],
  "errors": [],
  "violations": [],
@@ -67,6 +68,6 @@
  ],
  "scrollW": 375,
  "innerW": 375,
- "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T13:03:44.908Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
+ "progress": "{\"version\":1,\"solved\":[{\"world\":\"lunch\",\"spot\":\"menu\",\"at\":\"2026-09-21T13:16:34.334Z\"}],\"seeds\":{\"lunch:menu\":\"rebuild\"}}",
  "markers": false
 }

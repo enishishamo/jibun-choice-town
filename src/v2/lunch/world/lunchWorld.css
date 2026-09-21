@@ -142,16 +142,17 @@
   animation: lw-shake 600ms ease-out 1, lw-bob 1.6s ease-in-out 600ms infinite;
 }
 
+/* a place in trouble glows and leans; there is no badge pinned on top of it —
+   a dot in the corner is an app notification, not something happening in a world */
 .lw-spot-badge {
   position: absolute;
-  top: 4%;
-  right: 8%;
-  width: 22%;
-  height: 22%;
+  inset: -20%;
   border-radius: 50%;
-  background: var(--v2-coral);
-  box-shadow: 0 0 0 2px var(--v2-warm-cream);
+  background: radial-gradient(circle, color-mix(in srgb, var(--v2-coral) 55%, transparent) 0%, color-mix(in srgb, var(--v2-coral) 0%, transparent) 62%);
+  animation: lw-worry 1.6s ease-in-out infinite;
+  pointer-events: none;
 }
+@keyframes lw-worry { 0%, 100% { opacity: 0.55; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.04); } }
 
 .lw-spot.is-nudged .lw-spot-body { animation: lw-nudge 0.45s ease; }
 @keyframes lw-nudge { 0%, 100% { transform: scale(1); } 40% { transform: scale(0.92) rotate(-3deg); } 70% { transform: scale(1.04) rotate(2deg); } }
@@ -175,9 +176,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* these selectors must out-specify .lw-spot.is-trouble.is-new .lw-spot-body */
   .lw-spot .lw-spot-body,
+  .lw-spot.is-trouble .lw-spot-body,
+  .lw-spot.is-trouble.is-new .lw-spot-body,
   .lw-spot.is-nudged .lw-spot-body,
+  .lw-spot-badge,
   .lw-road-pulse {
-    animation: none;
+    animation: none !important;
   }
 }

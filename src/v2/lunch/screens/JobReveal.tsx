@@ -4,8 +4,10 @@
 import { useEffect, useState } from "react";
 import Art from "../Art";
 import { COPY } from "../copy";
+import { useScreenFocus } from "../useScreenFocus";
 
 export default function JobReveal({ art, onNext }: { art?: string; onNext: () => void }) {
+  const focusRef = useScreenFocus<HTMLElement>();
   const [beat, setBeat] = useState(-1);
   // beat -1 -> the hook line, 1 -> the job name, 2 -> the line, 3 -> the way on
   useEffect(() => {
@@ -17,7 +19,7 @@ export default function JobReveal({ art, onNext }: { art?: string; onNext: () =>
     return () => t.forEach(clearTimeout);
   }, []);
   return (
-    <section className="v2s v2s-reveal" aria-label={COPY.reveal.job}>
+    <section ref={focusRef} tabIndex={-1} className="v2s v2s-reveal" aria-label={COPY.reveal.job}>
       <div className="v2s-reveal-stage">
         <Art src={art} className="v2s-reveal-art" fallback={<span className="v2s-reveal-ph" aria-hidden="true" />} />
       </div>

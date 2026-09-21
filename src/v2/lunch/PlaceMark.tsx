@@ -58,8 +58,10 @@ const SHAPES: Record<PlaceId, React.ReactNode> = {
       <rect x="35" y="45" width="26" height="3" rx="1.5" fill={C.beige} />
       <rect x="35" y="52" width="26" height="3" rx="1.5" fill={C.beige} />
       <rect x="35" y="59" width="17" height="3" rx="1.5" fill={C.beige} />
-      <rect x="60" y="34" width="6" height="30" rx="3" fill={C.honey} transform="rotate(20 63 49)" />
-      <path d="M69 63l3 6-6-1z" fill={C.deep} />
+      <g transform="rotate(-24 52 58)">
+        <rect x="40" y="55" width="30" height="6" rx="3" fill={C.honey} />
+        <path d="M70 55l7 3-7 3z" fill={C.deep} />
+      </g>
     </>
   ),
   // carry / serve fall back to the same language, in case their art is missing
