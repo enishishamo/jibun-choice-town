@@ -2531,13 +2531,13 @@
       "design_needed": [],
       "deploy_status": null,
       "release_commit": null,
-      "blocked_reason": "q1-factory-selftest.mjs が 41 件中 9 件失敗している（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、変更前後とも 32/41 で回帰ではないことを git stash で確認済み。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。Q1 track の11パイプラインは現在 dormant のため実害は出ていないが、『自己テストが赤いまま放置されている』状態自体が Factory の信頼性を損なうので記録する。",
+      "blocked_reason": "Factory の自己検査が2か所で赤いまま放置されている。(1) q1-factory-selftest.mjs が41件中9件失敗（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、git stash で回帰でないことを確認済み（変更前後とも 32/41）。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。(2) factory/scripts/validate-factory-data.mjs が 36 ERROR で失敗（factory/database/mechanics.json の semantic review に必須フィールド欠落）。これは verify.mjs の既定バッテリに含まれるため npm run qa 系の一部が赤い。CI の deploy.yml は別経路なので公開には影響しないが、『検査が赤いのが常態』は Factory の信頼性を直接損なう。どちらも本セッションの変更が原因ではない。",
       "human_decision_required": false,
       "product_identity_impact": "NONE",
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-22T23:32:39.422Z",
-      "updated_at": "2026-09-22T23:32:39.463Z",
+      "updated_at": "2026-09-22T23:44:49.558Z",
       "history": [
         {
           "at": "2026-09-22T23:32:39.423Z",
@@ -2552,6 +2552,14 @@
           "at": "2026-09-22T23:32:39.464Z",
           "event": "blocked",
           "reason": "q1-factory-selftest.mjs が 41 件中 9 件失敗している（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、変更前後とも 32/41 で回帰ではないことを git stash で確認済み。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。Q1 track の11パイプラインは現在 dormant のため実害は出ていないが、『自己テストが赤いまま放置されている』状態自体が Factory の信頼性を損なうので記録する。",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-22T23:44:49.559Z",
+          "event": "blocked",
+          "reason": "Factory の自己検査が2か所で赤いまま放置されている。(1) q1-factory-selftest.mjs が41件中9件失敗（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、git stash で回帰でないことを確認済み（変更前後とも 32/41）。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。(2) factory/scripts/validate-factory-data.mjs が 36 ERROR で失敗（factory/database/mechanics.json の semantic review に必須フィールド欠落）。これは verify.mjs の既定バッテリに含まれるため npm run qa 系の一部が赤い。CI の deploy.yml は別経路なので公開には影響しないが、『検査が赤いのが常態』は Factory の信頼性を直接損なう。どちらも本セッションの変更が原因ではない。",
           "human_decision": false,
           "design_needed": false,
           "status": "BLOCKED"
