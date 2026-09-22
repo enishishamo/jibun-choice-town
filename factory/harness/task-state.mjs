@@ -40,7 +40,7 @@
 //   node factory/harness/task-state.mjs set-identity-impact <task_id> <NONE|POSSIBLE|YES>
 //   node factory/harness/task-state.mjs approve-identity-impact <task_id> --note "<human approval text>"
 //   node factory/harness/task-state.mjs block <task_id> --reason "..." [--human-decision | --design-needed]
-//   node factory/harness/task-state.mjs set-release-commit <task_id> <sha>
+//   node factory/harness/task-state.mjs set-upstream <task_id> --job <job_id> [--game-design <v>] [--design <v>]\n//   node factory/harness/task-state.mjs set-release-commit <task_id> <sha>
 //   node factory/harness/task-state.mjs can-deploy <task_id>               # exit 0 = allowed, prints reason either way
 //
 // Env: JC_TASKS_PATH overrides the ledger path (used by
@@ -305,6 +305,40 @@ function identityHeuristicBlockers(task) {
 // THE canonical release gate (R2a). can-deploy AND set-status both call this,
 // so there is exactly one encoding of "may this reach a user".
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// 2026-09-23 — upstream design provenance (game-production-pipeline.md §29).
+// A build task may record WHICH game design version it was built from. If it
+// does, the release gate re-reads that pipeline and refuses when the build is
+// standing on an artifact that has since been superseded or invalidated.
+// Recording nothing is allowed (most tasks are not game builds); recording a
+// version and then drifting from it is not.
+// ---------------------------------------------------------------------------
+function upstreamDesignBlockers(task) {
+  const up = task.upstream;
+  if (!up || !up.job_id) return [];
+  // JC_PIPELINE_ROOT mirrors JC_TASKS_PATH: the self-test points both at a
+  // scratch tree so this refusal can be exercised for real.
+  const pipeRoot = process.env.JC_PIPELINE_ROOT ? resolvePath(process.env.JC_PIPELINE_ROOT) : ROOT;
+  const file = join(pipeRoot, "factory", "projects", up.job_id, "q1-pipeline.json");
+  if (!existsSync(file)) return [`upstream.job_id=${up.job_id} but no pipeline ledger at ${file}`];
+  let p;
+  try { p = JSON.parse(readFileSync(file, "utf8")); }
+  catch (e) { return [`upstream pipeline ${up.job_id} is unreadable: ${e.message}`]; }
+  const reasons = [];
+  for (const [field, type, label] of [
+    ["game_design_version", "final_game_design", "FINAL_GAME_DESIGN"],
+    ["design_version", "design_package", "DESIGN_PACKAGE"],
+  ]) {
+    const want = up[field];
+    if (want === undefined || want === null) continue;
+    const a = p.artifacts?.[type];
+    if (!a) { reasons.push(`upstream ${label} v${want} is recorded on this task but ${up.job_id} has no ${type} artifact`); continue; }
+    if (a.status === "STALE") reasons.push(`upstream ${label} is STALE (${a.stale_because ?? "an upstream artifact changed"}) — this build is standing on a superseded design`);
+    if (a.version !== want) reasons.push(`this build records ${label} v${want} but ${up.job_id} is now at v${a.version} — stale build, re-derive or re-record`);
+  }
+  return reasons;
+}
+
 function deployBlockers(task, opts = {}) {
   const reasons = [];
   if (DEPLOY_BLOCKING_STATUSES.includes(task.status)) {
@@ -331,6 +365,7 @@ function deployBlockers(task, opts = {}) {
   if (unresolvedDn.length > 0) {
     reasons.push(`${unresolvedDn.length} unresolved design_needed entr(ies): ${unresolvedDn.map((d) => `${d.id}@${d.where}`).join(", ")} — an approved design is a Human/Design-Owner decision, so it can never be cleared by QA`);
   }
+  reasons.push(...upstreamDesignBlockers(task));
   // The placeholder-marker scan is the only check that can be skipped, and
   // only for unit-testing this script (the skip is logged by the caller).
   if (!opts.skipMarkerScan) reasons.push(...placeholderMarkerBlockers(task));
@@ -732,6 +767,26 @@ switch (cmd) {
     break;
   }
 
+  case "set-upstream": {
+    const [id] = rest;
+    if (!id) fail('usage: set-upstream <task_id> --job <job_id> [--game-design <version>] [--design <version>]');
+    const t = getTask(id);
+    const jobId = flag("job");
+    if (!jobId) fail("set-upstream requires --job <job_id>");
+    const num = (name) => { const v = flag(name); if (v === undefined) return undefined; const n = Number(v); if (!Number.isInteger(n) || n < 1) fail(`--${name} must be a positive integer version`); return n; };
+    t.upstream = {
+      job_id: jobId,
+      game_design_version: num("game-design") ?? t.upstream?.game_design_version ?? null,
+      design_version: num("design") ?? t.upstream?.design_version ?? null,
+      recorded_at: now(),
+    };
+    t.updated_at = now();
+    log(t, "upstream_recorded", t.upstream);
+    saveState(state);
+    console.log(JSON.stringify({ task_id: id, upstream: t.upstream, blockers_now: upstreamDesignBlockers(t) }, null, 2));
+    break;
+  }
+
   case "set-release-commit": {
     const [id, shaArg] = rest;
     if (!id || !shaArg) fail("usage: set-release-commit <task_id> <sha>");
@@ -774,6 +829,6 @@ switch (cmd) {
   }
 
   default:
-    console.error("commands: create | status | list | set-status | request-repair | reset-iteration | set-review | set-qa | design-needed | set-identity-impact | approve-identity-impact | block | set-release-commit | can-deploy");
+    console.error("commands: create | status | list | set-status | request-repair | reset-iteration | set-review | set-qa | design-needed | set-identity-impact | approve-identity-impact | block | set-upstream | set-release-commit | can-deploy");
     process.exit(2);
 }

@@ -1,0 +1,151 @@
+{
+  "job_id": "v2-lunch-carry",
+  "searched": "src/q1/（logisticsLogic.ts / LogisticsGame.tsx）, src/data/content/schoolLunch.ts, src/data/careerPaths.ts, factory/projects/legacy-load-and-route/**, factory/harness/gameplay-qa-load-route.mjs, factory/database/mechanics.json, factory/taxonomy/*, factory/state/audits/, factory/state/experience-backlog.json, factory/state/legacy/, factory/state/feedback/, public/assets/**, src/v2/lunch/**, docs/jibun-choice-v2/WORLD_DESIGN.md",
+  "items": [
+    {
+      "path": "src/q1/logisticsLogic.ts:1-157",
+      "what": "Ver.1 の純ロジック。8食材×validZones、4温度帯、3経路アーキタイプ、sessionWin",
+      "decision": "UPGRADE",
+      "reason": "validZones の上限モデル（10℃以下は5℃でも満たす）は4回のレビューを経て得た正しい知識。知識は残し、操作（ラベルをタップ）は残さない"
+    },
+    {
+      "path": "src/q1/LogisticsGame.tsx:1-172",
+      "what": "Ver.1 UI。料理カード4×ゾーンボタン4＋学校カード2＋「出発する」1回",
+      "decision": "REPLACE",
+      "reason": "フォームであってPLAYではない。トラックも移動も時間経過もなく、動詞が『ラベルをタップ』しかない。Ver.2 の PLAY FIRST に反する"
+    },
+    {
+      "path": "factory/harness/gameplay-qa-load-route.mjs:1-167",
+      "what": "27件の純ロジック抜け道テスト（現状 27 passed / 0 failed）",
+      "decision": "KEEP",
+      "reason": "固定ゾーン当て<5%、単一軸ヒューリスティック≤70%、全セッション可解、という天井の置き方は機構が変わっても移植できる契約"
+    },
+    {
+      "path": "factory/harness/gameplay-qa-load-route.mjs:54-65",
+      "what": "『正しい推論は必ず勝つ』検査が validZones から自分で配置を導いている旨の自認コメント",
+      "decision": "KEEP",
+      "reason": "P0（じゃがいもが正しく積んでもCLEARできない）が PASS 88 のゲートをすり抜けて出荷された原因そのもの。オラクル由来の検査は、子どもが実際に読むヒントについて何も証明しない、という教訓"
+    },
+    {
+      "path": "factory/projects/legacy-load-and-route/research.md:1-230",
+      "what": "一次情報リサーチ（厚労省別添1 全表、文科省告示64号、農水省、大川市仕様書）＋ FACT_CHECK_REQUIRED 一覧",
+      "decision": "KEEP",
+      "reason": "本主題で repo 内最良の出典付き資料。2026-09-23 の新規調査と突き合わせて使う"
+    },
+    {
+      "path": "factory/projects/legacy-load-and-route/design/fact_sheet_v4.json",
+      "what": "統合 fact sheet。出典・職務・専門性・隣接職境界・5つの不確実性",
+      "decision": "KEEP",
+      "reason": "『検収は学校側の仕事であって運転手の仕事ではない』という隣接職の境界を既に持っている。Ver.2 が繰り返しかねない誤りを防ぐ"
+    },
+    {
+      "path": "factory/projects/legacy-load-and-route/design-review-r1..r4.result.json",
+      "what": "独立デザインレビュー FAIL 64 → FAIL 62 → FAIL 68 → PASS 88",
+      "decision": "KEEP",
+      "reason": "3回の FAIL が、この題材で既知の悪手（CORE_DISTORTED_BY_GAME、ANSWER_LEAK）を記録している"
+    },
+    {
+      "path": "src/data/content/schoolLunch.ts:209-247",
+      "what": "Ver.1 logistics 職業カード。「『届ける』の中には、いろんな役割の人がいます」＋5つの下位役割",
+      "decision": "UPGRADE",
+      "reason": "KNOW THE JOB の中身として良い。ただし全文が出典なしのAI散文なので、2026-09-23 の一次情報で組み直す"
+    },
+    {
+      "path": "src/data/content/schoolLunch.ts:384-407",
+      "what": "logistics-lunch 体験。場所（朝7:00）、道具4つ、解決（8:20）、discoveryEcho、seeds 4つ",
+      "decision": "UPGRADE",
+      "reason": "discoveryEcho の形（『いまやってたこと、じつは仕事』）は Ver.2 の JOB REVEAL そのもの。ただし 7:00 / 8:20 の時刻は創作で、実際の業務時間は 9:30〜15:30（大川市）等。数値は捨てて形だけ残す"
+    },
+    {
+      "path": "src/data/careerPaths.ts:1912-1951",
+      "what": "logistics キャリアパス。『大型免許必須は誤解』の訂正つき",
+      "decision": "KEEP",
+      "reason": "この職について repo 内で最も子どもの役に立つ事実。ただし factSources が求人系の商業サイトで一次情報ではない点は要フラグ"
+    },
+    {
+      "path": "factory/database/mechanics.json の load_and_route エントリ",
+      "what": "primaryMechanic=drag_drop_assign、『冷凍/冷蔵/常温の荷室へドラッグ』『該当フェーズへ差し戻される』",
+      "decision": "REPLACE",
+      "reason": "出荷コードと食い違っている（実際は4ゾーン・タップ・差し戻しなしの一発コミット）のに reviewStale=false。差別化判断の土台が壊れているので直す必要がある"
+    },
+    {
+      "path": "factory/state/audits/q1-audit.json の load_and_route",
+      "what": "CA 80 / GQ 58、risk high、exploit=memorize、replay『2回目も条件が不変』",
+      "decision": "KEEP",
+      "reason": "Ver.2 が下回ってはいけない基準線。GQ 58 が低いのは『覚えたら終わり』だったため。新案はここを超える必要がある"
+    },
+    {
+      "path": "factory/state/experience-backlog.json の LogisticsGame",
+      "what": "WEAK_WORLD_FEEDBACK / HINT_LEAKAGE、repair_sketch『走行中に食材の温度・時計・車両位置を変化させ、検収拒否の原因を視覚化する』",
+      "decision": "UPGRADE",
+      "reason": "この repair_sketch は実質 Ver.2 のブリーフ。『走行中に変化する』＝時間が流れる、が欠けていた核心"
+    },
+    {
+      "path": "public/assets/kyushoku/delivery_center.jpg",
+      "what": "冷凍-18℃以下 / 冷蔵0〜10℃ / 常温10〜25℃ のラベル付き写真。冷凍ラベルの下に魚の絵",
+      "decision": "DROP",
+      "reason": "厚労省の表と矛盾し、かつ答えを漏らす。impl-review-r1 で意図的に配線を外した資産。二度と配線しない（警告として保存はする）"
+    },
+    {
+      "path": "public/assets/kyushoku/delivery_check.jpg",
+      "what": "Ver.1 導入写真。impl-review-r2 でピクセル監査済み",
+      "decision": "DROP",
+      "reason": "写実写真。Ver.2 の design/v2 イラストパイプラインは写真を含まない"
+    },
+    {
+      "path": "public/assets/char-logistics.png, public/assets/item-truck.png",
+      "what": "Ver.1 のドライバーキャラとトラックアイコン",
+      "decision": "REPLACE",
+      "reason": "CHARACTER_BIBLE.md 以前の資産で Ver.2 の視覚言語が違う。Ver.1 用には凍結保存"
+    },
+    {
+      "path": "public/assets/v2/lunch/truck.png",
+      "what": "Ver.2 のトラック画（2026-09-21、Art QA 合格）",
+      "decision": "KEEP",
+      "reason": "承認済み Ver.2 アート。現在 carry スポットのマークに流用中"
+    },
+    {
+      "path": "src/v2/lunch/types.ts:6-16, worldView.ts:10-23",
+      "what": "carry スポットの存在、menuDone で trouble 化、CLEAR 直後の復帰で newTrouble=carry",
+      "decision": "KEEP",
+      "reason": "「はこぶ」は既に『次の異変』として世界に配線済み。新ゲームは既存の受け口に差し込む"
+    },
+    {
+      "path": "factory/projects/v2-lunch-menu/experience-design-proposal.md:255",
+      "what": "S11「次の異変（はこぶのトラックがガタッ）— タップ先は今回未実装」",
+      "decision": "KEEP",
+      "reason": "「はこぶ」について Ver.2 が持つ唯一のデザイン言明。入口のビート（トラックがガタッ）は決まっている"
+    },
+    {
+      "path": "factory/state/legacy/rebuild-queue.json の load_and_route",
+      "what": "status=queued のまま",
+      "decision": "DROP",
+      "reason": "リビルドは e20416c で出荷済み。台帳が現実と食い違っているだけの残骸で、設計の入力にはならない"
+    },
+    {
+      "path": "factory/state/legacy/reverse-audits/load_and_route.json",
+      "what": "logisticsLogic.ts:5-6 と LogisticsGame.tsx:17 から参照されているファイル",
+      "decision": "DROP",
+      "reason": "ファイルが存在しない（ディレクトリにあるのは forecast_and_balance.json のみ）。参照切れなので設計の根拠にできない"
+    },
+    {
+      "path": "factory/projects/legacy-load-and-route/design/{ae,scope_core,play_seeds,game_translations,...}_v1..v4.json",
+      "what": "Q1 Factory の段階別設計成果物 約40ファイル",
+      "decision": "DROP",
+      "reason": "Ver.1 のカードグリッドUI語彙を前提にしており、Ver.2 はそれを継承してはいけない。凍結保存はするが設計入力からは外す"
+    },
+    {
+      "path": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+      "what": "no_art_required: true（delivery_check.jpg を流用）",
+      "decision": "DROP",
+      "reason": "『アートは要らない』は Ver.2 が明確に否定した Ver.1 の近道。Ver.2 は Design Owner の画面設計を待つ"
+    },
+    {
+      "path": "factory/state/feedback/real-user-feedback.jsonl",
+      "what": "唯一の実子ども観測。Home→Map 入口で abandoned_confused、「どうやって使ったらいいかわからない」",
+      "decision": "KEEP",
+      "reason": "常設の警告。『長い遊び方説明を足して解決しない。アフォーダンスで解く』"
+    }
+  ],
+  "gaps": "この repo が知らないこと: (1) この仕事の参照ゲーム系譜が皆無（gameplay-references.json 24件に load_and_route は不在）。(2) Ver.2 の carry PLAY のデザインは1行（トラックがガタッ）以外に存在しない。(3) 積載・荷降ろし・コンテナ・帰り便・学校の入口で何が起きるかの出典付き記述がない。(4) 実際の配送時刻・校数・所要時間などの運用値。(5) 『学校で食べる』のハンドオーバー先が WORLD_DESIGN で OPEN のまま。(6) この題材で子どもがプレイしたテストは一度もない。"
+}

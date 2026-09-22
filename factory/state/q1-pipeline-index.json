@@ -143,6 +143,19 @@
       "redesign_count": 2,
       "updated_at": "2026-09-12T01:40:31.380Z",
       "depends_on": []
+    },
+    "v2-lunch-carry": {
+      "game_id": "v2-lunch-carry",
+      "profession": "給食を はこぶ しごと（配送・受け渡し）",
+      "track": "v2",
+      "state": "FACT_GATE_PASSED",
+      "trigger": "NEW_Q1_REQUEST",
+      "legacy_game_type": null,
+      "task_id": null,
+      "repair_count": 0,
+      "redesign_count": 0,
+      "updated_at": "2026-09-22T23:28:31.485Z",
+      "depends_on": []
     }
   }
 }

@@ -1,0 +1,738 @@
+{
+  "game_id": "v2-lunch-carry",
+  "profession": "給食を はこぶ しごと（配送・受け渡し）",
+  "track": "v2",
+  "trigger": "NEW_Q1_REQUEST",
+  "legacy_game_type": null,
+  "creator": "claude-code-orchestrator",
+  "state": "FACT_GATE_PASSED",
+  "current_stage": "WORK_DECISION_MAP",
+  "confidence": {
+    "fact": "HIGH",
+    "game_fit": null,
+    "design": null
+  },
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "legacy_inventory": {
+      "artifact_id": "v2-lunch-carry:legacy_inventory:v1",
+      "artifact_type": "legacy_inventory",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/legacy_inventory_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "searched": "src/q1/（logisticsLogic.ts / LogisticsGame.tsx）, src/data/content/schoolLunch.ts, src/data/careerPaths.ts, factory/projects/legacy-load-and-route/**, factory/harness/gameplay-qa-load-route.mjs, factory/database/mechanics.json, factory/taxonomy/*, factory/state/audits/, factory/state/experience-backlog.json, factory/state/legacy/, factory/state/feedback/, public/assets/**, src/v2/lunch/**, docs/jibun-choice-v2/WORLD_DESIGN.md",
+        "items": [
+          {
+            "path": "src/q1/logisticsLogic.ts:1-157",
+            "what": "Ver.1 の純ロジック。8食材×validZones、4温度帯、3経路アーキタイプ、sessionWin",
+            "decision": "UPGRADE",
+            "reason": "validZones の上限モデル（10℃以下は5℃でも満たす）は4回のレビューを経て得た正しい知識。知識は残し、操作（ラベルをタップ）は残さない"
+          },
+          {
+            "path": "src/q1/LogisticsGame.tsx:1-172",
+            "what": "Ver.1 UI。料理カード4×ゾーンボタン4＋学校カード2＋「出発する」1回",
+            "decision": "REPLACE",
+            "reason": "フォームであってPLAYではない。トラックも移動も時間経過もなく、動詞が『ラベルをタップ』しかない。Ver.2 の PLAY FIRST に反する"
+          },
+          {
+            "path": "factory/harness/gameplay-qa-load-route.mjs:1-167",
+            "what": "27件の純ロジック抜け道テスト（現状 27 passed / 0 failed）",
+            "decision": "KEEP",
+            "reason": "固定ゾーン当て<5%、単一軸ヒューリスティック≤70%、全セッション可解、という天井の置き方は機構が変わっても移植できる契約"
+          },
+          {
+            "path": "factory/harness/gameplay-qa-load-route.mjs:54-65",
+            "what": "『正しい推論は必ず勝つ』検査が validZones から自分で配置を導いている旨の自認コメント",
+            "decision": "KEEP",
+            "reason": "P0（じゃがいもが正しく積んでもCLEARできない）が PASS 88 のゲートをすり抜けて出荷された原因そのもの。オラクル由来の検査は、子どもが実際に読むヒントについて何も証明しない、という教訓"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/research.md:1-230",
+            "what": "一次情報リサーチ（厚労省別添1 全表、文科省告示64号、農水省、大川市仕様書）＋ FACT_CHECK_REQUIRED 一覧",
+            "decision": "KEEP",
+            "reason": "本主題で repo 内最良の出典付き資料。2026-09-23 の新規調査と突き合わせて使う"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/fact_sheet_v4.json",
+            "what": "統合 fact sheet。出典・職務・専門性・隣接職境界・5つの不確実性",
+            "decision": "KEEP",
+            "reason": "『検収は学校側の仕事であって運転手の仕事ではない』という隣接職の境界を既に持っている。Ver.2 が繰り返しかねない誤りを防ぐ"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design-review-r1..r4.result.json",
+            "what": "独立デザインレビュー FAIL 64 → FAIL 62 → FAIL 68 → PASS 88",
+            "decision": "KEEP",
+            "reason": "3回の FAIL が、この題材で既知の悪手（CORE_DISTORTED_BY_GAME、ANSWER_LEAK）を記録している"
+          },
+          {
+            "path": "src/data/content/schoolLunch.ts:209-247",
+            "what": "Ver.1 logistics 職業カード。「『届ける』の中には、いろんな役割の人がいます」＋5つの下位役割",
+            "decision": "UPGRADE",
+            "reason": "KNOW THE JOB の中身として良い。ただし全文が出典なしのAI散文なので、2026-09-23 の一次情報で組み直す"
+          },
+          {
+            "path": "src/data/content/schoolLunch.ts:384-407",
+            "what": "logistics-lunch 体験。場所（朝7:00）、道具4つ、解決（8:20）、discoveryEcho、seeds 4つ",
+            "decision": "UPGRADE",
+            "reason": "discoveryEcho の形（『いまやってたこと、じつは仕事』）は Ver.2 の JOB REVEAL そのもの。ただし 7:00 / 8:20 の時刻は創作で、実際の業務時間は 9:30〜15:30（大川市）等。数値は捨てて形だけ残す"
+          },
+          {
+            "path": "src/data/careerPaths.ts:1912-1951",
+            "what": "logistics キャリアパス。『大型免許必須は誤解』の訂正つき",
+            "decision": "KEEP",
+            "reason": "この職について repo 内で最も子どもの役に立つ事実。ただし factSources が求人系の商業サイトで一次情報ではない点は要フラグ"
+          },
+          {
+            "path": "factory/database/mechanics.json の load_and_route エントリ",
+            "what": "primaryMechanic=drag_drop_assign、『冷凍/冷蔵/常温の荷室へドラッグ』『該当フェーズへ差し戻される』",
+            "decision": "REPLACE",
+            "reason": "出荷コードと食い違っている（実際は4ゾーン・タップ・差し戻しなしの一発コミット）のに reviewStale=false。差別化判断の土台が壊れているので直す必要がある"
+          },
+          {
+            "path": "factory/state/audits/q1-audit.json の load_and_route",
+            "what": "CA 80 / GQ 58、risk high、exploit=memorize、replay『2回目も条件が不変』",
+            "decision": "KEEP",
+            "reason": "Ver.2 が下回ってはいけない基準線。GQ 58 が低いのは『覚えたら終わり』だったため。新案はここを超える必要がある"
+          },
+          {
+            "path": "factory/state/experience-backlog.json の LogisticsGame",
+            "what": "WEAK_WORLD_FEEDBACK / HINT_LEAKAGE、repair_sketch『走行中に食材の温度・時計・車両位置を変化させ、検収拒否の原因を視覚化する』",
+            "decision": "UPGRADE",
+            "reason": "この repair_sketch は実質 Ver.2 のブリーフ。『走行中に変化する』＝時間が流れる、が欠けていた核心"
+          },
+          {
+            "path": "public/assets/kyushoku/delivery_center.jpg",
+            "what": "冷凍-18℃以下 / 冷蔵0〜10℃ / 常温10〜25℃ のラベル付き写真。冷凍ラベルの下に魚の絵",
+            "decision": "DROP",
+            "reason": "厚労省の表と矛盾し、かつ答えを漏らす。impl-review-r1 で意図的に配線を外した資産。二度と配線しない（警告として保存はする）"
+          },
+          {
+            "path": "public/assets/kyushoku/delivery_check.jpg",
+            "what": "Ver.1 導入写真。impl-review-r2 でピクセル監査済み",
+            "decision": "DROP",
+            "reason": "写実写真。Ver.2 の design/v2 イラストパイプラインは写真を含まない"
+          },
+          {
+            "path": "public/assets/char-logistics.png, public/assets/item-truck.png",
+            "what": "Ver.1 のドライバーキャラとトラックアイコン",
+            "decision": "REPLACE",
+            "reason": "CHARACTER_BIBLE.md 以前の資産で Ver.2 の視覚言語が違う。Ver.1 用には凍結保存"
+          },
+          {
+            "path": "public/assets/v2/lunch/truck.png",
+            "what": "Ver.2 のトラック画（2026-09-21、Art QA 合格）",
+            "decision": "KEEP",
+            "reason": "承認済み Ver.2 アート。現在 carry スポットのマークに流用中"
+          },
+          {
+            "path": "src/v2/lunch/types.ts:6-16, worldView.ts:10-23",
+            "what": "carry スポットの存在、menuDone で trouble 化、CLEAR 直後の復帰で newTrouble=carry",
+            "decision": "KEEP",
+            "reason": "「はこぶ」は既に『次の異変』として世界に配線済み。新ゲームは既存の受け口に差し込む"
+          },
+          {
+            "path": "factory/projects/v2-lunch-menu/experience-design-proposal.md:255",
+            "what": "S11「次の異変（はこぶのトラックがガタッ）— タップ先は今回未実装」",
+            "decision": "KEEP",
+            "reason": "「はこぶ」について Ver.2 が持つ唯一のデザイン言明。入口のビート（トラックがガタッ）は決まっている"
+          },
+          {
+            "path": "factory/state/legacy/rebuild-queue.json の load_and_route",
+            "what": "status=queued のまま",
+            "decision": "DROP",
+            "reason": "リビルドは e20416c で出荷済み。台帳が現実と食い違っているだけの残骸で、設計の入力にはならない"
+          },
+          {
+            "path": "factory/state/legacy/reverse-audits/load_and_route.json",
+            "what": "logisticsLogic.ts:5-6 と LogisticsGame.tsx:17 から参照されているファイル",
+            "decision": "DROP",
+            "reason": "ファイルが存在しない（ディレクトリにあるのは forecast_and_balance.json のみ）。参照切れなので設計の根拠にできない"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/{ae,scope_core,play_seeds,game_translations,...}_v1..v4.json",
+            "what": "Q1 Factory の段階別設計成果物 約40ファイル",
+            "decision": "DROP",
+            "reason": "Ver.1 のカードグリッドUI語彙を前提にしており、Ver.2 はそれを継承してはいけない。凍結保存はするが設計入力からは外す"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+            "what": "no_art_required: true（delivery_check.jpg を流用）",
+            "decision": "DROP",
+            "reason": "『アートは要らない』は Ver.2 が明確に否定した Ver.1 の近道。Ver.2 は Design Owner の画面設計を待つ"
+          },
+          {
+            "path": "factory/state/feedback/real-user-feedback.jsonl",
+            "what": "唯一の実子ども観測。Home→Map 入口で abandoned_confused、「どうやって使ったらいいかわからない」",
+            "decision": "KEEP",
+            "reason": "常設の警告。『長い遊び方説明を足して解決しない。アフォーダンスで解く』"
+          }
+        ],
+        "gaps": "この repo が知らないこと: (1) この仕事の参照ゲーム系譜が皆無（gameplay-references.json 24件に load_and_route は不在）。(2) Ver.2 の carry PLAY のデザインは1行（トラックがガタッ）以外に存在しない。(3) 積載・荷降ろし・コンテナ・帰り便・学校の入口で何が起きるかの出典付き記述がない。(4) 実際の配送時刻・校数・所要時間などの運用値。(5) 『学校で食べる』のハンドオーバー先が WORLD_DESIGN で OPEN のまま。(6) この題材で子どもがプレイしたテストは一度もない。"
+      },
+      "creator": "claude-code-legacy-researcher",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:26:49.061Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/legacy_inventory_v1.json",
+          "created_at": "2026-09-22T23:26:49.062Z",
+          "creator": "claude-code-legacy-researcher"
+        }
+      ]
+    },
+    "work_research": {
+      "artifact_id": "v2-lunch-carry:work_research:v1",
+      "artifact_type": "work_research",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/work_research_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "subject": "日本の学校給食における『はこぶ』の実務。(A) 食材が給食センター／給食室に届くまで、(B) 給食センターから学校へ届くまで、(C) 回収。調査日 2026-09-23。ゲーム設計とは切り離した3名の調査者が並行で実施し、設計者には調査結果のみを渡した。",
+        "claims": [
+          {
+            "claim": "小学校は学校数では共同調理場方式が53.1%だが、児童数では単独調理場方式が57.8%で多数。中学校は学校数63.6%・生徒数57.1%で共同調理場が多数。",
+            "actor": "文部科学省（調査主体）／市町村教育委員会（方式の選択主体）",
+            "source": "文部科学省 学校給食実施状況調査（令和5年5月1日現在）第7表・第8表 https://www.mext.go.jp/content/20240612-mxt-kenshoku-000036440-1.pdf",
+            "source_class": "government",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "学校給食の『運搬』業務は給食実施校の51.9%（14,203校）で外部委託されている。共同調理場ベースでは1,874調理場・12,853校分。",
+            "actor": "市町村教育委員会（委託するかを決める主体）",
+            "source": "同調査 第13表",
+            "source_class": "government",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送ルートと各校の配送時刻は、運転手が日々決めるのではなく、発注者（市教育委員会・給食センター）が策定した『配送計画』という文書で契約時に固定されている。原文『①に掲げる１日の配送計画及び回収計画は、別紙１の定めを基本とする。ただし、学校の行事等により変更する場合があるので、その都度センターの指示に従うものとする。』",
+            "actor": "発注者＝市教育委員会・学校給食センター（決定）／受託者・配送従事者（従う側）",
+            "source": "大川市学校給食センター給食配送業務仕様書 6② https://www.city.okawa.lg.jp/s077/010/020/010/050/020/2siyou1108.pdf ／ さくら市 6(1) ／ 岩倉市 5(5)①（3自治体で一致）",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送途上で予定到着時刻に遅れる事由が発生した場合、従事者は自分で対処を決めず、速やかにセンターへ連絡して指示を受ける。原文『配送・回収業務の途上において、受配校及びセンターへの予定到着時刻に遅れる事由が発生した場合等には、速やかに連絡し必要な指示を受けること。』",
+            "actor": "連絡＝配送業務従事者／判断＝給食センター",
+            "source": "さくら市仕様書 9(3) https://www.city.tochigi-sakura.lg.jp/manage/contents/upload/6674c9164ca24.pdf ／ 大川市 8③（同旨）",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "検食は各受配校で、あらかじめ定めた責任者が児童生徒の摂食開始時間の30分前までに行う。異常があれば給食を中止し、共同調理場へ速やかに連絡する。つまり配送の締切は『給食開始時刻』ではなく『給食開始時刻マイナス30分』である。",
+            "actor": "受配校であらかじめ定められた責任者（告示は職名を指定していない。仙台市の説明では校長）",
+            "source": "学校給食衛生管理基準（平成21年3月31日 文部科学省告示第64号）第3 1(6)① https://www.mext.go.jp/b_menu/hakusho/nc/__icsFiles/afieldfile/2009/09/10/1283821_1.pdf",
+            "source_class": "primary_law",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "共同調理場は、調理した食品を調理後2時間以内に給食できるようにするための配送車を必要台数確保しなければならない（設備基準側は義務表現）。運用側は『調理後2時間以内に給食できるよう努めること』（努力義務）で、配食の時間は毎日記録、共同調理場では搬出時刻と搬入時刻を毎日記録、温度は定期的に記録する。",
+            "actor": "設置者＝教育委員会（台数確保）／調理場・受配校（記録）",
+            "source": "学校給食衛生管理基準 第2 1(2)①四 および 第3 1(4)④五",
+            "source_class": "primary_law",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "同一自治体の中でも学校ごとに給食開始時刻が違う。岩倉市の7校は 12:20 / 12:20 / 12:25 / 12:30 / 12:35 / 12:35 / 12:35 と15分の幅に分かれ、1日約3,800食を配送車3台で運ぶ。",
+            "actor": "市（教育委員会）が配食学校一覧表として提示",
+            "source": "岩倉市学校給食センター給食調理、配送等業務委託仕様書 4(4)『配食学校一覧表』 https://www.city.iwakura.aichi.jp/cmsfiles/contents/0000000/185/siyousyoann.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送・配食にあたっては必要に応じて保温食缶・保冷食缶・蓄冷材等を使用して温度管理を行う。厚労省マニュアル側では配送過程は10℃以下または65℃以上で管理し配送時刻を記録する。",
+            "actor": "調理場（共同調理場）側",
+            "source": "学校給食衛生管理基準 第3 1(4)④四 ／ 大量調理施設衛生管理マニュアル III-3 https://www.mhlw.go.jp/file/06-Seisakujouhou-11130500-Shokuhinanzenbu/0000139151.pdf",
+            "source_class": "primary_law",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "運ばれる単位は食缶ではなくコンテナ。コンテナ1台に最大4クラス分、重量上限は食器等を積載した状態で500kg以内、寸法は間口約159cm×奥行89cm×高さ160cm。アーム式パワーゲート／テールゲートリフターで積み降ろす。",
+            "actor": "調理業務従事者が積込／配送従事者が積載・運搬",
+            "source": "紀の川市 河南学校給食センター調理配送及び施設衛生管理業務仕様書 5(4) https://www.city.kinokawa.lg.jp/042/files/06_R6kanansiyou-2.pdf ／ さくら市10 ／ 大川市9②・10①",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "主食（パン・米飯）・牛乳・デザートは、センターの配送便ではなく別業者が直接学校へ配送する。原文『⑥主食、牛乳、デザート等については、別途業者から配送する。』学校ではそれらを配膳員が各クラスの人数分に仕分ける。",
+            "actor": "指定業者（センター受託者ではない）／学校側は配膳員",
+            "source": "岩倉市仕様書 5(2)⑥ および 5(6)⑤ ／ 兵庫県教育委員会 学校給食衛生管理マニュアル（保存食の規定が業者直送を前提にしている） https://www.hyogo-c.ed.jp/~taiiku-bo/syokuikukakari/eiseikanri/eisei.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送従事者は校舎内の配膳室まで入り、指定場所へ搬入し、受配校に配置されている配膳員と正しく搬入されたことを確認して、搬入・搬出記録簿に記載する。",
+            "actor": "配送業務従事者＋受配校の配膳員（対面確認）",
+            "source": "さくら市仕様書 6(1)イ ／ 大川市 6①(イ)",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "車両の人員体制は自治体で割れる。1名（運転のみ）＝さくら市・米子市、2名（運転手＋補助作業員）＝大川市・紀の川市。紀の川市は2名の理由を『安全確保のために』と明記。大川市は『運転手は専属の従業員とする』。",
+            "actor": "受託者（配置）／発注者（仕様で規定）",
+            "source": "さくら市 11(1) ／ 大川市 6①・7③④ ／ 紀の川市 ／ 米子市 学校給食輸送業務 質問と回答 https://www.city.yonago.lg.jp/15558.htm",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "1台が複数校を回るのが標準。紀の川市は11校を3トン車5台（コンテナ4台積）で、学校までの距離は0.5km〜7.4km。さくら市は8校を6台。大川市はコンテナ4台積の車両3台。",
+            "actor": "受託者（市と協議のうえ配送計画を作成）",
+            "source": "紀の川市 4項・5(4)① ／ さくら市 2・11(1) ／ 大川市 6①・10①",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送順・配送時刻は固定だが不変ではない。学校行事等により変更され、その都度センターが事前通知する。原文『学校行事等による配送時刻や配送順の変更により指定時間を変更する場合がある。』米子市は『学校の行事等により、年に数回配送時間を20分程度早めることがあります。』",
+            "actor": "センター（通知）／受託者（従う）",
+            "source": "岩倉市 5(5)① ／ 米子市 質問と回答",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "センターでの検食で異常が見つかった場合、直ちに給食の運搬を中止し、連絡体制図により関係各校に連絡する。習志野市ではセンター側の検食は配送車が出発する前に行う。",
+            "actor": "検食者（習志野市では所長及び係長）／給食の一部または全部の中止は学校教育課と協議のうえ決定",
+            "source": "習志野市 学校給食における危機管理マニュアル https://www.city.narashino.lg.jp/material/files/group/12/sankoushiryou16.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "食品の検収等の日常点検の結果、異常の発生が認められる場合、校長又は共同調理場の長（＝校長等）が、食品の返品、献立の一部又は全部の削除、調理済食品の回収等必要な措置を講じる。日常の点検・記録を担うのは衛生管理責任者／検収責任者であり、返品・献立削除を決裁するのは校長等、という二段構造になっている。",
+            "actor": "校長 又は 共同調理場の長（センター所長）。栄養教諭でも調理員でも業者でもない",
+            "source": "学校給食衛生管理基準 第4 1(1)五（同項三で『校長等』を定義）",
+            "source_class": "primary_law",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "検収は、あらかじめ定めた検収責任者が食品の納入に立会し、品名・数量・納品時間・業者名・生産地・品質・鮮度・包装の汚破損・異物混入・異臭・期限・品温（納入業者が運搬の際に適切な温度管理を行っていたかを含む）等を毎日点検し記録する。納入業者は検収室で受け渡しを行い、下処理室・調理室に立ち入らせない。",
+            "actor": "あらかじめ定めた検収責任者（告示は職名を指定していない）",
+            "source": "学校給食衛生管理基準 第3 1(3)一・四",
+            "source_class": "primary_law",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "発注量は『1人分の分量 × 予定食数』を廃棄率で割り戻して算出する。発注後に食数の変動・学校行事・学級閉鎖等があった場合は発注量を変更することがあり、災害等による休校時は急なキャンセルを依頼することがある。",
+            "actor": "栄養教諭・学校栄養職員（献立作成者）／センター（変更・中止を通知）",
+            "source": "別府市立学校給食用食材調達等に関する手引き（令和5年5月）p.11, p.13 https://www.city.beppu.oita.jp/doc/gakusyuu/kyouikuiinkai/kyushoku/syokuzai/tebiki.pdf",
+            "source_class": "municipal",
+            "confidence": "MEDIUM"
+          },
+          {
+            "claim": "食数変更のキャンセル可否は食材と業者によって分かれる。長野県塩尻市は全校自校給食で『食材によっては当日の納入量調整も可能であり、業者側の了承を得られる場合に、納入量の調整を実施する』。キャンセルできなかった食材はこども食堂や社会福祉施設へ提供した事例がある。",
+            "actor": "各学校（調整を依頼）／納入業者（了承の可否）",
+            "source": "令和4年度文部科学省委託『学校給食における食品ロス削減に関する調査研究 報告書』（令和5年3月） https://www.mext.go.jp/content/20240329-mxt_kenshoku01-000035051_1.pdf",
+            "source_class": "government",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "回収は配送と同じ受託業務・同じ車両で行われ、各学校の給食終了後に順次回収する。業務時間帯はさくら市10:00〜15:00、大川市9:30〜15:30。つまり午前に配送し昼過ぎに回収して戻る1日。",
+            "actor": "配送受託者",
+            "source": "岩倉市 5(5)① ／ さくら市 5(2)・6(1) ／ 大川市 5②・6①",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "残食は学級ごと・品目別に計量して残食記録表に記録される。記録するのは調理受託者であって配送員ではない。",
+            "actor": "調理業務受託者",
+            "source": "紀の川市 5(6)② ／ 岩倉市 5(8)",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "2026年9月、長崎市の2つの新給食センターで稼働開始から遅れが続き、中部センターは9日間すべての稼働日で遅れ、最大6校で10分以上の到着遅れ。原因は道路ではなくセンター内の作業であり、『調理物の提供量が予定より少なかったり、箸や食器の数を間違えたりするケース』『調理時間の厳守不足』『容器へ移す時間が長い』と報じられた。8月のリハーサル第1回は最大1時間以上の遅れ。市教委は配送計画の見直しも検討としている。",
+            "actor": "長崎市教育委員会",
+            "source": "長崎新聞／Yahoo!ニュース https://news.yahoo.co.jp/articles/61fd75402355351224d5c2f237e28dc191caa47f",
+            "source_class": "secondary",
+            "confidence": "MEDIUM"
+          },
+          {
+            "claim": "子どもから実際に見えているのは、校地内に入ってくる車体に文字の書かれた配送車、白衣とヘアキャップと（積載時は）保護帽の従事者、食缶ではなく大きなコンテナ、廊下と明確に区分され原則施錠設備のある配膳室。習志野市では配膳室からダムウェーターで各階へ上げ、運搬車が『準備を始めるまで約10〜15分の間、教室前廊下に置かれ、目の届きにくい状況となる』。",
+            "actor": "配送従事者・配膳員（見られる側）／児童生徒（見る側）",
+            "source": "紀の川市 5(4)② ／ さくら市 8(4)・9(5) ／ 大川市 8②・9②・10① ／ 学校給食衛生管理基準 第2 1(1)②六 ／ 習志野市 危機管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "岩倉市は配膳従事者の業務に『児童生徒の食缶類返却時の児童生徒・教職員への声かけの実施、また児童生徒・教職員とのコミュニケーションに努め、信頼関係を築くこと』を明記している。教室内の配食は給食当番の児童生徒と教職員が行うことが制度上の前提。",
+            "actor": "配膳従事者／給食当番の児童生徒・教職員",
+            "source": "岩倉市 5(6)⑫ ／ 学校給食衛生管理基準 第5 1(11)",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "積み降ろしは実際に危険作業として扱われている。埼玉で学校給食の製造所での積み込み中にトラックと搬入口の間に挟まれ運転手が死亡した事故があり、さくら市はコンテナ積載時の保護帽着用と、労働安全衛生規則改正（令和6年2月1日施行）によるテールゲートリフター使用作業の特別教育受講を義務付けている。",
+            "actor": "受託者（教育・保護具の手配）／従事者",
+            "source": "埼玉新聞 https://www.saitama-np.co.jp/articles/12788 ／ さくら市 8(4)・8(5)",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "車両故障・事故に備え、直ちに対応が可能な連絡体制と代替車両で対応できる体制を整えることが契約上の義務。日常点検は運行前に毎日行い、配送開始10分前には点検と業務連絡を終えていることが要求される。携帯電話又は無線等の即時連絡体制を常時整える。",
+            "actor": "受託者",
+            "source": "さくら市 9(1)・11(6)・8(10) ／ 大川市 7⑥・7⑨・8①",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          }
+        ],
+        "unconfirmed": [
+          "配送計画（別紙1／資料1）の実物。校ごとの到着時刻・配送順・車両割当の具体値は、調査した3自治体すべてで本体PDFに含まれず一件も確認できていない。",
+          "配送計画を実際に起案する職名（センター所長／栄養教諭／学校栄養職員／事務職員／受託者との協議）。岩倉市の業務分担表に『配送計画の作成』という行は存在しない。actor: UNKNOWN。",
+          "配送順の決定基準（給食開始時刻順か、距離順か、積載効率順か）。『給食開始時刻の早い校を先に配る』は合理的に見えるが明文化された資料は見つかっていない。",
+          "1台が同日に二巡する『第1便／第2便』運用の有無・頻度。",
+          "荷降ろし順を物理的に決めるもの（積載順との関係、奥／手前の規則）。",
+          "学校到着時の温度測定を誰が行うか。基準・マニュアルとも主体を明記していない。測定頻度の『定期的』が月1か週1かも不明。",
+          "当日の欠席を当日の配送数量・配缶量に反映する運用。見つかったのは給食費の減額規定のみで別物。",
+          "食缶の転倒・こぼれ時の専用手順。異物混入の手順は確認済みだが、こぼれは見つからなかった。",
+          "悪天候・積雪時の配送中止の判断者と基準。",
+          "学校側の受け入れ遅れ（配膳室が開いていない等）の手順。",
+          "発注の全国的なリードタイム日数、および食数変更・キャンセルの締め切り。国の基準に規定がなく、自治体手引きにも日数の記載がない。",
+          "牛乳・パンが学校へ直送されるか、経路の全国的な一般性。岩倉市では別業者の直送と明記されているが、全国で同じかは未検証。",
+          "文科省調査の『その他調理方式』の定義、および親子方式・デリバリー方式がどの区分に計上されるか。"
+        ],
+        "researcher_notes": "調査は3つの独立した担当に分け、いずれにも『ゲームを設計するな。ゲームにできそうという判断も書くな』と明示した。理由は、物流という題材が『経路ゲーム』というステレオタイプを非常に強く誘引するため。結果として最も重要な発見は、その誘引が事実に反するということだった: 配送ルートと時刻は運転手が決めておらず、契約書の別紙で固定されている。運転手の当日の判断は『異変に気づいてセンターに連絡し指示を受ける』であって『自分で経路を決め直す』ではない。この一点を先に確定できたことが、この調査の最大の成果である。"
+      },
+      "creator": "claude-code-work-researcher",
+      "source_artifacts": [
+        "v2-lunch-carry:legacy_inventory:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:26:49.110Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/work_research_v1.json",
+          "created_at": "2026-09-22T23:26:49.110Z",
+          "creator": "claude-code-work-researcher"
+        }
+      ]
+    },
+    "work_decision_map": {
+      "artifact_id": "v2-lunch-carry:work_decision_map:v1",
+      "artifact_type": "work_decision_map",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/work_decision_map_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "note": "gameability は『子どもの操作に翻訳できる余地があるか』のメモであって、ゲーム案ではない。distortion_risk は『遊べる形にしたとき実際の仕事をどれだけ歪めるか』。行の並びは時系列（センター内 → 積込 → 走行 → 学校 → 回収）。",
+        "rows": [
+          {
+            "work_action": "配送計画（どの車がどの校を何時に回るか）を策定する",
+            "actor": "発注者＝市教育委員会・給食センター（契約時）。起案する個人の職名は UNKNOWN",
+            "trigger": "委託契約の締結／年度の開始",
+            "inputs": "受配校一覧、各校の給食開始時刻、クラス数と食数、校までの距離、保有車両台数とコンテナ積載数",
+            "constraints": "調理後2時間以内に給食できる台数を確保する義務。各校の検食は摂食開始30分前まで",
+            "decision": "ルート・順序・各校の指定時刻を決める",
+            "physical_or_digital_action": "仕様書の別紙として文書化する",
+            "outcome": "1年間固定される配送計画",
+            "frequency": "契約時に1回",
+            "variability": "低（年単位）",
+            "source": "大川市仕様書6②／さくら市6(1)／岩倉市5(5)①",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "HIGH"
+          },
+          {
+            "work_action": "コンテナに学校別・クラス別の食缶・食器・箸を積み込み、数を合わせる",
+            "actor": "調理業務従事者（積込）",
+            "trigger": "調理・配缶の完了",
+            "inputs": "調理業務指示書の学校別クラス別食数、コンテナ1台＝最大4クラス分",
+            "constraints": "コンテナ1台500kg以内。寸法159×89×160cm。積み残し・数え違いは学校で不足になる",
+            "decision": "どのコンテナに何を何セット入れるか",
+            "physical_or_digital_action": "食缶・食器かご・箸をコンテナへ入れる",
+            "outcome": "学校ごとのコンテナが揃う。間違えるとその学校で足りない",
+            "frequency": "毎日",
+            "variability": "中（クラス数・献立で変わる）",
+            "source": "紀の川市5(4)／さくら市10／大川市9②・10①／長崎市の実例（箸や食器の数え間違いが遅延原因）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "保温食缶・保冷食缶・蓄冷材を使い分けて温度を保つ",
+            "actor": "調理場（共同調理場）側",
+            "trigger": "配缶・積込",
+            "inputs": "献立の品目、温かい料理か冷たい料理か",
+            "constraints": "10℃以下または65℃以上。配送時刻を記録",
+            "decision": "どの容器・蓄冷材を使うか",
+            "physical_or_digital_action": "食缶を選び蓋を完全に密閉する",
+            "outcome": "学校に着いたときの温度",
+            "frequency": "毎日",
+            "variability": "中（献立で変わる）",
+            "source": "学校給食衛生管理基準 第3 1(4)④四／大量調理施設衛生管理マニュアル III-3",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "出発前の10分間で車両点検と業務連絡を終える",
+            "actor": "配送業務従事者",
+            "trigger": "配送開始の10分前",
+            "inputs": "日常点検表、当日の変更連絡",
+            "constraints": "配送開始10分前には完了していること",
+            "decision": "異常があれば予備車の手配を要請するか",
+            "physical_or_digital_action": "点検し記録簿に記載する",
+            "outcome": "出発可否",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "さくら市9(1)／大川市8①・7⑨",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "各校の配膳室へ搬入し、配膳員と対面で『正しく届いた』ことを確認して記録簿に書く",
+            "actor": "配送業務従事者＋受配校の配膳員",
+            "trigger": "学校到着",
+            "inputs": "配送計画、搬入・搬出記録簿、コンテナの中身",
+            "constraints": "配膳室は廊下と明確に区分され原則施錠。アレルギー対応食は別容器で受渡管理表にサイン",
+            "decision": "揃っているか。違っていればその場で申告するか",
+            "physical_or_digital_action": "パワーゲートで降ろし、配膳室の指定場所へ入れ、記録簿に記載する",
+            "outcome": "学校側が受け取った状態になる。齟齬はここで見つかる",
+            "frequency": "毎日・毎校",
+            "variability": "中",
+            "source": "さくら市6(1)イ／大川市6①(イ)／岩倉市5(6)⑩",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "予定到着時刻に遅れる事由が発生したとき、自分で決めずにセンターへ連絡して指示を受ける",
+            "actor": "連絡＝配送業務従事者／判断＝給食センター",
+            "trigger": "遅延・故障・事故・道路事情",
+            "inputs": "現在地、残りの校、各校の給食開始時刻",
+            "constraints": "携帯電話または無線等の即時連絡体制を常時整える。判断は自分でしない",
+            "decision": "（従事者側）いつ、何を伝えるか。（センター側）順序を変えるか、予備車を出すか、学校に連絡するか",
+            "physical_or_digital_action": "連絡する／指示に従う",
+            "outcome": "遅れがどこに寄るかが変わる",
+            "frequency": "随時",
+            "variability": "高",
+            "source": "さくら市9(3)／大川市8③／さくら市11(6)（代替車両の体制）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "学校行事等による配送時刻・配送順の変更をセンターが事前に通知し、受託者が従う",
+            "actor": "センター（通知）／受託者（従う）",
+            "trigger": "学校行事、短縮授業等",
+            "inputs": "学校からの連絡",
+            "constraints": "年に数回、20分程度早まることがある（米子市）",
+            "decision": "（センター側）どの校の順を動かすか",
+            "physical_or_digital_action": "事前通知",
+            "outcome": "その日だけ計画が変わる",
+            "frequency": "年に数回",
+            "variability": "中",
+            "source": "岩倉市5(5)①／米子市 質問と回答",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "検食で異常が見つかったら運搬を中止し、関係各校へ連絡する",
+            "actor": "検食者（習志野市では所長及び係長）／中止の決定は学校教育課と協議",
+            "trigger": "出発前の検食で異味異臭・異物",
+            "inputs": "検食の結果",
+            "constraints": "センター側の検食は配送車が出発する前に行う",
+            "decision": "止めるか、一部だけ止めるか",
+            "physical_or_digital_action": "運搬中止、連絡体制図に沿って連絡",
+            "outcome": "その日の給食が変わる／なくなる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "習志野市 学校給食における危機管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "検収で異常が認められたとき、返品・献立の一部または全部の削除・回収等の措置を決裁する",
+            "actor": "校長 又は 共同調理場の長（校長等）",
+            "trigger": "検収・日常点検での異常",
+            "inputs": "検収責任者の点検記録",
+            "constraints": "点検・記録は衛生管理責任者／検収責任者、決裁は校長等という二段構造",
+            "decision": "返すか、献立から外すか、回収するか",
+            "physical_or_digital_action": "措置を講じる",
+            "outcome": "その日の献立が変わる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "学校給食衛生管理基準 第4 1(1)五",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "給食終了後に各校を順に回り、コンテナ（空の食缶・食器・嘔吐食器は別保管）を回収して戻る",
+            "actor": "配送業務従事者（回収）／配膳員（教室前からワゴンを回収し配膳室でコンテナへ積み替え）",
+            "trigger": "各校の給食終了",
+            "inputs": "回収計画",
+            "constraints": "配送と同じ車・同じ契約。業務時間は9:30〜15:30等。嘔吐食器は感染症対策で別保管",
+            "decision": "どの順に回るか（＝計画どおり）／別保管の申し送り",
+            "physical_or_digital_action": "積み込み、搬出記録簿に記載",
+            "outcome": "センターに戻り洗浄・消毒へ",
+            "frequency": "毎日",
+            "variability": "中",
+            "source": "岩倉市5(5)①・5(6)⑦／さくら市6(1)ウ／大川市5②",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "残食を学級ごと・品目別に計量して記録する",
+            "actor": "調理業務受託者（配送員ではない）",
+            "trigger": "回収されたコンテナの開封",
+            "inputs": "戻ってきた食缶の中身",
+            "constraints": "毎日、業務終了後に残食記録表へ",
+            "decision": "なし（計量と記録）",
+            "physical_or_digital_action": "計量し記録する",
+            "outcome": "献立や量の見直しの材料になる",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "紀の川市5(6)②／岩倉市5(8)",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "主食・牛乳・デザートを別業者が学校へ直接配送し、学校側で配膳員がクラスの人数分に仕分ける",
+            "actor": "指定業者（配送）／受配校の配膳員（仕分け）",
+            "trigger": "当日の納品",
+            "inputs": "クラス別人数",
+            "constraints": "センター便とは別ルート。学校側で別途検収される",
+            "decision": "なし（仕分けは人数どおり）",
+            "physical_or_digital_action": "直送、受け取り、仕分け",
+            "outcome": "センター便と直送便の2系統が同じ日に学校で合流する",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "岩倉市5(2)⑥・5(6)⑤／兵庫県 学校給食衛生管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          }
+        ]
+      },
+      "creator": "claude-code-work-researcher",
+      "source_artifacts": [
+        "v2-lunch-carry:work_research:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:28:05.767Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/work_decision_map_v1.json",
+          "created_at": "2026-09-22T23:28:05.767Z",
+          "creator": "claude-code-work-researcher"
+        }
+      ]
+    }
+  },
+  "independent_review": null,
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [],
+  "limited_exceptions": [],
+  "task_id": null,
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-22T23:23:23.910Z",
+  "updated_at": "2026-09-22T23:28:31.485Z",
+  "history": [
+    {
+      "at": "2026-09-22T23:23:23.933Z",
+      "event": "init",
+      "track": "v2",
+      "trigger": "NEW_Q1_REQUEST",
+      "entry_stage": "LEGACY_INVENTORY",
+      "legacy_game_type": null
+    },
+    {
+      "at": "2026-09-22T23:26:49.062Z",
+      "event": "state_change",
+      "from": "DRAFT",
+      "to": "LEGACY_INVENTORIED",
+      "note": "artifact legacy_inventory v1"
+    },
+    {
+      "at": "2026-09-22T23:26:49.062Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:legacy_inventory:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-22T23:26:49.111Z",
+      "event": "state_change",
+      "from": "LEGACY_INVENTORIED",
+      "to": "RESEARCHED",
+      "note": "artifact work_research v1"
+    },
+    {
+      "at": "2026-09-22T23:26:49.111Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_research:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:legacy_inventory:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:28:05.767Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "DECISION_MAPPED",
+      "note": "artifact work_decision_map v1"
+    },
+    {
+      "at": "2026-09-22T23:28:05.767Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_decision_map:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:28:05.824Z",
+      "event": "state_change",
+      "from": "DECISION_MAPPED",
+      "to": "FACT_GATE_PASSED",
+      "note": "FACT GATE satisfied"
+    },
+    {
+      "at": "2026-09-22T23:28:05.825Z",
+      "event": "fact_gate_passed",
+      "rows": 12
+    },
+    {
+      "at": "2026-09-22T23:28:31.484Z",
+      "event": "confidence_set",
+      "confidence": {
+        "fact": "HIGH",
+        "game_fit": null,
+        "design": null
+      },
+      "note": "FACT GATE を通った10行はすべて primary_law または municipal の一次資料に基づき confidence HIGH。未確認13件（配送計画の実物、起案者の職名、荷降ろし順の規則、当日欠席の反映など）は残るが、いずれもゲートを通った行の根拠ではない。設計はゲート通過行のみを土台にする。"
+    }
+  ]
+}
