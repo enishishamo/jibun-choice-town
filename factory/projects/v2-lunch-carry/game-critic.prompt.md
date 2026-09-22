@@ -4,9 +4,21 @@ You are the GAME CRITIC for a children's career-exploration product (JIBUN CHOIC
 
 You did not write these concepts. Do not assume the designer was right about anything, including the recommendation.
 
+## THIS IS ROUND 2
+
+Round 1 reviewed three different concepts and you (in a previous, separate context) returned **FAIL 43, adopt NONE, 4 blockers**. Those concepts were rejected outright via `reject-concepts` and are gone. The result is preserved at `factory/projects/v2-lunch-carry/game-critic-r1.result.json` and the rejected concepts at `.../design/game_concepts_v1.json` — read both, because the new designer was explicitly briefed on your findings and you must check whether the repairs are real or cosmetic.
+
+Round 1's four blockers were: (1) A's main action was a decision no source says anyone makes; (2) A could be beaten by sending everything immediately because no failure condition was defined; (3) A's 検食 character was an answer oracle AND the causality was inverted; (4) C used 検食異常 as an in-transit event when the centre's 検食 happens before departure.
+
+**The concepts to judge now are in `factory/projects/v2-lunch-carry/design/game_concepts_v2.json`** (three concepts: A-watasu / B-tashikamete-tsutaeru / C-wakete-tsumu; the designer recommends **B** with self-declared confidence MEDIUM, and states plainly that A and C should NOT be adopted).
+
+The designer's central structural claim, which you should test hard: **the FACT-GATE-passing rows whose actor is the delivery worker are exactly three (rows[4], rows[5], rows[9])**, so these three concepts are the exhaustive set of what a 「はこぶ」 game can be built on, not three ideas among many. If that claim is true, then rejecting all three again means the honest outcome is `reject-concepts` plus a question for a Human, not a fourth round. If it is false, say which other row a delivery-worker game could stand on.
+
+The designer also records two unresolved doubts about B: whether "checking costs the same clock as asking for help" actually bites on the first play, and that the numbers holding the tension (spare-vehicle arrival time, centre response time) are UNCONFIRMED in the research. Judge whether those are fatal or implementable.
+
 ## Read these, in the repo
 
-- `factory/projects/v2-lunch-carry/design/game_concepts_v1.json` — the three concepts and the designer's comparison matrix and recommendation. **This is what you are judging.**
+- `factory/projects/v2-lunch-carry/design/game_concepts_v2.json` — **this is what you are judging.** (`game_concepts_v1.json` is the rejected round 1, for comparison only.)
 - `factory/projects/v2-lunch-carry/design/work_decision_map_v1.json` — the 12 real work actions with actor, source, confidence, gameability, distortion_risk. A mechanical FACT GATE already ran over this and passed 10 rows; it REJECTED 「配送計画の策定」 (gameability LOW, distortion_risk HIGH) because route and per-school times are fixed in the contract by the local authority, not decided by the driver.
 - `factory/projects/v2-lunch-carry/design/work_research_v1.json` — the sourced claims and the 13 things that could NOT be confirmed.
 - `factory/projects/v2-lunch-carry/design/game_reference_research_v1.json` — the game grammar available to borrow, the crowded mechanic territory, and the known exploit traps.
@@ -27,7 +39,7 @@ You did not write these concepts. Do not assume the designer was right about any
 
 2. **Is it a game?** Apply the adversarial question to each concept with the job stripped out. If 「はこぶ」 were replaced by a nonsense theme, would the loop still be worth a second play?
 
-3. **Is the designer's recommendation correct?** The designer recommends **A-sakanoboru**. Attack that choice specifically. Is A really the only one satisfying both PLAY FIRST and C⇄D? Is the criticism of B (feedback not immediate, actor drift to 調理業務従事者) and of C (选项 become words, slow first five seconds) fair, or is it convenient? If you think a different concept should be adopted, say so and say why.
+3. **Is the designer's recommendation correct?** The designer recommends **B-tashikamete-tsutaeru** and argues the round-1 blockers are structurally impossible in it. Attack that specifically. Is the child really not inventing discretion? Are the five degenerate strategies (always-act, always-wait, always-report-everything, never-report, memorise) actually defeated by stated mechanical conditions, or only asserted? Is there any answer oracle? If you think A or C should be adopted instead, or that none should, say so.
 
 4. **Are the three genuinely different?** Or are they one concept in three skins? Their main actions are とじて、おくる / かぞえる / つたえる.
 
@@ -44,5 +56,5 @@ You did not write these concepts. Do not assume the designer was right about any
 - Do not mark something down for being simple. `game-critic-v2.md` calibration: 対象は小学生。文章量・選択肢数・操作の複雑さの少なさは減点対象にしない。判断の不在だけを減点する。
 
 OUTPUT FORMAT (mandatory): your ENTIRE final message must be ONE JSON object, no prose, no code fences, exactly this shape:
-{"verdict":"PASS|FAIL|HUMAN_REQUIRED","score":0-100,"career_authenticity":0-100,"game_quality":0-100,"blockers":[string],"high":[string],"medium":[string],"low":[string],"evidence":[string],"recommended_actions":[string],"adopt_concept_id":"A-sakanoboru|B-kazoeawase|C-tsutaeru|NONE"}
+{"verdict":"PASS|FAIL|HUMAN_REQUIRED","score":0-100,"career_authenticity":0-100,"game_quality":0-100,"blockers":[string],"high":[string],"medium":[string],"low":[string],"evidence":[string],"recommended_actions":[string],"adopt_concept_id":"A-watasu|B-tashikamete-tsutaeru|C-wakete-tsumu|NONE"}
 Each finding string: "<concept_id or file:line> — <title> — <why it is wrong> — <fix>". blockers/high non-empty ⇒ verdict FAIL.
