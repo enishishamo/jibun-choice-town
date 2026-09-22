@@ -41,9 +41,9 @@ The designer also records two unresolved doubts about B: whether "checking costs
 
 3. **Is the designer's recommendation correct?** The designer recommends **B-tashikamete-tsutaeru** and argues the round-1 blockers are structurally impossible in it. Attack that specifically. Is the child really not inventing discretion? Are the five degenerate strategies (always-act, always-wait, always-report-everything, never-report, memorise) actually defeated by stated mechanical conditions, or only asserted? Is there any answer oracle? If you think A or C should be adopted instead, or that none should, say so.
 
-4. **Are the three genuinely different?** Or are they one concept in three skins? Judge the main actions as written in the file under review.
+4. **Are the three genuinely different?** Or are they one concept in three skins? Their main actions are とじて、おくる / かぞえる / つたえる.
 
-5. **Exploits.** For the recommended concept especially, construct the cheapest way a child could beat it WITHOUT engaging with the real judgement. Name the exploit pattern if it is in `exploit-patterns.json`. Test every degenerate strategy the designer claims to have defeated, and check whether the defeat is a stated mechanical condition or only an assertion. Check for any on-screen element that hands the answer over rather than requiring the child to derive it.
+5. **Exploits.** For the recommended concept especially, construct the cheapest way a child could beat it WITHOUT engaging with the real judgement. Name the exploit pattern if it is in `exploit-patterns.json`. Specifically test: can A be beaten by always sending immediately? by always waiting? by memorising the school order? Does the 検食 person appearing actually force the child to derive the deadline, or does it hand the answer over?
 
 6. **Differentiation.** Does the recommended concept collide with something already shipped? The repo has 63 games; crowded primaryMechanic territory is measurement_inspection (6), spatial_placement (6), resource_allocation (6), drag_drop_assign (5). Existing close relatives: `load_and_route` (the Ver.1 給食 transport game: 積み分け＋順路計画→検収), `crane_lift` (止めるのが勝ち手), `pit_crane` (温度バンド維持), `delay_recover` (連絡と順序), `yard_plan` (往路の配置が復路で採点), `tally_check` (書類と現物の突合).
 
