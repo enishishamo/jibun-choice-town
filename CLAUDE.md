@@ -107,6 +107,7 @@ one-line summaries below staying accurate:
 | QA checklist (superseded for game-scoring by `game-critic-v2.md`) | `qa-rules.md` |
 | Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) — **Ver.1 only; Ver.2 uses `docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`** | `art-style.md`, `visual-design-system.md` |
 | Research sourcing rules | `research-rules.md` |
+| **Game production pipeline (research → game design → design handoff), FACT GATE, artifact contract** | `game-production-pipeline.md` |
 | **Ver.2 Product / Design Bible (see §0.5)** | `docs/jibun-choice-v2/*.md` |
 
 ### Conflict resolution order
@@ -153,6 +154,26 @@ Technical QA entry points: `npm run build`, `npm run lint`,
 `factory/harness/gameplay-qa-*.mjs` (per-game pure-logic exploit tests).
 Full checklist: `factory/rules/qa-rules.md` (functional) /
 `factory/rules/game-critic-v2.md` (binding game-quality gate).
+
+## 4.5. Game production pipeline (before any code is written)
+
+A new job/game does **not** start at implementation. It starts at
+[`factory/rules/game-production-pipeline.md`](factory/rules/game-production-pipeline.md):
+LEGACY INVENTORY → WORK RESEARCH → WORK DECISION MAP → **FACT GATE** →
+GAME REFERENCE RESEARCH → GAME CONCEPTS (≥3) → GAME CRITIC →
+FINAL GAME DESIGN → DESIGN HANDOFF, driven by
+`factory/harness/q1-pipeline.mjs --track v2`.
+
+The FACT GATE is mechanical (`fact-gate <job_id>`): it reads the work
+decision map's own rows and refuses unless one names an actor, is sourced
+strongly enough, is translatable into a child's action and would not badly
+misrepresent the job. **No game concept may be written before it passes** —
+"物流だから経路ゲーム" is exactly what it exists to stop. Not passing is a
+`FACT_NEEDED` item that returns to research and does not stop other jobs.
+
+The Factory may also decide **not** to build (`reject-concepts`); that is a
+first-class outcome and spends no repair budget. Proven end-to-end by
+`npm run selftest:pipeline`.
 
 ## 5. Task state (mechanical, not memory)
 

@@ -2512,6 +2512,51 @@
           "note": "q1-factory self-test fixture, not real work"
         }
       ]
+    },
+    "q1-factory-selftest-9-failures": {
+      "task_id": "q1-factory-selftest-9-failures",
+      "task_type": "factory-integrity",
+      "status": "BLOCKED",
+      "producer": "claude-code-orchestrator",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "q1-factory-selftest.mjs が 41 件中 9 件失敗している（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、変更前後とも 32/41 で回帰ではないことを git stash で確認済み。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。Q1 track の11パイプラインは現在 dormant のため実害は出ていないが、『自己テストが赤いまま放置されている』状態自体が Factory の信頼性を損なうので記録する。",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-22T23:32:39.422Z",
+      "updated_at": "2026-09-22T23:32:39.463Z",
+      "history": [
+        {
+          "at": "2026-09-22T23:32:39.423Z",
+          "event": "created",
+          "type": "factory-integrity",
+          "identityImpact": "NONE",
+          "producer": "claude-code-orchestrator",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-22T23:32:39.464Z",
+          "event": "blocked",
+          "reason": "q1-factory-selftest.mjs が 41 件中 9 件失敗している（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、変更前後とも 32/41 で回帰ではないことを git stash で確認済み。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。Q1 track の11パイプラインは現在 dormant のため実害は出ていないが、『自己テストが赤いまま放置されている』状態自体が Factory の信頼性を損なうので記録する。",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        }
+      ]
     }
   }
 }
