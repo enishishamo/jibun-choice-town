@@ -5,8 +5,8 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code-orchestrator",
-  "state": "FACT_GATE_PASSED",
-  "current_stage": "WORK_DECISION_MAP",
+  "state": "CONCEPTS_READY",
+  "current_stage": "GAME_CONCEPTS",
   "confidence": {
     "fact": "HIGH",
     "game_fit": null,
@@ -644,6 +644,330 @@
           "creator": "claude-code-work-researcher"
         }
       ]
+    },
+    "game_reference_research": {
+      "artifact_id": "v2-lunch-carry:game_reference_research:v1",
+      "artifact_type": "game_reference_research",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/game_reference_research_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "why_these_references": "FACT GATE を通った10行のうち、設計の核になりうる6つ（①員数を合わせて積む／②配膳室で対面確認して記録／③遅れたら自分で決めずセンターへ連絡／④保温・保冷で温度を保つ／⑤校ごとに違う給食開始時刻と、その30分前という本当の締切／⑥給食後に同じ車で空コンテナを回収）に対して、repo が既に持つ参照研究15本＋出荷済み24本の借用記録から該当構造を洗い、さらに repo に存在しなかった『いまの小学生が実際に遊んでいるゲーム』を新規調査して6本を追加した。借りるのは抽象構造のみで、キャラクター・画面・アート・ステージ・固有機能は借りない。",
+        "audience_evidence": "ゲムトレ ゲームに関するアンケート調査2025（2025年8月・全国の小学生324名・うち小4〜6が170名）。1位 Minecraft 28.4% / 2位 スプラトゥーン 16.9% / 3位 あつまれ どうぶつの森 12.0% / 8位 Roblox 1.5%（別報道で前年比8倍と急伸）。重要な補正: この層はスマホ中心ではなく Switch 優位。本プロダクトはスマホなので、Switch タイトルの文法を指1本へ翻訳する作業が要る。おみせっち・ビビッター・Block Blast は国内小学生調査での人気の実証が取れなかったため、人気の根拠ではなく構造の参考としてのみ採用した。 https://gametrainer.jp/data2025/",
+        "references": [
+          {
+            "reference": "Papers, Please",
+            "core_action": "書類と規程を1件ずつ突き合わせ、承認か却下かを決める",
+            "player_decision": "どの欄を見るか。規則が増えた今日、この書類は通るのか",
+            "feedback": "矛盾を指摘すると相手が反応する。見落とすと後で罰金通知が来る",
+            "tension": "規則が日ごとに積み上がる。速さと正確さが直接トレードオフ",
+            "reward": "一日を乗り切る。見落としが減っていく実感",
+            "replay_hook": "同じ書類でも今日の規則では判定が変わる",
+            "what_to_borrow": "progressive_rule_accumulation（規則が積み上がり、同じ対象でも判定が変わる）。discrepancy_detection（表に答えは書いておらず、表と現物の差が答え）。accuracy_speed_tradeoff",
+            "what_not_to_borrow": "全体主義の世界観、家族の生活費、道徳的ジレンマ。小4〜6には重すぎ、Product Identity 外",
+            "why_it_fits_this_job": "⑤の『12:20 と書いてあるが本当の締切は 11:50』は、まさに規則を当てて導く判定。①の員数照合も、票が答えを綴るのではなく学級数×品数から導く形にできる"
+          },
+          {
+            "reference": "Overcooked",
+            "core_action": "複数の調理工程を並行で回し、完成品を渡す",
+            "player_decision": "いま何を先にやるか。放置している鍋はまだ大丈夫か",
+            "feedback": "放置した鍋が焦げ始め、煙が出て、やがて燃える。すべて非言語",
+            "tension": "注文が届き続ける。いま手を離しているものが劣化していく",
+            "reward": "皿が出る。一日が終わる",
+            "replay_hook": "もっと良い段取りがあったはず",
+            "what_to_borrow": "放置コスト（ignored state degrades）。handoff の1点だけ（相手に渡して、相手が受け取りを返す）",
+            "what_not_to_borrow": "協力プレイ前提の設計。mechanics-library が cooperative_coordination を『単独作業が本質の仕事に持ち込むな』と明示している",
+            "why_it_fits_this_job": "④の温度は、直接いじれないまま別の作業中に劣化し続ける状態そのもの"
+          },
+          {
+            "reference": "PowerWash Simulator",
+            "core_action": "汚れを落とす。部品ごとに完了率が上がる",
+            "player_decision": "どこがまだ残っているか",
+            "feedback": "当てた場所だけが即座にきれいになる。残りがハイライトで分かる",
+            "tension": "ほぼ無い。失敗が存在しない労働ループ",
+            "reward": "部品ごとの完了、最後に before/after のタイムラプス",
+            "replay_hook": "取りこぼしを見つける気持ちよさ",
+            "what_to_borrow": "completion_by_subcomponent（部品単位の完了）。highlight_remaining_work。low_penalty_work_loop（見落とし探しを罰ではなく快感に変換した唯一の先例）。completion_timelapse",
+            "what_not_to_borrow": "無期限・無失敗。1〜3分の Q1 には締まりが要る",
+            "why_it_fits_this_job": "①の実務の失敗は数え間違い＝見落とし（job difficulty: oversight_risk）。見落としを叱らずに扱える先例がこれしかない"
+          },
+          {
+            "reference": "Block Blast!",
+            "core_action": "手札の3つを盤面に置く。回転はできない",
+            "player_decision": "3つをどの順でどこへ置くか",
+            "feedback": "行や列が埋まると自動で消える",
+            "tension": "3つ全部を置き切るまで次が来ない。置き場が無くなれば終了",
+            "reward": "消える瞬間、コンボ",
+            "replay_hook": "さっきの1手が悪かった、が明確",
+            "what_to_borrow": "『置き切るまで補充されない』バッチのリズム。回転できない＝規格・寸法の制約を素直に表現できる。置いた瞬間に判定が自動発火する",
+            "what_not_to_borrow": "純パズルそのもの。仕事固有の C が無く、単体で貼ると spatial_placement（既に6本）の重複に落ちる",
+            "why_it_fits_this_job": "コンテナ1台＝最大4学級・500kg という実務のバッチ性と構造が一致する"
+          },
+          {
+            "reference": "ビビッター",
+            "core_action": "ギリギリで止める。それだけ",
+            "player_decision": "あと一歩行くか、ここで止めるか",
+            "feedback": "止めた位置がそのまま結果。行き過ぎると即アウト",
+            "tension": "押し引きそのもの",
+            "reward": "止められた位置",
+            "replay_hook": "1回が数秒。すぐもう1回",
+            "what_to_borrow": "限界を自分で見極めて手を止める一撃の判断。ルール説明が『止める』の1語で済むこと",
+            "what_not_to_borrow": "対人比較・ランキング（Product Identity Gate）。度胸を煽るトーン。運任せ",
+            "why_it_fits_this_job": "④と⑤の『安全側に倒すと進まない』というトレードオフを、1タップで成立させられる最小形"
+          },
+          {
+            "reference": "あつまれ どうぶつの森",
+            "core_action": "拾う・渡す・話しかける",
+            "player_decision": "誰に何を渡すか、どこに置くか",
+            "feedback": "相手が即座に表情と声で反応を返す。渡した物が相手の手に移る",
+            "tension": "弱い。毎日少しずつ変わることが駆動",
+            "reward": "相手が喜ぶ。島の見た目が変わる",
+            "replay_hook": "翌日には違う状態になっている",
+            "what_to_borrow": "『相手に手渡して、相手が受け取りを返してくる』というハンドオフの完了表現。正誤判定ではなく相手の反応で結果を伝える",
+            "what_not_to_borrow": "実時間経過・長期運営。『あなたに合う住民』型の分類は Product Identity Gate 違反",
+            "why_it_fits_this_job": "②の配膳員との対面確認は、正誤マークではなく相手の反応で返すべき局面そのもの"
+          },
+          {
+            "reference": "Minecraft（小学生シェア1位）",
+            "core_action": "壊す・置く。2動詞だけ",
+            "player_decision": "次に何を作るか",
+            "feedback": "殴ったブロックにヒビが入り、割れて、足元に落ちる。因果が1秒以内に完結し完全に非言語",
+            "tension": "日没",
+            "reward": "作った物が世界にそのまま残る",
+            "replay_hook": "自分の作りかけが待っている",
+            "what_to_borrow": "押した所だけが押した分だけ変わる完全ローカルな因果。進捗が世界の形として残り、スコア表示を必要としない",
+            "what_not_to_borrow": "オープンエンドな目標不在。1〜3分では不成立",
+            "why_it_fits_this_job": "PLAY FIRST の到達点の実例。最初の1タップで触った所だけが目に見えて変わることが、説明を不要にする"
+          },
+          {
+            "reference": "Roblox の obby（障害物コース）",
+            "core_action": "走る・跳ぶ。落ちたら戻る",
+            "player_decision": "どの足場へ跳ぶか",
+            "feedback": "落ちる＝即リスポーン。失敗の説明が一切ない",
+            "tension": "落ちたらチェックポイントまで戻る",
+            "reward": "次のチェックポイント",
+            "replay_hook": "再挑戦が1秒。『今のはいけた』が即座に立つ",
+            "what_to_borrow": "チュートリアルが構造的に不要（『前に進む』以外の情報がゼロ）。失敗コストが『少し戻る』で叱られない。チェックポイント＝部分的な進捗が保全される",
+            "what_not_to_borrow": "反射・操作精度そのものが挑戦になる型。mechanics-library が execution_precision を『思考・判断が本質の課題に貼ると反射ゲーになる』と明示",
+            "why_it_fits_this_job": "やり直しコストの設計基準。この仕事は失敗が怖い題材なので、叱らない再挑戦が要る"
+          },
+          {
+            "reference": "出荷済み crane_lift（港・JIBUN CHOICE 内）",
+            "core_action": "掲示された規程に対して1件ずつ判断する",
+            "player_decision": "吊るか、止めるか、引き返すか",
+            "feedback": "止めた分だけ夜が短くなる",
+            "tension": "過剰に止めると夜が尽きる",
+            "reward": "ノーミスで夜を越える",
+            "replay_hook": "条件の組合せが変わる",
+            "what_to_borrow": "止める・引き返すことが一級の勝ち手であること。そしてその対になる機構、過剰停止にコストがあること",
+            "what_not_to_borrow": "そのままの再実装。既に出荷済みなので同型は重複になる",
+            "why_it_fits_this_job": "③の『自分で決めずに連絡する』は、連絡が正解手である一方、無根拠な連絡が最適になってはいけない。その均衡機構が既にここにある"
+          },
+          {
+            "reference": "出荷済み yard_plan（港・JIBUN CHOICE 内）",
+            "core_action": "後で取り出すために、いま置く",
+            "player_decision": "どこに置けば翌朝に困らないか",
+            "feedback": "悪い配置のツケが翌朝のシミュレーションで箱ごとに再生される",
+            "tension": "いまの楽と明日の手間",
+            "reward": "翌朝が静かに終わる",
+            "replay_hook": "配置の別解",
+            "what_to_borrow": "往路の自分の選択が復路で1件ずつ再生されて採点される、という閉じたループ",
+            "what_not_to_borrow": "そのままの再実装。空間最適化は既に6本ある混雑 territory",
+            "why_it_fits_this_job": "⑥は同じ車・同じ契約で往復する。往路に積んだ物が復路に戻るという閉ループが実務にそのままある"
+          }
+        ],
+        "grammar_borrowed": "① 文書に対して照合しなければならない数（表が答えを綴らず、学級数×品数から子どもが導く）／ 置き切るまで次が来ないバッチ／ 残りが見えている部品リスト／ その場では露見せず後段のゲートで初めて効く誤り。② 相手が受け取りを返してくるまで完了しないハンドオフ／ 出す前に自分で良否を判定するゲート。③ 自分で解いてはいけない問題で、渡すことが正解手。ただし渡すこと自体にコストと必要情報がある／ 圧力ごとに効く手が違い、手段は交換可能ではない。④ 別の作業をしている間に劣化し続け、直接は操作できない状態。⑤ 盤面に書いてある時刻は本当の締切ではなく、盤面上の規則から導く／ 溢れる前に段階的な予兆が出る。⑥ 往路の選択が復路で1件ずつ再生される／ 置いたら動かせない。",
+        "explicitly_not_borrowed": "Mini Metro のネットワーク設計と truck_dispatch の空走最適化は、実質的に経路設計であり FACT GATE が除外した行（配送計画の策定：gameability LOW / distortion_risk HIGH）と衝突するため借りない。Ver.1 の load_and_route（LogisticsGame）は『積み分け＋順路計画→検収』で出荷済みだが、順路計画の部分は同じ理由で継承しない。",
+        "crowded_territory": "出荷済み63本の primaryMechanic 分布: measurement_inspection 6 / spatial_placement 6 / resource_allocation 6 / drag_drop_assign 5 / matching 4 / parameter_adjust 4 / composition_design 4 / search_discovery 4 / sequencing 3。空いているのは justified_refusal 1 / pressure_matched_response 1 / restraint_classification 1 / plan_then_adapt 1 / trend_reading 1。",
+        "known_traps": "exploit-patterns.json のうち本件で特に踏みやすいもの: c_table_spells_answer（積込票がそのまま答えを綴る）／ all_select_overfill（多く積んでも先頭N個しか検査されない）／ instant_stop_perfect・wait_then_stop（とりあえず連絡が常に最適になる）／ uniform_lever（複数の対応手段が同効果で未使用を順に押すに縮退）／ fixed_plan_ignores_records（30分前ルールを読まずに突破できる固定手順）／ memorizable_layout（7校の時刻を暗記で突破）／ text_only_consequence（結果が文章カードだけで世界が変わらない）。",
+        "first_30_seconds_rules": "参照6本に共通する onboarding の構造: (1) 画面に既に動いているものか並んでいるものがある＝形そのものが指示になっている。(2) 最初の1タップで、触った場所だけが目に見えて変わる。(3) 失敗の説明が無く、失敗した状態そのものが説明になっている。(4) 成功判定が自動発火する。(5) やり直しコストが『少し戻る』。"
+      },
+      "creator": "claude-code-reference-researcher",
+      "source_artifacts": [
+        "v2-lunch-carry:work_decision_map:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:39:58.476Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/game_reference_research_v1.json",
+          "created_at": "2026-09-22T23:39:58.477Z",
+          "creator": "claude-code-reference-researcher"
+        }
+      ]
+    },
+    "game_concepts": {
+      "artifact_id": "v2-lunch-carry:game_concepts:v1",
+      "artifact_type": "game_concepts",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/game_concepts_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "concepts": [
+          {
+            "concept_id": "A-sakanoboru",
+            "job_reality": "各校の給食開始時刻は違う（岩倉市の7校は 12:20〜12:35）。そして本当の締切は開始時刻ではなく、その30分前。各校で検食の責任者が先に食べて確かめる決まりがあるため（学校給食衛生管理基準 第3 1(6)①）。配送計画は契約で固定されており、運転手は順路を決めない。",
+            "main_action": "とじて、おくる（コンテナを閉めて送り出すタイミングを自分で決める）",
+            "core_loop": "センターの積み出し口に、学校ごとのコンテナが並んでいる。各校の時計が見えている。コンテナを触ると蓋が閉まり、車へ送り出される。送り出した先で、その学校の検食の人が待っていて、間に合えば席につき、間に合わなければ立ったまま。次のコンテナへ。",
+            "player_decision": "いま閉めるか、あと1品待つか。時計に書いてある開始時刻ではなく、検食の人がいつ現れるかを見て、本当の締切を自分で見つける。",
+            "constraint": "調理が終わった料理から順にしか入らない。全部そろうのを待つと、早い学校に間に合わない。",
+            "feedback": "検食の人がホームに現れる時刻が、その学校の本当の締切。時計の数字とズレていることが、2校目で必ず分かる。間に合ったコンテナは湯気が立ったまま、遅れたコンテナは湯気が消える。",
+            "event": "1校が行事で20分早まったという連絡が入り、その学校のホームの検食の人だけが早く現れる（米子市『年に数回、配送時間を20分程度早めることがあります』）。",
+            "fail_recovery": "遅れた学校は、次の周でもう一度来る。取り返しはつくが、その分ほかが押す。全滅はしない。",
+            "clear": "その日の全校のコンテナを送り出し、湯気が立ったまま届いた学校が並ぶ。",
+            "replay": "惜しい／上達",
+            "replay_reason": "『あと3秒待てばあの1品も入った』が毎回残る。時刻の組み合わせが日ごとに変わるので、覚えた手順ではなく読み方が上達する。",
+            "job_reveal_bridge": "いま見ていたのは時計ではなく、学校ごとに違う『食べはじめる時刻』だった。そこから30分さかのぼって考える人がいる。",
+            "interest_seeds": "先に手を打つ／ちょうどいいところで決める／人のつごうに合わせる",
+            "reference_games": "Papers, Please（progressive_rule_accumulation: 盤面の規則から判定を導く）／ ビビッター（ギリギリで自分から止める一撃）／ Mini Metro（溢れる前の段階的な予兆。警告表現のみ借用、ネットワーク設計は借りない）",
+            "distortion_risk": "LOW",
+            "cognitive_load": "中。変化する変数は時計1つと湯気1つ。challenge は rule_matching_verification（主役）＋ time_pressure（補助）の2つに収まる。",
+            "decision_row_ids": "rows[4] 搬入と対面確認 / rows[5] 遅れの連絡 / 学校ごとに違う給食開始時刻と検食30分前（work_research claims）"
+          },
+          {
+            "concept_id": "B-kazoeawase",
+            "job_reality": "コンテナ1台に最大4学級分、500kg以内。学校別・学級別に食缶・食器・箸を積む。2026年9月の長崎市では新センターが9日連続で遅れ、原因は道路ではなくセンター内部の『箸や食器の数を間違える』『容器へ移す時間が長い』だった。",
+            "main_action": "かぞえる（学級の数と献立の品数から、積むべき数を自分で出して合わせる）",
+            "core_loop": "空のコンテナが1台。その学校の教室が窓の向こうに見えていて、机の数が数えられる。棚から食缶・食器かご・箸の束を取ってコンテナへ入れる。入れた分だけコンテナの中身が増える。足りない／多いは、その場では分からない。",
+            "player_decision": "この学校は何学級で、今日の献立は何品か。だから食缶はいくつで、箸は何束か。",
+            "constraint": "コンテナは1台で最大4学級。積みきれない学級は次のコンテナへ回すしかない。棚の在庫は有限。",
+            "feedback": "積んだ物がコンテナの中に積み上がる。学校で蓋を開けたとき、足りなければその学級の机だけが空のままになる。",
+            "event": "1学級が学級閉鎖で今日は0人、という札が窓の向こうに出る。数え直しが要る。",
+            "fail_recovery": "足りなかった学級には、次の便でもう一度届けられる。ただし、その学級だけ給食が遅れて始まる。",
+            "clear": "全学級の机に、過不足なく並ぶ。",
+            "replay": "スッキリ／上達",
+            "replay_reason": "全部の机が一度に埋まる瞬間が気持ちいい。学級数と品数の組み合わせが変わるので、暗記ではなく数え方が速くなる。",
+            "job_reveal_bridge": "いま数えていたのは、何百人分の『足りる／足りない』。数え間違いが、遠くの教室の空っぽの机になる。",
+            "interest_seeds": "数を合わせる／見落としをなくす／後の人のことを考える",
+            "reference_games": "Papers, Please（discrepancy_detection: 表は答えを綴らず、表と現物の差が答え）／ PowerWash Simulator（completion_by_subcomponent と highlight_remaining_work: 見落とし探しを罰ではなく快感に変える）／ Block Blast（置き切るまで次が来ないバッチのリズム）",
+            "distortion_risk": "LOW",
+            "cognitive_load": "中。challenge は rule_matching_verification（主役）＋ delayed_feedback（補助）。ただし delayed_feedback は mechanics-library で age medium-high、遅延は1ステップに留める必要がある。",
+            "decision_row_ids": "rows[1] コンテナへの積込と員数 / rows[4] 搬入と対面確認"
+          },
+          {
+            "concept_id": "C-tsutaeru",
+            "job_reality": "配送途上で遅れる事由が発生したとき、従事者は自分で対処を決めない。速やかにセンターへ連絡して指示を受ける（さくら市9(3)・大川市8③）。センター側が、順序を変えるか、予備車を出すか、学校へ連絡するかを決める。",
+            "main_action": "つたえる（何が起きたかを、必要な中身をそろえてセンターへ渡す）",
+            "core_loop": "走行中の車の窓から、道と時計と積荷が見えている。何かが起きる。無線に手を伸ばすと、何を伝えるか（どこで・何が・あと何分）を選んで送る。センターが手を打ち、その結果が窓の外で起きる。",
+            "player_decision": "いま連絡するか、もう少し様子を見るか。何を伝えるか。伝える中身が足りないと、センターは間違った手を打つ。",
+            "constraint": "連絡している間は進まない。中身の足りない連絡は、指示が的外れになって戻ってくる。",
+            "feedback": "センターが打った手が窓の外に出る。予備車が来る／学校へ連絡が行って給食時刻がずれる／順序が変わる。打った手が状況と合っていないと、次の学校で詰まる。",
+            "event": "検食で異常が見つかり、運搬中止の指示が入る（習志野市 危機管理マニュアル）。自分の判断ではどうにもならない出来事が、外から来る。",
+            "fail_recovery": "遅れても、伝え直せば別の手が打てる。ただし打てる手は残り時間で減っていく。",
+            "clear": "その日の全校に、それぞれの形で給食が届く。何も起きなかった日と同じ形ではない。",
+            "replay": "発見／惜しい",
+            "replay_reason": "同じ出来事でも、伝える中身と早さでセンターの打つ手が変わる。『あれを言っておけば予備車が間に合った』が残る。",
+            "job_reveal_bridge": "いまやっていたのは、自分で決めないという判断。決めていいことと、決めてはいけないことがある仕事。",
+            "interest_seeds": "早めに知らせる／人にきちんと伝える／自分だけで抱えこまない",
+            "reference_games": "crane_lift（止める・引き返すことが一級の勝ち手、ただし過剰停止にコスト）／ mechanics-library pressure_matched_response（圧力ごとに効く手が違い、手段は交換可能ではない）／ あつまれ どうぶつの森（相手が受け取りを返してくるハンドオフ、正誤ではなく反応で返す）",
+            "distortion_risk": "LOW",
+            "cognitive_load": "高め。challenge は pressure_matched_response（主役）で1つに絞れるが、『何を伝えるか』の選択肢が増えると小4〜6には過積載になりやすい。",
+            "decision_row_ids": "rows[5] 遅れたらセンターへ連絡して指示を受ける / rows[7] 検食異常での運搬中止 / rows[6] 学校行事による時刻変更"
+          }
+        ],
+        "comparison": {
+          "axes": [
+            "実仕事との対応",
+            "actorの正確性",
+            "仕事固有の判断",
+            "主操作の直感性",
+            "5秒で触り始められるか",
+            "feedbackの即時性",
+            "意味ある選択",
+            "失敗→再試行",
+            "REPLAY理由",
+            "30〜60秒成立性",
+            "説明文依存の少なさ",
+            "仕事名を隠しても面白いか",
+            "他JIBUN CHOICEゲームとの差",
+            "JIBUN CHOICEらしさ",
+            "distortion risk",
+            "mobile suitability"
+          ],
+          "rows": [
+            {
+              "concept_id": "A-sakanoboru",
+              "実仕事との対応": "高。検食30分前は告示の原文、時刻のばらつきは自治体の実データ",
+              "actorの正確性": "高。締切を作っているのは検食の責任者であり、運転手ではない。運転手は順路を決めないという事実も侵さない",
+              "仕事固有の判断": "高。『書いてある時刻 ≠ 本当の締切』は、この仕事で C⇄D が構造的に自動成立する唯一の一点",
+              "主操作の直感性": "高。触ると閉まって送り出される。動詞が1つ",
+              "5秒で触り始められるか": "高。並んでいるコンテナと進む時計が、形そのもので指示になっている",
+              "feedbackの即時性": "高。湯気が立つ／消えるで即時、かつ非言語",
+              "意味ある選択": "高。待つか閉めるかに毎回意味がある",
+              "失敗→再試行": "中。遅れた学校は次の周で取り返せるが全滅はしない",
+              "REPLAY理由": "惜しい／上達。『あと3秒』が毎回残る",
+              "30〜60秒成立性": "高",
+              "説明文依存の少なさ": "高。検食の人が現れる、という出来事だけで規則が伝わる",
+              "仕事名を隠しても面白いか": "高。締切の読み替えは題材を外しても遊びとして立つ",
+              "他JIBUN CHOICEゲームとの差": "高。主操作は『タイミングで止める』系で、混雑territory（measurement_inspection/spatial_placement/resource_allocation/drag_drop_assign）を外れる",
+              "JIBUN CHOICEらしさ": "高。数字を見せずに規則を体で覚える",
+              "distortion risk": "LOW",
+              "mobile suitability": "高。1タップのみ"
+            },
+            {
+              "concept_id": "B-kazoeawase",
+              "実仕事との対応": "高。長崎市の実例が『数え間違いが遅延の真因』を裏づける",
+              "actorの正確性": "中。数えて積むのは調理業務従事者であり配送従事者ではない。『はこぶ』の枠で扱うと主体がずれる",
+              "仕事固有の判断": "中。学級数×品数の算術は仕事固有というより一般的",
+              "主操作の直感性": "高。取って入れる",
+              "5秒で触り始められるか": "中。窓の向こうの机を数える、という一段の間接がある",
+              "feedbackの即時性": "低。誤りが学校まで露見しない（それが実務の真実ではあるが、PLAY FIRST の即時反応と衝突する）",
+              "意味ある選択": "中。正解が1つに決まる算術で、選択というより計算",
+              "失敗→再試行": "中",
+              "REPLAY理由": "スッキリ／上達",
+              "30〜60秒成立性": "中。4学級×3品を数えると時間がかかる",
+              "説明文依存の少なさ": "中。何をいくつ積むかの規則を伝える必要がある",
+              "仕事名を隠しても面白いか": "中。数え合わせ単体はドリルに近い",
+              "他JIBUN CHOICEゲームとの差": "低。measurement_inspection（既に6本）および出荷済み tally_check の突合と同型に落ちやすい",
+              "JIBUN CHOICEらしさ": "中",
+              "distortion risk": "LOW",
+              "mobile suitability": "中。数える対象が小さくなりがち"
+            },
+            {
+              "concept_id": "C-tsutaeru",
+              "実仕事との対応": "高。連絡して指示を受けるは仕様書の原文",
+              "actorの正確性": "高。決めるのはセンター、伝えるのは従事者、という二段構造をそのまま保てる",
+              "仕事固有の判断": "高。『自分で決めない』が判断である、という珍しい形",
+              "主操作の直感性": "中。無線を開いて中身を組み立てる、は2段階",
+              "5秒で触り始められるか": "低。最初の画面で何が起きているかを理解するのに出来事の発生を待つ必要がある",
+              "feedbackの即時性": "中。センターが手を打つまでの間がある",
+              "意味ある選択": "高",
+              "失敗→再試行": "高",
+              "REPLAY理由": "発見／惜しい",
+              "30〜60秒成立性": "中",
+              "説明文依存の少なさ": "低。『何を伝えるか』の選択肢が言葉になりやすく、UI/TEXT RULE と最も衝突する",
+              "仕事名を隠しても面白いか": "中",
+              "他JIBUN CHOICEゲームとの差": "中。pressure_matched_response は空いているが、出荷済み delay_recover（状況確認→連絡→変更案→承認→共有の順序制約）と近接する",
+              "JIBUN CHOICEらしさ": "高。『決めていいことと決めてはいけないことがある』は他に無い主題",
+              "distortion risk": "LOW",
+              "mobile suitability": "中"
+            }
+          ],
+          "note": "数値は付けていない。16軸の単純合計で決めると、B が『実仕事との対応 高』で稼いで上位に来るが、B の弱点（feedback が即時でない／主体がずれる／既存と同型）はどれも合計では消えない種類の欠点であるため。§15 の指示どおり、合計点では決定していない。"
+        },
+        "recommended_concept_id": "A-sakanoboru",
+        "recommendation_rationale": "3案のうち A だけが、PLAY FIRST の要件（5秒で触り始められる・即時かつ非言語のfeedback・説明文に依存しない）と、C⇄D の要件（Cを見ないと解けない）を同時に満たす。決め手は『書いてある時刻 ≠ 本当の締切』という構造で、これは参照調査が『この仕事で C⇄D が構造的に自動成立する唯一の一点』と名指しした箇所と一致する。子どもは時計の数字を読むのではなく、検食の人が現れるという出来事から本当の締切を見つける。B は実務の裏づけが最も強いが、誤りが学校まで露見しないという実務の真実が PLAY FIRST の即時反応と正面から衝突し、かつ主体が配送従事者ではなく調理業務従事者にずれる。C は主題として最も独自（『自分で決めないという判断』）だが、選択肢が言葉になりやすく UI/TEXT RULE と最も衝突し、最初の5秒に出来事の発生を待たせる。なお A は『順路を決める』を一切含まないため、FACT GATE が distortion_risk HIGH として落とした行を踏まない。"
+      },
+      "creator": "claude-code-game-designer",
+      "source_artifacts": [
+        "v2-lunch-carry:work_decision_map:v1",
+        "v2-lunch-carry:game_reference_research:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:41:50.882Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/game_concepts_v1.json",
+          "created_at": "2026-09-22T23:41:50.883Z",
+          "creator": "claude-code-game-designer"
+        }
+      ]
     }
   },
   "independent_review": null,
@@ -656,7 +980,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-22T23:23:23.910Z",
-  "updated_at": "2026-09-22T23:28:31.485Z",
+  "updated_at": "2026-09-22T23:41:50.884Z",
   "history": [
     {
       "at": "2026-09-22T23:23:23.933Z",
@@ -733,6 +1057,52 @@
         "design": null
       },
       "note": "FACT GATE を通った10行はすべて primary_law または municipal の一次資料に基づき confidence HIGH。未確認13件（配送計画の実物、起案者の職名、荷降ろし順の規則、当日欠席の反映など）は残るが、いずれもゲートを通った行の根拠ではない。設計はゲート通過行のみを土台にする。"
+    },
+    {
+      "at": "2026-09-22T23:33:00.627Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "reference_research_exists",
+        "concepts_gte_3",
+        "comparison_exists",
+        "final_design_exists",
+        "rejections_recorded",
+        "game_critic_pass"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:39:58.477Z",
+      "event": "state_change",
+      "from": "FACT_GATE_PASSED",
+      "to": "REFERENCES_READY",
+      "note": "artifact game_reference_research v1"
+    },
+    {
+      "at": "2026-09-22T23:39:58.477Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_decision_map:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:41:50.884Z",
+      "event": "state_change",
+      "from": "REFERENCES_READY",
+      "to": "CONCEPTS_READY",
+      "note": "artifact game_concepts v1"
+    },
+    {
+      "at": "2026-09-22T23:41:50.884Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_concepts:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_decision_map:v1",
+        "v2-lunch-carry:game_reference_research:v1"
+      ]
     }
   ]
 }
