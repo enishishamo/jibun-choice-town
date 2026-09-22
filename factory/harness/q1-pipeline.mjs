@@ -53,7 +53,7 @@ import {
   TRIGGERS, ARTIFACT_SCHEMAS, ARTIFACT_TYPES, transitiveDownstream, validateArtifact,
   gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE, checkConsistencyRepairEligible,
   validateFactCorrectionEvidence, checkFactCorrectionEligible, FACT_CORRECTION_NARROWING_TYPES,
-  TRACK_IDS, designStagesFor, downstreamStagesFor, v2DesignReadyReasons, factGateReasons,
+  TRACK_IDS, designStagesFor, downstreamStagesFor, v2DesignReadyReasons, factGateReasons, conceptRowTraceProblems,
   confidenceBlockers, CONFIDENCE_KINDS, CONFIDENCE_LEVELS,
 } from "./q1-factory-schema.mjs";
 
@@ -247,6 +247,12 @@ switch (cmd) {
     try { payload = JSON.parse(readFileSync(file, "utf8")); } catch (e) { fail(`could not read/parse ${file}: ${e.message}`); }
     const v = validateArtifact(type, payload);
     if (!v.ok) refuse({ accepted: false, artifact_type: type, problems: v.problems });
+    // A concept must stand on rows the FACT GATE actually passed (2026-09-23).
+    if (type === "game_concepts") {
+      const map = p.artifacts?.work_decision_map;
+      const probs = conceptRowTraceProblems(payload, map && map.status !== "STALE" ? map.payload : null);
+      if (probs.length) refuse({ accepted: false, artifact_type: type, problems: probs, note: "every concept must name rows[N] of the work decision map, and those rows must have passed the FACT GATE" });
+    }
     // Human Decision domain declared inside an artifact => open a decision and refuse autonomous progress.
     const declared = payload.human_decision_domains ?? [];
     const badDomains = declared.filter((d) => !HUMAN_DECISION_DOMAINS.includes(d));

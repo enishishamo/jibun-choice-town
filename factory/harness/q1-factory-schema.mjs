@@ -567,6 +567,42 @@ export function factGateReasons(workDecisionMap) {
   return why.length ? why : ["no row satisfies actor + evidence + gameability + distortion together"];
 }
 
+// ------------------------------------------- concept → decision row trace
+// 2026-09-23, found by running the pipeline for real on the first job.
+// The FACT GATE validates the decision map's ROWS. Nothing checked that a
+// game concept actually RESTS on one of those rows — so a concept built on a
+// decision nobody makes reached the critic, who rejected it with
+// "主操作が実務として裏づけられていない". The gap was structural, not careless:
+// the gate and the concepts were validated in separate scopes.
+//
+// Each concept must name the rows it stands on, as `rows[N]` references, and
+// every referenced row must exist AND have passed the FACT GATE. This cannot
+// prove the main_action really is that row's action — a human or a critic
+// still has to judge that — but it makes "I built this on nothing" impossible
+// to submit silently.
+export function conceptRowTraceProblems(conceptsPayload, decisionMapPayload) {
+  const problems = [];
+  const concepts = Array.isArray(conceptsPayload?.concepts) ? conceptsPayload.concepts : [];
+  if (!decisionMapPayload) return ["no work_decision_map to trace concepts against (or it is STALE)"];
+  const rows = Array.isArray(decisionMapPayload.rows) ? decisionMapPayload.rows : [];
+  const passing = new Set(factGateRows(decisionMapPayload).map((r) => rows.indexOf(r)));
+  for (const c of concepts) {
+    const ref = String(c?.decision_row_ids ?? "");
+    const idx = [...ref.matchAll(/rows\[(\d+)\]/g)].map((m) => Number(m[1]));
+    if (idx.length === 0) {
+      problems.push(`concept ${c?.concept_id}: decision_row_ids names no rows[N] — a concept must say which work decision map rows it stands on`);
+      continue;
+    }
+    for (const i of idx) {
+      if (!rows[i]) { problems.push(`concept ${c?.concept_id}: rows[${i}] does not exist in the work decision map`); continue; }
+      if (!passing.has(i)) {
+        problems.push(`concept ${c?.concept_id}: rows[${i}] ("${String(rows[i].work_action).slice(0, 40)}") did NOT pass the FACT GATE (actor=${rows[i].actor}, gameability=${rows[i].gameability}, distortion_risk=${rows[i].distortion_risk}) — a concept may not be built on it`);
+      }
+    }
+  }
+  return problems;
+}
+
 // --------------------------------------------- V2 GAME DESIGN READY checks
 // The V2 equivalent of GAME_DESIGN_READY_CHECKS. Same shape, different
 // pipeline: PLAY FIRST replaces profession-first, so there is no
@@ -581,6 +617,7 @@ export const V2_DESIGN_READY_CHECKS = [
   { id: "reference_research_exists", check: (p) => (art(p, "game_reference_research") ? null : "game reference research missing or STALE") },
   { id: "concepts_gte_3", check: (p) => { const n = art(p, "game_concepts")?.payload?.concepts?.length ?? 0; return n >= 3 ? null : `game concepts < 3 (have ${n})`; } },
   { id: "comparison_exists", check: (p) => (art(p, "game_concepts")?.payload?.comparison ? null : "concept comparison matrix missing") },
+  { id: "concepts_trace_to_gate_rows", check: (p) => { const c = art(p, "game_concepts"), m = art(p, "work_decision_map"); if (!c || !m) return null; const probs = conceptRowTraceProblems(c.payload, m.payload); return probs.length ? probs[0] : null; } },
   { id: "final_design_exists", check: (p) => (art(p, "final_game_design") ? null : "final game design missing or STALE") },
   { id: "rejections_recorded", check: (p) => ((art(p, "final_game_design")?.payload?.rejected_concepts?.length ?? 0) >= 2 ? null : "rejected concepts not recorded") },
   { id: "game_critic_pass", check: (p) => (p.independent_review?.verdict === "PASS" && p.independent_review?.independent === true && p.independent_review?.stale !== true ? null : `game critic is ${JSON.stringify(p.independent_review?.verdict ?? null)} (independent=${p.independent_review?.independent ?? false}, stale=${p.independent_review?.stale ?? false})`) },

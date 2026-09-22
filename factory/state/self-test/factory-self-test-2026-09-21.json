@@ -1,9 +1,9 @@
 {
-  "ran_at": "2026-09-22T23:30:48.408Z",
+  "ran_at": "2026-09-22T23:49:36.774Z",
   "script": "factory/harness/factory-self-test.mjs",
   "ledger": "scratch (JC_TASKS_PATH) — the real factory/state/tasks.json is never read or written",
   "fixture_commits": {
-    "clean": "326da05c7cd71a1c220b175bbdf8af432448727d",
+    "clean": "aea428d6af49a5e3f4c275820688fde5c5d52013",
     "src_touching": "4310abeeb1e52953449c1631bafca639c4223b1d"
   },
   "results": [
@@ -29,7 +29,7 @@
       "id": "D",
       "name": "release-gate-check refuses a src-touching commit with no task record",
       "ok": true,
-      "detail": "exit=1, names the commit=true: FAIL: 1 commit(s) touch src/ or public/ with NO task in /var/folders/tl/zbr33y4s10ng8xn0zdh44wdc0000gn/T/jc-factory-selftest-JCYQmo/tasks.json whose release_commit is exactly that sha: |   - 4310abeeb1e52953449c1631bafca639c4223b1d  (src/v2/lunch/README.md, src/v2/lunch/world/README.md) | Record eac"
+      "detail": "exit=1, names the commit=true: FAIL: 1 commit(s) touch src/ or public/ with NO task in /var/folders/tl/zbr33y4s10ng8xn0zdh44wdc0000gn/T/jc-factory-selftest-vV1dDt/tasks.json whose release_commit is exactly that sha: |   - 4310abeeb1e52953449c1631bafca639c4223b1d  (src/v2/lunch/README.md, src/v2/lunch/world/README.md) | Record eac"
     },
     {
       "id": "E",

@@ -16,6 +16,7 @@
 //   F  a build standing on an old game design version is detected
 //   G  GAME_CONCEPT_REJECTED can return to research, without spending budget
 //   H  a QA finding routes to its owner (a design-owner gap never becomes a build task's to fix)
+//   I  a concept built on a FACT-GATE-rejected row (or on nothing) is refused at submit
 //
 // Usage: node factory/harness/pipeline-self-test.mjs
 // Exit 0 = all passed.
@@ -72,11 +73,11 @@ const row = (over = {}) => ({
 const decisionMap = (id, rows) => ({ job_id: id, rows });
 const reference = (n) => ({ reference: `g${n}`, core_action: "a", player_decision: "d", feedback: "f", tension: "t", reward: "r", replay_hook: "h", what_to_borrow: "b", what_not_to_borrow: "nb", why_it_fits_this_job: "w" });
 const refResearch = (id) => ({ job_id: id, why_these_references: "w", grammar_borrowed: "g", references: [reference(1), reference(2)] });
-const concept = (cid, action) => ({
+const concept = (cid, action, trace = "rows[0]") => ({
   concept_id: cid, job_reality: "jr", main_action: action, core_loop: "cl", player_decision: "pd", constraint: "c",
   feedback: "f", event: "e", fail_recovery: "fr", clear: "cr", replay: "rp", replay_reason: "rr",
   job_reveal_bridge: "jb", interest_seeds: "is", reference_games: "rg", distortion_risk: "LOW",
-  cognitive_load: "low", decision_row_ids: "1",
+  cognitive_load: "low", decision_row_ids: trace,
 });
 const concepts = (id) => ({ job_id: id, comparison: "matrix", recommended_concept_id: "c1", recommendation_rationale: "r", concepts: [concept("c1", "かぞえる"), concept("c2", "つたえる"), concept("c3", "たもつ")] });
 const finalDesign = (id) => ({
@@ -218,6 +219,34 @@ function seed(id, upTo) {
   check("H", "a design-owner gap blocks release but never changes the build task's status (it is not the builder's to fix)",
     after.status === statusBefore && blocks && after.design_needed.length === 1,
     `status ${statusBefore} -> ${after.status}, blocks_release=${blocks}`);
+}
+
+// --- I: a concept built on a row the FACT GATE rejected is refused ---------
+// This is the hole the first real job fell through: the gate validated the
+// decision map's rows, and nothing checked that a concept stood on one.
+{
+  const id = "selftest-i";
+  pipe(["init", id, "--profession", "p", "--track", "v2", "--creator", "producer"]);
+  pipe(["submit", id, "legacy_inventory", "--file", artifact(legacyInventory(id)), "--creator", "producer"]);
+  pipe(["submit", id, "work_research", "--file", artifact(workResearch(id)), "--creator", "producer", "--source", "legacy_inventory@1"]);
+  // rows[0] passes the gate; rows[1] is the "somebody else decides this" row
+  const mixed = decisionMap(id, [row(), row({ work_action: "配送計画の策定", actor: "発注者", gameability: "LOW", distortion_risk: "HIGH" })]);
+  pipe(["submit", id, "work_decision_map", "--file", artifact(mixed), "--creator", "producer", "--source", "work_research@1"]);
+  pipe(["submit", id, "game_reference_research", "--file", artifact(refResearch(id)), "--creator", "producer", "--source", "work_decision_map@1"]);
+
+  const onRejected = { ...concepts(id), concepts: [concept("c1", "かぞえる", "rows[1]"), concept("c2", "つたえる"), concept("c3", "たもつ")] };
+  const bad = pipe(["submit", id, "game_concepts", "--file", artifact(onRejected), "--creator", "producer", "--source", "work_decision_map@1"]);
+  const namedRejected = /did NOT pass the FACT GATE/.test(bad.out);
+
+  const untraced = { ...concepts(id), concepts: [concept("c1", "かぞえる", "いい感じの判断"), concept("c2", "つたえる"), concept("c3", "たもつ")] };
+  const bad2 = pipe(["submit", id, "game_concepts", "--file", artifact(untraced), "--creator", "producer", "--source", "work_decision_map@1"]);
+  const namedUntraced = /names no rows\[N\]/.test(bad2.out);
+
+  const good = pipe(["submit", id, "game_concepts", "--file", artifact(concepts(id)), "--creator", "producer", "--source", "work_decision_map@1"]);
+
+  check("I", "a concept standing on a FACT-GATE-rejected row, or on nothing, is refused at submit",
+    bad.status === 1 && namedRejected && bad2.status === 1 && namedUntraced && good.status === 0,
+    `rejected_row_exit=${bad.status} named=${namedRejected} untraced_exit=${bad2.status} named=${namedUntraced} good_exit=${good.status}`);
 }
 
 // --- evidence + summary -----------------------------------------------------

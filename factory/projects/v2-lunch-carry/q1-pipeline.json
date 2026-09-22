@@ -5,7 +5,7 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code-orchestrator",
-  "state": "CONCEPTS_READY",
+  "state": "GAME_CONCEPT_REJECTED",
   "current_stage": "GAME_CONCEPTS",
   "confidence": {
     "fact": "HIGH",
@@ -803,8 +803,8 @@
       "artifact_id": "v2-lunch-carry:game_concepts:v1",
       "artifact_type": "game_concepts",
       "version": 1,
-      "status": "CURRENT",
-      "stale_because": null,
+      "status": "STALE",
+      "stale_because": "concepts rejected: 独立 GAME CRITIC r1 = FAIL 43（CA 42 / GQ 45）、採択 NONE、blocker 4件。中でも致命的なのは A 案について『配送員が、あと1品待つか・不完全なコンテナを閉めて送り出すかを決める』という行為が FACT GATE 通過行に存在しないという指摘。設計者（claude-code-game-designer）が、誰もしていない判断を発明していた。さらに A は検食者が答えオラクルになっており、しかも検食者が現れる時点では既に学校へ搬入済みでなければならないので因果が逆転していた。B は積込・員数合わせの actor が調理業務従事者であり『はこぶ』の枠に置くと隣接職への主体移譲になる。C は前提（連絡して指示を受ける）は仕様書の原文どおりで健全だが、使ったトリガー（検食異常）がセンター側検食＝出発前という自分の決定マップと矛盾していた。3案とも棄却し、運転手が実際に担っている行（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）だけを土台に作り直す。",
       "file": "factory/projects/v2-lunch-carry/design/game_concepts_v1.json",
       "payload": {
         "job_id": "v2-lunch-carry",
@@ -970,7 +970,23 @@
       ]
     }
   },
-  "independent_review": null,
+  "independent_review": {
+    "kind": "design",
+    "verdict": "FAIL",
+    "score": 43,
+    "blockers": 4,
+    "high": 7,
+    "evidence": "factory/projects/v2-lunch-carry/game-critic-r1.result.json",
+    "input": "factory/projects/v2-lunch-carry/game-critic.prompt.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code-game-designer",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": true,
+    "recorded_at": "2026-09-22T23:46:19.077Z"
+  },
   "impl_review": null,
   "art_review": null,
   "failures": [],
@@ -980,7 +996,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-22T23:23:23.910Z",
-  "updated_at": "2026-09-22T23:41:50.884Z",
+  "updated_at": "2026-09-22T23:47:28.350Z",
   "history": [
     {
       "at": "2026-09-22T23:23:23.933Z",
@@ -1103,6 +1119,27 @@
         "v2-lunch-carry:work_decision_map:v1",
         "v2-lunch-carry:game_reference_research:v1"
       ]
+    },
+    {
+      "at": "2026-09-22T23:46:19.078Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r1.result.json"
+    },
+    {
+      "at": "2026-09-22T23:47:28.350Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r1 = FAIL 43（CA 42 / GQ 45）、採択 NONE、blocker 4件。中でも致命的なのは A 案について『配送員が、あと1品待つか・不完全なコンテナを閉めて送り出すかを決める』という行為が FACT GATE 通過行に存在しないという指摘。設計者（claude-code-game-designer）が、誰もしていない判断を発明していた。さらに A は検食者が答えオラクルになっており、しかも検食者が現れる時点では既に学校へ搬入済みでなければならないので因果が逆転していた。B は積込・員数合わせの actor が調理業務従事者であり『はこぶ』の枠に置くと隣接職への主体移譲になる。C は前提（連絡して指示を受ける）は仕様書の原文どおりで健全だが、使ったトリガー（検食異常）がセンター側検食＝出発前という自分の決定マップと矛盾していた。3案とも棄却し、運転手が実際に担っている行（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）だけを土台に作り直す。"
+    },
+    {
+      "at": "2026-09-22T23:47:28.350Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r1 = FAIL 43（CA 42 / GQ 45）、採択 NONE、blocker 4件。中でも致命的なのは A 案について『配送員が、あと1品待つか・不完全なコンテナを閉めて送り出すかを決める』という行為が FACT GATE 通過行に存在しないという指摘。設計者（claude-code-game-designer）が、誰もしていない判断を発明していた。さらに A は検食者が答えオラクルになっており、しかも検食者が現れる時点では既に学校へ搬入済みでなければならないので因果が逆転していた。B は積込・員数合わせの actor が調理業務従事者であり『はこぶ』の枠に置くと隣接職への主体移譲になる。C は前提（連絡して指示を受ける）は仕様書の原文どおりで健全だが、使ったトリガー（検食異常）がセンター側検食＝出発前という自分の決定マップと矛盾していた。3案とも棄却し、運転手が実際に担っている行（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）だけを土台に作り直す。",
+      "return_to": "GAME_CONCEPTS"
     }
   ]
 }

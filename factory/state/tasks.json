@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-22T23:22:09.536Z",
+      "updated_at": "2026-09-22T23:49:45.918Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -1071,6 +1071,16 @@
         },
         {
           "at": "2026-09-22T23:22:09.536Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:49:45.792Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:49:45.923Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
         }
@@ -2444,7 +2454,7 @@
       "identity_impact_approved": false,
       "identity_impact_approval_note": null,
       "created_at": "2026-09-22T23:20:54.260Z",
-      "updated_at": "2026-09-22T23:22:13.778Z",
+      "updated_at": "2026-09-22T23:49:50.143Z",
       "history": [
         {
           "at": "2026-09-22T23:20:54.261Z",
@@ -2506,6 +2516,20 @@
         },
         {
           "at": "2026-09-22T23:22:13.778Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-22T23:49:49.997Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:49:50.144Z",
           "event": "status_change",
           "from": "BLOCKED",
           "to": "SUPERSEDED",
