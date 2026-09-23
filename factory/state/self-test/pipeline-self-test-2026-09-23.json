@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-09-23T01:51:47.651Z",
+  "ran_at": "2026-09-23T02:28:27.918Z",
   "script": "factory/harness/pipeline-self-test.mjs",
   "scope": "RESEARCH -> GAME DESIGN -> DESIGN HANDOFF pipeline (v2 track) and its join to the build ledger",
   "ledger": "scratch (JC_PIPELINE_ROOT + JC_TASKS_PATH) — the real factory/projects and factory/state/tasks.json are never read or written",
