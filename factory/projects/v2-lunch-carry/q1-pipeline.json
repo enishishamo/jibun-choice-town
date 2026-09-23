@@ -5,11 +5,11 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code-orchestrator",
-  "state": "CONCEPTS_READY",
-  "current_stage": "GAME_CONCEPTS",
+  "state": "GAME_CONCEPT_REJECTED",
+  "current_stage": "WORK_RESEARCH",
   "confidence": {
     "fact": "HIGH",
-    "game_fit": null,
+    "game_fit": "LOW",
     "design": null
   },
   "design_iteration": 1,
@@ -803,8 +803,8 @@
       "artifact_id": "v2-lunch-carry:game_concepts:v2",
       "artifact_type": "game_concepts",
       "version": 2,
-      "status": "CURRENT",
-      "stale_because": null,
+      "status": "STALE",
+      "stale_because": "concepts rejected: 独立 GAME CRITIC r2 = FAIL 38（CA 41 / GQ 36）、採択 NONE、blocker 5件。5件すべてが同じ形をしている: 勝敗を支える中核ルールが、確認されていない事実の発明である。B の『確認には一律t時間』『センターは最初の不完全な連絡だけで資源を不可逆投入する』『後から訂正不能』『原因ごとに予備車・回り道・学校連絡が一対一対応』、A の『運搬車台数×品目数＝必要数』と搬入時に学級別運搬車が並ぶという前提、C の過剰分離にコストがあるという前提。いずれも work_research の unconfirmed に該当する。創作規則を外すと、固定戦略を負かす機構が消える。したがってこれは設計の失敗ではなく事実の不足であり、差し戻し先は GAME_CONCEPTS ではなく WORK_RESEARCH。なお critic の HIGH『通過行は三つだけという全数主張が偽』は誤読で、機械的に検証すると FACT GATE は rows[0] と rows[3] の2行を落としており、配送業務従事者が actor で通過したのは rows[4]/[5]/[9] の3つで設計者の主張どおり。ただし rows[3]（出発前点検と異常時の予備車要請）は distortion_risk LOW でありながら私が gameability LOW と付けたことだけで落ちている。これは事実ではなく判断なので、再監査の対象として記録する。",
       "file": "factory/projects/v2-lunch-carry/design/game_concepts_v2.json",
       "payload": {
         "job_id": "v2-lunch-carry",
@@ -1001,19 +1001,19 @@
   "independent_review": {
     "kind": "design",
     "verdict": "FAIL",
-    "score": 43,
-    "blockers": 4,
-    "high": 7,
-    "evidence": "factory/projects/v2-lunch-carry/game-critic-r1.result.json",
-    "input": "factory/projects/v2-lunch-carry/game-critic.prompt.md",
+    "score": 38,
+    "blockers": 5,
+    "high": 5,
+    "evidence": "factory/projects/v2-lunch-carry/game-critic-r2.result.json",
+    "input": "factory/projects/v2-lunch-carry/game-critic-r2.prompt-as-run.md",
     "reviewer": "codex-review",
-    "creator": "claude-code-game-designer",
+    "creator": "claude-code-game-designer-2",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 1,
     "repair_count_at_review": 0,
     "stale": true,
-    "recorded_at": "2026-09-22T23:46:19.077Z"
+    "recorded_at": "2026-09-23T00:01:59.700Z"
   },
   "impl_review": null,
   "art_review": null,
@@ -1024,7 +1024,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-22T23:23:23.910Z",
-  "updated_at": "2026-09-22T23:57:55.532Z",
+  "updated_at": "2026-09-23T00:02:28.168Z",
   "history": [
     {
       "at": "2026-09-22T23:23:23.933Z",
@@ -1185,6 +1185,37 @@
         "v2-lunch-carry:work_decision_map:v1",
         "v2-lunch-carry:game_reference_research:v1"
       ]
+    },
+    {
+      "at": "2026-09-23T00:01:59.700Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r2.result.json"
+    },
+    {
+      "at": "2026-09-23T00:02:28.127Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r2 = FAIL 38（CA 41 / GQ 36）、採択 NONE、blocker 5件。5件すべてが同じ形をしている: 勝敗を支える中核ルールが、確認されていない事実の発明である。B の『確認には一律t時間』『センターは最初の不完全な連絡だけで資源を不可逆投入する』『後から訂正不能』『原因ごとに予備車・回り道・学校連絡が一対一対応』、A の『運搬車台数×品目数＝必要数』と搬入時に学級別運搬車が並ぶという前提、C の過剰分離にコストがあるという前提。いずれも work_research の unconfirmed に該当する。創作規則を外すと、固定戦略を負かす機構が消える。したがってこれは設計の失敗ではなく事実の不足であり、差し戻し先は GAME_CONCEPTS ではなく WORK_RESEARCH。なお critic の HIGH『通過行は三つだけという全数主張が偽』は誤読で、機械的に検証すると FACT GATE は rows[0] と rows[3] の2行を落としており、配送業務従事者が actor で通過したのは rows[4]/[5]/[9] の3つで設計者の主張どおり。ただし rows[3]（出発前点検と異常時の予備車要請）は distortion_risk LOW でありながら私が gameability LOW と付けたことだけで落ちている。これは事実ではなく判断なので、再監査の対象として記録する。"
+    },
+    {
+      "at": "2026-09-23T00:02:28.127Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r2 = FAIL 38（CA 41 / GQ 36）、採択 NONE、blocker 5件。5件すべてが同じ形をしている: 勝敗を支える中核ルールが、確認されていない事実の発明である。B の『確認には一律t時間』『センターは最初の不完全な連絡だけで資源を不可逆投入する』『後から訂正不能』『原因ごとに予備車・回り道・学校連絡が一対一対応』、A の『運搬車台数×品目数＝必要数』と搬入時に学級別運搬車が並ぶという前提、C の過剰分離にコストがあるという前提。いずれも work_research の unconfirmed に該当する。創作規則を外すと、固定戦略を負かす機構が消える。したがってこれは設計の失敗ではなく事実の不足であり、差し戻し先は GAME_CONCEPTS ではなく WORK_RESEARCH。なお critic の HIGH『通過行は三つだけという全数主張が偽』は誤読で、機械的に検証すると FACT GATE は rows[0] と rows[3] の2行を落としており、配送業務従事者が actor で通過したのは rows[4]/[5]/[9] の3つで設計者の主張どおり。ただし rows[3]（出発前点検と異常時の予備車要請）は distortion_risk LOW でありながら私が gameability LOW と付けたことだけで落ちている。これは事実ではなく判断なので、再監査の対象として記録する。",
+      "return_to": "WORK_RESEARCH"
+    },
+    {
+      "at": "2026-09-23T00:02:28.167Z",
+      "event": "confidence_set",
+      "confidence": {
+        "fact": "HIGH",
+        "game_fit": "LOW",
+        "design": null
+      },
+      "note": "2ラウンドとも採択 NONE。ゲームの成立が、一次資料で確認できていない運用値（連絡項目・センター応答手順・訂正可能性・代替車の手配所要時間・搬入時の照合単位と帳票）に依存している。これらが埋まるまで BUILD へ進めない。"
     }
   ]
 }
