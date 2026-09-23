@@ -1,7 +1,6 @@
 /* Ver.2 stylesheet — intentionally separate from src/index.css (Ver.1).
-   No palette or typography is defined yet: exact colors are OPEN (D-16) and
-   the display font is OPEN. Keep this file to layout-neutral scaffolding
-   until the Design Bible / Master Assets fix them. */
+   Colours: palette v1 tokens (--v2-*, VISUAL_TONE.md §3, LOCKED 2026-09-20)
+   defined at the bottom of this file. Typography is still OPEN. */
 * {
   box-sizing: border-box;
 }
@@ -12,8 +11,8 @@ body {
   padding: 0;
   min-height: 100%;
   font-family: "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  background: #ffffff;
-  color: #333333;
+  background: var(--v2-warm-cream);
+  color: var(--v2-deep-green);
 }
 
 .v2-shell {
@@ -31,7 +30,7 @@ body {
   margin: 0;
   font-size: 12px;
   padding: 4px 10px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--v2-warm-beige);
   border-radius: 999px;
 }
 
@@ -55,5 +54,18 @@ body {
 .v2-shell-link {
   margin-top: 16px;
   font-size: 14px;
-  color: #333333;
+  color: var(--v2-deep-green);
+}
+
+/* VISUAL_TONE.md §3 — 基準 palette v1 (LOCKED, 2026-09-20). Token names mirror
+   the table; do not add colors outside this list (DESIGN_OWNERSHIP §2). */
+:root {
+  --v2-sky-blue: #64B4DC;
+  --v2-soft-sky: #B1D4EB;
+  --v2-fresh-green: #779763;
+  --v2-deep-green: #427D50;
+  --v2-coral: #E5784F;
+  --v2-honey-yellow: #E5BF7A;
+  --v2-warm-cream: #F1F1EE;
+  --v2-warm-beige: #E4D3B8;
 }

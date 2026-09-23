@@ -1,0 +1,31 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 94,
+  "SUBJECT_OCCLUSION": 96,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 95,
+  "CONTAINER_FIT": 91,
+  "BACKGROUND_EDGE_QUALITY": 93,
+  "ASPECT_RATIO_FIT": 96,
+  "VISUAL_INTEGRATION": 86,
+  "MOBILE_CROP": 91,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 91
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The truck and school icons feel slightly detached from each other and the tray because they float without a shared route, panel, or stronger alignment.",
+  "The four status marks lack labels or a surrounding component, making them resemble temporary debug indicators.",
+  "The orange card marker is positioned differently from the centered status marks and has little visual context.",
+  "Disabled candidate artwork is very faint, slightly weakening consistency and legibility."
+ ],
+ "issues": [
+  "08-deliver-ready/top delivery icons — truck and school use noticeably different visual footprints and float in open space — place them in a consistently aligned delivery-status row or connect them with a subtle route indicator.",
+  "08-deliver-ready/status marks — four unlabelled circles read as provisional indicators — add a compact status container, semantic icons, or clearer selected/completed states.",
+  "08-deliver-ready/fried-chicken candidate marker — orange dot floats close to the card corner without explaining its relationship to the item — anchor it to a consistent badge position with padding and, if appropriate, a small label.",
+  "08-deliver-ready/disabled candidate cards — low-opacity food images become unnecessarily washed out against already pale cards — retain more image contrast and communicate disabled state through a controlled overlay or border treatment."
+ ]
+}

@@ -1,0 +1,193 @@
+/* 給食 WORLD MAP — the opened bento box and its five places.
+   Colors: palette v1 tokens only (--v2-*, defined in src/v2/index.css).
+   Flat fills; translucency only via color-mix of a palette token. */
+
+/* the whole screen IS the world: the bento fills the viewport, centred, keeping
+   its 375x560 proportions on any phone. Nothing else shares the screen. */
+.lw-world {
+  min-height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  background: var(--v2-warm-cream);
+  box-sizing: border-box;
+}
+.lw-map {
+  position: relative;
+  width: min(100%, 480px, calc((100dvh - 24px) * 375 / 700));
+  margin: 0 auto;
+  overflow: visible;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- Layer 1: bento box frame ---- */
+.lw-bento,
+.lw-bento-img,
+.lw-roads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lw-bento-img { object-fit: contain; }
+
+/* the opened lunch box: coral lid behind, cream interior in front */
+.lw-bento-shadow { fill: var(--v2-deep-green); opacity: 0.1; }
+.lw-bento-lid { fill: var(--v2-coral); }
+.lw-bento-lid-inner { fill: color-mix(in srgb, var(--v2-coral) 72%, var(--v2-warm-cream)); }
+.lw-bento-clasp { fill: var(--v2-honey-yellow); }
+.lw-bento-tray { fill: var(--v2-warm-beige); }
+.lw-bento-tray-inner { fill: color-mix(in srgb, var(--v2-warm-cream) 88%, var(--v2-warm-beige)); }
+
+
+/* ---- Layer 2: roads (pathLength=100 on every path) ---- */
+.lw-roads { pointer-events: none; }
+
+.lw-road-base {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke: var(--v2-warm-beige);
+  stroke-dasharray: 4 5;
+}
+
+/* A lit road is the SAME dashed road in a warmer colour — never a solid bar.
+ * `50 100` used to draw one unbroken 50-unit stroke out of the spot, which read
+ * as a pole stuck into the place rather than as a path that is partly lit.
+ * The list below is the base rhythm (4 5) written out six times and then closed
+ * with a gap longer than the path, so exactly the first half carries dashes. */
+.lw-road.is-partial .lw-road-base {
+  stroke: var(--v2-honey-yellow);
+  stroke-dasharray: 4 5 4 5 4 5 4 5 4 5 4 100;
+}
+
+.lw-road.is-on .lw-road-base {
+  stroke: var(--v2-honey-yellow);
+  stroke-dasharray: 4 5;
+}
+
+/* one-shot light pulse; remounted (React key) when the state changes */
+.lw-road-pulse {
+  fill: none;
+  stroke: var(--v2-warm-cream);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 12 100;
+  stroke-dashoffset: 12; /* dash parked before the path start = invisible */
+  animation: lw-pulse-full 1.2s ease-in-out 1;
+}
+
+.lw-road.is-partial .lw-road-pulse { animation-name: lw-pulse-half; }
+
+@keyframes lw-pulse-full { from { stroke-dashoffset: 12; } to { stroke-dashoffset: -100; } }
+@keyframes lw-pulse-half { from { stroke-dashoffset: 12; } to { stroke-dashoffset: -50; } }
+
+/* ---- Layer 3: spots ---- */
+.lw-spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: clamp(64px, 22%, 110px);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  color: inherit;
+  touch-action: manipulation;
+}
+
+.lw-spot:focus-visible {
+  outline: 3px solid var(--v2-sky-blue);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.lw-spot-body {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+/* a place that is sorted glows warmly from behind — never a ring drawn on top of it */
+.lw-spot-body::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--v2-honey-yellow) 62%, transparent) 0%, color-mix(in srgb, var(--v2-honey-yellow) 0%, transparent) 64%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.lw-spot.is-solved .lw-spot-body::before { opacity: 1; }
+
+/* the clay mark each place shows until its generated tile lands */
+.lw-spot-mark { position: absolute; inset: -10%; width: 112%; height: 112%; display: block; }
+.lw-spot-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+/* muted: unplayed, desaturated, no motion */
+.lw-spot.is-muted {
+  filter: saturate(0.5);
+  opacity: 0.78;
+}
+
+/* trouble: the visible 異変 — slightly larger, a gentle bob and a coral badge */
+.lw-spot.is-trouble { transform: translate(-50%, -50%) scale(1.08); }
+.lw-spot.is-trouble .lw-spot-body { animation: lw-bob 1.6s ease-in-out infinite; }
+
+.lw-spot.is-trouble.is-new .lw-spot-body {
+  animation: lw-shake 600ms ease-out 1, lw-bob 1.6s ease-in-out 600ms infinite;
+}
+
+/* a place in trouble glows and leans; there is no badge pinned on top of it —
+   a dot in the corner is an app notification, not something happening in a world */
+.lw-spot-badge {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--v2-coral) 55%, transparent) 0%, color-mix(in srgb, var(--v2-coral) 0%, transparent) 62%);
+  animation: lw-worry 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes lw-worry { 0%, 100% { opacity: 0.55; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.04); } }
+
+.lw-spot.is-nudged .lw-spot-body { animation: lw-nudge 0.45s ease; }
+@keyframes lw-nudge { 0%, 100% { transform: scale(1); } 40% { transform: scale(0.92) rotate(-3deg); } 70% { transform: scale(1.04) rotate(2deg); } }
+
+@keyframes lw-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6%); } }
+
+@keyframes lw-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-4%, -6%) rotate(-5deg); }
+  40% { transform: translate(4%, 2%) rotate(4deg); }
+  60% { transform: translate(-3%, -2%) rotate(-3deg); }
+  80% { transform: translate(2%, 1%) rotate(2deg); }
+}
+
+.lw-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* these selectors must out-specify .lw-spot.is-trouble.is-new .lw-spot-body */
+  .lw-spot .lw-spot-body,
+  .lw-spot.is-trouble .lw-spot-body,
+  .lw-spot.is-trouble.is-new .lw-spot-body,
+  .lw-spot.is-nudged .lw-spot-body,
+  .lw-spot-badge,
+  .lw-road-pulse {
+    animation: none !important;
+  }
+}

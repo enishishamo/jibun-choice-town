@@ -1,0 +1,1938 @@
+{
+  "game_id": "v2-lunch-carry",
+  "profession": "給食を はこぶ しごと（配送・受け渡し）",
+  "track": "v2",
+  "trigger": "NEW_Q1_REQUEST",
+  "legacy_game_type": null,
+  "creator": "claude-code-orchestrator",
+  "state": "GAME_CONCEPT_REJECTED",
+  "current_stage": "WORK_RESEARCH",
+  "confidence": {
+    "fact": "HIGH",
+    "game_fit": "LOW",
+    "design": null
+  },
+  "design_iteration": 1,
+  "repair_count": 0,
+  "redesign_count": 0,
+  "artifacts": {
+    "legacy_inventory": {
+      "artifact_id": "v2-lunch-carry:legacy_inventory:v1",
+      "artifact_type": "legacy_inventory",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/legacy_inventory_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "searched": "src/q1/（logisticsLogic.ts / LogisticsGame.tsx）, src/data/content/schoolLunch.ts, src/data/careerPaths.ts, factory/projects/legacy-load-and-route/**, factory/harness/gameplay-qa-load-route.mjs, factory/database/mechanics.json, factory/taxonomy/*, factory/state/audits/, factory/state/experience-backlog.json, factory/state/legacy/, factory/state/feedback/, public/assets/**, src/v2/lunch/**, docs/jibun-choice-v2/WORLD_DESIGN.md",
+        "items": [
+          {
+            "path": "src/q1/logisticsLogic.ts:1-157",
+            "what": "Ver.1 の純ロジック。8食材×validZones、4温度帯、3経路アーキタイプ、sessionWin",
+            "decision": "UPGRADE",
+            "reason": "validZones の上限モデル（10℃以下は5℃でも満たす）は4回のレビューを経て得た正しい知識。知識は残し、操作（ラベルをタップ）は残さない"
+          },
+          {
+            "path": "src/q1/LogisticsGame.tsx:1-172",
+            "what": "Ver.1 UI。料理カード4×ゾーンボタン4＋学校カード2＋「出発する」1回",
+            "decision": "REPLACE",
+            "reason": "フォームであってPLAYではない。トラックも移動も時間経過もなく、動詞が『ラベルをタップ』しかない。Ver.2 の PLAY FIRST に反する"
+          },
+          {
+            "path": "factory/harness/gameplay-qa-load-route.mjs:1-167",
+            "what": "27件の純ロジック抜け道テスト（現状 27 passed / 0 failed）",
+            "decision": "KEEP",
+            "reason": "固定ゾーン当て<5%、単一軸ヒューリスティック≤70%、全セッション可解、という天井の置き方は機構が変わっても移植できる契約"
+          },
+          {
+            "path": "factory/harness/gameplay-qa-load-route.mjs:54-65",
+            "what": "『正しい推論は必ず勝つ』検査が validZones から自分で配置を導いている旨の自認コメント",
+            "decision": "KEEP",
+            "reason": "P0（じゃがいもが正しく積んでもCLEARできない）が PASS 88 のゲートをすり抜けて出荷された原因そのもの。オラクル由来の検査は、子どもが実際に読むヒントについて何も証明しない、という教訓"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/research.md:1-230",
+            "what": "一次情報リサーチ（厚労省別添1 全表、文科省告示64号、農水省、大川市仕様書）＋ FACT_CHECK_REQUIRED 一覧",
+            "decision": "KEEP",
+            "reason": "本主題で repo 内最良の出典付き資料。2026-09-23 の新規調査と突き合わせて使う"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/fact_sheet_v4.json",
+            "what": "統合 fact sheet。出典・職務・専門性・隣接職境界・5つの不確実性",
+            "decision": "KEEP",
+            "reason": "『検収は学校側の仕事であって運転手の仕事ではない』という隣接職の境界を既に持っている。Ver.2 が繰り返しかねない誤りを防ぐ"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design-review-r1..r4.result.json",
+            "what": "独立デザインレビュー FAIL 64 → FAIL 62 → FAIL 68 → PASS 88",
+            "decision": "KEEP",
+            "reason": "3回の FAIL が、この題材で既知の悪手（CORE_DISTORTED_BY_GAME、ANSWER_LEAK）を記録している"
+          },
+          {
+            "path": "src/data/content/schoolLunch.ts:209-247",
+            "what": "Ver.1 logistics 職業カード。「『届ける』の中には、いろんな役割の人がいます」＋5つの下位役割",
+            "decision": "UPGRADE",
+            "reason": "KNOW THE JOB の中身として良い。ただし全文が出典なしのAI散文なので、2026-09-23 の一次情報で組み直す"
+          },
+          {
+            "path": "src/data/content/schoolLunch.ts:384-407",
+            "what": "logistics-lunch 体験。場所（朝7:00）、道具4つ、解決（8:20）、discoveryEcho、seeds 4つ",
+            "decision": "UPGRADE",
+            "reason": "discoveryEcho の形（『いまやってたこと、じつは仕事』）は Ver.2 の JOB REVEAL そのもの。ただし 7:00 / 8:20 の時刻は創作で、実際の業務時間は 9:30〜15:30（大川市）等。数値は捨てて形だけ残す"
+          },
+          {
+            "path": "src/data/careerPaths.ts:1912-1951",
+            "what": "logistics キャリアパス。『大型免許必須は誤解』の訂正つき",
+            "decision": "KEEP",
+            "reason": "この職について repo 内で最も子どもの役に立つ事実。ただし factSources が求人系の商業サイトで一次情報ではない点は要フラグ"
+          },
+          {
+            "path": "factory/database/mechanics.json の load_and_route エントリ",
+            "what": "primaryMechanic=drag_drop_assign、『冷凍/冷蔵/常温の荷室へドラッグ』『該当フェーズへ差し戻される』",
+            "decision": "REPLACE",
+            "reason": "出荷コードと食い違っている（実際は4ゾーン・タップ・差し戻しなしの一発コミット）のに reviewStale=false。差別化判断の土台が壊れているので直す必要がある"
+          },
+          {
+            "path": "factory/state/audits/q1-audit.json の load_and_route",
+            "what": "CA 80 / GQ 58、risk high、exploit=memorize、replay『2回目も条件が不変』",
+            "decision": "KEEP",
+            "reason": "Ver.2 が下回ってはいけない基準線。GQ 58 が低いのは『覚えたら終わり』だったため。新案はここを超える必要がある"
+          },
+          {
+            "path": "factory/state/experience-backlog.json の LogisticsGame",
+            "what": "WEAK_WORLD_FEEDBACK / HINT_LEAKAGE、repair_sketch『走行中に食材の温度・時計・車両位置を変化させ、検収拒否の原因を視覚化する』",
+            "decision": "UPGRADE",
+            "reason": "この repair_sketch は実質 Ver.2 のブリーフ。『走行中に変化する』＝時間が流れる、が欠けていた核心"
+          },
+          {
+            "path": "public/assets/kyushoku/delivery_center.jpg",
+            "what": "冷凍-18℃以下 / 冷蔵0〜10℃ / 常温10〜25℃ のラベル付き写真。冷凍ラベルの下に魚の絵",
+            "decision": "DROP",
+            "reason": "厚労省の表と矛盾し、かつ答えを漏らす。impl-review-r1 で意図的に配線を外した資産。二度と配線しない（警告として保存はする）"
+          },
+          {
+            "path": "public/assets/kyushoku/delivery_check.jpg",
+            "what": "Ver.1 導入写真。impl-review-r2 でピクセル監査済み",
+            "decision": "DROP",
+            "reason": "写実写真。Ver.2 の design/v2 イラストパイプラインは写真を含まない"
+          },
+          {
+            "path": "public/assets/char-logistics.png, public/assets/item-truck.png",
+            "what": "Ver.1 のドライバーキャラとトラックアイコン",
+            "decision": "REPLACE",
+            "reason": "CHARACTER_BIBLE.md 以前の資産で Ver.2 の視覚言語が違う。Ver.1 用には凍結保存"
+          },
+          {
+            "path": "public/assets/v2/lunch/truck.png",
+            "what": "Ver.2 のトラック画（2026-09-21、Art QA 合格）",
+            "decision": "KEEP",
+            "reason": "承認済み Ver.2 アート。現在 carry スポットのマークに流用中"
+          },
+          {
+            "path": "src/v2/lunch/types.ts:6-16, worldView.ts:10-23",
+            "what": "carry スポットの存在、menuDone で trouble 化、CLEAR 直後の復帰で newTrouble=carry",
+            "decision": "KEEP",
+            "reason": "「はこぶ」は既に『次の異変』として世界に配線済み。新ゲームは既存の受け口に差し込む"
+          },
+          {
+            "path": "factory/projects/v2-lunch-menu/experience-design-proposal.md:255",
+            "what": "S11「次の異変（はこぶのトラックがガタッ）— タップ先は今回未実装」",
+            "decision": "KEEP",
+            "reason": "「はこぶ」について Ver.2 が持つ唯一のデザイン言明。入口のビート（トラックがガタッ）は決まっている"
+          },
+          {
+            "path": "factory/state/legacy/rebuild-queue.json の load_and_route",
+            "what": "status=queued のまま",
+            "decision": "DROP",
+            "reason": "リビルドは e20416c で出荷済み。台帳が現実と食い違っているだけの残骸で、設計の入力にはならない"
+          },
+          {
+            "path": "factory/state/legacy/reverse-audits/load_and_route.json",
+            "what": "logisticsLogic.ts:5-6 と LogisticsGame.tsx:17 から参照されているファイル",
+            "decision": "DROP",
+            "reason": "ファイルが存在しない（ディレクトリにあるのは forecast_and_balance.json のみ）。参照切れなので設計の根拠にできない"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/{ae,scope_core,play_seeds,game_translations,...}_v1..v4.json",
+            "what": "Q1 Factory の段階別設計成果物 約40ファイル",
+            "decision": "DROP",
+            "reason": "Ver.1 のカードグリッドUI語彙を前提にしており、Ver.2 はそれを継承してはいけない。凍結保存はするが設計入力からは外す"
+          },
+          {
+            "path": "factory/projects/legacy-load-and-route/design/art_brief_v1.json",
+            "what": "no_art_required: true（delivery_check.jpg を流用）",
+            "decision": "DROP",
+            "reason": "『アートは要らない』は Ver.2 が明確に否定した Ver.1 の近道。Ver.2 は Design Owner の画面設計を待つ"
+          },
+          {
+            "path": "factory/state/feedback/real-user-feedback.jsonl",
+            "what": "唯一の実子ども観測。Home→Map 入口で abandoned_confused、「どうやって使ったらいいかわからない」",
+            "decision": "KEEP",
+            "reason": "常設の警告。『長い遊び方説明を足して解決しない。アフォーダンスで解く』"
+          }
+        ],
+        "gaps": "この repo が知らないこと: (1) この仕事の参照ゲーム系譜が皆無（gameplay-references.json 24件に load_and_route は不在）。(2) Ver.2 の carry PLAY のデザインは1行（トラックがガタッ）以外に存在しない。(3) 積載・荷降ろし・コンテナ・帰り便・学校の入口で何が起きるかの出典付き記述がない。(4) 実際の配送時刻・校数・所要時間などの運用値。(5) 『学校で食べる』のハンドオーバー先が WORLD_DESIGN で OPEN のまま。(6) この題材で子どもがプレイしたテストは一度もない。"
+      },
+      "creator": "claude-code-legacy-researcher",
+      "source_artifacts": [],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:26:49.061Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/legacy_inventory_v1.json",
+          "created_at": "2026-09-22T23:26:49.062Z",
+          "creator": "claude-code-legacy-researcher"
+        }
+      ]
+    },
+    "work_research": {
+      "artifact_id": "v2-lunch-carry:work_research:v2",
+      "artifact_type": "work_research",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/work_research_v2.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "subject": "「はこぶ」追加調査（2026-09-23 第2次）。独立 GAME CRITIC が2ラウンド連続で『勝敗を支える中核ルールが未確認事実の発明である』として全案を却下したため、critic が名指しした7つの空白だけを狙って調査した。新規に自治体仕様書5本・危機管理/衛生管理マニュアル2本・契約書1本を全文取得して本文を直接検査した。",
+        "claims": [
+          {
+            "claim": "遅延連絡の義務・宛先・即時性は明文化されている。「配送・回収途上において、学校・センターへの予定到着時刻に遅れる事由が発生した場合等には、速やかにセンターに連絡すること」。ただし報告項目のセットを列挙した規定は、検査した6本の仕様書のいずれにも存在しない。",
+            "actor": "配送従事者（連絡）／センター（指示）",
+            "source": "大和郡山市中学校給食センターおおぞら 給食配送配膳等業務仕様書 9④ https://www.city.yamatokoriyama.lg.jp/material/files/group/32/r6chuugakkouhaisouhaizennnyuusatushiyousho.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "契約上は二段階報告になっている。事象発生時に直ちに報告して指示を受け、緊急時に自己判断で措置した場合は「そのとった措置の内容を当該措置後直ちに」再報告する。",
+            "actor": "受託者→市",
+            "source": "北九州市立二島中学校給食等配送業務委託 契約書 第7条（臨機の措置） https://www.city.kitakyushu.lg.jp/files/000029978.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "報告項目が列挙されている唯一の例は異物混入であって配送遅延ではない。「被害状況（喫食の有無 何時・どこで・何が・どんな状態であったか等）を把握し」。",
+            "actor": "学校→センター所長",
+            "source": "板野町の学校給食における危機管理マニュアル 異物混入への対応 2(2)① http://www.town.itano.tokushima.jp/docs/2017060800028/files/kyuusyokukikikannri.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "予備車両の確保は契約義務であり、自治体によっては常備の実車として台数に計上されている。苫小牧市は第1調理場が配送車7台＋予備車1台＝計8台、第2調理場が2台＋予備車1台＝計3台。",
+            "actor": "受託者",
+            "source": "苫小牧市 学校給食配送回収等業務 仕様書 8(1) https://www.city.tomakomai.hokkaido.jp/files/00032500/00032546/%E4%BB%95%E6%A7%98%E6%9B%B8.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "代替車両の手配について「○分以内」という時間規定は、検査した7自治体の仕様書のいずれにも存在しない。表現はすべて定性的（「速やかに対応できる体制」「早急に修理または代替車両により配送業務に影響しないように」）か、予備車を常時1台実在させるという台数要件である。",
+            "actor": "受託者",
+            "source": "苫小牧8(1)／岩倉／伊予9④・(2)②／大和郡山11①／平戸／さくら市11(6)／大川市7⑨ の全文検索",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "予備車の手配・配送順の変更・学校への連絡を遅延時の選択肢として並べ、どれを使うかを決める判断手順を書いた文書は見つからなかった。配送順の変更は「学校行事等による計画変更」としてしか書かれていない。",
+            "actor": "UNKNOWN（センター所長が決めることは異物混入の文脈でのみ明記）",
+            "source": "全資料の全文検索／板野町 2(1)①・2(2)①（異物混入時のセンター所長の判断）",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "配送業務において、最初の報告が誤っていた場合の訂正手続を定めた記述は、検査した全資料に存在しない。最も近い前例は食中毒報告の「患者等数に変動があったときは速やかに本様式にて随時報告すること」＝同一様式の再提出であり、これは配送の話ではない。",
+            "actor": "学校・共同調理場→教育委員会（食中毒報告の場合）",
+            "source": "板野町 様式2 注1（出典表記：平成21年4月1日施行 文部科学省 学校給食衛生管理基準 別紙4-1）",
+            "source_class": "government",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "搬入時の帳票は実在し、名前がついている。「指定された配送コンテナを各校へ配送し、配膳室へ搬入する。この際、『搬入搬出記録簿』へ必要事項を記載する」。ただし記録簿の欄名（列）は公開資料から取得できなかった。",
+            "actor": "配送従事者",
+            "source": "苫小牧市 仕様書 2(1)イ",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "受け渡しは双方責任での相互確認であり、確認対象としてコンテナの汚損が明記されている。「給食センター及び各学校職員と受取り及び引渡しの確認を、双方で責任を持って行い、その際にコンテナに汚損がないかを常に確認すること」。また「配送、回収の収受を給食センターと学校・園とで文書により行うこと」。",
+            "actor": "配送従事者＋学校職員",
+            "source": "伊予市学校給食等配送業務 仕様書 ④⑤ https://www.city.iyo.lg.jp/kyouikusoumu/documents/siyou.pdf",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "学校側では受け入れ時に時刻と数を日常点検表へ記入する。照合先の文書が明記されるのは別配送品のほうで、「給食器材、主食、牛乳、デザート等の受け入れ時には、献立表や納入伝票と照合して確認すること」。センター便のコンテナについて食缶単位・クラス単位の員数照合を搬入時に行う旨の規定は見つからなかった。",
+            "actor": "配膳従事者",
+            "source": "岩倉市 仕様書 (6)③・(6)④",
+            "source_class": "municipal",
+            "confidence": "MEDIUM"
+          },
+          {
+            "claim": "受け渡しの時点で、配膳室にはワゴン（または学校用コンテナ）が洗浄済みで待機しているが中身は空である。クラス別の仕分けと積み込みは、受け渡しのあとに配膳員が行う。「配膳室に搬入されたコンテナから、食器・食缶等をワゴン車に積み替え、指定場所へ運搬」「食器・食缶等を学級別に仕分けをし、清潔な状態を保ったままワゴン車に乗せて各教室の前まで運ぶ」。",
+            "actor": "配膳従事者",
+            "source": "岩倉市 仕様書 (6)①・(6)⑥・(8)／大和郡山 ③⑵",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "嘔吐食器等の別保管・別返却は義務であり、無料ではない。分けた分だけ追加工程が発生する。学校側は「衛生的に処理を行った食器を調理室に返却するに当たっては、嘔吐物で汚染されたことを明示して、他の食器具とは別にして返却をしてもらう」、センター側は「他の食器具とは別にして洗浄前に、次亜塩素酸ナトリウム溶液（200ppm）に5分間付け置き し消毒後、洗浄する」。",
+            "actor": "学校（明示・別返却）／センター（洗浄前の別工程）",
+            "source": "今治市学校給食衛生管理マニュアル p105 https://www.city.imabari.ehime.jp/kyushoku/siryo/eiseikanri.pdf ／ 苫小牧 2(4)ウ",
+            "source_class": "municipal",
+            "confidence": "HIGH"
+          },
+          {
+            "claim": "ただし「分けすぎると損をする」ことを示す数量的制約（別容器の個数上限、別洗浄ラインの能力、保管場所の容量）を書いた文書は見つからなかった。追加工程は発生するが、上限で詰まることは裏づけられない。",
+            "actor": "UNKNOWN",
+            "source": "全資料の全文検索",
+            "source_class": "municipal",
+            "confidence": "MEDIUM"
+          },
+          {
+            "claim": "配送を実質的に縛る唯一の明文の時間制約は、配送側ではなく調理側にある。「調理後の食品については適切な温度管理を行い、調理後2時間以内に喫食できるよう努める」。",
+            "actor": "調理場・学校",
+            "source": "今治市学校給食衛生管理マニュアル（大量調理施設衛生管理マニュアル準拠）",
+            "source_class": "government",
+            "confidence": "HIGH"
+          }
+        ],
+        "unconfirmed": [
+          "GAP1 遅延連絡の報告項目セット。連絡義務・宛先・即時性・『事故報告書』という様式名までは確認できたが、何を伝えるかを列挙した規定は7自治体の仕様書のいずれにも存在しない。",
+          "GAP2 センターの対処手順。予備車が存在すること、異物混入時は所長が判断することまでは確認できたが、遅延時に予備車手配・配送順変更・学校連絡のどれを選ぶかを決める判断手順を書いた文書は存在しない。",
+          "GAP3 訂正可能性。配送業務には訂正手続の記述が皆無。『そもそも書かれていない』が実態。",
+          "GAP5残 搬入搬出記録簿の欄名（列）、および食缶単位・クラス単位の員数照合を搬入時に行うかどうか。",
+          "GAP7残 過剰な別保管を物理的に詰まらせる数値制約（別容器の個数上限、別洗浄ラインの能力、保管容量）。",
+          "以上に加えて第1次調査の未確認13件は未解消のまま（配送計画の別紙の実物、起案者の職名、荷降ろし順の規則、当日欠席の反映、二巡運行の有無ほか）。"
+        ],
+        "researcher_notes": "この調査の結論は、探し方が足りなかったというより、**遅延対応が仕様書レベルで意図的に定型化されていない**ことの反映と読める。7自治体・2マニュアル・1契約書を当たって出てくるのは一貫して「直ちに連絡し、指示に従う」という判断の外注の記述だけで、その先の判断基準は現場とセンターの電話のやりとりに委ねられている。\n\n逆に、物と手順の側は固く取れた。予備車が常備の実車として台数に載っていること、搬入時に記録簿へ時刻と数を書くこと、配膳室の運搬具は空で待っていること、嘔吐食器には洗浄前の別漬け置き工程が挟まること。これらは条番号つきで引用できる。\n\n設計に対する含意を2つだけ記録する。いずれも事実の記述であって設計判断ではない。\n(1) 案A（搬入時の員数照合）の前提は**反証された**。受け渡し時点でクラス別の運搬車が並んでいるという状態は存在せず、仕分けは受け渡しのあとに配膳員が行う。\n(2) 案C（別保管）は**部分的に補強された**。別分けはタダではなく、明示と洗浄前の5分間の別漬け置きという追加工程を伴う。ただし『分けすぎたら物理的に入らない』という上限は依然として裏づけがない。"
+      },
+      "creator": "claude-code-work-researcher-2",
+      "source_artifacts": [
+        "v2-lunch-carry:legacy_inventory:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-23T00:11:52.079Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/work_research_v1.json",
+          "created_at": "2026-09-22T23:26:49.110Z",
+          "creator": "claude-code-work-researcher"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/v2-lunch-carry/design/work_research_v2.json",
+          "created_at": "2026-09-23T00:11:52.080Z",
+          "creator": "claude-code-work-researcher-2"
+        }
+      ]
+    },
+    "work_decision_map": {
+      "artifact_id": "v2-lunch-carry:work_decision_map:v1",
+      "artifact_type": "work_decision_map",
+      "version": 1,
+      "status": "STALE",
+      "stale_because": "work_research changed v1->v2",
+      "file": "factory/projects/v2-lunch-carry/design/work_decision_map_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "note": "gameability は『子どもの操作に翻訳できる余地があるか』のメモであって、ゲーム案ではない。distortion_risk は『遊べる形にしたとき実際の仕事をどれだけ歪めるか』。行の並びは時系列（センター内 → 積込 → 走行 → 学校 → 回収）。",
+        "rows": [
+          {
+            "work_action": "配送計画（どの車がどの校を何時に回るか）を策定する",
+            "actor": "発注者＝市教育委員会・給食センター（契約時）。起案する個人の職名は UNKNOWN",
+            "trigger": "委託契約の締結／年度の開始",
+            "inputs": "受配校一覧、各校の給食開始時刻、クラス数と食数、校までの距離、保有車両台数とコンテナ積載数",
+            "constraints": "調理後2時間以内に給食できる台数を確保する義務。各校の検食は摂食開始30分前まで",
+            "decision": "ルート・順序・各校の指定時刻を決める",
+            "physical_or_digital_action": "仕様書の別紙として文書化する",
+            "outcome": "1年間固定される配送計画",
+            "frequency": "契約時に1回",
+            "variability": "低（年単位）",
+            "source": "大川市仕様書6②／さくら市6(1)／岩倉市5(5)①",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "HIGH"
+          },
+          {
+            "work_action": "コンテナに学校別・クラス別の食缶・食器・箸を積み込み、数を合わせる",
+            "actor": "調理業務従事者（積込）",
+            "trigger": "調理・配缶の完了",
+            "inputs": "調理業務指示書の学校別クラス別食数、コンテナ1台＝最大4クラス分",
+            "constraints": "コンテナ1台500kg以内。寸法159×89×160cm。積み残し・数え違いは学校で不足になる",
+            "decision": "どのコンテナに何を何セット入れるか",
+            "physical_or_digital_action": "食缶・食器かご・箸をコンテナへ入れる",
+            "outcome": "学校ごとのコンテナが揃う。間違えるとその学校で足りない",
+            "frequency": "毎日",
+            "variability": "中（クラス数・献立で変わる）",
+            "source": "紀の川市5(4)／さくら市10／大川市9②・10①／長崎市の実例（箸や食器の数え間違いが遅延原因）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "保温食缶・保冷食缶・蓄冷材を使い分けて温度を保つ",
+            "actor": "調理場（共同調理場）側",
+            "trigger": "配缶・積込",
+            "inputs": "献立の品目、温かい料理か冷たい料理か",
+            "constraints": "10℃以下または65℃以上。配送時刻を記録",
+            "decision": "どの容器・蓄冷材を使うか",
+            "physical_or_digital_action": "食缶を選び蓋を完全に密閉する",
+            "outcome": "学校に着いたときの温度",
+            "frequency": "毎日",
+            "variability": "中（献立で変わる）",
+            "source": "学校給食衛生管理基準 第3 1(4)④四／大量調理施設衛生管理マニュアル III-3",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "出発前の10分間で車両点検と業務連絡を終える",
+            "actor": "配送業務従事者",
+            "trigger": "配送開始の10分前",
+            "inputs": "日常点検表、当日の変更連絡",
+            "constraints": "配送開始10分前には完了していること",
+            "decision": "異常があれば予備車の手配を要請するか",
+            "physical_or_digital_action": "点検し記録簿に記載する",
+            "outcome": "出発可否",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "さくら市9(1)／大川市8①・7⑨",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "各校の配膳室へ搬入し、配膳員と対面で『正しく届いた』ことを確認して記録簿に書く",
+            "actor": "配送業務従事者＋受配校の配膳員",
+            "trigger": "学校到着",
+            "inputs": "配送計画、搬入・搬出記録簿、コンテナの中身",
+            "constraints": "配膳室は廊下と明確に区分され原則施錠。アレルギー対応食は別容器で受渡管理表にサイン",
+            "decision": "揃っているか。違っていればその場で申告するか",
+            "physical_or_digital_action": "パワーゲートで降ろし、配膳室の指定場所へ入れ、記録簿に記載する",
+            "outcome": "学校側が受け取った状態になる。齟齬はここで見つかる",
+            "frequency": "毎日・毎校",
+            "variability": "中",
+            "source": "さくら市6(1)イ／大川市6①(イ)／岩倉市5(6)⑩",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "予定到着時刻に遅れる事由が発生したとき、自分で決めずにセンターへ連絡して指示を受ける",
+            "actor": "連絡＝配送業務従事者／判断＝給食センター",
+            "trigger": "遅延・故障・事故・道路事情",
+            "inputs": "現在地、残りの校、各校の給食開始時刻",
+            "constraints": "携帯電話または無線等の即時連絡体制を常時整える。判断は自分でしない",
+            "decision": "（従事者側）いつ、何を伝えるか。（センター側）順序を変えるか、予備車を出すか、学校に連絡するか",
+            "physical_or_digital_action": "連絡する／指示に従う",
+            "outcome": "遅れがどこに寄るかが変わる",
+            "frequency": "随時",
+            "variability": "高",
+            "source": "さくら市9(3)／大川市8③／さくら市11(6)（代替車両の体制）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "学校行事等による配送時刻・配送順の変更をセンターが事前に通知し、受託者が従う",
+            "actor": "センター（通知）／受託者（従う）",
+            "trigger": "学校行事、短縮授業等",
+            "inputs": "学校からの連絡",
+            "constraints": "年に数回、20分程度早まることがある（米子市）",
+            "decision": "（センター側）どの校の順を動かすか",
+            "physical_or_digital_action": "事前通知",
+            "outcome": "その日だけ計画が変わる",
+            "frequency": "年に数回",
+            "variability": "中",
+            "source": "岩倉市5(5)①／米子市 質問と回答",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "検食で異常が見つかったら運搬を中止し、関係各校へ連絡する",
+            "actor": "検食者（習志野市では所長及び係長）／中止の決定は学校教育課と協議",
+            "trigger": "出発前の検食で異味異臭・異物",
+            "inputs": "検食の結果",
+            "constraints": "センター側の検食は配送車が出発する前に行う",
+            "decision": "止めるか、一部だけ止めるか",
+            "physical_or_digital_action": "運搬中止、連絡体制図に沿って連絡",
+            "outcome": "その日の給食が変わる／なくなる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "習志野市 学校給食における危機管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "検収で異常が認められたとき、返品・献立の一部または全部の削除・回収等の措置を決裁する",
+            "actor": "校長 又は 共同調理場の長（校長等）",
+            "trigger": "検収・日常点検での異常",
+            "inputs": "検収責任者の点検記録",
+            "constraints": "点検・記録は衛生管理責任者／検収責任者、決裁は校長等という二段構造",
+            "decision": "返すか、献立から外すか、回収するか",
+            "physical_or_digital_action": "措置を講じる",
+            "outcome": "その日の献立が変わる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "学校給食衛生管理基準 第4 1(1)五",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM"
+          },
+          {
+            "work_action": "給食終了後に各校を順に回り、コンテナ（空の食缶・食器・嘔吐食器は別保管）を回収して戻る",
+            "actor": "配送業務従事者（回収）／配膳員（教室前からワゴンを回収し配膳室でコンテナへ積み替え）",
+            "trigger": "各校の給食終了",
+            "inputs": "回収計画",
+            "constraints": "配送と同じ車・同じ契約。業務時間は9:30〜15:30等。嘔吐食器は感染症対策で別保管",
+            "decision": "どの順に回るか（＝計画どおり）／別保管の申し送り",
+            "physical_or_digital_action": "積み込み、搬出記録簿に記載",
+            "outcome": "センターに戻り洗浄・消毒へ",
+            "frequency": "毎日",
+            "variability": "中",
+            "source": "岩倉市5(5)①・5(6)⑦／さくら市6(1)ウ／大川市5②",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "残食を学級ごと・品目別に計量して記録する",
+            "actor": "調理業務受託者（配送員ではない）",
+            "trigger": "回収されたコンテナの開封",
+            "inputs": "戻ってきた食缶の中身",
+            "constraints": "毎日、業務終了後に残食記録表へ",
+            "decision": "なし（計量と記録）",
+            "physical_or_digital_action": "計量し記録する",
+            "outcome": "献立や量の見直しの材料になる",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "紀の川市5(6)②／岩倉市5(8)",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          },
+          {
+            "work_action": "主食・牛乳・デザートを別業者が学校へ直接配送し、学校側で配膳員がクラスの人数分に仕分ける",
+            "actor": "指定業者（配送）／受配校の配膳員（仕分け）",
+            "trigger": "当日の納品",
+            "inputs": "クラス別人数",
+            "constraints": "センター便とは別ルート。学校側で別途検収される",
+            "decision": "なし（仕分けは人数どおり）",
+            "physical_or_digital_action": "直送、受け取り、仕分け",
+            "outcome": "センター便と直送便の2系統が同じ日に学校で合流する",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "岩倉市5(2)⑥・5(6)⑤／兵庫県 学校給食衛生管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW"
+          }
+        ]
+      },
+      "creator": "claude-code-work-researcher",
+      "source_artifacts": [
+        "v2-lunch-carry:work_research:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-22T23:28:05.767Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/work_decision_map_v1.json",
+          "created_at": "2026-09-22T23:28:05.767Z",
+          "creator": "claude-code-work-researcher"
+        }
+      ]
+    },
+    "game_reference_research": {
+      "artifact_id": "v2-lunch-carry:game_reference_research:v2",
+      "artifact_type": "game_reference_research",
+      "version": 2,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/game_reference_research_v2.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "supersedes": "game_reference_research_v1.json",
+        "why_these_references": "v1 は『配送員が圧力の下で決める』10行の decision map に対して書かれたため、借りてきた文法が judgement / discrepancy / handoff / degradation に偏っていた。2026-09-23 の Human Decision（gate-log entry-2026-09-23-01）でスポット「はこぶ」が『給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程』へ再定義され、ゲーム化対象が裁量的な DECISION に限られなくなった結果、work_action_map_v1.json は21行・FACT GATE 通過19行になり、そのうち DECISION は rows[3] のただ1行だけになった。残る18行は VERIFICATION 4 / MANIPULATION 5 / ANOMALY_DETECTION 2 / RECORDING 2 / SEQUENCING 1 / COMMUNICATION 2 / COORDINATION 1 / ZONE_SEPARATION 1 である。v1 の10本はいずれも今も有効なので全て持ち越し、各 what_to_borrow / why_it_fits_this_job に『どの rows[N] に効くか』の追跡を追加した。そのうえで v1 に文法がまったく無かった5領域 —— 精査して異常に気づくこと（ANOMALY_DETECTION）、物ごとに正しい行き先がある仕分け（MANIPULATION/SEQUENCING）、記録そのものが盤面になること（RECORDING）、世界から読み取る締切（TIMING）、渡した相手が反応を返すこと（教室の配食・声かけ）—— に対して新規5本を追加した。『2〜4本』の目安を1本超えているのは、RECORDING と ZONE_SEPARATION と TIMING が v1 の10本では1本も担保できず、既存エントリの拡張だけでは埋まらなかったためである（ZONE_SEPARATION だけは新規追加せず Overcooked と Minecraft の拡張で処理した）。借りるのは抽象構造のみで、キャラクター・画面・アート・ステージ・固有機能は借りない。これはゲーム案ではない。",
+        "audience_evidence": "v1 と同一の一次データを維持する。ゲムトレ ゲームに関するアンケート調査2025（2025年8月・全国の小学生324名・うち小4〜6が170名）。1位 Minecraft 28.4% / 2位 スプラトゥーン 16.9% / 3位 あつまれ どうぶつの森 12.0% / 8位 Roblox 1.5%。重要な補正（変更なし）: この層はスマホ中心ではなく Switch 優位であり、本プロダクトはスマホなので Switch タイトルの文法を指1本へ翻訳する作業が要る。 https://gametrainer.jp/data2025/ ／ 今回の追加分の但し書き: 『8番出口』は上記調査の順位には現れないが、累計販売300万本超・Switch 版のダウンロードランキング上位・実写映画化・『8番ライク』と呼ばれる模倣作の大量発生という形で日本語圏の広範な認知が確認できる（https://automaton-media.com/articles/newsjp/theexit8-20240808-305003/ ／ https://www.famitsu.com/article/202511/58858 ／ https://recgame.jp/news/detail/2591）。ただし『小4〜6が自分で遊んでいる』ことの直接の実証ではなく、ホラー寄りのトーンは本プロダクトの対象年齢に合わないため、借りるのは構造のみ。Unpacking・ピクロス・リズム天国・おみせっちも同様に、国内小学生調査での人気の実証は取れていないので、人気の根拠ではなく構造の参考としてのみ採用する。",
+        "references": [
+          {
+            "reference": "Papers, Please",
+            "core_action": "書類と規程を1件ずつ突き合わせ、承認か却下かを決める",
+            "player_decision": "どの欄を見るか。規則が増えた今日、この書類は通るのか",
+            "feedback": "矛盾を指摘すると相手が反応する。見落とすと後で罰金通知が来る",
+            "tension": "規則が日ごとに積み上がる。速さと正確さが直接トレードオフ",
+            "reward": "一日を乗り切る。見落としが減っていく実感",
+            "replay_hook": "同じ書類でも今日の規則では判定が変わる",
+            "what_to_borrow": "progressive_rule_accumulation（規則が積み上がり、同じ対象でも判定が変わる）。discrepancy_detection（表に答えは書いておらず、表と現物の差が答え）。accuracy_speed_tradeoff。v2 追加: 『突き合わせる相手が紙である』という構造そのもの。rows[14] は照合先の文書が実名で2つ（献立表・納入伝票）存在する唯一級の行で、Papers, Please の『2つの紙が食い違っているときにだけ現物を見る』という読みの順序がそのまま置ける",
+            "what_not_to_borrow": "全体主義の世界観、家族の生活費、道徳的ジレンマ。小4〜6には重すぎ、Product Identity 外。相手を却下して追い返す関係性も、rows[1] の検収（業者は明日も来る）には合わない",
+            "why_it_fits_this_job": "rows[14] 直送品を献立表・納入伝票と照合／rows[1] 検収の品名・数量・期限・品温の点検／rows[10] の『12:20 と書いてあるが本当の締切は 11:50』。いずれも表が答えを綴らず、盤面上の規則から導かせる形が要る",
+            "serves_rows": [
+              1,
+              10,
+              14
+            ]
+          },
+          {
+            "reference": "Overcooked",
+            "core_action": "複数の調理工程を並行で回し、完成品を渡す",
+            "player_decision": "いま何を先にやるか。放置している鍋はまだ大丈夫か",
+            "feedback": "放置した鍋が焦げ始め、煙が出て、やがて燃える。すべて非言語",
+            "tension": "注文が届き続ける。いま手を離しているものが劣化していく",
+            "reward": "皿が出る。一日が終わる",
+            "replay_hook": "もっと良い段取りがあったはず",
+            "what_to_borrow": "放置コスト（ignored state degrades）。handoff の1点だけ（相手に渡して、相手が受け取りを返す）。v2 追加: カウンター／台越しの受け渡し —— 物は台の上を越えるが、体は越えられない、という境界の表現。境界が壁ではなく『渡す場所』として描かれ、説明文なしで『ここから先は自分の側ではない』が伝わる。これが rows[2] の ZONE_SEPARATION に対する唯一の既存文法である",
+            "what_not_to_borrow": "協力プレイ前提の設計。mechanics-library が cooperative_coordination を『単独作業が本質の仕事に持ち込むな』と明示している。投げ渡し（物を放る）も、衛生が主題の工程では借りない",
+            "why_it_fits_this_job": "rows[5] の温度は、直接いじれないまま別の作業中に劣化し続ける状態そのもの。rows[2] の『納入業者は検収室までで渡し、下処理室・調理室へ立ち入らない』は、まさに台越しの受け渡し。rows[12] の配膳室も、配送従事者が入れる場所と学校側の領域が分かれている",
+            "serves_rows": [
+              2,
+              5,
+              12,
+              15
+            ]
+          },
+          {
+            "reference": "PowerWash Simulator",
+            "core_action": "汚れを落とす。部品ごとに完了率が上がる",
+            "player_decision": "どこがまだ残っているか",
+            "feedback": "当てた場所だけが即座にきれいになる。残りがハイライトで分かる",
+            "tension": "ほぼ無い。失敗が存在しない労働ループ",
+            "reward": "部品ごとの完了、最後に before/after のタイムラプス",
+            "replay_hook": "取りこぼしを見つける気持ちよさ",
+            "what_to_borrow": "completion_by_subcomponent（部品単位の完了）。highlight_remaining_work。low_penalty_work_loop（見落とし探しを罰ではなく快感に変換した先例）。completion_timelapse。v2 追加: 『まだ見ていない所』が盤面に残って見えるので、点検表の項目リストを文字で出さなくても VERIFICATION が成立する",
+            "what_not_to_borrow": "無期限・無失敗。1〜3分の Q1 には締まりが要る",
+            "why_it_fits_this_job": "rows[7] 出発前点検は『決められた項目を飛ばさずに順に見る』行為で、まさに『まだ見ていない所が見えている』構造。rows[1] 検収と rows[4] 配缶の実務の失敗は数え間違い＝見落とし（oversight_risk）で、見落としを叱らずに扱える先例がこれしかない",
+            "serves_rows": [
+              1,
+              4,
+              7
+            ]
+          },
+          {
+            "reference": "Block Blast!",
+            "core_action": "手札の3つを盤面に置く。回転はできない",
+            "player_decision": "3つをどの順でどこへ置くか",
+            "feedback": "行や列が埋まると自動で消える",
+            "tension": "3つ全部を置き切るまで次が来ない。置き場が無くなれば終了",
+            "reward": "消える瞬間、コンボ",
+            "replay_hook": "さっきの1手が悪かった、が明確",
+            "what_to_borrow": "『置き切るまで補充されない』バッチのリズム。回転できない＝規格・寸法の制約を素直に表現できる。置いた瞬間に判定が自動発火する",
+            "what_not_to_borrow": "純パズルそのもの。仕事固有の C が無く、単体で貼ると spatial_placement（既に6本）の重複に落ちる",
+            "why_it_fits_this_job": "rows[6] のコンテナは1台＝最大4クラス・500kg以内・間口約159×奥行89×高さ160cm という、数値で明文化された寸法と重量の上限を持つ。rows[4] の配缶も『そのコンテナの分を入れ切るまで次のコンテナへ進めない』バッチ性がある",
+            "serves_rows": [
+              4,
+              6
+            ]
+          },
+          {
+            "reference": "ビビッター",
+            "core_action": "ギリギリで止める。それだけ",
+            "player_decision": "あと一歩行くか、ここで止めるか",
+            "feedback": "止めた位置がそのまま結果。行き過ぎると即アウト",
+            "tension": "押し引きそのもの",
+            "reward": "止められた位置",
+            "replay_hook": "1回が数秒。すぐもう1回",
+            "what_to_borrow": "限界を自分で見極めて手を止める一撃の判断。ルール説明が『止める』の1語で済むこと",
+            "what_not_to_borrow": "対人比較・ランキング（Product Identity Gate）。度胸を煽るトーン。運任せ",
+            "why_it_fits_this_job": "rows[5]（温度）と rows[10]（30分前の締切）の『安全側に倒すと進まない』というトレードオフを、1タップで成立させられる最小形。rows[8] の検食も『止める／進める』の二値である",
+            "serves_rows": [
+              5,
+              8,
+              10
+            ]
+          },
+          {
+            "reference": "あつまれ どうぶつの森",
+            "core_action": "拾う・渡す・話しかける",
+            "player_decision": "誰に何を渡すか、どこに置くか",
+            "feedback": "相手が即座に表情と声で反応を返す。渡した物が相手の手に移る",
+            "tension": "弱い。毎日少しずつ変わることが駆動",
+            "reward": "相手が喜ぶ。島の見た目が変わる",
+            "replay_hook": "翌日には違う状態になっている",
+            "what_to_borrow": "『相手に手渡して、相手が受け取りを返してくる』というハンドオフの完了表現。正誤判定ではなく相手の反応で結果を伝える",
+            "what_not_to_borrow": "実時間経過・長期運営。『あなたに合う住民』型の分類は Product Identity Gate 違反",
+            "why_it_fits_this_job": "rows[12] の配膳員との対面確認は、正誤マークではなく相手の反応で返すべき局面そのもの。rows[18]『食缶類返却時の声かけ』は契約書に業務として書かれているが、会話を選択肢クイズにすると language 依存になるので、反応だけで返す文法がここにある",
+            "serves_rows": [
+              12,
+              16,
+              18
+            ]
+          },
+          {
+            "reference": "Minecraft（小学生シェア1位）",
+            "core_action": "壊す・置く。2動詞だけ",
+            "player_decision": "次に何を作るか",
+            "feedback": "殴ったブロックにヒビが入り、割れて、足元に落ちる。因果が1秒以内に完結し完全に非言語",
+            "tension": "日没",
+            "reward": "作った物が世界にそのまま残る",
+            "replay_hook": "自分の作りかけが待っている",
+            "what_to_borrow": "押した所だけが押した分だけ変わる完全ローカルな因果。進捗が世界の形として残り、スコア表示を必要としない。v2 追加: 線（柵・壁・床材の切り替わり）が世界の中の物として置かれていて、『ここから先は別の区域』が文字なしで伝わること",
+            "what_not_to_borrow": "オープンエンドな目標不在。1〜3分では不成立",
+            "why_it_fits_this_job": "PLAY FIRST の到達点の実例。最初の1タップで触った所だけが目に見えて変わることが、説明を不要にする。rows[2] の受け渡し線も、注意書きではなく床の切り替わりとして置くべきである",
+            "serves_rows": [
+              2,
+              16
+            ]
+          },
+          {
+            "reference": "Roblox の obby（障害物コース）",
+            "core_action": "走る・跳ぶ。落ちたら戻る",
+            "player_decision": "どの足場へ跳ぶか",
+            "feedback": "落ちる＝即リスポーン。失敗の説明が一切ない",
+            "tension": "落ちたらチェックポイントまで戻る",
+            "reward": "次のチェックポイント",
+            "replay_hook": "再挑戦が1秒。『今のはいけた』が即座に立つ",
+            "what_to_borrow": "チュートリアルが構造的に不要（『前に進む』以外の情報がゼロ）。失敗コストが『少し戻る』で叱られない。チェックポイント＝部分的な進捗が保全される",
+            "what_not_to_borrow": "反射・操作精度そのものが挑戦になる型。mechanics-library が execution_precision を『思考・判断が本質の課題に貼ると反射ゲーになる』と明示",
+            "why_it_fits_this_job": "やり直しコストの設計基準。この仕事は失敗が怖い題材（rows[4] の不足、rows[6] の挟まれ災害、rows[16] の最後の人に足りない）なので、叱らない再挑戦が要る。rows[6] は実在の死亡災害があり、危険を『遊びの罰』として演出してはならない領域",
+            "serves_rows": [
+              4,
+              6,
+              16
+            ]
+          },
+          {
+            "reference": "出荷済み crane_lift（港・JIBUN CHOICE 内）",
+            "core_action": "掲示された規程に対して1件ずつ判断する",
+            "player_decision": "吊るか、止めるか、引き返すか",
+            "feedback": "止めた分だけ夜が短くなる",
+            "tension": "過剰に止めると夜が尽きる",
+            "reward": "ノーミスで夜を越える",
+            "replay_hook": "条件の組合せが変わる",
+            "what_to_borrow": "止める・引き返すことが一級の勝ち手であること。そしてその対になる機構、過剰停止にコストがあること",
+            "what_not_to_borrow": "そのままの再実装。既に出荷済みなので同型は重複になる",
+            "why_it_fits_this_job": "rows[11]『自分で決めずに連絡する』は、連絡が正解手である一方、無根拠な連絡が最適になってはいけない。その均衡機構が既にここにある。rows[8]/rows[10] の検食も『止め損なえば異常が出る／過剰に止めれば給食がなくなる』と両側にコストがあると明文で書かれている。rows[3] は19行で唯一の DECISION（返品・献立削除・回収を校長等が決裁）で、決裁が現場担当者ではなく上位者にあるという二段構造ごと表現する必要がある",
+            "serves_rows": [
+              3,
+              8,
+              10,
+              11
+            ]
+          },
+          {
+            "reference": "出荷済み yard_plan（港・JIBUN CHOICE 内）",
+            "core_action": "後で取り出すために、いま置く",
+            "player_decision": "どこに置けば翌朝に困らないか",
+            "feedback": "悪い配置のツケが翌朝のシミュレーションで箱ごとに再生される",
+            "tension": "いまの楽と明日の手間",
+            "reward": "翌朝が静かに終わる",
+            "replay_hook": "配置の別解",
+            "what_to_borrow": "往路の自分の選択が復路で1件ずつ再生されて採点される、という閉じたループ",
+            "what_not_to_borrow": "そのままの再実装。空間最適化は既に6本ある混雑 territory",
+            "why_it_fits_this_job": "rows[19] は同じ車・同じ契約・同じ別紙で往復する。往路に積んだ物が復路に戻るという閉ループが実務にそのままある。rows[6] の『どの順でどこへ載せるか＝降ろす順と対応する』も同型。ただし荷降ろし順を物理的に決める規則は未確認なので、実務の規則として提示してはならない",
+            "serves_rows": [
+              6,
+              19
+            ]
+          },
+          {
+            "reference": "8番出口（The Exit 8）",
+            "core_action": "同じ通路を歩き、『いつもと違う』かどうかだけを判断して、進むか引き返すかを選ぶ",
+            "player_decision": "異変があるか無いか。あると思ったら引き返す、無いと思ったら進む",
+            "feedback": "判断が正しければ出口番号が1つ増える。誤れば番号が0に戻る。なぜ間違えたかの説明は無い",
+            "tension": "異変の一覧は与えられない。『正常』は繰り返し歩くうちに自分の中に溜まる基準でしかない。見落としと過剰反応の両方に同じ罰がある",
+            "reward": "番号が増えること。進捗が世界の中の看板として1か所に出ている",
+            "replay_hook": "見たことのない異変が必ず残っている。『今のは気づけたはず』が毎回立つ",
+            "first_30_seconds": "壁の注意書きが遊び方そのもの（異変を見つけたら引き返せ、見つけられなければ進め）で、UI の説明ではなく世界の中の掲示になっている。最初の1周は必ず正常な通路で、何もしなくても進めるので、『これが正常だ』が体験として先に入る。プレイヤーの操作は前進と反転の2つしかない。",
+            "what_to_borrow": "anomaly_against_learned_baseline（正常の基準を教えずに、繰り返し見せることで植えつけ、差だけを問う）。二値の応答（進む／引き返す）しか用意しないことで、判断が言語に一切依存しない。見落としと過剰反応に対称なコストを置くこと。遊び方の説明を UI ではなく世界の中の掲示物として置くこと。",
+            "what_not_to_borrow": "ホラーのトーン、閉塞感、追いかけてくる存在。小4〜6向けの本プロダクトでは使えない。ゼロに戻る全損型のリセットも、Roblox obby のチェックポイント方式のほうが本件には合う（この仕事は失敗が怖い題材なので全損は避ける）。『異変一覧を暗記する』攻略も memorizable_layout の罠に直結するので、正常側を毎回変える必要がある。",
+            "why_it_fits_this_job": "rows[8]（出発前の検食で異味異臭・異物に気づき、運搬を止める）と rows[10]（受配校の検食）は、まさに『正常を知っている人だけが異常に気づく』行為で、どちらも止める／進めるの二値である。rows[1] の検収（汚破損・異物・異臭・鮮度・品温）も同型。critic r1 の blocker『検食者を、本当の締切を教えてくれるオラクルとして出すな』に対しても、この文法は答えを教える存在をそもそも置かない。rows[12] のコンテナ汚損の確認も『いつもと違うかどうか』だけを見る行為である。",
+            "serves_rows": [
+              1,
+              8,
+              10,
+              12
+            ]
+          },
+          {
+            "reference": "Unpacking",
+            "core_action": "箱から物を出し、それぞれが収まるべき場所へ置く",
+            "player_decision": "この物はどこに属するか",
+            "feedback": "収まるべき種類の場所へ持っていくと、物のほうが吸い付いて収まる。スコアも時間制限も失敗状態も無い（GDC 2021『Designing a Game Without Fail States or Scores』）",
+            "tension": "無い。箱が空になるまで終わらない、という形の駆動だけがある",
+            "reward": "箱が空になること。散らかっていた画面が、置いた分だけ整った画面に変わっていく",
+            "replay_hook": "弱い。だが『全部しまい切った』の充足が1回ごとに完結している",
+            "first_30_seconds": "画面には開いた箱と空の部屋しかない。箱から物が1つ出ているので、掴んで動かす以外にやることが無い。最初の1つを適当な場所へ置くと吸い付いて収まり、それで『物には場所がある』が伝わる。文字は一切要らない。",
+            "what_to_borrow": "destination_per_object（物ごとに正しい行き先の種類があり、正しい種類の場所では吸い付き、違う場所では収まらない）。completion_by_emptying（供給側が空になることが完了で、達成度の数字を要らなくする）。終わろうとしたときに初めて『置き場所が違う物』だけに印が付き、正しい場所は教えない、という確認の返し方。これは c_table_spells_answer を踏まずに『間違いを気づかせる』唯一の実用形。",
+            "what_not_to_borrow": "無時間・無失敗そのもの。1〜3分の Q1 には締まりが要る。持ち主の人生を年表としてたどる叙述構造（言語と時間の厚みが必要で、対象年齢と尺に合わない）。",
+            "why_it_fits_this_job": "rows[15]（配膳室で、コンテナの中身を学級という単位へ分け直し、洗浄済みの空ワゴンへ積み替える）は第2次調査で最も強く裏づけが取れた新事実であり、『物ごとに正しい行き先がある仕分け』そのもの。学級を取り違えると2クラスが同時に困るという非対称な誤りも、吸い付かない／後から印が付くで非言語に表せる。rows[4] の配缶（学校別・クラス別に食缶・食器・箸を揃える）、rows[16] の教室配食（人数分に配りきる）、rows[17] の嘔吐食器の別返却（混ざってはいけない）も同じ文法。",
+            "serves_rows": [
+              4,
+              15,
+              16,
+              17
+            ]
+          },
+          {
+            "reference": "ピクロス（ノノグラム）",
+            "core_action": "縦と横の手がかりから、盤面のマスを1つずつ埋めていく",
+            "player_decision": "このマスは埋まるのか、確実に空なのか",
+            "feedback": "矛盾した埋め方をすると、その行か列が成立しなくなる。答えを教えられるのではなく、自分の書き込みが自分と食い違う",
+            "tension": "確定していないマスを推測で埋めると、後で崩れる",
+            "reward": "埋め終わったとき、記録そのものが絵になる",
+            "replay_hook": "盤面が変われば手がかりも変わる。同じ解き方が別の形を作る",
+            "first_30_seconds": "格子と、その縁に並んだ数字しか画面に無い。1マス触ると塗れる、もう一度触ると消える。最初に必ず『行の長さと数字が一致していて一通りにしか埋まらない行』が用意されているので、1手目が自力で確定する。",
+            "what_to_borrow": "two_axis_ledger（縦軸と横軸の交点に書き込む、記録表そのものが盤面である形）。derived_not_given（答えは表に書いておらず、行と列の事実から子どもが導く）。self_consistency_check（誤りを『×』ではなく、記録どうしの食い違いとして露見させる）。『書く』が主操作でありながら反射も速さも要らないこと。",
+            "what_not_to_borrow": "純粋な論理パズルとしての難度設計。仕事固有の C が無ければ matching（既に4本）と measurement_inspection（既に6本）の混雑 territory に落ちる。数字の手がかりを増やして難しくする方向も、読解負荷が上がるので取らない。",
+            "why_it_fits_this_job": "rows[20]（戻ってきた食缶の残食を、学級ごと・品目別に計量して残食記録表へ記録する）は『学級×品目』という二軸が明文で決まっている唯一の行で、記録表が文字どおり格子である。rows[13]（搬入搬出記録簿・日常点検表）も同じ形だが、欄名が未確認（GAP5残）なので『どの欄に何を書くか』を発明してはならない —— この文法で使えるのは『起きたことと書いたものを一致させる』という関係までである。rows[20] は工程が一周して次の日の『つくる』へ返る唯一の行でもあり、埋め終わった記録が次に効く、という返しを置ける。",
+            "serves_rows": [
+              13,
+              20
+            ]
+          },
+          {
+            "reference": "リズム天国（Rhythm Heaven）",
+            "core_action": "世界の中で起きていることを見聞きして、来るべき瞬間に合わせる",
+            "player_decision": "いまか、まだか",
+            "feedback": "合えば世界の側が気持ちよく応える（切れる、飛ぶ、決まる）。外れると同じ物が別の壊れ方をする。数値は出ない",
+            "tension": "窓は毎回同じ幅ではなく、その場の出来事から読み取り直す",
+            "reward": "一続きが決まったときの手触り",
+            "replay_hook": "『今のは取れた』が外れた瞬間に分かる",
+            "first_30_seconds": "最初の数拍は必ず『見ているだけ』で、手を出さなくても1周が目の前で完結する。どこが正しい瞬間かは、音と動きの側が先に教えてしまう。指示文ではなく、世界が一度お手本を通すことが説明になっている。",
+            "what_to_borrow": "cue_lives_in_the_world（正しい瞬間を UI のゲージやカウントダウンで示さず、世界の出来事の側に置く）。show_one_full_cycle_first（手を出す前に一周を見せて、締切を自分で読み取らせる）。窓の広さを寛容にしたまま、外した結果を罰ではなく別の見た目にすること。",
+            "what_not_to_borrow": "フレーム精度の入力。mechanics-library が execution_precision を『思考・判断が本質の課題に貼ると反射ゲーになる』と明示しており、この仕事は判断が本質である。音に依存する設計も、音を切って遊ぶ子どもに対して成立しない。難度を窓の狭さで上げる方向も取らない。",
+            "why_it_fits_this_job": "rows[10] の『摂食開始時間の30分前までに検食』は、明文で存在する数少ない時間制約であり、各校の実質的な締切をつくる（12:20 の学校の本当の締切は 11:50）。critic r1 の blocker は『その締切を教えてくれるオラクルを画面に出すな』であり、この文法は締切を盤面の出来事から読み取らせる。rows[15]（給食開始時刻が学級ごとに決まっている）と rows[7]（配送開始10分前という明文の締切）にも同じ形が要る。",
+            "serves_rows": [
+              7,
+              10,
+              15
+            ]
+          },
+          {
+            "reference": "おみせっち",
+            "core_action": "来た人の注文どおりに用意して、手渡す",
+            "player_decision": "いま誰に何を出すか",
+            "feedback": "受け取った相手がその場で反応する。受け取ってもらえて初めて1件が終わる",
+            "tension": "待っている人が並ぶ。渡し終わるまで次に進まない",
+            "reward": "渡した相手の反応と、店の側が少しずつ増えること",
+            "replay_hook": "短い1件が連続する。区切りがいつでも来る",
+            "first_30_seconds": "誰かが来て、欲しい物が頭の上に絵で出ている。取って渡す以外にできることが無い。指1本のタップ2回で1件が完結し、それが遊び方の全部である。スマホ縦持ちの片手操作で成立している点が、Switch 優位の参照群を翻訳するうえで重要。",
+            "what_to_borrow": "handoff_completes_the_unit（渡して相手が受け取るまで1件が終わらない、という区切りの取り方）。want_shown_as_picture（相手が欲しい物を文字ではなく絵で提示する）。指1本・2タップで1件が閉じる尺。あつ森の手渡しをスマホの1本指へ翻訳した形として参照する。",
+            "what_not_to_borrow": "売上・通貨・課金・放置報酬。points/currency/reward 系は Product Identity Gate（§1）で Human Product Decision が要る領域であり、提案してはならない。客を捌く速さの競争も、この仕事の像を『効率』に寄せて歪める。",
+            "why_it_fits_this_job": "rows[16]（教室で給食当番の児童生徒と教職員が配食する）は、受け渡しの連鎖の終端が子ども自身であるという、この仕事で唯一子どもが当事者として制度に書かれている行で、遊ぶ子が実際に学校でやっていることそのものである。rows[18] の『食缶類返却時の声かけ』は契約書に業務として明記されているが、会話を選択肢クイズにすると language 依存になるため、渡す／受け取るときの反応だけで成立させる必要がある。rows[12] の双方責任の相互確認も、一方通行ではなく相手が受け取りを返す形。",
+            "serves_rows": [
+              12,
+              16,
+              18
+            ]
+          }
+        ],
+        "grammar_borrowed": "【VERIFICATION: rows[1] 検収 / rows[7] 出発前点検 / rows[12] 搬入時の相互確認・コンテナ汚損 / rows[14] 直送品と献立表・納入伝票の照合】突き合わせる相手が紙として実在し、2つの紙が食い違っているときにだけ現物を見る（Papers, Please）。まだ見ていない所が盤面に残って見えるので、点検項目を文字で列挙しなくても『飛ばさずに見る』が成立する（PowerWash Simulator）。相手が受け取りを返してくるまで完了しない双方向のハンドオフ（あつまれ どうぶつの森／おみせっち）。\n\n【ANOMALY_DETECTION・PERCEPTION: rows[8] センター検食 / rows[10] 受配校の検食 / rows[1] / rows[12]】正常の基準を教えずに繰り返し見せて植えつけ、差だけを問う。応答は進む／引き返すの二値だけで、判断が言語に依存しない。見落としと過剰反応に対称なコストを置く（8番出口）。過剰停止にコストがある均衡機構は出荷済み crane_lift に既にある。\n\n【MANIPULATION・SEQUENCING: rows[4] 配缶 / rows[6] 積込 / rows[15] 配膳室の学級別仕分け / rows[16] 教室配食 / rows[17] 別返却 / rows[19] 回収】物ごとに正しい行き先の種類があり、正しい種類の場所では吸い付き、違う場所では収まらない。供給側（箱・コンテナ）が空になることが完了で、達成度の数字を要らなくする。終わろうとしたときに初めて置き場所が違う物だけに印が付き、正しい場所は教えない（Unpacking）。置き切るまで補充されないバッチのリズムと、回転できない＝寸法・重量の上限（Block Blast!）。往路の積み方が復路で1件ずつ再生される閉ループ（yard_plan）。\n\n【RECORDING: rows[13] 搬入搬出記録簿 / rows[20] 残食の学級別・品目別計量】縦軸と横軸の交点に書き込み、記録表そのものが盤面である。答えは表に書いておらず行と列の事実から導く。誤りは『×』ではなく記録どうしの食い違いとして露見する（ピクロス）。進捗が世界の形として残りスコア表示を要らなくする（Minecraft）。\n\n【ZONE_SEPARATION: rows[2] 検収室までの受け渡し線】物は台の上を越えるが体は越えられない。境界が壁ではなく『渡す場所』として描かれる（Overcooked のカウンター）。線は注意書きではなく床材の切り替わりなど世界の中の物として置く（Minecraft）。\n\n【TIMING: rows[10] 摂食開始30分前 / rows[7] 配送開始10分前 / rows[15] 学級ごとの開始時刻】正しい瞬間を UI のゲージやカウントダウンではなく世界の出来事の側に置き、手を出す前に一周を見せて締切を自分で読み取らせる。窓は寛容にし、外した結果は罰ではなく別の見た目にする（リズム天国）。盤面に書いてある時刻は本当の締切ではなく盤面上の規則から導く（Papers, Please）。\n\n【COMMUNICATION・COORDINATION: rows[11] 遅延連絡 / rows[18] 返却時の声かけ / rows[17] 嘔吐食器の別返却】自分で解いてはいけない問題で、渡すことが正解手。ただし渡すこと自体にコストがある（crane_lift）。欲しい物・伝えたいことは文字ではなく絵と反応で返す（おみせっち／あつ森）。顔を合わせずに次工程へ引き継ぐときは、明示そのものが操作になる。\n\n【DECISION: rows[3] 検収異常時の校長等による決裁 —— 19行で唯一】掲示された規程に対して1件ずつ、返すか・献立から外すか・回収するかを選ぶ。点検は現場、決裁は上位者、という二段構造ごと表現する（crane_lift）。\n\n【状態の劣化: rows[5] 保温・保冷】別の作業をしている間に劣化し続け、直接は操作できない状態（Overcooked）。\n\n【全体のやり直しコスト】失敗コストは『少し戻る』で、部分的な進捗は保全される。全損リセットは取らない（Roblox obby）。",
+        "explicitly_not_borrowed": "Mini Metro のネットワーク設計と truck_dispatch の空走最適化は、実質的に経路設計であり FACT GATE が落とした rows[0]（配送計画の策定：gameability LOW / distortion_risk HIGH）および rows[9]（固定された配送順どおりに走る：同）と衝突するため借りない。Ver.1 の load_and_route（LogisticsGame）は『積み分け＋順路計画→検収』で出荷済みだが、順路計画の部分は同じ理由で継承しない。v2 追加分: 8番出口のホラー要素と全損リセット、Unpacking の無時間・無失敗と人生年表の叙述、リズム天国のフレーム精度入力と音依存、おみせっちの売上・通貨・課金・放置報酬（points/currency/reward は Product Identity Gate §1 で Human Product Decision 必須の領域であり、提案自体をしない）。また rows[6] は実在の挟まれ死亡災害がある作業なので、危険を『遊びの罰』として演出する文法はどの参照からも借りない。",
+        "crowded_territory": "factory/database/mechanics.json の実データを本作業で再検証済み（63本、v1 の記載と一致）。primaryMechanic 分布: measurement_inspection 6 / spatial_placement 6 / resource_allocation 6 / drag_drop_assign 5 / matching 4 / parameter_adjust 4 / composition_design 4 / search_discovery 4 / sequencing 3 / trial_and_error_experiment 2 / data_layer_compare 2 / evidence_elimination 2 / resource_budget 2。1本しかない（＝空いている）のは justified_refusal / pressure_matched_response / restraint_classification / plan_then_adapt / trend_reading / rule_application / conversation_observation / simulation_run / evidence_cross_reference / spec_matching / controlled_experiment / evidence_to_cause_matching / constrained_selection。v2 の注記: 今回の行群は measurement_inspection・spatial_placement・matching という最も混雑した3領域へ素直に落ちやすい。8番出口の anomaly_against_learned_baseline、ピクロスの two_axis_ledger、Unpacking の destination_per_object は、いずれも既存63本の primaryMechanic のどれとも一致しない構造であり、混雑回避の入口として記録しておく。",
+        "known_traps": "exploit-patterns.json のうち本件で特に踏みやすいもの（v1 から維持）: c_table_spells_answer（積込票・献立表・納入伝票がそのまま答えを綴る）／ all_select_overfill（多く積んでも先頭N個しか検査されない）／ instant_stop_perfect・wait_then_stop（とりあえず連絡・とりあえず止めるが常に最適になる）／ uniform_lever（複数の対応手段が同効果で未使用を順に押すに縮退）／ fixed_plan_ignores_records（30分前ルールを読まずに突破できる固定手順）／ memorizable_layout（7校の時刻を暗記で突破）／ text_only_consequence（結果が文章カードだけで世界が変わらない）。\n\nv2 で新たに効く罠: memorizable_layout は 8番出口 型の異変検知にそのまま刺さる（異変の一覧を暗記すれば見る必要がなくなる）ので、正常側を毎回変える必要がある。all_select_overfill は rows[17] の嘔吐食器の別返却で『全部別にすれば無条件で勝つ』として現れるが、分離を詰まらせる数量上限（別容器の個数、別洗浄ラインの能力、保管容量）は裏づけが無い（GAP7残）ので、確認済みの事実（明示＋洗浄前200ppm5分の別漬け置き）の範囲でしか価格をつけられない。c_table_spells_answer は rows[13] の記録簿で最も危険で、欄名が未確認（GAP5残）のため『どの欄に何を書くか』を発明した時点で捏造になる。\n\ncritic が過去に立てた blocker（再掲・拘束力あり）: r1 —— rows[8] のセンター検食を『走行中の出来事』にしてはならない（時系列は出発前で固定）／ rows[10] の検食者を『本当の締切を教えてくれるオラクル』として画面に出してはならない。r2 —— rows[11] を土台に『確認には一律t時間』『センターは最初の連絡だけで不可逆に資源を投入する』『訂正不能』『原因ごとに対処が一対一対応』を発明してはならない（GAP1/2/3 未解決。使えるのは『気づく』と『伝える』まで）／ rows[12] から『運搬車台数×品目数＝必要数』の掛け算の員数検査は導けない（受け渡し時点でワゴンは空であり、学級別の仕分けは受け渡しの『あと』に配膳員が行う＝rows[15]）。",
+        "first_30_seconds_rules": "参照15本に共通する onboarding の構造（v1 の5項目を維持し、v2 で3項目を追加）: (1) 画面に既に動いているものか並んでいるものがある＝形そのものが指示になっている。(2) 最初の1タップで、触った場所だけが目に見えて変わる。(3) 失敗の説明が無く、失敗した状態そのものが説明になっている。(4) 成功判定が自動発火する。(5) やり直しコストが『少し戻る』。(6) 【v2 追加】手を出す前に、1周分が目の前で完結して見える —— 8番出口の最初の1周は必ず正常な通路であり、リズム天国は最初の数拍を見ているだけにする。『正常』や『正しい瞬間』を言葉で定義せず、先に体験として通す。(7) 【v2 追加】できることが2つしかない（進む／引き返す、掴む／置く、塗る／消す、取る／渡す）。動詞を2つに絞ることが、説明文を不要にする最大の要因である。(8) 【v2 追加】遊び方の説明が必要な場合でも、UI のチュートリアル層ではなく世界の中の掲示物・貼り紙・看板として置く（8番出口の壁の注意書き）。DESIGN LOCK の観点では、これは Claude が勝手に補助テキストを足すことではなく、GPT の設計として世界の中に描かれるべきものである。"
+      },
+      "creator": "claude-code-reference-researcher-2",
+      "source_artifacts": [
+        "v2-lunch-carry:work_action_map:v1"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-23T02:09:35.083Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/game_reference_research_v1.json",
+          "created_at": "2026-09-22T23:39:58.477Z",
+          "creator": "claude-code-reference-researcher"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/v2-lunch-carry/design/game_reference_research_v2.json",
+          "created_at": "2026-09-23T02:09:35.085Z",
+          "creator": "claude-code-reference-researcher-2"
+        }
+      ]
+    },
+    "game_concepts": {
+      "artifact_id": "v2-lunch-carry:game_concepts:v3",
+      "artifact_type": "game_concepts",
+      "version": 3,
+      "status": "STALE",
+      "stale_because": "concepts rejected: 独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。",
+      "file": "factory/projects/v2-lunch-carry/design/game_concepts_v3.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "round": 3,
+        "supersedes": "game_concepts_v2.json",
+        "why_a_third_round_is_justified": "R1（FAIL 43）と R2（FAIL 38）はいずれも adopt NONE で却下された。両ラウンドが依拠していた work_decision_map_v1 は『ゲーム化できるのは配送員の裁量的 DECISION だけ』という読みで書かれており、通過10行のうち配送員が主体の行はごく少なく、設計者は緊張を作るために未確認のルール（確認に一律 t 時間、センターは最初の連絡だけで不可逆に資源を投入する、訂正不能、運搬車台数×品目数＝必要数、過剰分離にコストがある）を発明せざるを得なかった。R2 の5 blocker はすべてこの形である。2026-09-23 の Human Decision（gate-log entry-2026-09-23-01）でスポット「はこぶ」が『給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程』へ再定義され、確認／照合／異常への気づき／正確な手順／タイミング／受け渡し／記録／連絡／複数人の連携もゲーム化対象になった。その結果 work_action_map_v1 は21行・FACT GATE 通過19行になり、旧読みでは見えていなかった18行が使えるようになった。本ラウンドの3案はいずれも、旧 map では存在しなかったか LOW と誤スコアされていた行の上に立っており、R1/R2 の案の修正版ではない。3案とも、勝敗を決めるルールを未確認事実から作っていない。",
+        "concepts": [
+          {
+            "concept_id": "A-wakete-okuridasu",
+            "job_reality": "配膳室にいる配膳従事者（配膳員）の1時間。(1) 配送員が運んできたセンター便のコンテナを、双方で責任を持って受け取り、その際コンテナに汚損がないかを確認する（rows[12]、伊予市④⑤）。(2) 主食・牛乳・デザート等は別業者が学校へ直接配送してくるので、受け入れ時に献立表や納入伝票と照合して確認する（rows[14]、岩倉市5(2)⑥・(6)④）。(3) 配膳室に搬入されたコンテナから食器・食缶等を学級別に仕分け、洗浄済みで空のワゴンへ積み替えて各教室の前まで運ぶ（rows[15]、岩倉市(6)①(6)⑥(8)／大和郡山③⑵）。第2次調査が反証した事実——受け渡しの時点でワゴンは洗浄済みだが中身は空であり、学級別の仕分けは受け渡しの『あと』に配膳員が行う——をそのまま前提にしている。R2 blocker の『搬入時点で学級別運搬車が中身入りで並んでいる』という誤った前提は、この案には存在しない。3行とも actor は同じ配膳従事者で、rows[14] と rows[15] は同一自治体の同一仕様書から取れている。",
+            "main_action": "学級ごとの空のワゴンへ、届いたものを分けて積み、そろったワゴンから順に送り出す",
+            "core_loop": "開いているコンテナから食缶・食器を1つ掴む → 学級のワゴンへ置くと収まる → 壁の献立表と見比べて、まだ載っていない品目の列に気づく → 別業者の直送便が台に届く → 納入伝票・献立表・現物を見比べる → 残りを積む → そのワゴンを送り出す → ワゴンは廊下を通って教室の前へ着き、教室の側が受け取る → 次の学級。判定に必要な情報（今日の献立表、納入伝票、学級ごとの人数、各学級が食べ始める様子）はすべて盤面に常時見えている。開かないと見えない情報を作らない（GAME_DESIGN_RULES §1 rule 7。R2 blocker の『情報を隠して開く時間に罰を課す』を構造的に踏まない）。",
+            "player_decision": "『このワゴンは、いま送り出してよいか』。今日の献立表にある品目が、その学級の分だけ載っているか。まだ着いていない系統があるか。どの学級から送り出すか。",
+            "constraint": "【事実から取る制約】(1) 学級ごとに給食開始時刻が決まっている（rows[15] time_pressure）。だから送り出す順序に意味がある。(2) センター便と直送便は別ルート・別業者で、同じ日に学校で合流し、揃って初めて給食になる（rows[14]）。(3) 学級を取り違えると2クラスが同時に困る（rows[15] error_consequence）。(4) 気づかなければ足りないまま教室へ行く（rows[14] error_consequence）。\n【発明しないと明記すること】各学級の開始時刻の間隔、1件の確認に要する秒数、直送便がセンター便の前に着くか後に着くかは、全資料で未確認である。したがって判定に使うのは『順序』と『揃っているか』だけで、所要時間の数値・時間予算・一律の確認コストを一切置かない（R2 blocker『確認には一律 t 時間』を踏まない）。到着順も固定の手順として覚えられないよう毎回変える（known_traps: memorizable_layout / fixed_plan_ignores_records）。\n【固定戦略とその機械的な敗因】(a) always-send-immediately（届いた端から送る）: 直送便がまだ着いていない学級のワゴンは今日の献立表の品目を欠いたまま出るので、教室で最後の子の前に物が置かれない。敗因は時間罰ではなく『欠品が世界に見える』ことで、rows[14] の error_consequence そのものである。(b) always-wait（全部そろうまで1台も出さない）: 学級の開始時刻は学級ごとに違うので、最も早い学級が食べ始めたあとに届く。敗因は順序だけで定義でき、数値を要しない。(c) 献立表を読まない: 今日どの品目があるかは献立表にしか無く、ワゴンの見た目からは『あと何が要るか』が決まらない（品目数が日ごとに変わる）。読まなければどのワゴンも揃っているように見える。(d) 到着順の暗記: 2系統の到着順は未確認なので毎回変え、盤面の現物だけが根拠になるようにする。(e) 全部1台に積む: ワゴンは学級ごとに1台で、送り出す先は教室である。1台に全学級分を積んでも行き先は1学級であり、残りの学級には何も着かない。(f) 総当たり（送ってから取りに戻るのを繰り返す）: 取りに戻る間に他の学級の開始時刻が来るため、全学級で繰り返すと後半の学級が必ず間に合わなくなる——ただしこれは順序の帰結であって、回数制限や時間罰を新設するものではない。",
+            "feedback": "物を正しい種類の場所へ持っていくと、ワゴンの側に収まる（Unpacking）。ワゴンが学級の分で満ちると、その学級の区画が見た目で満ちる。送り出したワゴンは廊下を進み、教室の前に着き、教室の側が受け取りを返す（あつまれ どうぶつの森／おみせっち：相手が受け取って初めて1件が終わる）。足りないまま送った場合は、教室で最後の子の前に何も置かれない、という世界の状態として返る。×も文章も出さない。送り出そうとした瞬間にだけ、載っているもののうち今日の献立表に無いものへ印がつき、正しい置き場所は教えない（Unpacking の確認の返し方＝答えを漏らさずに間違いだけ気づかせる形）。",
+            "event": "直送便の到着（rows[14]）。台に牛乳のケースやデザートが置かれ、納入伝票が付いてくる。伝票と現物が食い違う日がある（照合が仕様書で義務づけられているのは、食い違いが起こり得るからである）。重要なのは、主ループが異常のない普通の日でも完全に成立することである——普通の日でも、仕分けと送り出す順序という判断は残る。R1 の high 指摘『稀な異常に依存しない主ループがなければ棄却』に構造で答えている。異常は主ループではなく、たまに起きる濃い1件である。",
+            "fail_recovery": "送り出したワゴンは廊下にあるので、取りに戻れる（Roblox obby：やり直しコストは『少し戻る』で、進捗は全損しない）。戻している間に別の学級の開始時刻が来る、という順序上の代償だけを負う。叱る表示はしない。廊下に早く出しすぎたワゴンが人の目の届かないところに置かれている状態は、習志野市の危機管理マニュアルに実在の課題として書かれているので、世界の絵として描く——ただし数値の減点にはしない（裏づけがあるのは『そういう状態になる』ことまでで、罰の大きさではない）。",
+            "clear": "すべての学級のワゴンが、その学級の分を載せて、その学級が食べ始める前に教室の前に着く。コンテナが空になることが完了の合図になる（Unpacking：completion_by_emptying。達成度の数字を出さない）。",
+            "replay": "今日の献立（品目の数と種類）、学級の数と人数、2系統の到着順が日ごとに変わる。",
+            "replay_reason": "『あの学級を先に出せばよかった』『牛乳を待たずに出してしまった』が、終わった瞬間に自分で分かる。盤面に答えが書いていないので、次はもっと早く気づける、という上達の余地が残る。",
+            "job_reveal_bridge": "最後に、空になったコンテナが来た道を逆にたどる。配送員の車へ返り、センターへ戻り、残った分が学級ごと・品目別に計量されて記録表に載る（rows[20]）。そこで初めて、自分がいた部屋が『配膳室』で、していたことが配膳員の仕事であり、その前にコンテナを運んできた人、別の車で牛乳を届けた人、さらに前に食材を受け取った人がいたと分かる。『はこぶ』が一人の運転手ではなく受け渡しの連鎖だという Human Decision の再定義が、そのまま Job Reveal になる。",
+            "interest_seeds": "二つの流れが合流する場所に立つこと／紙と現物を見比べること／人数分きっちり揃えること／どれから先に届けるかを組み立てること／自分が渡したものが誰かの手元に着くのを見ること",
+            "reference_games": "Unpacking（destination_per_object／completion_by_emptying／終わりに間違いだけ印がつき正解は教えない）／Papers, Please（献立表と納入伝票という実在の2つの紙、紙どうしが食い違うときにだけ現物を見る読みの順序）／リズム天国（締切を UI のゲージではなく世界の出来事＝学級が食べ始める様子に置き、手を出す前に1周見せる）／Overcooked（台越しの受け渡し）／おみせっち（渡して相手が受け取るまで1件が終わらない、指1本2タップの尺）",
+            "distortion_risk": "LOW〜MEDIUM。actor・場所・道具・順序はすべて同一自治体の仕様書の条番号で裏づけがあり、歪めていない。残るリスクは2つ。(1) 配膳室の作業を実際より『慌ただしい』ものとして描く危険——所要時間の数値を置かず順序だけで判定することで抑える。(2) 直送便の食い違いを実際より頻繁に見せると『いつも間違える業者』という誤った職場像になる——異常は主ループではなく低頻度の出来事に留める。",
+            "cognitive_load": "低〜中。動詞は『掴んで置く』と『送り出す』の2つだけ（first_30_seconds_rules 7）。読むのは献立表の品目の並びと納入伝票の数だけで、文章は無い。同時に見る対象はワゴンの列・コンテナ・献立表の3つ。",
+            "decision_row_ids": "rows[12] / rows[14] / rows[15]（主操作。3行とも FACT GATE 通過、actor はいずれも配膳従事者側）。rows[20] は CLEAR 後の世界の反応としてのみ描き、子どもの操作にはしない（計量の actor は調理業務受託者であり、配膳員ではないため）。",
+            "child_active_operations": "比べる（献立表・納入伝票と現物）／気づく（まだ載っていない品目の列）／合わせる（品目と学級を対応させる）／動かす（掴んでワゴンへ積む）／順番を考える（どの学級から送り出すか）"
+          },
+          {
+            "concept_id": "B-tosu-ka-tomeru",
+            "job_reality": "検収室で、あらかじめ定めた検収責任者が食材の納入に立会い、品名・数量・納品時間・業者名・生産地・品質・鮮度・包装の汚破損・異物混入・異臭・期限・品温を毎日全品目点検して記録する（rows[1]、学校給食衛生管理基準 第3 1(3)一・四）。納入業者は検収室までで受け渡しを行い、下処理室・調理室に立ち入らない（rows[2]、同 第3 1(3)四）。異常が認められたときに返品・献立からの削除・回収を決めるのは校長又は共同調理場の長であり、検収責任者ではない（rows[3]）。つまり現場の行為は『点検して、通すか、止めて上へ上げるか』までで、処分は決めない二段構造である。Ver.1 の fact_sheet が既に持っている『検収は運転手の仕事ではない』という隣接職の境界とも矛盾しない。",
+            "main_action": "検収台に並んだ今日の納品を、発注の紙と現物の両方から見て、1件ずつ奥へ通すか、止めて上へ上げる",
+            "core_loop": "台の向こう側に業者が立ち、今日の納品を1つずつ台に置く → 台の上の現物と、手前に広げてある今日の発注の紙を見る → 通すなら奥（検収室の側）へ動かす、おかしいと思ったら止めて上へ上げる → 次の1つ。操作は『通す』『止める』の2つだけで、言語に依存しない（8番出口）。発注の紙も現物も常時盤面にあり、開いて初めて見える情報を作らない。",
+            "player_decision": "『これは今日の発注どおりか。紙に書いていないところにおかしいところは無いか』。通すか、止めるか。",
+            "constraint": "【事実から取る制約】rows[1] は点検対象を2種類に分けて明記している。(i) 紙と突き合わせれば決まる属性＝品名・数量・納品時間・業者名・生産地・期限。(ii) 紙のどこにも書いていない、現物を見る・嗅ぐ・測るしかない属性＝品質・鮮度・包装の汚破損・異物混入・異臭・品温。この二重性が、この案の主判断である。\n【固定戦略とその機械的な敗因】(a) always-pass（全部通す）: 『見落とせばそのまま調理へ入る』（rows[1] error_consequence）。通した異常はその日の給食として世界に出る。(b) always-stop（全部止める）: 止めたものは調理へ進まないので『その日の献立が変わる／欠ける』（rows[1] outcome、rows[3] outcome）。見落としと過剰反応の両方に実在の代償があり、しかもそれが一次法令の文言から直接取れている（8番出口の対称コスト／出荷済み crane_lift の均衡機構）。(c) 紙だけ読む: 異臭・汚破損・品温は紙に対応する欄が無いので、紙だけでは取りこぼす。(d) 現物だけ見る: 数量・期限・業者名・生産地の食い違いは、現物を眺めるだけでは分からない。(c)(d) が同時に成り立つので、単一の見方に縮退しない。(e) 暗記: 発注内容は献立と納入業者で日ごとに変わる（rows[1] variability）。同じにんじんが今日は正しく明日は違う。異変の一覧を覚える攻略（known_traps: memorizable_layout）は、正常側が毎日変わることで成立しない。\n【発明しないこと】止めたあと何が起きるかの判断手順（誰がどれを選ぶか）は rows[3] の actor が校長等であることまでしか裏づけが無いので、子どもに決めさせない。処分の理由も説明させない。",
+            "feedback": "通したものは奥へ入り、調理の側が受け取る。止めたものは台の手前に残り、業者の側が持ち帰る動きをする。正誤マークは出さない。1日の終わりに、その日の給食がどうなったかが世界の状態として出る（通した異常が出てしまった／止めすぎて献立の品目が欠けた）。1件ごとに正解を返さないので、当てずっぽうで止めて反応を見る探り方が成立しない。",
+            "event": "納入業者が台の向こう側から動かないこと自体が、世界のルールとして毎回描かれる（rows[2]）。床の材質が切り替わり、業者はそこから先へ来ない。これは採点する規則ではなく、注意書きでもなく、世界の形として置く（Minecraft／Overcooked のカウンター）。『物は越えるが人は越えない』が、説明文なしで伝わる。",
+            "fail_recovery": "全損リセットはしない（8番出口の0に戻る型は取らない）。止めた／通した判断は取り消せないが、次の1件が必ず来る。1日が終わったあと、もう1日を始められる。",
+            "clear": "今日の納入を最後まで見終わり、調理が始まる。台の上が空になることが完了の合図。",
+            "replay": "今日の献立と納入業者が変わるので、発注の紙が変わり、同じ品物でも判定が変わる。",
+            "replay_reason": "『さっきのは紙を見ていれば分かった』『においに気づけたはず』が、その日の終わりに自分で立つ。見落としが減っていく実感が上達になる（Papers, Please／PowerWash Simulator）。",
+            "job_reveal_bridge": "通した食材が調理場へ入り、配缶され、コンテナに積まれ、学校へ運ばれ、教室に着くまでが一続きに見える。自分がしていたのは『受け渡しの連鎖のいちばん最初の関所』で、検収という仕事だったと分かる。止めるかどうかを決めるのは自分だが、返すかどうかを決めるのは別の人だった、という二段構造もここで明かす。",
+            "interest_seeds": "紙と現物を突き合わせること／においや温度のような紙に書けないものに気づくこと／通さない勇気／決めるのは自分ではないと知ること",
+            "reference_games": "8番出口（差だけを問う・二値の応答・見落としと過剰反応に対称なコスト・遊び方を世界の中の掲示で伝える）／Papers, Please（紙と現物の突き合わせ、規則が変われば同じ対象でも判定が変わる）／出荷済み crane_lift（止めることが一級の勝ち手で、過剰停止にも代償がある均衡）／Overcooked・Minecraft（台越しの受け渡し線を世界の形として描く）",
+            "distortion_risk": "LOW。行為・actor・点検項目はすべて一次法令の文言どおりで、創作の余地がほとんど無い。残るリスクは、異常の頻度を上げすぎて『納入業者はよく間違える』という誤った像を作ること。異常は低頻度に留め、普通の日を必ず通す。",
+            "cognitive_load": "低。動詞は『通す』『止める』の2つ。ただし見る対象（紙の欄と現物の属性）は A より多く、1件あたりの視線移動は増える。",
+            "decision_row_ids": "rows[1] / rows[2]（主操作。子どもは検収責任者の側に立つ）。rows[3] は子どもが行う操作ではなく、『決めるのは自分ではない』という二段構造を世界の反応として描くためだけに参照する（actor は校長等であり、子どもに決裁させない）。",
+            "child_active_operations": "見る（現物の汚破損・鮮度）／比べる（発注の紙と現物）／気づく（紙に書いていない異常）／止める（通さない）"
+          },
+          {
+            "concept_id": "C-saigo-no-hitori-made",
+            "job_reality": "教室で、給食当番の児童生徒と教職員が配食する（rows[16]、学校給食衛生管理基準 第5 1(11)）。学級分の食缶・食器・箸と、学級の人数があり、全員に行き渡るよう一人分ずつ盛り分けて渡す。最後の人に足りない／余る、が失敗の形として map に明記されている。受け渡しの連鎖の終端が子ども自身であり、この仕事で唯一、遊ぶ子が制度の文言の中に当事者として書かれている行である。残った分はセンターへ戻り、学級ごと・品目別に計量されて記録表に載る（rows[20]）。",
+            "main_action": "学級の食缶から、最後の一人まで行き渡るように、一人分ずつ盛り分けて渡す",
+            "core_loop": "食缶と、並んでいる学級の人数が見えている → おたまを傾ける（押している間だけ出る） → 止める → 器が満ちて、次の子へ渡る → 食缶の残りが減る → 残りと、まだ並んでいる人数を見比べる → 次の一人分を調節する。1品終われば次の品（ごはん・汁物・おかず）へ。牛乳やデザートのように一人1つの品は、注ぐのではなく数えて配る。",
+            "player_decision": "『この一人分は、どれくらいにするか』。食缶の残りと、まだ並んでいる人数を見て、いま手を止めるかどうか。",
+            "constraint": "【事実から取る制約】学級の人数は決まっている。食缶に入っている量はその日の献立で変わる。『最後の人に足りない／余る』が失敗（rows[16] error_consequence）。注いだ分は戻せない（物理的事実であって、発明した罰ではない）。\n【固定戦略とその機械的な敗因】(a) always-big（毎回たっぷり盛る）: 並んでいる人数に届く前に食缶が空になる。最後の子の器が空のまま残る。(b) always-small（毎回少なく盛る）: 全員に配り終わっても食缶に残る。残りはセンターへ戻って計量される（rows[20]）ので、余りもまた世界に残る結果になる。(a)(b) の両方に代償があり、どちらも map の文言そのままで、数値を発明していない。(c) 暗記: 品目・食缶の量・学級の人数が日ごとに変わるので、『毎回この角度で止める』が通用しない。(d) 総当たり: 注いだ分は戻せないので、試してから直す、が使えない。注ぎ始める前に食缶と人数を見ることだけが有効な手になる——これが C（仕事固有の見方）の必要性そのものである。\n【発明しないこと】一人分の適量を数値（g・ml）で示さない。当日欠席を数量に反映する運用は未確認なので使わない（R1 の high 指摘に該当）。残食の量が翌日の配缶量をどれだけ変えるか、という係数も未確認なので置かない。",
+            "feedback": "押している間だけ出て、食缶の残りが目に見えて減る。器が満ちる。受け取った子が席に着く。並んでいる列が短くなる。数値もスコアも出ない。最後まで配りきれたか／余ったかは、食缶の中身と席の様子だけで分かる（Minecraft：押した所だけが押した分だけ変わる完全ローカルな因果）。",
+            "event": "配膳員がワゴンを教室の前に置いて戻っていく（rows[15] の終端）。ワゴンには今日の品がいくつか載っていて、品ごとに配り方が違う（注ぐもの／数えるもの）。品が変わるたびに、食缶の量と人数の関係を見直すことになる。",
+            "fail_recovery": "足りなくなったときは、余っている品から足す・おかわりの分を回すといった、教室で実際に起きる形で続きがある。全損リセットはしない。叱る表示はしない。",
+            "clear": "学級の全員に、今日の品が行き渡る。最後の子の器が満ちた時点で終わる。",
+            "replay": "献立（品目と食缶の量）と学級の人数が日ごとに変わる。",
+            "replay_reason": "『最後の3人でぎりぎりだった』『今日はけっこう余った』が、配り終わった瞬間に目で分かる。次はもっと早い段階で気づける、という上達がある。",
+            "job_reveal_bridge": "配り終わったあと、空の食缶がワゴンに戻り、配膳員が回収し、配送員の車でセンターへ戻り、残った分が学級ごと・品目別に計量されて記録表に載る（rows[20]。この行は工程が一周して次の日の『つくる』へ返る行である）。いま自分がやっていた給食当番は、その連鎖のいちばん最後の一区間だったと分かる。自分の前に何人の手を通ってきたかが、逆再生として見える。",
+            "interest_seeds": "目分量で分けること／最後の一人まで行き渡らせること／自分がやっていたことが仕事の一部だったと知ること／残したものがどこへ行くのかを知ること",
+            "reference_games": "ビビッター（限界を自分で見極めて手を止める一撃の判断。ルール説明が『止める』の1語で済む）／おみせっち（渡して相手が受け取るまで1件が終わらない、指1本の尺）／Minecraft（押した分だけ世界が変わる非言語の因果）／Unpacking（供給側が空になることが完了）",
+            "distortion_risk": "LOW（仕事の描写としては）。ただし別種のリスクがある: 主体が子ども自身なので、『これは仕事なのか』という接続が Job Reveal の設計に全面的に依存する。Reveal が弱いと、ただの給食当番シミュレータになって職業発見が起きない。",
+            "cognitive_load": "最も低い。動詞は『傾ける』『止める』の2つ。文字は一切要らない。スマホ縦持ち・指1本で成立する。",
+            "decision_row_ids": "rows[16]（主操作。actor は給食当番の児童生徒＋教職員で、遊ぶ子自身がその actor である）。rows[20] は配り終わったあとの世界の反応としてのみ描き、子どもの操作にしない（計量の actor は調理業務受託者）。",
+            "child_active_operations": "見る（食缶の残りと並んでいる人数）／合わせる（一人分の量を人数に合わせる）／動かす（傾ける）／止める（ここで止める）"
+          }
+        ],
+        "comparison": {
+          "axes_note": "R1・R2 で実際に案を落とした軸をそのまま並べた。◎＞○＞△＞×。",
+          "実仕事との対応": {
+            "A": "◎ rows[12]/[14]/[15] の3行とも条番号つきで、actor は同一の配膳従事者。rows[14] と rows[15] は同一自治体の同一仕様書。",
+            "B": "◎ rows[1]/[2] は一次法令（文科省告示第64号）の文言そのもの。点検項目まで列挙されている。",
+            "C": "◎ rows[16] は一次法令。ただし記述は短く、『一人分の量をどう決めるか』の明文は無い（そこは数値化せず目分量のままにしてある）。"
+          },
+          "actorの正確性": {
+            "A": "◎ 配膳員が配膳室でやることだけ。配送員の仕事も調理員の仕事もさせない。",
+            "B": "◎ 検収責任者の点検までで、処分の決裁（rows[3]、actor は校長等）はさせない。二段構造を壊さない。",
+            "C": "◎ 制度上の actor が遊ぶ子自身。この仕事で唯一。"
+          },
+          "未確認事実への依存": {
+            "A": "○ 勝敗条件に未確認事実は入っていない。ただし直送便とセンター便の到着順は未確認なので、固定の順序として提示せず毎回変えるという形で回避している。所要時間・時間予算は一切置かない。",
+            "B": "◎ 勝敗条件（通した異常が出る／止めすぎて献立が欠ける）は両方とも一次法令の文言から直接出る。",
+            "C": "◎ 勝敗条件（最後の人に足りない／余る）が map の文言そのまま。当日欠席の反映・残食から翌日量への係数という未確認事項は使っていない。"
+          },
+          "主操作の直感性": {
+            "A": "○ 掴んで置く。指1本。",
+            "B": "○ 通す／止めるの二値。",
+            "C": "◎ 傾ける／止める。説明が要らない。"
+          },
+          "5秒で触り始められるか": {
+            "A": "○ コンテナが開いていて、空のワゴンが学級の数だけ並んでいる。形そのものが指示になっている。",
+            "B": "○ 台に物が置かれ、業者が待っている。奥へ動かすか手前に残すかしかできない。",
+            "C": "◎ 食缶とおたま、並んでいる子。押せば出る、離せば止まる。"
+          },
+          "feedbackの即時性": {
+            "A": "△〜○ 置いた瞬間は収まる反応が返るが、正誤（欠品）は送り出したあとに教室で返る。Unpacking の『終わろうとしたときに間違いだけ印がつく』を採っているので設計としては一貫しているが、3案で最も遅い。",
+            "B": "○ 1件ごとの反応（奥へ入る／手前に残る）は即時。正誤はその日の終わりにまとめて返る（1件ごとに正解を返すと探り攻略が成立するため、意図的に遅らせている）。",
+            "C": "◎ 押している間ずっと世界が変わり続ける。因果が1秒以内に閉じる。"
+          },
+          "固定戦略の敗因が機械的に書けるか": {
+            "A": "○ always-send / always-wait / 献立表を読まない / 暗記 / 全部1台 の5つすべてに、順序と欠品だけで定義できる敗因がある。時間罰を要しない。",
+            "B": "◎ always-pass と always-stop の敗因が一次法令の outcome 文そのもの。紙だけ／現物だけの縮退も、点検項目が二系統であることから機械的に潰れる。",
+            "C": "◎ always-big / always-small の敗因が map の error_consequence そのまま。総当たりは『注いだ分は戻せない』という物理で潰れる。"
+          },
+          "答えのオラクルが無いか": {
+            "A": "◎ 判定に要る物（献立表・納入伝票・人数・学級の食べ始め）はすべて常時盤面にあり、締切を教えてくれる人物を置かない（R1 blocker への直接の答え）。間違いの印は『違う』だけで正解の置き場所を教えない。",
+            "B": "◎ 1件ごとに正解を返さない。止めた先の判断は世界の側が持っていて、子どもに理由を説明しない。",
+            "C": "◎ 適量を示す数値・ゲージ・目盛りを出さない。食缶の残りと人数という現物だけが根拠。"
+          },
+          "既存63本との差": {
+            "A": "○ 行き先が物の性質ではなく『今日の紙と学級』で決まること、供給側が空になることが完了であること、送り出しが不可逆であることの3点で、sort_out（道具の性質で仕分ける）や drag_drop_assign 系5本とは骨格が違う。ただし混雑領域に近いのは事実で、実装時に drag_drop_assign へ吸われない設計が要る。",
+            "B": "△ 正直に言って3案で最も弱い。curb_check（観察→ルール照合→積む/残す/隔離連絡）、tally_check（書類と現物の3点照合）、rx_check、loan_screen と同じ measurement_inspection / matching 領域に真っ直ぐ落ちる。差別化できるのは『紙に有る属性と紙に無い属性の二系統』と『決めるのは自分ではない二段構造』の2点だけ。",
+            "C": "◎ 63本のどれも、連続量を目分量で分けきる操作を主機構にしていない（resource_allocation 6本はいずれも離散資源の配分と予測）。primaryMechanic として新しい。"
+          },
+          "distortion risk": {
+            "A": "LOW〜MEDIUM",
+            "B": "LOW",
+            "C": "LOW（仕事の描写として）／ただし職業発見が Reveal 依存"
+          },
+          "mobile suitability": {
+            "A": "○ ドラッグ主体。ワゴンの列を横スクロールさせない画面設計が要る。",
+            "B": "○ タップ2種類のみ。ただし現物の細部（汚破損・鮮度）を小さい画面で見分けさせる絵の力が要る。",
+            "C": "◎ 指1本の長押しと離すだけ。縦持ち片手で成立する。"
+          },
+          "C NECESSITY（仕事固有の情報を使わないと勝てないか）": {
+            "A": "◎ 今日の献立表を読まなければ『あと何が要るか』が決まらない。納入伝票と現物の照合も勝ち筋に直結する。",
+            "B": "◎ 発注の紙と、紙に書けない感覚的属性の両方を使わないと通せない。",
+            "C": "△〜○ 使うのは『食缶の量と学級の人数の対応』だけで、A/B より薄い。題材を外すと『均等に分ける』操作に近づく。ここが C の最大の弱点である。"
+          }
+        },
+        "recommended_concept_id": "A-wakete-okuridasu",
+        "recommendation_rationale": "A を推す理由は3つある。(1) 立っている3行が同一 actor・同一場所・同一時間帯で、しかも rows[14] と rows[15] は同一自治体の同一仕様書から取れている。R1 の『actor・trigger・decision が同じ通過行に揃っていない』という指摘に対して、構造で答えられる唯一の案である。(2) 勝敗を決めるルールに未確認事実が1つも入っていない。判定は『今日の献立表の品目が、その学級の分だけ載っているか』と『学級の食べ始めの順序』だけで、R2 が落とした所要時間・時間予算・センターの応答・訂正可否・容量上限のどれにも触れない。(3) C NECESSITY が強い。献立表と納入伝票という実在の文書を読まなければ攻略できず、これは q1-first-play-standard §3 の『C を使わなくても突破できる』を構造的に避ける。\n\nC を推さなかったのは、PLAY FIRST の成立度と操作の新規性では3案で最も強いにもかかわらず、C NECESSITY が薄く、題材を外すと『均等に分ける』操作へ縮退する危険があるためである（R1 が B-kazoeawase に対して出した『算術ドリルへの縮退』と同型の指摘を受けうる）。ただし C には他の2案に無い価値が2つある——遊ぶ子自身が制度上の actor であること、そして『自分がやっていた給食当番は連鎖の最後の一区間だった』という Ver.2 の PLAY FIRST にきわめて素直な Job Reveal が作れること。A が critic を通らなかった場合の次点は B ではなく C である。\n\nB を推さなかったのは、事実の強度（一次法令）と固定戦略の潰し方では3案中最良であるにもかかわらず、既存63本の中で最も混雑した領域（curb_check / tally_check / rx_check / loan_screen）に真っ直ぐ落ちるためである。単独で新規に作る価値より、A か C の中の1要素として吸収したほうが良い可能性が高い。",
+        "confidence": "MEDIUM。根拠: (a) 3案とも FACT GATE 通過行の上に立ち、勝敗条件に未確認事実を含まないことは自分で機械的に確認した。(b) R1 の4 blocker（未確認裁量の発明・C 不要攻略・検食オラクル・検食の時系列誤り）と R2 の5 blocker（一律 t 時間・不可逆投入・情報の隠蔽と時間罰・原因漏らし UI・always-separate 無条件勝利・未確認の数量式）は、いずれも本ラウンドの3案に構造上存在しない。(c) 残る不確実性は主に『面白さ』側にある——A の正誤 feedback が送り出し後に来ることが Q1 の1〜3分で許容されるか、C の C NECESSITY の薄さが致命的か、A が実装段階で drag_drop_assign へ吸われないかは、机上では決着しない。HIGH と言わないのは、2ラウンド連続で落ちた題材であり、また『仕分け』も『照合』も既存の混雑領域に隣接しているという事実が消えていないためである。\n\n棄却（shelve）を推さない理由: 前2回の却下理由は『事実が足りない』ではなく『事実の読み方が狭すぎて、緊張を作るには発明するしかなかった』である。Human Decision と第2次調査でその前提が変わり、通過行が10→19、うち配膳室・教室・検収という別 actor の行が新たに入った。A の3行は R1/R2 の設計者には見えていなかった（rows[14]/[15] は旧 map に存在せず、rows[12] は旧 map では別の内容だった）。したがって『同じ土俵で3回目を試す』のではない。ただし、もし critic が A も落とすなら、そのときは4回目を回さず Human へ『はこぶスポット自体を保留するか』を上げるべきだと考える。",
+        "unconfirmed_facts_deliberately_not_used": [
+          "GAP1 遅延連絡の報告項目セット／GAP2 センターの対処手順／GAP3 訂正可能性 — rows[11] を主操作にした案を1つも出していない。R2 の主要 blocker がここだったため、『気づいて伝える』以上のルールを作れる案は今回作らなかった。",
+          "GAP5残 搬入搬出記録簿の欄名 — rows[13] を主操作にした案を出していない。ピクロスの two_axis_ledger（既存63本の primaryMechanic のどれとも一致しない、混雑回避として最も有望な文法）はここと rows[20] にしか置けないが、rows[13] は欄名が未確認で『どの欄に何を書くか』を発明した時点で捏造になり、rows[20] は二軸（学級×品目）こそ明文だが、戻ってきた食缶をどう識別するかの規定が無いため、識別の謎解きを作ると R2 と同じ発明になる。計量と転記だけにすると Human Decision が禁じた『無心の反復』になる。よって RECORDING は今回見送った——これは怠慢ではなく、事実が足りないという判断である。",
+          "GAP7残 過剰な別保管を詰まらせる数値上限 — rows[17]（嘔吐食器の別返却）を勝敗条件に使った案を出していない。裏づけがあるのは『明示して別に返す義務』と『洗浄前に200ppm5分の別漬け置きという追加工程』までで、これは受け取る側の工程であって子ども側のコストではない。したがって『分けすぎると損をする』を機械的に書けず、always-separate を機械的に負かせない。R2 blocker C への直接の回答として、この行には勝敗を載せない。",
+          "当日欠席の数量反映／二巡運行／荷降ろし順の規則／配送計画の別紙の実物 — いずれも未確認のまま。どの案でも使っていない。"
+        ],
+        "rows_not_built_on": "rows[0]（配送計画の策定）と rows[9]（固定された配送順どおりに走る）は FACT GATE を通っていない禁止2行であり、3案のいずれも土台にしていない。経路設計・順路選択を子どもにさせる案は1つも出していない（Mini Metro / truck_dispatch 系の文法は game_reference_research_v2 の explicitly_not_borrowed でも除外されている）。",
+        "human_decision_domains": []
+      },
+      "creator": "claude-code-game-designer-3",
+      "source_artifacts": [
+        "v2-lunch-carry:work_action_map:v1",
+        "v2-lunch-carry:game_reference_research:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-23T02:21:56.792Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/game_concepts_v1.json",
+          "created_at": "2026-09-22T23:41:50.883Z",
+          "creator": "claude-code-game-designer"
+        },
+        {
+          "version": 2,
+          "file": "factory/projects/v2-lunch-carry/design/game_concepts_v2.json",
+          "created_at": "2026-09-22T23:57:55.532Z",
+          "creator": "claude-code-game-designer-2"
+        },
+        {
+          "version": 3,
+          "file": "factory/projects/v2-lunch-carry/design/game_concepts_v3.json",
+          "created_at": "2026-09-23T02:21:56.793Z",
+          "creator": "claude-code-game-designer-3"
+        }
+      ]
+    },
+    "work_action_map": {
+      "artifact_id": "v2-lunch-carry:work_action_map:v1",
+      "artifact_type": "work_action_map",
+      "version": 1,
+      "status": "CURRENT",
+      "stale_because": null,
+      "file": "factory/projects/v2-lunch-carry/design/work_action_map_v1.json",
+      "payload": {
+        "job_id": "v2-lunch-carry",
+        "note": "2026-09-23 Human Decision（gate-log entry-2026-09-23-01）を受けた WORK ACTION MAP。スポット「はこぶ」= 給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程、として、単一の配送ドライバーではなく受け渡しの連鎖に関わる複数 actor の行為を並べた。行の並びは時系列（食材の納品検収 → センター内の配缶・積込 → 出発前 → 走行 → 学校での受け渡し → 配膳室 → 教室 → 返却・回収 → 記録）。これはゲーム案ではない。gameability は『子ども自身が 見る/比べる/気づく/合わせる/動かす/止める/選ぶ/順番を考える/タイミングを取る/伝える のどれかを、仕事を歪めずに能動的に行える余地があるか』であって『裁量があるか』ではない（この取り違えが R1/R2 の却下の根であり、今回の最大の変更点）。distortion_risk は『遊べる形にしたとき実際の仕事をどれだけ歪めるか』。\n\n【旧 work_decision_map_v1 からの再スコア（理由つき）】\n(1) 旧 rows[3]『出発前10分の車両点検と業務連絡』 gameability LOW → HIGH（rows[7]）。旧 map は『異常時に予備車の手配を要請するか』という裁量として書いていたため LOW になっていたが、実際の行為は点検表に沿った VERIFICATION であり、見る・比べる・気づく がそのまま子どもの操作になる。critic r2 の high 指摘（rows[3] を『配送員の通過行は三つだけ』から落としたのは誤り）にも直接対応する。\n(2) 旧 rows[2]『保温・保冷食缶・蓄冷材の使い分け』 MEDIUM → HIGH（rows[5]）。容器を選んで料理を入れるという 選ぶ/合わせる がそのまま操作になる。品目ごとにどの容器を使うかの明文がないため distortion_risk は MEDIUM のまま。\n(3) 旧 rows[11]『主食・牛乳・デザートの直送と学校側の仕分け』 MEDIUM → HIGH（rows[14]）。旧 map は『decision: なし』として低く見ていたが、第2次調査で受け入れ時の照合先文書が明記されている唯一の箇所（岩倉市(6)④『献立表や納入伝票と照合して確認すること』）と判明した。比べる対象が実在する数少ない行。\n(4) 旧 rows[10]『残食の計量記録』 MEDIUM → HIGH（rows[20]）。学級ごと・品目別という比較軸と計量という身体操作が明文にあり、記録は Human Decision でゲーム化候補に明示的に含められた。\n(5) 旧 rows[9]『回収』は MEDIUM のまま（rows[19]）だが、嘔吐食器の別返却を独立行（rows[17]）へ切り出した。第2次調査で『別分けはタダではなく、明示＋洗浄前の200ppm5分の別漬け置きという追加工程を伴う』ことが取れたため、旧行の『別保管の申し送り』より強く書ける。\n(6) 旧 rows[5]『遅延時の連絡』 gameability HIGH → MEDIUM（rows[11]、唯一の引き下げ）。連絡義務・宛先・即時性・措置後の再報告は HIGH で取れているが、何を報告するか・センターが何を根拠に対処を選ぶか・誤報を訂正できるかは第2次調査でも7自治体すべてで不在（GAP1/2/3）。r2 の blocker はここを発明したことだったので、『気づいて伝える』以上のルールを作れない行として MEDIUM に落とす。\n(7) 新規行（旧 map に無かった、はこぶ＝受け渡しの連鎖という再定義で入ってきたもの）: rows[1] 検収の立会点検、rows[2] 検収室までという受け渡し線、rows[10] 受配校の検食（摂食開始30分前）、rows[12] 双方責任の相互確認とコンテナ汚損、rows[13] 記録簿・日常点検表への記載、rows[14] 直送品と献立表・納入伝票の照合、rows[15] 配膳室での学級別仕分けと空ワゴンへの積み替え、rows[16] 教室での給食当番による配食、rows[17] 嘔吐食器の明示と別返却、rows[18] 返却時の受け取りと声かけ。積み降ろしの危険（保護帽・特別教育・挟まれ死亡事故）は独立行にせず rows[6] の constraints へ入れた。\n\n【変更なしで LOW / distortion_risk HIGH のまま＝ゲーム化禁止】\nrows[0]『配送計画の策定』と rows[9]『固定された配送順・指定時刻どおりに走る』。配送員が自由にルートを決めることと、配送員が代替方法を独断で決めることは Human Decision でも引き続き禁止と明記されている。ルートは契約の別紙で発注者が固定しており、当日の従事者に選択肢はない。この2行は『ここは子どもに選ばせてはいけない』という境界として残してあり、案の土台にしてはならない。\n\n【事実として記録していないもの（work_research_v2 で未解決のまま。勝敗条件に使えない）】\nGAP1 遅延連絡で何を報告するか／GAP2 センターが予備車・順序変更・学校連絡のどれを選ぶかの判断手順／GAP3 誤った最初の報告を訂正できるか／GAP5残 搬入搬出記録簿の欄名と、搬入時に食缶・クラス単位の員数照合を行うかどうか／GAP7残 別保管を詰まらせる数値上限（別容器の個数、別洗浄ラインの能力、保管容量）。加えて第1次調査の未確認13件（配送計画の実物、起案者の職名、荷降ろし順の規則、当日欠席の数量反映、二巡運行の有無ほか）も未解消。\n\n【第2次調査が覆した／補強した前提】\n反証: 受け渡しの時点で配膳室に学級別の運搬車が中身入りで並んでいる、という前提は存在しない。ワゴンは洗浄済みだが空で待っており、学級別の仕分けは受け渡しの『あと』に配膳員が行う（rows[12] と rows[15] を分けてあるのはこのため）。部分的補強: 嘔吐食器の別分けには実在の追加工程があるが、『分けすぎると物理的に詰まる』上限は依然として裏づけがない（rows[17]）。\n\n【行番号の対応（21行）】rows[0] 配送計画 / rows[1] 検収 / rows[2] 検収室の受け渡し線 / rows[3] 検収異常の決裁 / rows[4] 配缶・員数合わせ / rows[5] 保温保冷 / rows[6] コンテナ積載 / rows[7] 出発前点検 / rows[8] センター検食（出発前） / rows[9] 固定順走行 / rows[10] 受配校の検食 / rows[11] 遅延連絡 / rows[12] 搬入時の相互確認 / rows[13] 記録簿 / rows[14] 直送品の照合 / rows[15] 配膳室の学級別仕分け / rows[16] 教室配食 / rows[17] 嘔吐食器の別返却 / rows[18] 返却の受け取りと声かけ / rows[19] 回収巡回 / rows[20] 残食の計量記録。FACT GATE を通るのは19行で、落ちるのは rows[0] と rows[9]（＝上記の禁止2行）だけである。",
+        "rows": [
+          {
+            "work_action": "どの車がどの学校を何時に回るかを定めた配送計画を策定し、契約の別紙として固定する",
+            "action_type": "DECISION",
+            "actor": "発注者＝市教育委員会・学校給食センター（契約時）。起案する個人の職名は UNKNOWN",
+            "trigger": "委託契約の締結／年度の開始",
+            "inputs": "受配校一覧、各校の給食開始時刻（岩倉市の7校は12:20〜12:35の15分幅）、クラス数と食数、校までの距離（紀の川市0.5〜7.4km）、保有車両台数とコンテナ積載数",
+            "constraints": "調理後2時間以内に給食できる台数を確保する義務（設備基準）。各校の検食は摂食開始30分前まで",
+            "action_or_judgement": "ルート・順序・各校の指定時刻を決め、仕様書の別紙として文書化する。当日の従事者には選択肢を残さない",
+            "outcome": "1年間おおむね固定される配送計画",
+            "frequency": "契約時に1回",
+            "variability": "低（年単位）",
+            "source": "大川市仕様書6②『①に掲げる１日の配送計画及び回収計画は、別紙１の定めを基本とする』／さくら市6(1)／岩倉市5(5)①（3自治体で一致）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "HIGH",
+            "time_pressure": "なし（年単位の文書作業）",
+            "error_consequence": "計画が悪いと全校の到着が押す",
+            "repeatability": "低",
+            "coordination_target": "受託者・受配校",
+            "precision_requirement": "文書としての正確さ"
+          },
+          {
+            "work_action": "食材の納入に立会い、品名・数量・納品時間・業者名・生産地・品質・鮮度・包装の汚破損・異物混入・異臭・期限・品温を毎日点検して記録する",
+            "action_type": "VERIFICATION",
+            "actor": "あらかじめ定めた検収責任者（告示は職名を指定していない）",
+            "trigger": "納入業者の到着",
+            "inputs": "発注内容、納品された現物、検収記録簿。品温には『納入業者が運搬の際に適切な温度管理を行っていたか』の確認が含まれる",
+            "constraints": "毎日、全品目。納入業者は検収室で受け渡しを行い、下処理室・調理室に立ち入らせない（区域の境界を越えさせない）",
+            "action_or_judgement": "現物を見て・触れて・温度を測り、発注内容と突き合わせ、合否を点検表に記録する",
+            "outcome": "その日の食材が調理へ進むか、異常として上へ上がるか",
+            "frequency": "毎日",
+            "variability": "中（献立と納入業者で変わる）",
+            "source": "学校給食衛生管理基準（文部科学省告示第64号）第3 1(3)一・四",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚（汚破損・異物・鮮度）／嗅覚（異臭）／触覚・計器（品温）",
+            "time_pressure": "中（業者が待っている／調理の開始に間に合わせる）",
+            "precision_requirement": "高（品名・数量・期限は一致していなければならない）",
+            "coordination_target": "納入業者",
+            "error_consequence": "見落とせばそのまま調理へ入る",
+            "repeatability": "高（毎日、品目が変わる）"
+          },
+          {
+            "work_action": "納入業者が検収室までで食材を受け渡し、下処理室・調理室より奥へ立ち入らない",
+            "action_type": "ZONE_SEPARATION",
+            "actor": "指定業者（納入業者）／検収責任者（受ける側）",
+            "trigger": "食材の納品",
+            "inputs": "施設の区域区分（汚染作業区域・非汚染作業区域）、検収室の位置",
+            "constraints": "『納入業者は検収室で受け渡しを行い、下処理室・調理室に立ち入らせない』",
+            "action_or_judgement": "物は越えるが人は越えない、という受け渡し線を守る",
+            "outcome": "調理室側の清潔が保たれる",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "学校給食衛生管理基準 第3 1(3)四",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・空間",
+            "time_pressure": "低",
+            "precision_requirement": "中（線を越えたか越えないかは二値）",
+            "coordination_target": "検収責任者と納入業者の二者",
+            "error_consequence": "汚染区域から清潔区域へ持ち込まれる",
+            "repeatability": "高"
+          },
+          {
+            "work_action": "検収等の日常点検で異常が認められたとき、返品・献立の一部または全部の削除・調理済食品の回収等の措置を決裁する",
+            "action_type": "DECISION",
+            "actor": "校長 又は 共同調理場の長（＝校長等）。栄養教諭でも調理員でも業者でもない",
+            "trigger": "検収責任者・衛生管理責任者からの異常報告",
+            "inputs": "検収責任者の点検記録、代替の可否、その日の献立",
+            "constraints": "点検・記録は検収責任者、決裁は校長等、という二段構造。現場の担当者が単独で決めない",
+            "action_or_judgement": "返すか、献立から外すか、回収するかを選ぶ",
+            "outcome": "その日の献立が変わる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "学校給食衛生管理基準 第4 1(1)五（同項三で『校長等』を定義）",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM",
+            "time_pressure": "高（給食の時刻は動かない）",
+            "error_consequence": "誤れば異常のある食材が出るか、不要に献立が欠ける",
+            "repeatability": "低（まれな事象なので主ループにすると職場像が歪む）",
+            "coordination_target": "検収責任者・栄養教諭・納入業者"
+          },
+          {
+            "work_action": "学校別・クラス別に食缶・食器・箸をコンテナへ積み込み、数を合わせる",
+            "action_type": "MANIPULATION",
+            "actor": "調理業務従事者（積込）",
+            "trigger": "調理・配缶の完了",
+            "inputs": "調理業務指示書の学校別クラス別食数、コンテナ1台＝最大4クラス分",
+            "constraints": "積み残し・数え違いはその学校でそのまま不足になる。長崎市の新センターでは『調理物の提供量が予定より少なかったり、箸や食器の数を間違えたりするケース』が遅延原因として報じられた",
+            "action_or_judgement": "どのコンテナに何を何セット入れるかを指示書どおりに揃え、数える",
+            "outcome": "学校ごとのコンテナが揃う。間違えるとその学校で足りない",
+            "frequency": "毎日",
+            "variability": "中（クラス数・献立で変わる）",
+            "source": "紀の川市5(4)／さくら市10／大川市9②・10①／長崎新聞（遅延原因としての数え間違い）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・触覚（数と重さ）",
+            "time_pressure": "高（出発時刻が決まっている）",
+            "precision_requirement": "高（クラス数×品目の員数は一致していなければならない）",
+            "error_consequence": "学校で不足が発生し、その場では取り返せない",
+            "repeatability": "高（毎日、献立で構成が変わる）",
+            "coordination_target": "配送従事者（次工程）・受配校"
+          },
+          {
+            "work_action": "保温食缶・保冷食缶・蓄冷材を使い分けて、温かいものは温かく冷たいものは冷たいまま運べる状態にする",
+            "action_type": "MANIPULATION",
+            "actor": "調理場（共同調理場）側",
+            "trigger": "配缶・積込",
+            "inputs": "献立の品目、温かい料理か冷たい料理か",
+            "constraints": "配送過程は10℃以下または65℃以上で管理し配送時刻を記録する。『必要に応じて保温食缶・保冷食缶・蓄冷材等を使用』とあるだけで、品目ごとにどれを使うかの一覧は明文化されていない",
+            "action_or_judgement": "品目に合う容器・蓄冷材を選び、蓋を確実に閉める",
+            "outcome": "学校に着いたときの温度",
+            "frequency": "毎日",
+            "variability": "中（献立で変わる）",
+            "source": "学校給食衛生管理基準 第3 1(4)④四／大量調理施設衛生管理マニュアル III-3",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "MEDIUM",
+            "sensory_channel": "温度（湯気・結露など視覚化できる）",
+            "time_pressure": "中",
+            "precision_requirement": "中（10℃以下／65℃以上という二つの帯）",
+            "error_consequence": "到着時に温度帯を外す",
+            "repeatability": "高（献立が毎日変わるので組合せが変わる）"
+          },
+          {
+            "work_action": "コンテナを車両へ積載する（1台最大4クラス分、食器等を積載した状態で500kg以内、間口約159×奥行89×高さ160cm、アーム式パワーゲート／テールゲートリフターで積み降ろし）",
+            "action_type": "MANIPULATION",
+            "actor": "調理業務従事者（積込）／配送業務従事者（積載・運搬）",
+            "trigger": "コンテナの準備完了",
+            "inputs": "その日のコンテナ台数、車両の積載可能台数（3トン車でコンテナ4台積等）",
+            "constraints": "500kg以内・寸法固定という物理制約が数値で明文化されている。積載時は保護帽を着用し、テールゲートリフター使用作業には労働安全衛生規則改正（令和6年2月1日施行）による特別教育が必要。埼玉では学校給食の製造所での積み込み中にトラックと搬入口の間に挟まれ運転手が死亡した事故がある",
+            "action_or_judgement": "どの順でどこへ載せるか（＝降ろす順と対応する）を決めて動かす。危険な位置に身体を入れない",
+            "outcome": "車に積み終わり、出発できる状態になる",
+            "frequency": "毎日",
+            "variability": "中（台数・校数で変わる）",
+            "source": "紀の川市5(4)／さくら市8(4)・8(5)・10／大川市9②・10①／埼玉新聞（挟まれ死亡事故）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・身体（重さ・大きさ・空間）",
+            "time_pressure": "高（出発時刻）",
+            "precision_requirement": "高（重量・寸法の上限は数値で決まっている）",
+            "error_consequence": "積み直しで遅れる／重大な挟まれ災害",
+            "repeatability": "高",
+            "coordination_target": "積込側と運搬側の二者",
+            "note_for_designer": "荷降ろし順を物理的に決める規則（積載順との関係、奥／手前）は未確認（第1次調査の未確認項目）。死亡災害が実在する作業なので、危険を『遊びの罰』として演出することは避けるべき領域として記録する"
+          },
+          {
+            "work_action": "配送開始10分前までに車両の日常点検と業務連絡を終える",
+            "action_type": "VERIFICATION",
+            "actor": "配送業務従事者",
+            "trigger": "配送開始の10分前",
+            "inputs": "日常点検表、当日の変更連絡",
+            "constraints": "運行前に毎日行い、配送開始10分前には点検と業務連絡を終えていること。携帯電話又は無線等の即時連絡体制を常時整える。予備車は契約義務であり、苫小牧市では第1調理場7台＋予備車1台＝計8台と実車として台数に計上されている",
+            "action_or_judgement": "決められた項目を順に見て、異常の有無を点検表に記録し、異常があれば報告する",
+            "outcome": "出発できる状態かどうかが確定する",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "さくら市9(1)・11(6)・8(10)／大川市7⑥・7⑨・8①／苫小牧市8(1)（予備車の台数計上）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚（見て回る）",
+            "time_pressure": "中（10分という明文の締切がある）",
+            "precision_requirement": "中（項目を飛ばさないこと）",
+            "error_consequence": "走り出してから止まる",
+            "repeatability": "高（毎日同じ項目を、違う状態に対して）",
+            "note_for_designer": "旧 work_decision_map rows[3] は『異常時に予備車を要請するか』という裁量として書いたため gameability LOW だったが、実在するのは点検そのものであり、見る・気づく は子どもの操作になる（再スコア LOW→HIGH）"
+          },
+          {
+            "work_action": "センターでの検食で異常が見つかったとき、直ちに給食の運搬を中止し、連絡体制図により関係各校へ連絡する",
+            "action_type": "ANOMALY_DETECTION",
+            "actor": "検食者（習志野市では所長及び係長）／給食の一部または全部の中止は学校教育課と協議のうえ決定",
+            "trigger": "出発前の検食での異味異臭・異物",
+            "inputs": "検食の結果、連絡体制図",
+            "constraints": "習志野市ではセンター側の検食は配送車が出発する『前』に行う。走行中のイベントではない",
+            "action_or_judgement": "異常に気づき、運搬を止め、連絡体制図の順に伝える",
+            "outcome": "その日の給食が変わる／なくなる",
+            "frequency": "まれ",
+            "variability": "高",
+            "source": "習志野市 学校給食における危機管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM",
+            "sensory_channel": "味覚・嗅覚・視覚",
+            "time_pressure": "高",
+            "error_consequence": "止め損なえば異常のある給食が出る／過剰に止めれば給食がなくなる",
+            "repeatability": "低（まれな事象）",
+            "note_for_designer": "critic r1 の blocker: この検食を『走行中の出来事』として使ってはならない。時系列は出発前で固定"
+          },
+          {
+            "work_action": "契約の別紙で固定された配送順・各校の指定時刻どおりに走る",
+            "action_type": "SEQUENCING",
+            "actor": "配送業務従事者（従う側）／センター（変更を通知する側）",
+            "trigger": "出発",
+            "inputs": "配送計画（別紙）、当日の変更通知",
+            "constraints": "順序・時刻は従事者が日々決めるものではない。変更は学校行事等によりセンターが『その都度』事前通知する（米子市『年に数回、配送時間を20分程度早めることがあります』）。1台が複数校を回るのが標準（紀の川市11校を5台、さくら市8校を6台、大川市3台）",
+            "action_or_judgement": "計画に従う。順路を選ぶ裁量はない",
+            "outcome": "各校に指定時刻どおり着く",
+            "frequency": "毎日",
+            "variability": "低（変更は年に数回）",
+            "source": "大川市6②／さくら市6(1)／岩倉市5(5)①／米子市 質問と回答／紀の川市4・5(4)①",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "LOW",
+            "distortion_risk": "HIGH",
+            "time_pressure": "高",
+            "repeatability": "高",
+            "note_for_designer": "Human Decision で引き続き禁止と明記されている領域。『配送員が自由にルートを決める』は事実に反する。この行は境界の記録であり、案の土台にしてはならない"
+          },
+          {
+            "work_action": "受配校であらかじめ定めた責任者が、児童生徒の摂食開始時間の30分前までに検食を行い、異常があれば給食を中止して共同調理場へ速やかに連絡する",
+            "action_type": "ANOMALY_DETECTION",
+            "actor": "受配校であらかじめ定められた責任者（告示は職名を指定していない。仙台市の説明では校長）",
+            "trigger": "給食の到着後、摂食開始の30分前",
+            "inputs": "その日の給食そのもの",
+            "constraints": "『摂食開始時間の30分前までに』という明文の締切。つまり配送の実質的な締切は給食開始時刻ではなく給食開始時刻マイナス30分である",
+            "action_or_judgement": "食べて・見て・においで異常の有無を判断し、異常なら止めて連絡する",
+            "outcome": "その学校の給食が出るか止まるか",
+            "frequency": "毎日（異常はまれ）",
+            "variability": "低（手順）／高（異常時）",
+            "source": "学校給食衛生管理基準 第3 1(6)①",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "MEDIUM",
+            "sensory_channel": "味覚・嗅覚・視覚",
+            "time_pressure": "高（30分前という数字が明文で存在する数少ない時間制約）",
+            "precision_requirement": "中",
+            "error_consequence": "見落とせば全校児童が食べる",
+            "repeatability": "高",
+            "note_for_designer": "critic r1 の blocker: 検食者の出現を『本当の締切を教えてくれるオラクル』として画面に出してはならない。30分前は盤面から導ける情報として置く必要がある"
+          },
+          {
+            "work_action": "予定到着時刻に遅れる事由が発生したとき、自分で対処を決めず、速やかにセンターへ連絡して指示を受ける。緊急やむを得ず自ら措置した場合は、その措置の内容を措置後直ちに再報告する",
+            "action_type": "COMMUNICATION",
+            "actor": "連絡＝配送業務従事者／判断＝給食センター",
+            "trigger": "遅延・故障・事故・道路事情",
+            "inputs": "現在地、残りの校、各校の指定時刻",
+            "constraints": "連絡義務・宛先・即時性は明文。ただし『何を報告するか』の項目セットを列挙した規定は検査した7自治体の仕様書のいずれにも存在せず、センターが予備車手配・配送順変更・学校連絡のどれを選ぶかの判断手順も、最初の報告を訂正する手続も、全資料に存在しない。代替車両について『○分以内』という時間規定も存在しない",
+            "action_or_judgement": "気づいた時点で伝える。対処は自分で決めない",
+            "outcome": "遅れがどこに寄るかが変わる（どう変わるかを決めるのはセンター側）",
+            "frequency": "随時",
+            "variability": "高",
+            "source": "さくら市9(3)／大川市8③／大和郡山市9④／北九州市 二島中学校給食等配送業務委託 契約書 第7条（臨機の措置）／苫小牧8(1)・岩倉・伊予9④・平戸・さくら11(6)・大川7⑨の全文検索（時間規定の不在）",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "MEDIUM",
+            "time_pressure": "高（『速やかに』）",
+            "coordination_target": "センター（指示を出す側）",
+            "error_consequence": "遅れたまま伝えなければ学校側が備えられない",
+            "repeatability": "低〜中",
+            "note_for_designer": "旧 rows[5] の gameability HIGH → MEDIUM へ引き下げ。critic r2 の主要 blocker はここを土台に『確認には一律t時間』『センターは最初の連絡だけで不可逆に資源を投入する』『訂正不能』『原因ごとに対処が一対一対応』を発明したことだった。GAP1/2/3 が埋まるまで、報告項目・センターの応答・訂正可否・所要時間を勝敗条件にしてはならない。使えるのは『異変に気づく』と『伝える』までである"
+          },
+          {
+            "work_action": "各校の配膳室へ搬入し、学校職員と受取り・引渡しの確認を双方で責任を持って行い、その際コンテナに汚損がないかを常に確認する",
+            "action_type": "VERIFICATION",
+            "actor": "配送業務従事者＋受配校の配膳員・学校職員（対面）",
+            "trigger": "学校到着",
+            "inputs": "配送してきたコンテナ、配膳室の指定場所",
+            "constraints": "配膳室は廊下と明確に区分され原則施錠設備がある。確認対象として明文にあるのは『受取り及び引渡し』の収受と『コンテナの汚損』であり、搬入時に食缶単位・クラス単位の員数照合を行う旨の規定は見つかっていない（未確認・GAP5残）。配送、回収の収受は文書により行う",
+            "action_or_judgement": "パワーゲートで降ろし、指定場所へ入れ、相手と一緒に見て、双方で確認する",
+            "outcome": "学校側が受け取った状態になる。齟齬はこの時点で見つかる",
+            "frequency": "毎日・毎校",
+            "variability": "中",
+            "source": "伊予市学校給食等配送業務 仕様書 ④⑤／さくら市6(1)イ／大川市6①(イ)／苫小牧市2(1)イ",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚（汚損）・対面のやりとり",
+            "time_pressure": "中（次の学校が待っている）",
+            "precision_requirement": "中",
+            "coordination_target": "配送従事者と学校職員の二者が同時に責任を持つ",
+            "error_consequence": "ここで見つけ損ねると学校の中で問題になる",
+            "repeatability": "高（同じ所作を校ごとに繰り返す）",
+            "note_for_designer": "第2次調査が反証した点: 受け渡しの時点でクラス別の運搬車が中身入りで並んでいる状態は存在しない。『運搬車台数×品目数＝必要数』という掛け算の員数検査（critic r2 blocker）はこの行から導けない"
+          },
+          {
+            "work_action": "搬入の際に搬入搬出記録簿へ必要事項を記載し、学校側は受け入れ時刻と数を日常点検表へ記入する",
+            "action_type": "RECORDING",
+            "actor": "配送業務従事者（搬入搬出記録簿）／配膳従事者（日常点検表）",
+            "trigger": "搬入・搬出の完了",
+            "inputs": "実際に運び込んだもの、時刻",
+            "constraints": "記録簿は実在し名前もついているが、欄名（列）は公開資料から取得できていない（未確認・GAP5残）。共同調理場では搬出時刻と搬入時刻を毎日記録し、温度は定期的に記録する義務がある",
+            "action_or_judgement": "書く。起きたとおりに残す",
+            "outcome": "誰が何をいつ渡したかが後から辿れる",
+            "frequency": "毎日・毎校",
+            "variability": "低",
+            "source": "苫小牧市2(1)イ／岩倉市(6)③／学校給食衛生管理基準 第3 1(4)④五",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW",
+            "time_pressure": "低",
+            "precision_requirement": "高（記録と実際が一致していること）",
+            "error_consequence": "後から辿れなくなる",
+            "repeatability": "高",
+            "note_for_designer": "記録は Human Decision でゲーム化候補に明示的に含められたが、欄名が未確認なので『どの欄に何を書くか』を発明してはならない。使えるのは『起きたことと書いたものを一致させる』という関係まで"
+          },
+          {
+            "work_action": "主食・牛乳・デザート等を別業者が学校へ直接配送し、学校側は受け入れ時に献立表や納入伝票と照合して確認する",
+            "action_type": "VERIFICATION",
+            "actor": "指定業者（センター受託者ではない）が配送／受配校の配膳従事者が照合",
+            "trigger": "当日の直送便の到着",
+            "inputs": "納入伝票、献立表、実際に届いた現物、クラス別人数",
+            "constraints": "センター便とは別ルート・別業者。照合先の文書が明記されている数少ない箇所であり、『給食器材、主食、牛乳、デザート等の受け入れ時には、献立表や納入伝票と照合して確認すること』と書かれている",
+            "action_or_judgement": "届いたものを伝票と献立表の両方に突き合わせ、その後クラスの人数分に仕分ける",
+            "outcome": "センター便と直送便の2系統が同じ日に学校で合流し、揃って初めて給食になる",
+            "frequency": "毎日",
+            "variability": "低〜中",
+            "source": "岩倉市 仕様書 5(2)⑥『主食、牛乳、デザート等については、別途業者から配送する』・(6)④・5(6)⑤／兵庫県教育委員会 学校給食衛生管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚（現物と紙の突き合わせ）",
+            "time_pressure": "中",
+            "precision_requirement": "高（数と品目が一致していること）",
+            "coordination_target": "指定業者・センター便・学校の3者が同じ日に合流する",
+            "error_consequence": "気づかなければ足りないまま教室へ行く",
+            "repeatability": "高",
+            "note_for_designer": "旧 rows[11] は『decision: なし（仕分けは人数どおり）』として MEDIUM だったが、比べる対象となる文書が実名で存在する唯一級の行であるため HIGH へ再スコア"
+          },
+          {
+            "work_action": "配膳室に搬入されたコンテナから食器・食缶等を学級別に仕分け、清潔な状態を保ったまま洗浄済みのワゴンへ積み替えて各教室の前まで運ぶ",
+            "action_type": "SEQUENCING",
+            "actor": "配膳従事者（配膳員）",
+            "trigger": "コンテナの受け取り完了",
+            "inputs": "コンテナの中身、学級の数と配置、洗浄済みで空のワゴン",
+            "constraints": "受け渡しの時点でワゴンは洗浄済みだが『中身は空』であり、学級別の仕分けは受け渡しの『あと』に配膳員が行う。習志野市では配膳室からダムウェーターで各階へ上げ、運搬車が準備開始まで約10〜15分、教室前廊下に置かれ目の届きにくい状況になる",
+            "action_or_judgement": "コンテナの中身を学級という単位へ分け直し、順に運ぶ",
+            "outcome": "各教室の前に、その学級の分が揃う",
+            "frequency": "毎日",
+            "variability": "中（学級数・献立で変わる）",
+            "source": "岩倉市 仕様書 (6)①・(6)⑥・(8)／大和郡山市 ③⑵／習志野市 危機管理マニュアル",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・身体（運ぶ）",
+            "time_pressure": "高（給食開始時刻が学級ごとに決まっている）",
+            "precision_requirement": "高（学級と中身の対応が入れ替わってはいけない）",
+            "coordination_target": "各学級（複数の宛先へ同時に届ける）",
+            "error_consequence": "学級を取り違えると2クラスが同時に困る",
+            "repeatability": "高",
+            "note_for_designer": "『はこぶ』の最後の一区間はここであり、センターの車ではなく学校の中の廊下である。第2次調査で最も強く裏づけが取れた新事実"
+          },
+          {
+            "work_action": "教室で、給食当番の児童生徒と教職員が配食する",
+            "action_type": "MANIPULATION",
+            "actor": "給食当番の児童生徒＋教職員",
+            "trigger": "ワゴンが教室前に届く",
+            "inputs": "学級分の食缶・食器・箸、学級の人数",
+            "constraints": "制度上、教室内の配食は給食当番の児童生徒と教職員が行うことが前提として基準に書かれている",
+            "action_or_judgement": "クラス全員に行き渡るよう、一人分ずつ盛り分けて渡す",
+            "outcome": "全員に給食が行き渡る（あるいは最後の人が足りない）",
+            "frequency": "毎日",
+            "variability": "中（献立で変わる）",
+            "source": "学校給食衛生管理基準 第5 1(11)",
+            "source_class": "primary_law",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・身体（量の見当）",
+            "time_pressure": "中（昼の時間は決まっている）",
+            "precision_requirement": "中（人数分に配りきる）",
+            "coordination_target": "同じ学級の全員",
+            "error_consequence": "最後の人に足りない／余る",
+            "repeatability": "高",
+            "note_for_designer": "受け渡しの連鎖の終端が子ども自身であるという、この仕事で唯一子どもが当事者として制度に書かれている行。歪めずに『子どもが実際にやっていること』として使える"
+          },
+          {
+            "work_action": "嘔吐物で汚染された食器を、汚染されたことを明示して他の食器具とは別にして返却し、センター側は洗浄前に次亜塩素酸ナトリウム溶液（200ppm）へ5分間付け置き消毒してから洗浄する",
+            "action_type": "COORDINATION",
+            "actor": "学校（明示して別に返す側）／センター（洗浄前の別工程で受ける側）",
+            "trigger": "教室等での嘔吐",
+            "inputs": "汚染された食器、通常の返却物",
+            "constraints": "別に分けることは義務であり、分けた分だけ追加工程が発生する（明示＋洗浄前の5分間の別漬け置き）。ただし『分けすぎると損をする』ことを示す数量的制約（別容器の個数上限、別洗浄ラインの能力、保管場所の容量）を書いた文書は見つかっていない（未確認・GAP7残）",
+            "action_or_judgement": "汚染されたものを見分け、分けて、そうと分かるように伝えて返す",
+            "outcome": "センター側が正しい工程へ回せる",
+            "frequency": "まれ（が、起きれば必ずこの手順）",
+            "variability": "中",
+            "source": "今治市学校給食衛生管理マニュアル p105／苫小牧市2(4)ウ",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚（どれが汚染されたか）・表示",
+            "time_pressure": "低〜中",
+            "precision_requirement": "高（混ざってはいけない）",
+            "coordination_target": "学校とセンターが顔を合わせずに引き継ぐ",
+            "error_consequence": "明示しなければ汚染された食器が通常ラインへ入る",
+            "repeatability": "中",
+            "note_for_designer": "critic r2 の blocker: 『全部別にすれば無条件で勝つ』を防ぐ数量上限は裏づけがない。分離に価格をつけるなら、追加工程（明示と5分の別漬け置き）という確認済みの事実の範囲で行い、容量上限を発明してはならない"
+          },
+          {
+            "work_action": "配膳従事者が教室から返ってきた食缶類を受け取り、その際に児童生徒・教職員へ声をかけ、コミュニケーションに努める",
+            "action_type": "COMMUNICATION",
+            "actor": "配膳従事者／児童生徒・教職員",
+            "trigger": "学級の給食終了",
+            "inputs": "返却された食缶・食器、返しに来た児童生徒",
+            "constraints": "『児童生徒の食缶類返却時の児童生徒・教職員への声かけの実施、また児童生徒・教職員とのコミュニケーションに努め、信頼関係を築くこと』として業務に明記されている",
+            "action_or_judgement": "受け取りながら、声をかける",
+            "outcome": "返却が滞りなく進み、学校と委託業務の間に信頼関係ができる",
+            "frequency": "毎日",
+            "variability": "低",
+            "source": "岩倉市 仕様書 5(6)⑫",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW",
+            "coordination_target": "児童生徒・教職員",
+            "repeatability": "高",
+            "note_for_designer": "契約書に『声をかけること』が業務として書かれているという事実自体が、この仕事像を単なる物流から外す材料になる。ただし会話を選択肢クイズにすると language 依存になり、非言語で成立させる必要がある"
+          },
+          {
+            "work_action": "給食終了後に各校を順に回り、空の食缶・食器を積んだコンテナを回収してセンターへ戻る",
+            "action_type": "MANIPULATION",
+            "actor": "配送業務従事者（回収）／配膳従事者（教室前からワゴンを回収し配膳室でコンテナへ積み替え）",
+            "trigger": "各校の給食終了",
+            "inputs": "回収計画（配送計画と同じ別紙）",
+            "constraints": "回収は配送と同じ受託業務・同じ車両で行う。業務時間はさくら市10:00〜15:00、大川市9:30〜15:30。つまり午前に配送し昼過ぎに回収して戻る1日である",
+            "action_or_judgement": "計画どおりに回り、積み、搬出記録簿に記載する",
+            "outcome": "センターへ戻り洗浄・消毒工程へ渡る",
+            "frequency": "毎日",
+            "variability": "中（学校ごとに終了時刻が違う）",
+            "source": "岩倉市5(5)①・5(6)⑦／さくら市5(2)・6(1)ウ／大川市5②・6①",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "MEDIUM",
+            "distortion_risk": "LOW",
+            "time_pressure": "中（学校の終了時刻に合わせる）",
+            "repeatability": "高",
+            "coordination_target": "各校の配膳員"
+          },
+          {
+            "work_action": "戻ってきた食缶の残食を、学級ごと・品目別に計量して残食記録表に記録する",
+            "action_type": "RECORDING",
+            "actor": "調理業務受託者（配送員ではない）",
+            "trigger": "回収されたコンテナの開封",
+            "inputs": "戻ってきた食缶の中身、その日の献立と品目",
+            "constraints": "毎日、業務終了後に残食記録表へ。学級ごと・品目別という二つの軸が明文で決まっている",
+            "action_or_judgement": "計り、学級と品目の交点へ書く",
+            "outcome": "献立や量の見直しの材料になる。つまり『はこぶ』の終わりが次の日の『つくる』へ返る",
+            "frequency": "毎日",
+            "variability": "低（手順）／高（結果）",
+            "source": "紀の川市5(6)②／岩倉市5(8)",
+            "source_class": "municipal",
+            "confidence": "HIGH",
+            "gameability": "HIGH",
+            "distortion_risk": "LOW",
+            "sensory_channel": "視覚・計量",
+            "time_pressure": "低",
+            "precision_requirement": "中（計量値）",
+            "error_consequence": "誤れば翌日以降の量が誤る",
+            "repeatability": "高（毎日、結果が毎日変わる）",
+            "note_for_designer": "旧 rows[10] は MEDIUM だったが、計るという身体操作と学級×品目という比較軸が明文で存在し、記録は Human Decision でゲーム化候補に含まれたため HIGH へ再スコア。工程が一周して戻る唯一の行でもある"
+          }
+        ]
+      },
+      "creator": "claude-code-work-analyst",
+      "source_artifacts": [
+        "v2-lunch-carry:work_research:v2"
+      ],
+      "design_iteration": 1,
+      "created_at": "2026-09-23T02:01:54.016Z",
+      "versions": [
+        {
+          "version": 1,
+          "file": "factory/projects/v2-lunch-carry/design/work_action_map_v1.json",
+          "created_at": "2026-09-23T02:01:54.018Z",
+          "creator": "claude-code-work-analyst"
+        }
+      ]
+    }
+  },
+  "independent_review": {
+    "kind": "design",
+    "verdict": "FAIL",
+    "score": 51,
+    "blockers": 3,
+    "high": 3,
+    "evidence": "factory/projects/v2-lunch-carry/game-critic-r3.result.json",
+    "input": "factory/projects/v2-lunch-carry/game-critic-r3.prompt-as-run.md",
+    "reviewer": "codex-review",
+    "creator": "claude-code-game-designer-3",
+    "independent": true,
+    "review_mechanism": "factory/harness/codex-review.mjs",
+    "iteration": 1,
+    "repair_count_at_review": 0,
+    "stale": true,
+    "recorded_at": "2026-09-23T02:26:20.342Z"
+  },
+  "impl_review": null,
+  "art_review": null,
+  "failures": [],
+  "human_decisions": [
+    {
+      "id": "hd-1",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
+      ],
+      "note": "「はこぶ」スポットを保留するかどうかの判断を求める。\n\n【何が分かったか】\n配送業務従事者が実際に担う行為のうち、FACT GATE を通ったのは3つ（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）。2ラウンドのゲーム案（設計者を交代して作り直し）は、独立 GAME CRITIC に FAIL 43 / FAIL 38 でいずれも採択 NONE。5件の blocker はすべて同じ形で『勝敗を支える中核ルールが、確認されていない事実の発明である』。\n\nそこで critic が名指しした7つの空白だけを狙って追加調査した（自治体仕様書5本・危機管理/衛生管理マニュアル2本・契約書1本を新規に全文取得）。結果:\n\n閉じた: 代替車の手配時間は『そもそも時間規定が存在しない』（7自治体すべて定性的表現か台数要件）。配膳室の運搬具は受け渡し時点では空で待っており、クラス別の仕分けは受け渡しのあと配膳員が行う。嘔吐食器の別保管は無料ではなく、明示と洗浄前の5分間の別漬け置きという追加工程を伴う。搬入時の帳票『搬入搬出記録簿』は実在し、時刻と数を記録する。\n\n閉じなかった: 遅延時に何を報告するかの項目セット。センターが何を根拠に予備車／順序変更／学校連絡を選ぶかの判断手順。最初の報告が誤っていた場合の訂正手続。\n\n【なぜ閉じないか】\n探し方の問題ではないと読める。7自治体を当たって出てくるのは一貫して『直ちに連絡し、指示に従う』という判断の外注の記述だけで、その先は現場とセンターの電話のやりとりに委ねられている。つまりこの職業の専門性は意図的に非決定的である。計画に従い、壊れたら自分で決めずに報告する。それがこの仕事の正しさである。\n\n【問い】次のどれを選ぶか。\n(A) 「はこぶ」を保留し、別のスポット（そだてる／つくる／とどける）へ移る。\n(B) 実地取材または自治体への情報公開請求を承認し、GAP1〜3 を埋めてから再開する。\n(C) 判断ではなく、確認済みの物と手順（予備車が実在する／記録簿に時刻と数を書く／嘔吐食器には別工程が挟まる／配膳室の運搬具は空で待っている）の上にループを組むことを許容する。ただし GAME QUALITY 軸は落ちる可能性が高い。\n(D) 「はこぶ」というスポットの意味自体を設計し直す（例: 運転手ではなく、コンテナが学校に着いてから教室に届くまでの受け渡しの連鎖。子どもが実際に見ている部分であり、給食当番として自分でやっている部分でもある）。ただしこれは 給食 WORLD の5スポットの定義に触るため世界構造の変更にあたる。\n\n実装側の推奨は無い。(A)(B)(C)(D) はいずれも Product / 世界構造の判断であって、設計者が決めてよい範囲を超えている。",
+      "status": "resolved",
+      "opened_at": "2026-09-23T00:12:29.679Z",
+      "resolution": "Human Decision 2026-09-23（gate-log entry-2026-09-23-01）。(A)〜(D) のうち (D) に近い形で決着: 「はこぶ」は保留・削除しない。スポットを『給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程』と再定義し、複数 actor の確認済み仕事行為を扱ってよい。あわせてゲーム化対象を裁量的 decision に限定しないことが決まり、WORK DECISION MAP は WORK ACTION MAP へ上位化された。引き続き禁止: 配送員が自由にルートを決める／独断で代替方法を決める／未確認の時間制約やコストを勝敗条件にする。",
+      "resolved_at": "2026-09-23T01:53:05.508Z"
+    },
+    {
+      "id": "hd-2",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
+      ],
+      "note": "「はこぶ」スポットの継続可否を再上申する（2回目）。\n\n【再定義は効いた。ただし十分ではなかった】\n2026-09-23 の Human Decision（スポット再定義＋ゲーム化対象の拡張＋WORK ACTION MAP 化）を実装し、パイプラインを頭から回し直した。効果は数字に出ている。\n\nゲート通過行 10 → 19（うち DECISION は 10 → 1）。つまり18行は旧定義では見えていなかった。\n独立 critic のスコア 43 → 38 → 51、二軸 CA 42→41→57 / GQ 45→36→56。\n\nしかし3ラウンド目も採択 NONE。両軸とも60の床に届いていない。\n\n【なぜ止まるのか — 3回とも同じ根】\nblocker の形は毎回同じである。『緊張を作っている規則が、確認されていない事実の発明である』。\n\nr1: 配送員が出発の可否を決める（そんな判断は無い）\nr2: 確認に一律t時間／センターは最初の連絡だけで不可逆投入（どちらも不在）\nr3: 直送便の到着順と各学級の開始間隔／一人分の適量の閾値（どちらも不在）\n\nこの職業は、運用パラメータが公開されていない。配送計画の別紙、報告項目、センターの対処手順、記録簿の欄名、適量の基準、別保管の容量上限——8文書・7自治体を当たって一つも出てこなかった。そして緊張は普通そこから来る。だから設計者が3人交代しても同じ場所で詰まる。\n\n【それでも分かったこと】\n(a) rows[16] 教室での配食は actor が給食当番の児童生徒＋教職員で、遊ぶ子自身が告示の名指しする当事者である。この製品で他に例がない。ただし『正しい一人分』の基準が無い。\n(b) rows[20] 残食の学級別・品目別計量は、学級×品目・計量・記録表がすべて明文で、実測値を交点へ転記するだけなら発明が要らない。RECORDING として成立しうるが、我々はこれをゲーム性不足で見送った。事実不足ではない（critic の指摘どおり、この点は我々の記録が不正確だった）。\n(c) 逆に、時間・順序・閾値を使う設計は、この職業では全て発明になる。\n\n【問い】次のどれを選ぶか。\n(A) 「はこぶ」を一旦保留し、別のスポット（そだてる／つくる／とどける）へ移る。この3ラウンドの成果（行為マップ21行・参照15本）は保存され、事実が増えたときに再開できる。\n(B) 実地取材または情報公開請求を承認する。埋めるべきは『配送計画の別紙』『報告項目』『センターの対処手順』『一人分の適量の基準』の4つ。うち最後のものが最も小さく、(a) を開く。\n(C) 時間・順序・閾値を使わない設計に限定して4ラウンド目を許可する。現実的な候補は rows[20] の RECORDING 一本で、我々はこれをゲームとして弱いと判断している。\n(D) 『正しい一人分』のような日常的な基準については、一次資料ではなく実地の観察（学校の給食当番の実際）を根拠として認める、という事実運用の変更。これは研究ルールの変更にあたる。\n\n実装側の推奨は (A) である。3ラウンド・設計者3人・独立レビュー3回を費やして両軸60に届いておらず、残る道はいずれも事実の追加か基準の変更を要する。ただし (A)(B)(C)(D) はいずれも Product / 世界構造 / 研究ルールの判断であり、設計者が決めてよい範囲を超える。",
+      "status": "open",
+      "opened_at": "2026-09-23T02:27:09.358Z"
+    }
+  ],
+  "limited_exceptions": [],
+  "task_id": null,
+  "version": null,
+  "depends_on": [],
+  "created_at": "2026-09-22T23:23:23.910Z",
+  "updated_at": "2026-09-23T02:27:09.359Z",
+  "history": [
+    {
+      "at": "2026-09-22T23:23:23.933Z",
+      "event": "init",
+      "track": "v2",
+      "trigger": "NEW_Q1_REQUEST",
+      "entry_stage": "LEGACY_INVENTORY",
+      "legacy_game_type": null
+    },
+    {
+      "at": "2026-09-22T23:26:49.062Z",
+      "event": "state_change",
+      "from": "DRAFT",
+      "to": "LEGACY_INVENTORIED",
+      "note": "artifact legacy_inventory v1"
+    },
+    {
+      "at": "2026-09-22T23:26:49.062Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:legacy_inventory:v1",
+      "invalidated": [],
+      "sources": []
+    },
+    {
+      "at": "2026-09-22T23:26:49.111Z",
+      "event": "state_change",
+      "from": "LEGACY_INVENTORIED",
+      "to": "RESEARCHED",
+      "note": "artifact work_research v1"
+    },
+    {
+      "at": "2026-09-22T23:26:49.111Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_research:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:legacy_inventory:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:28:05.767Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "DECISION_MAPPED",
+      "note": "artifact work_decision_map v1"
+    },
+    {
+      "at": "2026-09-22T23:28:05.767Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_decision_map:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:28:05.824Z",
+      "event": "state_change",
+      "from": "DECISION_MAPPED",
+      "to": "FACT_GATE_PASSED",
+      "note": "FACT GATE satisfied"
+    },
+    {
+      "at": "2026-09-22T23:28:05.825Z",
+      "event": "fact_gate_passed",
+      "rows": 12
+    },
+    {
+      "at": "2026-09-22T23:28:31.484Z",
+      "event": "confidence_set",
+      "confidence": {
+        "fact": "HIGH",
+        "game_fit": null,
+        "design": null
+      },
+      "note": "FACT GATE を通った10行はすべて primary_law または municipal の一次資料に基づき confidence HIGH。未確認13件（配送計画の実物、起案者の職名、荷降ろし順の規則、当日欠席の反映など）は残るが、いずれもゲートを通った行の根拠ではない。設計はゲート通過行のみを土台にする。"
+    },
+    {
+      "at": "2026-09-22T23:33:00.627Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "reference_research_exists",
+        "concepts_gte_3",
+        "comparison_exists",
+        "final_design_exists",
+        "rejections_recorded",
+        "game_critic_pass"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:39:58.477Z",
+      "event": "state_change",
+      "from": "FACT_GATE_PASSED",
+      "to": "REFERENCES_READY",
+      "note": "artifact game_reference_research v1"
+    },
+    {
+      "at": "2026-09-22T23:39:58.477Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_reference_research:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_decision_map:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:41:50.884Z",
+      "event": "state_change",
+      "from": "REFERENCES_READY",
+      "to": "CONCEPTS_READY",
+      "note": "artifact game_concepts v1"
+    },
+    {
+      "at": "2026-09-22T23:41:50.884Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_concepts:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_decision_map:v1",
+        "v2-lunch-carry:game_reference_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-22T23:46:19.078Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r1.result.json"
+    },
+    {
+      "at": "2026-09-22T23:47:28.350Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r1 = FAIL 43（CA 42 / GQ 45）、採択 NONE、blocker 4件。中でも致命的なのは A 案について『配送員が、あと1品待つか・不完全なコンテナを閉めて送り出すかを決める』という行為が FACT GATE 通過行に存在しないという指摘。設計者（claude-code-game-designer）が、誰もしていない判断を発明していた。さらに A は検食者が答えオラクルになっており、しかも検食者が現れる時点では既に学校へ搬入済みでなければならないので因果が逆転していた。B は積込・員数合わせの actor が調理業務従事者であり『はこぶ』の枠に置くと隣接職への主体移譲になる。C は前提（連絡して指示を受ける）は仕様書の原文どおりで健全だが、使ったトリガー（検食異常）がセンター側検食＝出発前という自分の決定マップと矛盾していた。3案とも棄却し、運転手が実際に担っている行（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）だけを土台に作り直す。"
+    },
+    {
+      "at": "2026-09-22T23:47:28.350Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r1 = FAIL 43（CA 42 / GQ 45）、採択 NONE、blocker 4件。中でも致命的なのは A 案について『配送員が、あと1品待つか・不完全なコンテナを閉めて送り出すかを決める』という行為が FACT GATE 通過行に存在しないという指摘。設計者（claude-code-game-designer）が、誰もしていない判断を発明していた。さらに A は検食者が答えオラクルになっており、しかも検食者が現れる時点では既に学校へ搬入済みでなければならないので因果が逆転していた。B は積込・員数合わせの actor が調理業務従事者であり『はこぶ』の枠に置くと隣接職への主体移譲になる。C は前提（連絡して指示を受ける）は仕様書の原文どおりで健全だが、使ったトリガー（検食異常）がセンター側検食＝出発前という自分の決定マップと矛盾していた。3案とも棄却し、運転手が実際に担っている行（rows[4] 搬入と対面確認、rows[5] 遅延の連絡、rows[9] 回収）だけを土台に作り直す。",
+      "return_to": "GAME_CONCEPTS"
+    },
+    {
+      "at": "2026-09-22T23:57:55.532Z",
+      "event": "state_change",
+      "from": "GAME_CONCEPT_REJECTED",
+      "to": "CONCEPTS_READY",
+      "note": "artifact game_concepts v2"
+    },
+    {
+      "at": "2026-09-22T23:57:55.532Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_concepts:v2",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_decision_map:v1",
+        "v2-lunch-carry:game_reference_research:v1"
+      ]
+    },
+    {
+      "at": "2026-09-23T00:01:59.700Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r2.result.json"
+    },
+    {
+      "at": "2026-09-23T00:02:28.127Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r2 = FAIL 38（CA 41 / GQ 36）、採択 NONE、blocker 5件。5件すべてが同じ形をしている: 勝敗を支える中核ルールが、確認されていない事実の発明である。B の『確認には一律t時間』『センターは最初の不完全な連絡だけで資源を不可逆投入する』『後から訂正不能』『原因ごとに予備車・回り道・学校連絡が一対一対応』、A の『運搬車台数×品目数＝必要数』と搬入時に学級別運搬車が並ぶという前提、C の過剰分離にコストがあるという前提。いずれも work_research の unconfirmed に該当する。創作規則を外すと、固定戦略を負かす機構が消える。したがってこれは設計の失敗ではなく事実の不足であり、差し戻し先は GAME_CONCEPTS ではなく WORK_RESEARCH。なお critic の HIGH『通過行は三つだけという全数主張が偽』は誤読で、機械的に検証すると FACT GATE は rows[0] と rows[3] の2行を落としており、配送業務従事者が actor で通過したのは rows[4]/[5]/[9] の3つで設計者の主張どおり。ただし rows[3]（出発前点検と異常時の予備車要請）は distortion_risk LOW でありながら私が gameability LOW と付けたことだけで落ちている。これは事実ではなく判断なので、再監査の対象として記録する。"
+    },
+    {
+      "at": "2026-09-23T00:02:28.127Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r2 = FAIL 38（CA 41 / GQ 36）、採択 NONE、blocker 5件。5件すべてが同じ形をしている: 勝敗を支える中核ルールが、確認されていない事実の発明である。B の『確認には一律t時間』『センターは最初の不完全な連絡だけで資源を不可逆投入する』『後から訂正不能』『原因ごとに予備車・回り道・学校連絡が一対一対応』、A の『運搬車台数×品目数＝必要数』と搬入時に学級別運搬車が並ぶという前提、C の過剰分離にコストがあるという前提。いずれも work_research の unconfirmed に該当する。創作規則を外すと、固定戦略を負かす機構が消える。したがってこれは設計の失敗ではなく事実の不足であり、差し戻し先は GAME_CONCEPTS ではなく WORK_RESEARCH。なお critic の HIGH『通過行は三つだけという全数主張が偽』は誤読で、機械的に検証すると FACT GATE は rows[0] と rows[3] の2行を落としており、配送業務従事者が actor で通過したのは rows[4]/[5]/[9] の3つで設計者の主張どおり。ただし rows[3]（出発前点検と異常時の予備車要請）は distortion_risk LOW でありながら私が gameability LOW と付けたことだけで落ちている。これは事実ではなく判断なので、再監査の対象として記録する。",
+      "return_to": "WORK_RESEARCH"
+    },
+    {
+      "at": "2026-09-23T00:02:28.167Z",
+      "event": "confidence_set",
+      "confidence": {
+        "fact": "HIGH",
+        "game_fit": "LOW",
+        "design": null
+      },
+      "note": "2ラウンドとも採択 NONE。ゲームの成立が、一次資料で確認できていない運用値（連絡項目・センター応答手順・訂正可能性・代替車の手配所要時間・搬入時の照合単位と帳票）に依存している。これらが埋まるまで BUILD へ進めない。"
+    },
+    {
+      "at": "2026-09-23T00:11:52.080Z",
+      "event": "state_change",
+      "from": "GAME_CONCEPT_REJECTED",
+      "to": "RESEARCHED",
+      "note": "artifact work_research v2"
+    },
+    {
+      "at": "2026-09-23T00:11:52.080Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_research:v2",
+      "invalidated": [
+        "work_decision_map",
+        "game_reference_research"
+      ],
+      "sources": [
+        "v2-lunch-carry:legacy_inventory:v1"
+      ]
+    },
+    {
+      "at": "2026-09-23T00:11:52.131Z",
+      "event": "gate_refused",
+      "gate": "GAME_DESIGN_READY",
+      "reasons": [
+        "decision_map_exists",
+        "fact_gate_passes",
+        "reference_research_exists",
+        "concepts_gte_3",
+        "comparison_exists",
+        "final_design_exists",
+        "rejections_recorded",
+        "game_critic_pass"
+      ]
+    },
+    {
+      "at": "2026-09-23T00:12:29.679Z",
+      "event": "human_decision_opened",
+      "id": "hd-1",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
+      ]
+    },
+    {
+      "at": "2026-09-23T01:50:29.679Z",
+      "event": "fact_gate_refused",
+      "reasons": [
+        "no work_action_map artifact (or it is STALE)"
+      ]
+    },
+    {
+      "at": "2026-09-23T01:53:05.509Z",
+      "event": "human_decision_resolved",
+      "id": "hd-1",
+      "note": "Human Decision 2026-09-23（gate-log entry-2026-09-23-01）。(A)〜(D) のうち (D) に近い形で決着: 「はこぶ」は保留・削除しない。スポットを『給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程』と再定義し、複数 actor の確認済み仕事行為を扱ってよい。あわせてゲーム化対象を裁量的 decision に限定しないことが決まり、WORK DECISION MAP は WORK ACTION MAP へ上位化された。引き続き禁止: 配送員が自由にルートを決める／独断で代替方法を決める／未確認の時間制約やコストを勝敗条件にする。"
+    },
+    {
+      "at": "2026-09-23T02:01:54.019Z",
+      "event": "state_change",
+      "from": "RESEARCHED",
+      "to": "ACTION_MAPPED",
+      "note": "artifact work_action_map v1"
+    },
+    {
+      "at": "2026-09-23T02:01:54.019Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:work_action_map:v1",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_research:v2"
+      ]
+    },
+    {
+      "at": "2026-09-23T02:01:54.072Z",
+      "event": "state_change",
+      "from": "ACTION_MAPPED",
+      "to": "FACT_GATE_PASSED",
+      "note": "FACT GATE satisfied"
+    },
+    {
+      "at": "2026-09-23T02:01:54.072Z",
+      "event": "fact_gate_passed",
+      "rows": 21,
+      "map_type": "work_action_map",
+      "map_version": 1
+    },
+    {
+      "at": "2026-09-23T02:09:35.085Z",
+      "event": "state_change",
+      "from": "FACT_GATE_PASSED",
+      "to": "REFERENCES_READY",
+      "note": "artifact game_reference_research v2"
+    },
+    {
+      "at": "2026-09-23T02:09:35.085Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_reference_research:v2",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_action_map:v1"
+      ]
+    },
+    {
+      "at": "2026-09-23T02:21:56.793Z",
+      "event": "state_change",
+      "from": "REFERENCES_READY",
+      "to": "CONCEPTS_READY",
+      "note": "artifact game_concepts v3"
+    },
+    {
+      "at": "2026-09-23T02:21:56.793Z",
+      "event": "artifact_submitted",
+      "artifact_id": "v2-lunch-carry:game_concepts:v3",
+      "invalidated": [],
+      "sources": [
+        "v2-lunch-carry:work_action_map:v1",
+        "v2-lunch-carry:game_reference_research:v2"
+      ]
+    },
+    {
+      "at": "2026-09-23T02:26:20.343Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r3.result.json"
+    },
+    {
+      "at": "2026-09-23T02:27:09.313Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。"
+    },
+    {
+      "at": "2026-09-23T02:27:09.314Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。",
+      "return_to": "WORK_RESEARCH"
+    },
+    {
+      "at": "2026-09-23T02:27:09.359Z",
+      "event": "human_decision_opened",
+      "id": "hd-2",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
+      ]
+    }
+  ]
+}

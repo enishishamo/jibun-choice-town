@@ -26,6 +26,23 @@ Design Bible / HARD RULE を画像より優先する。下記 A〜E は合成画
 | A「うしろ」ポーズ・C/D/E の相棒 | 縮尺が小さく耳の左右・口の有無を断定できない | Master 化の前に個別に拡大確認する（human review） |
 | 全領域 | 口の有無は画像から断定していない | CHARACTER_BIBLE「mouth = NONE」を正とする |
 
+## Storyboard Reference（2026-09-21、GPT 作成・Human 共有）— 「パカッ」体験の連続動作
+
+コンセプトボード（上記 A〜E）とは**別の** Visual Reference。6 コマ構成:
+`MAP → APPROACH → DISCOVERY → UNLATCH → PAKKA! → WORLD`。
+
+| 配置状況 | 推奨ファイル名 |
+|---|---|
+| **未配置（Human が Work / Finder で配置）** | `storyboard-pakka-2026-09-21.png`（6 コマ合成 1 枚） |
+
+| 扱い | 内容 |
+|---|---|
+| 何の参照か | 「パカッ」体験の**連続動作・カメラの寄り方・相棒の演技**（近づく→気づく→留め金に触れる→開く→中の社会が見える）を示す storyboard |
+| 採用するもの | 動作の順序とカメラの流れ（全体MAP の俯瞰 → お弁当箱へ寄る → 留め金へさらに寄る → 開いた瞬間に内部が光る → WORLD MAP へ）。相棒の演技の方向性（見上げる・触れる・のぞき込む） |
+| 採用しないもの | **各コマの絵そのものを最終 asset として実装しない**。英語ラベル（MAP / APPROACH / PAKKA! 等）・番号バッジ・矢印は実画面に使わない。exact な色・構図・オブジェ配置・お弁当箱の内部の細部 |
+| 相棒 | HARD RULE（[CHARACTER_BIBLE.md](../../../docs/jibun-choice-v2/CHARACTER_BIBLE.md)）が優先。コマごとに向きが変わるが、実装で `scaleX(-1)` 等の左右反転で向きを作らない（Human 指示 2026-09-21） |
+| 関連 OPEN | WORLD_DESIGN §2 の「近づく」操作・演出の長さ・カメラ位置は引き続き OPEN（この storyboard は方向性の参照であり、Human 決定の代わりではない） |
+
 ## 追加の注意
 
 - Reference B/C/D/E の相棒は Reference A と同一キャラクターとして扱う（別キャラ化しない）。

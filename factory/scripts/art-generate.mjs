@@ -16,11 +16,42 @@
 //   node factory/scripts/art-generate.mjs shop-opening --confirm       # generate
 //   node factory/scripts/art-generate.mjs shop-opening --ids a,b --force --confirm
 //   flags: --limit N  --quality low|medium|high  --max-usd X  --no-refs
+//
+// 2026-09-21 — DEPRECATED, AND REFUSED BY DEFAULT.
+// This script calls the OpenAI Image API, which is PAY-PER-USE. CLAUDE.md §8
+// ("Never use paid APIs, API keys, or incur additional billing") forbids that
+// for every automated Factory path, so the cost caps below are not enough:
+// the rule is "no paid call at all", not "a cheap paid call". The canonical
+// art pipeline is factory/harness/art/art-loop.mjs, which routes through
+// reuse > css/svg > composition > codex_imagegen (ChatGPT subscription,
+// no per-image billing) and records provenance in
+// factory/state/art/manifest-v2.json.
+// A HUMAN who knowingly wants to pay can still run this with
+// --i-am-a-human-authorizing-paid-api. No agent may pass that flag on its
+// own initiative; doing so is a CLAUDE.md §8 violation.
 import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+if (!process.argv.includes("--i-am-a-human-authorizing-paid-api")) {
+  console.error(`REFUSED: factory/scripts/art-generate.mjs calls the OpenAI Image API (pay-per-use).
+
+CLAUDE.md §8: "Never use paid APIs, API keys, or incur additional billing."
+No agent may run this script — not even in dry-run mode, so the paid path is
+never one forgotten flag away.
+
+Use the canonical art pipeline instead (subscription-only, provenance-tracked):
+  node factory/harness/art/art-loop.mjs status
+  node factory/harness/art/art-loop.mjs run --request <request.json>
+  (see factory/harness/art/README.md)
+
+If you are a HUMAN deliberately authorizing paid image generation, re-run with
+  --i-am-a-human-authorizing-paid-api
+`);
+  process.exit(2);
+}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, "factory/art/config.json"), "utf8"));

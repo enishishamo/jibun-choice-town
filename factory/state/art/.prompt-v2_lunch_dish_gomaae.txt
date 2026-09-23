@@ -1,0 +1,29 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: a small fluted white bowl of dark-green spinach and thin orange carrot strips dressed with sesame seeds (gomaae). Series: JIBUN CHOICE 給食 こんだてPLAY dish set, all dishes share the same camera, scale, lighting and clay material.
+Role in game: こんだてPLAY の料理「やさいのごまあえ」の master asset（純粋な visual。属性・記号・文字は UI 層で扱う）
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.
+Must include: green spinach and carrot strips with sesame in a fluted white bowl; one single dish only; transparent background
+Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 1:1 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 野菜の表面が濡れた実物のように強く光り、reference setのマットで指跡を感じる粘土質感より写実的
+- Fix vs reference set: 葉や茎の細かな皺・筋・不均一な曲がりが精密すぎ、referenceの丸く簡略化された造形言語と異なる
+- Fix vs reference set: 器が光沢の強い陶器として見え、reference内の小物に共通する柔らかなクレイ素材感から外れる
+- Fix vs reference set: 純白の高キーな商品撮影風背景と均一な照明で、referenceの暖色系の柔らかな斜光・ミニチュア撮影感が弱い
+- Fix vs reference set: ゴマ粒が非常に小さく写実的で、シリーズの玩具的なスケール感・形状の単純化と一致しない
+- 料理内容と単体アセットとしての構図は明快だが、食材の湿った艶と精密な表面表現がフォトリアル寄りで、同じ粘土世界の小物に見えにくい
+- シリーズ必須ゲートのSERIES_STYLE_MATCHが80未満。野菜と器をより丸く単純化し、艶を抑えたマットな手作り粘土質感、暖かい斜光、わずかな造形の揺らぎへ寄せる必要がある
+- 白背景はtool/object用途として許容されるが、現状はEC商品写真のように無機質。ごく薄い暖色背景と柔らかな接地影があるとreference setとの一体感が増す

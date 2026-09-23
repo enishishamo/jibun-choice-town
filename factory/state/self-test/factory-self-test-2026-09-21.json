@@ -1,0 +1,66 @@
+{
+  "ran_at": "2026-09-23T02:28:23.746Z",
+  "script": "factory/harness/factory-self-test.mjs",
+  "ledger": "scratch (JC_TASKS_PATH) — the real factory/state/tasks.json is never read or written",
+  "fixture_commits": {
+    "clean": "6c78d08b399c5d2edc8f67e366d6f194bb32b870",
+    "src_touching": "4310abeeb1e52953449c1631bafca639c4223b1d"
+  },
+  "results": [
+    {
+      "id": "A",
+      "name": "normal task reaches RELEASED and passes can-deploy",
+      "ok": true,
+      "detail": "set-status exit=0, status=RELEASED, can-deploy exit=0 {\n  \"allowed\": true,\n  \"task_id\": \"selftest-a-normal\",\n  \"reasons\": [],\n  \"task\": {\n    \"task_id\": \"selftest-a-normal\",\n    \"task_type\": \"self-test\",\n    \"status\": \"RELEASED\",\n    \"producer\": \"claude-code\",\n    \"repair_count\": 0,\n    \"review_status\": \"PASS\",\n    \"review_evidence\": \"/var/folders/tl/z"
+    },
+    {
+      "id": "B",
+      "name": "review FAIL blocks RELEASED and can-deploy",
+      "ok": true,
+      "detail": "set-status exit=1, status=QA, can-deploy exit=1, names review_status=true"
+    },
+    {
+      "id": "C",
+      "name": "QA FAIL blocks RELEASED and can-deploy",
+      "ok": true,
+      "detail": "set-status exit=1, status=QA, can-deploy exit=1, names qa_status=true"
+    },
+    {
+      "id": "D",
+      "name": "release-gate-check refuses a src-touching commit with no task record",
+      "ok": true,
+      "detail": "exit=1, names the commit=true: FAIL: 1 commit(s) touch src/ or public/ with NO task in /var/folders/tl/zbr33y4s10ng8xn0zdh44wdc0000gn/T/jc-factory-selftest-O3DjG8/tasks.json whose release_commit is exactly that sha: |   - 4310abeeb1e52953449c1631bafca639c4223b1d  (src/v2/lunch/README.md, src/v2/lunch/world/README.md) | Record eac"
+    },
+    {
+      "id": "E",
+      "name": "request-repair refuses the 2nd attempt",
+      "ok": true,
+      "detail": "first exit=0, second exit=1"
+    },
+    {
+      "id": "F",
+      "name": "unresolved design_needed keeps the task movable and other tasks free, but blocks can-deploy",
+      "ok": true,
+      "detail": "status QA->QA (unchanged=true), unrelated RELEASED=RELEASED, later move exit=0, can-deploy exit=1, names DN=true"
+    },
+    {
+      "id": "G",
+      "name": "ver1-freeze-check detects a violation",
+      "ok": true,
+      "detail": "VER1_TAG=49dcf4c9 exit=1, reported drift=true"
+    },
+    {
+      "id": "H",
+      "name": "set-review refuses when reviewer === producer",
+      "ok": true,
+      "detail": "exit=1, review_status=null"
+    },
+    {
+      "id": "I",
+      "name": "set-qa refuses a PASS backed only by a free-text note (and refuses no evidence at all)",
+      "ok": true,
+      "detail": "note exit=1, no-evidence exit=2, qa_status=null"
+    }
+  ],
+  "overall": "PASS"
+}

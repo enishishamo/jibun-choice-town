@@ -1,0 +1,87 @@
+{
+  "ran_at": "2026-09-23T02:28:27.918Z",
+  "script": "factory/harness/pipeline-self-test.mjs",
+  "scope": "RESEARCH -> GAME DESIGN -> DESIGN HANDOFF pipeline (v2 track) and its join to the build ledger",
+  "ledger": "scratch (JC_PIPELINE_ROOT + JC_TASKS_PATH) — the real factory/projects and factory/state/tasks.json are never read or written",
+  "results": [
+    {
+      "id": "A",
+      "name": "without WORK_RESEARCH the design gate refuses and says so by name",
+      "ok": true,
+      "detail": "exit=1 names_research=true"
+    },
+    {
+      "id": "B",
+      "name": "a failing FACT GATE refuses, and the design gate refuses naming it — no concept may be written on it",
+      "ok": true,
+      "detail": "fact-gate=1 can-advance=1 gate=1 named=true"
+    },
+    {
+      "id": "C",
+      "name": "without a FINAL_GAME_DESIGN the build transition is refused",
+      "ok": true,
+      "detail": "exit=1 out={\n  \"allowed\": false,\n  \"transition\": \"BUILD\",\n  \"game_id\": \"selftest-c\",\n  \"state\": \"CONCEPTS_READY\",\n  \"confidence\": {\n    \"fact\": null,\n    \"game_fit\": null,\n    \"design\": null\n  },\n  \"reasons\": [\n"
+    },
+    {
+      "id": "D",
+      "name": "with a handoff but no DESIGN_PACKAGE, design-independent build work is allowed to continue",
+      "ok": true,
+      "detail": "build=0 production=1 names_package=true"
+    },
+    {
+      "id": "E",
+      "name": "a builder cannot declare the final visual done while no DESIGN_PACKAGE exists",
+      "ok": true,
+      "detail": "exit=1 reason_present=true"
+    },
+    {
+      "id": "F",
+      "name": "when an upstream fact changes, a build recorded against the old game design is flagged stale",
+      "ok": true,
+      "detail": "before_had_stale=false after_named=true"
+    },
+    {
+      "id": "G",
+      "name": "GAME_CONCEPT_REJECTED returns to research, stales the concepts, and spends no repair budget",
+      "ok": true,
+      "detail": "state=GAME_CONCEPT_REJECTED stage=WORK_RESEARCH repair=0/0 concepts=STALE"
+    },
+    {
+      "id": "H",
+      "name": "a design-owner gap blocks release but never changes the build task's status (it is not the builder's to fix)",
+      "ok": true,
+      "detail": "status READY -> READY, blocks_release=true"
+    },
+    {
+      "id": "I",
+      "name": "a concept standing on a FACT-GATE-rejected row, or on nothing, is refused at submit",
+      "ok": true,
+      "detail": "rejected_row_exit=1 named=true untraced_exit=1 named=true good_exit=0"
+    },
+    {
+      "id": "J",
+      "name": "a work action map with NO DECISION passes the FACT GATE on verified PERCEPTION / VERIFICATION",
+      "ok": true,
+      "detail": "submit=0 fact-gate=0 contains_DECISION=false"
+    },
+    {
+      "id": "K",
+      "name": "an unsourced / unattributed / job-distorting ACTION does not pass, whatever its action_type",
+      "ok": true,
+      "detail": "fact-gate=1 out={\n  \"allowed\": false,\n  \"gate\": \"FACT_GATE\",\n  \"game_id\": \"selftest-k\",\n  \"state\": \"ACTION_MAPPED\",\n  \"map\": \"work_action_map@v1\",\n  \"reasons\": [\n    \"every tra"
+    },
+    {
+      "id": "L",
+      "name": "a concept must stand on a gate-passing ACTION row and name what the CHILD actively does",
+      "ok": true,
+      "detail": "passive=1/true rejected_row=1/true good=0"
+    },
+    {
+      "id": "M",
+      "name": "a legacy DECISION-only job still passes the gate and still accepts concepts (no regression)",
+      "ok": true,
+      "detail": "submit=0 fact-gate=0 used_legacy_map=true concepts=0"
+    }
+  ],
+  "overall": "PASS"
+}

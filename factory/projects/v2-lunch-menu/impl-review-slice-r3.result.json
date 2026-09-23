@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 78,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:183 — Tap-ownership test accepts an untappable control — `hit.contains(el)` treats an ancestor/container returned by `elementFromPoint()` as ownership success, but a tap targeting that ancestor does not dispatch the button’s click handler; an overlaid `.lmp-slots`/tray container can therefore swallow every child control while the check passes — require the hit to be the control or its descendant, or perform a real tap at every sample point and assert the intended handler/state transition."
+    ],
+    "medium": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:244 — Cleared sessions are not inert under `swap()` — unlike `place()` and `remove()`, `swap()` has no `phase === \"cleared\"` guard and will mutate a completed tray; the harness’s “cleared session is inert” assertion at factory/harness/gameplay-qa-v2-lunch-menu.mjs:226 omits `swap()`, so the defect passes — reject swaps in the cleared phase and include `swap()` in the inert-session assertion.",
+      "factory/harness/v2-lunch-shots.mjs:162 — Touch QA does not prove controls meet minimum target size — it checks overlap, viewport sampling, and a non-vacuous control count, but never asserts a 44–48 px minimum width and height; undersized yet non-overlapping controls pass — assert the approved minimum dimensions for every enabled interactive control at 375×812.",
+      "factory/harness/v2-lunch-shots.mjs:44 — Reduced-motion behavior is never exercised — the run uses only the default media preference, so broken or incomplete `prefers-reduced-motion` behavior passes despite being a stated review target — run a second browser pass with reduced motion emulated and assert the full flow remains usable and state feedback remains perceptible."
+    ],
+    "low": [
+      "src/v2/lunch/screens/JobReveal.tsx:13 — StrictMode can cancel the reveal sequence — development StrictMode cleanup clears the first effect’s timers, while remount behavior is not covered by the browser harness; add a StrictMode component test or make the timed sequence explicitly restart-safe.",
+      "factory/harness/v2-lunch-shots.mjs:131 — Snapshot-time aria audit remains over-permissive — it strips everything following `：` or enclosed in parentheses and accepts the prefix alone; the later cumulative audit is strict, so final runs catch the defect, but an early thrown flow can lose that protection — use the same strict two-allowed-pieces parser in both checks."
+    ],
+    "evidence": [
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs completed 54/54 checks at HEAD 062cbf5993d7e37602b34ea653113d195dd6d72d; exhaustive results included 16 viable menus of 126, staple enforcement, all event targets recoverable, and no driven place/remove/swap/fireEvent transition to cleared.",
+      "factory/harness/ver1-freeze-check.mjs passed: Ver.1 files matched tag ver1-archive-2026-09-20 and all 22 src/v2 files avoided forbidden Ver.1 UI/state imports.",
+      "TypeScript checks passed with `--noEmit --incremental false` for both application and Node configurations; `git diff --check` also passed.",
+      "The current cumulative observer does verify all three claimed repairs: board-mounted history at factory/harness/v2-lunch-shots.mjs:87-92, board aria digit auditing at lines 338-349, and pseudo-element content collection at lines 69-79.",
+      "The current harness catches the listed rendered score/right-wrong/aptitude/job-name mutations when introduced as text, aria-labels, or generated content; its 3.5-second idle assertion catches auto-advance on the exercised sendable tray, and the pure model harness catches place/remove/swap/fireEvent implementations that directly enter `cleared`. It still misses the ancestor-overlay tap mutation and cleared-session `swap()` defect described above.",
+      "A scratch-copy mutation execution and full Chrome shot run could not be completed in this review environment because filesystem writes, temporary Vite cache creation, and socket binding were denied (`EPERM`). The existing pure harness still executed despite Vite cache warnings; the browser-dependent mutation claims above were verified by control-flow inspection rather than represented as successful executions.",
+      "All inspected colors under src/v2 use the eight `--v2-*` palette tokens or `color-mix()` combinations; no forbidden Ver.1 storage-key access or reachable developer marker was found."
+    ],
+    "recommended_actions": [
+      "Fix tap ownership by removing the ancestor-success case and mutation-test an absolute ancestor overlay that intercepts pointer events.",
+      "Make `swap()` reject cleared sessions and extend the cleared-session inertness assertion to cover it.",
+      "Add target-size assertions and a reduced-motion browser pass to the mobile QA harness.",
+      "Re-run the complete Chrome flow and the requested mutation matrix in a writable environment, preserving per-mutation pass/fail output as review evidence."
+    ]
+  },
+  "elapsed_sec": 182.335,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "7b90fcc44c91512bc79edd10490dc36f99b8d5bedc773118c61bfd5139bcd699"
+}

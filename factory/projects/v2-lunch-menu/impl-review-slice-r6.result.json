@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 86,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:84 — Property-only form values escape the accumulated audit — M19 is caught when React/markup changes the value attribute, but `input.value = \"100てん\"` does not trigger the observer’s attributeFilter; a concrete mutation that appends an empty input, sets its value property after insertion, and removes it before the next screenshot passes unseen — instrument HTMLInputElement/HTMLTextAreaElement value setters or poll/record every animation frame while PLAY is mounted, and mutation-test a transient property-only value"
+    ],
+    "medium": [
+      "factory/harness/v2-lunch-shots.mjs:59 — Several child-readable display channels remain outside the audit — Concrete passing mutations are: `<img alt=\"100てん\">` using a valid image; `<li>` with `::marker { content:\"100てん\" }`; a transient canvas calling `fillText(\"100てん\",...)`; an open shadow root containing `100てん`; and an element with `aria-valuetext=\"100てん\"`; SVG `<text>` and `<title>` are already caught by the text-node walker, while CSS `counter()` used in `::before`/`::after` is at least surfaced as unapproved computed content — collect alt/title and all relevant ARIA value attributes, inspect `::marker`, recursively traverse open shadow roots and observe newly attached roots, instrument canvas text APIs, and add one mutation test per named channel"
+    ],
+    "low": [],
+    "evidence": [
+      "src/v2/lunch/play/lunchMenuPlay.css:177 — Groove boxes use the same 21.5% pitch as GROOVE_Y, and track, hollow, and lip dimensions are row-relative; at the shipped 92px minimum rack the salt-row lip ends at about 94.9% of the block and the 16px settled bead also remains inside, so no concrete block-height failure was found.",
+      "factory/harness/v2-lunch-shots.mjs:308 — Rack bounds and cross-row label obstruction are checked for empty and full states at all five declared viewport sizes, including 320×568.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:284 — pickEventDish considers only on-tray dishes and filters for at least MIN_RECOVERIES; exhaustive QA reported a worst case of seven recoveries across all 16 viable menus.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:313 — send() is the only model transition to cleared; place, remove, swap, and fireEvent remain non-clearing, and the first send was exhaustively verified as intercepted.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:107 — All PLAY animation timeouts use the fxTimers registry, whose unmount cleanup clears pending callbacks; no escaping PLAY timer was found.",
+      "src/v2/state/progress.ts:27 — Persisted progress is reconstructed from validated fields and malformed JSON is caught; the slice neither restores a hand-edited game session nor reads the Ver.1 key.",
+      "factory/harness/ver1-freeze-check.mjs:45 — The freeze check passed: Ver.1 files match the archive tag and all 22 src/v2 files avoid forbidden Ver.1 imports.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:251 — The pure-model suite completed 54/54 checks; Vite emitted sandbox-related websocket/cache errors, but the loaded model checks themselves ran to completion."
+    ],
+    "recommended_actions": [
+      "Add a mutation that inserts an empty readonly input, assigns `value` through the DOM property for less than one screenshot interval, then removes it; require the accumulated audit to identify `100てん`.",
+      "Extend the audit and mutation log with the five concrete channels named above: valid-image alt, `::marker`, canvas text, open shadow DOM, and aria-valuetext.",
+      "Rerun the complete browser journey outside the read-only/network-restricted review sandbox after the audit extensions, including the existing five-size geometry sweep and reduced-motion route."
+    ]
+  },
+  "elapsed_sec": 185.972,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
+}

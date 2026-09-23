@@ -1,6 +1,6 @@
 {
  "note": "Stage 6 provider probe results. Probed for real (generation executed, file obtained, visually verified) on 2026-09-02.",
- "probed_at": "2026-09-02",
+ "probed_at": "2026-09-21",
  "providers": [
   {
    "provider": "existing_asset_reuse",
@@ -59,8 +59,9 @@
    "can_generate": true,
    "can_save_file": true,
    "repo_accessible": true,
-   "test_result": "REAL PROBE PASSED: codex exec --sandbox workspace-write generated a 1254x1254 PNG via built-in image_gen.imagegen with reply {\"generated\":true}; artifacts preserved at factory/state/art/probe-evidence/ (probe.png + probe-result.txt); visually verified (red circle on white); no API key in env (~/.codex OAuth only)",
-   "safe_for_automation": true
+   "test_result": "REAL RE-PROBE 2026-09-21 (Autonomous Execution regression repair: the 2026-09-02 probe had gone stale >14d, which made art-loop fall through to human_boundary): art-provider generate --provider codex_imagegen produced factory/state/art/probe-evidence/probe-2026-09-21.png via built-in image_gen.imagegen under ChatGPT OAuth (no API key in env). Previous evidence: probe.png + probe-result.txt (2026-09-02).",
+   "safe_for_automation": true,
+   "probed_at": "2026-09-21"
   },
   {
    "provider": "codex_vision_qa",

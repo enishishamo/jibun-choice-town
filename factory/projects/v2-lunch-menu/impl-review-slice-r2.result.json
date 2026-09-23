@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 72,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:155 — タップ所有権検査が非操作要素による遮蔽を見逃す — elementFromPoint() の結果が対象外要素または null の場合、owner && owner !== el が偽になり合格するため、透明オーバーレイ等が全タップを奪う誤実装でも通る。実際、空トレイ時の disabled school は pointer-events:none なのに自己解決しない点が失敗になっていない — owner !== el を無条件で違反にし、対象座標がviewport内かも検証する",
+      "factory/harness/v2-lunch-shots.mjs:58 — 可視文字監査がCSS生成コンテンツを観測しない — TreeWalker、innerText、aria-labelだけを記録しているため、.lmp::after { content:\"100点\" } のような可視スコア・判定・職業名はMutationObserverにも数字検査にもallow-list検査にも現れず、スクリーンショットは保存するだけなので誤実装が通る — 疑似要素のcomputedStyle(...,\"::before/::after\").contentを全要素・全mutationで記録して同じ禁止語、数字、copy.ts由来検査に掛けるか、CSSの非空contentを静的に禁止する"
+    ],
+    "medium": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:243 — cleared sessionでswapだけが動作する — place/remove/sendはclearedを拒否する一方、swapにはphaseガードがなく、完了済みSessionを書き換えられる。さらにハーネスの「cleared session is inert」はswapを呼ばないため、この不整合を検出しない — swap冒頭でclearedを拒否し、factory/harness/gameplay-qa-v2-lunch-menu.mjs:226のinert検査にswapを追加する",
+      "factory/harness/v2-lunch-shots.mjs:176 — 実使用の競合シーケンスが回帰試験されていない — 通常速度の一本道だけで、380ms飛行中の連打・飛行中のremove/swap・swipeとschool tapの二重送信・unmount中のタイマー・prefers-reduced-motionを操作していないため、それらを壊してもshots QAは通り得る — fake timer/component testsまたは実ブラウザ試験として各競合シーケンスとunmount後更新なしを追加する"
+    ],
+    "low": [
+      "factory/harness/v2-lunch-shots.mjs:323 — 画像破損検査は最後の画面に残ったimgしか調べない — 途中で表示されアンマウントされた破損画像は最終querySelectorAllに残らず見逃される — MutationObserverまたはload/errorイベントで全imgの履歴を蓄積する"
+    ],
+    "evidence": [
+      "factory/harness/v2-lunch-shots.mjs:147-173を確認し、幾何検査はPLAY盤面上で空トレイ時とschool提示時の2回実行され、10 controls未満なら自己失敗する修正を確認した。ただしelementFromPointが対象自身へ解決するという主張はnull/非control分岐で成立していない",
+      "factory/harness/v2-lunch-shots.mjs:300-321を確認し、累積boardAriaの数字検査、copy.ts由来allow-list、許可片同士の「（）」または「：」合成限定、盤面マウント中の職業名検査を確認した",
+      "npm run qa:v2-lunchは54/54 checks passed。全126トレイ、3654操作、主食要件、EVENT対象・回復数、二段階sendを通過した",
+      "npm run check:ver1-freezeはPASS。Ver.1との差分なし、src/v2配下22ファイルからVer.1 screens/q1/state/Appへのimportなしを確認した",
+      "npm run build:v2はread-only環境でtsbuildinfoを書けずEPERM。scratch worktreeによるmutation再実行も同じ書込制約のため実施不能だった",
+      "mutation検出経路のコード追跡では、DOM text/ariaとして追加するscore・right/wrong・aptitude・飛行中score・settle中verdict・盤面マウント中job名は累積記録で検出される。一方、CSS疑似要素で描画する同じ誤実装は検出されない",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:107-111ではPLAY内の全setTimeoutがfxTimersを通りunmount cleanupされる。JobReveal.tsx:13-20とLunchWorldMap.tsx:68-73も各自cleanupを持つ",
+      "src/v2/state/progress.ts:27-50は不正JSON、非object、誤version、不正solved要素を正規化し、Ver.1キーを読み書きしない"
+    ],
+    "recommended_actions": [
+      "タップ所有権検査をowner === elの厳密条件へ修正し、透明overlay mutationで確実に落ちることを確認する",
+      "CSS generated contentを可視文字監査へ含め、疑似要素の100点・正解・栄養教諭mutationを追加する",
+      "swapのclearedガードとinert回帰試験を追加する",
+      "書込可能な隔離環境で、列挙された誤実装一式に加えてoverlay、CSS score、cleared swapのmutation suiteを再実行する"
+    ]
+  },
+  "elapsed_sec": 259.273,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "4e2177027941459ff593744961481882c55b7b3e942afb7b501c9dc69ad1db2a"
+}

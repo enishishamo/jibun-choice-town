@@ -53,6 +53,10 @@ exact color values / exact object positions / typography / UI spacing / labels /
 - OPEN: 「近づく」の操作（タップ / ピンチ / 自動ズーム）、開く演出の長さ、
   開いた後のカメラ位置。Ver.1 の MAP camera 仕様（district focus はカメラを動かさない等）を
   そのまま流用するかは未決定。
+- Storyboard Reference（2026-09-21、GPT 作成）: 6 コマ `MAP → APPROACH → DISCOVERY → UNLATCH →
+  PAKKA! → WORLD` が連続動作・カメラ・相棒の演技の**方向性**を示す
+  （`design/v2/reference/MANIFEST.md` 参照）。各コマの絵を最終 asset にはせず、英語ラベルも
+  実画面に使わない。上記 OPEN の決定の代わりにはならない。
 
 ## 3. 給食 WORLD MAP（LOCKED の骨格）
 

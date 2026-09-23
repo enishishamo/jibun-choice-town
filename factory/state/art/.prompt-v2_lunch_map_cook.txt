@@ -1,0 +1,29 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: a miniature school-kitchen tile as a single diorama piece, built on a small round clay base exactly like the round base under the approved school building: one large rounded stainless-steel cooking pot standing on a low sturdy stand, with one big wooden paddle resting across the rim of the pot. Soft matte metal rendered as clay, warm wooden paddle. Same matte clay / miniature toy material, same lighting and same warm palette as the school tile and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: 給食 WORLD MAP の「つくる」タイル。弁当箱の中に置かれる小さな給食調理場のジオラマ 1 個
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the tile centered and filling about 70% of the square with even margins (at least 14% on every side). It is ONE single small diorama tile that will be placed inside an open lunch box, so it must read as one compact object on its own little round base, not as a kitchen interior. No table, no cloth, no shadow plate: the tile floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only within the tile. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.
+Must include: one large stainless cooking pot on a low stand; one big wooden paddle resting across the pot; one small round clay base under the whole tile; transparent background
+Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; walls, room, floor tiles or kitchen interior around the tile; food inside the pot; hands or people; table, cloth, background, backdrop or drop shadow outside the tile; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 1:1 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the tile.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: Candidate surfaces are smoother and more uniform than the references’ visibly handmade, softly textured clay.
+- Fix vs reference set: White studio-like background lacks the environmental depth and miniature world context seen in the reference place scenes.
+- Fix vs reference set: Cool gray equipment dominates, while the references use warmer, brighter colors and more varied clay materials.
+- Fix vs reference set: Lighting is flatter and cooler than the references’ warm, soft directional illumination.
+- Fix vs reference set: The perfectly clean, sparse arrangement reads as a generic isolated 3D icon rather than a lived-in JIBUN CHOICE diorama.
+- SERIES_STYLE_MATCH is below 80: the asset does not convincingly look made by the same hands as the reference set.
+- An empty pot and prep tables do not communicate school-lunch preparation strongly enough; ingredients, trays, steam, or other recognizable meal-production details are needed.
+- As a place tile, the scene is too sparse and isolated; it depicts equipment rather than a small school-kitchen environment.

@@ -39,29 +39,32 @@
 メカニクスは gameType（固有名）のまま登録し、偏り検出用に
 `taxonomy/mechanics-taxonomy.md` の操作パターン（primaryMechanic）へ正規化する。
 
-## 画像生成パイプライン（/generate-art）
+## 画像生成パイプライン（正本: `factory/harness/art/`）
 
-Art Director の manifest から画像を自動生成する工程（OpenAI Image API・有料）:
+**正本は `factory/harness/art/art-loop.mjs`（Art Loop / Stage 6）。**
+追加課金なし（ChatGPTサブスクリプション内の codex_imagegen まで）で、
+need → reuse → provider → prompt → 生成 → QA → 再生成（最大3回） →
+provenance 記録までを回す。
 
 ```
-/generate-art <world-id>
-  ├─ STEP 1  dry-run（無料）     scripts/art-generate.mjs <world>（枚数と推定コストを表示）
-  ├─ STEP 2  ★HUMAN_REQUIRED    コストとAPIキーをユーザーが承認（毎回必ず停止）
-  ├─ STEP 3  生成               art-generate.mjs <world> --confirm（リトライ3回・途中再開可）
-  ├─ STEP 4  機械的QA           scripts/art-qa.mjs（寸法・透過・PNG妥当性）
-  ├─ STEP 5  visual QA          Claudeが各PNGをmanifestと突き合わせて目視判定
-  │                             不合格は --flag で needs_regeneration → その画像だけ再生成
-  ├─ STEP 6  実装へ反映         TODO(art)の結線（Claude）＋ scripts/art-check-links.mjs --update
-  └─ STEP 7  build/lint/表示確認 → コミット
+node factory/harness/art/art-loop.mjs status                   # manifest の現況
+node factory/harness/art/art-loop.mjs run --request <req.json> # 1 asset のループ
+node factory/harness/art/art-link-qa.mjs                       # 参照切れ＋provenance網羅チェック
 ```
 
-- スタイルは manifest の `common_style`（無ければ `art/style-prompt.md`）を全プロンプトに自動適用
-- 人物・建物の一貫性は manifest の consistency note の自動挿入＋キャラ立ち絵を参照画像にした
-  images/edits 呼び出しで担保（キャラクターを最初に生成する順序制御つき）
-- 料金ガード: `art/config.json` の 枚数/回・USD/回・USD/月 上限（超過見込みは実行前に拒否）、
-  `art/generation-log.jsonl` に全生成の台帳
-- 生成済みはスキップ。再生成は `--ids <id> --force` の明示指定のみ
-- APIキーは `.env.local`（gitignore済み）のみ。`.env.example` 参照
+- provider 優先順位: reuse > css/svg（セッション内）> composition > codex_imagegen >
+  human_boundary。**有料 API は adapter 側でブロック**（CLAUDE.md §8）
+- provenance は `factory/state/art/manifest-v2.json` に全 asset 分。`src/` から参照されている
+  `public/assets/` のファイルは manifest エントリ必須・`source_type` は `unknown` 不可
+  （`art-link-qa.mjs` が機械的に検査し、欠けていれば exit 1）
+- スタイル契約は `factory/harness/art/style-contract.md`、参照セットは `reference-set.json`
+- Ver.2 の art は `docs/jibun-choice-v2/ART_PIPELINE.md` の HARD GATES が優先（Design Owner = GPT）
+
+> **廃止: `/generate-art` と `factory/scripts/art-generate.mjs`**
+> OpenAI Image API（従量課金）を直接叩くため CLAUDE.md §8 に違反する。
+> スクリプト冒頭で既定拒否になっており、人間が明示的に
+> `--i-am-a-human-authorizing-paid-api` を付けた場合だけ動く。
+> エージェントがこのフラグを付けることは禁止。
 
 ## ディレクトリ
 

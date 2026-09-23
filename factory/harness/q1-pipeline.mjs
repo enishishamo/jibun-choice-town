@@ -43,7 +43,7 @@
 //   set-version <game_id> <version>              # released version tag/sha for real-user evidence
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve as resolvePath } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { validateReviewEvidenceFile } from "./review-evidence.mjs";
@@ -53,11 +53,18 @@ import {
   TRIGGERS, ARTIFACT_SCHEMAS, ARTIFACT_TYPES, transitiveDownstream, validateArtifact,
   gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE, checkConsistencyRepairEligible,
   validateFactCorrectionEvidence, checkFactCorrectionEligible, FACT_CORRECTION_NARROWING_TYPES,
+  TRACK_IDS, designStagesFor, downstreamStagesFor, v2DesignReadyReasons, factGateReasons, conceptRowTraceProblems,
+  resolveWorkMap, decisionViewOf,
+  confidenceBlockers, CONFIDENCE_KINDS, CONFIDENCE_LEVELS,
 } from "./q1-factory-schema.mjs";
 
 const HARNESS = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(HARNESS, "..", "..");
-const INDEX_PATH = join(ROOT, "factory", "state", "q1-pipeline-index.json");
+// JC_PIPELINE_ROOT exists for the same reason JC_TASKS_PATH does on
+// task-state.mjs: a self-test must be able to exercise every refusal path
+// without writing a single byte into the real factory/projects ledger.
+const STATE_ROOT = process.env.JC_PIPELINE_ROOT ? resolvePath(process.env.JC_PIPELINE_ROOT) : ROOT;
+const INDEX_PATH = join(STATE_ROOT, "factory", "state", "q1-pipeline-index.json");
 const TASK_STATE = join(HARNESS, "task-state.mjs");
 
 const args = process.argv.slice(2);
@@ -86,7 +93,7 @@ function now() {
 }
 
 export function pipelinePath(gameId) {
-  return join(ROOT, "factory", "projects", gameId, "q1-pipeline.json");
+  return join(STATE_ROOT, "factory", "projects", gameId, "q1-pipeline.json");
 }
 function loadIndex() {
   if (!existsSync(INDEX_PATH)) return { pipelines: {} };
@@ -111,7 +118,7 @@ function savePipeline(p) {
   writeFileSync(file, JSON.stringify(p, null, 2) + "\n");
   const idx = loadIndex();
   idx.pipelines[p.game_id] = {
-    game_id: p.game_id, profession: p.profession, state: p.state, trigger: p.trigger,
+    game_id: p.game_id, profession: p.profession, track: p.track ?? "q1", state: p.state, trigger: p.trigger,
     legacy_game_type: p.legacy_game_type ?? null, task_id: p.task_id ?? null,
     repair_count: p.repair_count, redesign_count: p.redesign_count, updated_at: p.updated_at,
     depends_on: p.depends_on ?? [],
@@ -128,6 +135,15 @@ function setState(p, state, note) {
   p.state = state;
   log(p, "state_change", { from, to: state, note: note ?? null });
 }
+function trackOf(p) {
+  return p?.track === "v2" ? "v2" : "q1";
+}
+function isDesignArtifact(p, type) {
+  return designStagesFor(trackOf(p)).some((s) => s.artifact === type);
+}
+function isDownstreamArtifact(p, type) {
+  return downstreamStagesFor(trackOf(p)).some((s) => s.artifact === type);
+}
 function stageOfArtifact(type) {
   return ARTIFACT_SCHEMAS[type]?.stage ?? null;
 }
@@ -141,20 +157,28 @@ switch (cmd) {
   case "init": {
     const gameId = rest[0];
     const profession = flag("profession");
-    if (!gameId || !profession) fail('usage: init <game_id> --profession "<name>" [--trigger <TRIGGER>] [--legacy-game-type <gameType>] [--entry-stage <STAGE>] [--creator <id>]');
+    if (!gameId || !profession) fail('usage: init <game_id> --profession "<name>" [--track q1|v2] [--trigger <TRIGGER>] [--legacy-game-type <gameType>] [--entry-stage <STAGE>] [--creator <id>]');
     if (existsSync(pipelinePath(gameId))) fail(`pipeline ${gameId} already exists (${pipelinePath(gameId)})`);
     const trigger = flag("trigger", "NEW_Q1_REQUEST");
     if (!TRIGGERS.includes(trigger)) fail(`bad --trigger ${trigger}; one of ${TRIGGERS.join(", ")}`);
-    const entryStage = flag("entry-stage", "PROFESSION_RESEARCH");
+    // 2026-09-23: `track` selects the stage vocabulary. Omitted = q1, so every
+    // pipeline created before this date keeps behaving exactly as before.
+    const track = flag("track", "q1");
+    if (!TRACK_IDS.includes(track)) fail(`bad --track ${track}; one of ${TRACK_IDS.join(", ")}`);
+    const entryStage = flag("entry-stage", track === "v2" ? "LEGACY_INVENTORY" : "PROFESSION_RESEARCH");
     if (!ALL_STAGE_IDS.includes(entryStage)) fail(`bad --entry-stage ${entryStage}`);
     const p = {
       game_id: gameId,
       profession,
+      track,
       trigger,
       legacy_game_type: flag("legacy-game-type") ?? null,
       creator: flag("creator", "claude-code"),
-      state: "RESEARCHING",
+      state: track === "v2" ? "DRAFT" : "RESEARCHING",
       current_stage: entryStage,
+      // §26: three confidences, each gating one transition. Unset = unknown,
+      // which is NOT the same as LOW and does not block by itself.
+      confidence: { fact: null, game_fit: null, design: null },
       design_iteration: 1,
       repair_count: 0,
       redesign_count: 0,
@@ -172,7 +196,7 @@ switch (cmd) {
       updated_at: now(),
       history: [],
     };
-    log(p, "init", { trigger, entry_stage: entryStage, legacy_game_type: p.legacy_game_type });
+    log(p, "init", { track, trigger, entry_stage: entryStage, legacy_game_type: p.legacy_game_type });
     savePipeline(p);
     console.log(JSON.stringify(p, null, 2));
     break;
@@ -181,7 +205,8 @@ switch (cmd) {
   case "status": {
     const p = loadPipeline(rest[0] ?? fail("usage: status <game_id>"));
     const summary = {
-      game_id: p.game_id, profession: p.profession, state: p.state, current_stage: p.current_stage,
+      game_id: p.game_id, profession: p.profession, track: trackOf(p), state: p.state, current_stage: p.current_stage,
+      confidence: p.confidence ?? null,
       design_iteration: p.design_iteration, repair_count: p.repair_count, redesign_count: p.redesign_count,
       artifacts: Object.fromEntries(Object.entries(p.artifacts).map(([k, a]) => [k, { version: a.version, status: a.status, file: a.file }])),
       independent_review: p.independent_review ? { verdict: p.independent_review.verdict, independent: p.independent_review.independent, stale: p.independent_review.stale, iteration: p.independent_review.iteration } : null,
@@ -223,6 +248,12 @@ switch (cmd) {
     try { payload = JSON.parse(readFileSync(file, "utf8")); } catch (e) { fail(`could not read/parse ${file}: ${e.message}`); }
     const v = validateArtifact(type, payload);
     if (!v.ok) refuse({ accepted: false, artifact_type: type, problems: v.problems });
+    // A concept must stand on rows the FACT GATE actually passed (2026-09-23).
+    if (type === "game_concepts") {
+      const map = resolveWorkMap(p);
+      const probs = conceptRowTraceProblems(payload, map?.payload ?? null);
+      if (probs.length) refuse({ accepted: false, artifact_type: type, problems: probs, note: "every concept must name rows[N] of the work decision map, and those rows must have passed the FACT GATE" });
+    }
     // Human Decision domain declared inside an artifact => open a decision and refuse autonomous progress.
     const declared = payload.human_decision_domains ?? [];
     const badDomains = declared.filter((d) => !HUMAN_DECISION_DOMAINS.includes(d));
@@ -268,7 +299,7 @@ switch (cmd) {
       // the DESIGN review is staled only by a new version of a DESIGN-stage artifact; downstream artifacts
       // (game_spec, art, implementation) are produced AFTER the GAME_DESIGN_READY gate by design and must
       // not invalidate it (2026-09-09: leak-detective release-ready was wrongly refused after game_spec v1->v2)
-      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
+      if (p.independent_review && !p.independent_review.stale && isDesignArtifact(p, type)) {
         p.independent_review.stale = true;
         p.independent_review.stale_because = `${type} changed v${prev.version}->v${version}`;
         invalidated.push("independent_review");
@@ -290,7 +321,7 @@ switch (cmd) {
       const next = STATE_AFTER_ARTIFACT[type];
       if (p.state === "REPAIRING" || p.state === "REDESIGNING" || p.state === "RETURNED") {
         // stay in the repair/redesign state until repair-done/gate; just record progress
-      } else if (next && p.state !== "GAME_DESIGN_READY" || (next && DOWNSTREAM_STAGES.some((s) => s.artifact === type))) {
+      } else if (next && p.state !== "GAME_DESIGN_READY" || (next && isDownstreamArtifact(p, type))) {
         setState(p, next, `artifact ${type} v${version}`);
       }
     }
@@ -346,7 +377,7 @@ switch (cmd) {
       for (const d of transitiveDownstream(type)) {
         if (p.artifacts[d] && p.artifacts[d].status !== "STALE") { p.artifacts[d].status = "STALE"; p.artifacts[d].stale_because = `${type} changed v${prev.version}->v${version} (consistency repair)`; invalidated.push(d); }
       }
-      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
+      if (p.independent_review && !p.independent_review.stale && isDesignArtifact(p, type)) {
         p.independent_review.stale = true; p.independent_review.stale_because = `${type} changed v${prev.version}->v${version} (consistency repair)`; invalidated.push("independent_review");
       }
       if (p.impl_review && !p.impl_review.stale && ["game_spec", "implementation", "game_translations", "art_production"].includes(type)) { p.impl_review.stale = true; invalidated.push("impl_review"); }
@@ -420,7 +451,7 @@ switch (cmd) {
       for (const d of transitiveDownstream(type)) {
         if (p.artifacts[d] && p.artifacts[d].status !== "STALE") { p.artifacts[d].status = "STALE"; p.artifacts[d].stale_because = `${type} changed v${prev.version}->v${version} (factual evidence correction: ${evidence.claim_removed})`; invalidated.push(d); }
       }
-      if (p.independent_review && !p.independent_review.stale && DESIGN_STAGES.some((s) => s.artifact === type)) {
+      if (p.independent_review && !p.independent_review.stale && isDesignArtifact(p, type)) {
         p.independent_review.stale = true; p.independent_review.stale_because = `${type} changed v${prev.version}->v${version} (factual evidence correction)`; invalidated.push("independent_review");
       }
       if (p.impl_review && !p.impl_review.stale && ["game_spec", "implementation", "game_translations", "art_production"].includes(type)) { p.impl_review.stale = true; invalidated.push("impl_review"); }
@@ -505,7 +536,7 @@ switch (cmd) {
     // Design-level codes (anything routed to a design stage) count against
     // repair_count; when the cap is hit the pipeline must REDESIGN (new seed/
     // translation) rather than keep patching the same idea.
-    const isDesignStage = DESIGN_STAGES.some((s) => s.id === returnTo);
+    const isDesignStage = designStagesFor(trackOf(p)).some((s) => s.id === returnTo);
     let decision;
     const activeEx = (p.limited_exceptions ?? []).find((x) => x.status === "active");
     if (activeEx) {
@@ -595,7 +626,10 @@ switch (cmd) {
   // ------------------------------------------------------------------ gate
   case "gate": {
     const p = loadPipeline(rest[0] ?? fail("usage: gate <game_id>"));
-    const reasons = gameDesignReadyReasons(p);
+    // The V2 track has its own readiness checklist (PLAY FIRST replaces
+    // profession-first), but the same mechanics: a list of named reasons,
+    // exit 1 while any remain.
+    const reasons = trackOf(p) === "v2" ? v2DesignReadyReasons(p) : gameDesignReadyReasons(p);
     const allowed = reasons.length === 0;
     if (allowed && p.state !== "GAME_DESIGN_READY") {
       setState(p, "GAME_DESIGN_READY", "all GAME_DESIGN_READY checks satisfied");
@@ -607,6 +641,104 @@ switch (cmd) {
     }
     console.log(JSON.stringify({ allowed, gate: "GAME_DESIGN_READY", game_id: p.game_id, state: p.state, reasons }, null, 2));
     process.exit(allowed ? 0 : 1);
+  }
+
+  // ------------------------------------------------------------ FACT GATE
+  // §8. Mechanical: it reads the work ACTION map's own rows (falling back to a
+  // legacy decision map, which is the same thing with every row a DECISION).
+  // It cannot be
+  // satisfied by asserting that the facts are good — only by a row that names
+  // an actor, is sourced strongly enough, is translatable into a child's
+  // action, and would not badly misrepresent the job.
+  case "fact-gate": {
+    const p = loadPipeline(rest[0] ?? fail("usage: fact-gate <game_id>"));
+    const map = resolveWorkMap(p);
+    const usable = map?.payload ?? null;
+    const reasons = factGateReasons(usable);
+    const allowed = reasons.length === 0;
+    if (allowed) {
+      if (p.state !== "FACT_GATE_PASSED") setState(p, "FACT_GATE_PASSED", "FACT GATE satisfied");
+      log(p, "fact_gate_passed", { rows: usable.rows.length, map_type: map.type, map_version: map.version });
+    } else {
+      // A failed FACT GATE is not a dead end and not a licence to invent: it
+      // is a FACT_NEEDED item, and other jobs keep moving (§25).
+      log(p, "fact_gate_refused", { reasons });
+    }
+    savePipeline(p);
+    console.log(JSON.stringify({ allowed, gate: "FACT_GATE", game_id: p.game_id, state: p.state, map: map ? `${map.type}@v${map.version}` : null, reasons,
+      note: allowed ? null : "record the gap as FACT_NEEDED and return to WORK_RESEARCH; do NOT write game concepts" }, null, 2));
+    process.exit(allowed ? 0 : 1);
+  }
+
+  // ------------------------------------------------------------ confidence
+  case "set-confidence": {
+    const p = loadPipeline(rest[0] ?? fail('usage: set-confidence <game_id> (--fact|--game-fit|--design) <HIGH|MEDIUM|LOW|UNCONFIRMED> [--note "..."]'));
+    p.confidence ??= { fact: null, game_fit: null, design: null };
+    let set = 0;
+    for (const [cli, key] of [["fact", "fact"], ["game-fit", "game_fit"], ["design", "design"]]) {
+      const v = flag(cli);
+      if (v === undefined) continue;
+      if (!CONFIDENCE_LEVELS.includes(v)) fail(`bad --${cli} ${v}; one of ${CONFIDENCE_LEVELS.join(", ")}`);
+      p.confidence[key] = v;
+      set++;
+    }
+    if (!set) fail(`usage: set-confidence <game_id> (--fact|--game-fit|--design) <${CONFIDENCE_LEVELS.join("|")}>`);
+    log(p, "confidence_set", { confidence: p.confidence, note: flag("note") ?? null });
+    savePipeline(p);
+    console.log(JSON.stringify({ game_id: p.game_id, confidence: p.confidence, kinds: CONFIDENCE_KINDS }, null, 2));
+    break;
+  }
+
+  // Are we allowed to take a named step forward? (§26)
+  case "can-advance": {
+    const p = loadPipeline(rest[0] ?? fail("usage: can-advance <game_id> <GAME_DESIGN|BUILD|PRODUCTION_READY>"));
+    const transition = rest[1];
+    if (!["GAME_DESIGN", "BUILD", "PRODUCTION_READY"].includes(transition)) fail("usage: can-advance <game_id> <GAME_DESIGN|BUILD|PRODUCTION_READY>");
+    const reasons = [...confidenceBlockers(p, transition)];
+    if (transition === "GAME_DESIGN") {
+      reasons.push(...factGateReasons(resolveWorkMap(p)?.payload ?? null).map((r) => `FACT GATE: ${r}`));
+    }
+    if (transition === "BUILD" || transition === "PRODUCTION_READY") {
+      const fin = p.artifacts?.final_game_design;
+      if (!fin) reasons.push("no FINAL_GAME_DESIGN artifact");
+      else if (fin.status === "STALE") reasons.push(`FINAL_GAME_DESIGN v${fin.version} is STALE (${fin.stale_because ?? "upstream changed"})`);
+      const ho = p.artifacts?.design_handoff;
+      if (!ho) reasons.push("no DESIGN_HANDOFF artifact");
+      else if (ho.status === "STALE") reasons.push(`DESIGN_HANDOFF v${ho.version} is STALE`);
+    }
+    if (transition === "PRODUCTION_READY") {
+      const pkg = p.artifacts?.design_package;
+      if (!pkg) reasons.push("no DESIGN_PACKAGE artifact — visual work cannot be marked done without one");
+      else if (pkg.status === "STALE") reasons.push(`DESIGN_PACKAGE v${pkg.version} is STALE`);
+    }
+    const allowed = reasons.length === 0;
+    console.log(JSON.stringify({ allowed, transition, game_id: p.game_id, state: p.state, confidence: p.confidence ?? null, reasons }, null, 2));
+    process.exit(allowed ? 0 : 1);
+  }
+
+  // ------------------------------------------------- concept rejection (§17)
+  // The Factory is allowed to decide NOT to build something. This is a first
+  // class outcome, not a failure to be repaired: it returns to research or to
+  // concept work and never counts as a repair attempt.
+  case "reject-concepts": {
+    const p = loadPipeline(rest[0] ?? fail('usage: reject-concepts <game_id> --reason "..." [--return-to WORK_RESEARCH|GAME_CONCEPTS]'));
+    const reason = flag("reason");
+    if (!reason) fail('reject-concepts requires --reason "..."');
+    const returnTo = flag("return-to", "GAME_CONCEPTS");
+    if (!["WORK_RESEARCH", "GAME_CONCEPTS"].includes(returnTo)) fail("--return-to must be WORK_RESEARCH or GAME_CONCEPTS");
+    // every concept artifact downstream of the rejection is no longer valid
+    for (const t of ["game_concepts", "final_game_design", "design_handoff"]) {
+      const a = p.artifacts?.[t];
+      if (a && a.status !== "STALE") { a.status = "STALE"; a.stale_because = `concepts rejected: ${reason}`; }
+    }
+    if (p.independent_review) p.independent_review.stale = true;
+    p.current_stage = returnTo;
+    setState(p, "GAME_CONCEPT_REJECTED", reason);
+    log(p, "game_concept_rejected", { reason, return_to: returnTo });
+    savePipeline(p);
+    console.log(JSON.stringify({ game_id: p.game_id, state: p.state, return_to: returnTo, reason,
+      note: "not a repair: budgets untouched. Produce different concepts, or go back for more research." }, null, 2));
+    break;
   }
 
   // -------------------------------------------------------- human decision
@@ -861,7 +993,7 @@ switch (cmd) {
   }
 
   default:
-    console.error("commands: init | submit | consistency-repair | fact-correct | status | list | stale | review | fail | repair-done | redesign | gate | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
+    console.error("commands: init | submit | consistency-repair | fact-correct | status | list | stale | review | fail | repair-done | redesign | gate | fact-gate | set-confidence | can-advance | reject-concepts | human-decision | resolve-human-decision | escalate | art-review | link-task | set-version | release-ready | mark-reaudit | set-entry-stage");
     process.exit(2);
 }
 

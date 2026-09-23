@@ -1,0 +1,33 @@
+[
+ {
+  "name": "gauge-rack",
+  "ok": true,
+  "loop_exit": 0,
+  "post": {
+   "src_size": [
+    1200,
+    800
+   ],
+   "alpha_corners": [
+    255,
+    255,
+    255,
+    255
+   ],
+   "keyed_white": true,
+   "content_bbox": [
+    45,
+    187,
+    1159,
+    629
+   ],
+   "ok": true,
+   "out": "public/assets/v2/lunch/gauge-rack.png",
+   "out_size": [
+    768,
+    256
+   ],
+   "content_fill": 0.593
+  }
+ }
+]

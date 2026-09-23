@@ -1,0 +1,29 @@
+{
+ "ok": true,
+ "verdict": "PASS",
+ "critic_verdict": "PASS",
+ "scores": {
+  "SUBJECT_CROP": 98,
+  "SUBJECT_OCCLUSION": 96,
+  "FOCAL_OBJECT_VISIBILITY": 98,
+  "BADGE_OVERLAP": 96,
+  "CONTAINER_FIT": 92,
+  "BACKGROUND_EDGE_QUALITY": 90,
+  "ASPECT_RATIO_FIT": 98,
+  "VISUAL_INTEGRATION": 84,
+  "MOBILE_CROP": 94,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 91
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The truck and school illustrations feel slightly detached from the main composition because of their arbitrary scale and large surrounding whitespace.",
+  "The tiny rule/status marks beneath the tray are faint and visually ambiguous, making that area feel less finalized than the polished clay assets.",
+  "Candidate-card dish scaling varies somewhat, though the framing system remains consistent."
+ ],
+ "issues": [
+  "top truck and school assets — small, disconnected focal elements with excessive empty space — enlarge slightly and align them within a clearer delivery-route composition",
+  "status row beneath tray — tiny faded marks have weak visibility and unclear relationship to the four larger colour indicators — increase contrast/size and tighten vertical spacing",
+  "candidate grid — subjects have mildly inconsistent apparent scale across cards — normalize transparent-canvas bounds and use consistent object-fit containment"
+ ]
+}

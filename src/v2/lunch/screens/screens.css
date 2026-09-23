@@ -1,0 +1,246 @@
+/* Post-CLEAR screens of the 栄養教諭 slice: JOB REVEAL / KNOW THE JOB /
+   CAREER PATH / 好きの種. Palette v1 tokens only; translucency only via
+   color-mix() of a token. Same clay materiality as the board: things sit on a
+   surface and cast a contact shadow, nothing floats in a white card. */
+.v2s {
+  position: relative;
+  min-height: 100dvh;
+  padding: 26px 20px max(22px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--v2-warm-cream);
+  color: var(--v2-deep-green);
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* the one button shape the slice uses */
+.v2s-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 30px;
+  min-height: 48px;
+  background: var(--v2-deep-green);
+  color: var(--v2-warm-cream);
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 72%, transparent);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+.v2s-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--v2-deep-green) 55%, transparent); }
+.v2s-btn:disabled { opacity: 0.4; box-shadow: none; }
+.v2s-btn-quiet {
+  background: color-mix(in srgb, var(--v2-warm-beige) 80%, var(--v2-warm-cream));
+  color: var(--v2-deep-green);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--v2-deep-green) 18%, transparent);
+}
+
+/* ── JOB REVEAL ── */
+.v2s-reveal { justify-content: center; gap: 10px; }
+.v2s-reveal-stage { width: 210px; height: 128px; position: relative; margin-bottom: 4px; animation: v2s-land 0.8s cubic-bezier(0.3, 1.3, 0.5, 1) both; }
+.v2s-reveal-stage::after {
+  content: "";
+  position: absolute;
+  left: 12%; right: 12%; bottom: 2px;
+  height: 14px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
+  filter: blur(2px);
+}
+.v2s-reveal-art { position: relative; width: 100%; height: 100%; object-fit: contain; }
+.v2s-reveal-ph {
+  position: relative; display: block; width: 70%; height: 74%; margin: 10% auto 0;
+  border-radius: 18px 18px 6px 6px;
+  background: var(--v2-warm-beige);
+}
+.v2s-reveal-lead, .v2s-reveal-job, .v2s-reveal-line, .v2s-reveal-next { opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.3, 1.2, 0.5, 1); }
+.v2s-reveal-lead.in, .v2s-reveal-job.in, .v2s-reveal-line.in, .v2s-reveal-next.in { opacity: 1; transform: none; }
+.v2s-reveal-lead { margin: 0; font-size: 16px; font-weight: 700; color: color-mix(in srgb, var(--v2-deep-green) 72%, var(--v2-warm-beige)); }
+.v2s-reveal-job { margin: 2px 0 0; font-size: 34px; line-height: 1.2; letter-spacing: 0.02em; }
+.v2s-reveal-job small { display: block; margin-top: 6px; font-size: 12px; font-weight: 400; color: color-mix(in srgb, var(--v2-deep-green) 60%, var(--v2-warm-beige)); }
+.v2s-reveal-line { margin: 4px 0 8px; font-size: 15px; line-height: 1.7; white-space: pre-line; }
+
+/* ── KNOW THE JOB ── */
+.v2s-know { justify-content: flex-start; gap: 12px; }
+.v2s-know-title { margin: 0; font-size: 24px; }
+.v2s-know-hint { margin: -6px 0 0; font-size: 12.5px; font-weight: 700; color: color-mix(in srgb, var(--v2-deep-green) 55%, var(--v2-warm-beige)); animation: v2s-nudge-hint 2.4s ease-in-out infinite; }
+@keyframes v2s-nudge-hint { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+.v2s-scenes { width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 9px; }
+.v2s-scene {
+  border-radius: 20px;
+  background: transparent;
+  overflow: hidden;
+  transition: background 0.25s ease;
+}
+/* only the place you are looking at gets a patch of ground under it */
+.v2s-scene.open { background: color-mix(in srgb, var(--v2-warm-beige) 55%, var(--v2-warm-cream)); }
+.v2s-scene-tap {
+  width: 100%;
+  min-height: 84px;
+  border: 0;
+  background: transparent;
+  padding: 8px 14px 8px 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  color: inherit;
+}
+.v2s-scene-tap:active { transform: scale(0.985); }
+.v2s-scene-art { position: relative; flex: none; width: 104px; height: 70px; display: grid; place-items: center; }
+.v2s-scene-art::after {
+  content: "";
+  position: absolute;
+  left: 14%; right: 14%; bottom: 3px;
+  height: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--v2-deep-green) 11%, transparent);
+  filter: blur(1px);
+}
+.v2s-scene-art img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+/* the clay mark each place shows until its generated tile lands */
+.v2s-scene-mark { position: relative; width: 100%; height: 100%; display: block; }
+.v2s-scene-label { font-size: 17px; font-weight: 700; }
+/* an opened place is the loud one; a visited-but-closed one steps back slightly */
+.v2s-scene.seen:not(.open) .v2s-scene-label { color: color-mix(in srgb, var(--v2-deep-green) 78%, var(--v2-warm-beige)); }
+.v2s-scene-line {
+  margin: 0;
+  padding: 0 16px 14px;
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: left;
+  animation: v2s-open 0.3s ease both;
+}
+
+.v2s-day { width: 100%; max-width: 340px; padding: 6px 6px 2px; }
+.v2s-day-title { display: block; text-align: left; font-size: 12px; font-weight: 700; color: color-mix(in srgb, var(--v2-deep-green) 62%, var(--v2-warm-beige)); margin-bottom: 8px; }
+.v2s-day-steps { list-style: none; margin: 0; padding: 0 0 0 4px; display: flex; flex-direction: column; gap: 2px; }
+.v2s-day-steps li {
+  position: relative;
+  padding: 5px 0 5px 26px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: left;
+  animation: v2s-rise 0.4s ease both;
+}
+.v2s-day-steps li::before {
+  content: "";
+  position: absolute;
+  top: 9px; left: 0;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--v2-honey-yellow);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--v2-deep-green) 16%, transparent);
+}
+.v2s-day-steps li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 23px; left: 5px;
+  width: 3px; bottom: -2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--v2-honey-yellow) 55%, var(--v2-warm-cream));
+}
+.v2s-know-foot { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* ── CAREER PATH ── */
+.v2s-career { justify-content: center; gap: 16px; }
+.v2s-career-title { margin: 0; font-size: 22px; }
+.v2s-steps { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 6px; }
+.v2s-step { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 8px 0 8px 4px; text-align: left; animation: v2s-rise 0.45s ease both; }
+.v2s-step-stone {
+  flex: none;
+  width: 34px; height: 30px;
+  border-radius: 14px 16px 15px 13px;
+  background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--v2-warm-cream) 70%, var(--v2-warm-beige)), var(--v2-warm-beige) 70%, color-mix(in srgb, var(--v2-warm-beige) 72%, var(--v2-deep-green)));
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-deep-green) 22%, transparent);
+}
+.v2s-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 18px; top: 42px;
+  width: 3px; height: 18px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 70%, var(--v2-deep-green));
+  opacity: 0.5;
+}
+.v2s-step-body b { display: block; font-size: 16px; margin-bottom: 2px; }
+.v2s-step-body span { font-size: 13px; line-height: 1.7; }
+.v2s-notes { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 8px; }
+.v2s-notes p {
+  margin: 0;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--v2-honey-yellow) 26%, var(--v2-warm-cream));
+  font-size: 12.5px;
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* ── 好きの種 ── */
+.v2s-seed { justify-content: center; gap: 18px; }
+.v2s-seed-q { margin: 0; font-size: 21px; }
+.v2s-seed-list { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 10px; }
+.v2s-seed-opt {
+  position: relative;
+  min-height: 60px;
+  border: 0;
+  border-radius: 18px;
+  padding: 16px 18px 16px 58px;
+  background: color-mix(in srgb, var(--v2-warm-beige) 52%, var(--v2-warm-cream));
+  color: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  text-align: left;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--v2-deep-green) 12%, transparent);
+  animation: v2s-rise 0.4s ease both;
+  transition: background 0.2s ease, transform 0.14s ease;
+}
+.v2s-seed-opt:active { transform: translateY(2px); }
+.v2s-seed-opt.on { background: color-mix(in srgb, var(--v2-fresh-green) 28%, var(--v2-warm-cream)); }
+/* a clay seed sitting on the row; the one you keep puts out a shoot */
+.v2s-seed-sprout {
+  position: absolute;
+  left: 20px; top: 50%;
+  width: 20px; height: 20px;
+  margin-top: -10px;
+  border-radius: 52% 48% 46% 54% / 60% 58% 42% 40%;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--v2-deep-green) 18%, transparent);
+  background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--v2-warm-cream) 66%, var(--v2-warm-beige)), color-mix(in srgb, var(--v2-warm-beige) 78%, var(--v2-deep-green)));
+  transition: background 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+.v2s-seed-opt.on .v2s-seed-sprout { transform: scale(1.1) rotate(-8deg); }
+.v2s-seed-sprout::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 78%;
+  width: 12px; height: 12px;
+  margin-left: -2px;
+  border-radius: 0 60% 0 60%;
+  background: var(--v2-fresh-green);
+  transform: scale(0) rotate(-20deg);
+  transform-origin: 0 100%;
+  transition: transform 0.35s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+.v2s-seed-opt.on .v2s-seed-sprout::after { transform: scale(1) rotate(-20deg); }
+
+@keyframes v2s-land { from { opacity: 0; transform: translateY(-26px) scale(0.92); } to { opacity: 1; transform: none; } }
+@keyframes v2s-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes v2s-open { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 200px; } }
+
+@media (max-height: 700px) {
+  .v2s { padding-top: 14px; gap: 8px; }
+  .v2s-know { gap: 7px; }
+  .v2s-scene-tap { min-height: 66px; }
+  .v2s-scene-art { width: 84px; height: 56px; }
+  .v2s-day { padding-top: 0; }
+  .v2s-day-steps li { padding: 3px 0 3px 24px; font-size: 12.5px; }
+  .v2s-reveal-stage { width: 168px; height: 100px; }
+  .v2s-reveal-job { font-size: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2s-reveal-stage, .v2s-day-steps li, .v2s-step, .v2s-seed-opt, .v2s-scene-line { animation: none; }
+  .v2s-reveal-lead, .v2s-reveal-job, .v2s-reveal-line, .v2s-reveal-next { transition: none; }
+}

@@ -1,0 +1,39 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 96,
+  "SUBJECT_OCCLUSION": 98,
+  "FOCAL_OBJECT_VISIBILITY": 94,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 58,
+  "BACKGROUND_EDGE_QUALITY": 61,
+  "ASPECT_RATIO_FIT": 94,
+  "VISUAL_INTEGRATION": 64,
+  "MOBILE_CROP": 92,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 69
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The selected bread asset retains a conspicuous white rectangular source background that does not match its rounded card or the surrounding UI.",
+  "Candidate dishes use inconsistent framing and visual footprints: some sit tightly within their cards while others appear small, faded, or close to the card edges.",
+  "The tiny status/rule marks beneath the tray look detached and arbitrarily positioned rather than intentionally integrated into a status panel.",
+  "Large gaps between the tray, status marks, colour controls, and candidate grid create an unbalanced mobile composition.",
+  "Opacity treatment on unavailable candidates is so strong that several dish assets appear washed out rather than deliberately disabled."
+ ],
+ "issues": [
+  "candidate grid/selected bread — raw white rectangular image background is visibly pasted onto the card — remove the baked-in background or mask the asset to transparency and clip it consistently to the card radius",
+  "candidate cards — dish scale and placement vary noticeably across the 3x3 grid — use a shared image viewport with consistent object-fit: contain, normalized scale, and centered object-position",
+  "candidate grid/disabled dishes — heavy opacity reduction weakens focal-object visibility and makes artwork look unfinished — keep dish art more legible and communicate disabled state with a consistent card tint, lock treatment, or border",
+  "status marks below tray — tiny coloured dots float without a clear container or alignment relationship — place them in a defined status row and align them to the corresponding tray slots or legend",
+  "overall mobile composition — oversized blank vertical gaps separate related controls and assets — tighten spacing and establish clearer grouped sections between tray status, colour selector, and dish choices",
+  "candidate card framing — shadows, backgrounds, and corner treatment are too faint and inconsistent to firmly contain the artwork — apply one consistent card surface, radius, clipping mask, and shadow system",
+  "CONTAINER_FIT below threshold: 58",
+  "BACKGROUND_EDGE_QUALITY below threshold: 61",
+  "VISUAL_INTEGRATION below threshold: 64",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 69",
+  "presentation critic verdict: FAIL"
+ ]
+}

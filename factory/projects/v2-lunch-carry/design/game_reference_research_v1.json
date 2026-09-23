@@ -1,0 +1,132 @@
+{
+  "job_id": "v2-lunch-carry",
+  "why_these_references": "FACT GATE を通った10行のうち、設計の核になりうる6つ（①員数を合わせて積む／②配膳室で対面確認して記録／③遅れたら自分で決めずセンターへ連絡／④保温・保冷で温度を保つ／⑤校ごとに違う給食開始時刻と、その30分前という本当の締切／⑥給食後に同じ車で空コンテナを回収）に対して、repo が既に持つ参照研究15本＋出荷済み24本の借用記録から該当構造を洗い、さらに repo に存在しなかった『いまの小学生が実際に遊んでいるゲーム』を新規調査して6本を追加した。借りるのは抽象構造のみで、キャラクター・画面・アート・ステージ・固有機能は借りない。",
+  "audience_evidence": "ゲムトレ ゲームに関するアンケート調査2025（2025年8月・全国の小学生324名・うち小4〜6が170名）。1位 Minecraft 28.4% / 2位 スプラトゥーン 16.9% / 3位 あつまれ どうぶつの森 12.0% / 8位 Roblox 1.5%（別報道で前年比8倍と急伸）。重要な補正: この層はスマホ中心ではなく Switch 優位。本プロダクトはスマホなので、Switch タイトルの文法を指1本へ翻訳する作業が要る。おみせっち・ビビッター・Block Blast は国内小学生調査での人気の実証が取れなかったため、人気の根拠ではなく構造の参考としてのみ採用した。 https://gametrainer.jp/data2025/",
+  "references": [
+    {
+      "reference": "Papers, Please",
+      "core_action": "書類と規程を1件ずつ突き合わせ、承認か却下かを決める",
+      "player_decision": "どの欄を見るか。規則が増えた今日、この書類は通るのか",
+      "feedback": "矛盾を指摘すると相手が反応する。見落とすと後で罰金通知が来る",
+      "tension": "規則が日ごとに積み上がる。速さと正確さが直接トレードオフ",
+      "reward": "一日を乗り切る。見落としが減っていく実感",
+      "replay_hook": "同じ書類でも今日の規則では判定が変わる",
+      "what_to_borrow": "progressive_rule_accumulation（規則が積み上がり、同じ対象でも判定が変わる）。discrepancy_detection（表に答えは書いておらず、表と現物の差が答え）。accuracy_speed_tradeoff",
+      "what_not_to_borrow": "全体主義の世界観、家族の生活費、道徳的ジレンマ。小4〜6には重すぎ、Product Identity 外",
+      "why_it_fits_this_job": "⑤の『12:20 と書いてあるが本当の締切は 11:50』は、まさに規則を当てて導く判定。①の員数照合も、票が答えを綴るのではなく学級数×品数から導く形にできる"
+    },
+    {
+      "reference": "Overcooked",
+      "core_action": "複数の調理工程を並行で回し、完成品を渡す",
+      "player_decision": "いま何を先にやるか。放置している鍋はまだ大丈夫か",
+      "feedback": "放置した鍋が焦げ始め、煙が出て、やがて燃える。すべて非言語",
+      "tension": "注文が届き続ける。いま手を離しているものが劣化していく",
+      "reward": "皿が出る。一日が終わる",
+      "replay_hook": "もっと良い段取りがあったはず",
+      "what_to_borrow": "放置コスト（ignored state degrades）。handoff の1点だけ（相手に渡して、相手が受け取りを返す）",
+      "what_not_to_borrow": "協力プレイ前提の設計。mechanics-library が cooperative_coordination を『単独作業が本質の仕事に持ち込むな』と明示している",
+      "why_it_fits_this_job": "④の温度は、直接いじれないまま別の作業中に劣化し続ける状態そのもの"
+    },
+    {
+      "reference": "PowerWash Simulator",
+      "core_action": "汚れを落とす。部品ごとに完了率が上がる",
+      "player_decision": "どこがまだ残っているか",
+      "feedback": "当てた場所だけが即座にきれいになる。残りがハイライトで分かる",
+      "tension": "ほぼ無い。失敗が存在しない労働ループ",
+      "reward": "部品ごとの完了、最後に before/after のタイムラプス",
+      "replay_hook": "取りこぼしを見つける気持ちよさ",
+      "what_to_borrow": "completion_by_subcomponent（部品単位の完了）。highlight_remaining_work。low_penalty_work_loop（見落とし探しを罰ではなく快感に変換した唯一の先例）。completion_timelapse",
+      "what_not_to_borrow": "無期限・無失敗。1〜3分の Q1 には締まりが要る",
+      "why_it_fits_this_job": "①の実務の失敗は数え間違い＝見落とし（job difficulty: oversight_risk）。見落としを叱らずに扱える先例がこれしかない"
+    },
+    {
+      "reference": "Block Blast!",
+      "core_action": "手札の3つを盤面に置く。回転はできない",
+      "player_decision": "3つをどの順でどこへ置くか",
+      "feedback": "行や列が埋まると自動で消える",
+      "tension": "3つ全部を置き切るまで次が来ない。置き場が無くなれば終了",
+      "reward": "消える瞬間、コンボ",
+      "replay_hook": "さっきの1手が悪かった、が明確",
+      "what_to_borrow": "『置き切るまで補充されない』バッチのリズム。回転できない＝規格・寸法の制約を素直に表現できる。置いた瞬間に判定が自動発火する",
+      "what_not_to_borrow": "純パズルそのもの。仕事固有の C が無く、単体で貼ると spatial_placement（既に6本）の重複に落ちる",
+      "why_it_fits_this_job": "コンテナ1台＝最大4学級・500kg という実務のバッチ性と構造が一致する"
+    },
+    {
+      "reference": "ビビッター",
+      "core_action": "ギリギリで止める。それだけ",
+      "player_decision": "あと一歩行くか、ここで止めるか",
+      "feedback": "止めた位置がそのまま結果。行き過ぎると即アウト",
+      "tension": "押し引きそのもの",
+      "reward": "止められた位置",
+      "replay_hook": "1回が数秒。すぐもう1回",
+      "what_to_borrow": "限界を自分で見極めて手を止める一撃の判断。ルール説明が『止める』の1語で済むこと",
+      "what_not_to_borrow": "対人比較・ランキング（Product Identity Gate）。度胸を煽るトーン。運任せ",
+      "why_it_fits_this_job": "④と⑤の『安全側に倒すと進まない』というトレードオフを、1タップで成立させられる最小形"
+    },
+    {
+      "reference": "あつまれ どうぶつの森",
+      "core_action": "拾う・渡す・話しかける",
+      "player_decision": "誰に何を渡すか、どこに置くか",
+      "feedback": "相手が即座に表情と声で反応を返す。渡した物が相手の手に移る",
+      "tension": "弱い。毎日少しずつ変わることが駆動",
+      "reward": "相手が喜ぶ。島の見た目が変わる",
+      "replay_hook": "翌日には違う状態になっている",
+      "what_to_borrow": "『相手に手渡して、相手が受け取りを返してくる』というハンドオフの完了表現。正誤判定ではなく相手の反応で結果を伝える",
+      "what_not_to_borrow": "実時間経過・長期運営。『あなたに合う住民』型の分類は Product Identity Gate 違反",
+      "why_it_fits_this_job": "②の配膳員との対面確認は、正誤マークではなく相手の反応で返すべき局面そのもの"
+    },
+    {
+      "reference": "Minecraft（小学生シェア1位）",
+      "core_action": "壊す・置く。2動詞だけ",
+      "player_decision": "次に何を作るか",
+      "feedback": "殴ったブロックにヒビが入り、割れて、足元に落ちる。因果が1秒以内に完結し完全に非言語",
+      "tension": "日没",
+      "reward": "作った物が世界にそのまま残る",
+      "replay_hook": "自分の作りかけが待っている",
+      "what_to_borrow": "押した所だけが押した分だけ変わる完全ローカルな因果。進捗が世界の形として残り、スコア表示を必要としない",
+      "what_not_to_borrow": "オープンエンドな目標不在。1〜3分では不成立",
+      "why_it_fits_this_job": "PLAY FIRST の到達点の実例。最初の1タップで触った所だけが目に見えて変わることが、説明を不要にする"
+    },
+    {
+      "reference": "Roblox の obby（障害物コース）",
+      "core_action": "走る・跳ぶ。落ちたら戻る",
+      "player_decision": "どの足場へ跳ぶか",
+      "feedback": "落ちる＝即リスポーン。失敗の説明が一切ない",
+      "tension": "落ちたらチェックポイントまで戻る",
+      "reward": "次のチェックポイント",
+      "replay_hook": "再挑戦が1秒。『今のはいけた』が即座に立つ",
+      "what_to_borrow": "チュートリアルが構造的に不要（『前に進む』以外の情報がゼロ）。失敗コストが『少し戻る』で叱られない。チェックポイント＝部分的な進捗が保全される",
+      "what_not_to_borrow": "反射・操作精度そのものが挑戦になる型。mechanics-library が execution_precision を『思考・判断が本質の課題に貼ると反射ゲーになる』と明示",
+      "why_it_fits_this_job": "やり直しコストの設計基準。この仕事は失敗が怖い題材なので、叱らない再挑戦が要る"
+    },
+    {
+      "reference": "出荷済み crane_lift（港・JIBUN CHOICE 内）",
+      "core_action": "掲示された規程に対して1件ずつ判断する",
+      "player_decision": "吊るか、止めるか、引き返すか",
+      "feedback": "止めた分だけ夜が短くなる",
+      "tension": "過剰に止めると夜が尽きる",
+      "reward": "ノーミスで夜を越える",
+      "replay_hook": "条件の組合せが変わる",
+      "what_to_borrow": "止める・引き返すことが一級の勝ち手であること。そしてその対になる機構、過剰停止にコストがあること",
+      "what_not_to_borrow": "そのままの再実装。既に出荷済みなので同型は重複になる",
+      "why_it_fits_this_job": "③の『自分で決めずに連絡する』は、連絡が正解手である一方、無根拠な連絡が最適になってはいけない。その均衡機構が既にここにある"
+    },
+    {
+      "reference": "出荷済み yard_plan（港・JIBUN CHOICE 内）",
+      "core_action": "後で取り出すために、いま置く",
+      "player_decision": "どこに置けば翌朝に困らないか",
+      "feedback": "悪い配置のツケが翌朝のシミュレーションで箱ごとに再生される",
+      "tension": "いまの楽と明日の手間",
+      "reward": "翌朝が静かに終わる",
+      "replay_hook": "配置の別解",
+      "what_to_borrow": "往路の自分の選択が復路で1件ずつ再生されて採点される、という閉じたループ",
+      "what_not_to_borrow": "そのままの再実装。空間最適化は既に6本ある混雑 territory",
+      "why_it_fits_this_job": "⑥は同じ車・同じ契約で往復する。往路に積んだ物が復路に戻るという閉ループが実務にそのままある"
+    }
+  ],
+  "grammar_borrowed": "① 文書に対して照合しなければならない数（表が答えを綴らず、学級数×品数から子どもが導く）／ 置き切るまで次が来ないバッチ／ 残りが見えている部品リスト／ その場では露見せず後段のゲートで初めて効く誤り。② 相手が受け取りを返してくるまで完了しないハンドオフ／ 出す前に自分で良否を判定するゲート。③ 自分で解いてはいけない問題で、渡すことが正解手。ただし渡すこと自体にコストと必要情報がある／ 圧力ごとに効く手が違い、手段は交換可能ではない。④ 別の作業をしている間に劣化し続け、直接は操作できない状態。⑤ 盤面に書いてある時刻は本当の締切ではなく、盤面上の規則から導く／ 溢れる前に段階的な予兆が出る。⑥ 往路の選択が復路で1件ずつ再生される／ 置いたら動かせない。",
+  "explicitly_not_borrowed": "Mini Metro のネットワーク設計と truck_dispatch の空走最適化は、実質的に経路設計であり FACT GATE が除外した行（配送計画の策定：gameability LOW / distortion_risk HIGH）と衝突するため借りない。Ver.1 の load_and_route（LogisticsGame）は『積み分け＋順路計画→検収』で出荷済みだが、順路計画の部分は同じ理由で継承しない。",
+  "crowded_territory": "出荷済み63本の primaryMechanic 分布: measurement_inspection 6 / spatial_placement 6 / resource_allocation 6 / drag_drop_assign 5 / matching 4 / parameter_adjust 4 / composition_design 4 / search_discovery 4 / sequencing 3。空いているのは justified_refusal 1 / pressure_matched_response 1 / restraint_classification 1 / plan_then_adapt 1 / trend_reading 1。",
+  "known_traps": "exploit-patterns.json のうち本件で特に踏みやすいもの: c_table_spells_answer（積込票がそのまま答えを綴る）／ all_select_overfill（多く積んでも先頭N個しか検査されない）／ instant_stop_perfect・wait_then_stop（とりあえず連絡が常に最適になる）／ uniform_lever（複数の対応手段が同効果で未使用を順に押すに縮退）／ fixed_plan_ignores_records（30分前ルールを読まずに突破できる固定手順）／ memorizable_layout（7校の時刻を暗記で突破）／ text_only_consequence（結果が文章カードだけで世界が変わらない）。",
+  "first_30_seconds_rules": "参照6本に共通する onboarding の構造: (1) 画面に既に動いているものか並んでいるものがある＝形そのものが指示になっている。(2) 最初の1タップで、触った場所だけが目に見えて変わる。(3) 失敗の説明が無く、失敗した状態そのものが説明になっている。(4) 成功判定が自動発火する。(5) やり直しコストが『少し戻る』。"
+}

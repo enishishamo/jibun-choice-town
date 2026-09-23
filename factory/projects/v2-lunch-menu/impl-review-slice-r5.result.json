@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 84,
+    "blockers": [],
+    "high": [
+      "factory/harness/v2-lunch-shots.mjs:58 — 可視文字監査に未観測の表示経路が残る — record() はテキストノード、aria-label、疑似要素しか収集せず、例えば PLAY 内へ `<input value=\"100てん\" readOnly>` を追加する mutation は画面にスコアを表示しても digit/copy.ts 監査を通過する。attributeFilter に value もなく、shot() の innerText にもフォーム値は含まれないため、全状態を観測するという契約を証明できない — input/textarea/select/output 等の表示値を各 record() と shot() で収集し、board の数字禁止および全体の copy.ts allow-list に通す mutation test を追加する"
+    ],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:283 — 全16 viable menuについて pickEventDish() はトレイ上の料理を選び、最悪でも7通りの回復メニューを残した。純粋ロジックQAは54/54を通過した。",
+      "src/v2/lunch/play/lunchMenuLogic.ts:220 — place/remove/swap の cleared guard、src/v2/lunch/play/lunchMenuLogic.ts:313 の send-only遷移、主食要件を確認した。全126トレイを駆動する既存検査も通過した。",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:107 — PLAY中の全タイマーは fxTimers を経由し、同ファイル111行でunmount時に破棄される。送信中、flight/mote中、二回目送信にも同期ref/stateの防護があることを確認した。",
+      "factory/harness/v2-lunch-shots.mjs:181 — tap ownership は現在、対象control自身またはその子へのhitだけを許容しており、祖先container、兄弟overlay、nullを拒否する。202行では44×44未満も拒否する。",
+      "factory/harness/v2-lunch-shots.mjs:56 — MutationObserverはclass/styleを監視し、任意の観測mutationごとに全要素の疑似要素を再走査する。したがって `.lmp.is-settled::before` やbead band class依存のM14/M17は、class変更そのものによって現在は確実に捕捉される。",
+      "factory/harness/v2-lunch-shots.mjs:214 — reduced-motion経路は初回構築、EVENT、汎用再構築、二回目送信、JOB REVEALまで駆動し、残存animationとconsole errorを検査する。",
+      "factory/harness/v2-lunch-shots.mjs:293 — 320×568、375×667、375×812、390×844、430×932のempty/full両状態でoverflow、9料理、tap ownership、重なり、44×44を検査する。短画面規則はsrc/v2/lunch/play/lunchMenuPlay.css:427以降にあり、46px最低高を含む。",
+      "src/v2/lunch/assets.ts:18 — grow/cook/menu画像と3つのKNOW THE JOB sceneが配線され、bentoとgauge-rackはコメントどおり未配線。hollowはsrc/v2/lunch/play/LunchMenuPlay.tsx:421でbandOnTrack()から算出される。",
+      "factory/harness/v2-lunch-shots.mjs:53 — 既報のscore/verdict/job-name transient、auto-send、pointer overlay、reduced-motion pointer failure、短画面minimum-size等のmutationは現行観測・idle・geometry・viewport検査で捕捉される。一方、新規mutation `<input value=\"100てん\">` はコード経路上未検出である。",
+      "src/v2/state/progress.ts:27 — malformed localStorageはオブジェクト形状、version、spot、日時、seed値を正規化しており、Ver.1キーを読み書きしない。",
+      "factory/harness/ver1-freeze-check.mjs:25 — Ver.1 import解決は相対パスを正規化して検査する。git diffでもarchive tagに対するVer.1領域の変更は検出されなかった。",
+      "実行環境がread-onlyのためscratch worktreeを作成するmutation再実行とbuild出力生成はできなかった。npm run qa:v2-lunchは54/54、build:v2はtsbuildinfo書込みのEPERMで停止したため、これは製品コンパイル失敗の証拠とは扱っていない。"
+    ],
+    "recommended_actions": [
+      "v2-lunch-shots.mjsの可視文字収集をフォーム値まで拡張し、PLAY内のinput valueに数字・未許可文言を置くmutationが名前付きで失敗することを追加する。",
+      "書込み可能なCIまたはscratch worktreeで、既報mutation群に加えてinput/textarea value、select option、canvas/SVG画像化文字の代表mutationを再実行し、検出結果を保存する。",
+      "修正後にnpm run qa:v2-lunch、npm run shots:v2-lunch、npm run build:v2、npm run check:ver1-freezeを通す。"
+    ]
+  },
+  "elapsed_sec": 198.257,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
+}

@@ -915,7 +915,7 @@
       "identity_impact_approved": true,
       "identity_impact_approval_note": "SELFTEST fixture approval — not a real Human Decision",
       "created_at": "2026-09-07T23:07:52.808Z",
-      "updated_at": "2026-09-08T19:44:06.090Z",
+      "updated_at": "2026-09-23T01:51:53.706Z",
       "history": [
         {
           "at": "2026-09-07T23:07:52.809Z",
@@ -1031,6 +1031,66 @@
         },
         {
           "at": "2026-09-08T19:44:06.091Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:20:49.893Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:20:50.027Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:21:16.483Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:21:16.610Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:21:49.945Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:21:50.070Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:22:09.410Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:22:09.536Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-22T23:49:45.792Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-22T23:49:45.923Z",
+          "event": "identity_impact_approved",
+          "note": "SELFTEST fixture approval — not a real Human Decision"
+        },
+        {
+          "at": "2026-09-23T01:51:53.569Z",
+          "event": "identity_impact_set",
+          "impact": "YES"
+        },
+        {
+          "at": "2026-09-23T01:51:53.707Z",
           "event": "identity_impact_approved",
           "note": "SELFTEST fixture approval — not a real Human Decision"
         }
@@ -1680,6 +1740,946 @@
           "note": "released to main 1e02c91 (GitHub Pages)"
         }
       ]
+    },
+    "v2-lunch-vertical-slice": {
+      "task_id": "v2-lunch-vertical-slice",
+      "task_type": "game-content",
+      "status": "SUPERSEDED",
+      "repair_count": 0,
+      "review_status": "FAIL",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-r4.result.json",
+      "review_required": true,
+      "qa_status": "PASS",
+      "qa_evidence": "npm run qa:v2-lunch 27/27 (2026-09-21, contract-level cue witnesses) + npm run shots:v2-lunch 375x812 real-tap 15 states, 0 console errors / 0 4xx",
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched.",
+      "human_decision_required": false,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-20T14:29:27.246Z",
+      "updated_at": "2026-09-21T13:40:56.990Z",
+      "history": [
+        {
+          "at": "2026-09-20T14:29:27.253Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES"
+        },
+        {
+          "at": "2026-09-20T14:43:01.159Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/harness/gameplay-qa-v2-lunch-menu.mjs 19/19 (2026-09-20) + 375px manual playthrough MAP→PLAY→EVENT→commit→REVEAL→seed→MAP"
+        },
+        {
+          "at": "2026-09-21T01:03:10.208Z",
+          "event": "blocked",
+          "reason": "independent review r4 could not run: Codex CLI usage limit (ChatGPT subscription) reached after the 13-asset image batch; r3 findings all addressed locally (see impl-review-r3.result.json + commits b32fb09). Re-run r4 when the quota resets.",
+          "human_decision": false
+        },
+        {
+          "at": "2026-09-21T03:38:08.213Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-r4.result.json",
+          "score": 64,
+          "high_count": 2,
+          "override_note": null
+        },
+        {
+          "at": "2026-09-21T03:38:08.250Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "npm run qa:v2-lunch 27/27 (2026-09-21, contract-level cue witnesses) + npm run shots:v2-lunch 375x812 real-tap 15 states, 0 console errors / 0 4xx"
+        },
+        {
+          "at": "2026-09-21T04:05:16.982Z",
+          "event": "blocked",
+          "reason": "2026-09-21 PLAY UI rebuilt after GPT Visual Review. Codex impl review r4 = FAIL 64 (0 blockers; 2 high are the TEMP world/reveal/seed screens = Design lane, not code); mediums fixed (flight timers seq-guarded, school control hidden from AT, harness write-free + real per-rule witnesses). Independent in-context Art QA of state 3 (first status cues) = FAIL 64/69 x4: a first-time child cannot infer the state from the still image → DN-04 cue form needs the Design Owner (GPT). Waiting on GPT design + Human approval; Ver.1/main/PUBLIC untouched.",
+          "human_decision": false
+        },
+        {
+          "at": "2026-09-21T13:40:56.991Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "2026-09-21 の Human 指令（FACTORY RESTORATION + 栄養教諭 JOB VERTICAL SLICE）により、このタスクの対象だった三色食品群カゴ方式の PLAY は撤去され、スライスは v2-lunch-nutrition-teacher-slice で作り直された。本タスクを止めていた DN-04（状態 cue の見た目）は失われておらず、新タスクの design_needed に DN-RACK として引き継がれている（未解決のまま）。台帳の付け替えであって、止まっていた設計判断を回避したものではない"
+        }
+      ]
+    },
+    "v2-lunch-nutrition-teacher-slice": {
+      "task_id": "v2-lunch-nutrition-teacher-slice",
+      "task_type": "game-content",
+      "status": "BLOCKED",
+      "producer": "claude-code-builder",
+      "repair_count": 1,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": "codex",
+      "review_independent": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+      "qa_evidence_kind": "file",
+      "design_needed": [
+        {
+          "id": "DN-RACK",
+          "where": "src/v2/lunch/play/lunchMenuPlay.css:.lmp-rack",
+          "note": "生成待ち: 木の板に4本の溝と中央の窪み（public/assets/v2/lunch/gauge-rack.png）。現状は同じ形をCSSで描いている",
+          "added_at": "2026-09-21T13:02:47.346Z",
+          "resolved_at": "2026-09-21T19:58:07.975Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "id": "DN-MAPTILES",
+          "where": "src/v2/lunch/PlaceMark.tsx",
+          "note": "生成待ち: 弁当箱の地面と そだてる/つくる/こんだて のタイル。truck.png/school.png と同じカメラ・光・接地影で揃える",
+          "added_at": "2026-09-21T13:02:47.387Z",
+          "resolved_at": "2026-09-21T19:57:49.913Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "id": "DN-SCENES",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "生成待ち: 給食室／教室／相談の3場面。同じ枠・同じ比率・同じカメラ",
+          "added_at": "2026-09-21T13:02:47.432Z",
+          "resolved_at": "2026-09-21T19:57:49.876Z",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "id": "DN-KNOW-LAYOUT",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "独立ビジュアルレビュー: 現状はアコーディオンのリストで generic app パターン。1側面=1画面の全面シーンで、文はシーンの中に置く案が出ている。画面設計は Design Owner 判断",
+          "added_at": "2026-09-21T13:17:47.422Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-CAREER-LAYOUT",
+          "where": "src/v2/lunch/screens/CareerPath.tsx",
+          "note": "独立ビジュアルレビュー: 現状は解説記事（点線タイムライン＋注記ボックス）。同じ玩具世界の道と3つの停留所にする案。語彙も高学年向けに要調整",
+          "added_at": "2026-09-21T13:17:47.461Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-SEED-LAYOUT",
+          "where": "src/v2/lunch/screens/SeedPick.tsx",
+          "note": "独立ビジュアルレビュー: 現状はラジオフォーム。種を拾って ぼうけんノート に入れる物体操作にする案。ぼうけんノート自体が未実装のため Design Owner 判断",
+          "added_at": "2026-09-21T13:17:47.498Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-MAPGROUND",
+          "where": "src/v2/lunch/world/LunchWorldMap.tsx:MAP_H",
+          "note": "5つの場所タイルは配線済み。地面(map/bento.png)は35度パースの浅い皿で内側が横57%×縦32%しかなく、縦長MAPの5か所が入らない。MAP作り直し(A)か、内側が縦60%以上取れる弁当箱の描き直し(B)か。factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md §1",
+          "added_at": "2026-09-21T19:57:49.950Z",
+          "resolved_at": null,
+          "approval": null
+        },
+        {
+          "id": "DN-RACK-HOLLOW",
+          "where": "src/v2/lunch/play/LunchMenuPlay.tsx:GaugeRack",
+          "note": "板の絵は生成済み(qa 84)だが未配線。窪み=GOOD BANDの幅は4軸で21/29/38/19%と違うのに、絵の窪みは4本とも約17%。敷くと玉が窪みの外なのに「ちょうどいい」判定になる。溝ごとに窪み幅を変えた板(A)か、窪みなしの板だけ描いて溝は計算描画のまま(B、実装側の推奨)か、現状CSSのまま(C)。art-wiring-2026-09-22.md §2",
+          "added_at": "2026-09-21T19:58:08.012Z",
+          "resolved_at": null,
+          "approval": null
+        }
+      ],
+      "deploy_status": null,
+      "release_commit": "09e4235e21b7fcb776217ec7183415f14bffad25",
+      "blocked_reason": "実装・検証は完了。独立レビューは7ラウンド（68→72→78→80→84→86→**94 PASS、指摘ゼロ**）、QA は tsc/lint/ver1-freeze/純ロジック54/実ブラウザ24state＋5サイズ掃引すべて PASS、変異テスト25件が全部名前つき assertion で落ちることを確認済み。残っているのは人間・Design Owner の判断のみ: (a) Ver.2 は core gameplay loop の変更なので product_identity_impact=YES、main 反映には明示的な Human 承認が必要（deploy-release-policy.md「HUMAN APPROVALが必要な変更」）。(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW）はいずれも画面設計・アート仕様で Design Owner 判断。(c) 別件 ver1-freeze-tag-vs-main-drift（main が凍結タグから Ver.1 83ファイル分ずれている）が未決着",
+      "human_decision_required": false,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T12:33:28.744Z",
+      "updated_at": "2026-09-21T21:10:25.614Z",
+      "history": [
+        {
+          "at": "2026-09-21T12:33:28.745Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T12:35:03.881Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "cb55712d4d69063e0a374aa210b0c80994c2491d"
+        },
+        {
+          "at": "2026-09-21T13:02:47.347Z",
+          "event": "design_needed_added",
+          "id": "DN-RACK",
+          "where": "src/v2/lunch/play/lunchMenuPlay.css:.lmp-rack",
+          "note": "生成待ち: 木の板に4本の溝と中央の窪み（public/assets/v2/lunch/gauge-rack.png）。現状は同じ形をCSSで描いている",
+          "added_at": "2026-09-21T13:02:47.346Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:02:47.388Z",
+          "event": "design_needed_added",
+          "id": "DN-MAPTILES",
+          "where": "src/v2/lunch/PlaceMark.tsx",
+          "note": "生成待ち: 弁当箱の地面と そだてる/つくる/こんだて のタイル。truck.png/school.png と同じカメラ・光・接地影で揃える",
+          "added_at": "2026-09-21T13:02:47.387Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:02:47.433Z",
+          "event": "design_needed_added",
+          "id": "DN-SCENES",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "生成待ち: 給食室／教室／相談の3場面。同じ枠・同じ比率・同じカメラ",
+          "added_at": "2026-09-21T13:02:47.432Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "READY"
+        },
+        {
+          "at": "2026-09-21T13:03:13.364Z",
+          "event": "repair_granted",
+          "repair_count": 1
+        },
+        {
+          "at": "2026-09-21T13:08:48.120Z",
+          "event": "release_commit_set",
+          "sha": "cc19901f034302a3be6aebf577836cd5a4a136c6",
+          "given": "HEAD"
+        },
+        {
+          "at": "2026-09-21T13:17:47.422Z",
+          "event": "design_needed_added",
+          "id": "DN-KNOW-LAYOUT",
+          "where": "src/v2/lunch/screens/KnowTheJob.tsx",
+          "note": "独立ビジュアルレビュー: 現状はアコーディオンのリストで generic app パターン。1側面=1画面の全面シーンで、文はシーンの中に置く案が出ている。画面設計は Design Owner 判断",
+          "added_at": "2026-09-21T13:17:47.422Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "REPAIR"
+        },
+        {
+          "at": "2026-09-21T13:17:47.462Z",
+          "event": "design_needed_added",
+          "id": "DN-CAREER-LAYOUT",
+          "where": "src/v2/lunch/screens/CareerPath.tsx",
+          "note": "独立ビジュアルレビュー: 現状は解説記事（点線タイムライン＋注記ボックス）。同じ玩具世界の道と3つの停留所にする案。語彙も高学年向けに要調整",
+          "added_at": "2026-09-21T13:17:47.461Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "REPAIR"
+        },
+        {
+          "at": "2026-09-21T13:17:47.499Z",
+          "event": "design_needed_added",
+          "id": "DN-SEED-LAYOUT",
+          "where": "src/v2/lunch/screens/SeedPick.tsx",
+          "note": "独立ビジュアルレビュー: 現状はラジオフォーム。種を拾って ぼうけんノート に入れる物体操作にする案。ぼうけんノート自体が未実装のため Design Owner 判断",
+          "added_at": "2026-09-21T13:17:47.498Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "REPAIR"
+        },
+        {
+          "at": "2026-09-21T14:00:23.874Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice.result.json",
+          "score": 68,
+          "high_count": 3,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "e98188300f8ef3c78a14edf2d6370649c0f3105d68d3647249aadeedb8d58809"
+        },
+        {
+          "at": "2026-09-21T14:15:56.164Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r2.result.json",
+          "score": 72,
+          "high_count": 2,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "4e2177027941459ff593744961481882c55b7b3e942afb7b501c9dc69ad1db2a"
+        },
+        {
+          "at": "2026-09-21T14:30:11.675Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r3.result.json",
+          "score": 78,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "7b90fcc44c91512bc79edd10490dc36f99b8d5bedc773118c61bfd5139bcd699"
+        },
+        {
+          "at": "2026-09-21T14:33:05.418Z",
+          "event": "blocked",
+          "reason": "最後の独立再レビュー（r4）が Codex usage limit で実行できなかった。有効な最新レビューは r3 = FAIL 78（blocker 0 / high 1 / medium 3）で、その指摘はすべて修正済み（コミット 8b03691 ほか）だが、修正後の fresh re-review が未実施のため PASS とは記録しない。quota 回復後に factory/projects/v2-lunch-menu/impl-review-slice.prompt.md で再実行し、set-review すること。なお can-deploy は他に Product Identity 未承認と design_needed 6件でも拒否しており、これらは Human/Design Owner の判断",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:57:49.877Z",
+          "event": "design_needed_resolved",
+          "id": "DN-SCENES",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:57:49.914Z",
+          "event": "design_needed_resolved",
+          "id": "DN-MAPTILES",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:57:49.950Z",
+          "event": "design_needed_added",
+          "id": "DN-MAPGROUND",
+          "where": "src/v2/lunch/world/LunchWorldMap.tsx:MAP_H",
+          "note": "5つの場所タイルは配線済み。地面(map/bento.png)は35度パースの浅い皿で内側が横57%×縦32%しかなく、縦長MAPの5か所が入らない。MAP作り直し(A)か、内側が縦60%以上取れる弁当箱の描き直し(B)か。factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md §1",
+          "added_at": "2026-09-21T19:57:49.950Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:58:07.976Z",
+          "event": "design_needed_resolved",
+          "id": "DN-RACK",
+          "approval": "factory/projects/v2-lunch-menu/art-wiring-2026-09-22.md"
+        },
+        {
+          "at": "2026-09-21T19:58:08.013Z",
+          "event": "design_needed_added",
+          "id": "DN-RACK-HOLLOW",
+          "where": "src/v2/lunch/play/LunchMenuPlay.tsx:GaugeRack",
+          "note": "板の絵は生成済み(qa 84)だが未配線。窪み=GOOD BANDの幅は4軸で21/29/38/19%と違うのに、絵の窪みは4本とも約17%。敷くと玉が窪みの外なのに「ちょうどいい」判定になる。溝ごとに窪み幅を変えた板(A)か、窪みなしの板だけ描いて溝は計算描画のまま(B、実装側の推奨)か、現状CSSのまま(C)。art-wiring-2026-09-22.md §2",
+          "added_at": "2026-09-21T19:58:08.012Z",
+          "resolved_at": null,
+          "approval": null,
+          "status_unchanged": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T19:59:46.023Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "8279693f816bc5ccff803cb979573aff9f148be8"
+        },
+        {
+          "at": "2026-09-21T19:59:46.091Z",
+          "event": "release_commit_set",
+          "sha": "8279693f816bc5ccff803cb979573aff9f148be8",
+          "given": "8279693f816bc5ccff803cb979573aff9f148be8"
+        },
+        {
+          "at": "2026-09-21T20:04:38.702Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "506de326b720ce83b08f2f3a714b0ec4809dae27"
+        },
+        {
+          "at": "2026-09-21T20:04:38.776Z",
+          "event": "release_commit_set",
+          "sha": "506de326b720ce83b08f2f3a714b0ec4809dae27",
+          "given": "506de326b720ce83b08f2f3a714b0ec4809dae27"
+        },
+        {
+          "at": "2026-09-21T20:05:47.834Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r4.result.json",
+          "score": 80,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "64d812eadab27e2168357b94fee3c5eaef4ab21297ee2ddc325765318d53e44e"
+        },
+        {
+          "at": "2026-09-21T20:27:00.241Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:27:00.323Z",
+          "event": "release_commit_set",
+          "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
+          "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:41:58.479Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+          "score": 84,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
+        },
+        {
+          "at": "2026-09-21T20:42:41.397Z",
+          "event": "blocked",
+          "reason": "独立レビューは r1..r5 まで実施済み（68→72→78→80→84、blocker は r2 以降ゼロ）。指摘はすべてQAハーネス側の穴で、毎回修正のうえ変異テストで落ちることを確認している（M1..M19）。それでも直近の r5 は FAIL 84 で、修正後の fresh re-review（r6）が未完了のため PASS とは記録しない。加えて can-deploy は (a) Product Identity impact=YES の人間承認が未取得、(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW、いずれも画面設計＝Design Owner 判断）でも拒否している。QAハーネス側の修正は別タスク v2-lunch-qa-harness-hardening-r4 に分けて記録（本タスクの repair 枠は使い切り済み）",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-21T20:50:50.353Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+          "score": 86,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
+        },
+        {
+          "at": "2026-09-21T21:04:51.936Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:04:51.995Z",
+          "event": "release_commit_set",
+          "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
+          "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:09:34.899Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+          "score": 94,
+          "high_count": 0,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "68e8a62d60c35f25d4edce8e9e44e10c8aa8787ace3a61e68df944a9141d0989"
+        },
+        {
+          "at": "2026-09-21T21:09:34.937Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:34.994Z",
+          "event": "release_commit_set",
+          "sha": "09e4235e21b7fcb776217ec7183415f14bffad25",
+          "given": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:10:25.615Z",
+          "event": "blocked",
+          "reason": "実装・検証は完了。独立レビューは7ラウンド（68→72→78→80→84→86→**94 PASS、指摘ゼロ**）、QA は tsc/lint/ver1-freeze/純ロジック54/実ブラウザ24state＋5サイズ掃引すべて PASS、変異テスト25件が全部名前つき assertion で落ちることを確認済み。残っているのは人間・Design Owner の判断のみ: (a) Ver.2 は core gameplay loop の変更なので product_identity_impact=YES、main 反映には明示的な Human 承認が必要（deploy-release-policy.md「HUMAN APPROVALが必要な変更」）。(b) 未解決 DESIGN_NEEDED 5件（DN-KNOW-LAYOUT / DN-CAREER-LAYOUT / DN-SEED-LAYOUT / DN-MAPGROUND / DN-RACK-HOLLOW）はいずれも画面設計・アート仕様で Design Owner 判断。(c) 別件 ver1-freeze-tag-vs-main-drift（main が凍結タグから Ver.1 83ファイル分ずれている）が未決着",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        }
+      ],
+      "review_mechanism": "factory/harness/codex-review.mjs"
+    },
+    "ver1-freeze-tag-vs-main-drift": {
+      "task_id": "ver1-freeze-tag-vs-main-drift",
+      "task_type": "factory-integrity",
+      "status": "HUMAN_DECISION_REQUIRED",
+      "producer": "claude-code-builder",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "main が凍結タグ ver1-archive-2026-09-20 から Ver.1 の 83 ファイル分ずれている（タグは main の祖先ではない）。凍結ガード check:ver1-freeze は作業ツリーをタグと比較するため、タグ基準のブランチでは PASS するが、そのブランチを main へマージすると main 側の Ver.1 改善（f71d042 / 3df51c8 / 805977e / acdf316 / 49dcf4c / 1847d29 系）と衝突・巻き戻りが起きうる。どちらを Ver.1 の正とするか（タグを打ち直すか、main を正として凍結基準を更新するか）は Human 判断。2026-09-21 の栄養教諭スライス作業中に発見。当該スライス自体は Ver.1 パスを一切変更していない",
+      "human_decision_required": true,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T13:29:15.057Z",
+      "updated_at": "2026-09-21T13:29:15.101Z",
+      "history": [
+        {
+          "at": "2026-09-21T13:29:15.058Z",
+          "event": "created",
+          "type": "factory-integrity",
+          "identityImpact": "NONE",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T13:29:15.102Z",
+          "event": "blocked",
+          "reason": "main が凍結タグ ver1-archive-2026-09-20 から Ver.1 の 83 ファイル分ずれている（タグは main の祖先ではない）。凍結ガード check:ver1-freeze は作業ツリーをタグと比較するため、タグ基準のブランチでは PASS するが、そのブランチを main へマージすると main 側の Ver.1 改善（f71d042 / 3df51c8 / 805977e / acdf316 / 49dcf4c / 1847d29 系）と衝突・巻き戻りが起きうる。どちらを Ver.1 の正とするか（タグを打ち直すか、main を正として凍結基準を更新するか）は Human 判断。2026-09-21 の栄養教諭スライス作業中に発見。当該スライス自体は Ver.1 パスを一切変更していない",
+          "human_decision": true,
+          "design_needed": false,
+          "status": "HUMAN_DECISION_REQUIRED"
+        }
+      ]
+    },
+    "v2-lunch-qa-harness-hardening-r4": {
+      "task_id": "v2-lunch-qa-harness-hardening-r4",
+      "task_type": "qa-harness",
+      "status": "BLOCKED",
+      "producer": "claude-code-builder",
+      "repair_count": 0,
+      "review_status": "PASS",
+      "review_evidence": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": "codex",
+      "review_independent": true,
+      "qa_status": "PASS",
+      "qa_evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+      "qa_evidence_kind": "file",
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": "09e4235e21b7fcb776217ec7183415f14bffad25",
+      "blocked_reason": "作業自体は完了（r7 PASS 94・指摘ゼロ、変異 M14..M25 で全ゲート検証済み）。それでも単独で deploy 可能にはしない: このタスクのコミットは v2/lunch-vertical-slice 上で栄養教諭スライス（product_identity_impact=YES、Human 承認待ち）のコミットと同じ列に並んでおり、impact=NONE のこのタスクが can-deploy を通ると、CI の release-gate-check から見て『同じ sha に対して通っているタスクがある』状態になり、Ver.2 の core gameplay loop を人間承認なしに main へ通す抜け道になる。スライスが Human 承認を得た時点で、両方まとめて解除する",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-21T20:23:59.876Z",
+      "updated_at": "2026-09-21T21:10:12.995Z",
+      "history": [
+        {
+          "at": "2026-09-21T20:23:59.877Z",
+          "event": "created",
+          "type": "qa-harness",
+          "identityImpact": "NONE",
+          "producer": "claude-code-builder",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-21T20:27:00.359Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-qa-harness-hardening-r4.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:27:00.426Z",
+          "event": "release_commit_set",
+          "sha": "1adf86d6b1772b47063512b8bef66cde830450b0",
+          "given": "1adf86d6b1772b47063512b8bef66cde830450b0"
+        },
+        {
+          "at": "2026-09-21T20:41:58.442Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r5.result.json",
+          "score": 84,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "2365df17bb3eb3322591d4c0c1df36687fb1055a0b5b075b034f4b664ef1566b"
+        },
+        {
+          "at": "2026-09-21T20:50:50.313Z",
+          "event": "review_recorded",
+          "verdict": "FAIL",
+          "raw_reviewer_verdict": "FAIL",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r6.result.json",
+          "score": 86,
+          "high_count": 1,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "96c445a187b443af4985e077570b0f36cd9e20ba01825ba8e35eec4a4da7f1c1"
+        },
+        {
+          "at": "2026-09-21T21:04:52.034Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:04:52.088Z",
+          "event": "release_commit_set",
+          "sha": "4310abeeb1e52953449c1631bafca639c4223b1d",
+          "given": "4310abeeb1e52953449c1631bafca639c4223b1d"
+        },
+        {
+          "at": "2026-09-21T21:09:34.760Z",
+          "event": "review_recorded",
+          "verdict": "PASS",
+          "raw_reviewer_verdict": "PASS",
+          "evidencePath": "factory/projects/v2-lunch-menu/impl-review-slice-r7.result.json",
+          "score": 94,
+          "high_count": 0,
+          "override_note": null,
+          "reviewer": "codex",
+          "producer": "claude-code-builder",
+          "review_independent": true,
+          "review_mechanism": "factory/harness/codex-review.mjs",
+          "prompt_sha256": "68e8a62d60c35f25d4edce8e9e44e10c8aa8787ace3a61e68df944a9141d0989"
+        },
+        {
+          "at": "2026-09-21T21:09:34.799Z",
+          "event": "qa_recorded",
+          "verdict": "PASS",
+          "evidence": "factory/state/qa/v2-lunch-nutrition-teacher-slice.json",
+          "kind": "file",
+          "checks": 5,
+          "all_zero": true,
+          "commit": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:34.861Z",
+          "event": "release_commit_set",
+          "sha": "09e4235e21b7fcb776217ec7183415f14bffad25",
+          "given": "09e4235e21b7fcb776217ec7183415f14bffad25"
+        },
+        {
+          "at": "2026-09-21T21:09:44.372Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "RELEASED",
+          "note": "QAハーネス硬化タスク。r7 PASS 94 で指摘ゼロ。変異 M14..M25 で全ゲートが落ちることを確認済み"
+        },
+        {
+          "at": "2026-09-21T21:10:12.996Z",
+          "event": "blocked",
+          "reason": "作業自体は完了（r7 PASS 94・指摘ゼロ、変異 M14..M25 で全ゲート検証済み）。それでも単独で deploy 可能にはしない: このタスクのコミットは v2/lunch-vertical-slice 上で栄養教諭スライス（product_identity_impact=YES、Human 承認待ち）のコミットと同じ列に並んでおり、impact=NONE のこのタスクが can-deploy を通ると、CI の release-gate-check から見て『同じ sha に対して通っているタスクがある』状態になり、Ver.2 の core gameplay loop を人間承認なしに main へ通す抜け道になる。スライスが Human 承認を得た時点で、両方まとめて解除する",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        }
+      ],
+      "review_mechanism": "factory/harness/codex-review.mjs"
+    },
+    "q1-improve-selftest-legacy-game": {
+      "task_id": "q1-improve-selftest-legacy-game",
+      "task_type": "game-content",
+      "status": "SUPERSEDED",
+      "producer": "claude-code",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": null,
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-22T23:20:54.260Z",
+      "updated_at": "2026-09-23T01:51:57.937Z",
+      "history": [
+        {
+          "at": "2026-09-22T23:20:54.261Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "NONE",
+          "producer": "claude-code",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-22T23:20:54.301Z",
+          "event": "status_change",
+          "from": "READY",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:20:54.464Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-22T23:21:20.698Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:21:20.864Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-22T23:21:54.138Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:21:54.295Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-22T23:22:13.621Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:22:13.778Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-22T23:49:49.997Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-22T23:49:50.144Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        },
+        {
+          "at": "2026-09-23T01:51:57.780Z",
+          "event": "status_change",
+          "from": "SUPERSEDED",
+          "to": "BLOCKED",
+          "note": "fixture: Human Decision pending"
+        },
+        {
+          "at": "2026-09-23T01:51:57.938Z",
+          "event": "status_change",
+          "from": "BLOCKED",
+          "to": "SUPERSEDED",
+          "note": "q1-factory self-test fixture, not real work"
+        }
+      ]
+    },
+    "q1-factory-selftest-9-failures": {
+      "task_id": "q1-factory-selftest-9-failures",
+      "task_type": "factory-integrity",
+      "status": "BLOCKED",
+      "producer": "claude-code-orchestrator",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "Factory の自己検査が2か所で赤いまま放置されている。(1) q1-factory-selftest.mjs が41件中9件失敗（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、git stash で回帰でないことを確認済み（変更前後とも 32/41）。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。(2) factory/scripts/validate-factory-data.mjs が 36 ERROR で失敗（factory/database/mechanics.json の semantic review に必須フィールド欠落）。これは verify.mjs の既定バッテリに含まれるため npm run qa 系の一部が赤い。CI の deploy.yml は別経路なので公開には影響しないが、『検査が赤いのが常態』は Factory の信頼性を直接損なう。どちらも本セッションの変更が原因ではない。",
+      "human_decision_required": false,
+      "product_identity_impact": "NONE",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-22T23:32:39.422Z",
+      "updated_at": "2026-09-22T23:44:49.558Z",
+      "history": [
+        {
+          "at": "2026-09-22T23:32:39.423Z",
+          "event": "created",
+          "type": "factory-integrity",
+          "identityImpact": "NONE",
+          "producer": "claude-code-orchestrator",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-22T23:32:39.464Z",
+          "event": "blocked",
+          "reason": "q1-factory-selftest.mjs が 41 件中 9 件失敗している（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、変更前後とも 32/41 で回帰ではないことを git stash で確認済み。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。Q1 track の11パイプラインは現在 dormant のため実害は出ていないが、『自己テストが赤いまま放置されている』状態自体が Factory の信頼性を損なうので記録する。",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        },
+        {
+          "at": "2026-09-22T23:44:49.559Z",
+          "event": "blocked",
+          "reason": "Factory の自己検査が2か所で赤いまま放置されている。(1) q1-factory-selftest.mjs が41件中9件失敗（E/J/K/P/Q/R/U/V/X）。2026-09-23 の V2 track 追加より前から失敗しており、git stash で回帰でないことを確認済み（変更前後とも 32/41）。失敗はいずれも independent_review が null のまま gate を評価している系で、self-test 側の fixture 崩れの可能性が高いが未調査。(2) factory/scripts/validate-factory-data.mjs が 36 ERROR で失敗（factory/database/mechanics.json の semantic review に必須フィールド欠落）。これは verify.mjs の既定バッテリに含まれるため npm run qa 系の一部が赤い。CI の deploy.yml は別経路なので公開には影響しないが、『検査が赤いのが常態』は Factory の信頼性を直接損なう。どちらも本セッションの変更が原因ではない。",
+          "human_decision": false,
+          "design_needed": false,
+          "status": "BLOCKED"
+        }
+      ]
+    },
+    "v2-lunch-carry-spot": {
+      "task_id": "v2-lunch-carry-spot",
+      "task_type": "game-content",
+      "status": "HUMAN_DECISION_REQUIRED",
+      "producer": "claude-code-orchestrator",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "給食WORLD『はこぶ』— 2回目の HUMAN_DECISION_REQUIRED。パイプライン v2-lunch-carry の hd-2 が open。\n\n2026-09-23 の Human Decision（スポット再定義・ゲーム化対象の拡張・WORK ACTION MAP 化）を実装し、頭から回し直した。再定義は効いた: ゲート通過行 10→19（DECISION は 10→1）、critic スコア 43→38→51、CA 42→41→57 / GQ 45→36→56。しかし3ラウンド目も採択 NONE で、二軸の床60に未達。\n\n3回とも blocker の形は同じ:『緊張を作っている規則が、確認されていない事実の発明である』。この職業は運用パラメータが公開されておらず（配送計画の別紙・報告項目・センターの対処手順・記録簿の欄名・一人分の適量・別保管の容量上限。8文書7自治体で一つも出ず）、緊張は普通そこから来る。設計者を3人交代させても同じ場所で詰まる。\n\nHuman への問いは4択（保留／実地取材・情報公開請求の承認／時間と閾値を使わない設計に限定した4ラウンド目／日常的な基準について実地観察を根拠として認める研究ルールの変更）。実装側の推奨は保留。詳細は hd-2 の note。\n\n3ラウンドの成果は保存済みで、事実が増えたときに再開できる（行為マップ21行・参照15本・却下3ラウンド分の記録）。Factory 側の統合と WORK ACTION MAP 化は完了し自己テスト 9/9 + 13/13 で検証済み。本タスクが止まっていても他の job は止まらない。",
+      "human_decision_required": true,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-23T00:13:02.486Z",
+      "updated_at": "2026-09-23T02:27:42.381Z",
+      "history": [
+        {
+          "at": "2026-09-23T00:13:02.487Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES",
+          "producer": "claude-code-orchestrator",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-23T00:13:02.526Z",
+          "event": "upstream_recorded",
+          "job_id": "v2-lunch-carry",
+          "game_design_version": null,
+          "design_version": null,
+          "recorded_at": "2026-09-23T00:13:02.525Z"
+        },
+        {
+          "at": "2026-09-23T00:13:02.567Z",
+          "event": "blocked",
+          "reason": "給食WORLD『はこぶ』のゲーム設計が HUMAN_DECISION_REQUIRED。パイプライン factory/projects/v2-lunch-carry（track=v2）の hd-1 が open。\n\n到達点: LEGACY_INVENTORY → WORK_RESEARCH(v2) → WORK_DECISION_MAP → FACT_GATE通過 → GAME_REFERENCE_RESEARCH → GAME_CONCEPTS を2ラウンド。独立 GAME CRITIC は r1=FAIL 43、r2=FAIL 38、いずれも採択 NONE。\n\n停止理由は設計の失敗ではなく事実の不足。critic の blocker 5件はすべて『勝敗を支える中核ルールが未確認事実の発明』の形で、狙いを絞った追加調査（自治体仕様書5本ほか新規8文書）でも、遅延時に何を報告するか・センターが何を根拠に対処を選ぶか・誤報をどう訂正するかは一次資料から出てこなかった。7自治体すべてで『直ちに連絡し指示に従う』という判断の外注の記述しかなく、その先は現場とセンターの電話に委ねられている。つまりこの職業の専門性は意図的に非決定的である。\n\nHuman への問いは4択（保留／実地取材・情報公開請求の承認／物と手順の上に組むことの許容／スポットの意味の再定義）。詳細は hd-1 の note。(D) は給食WORLDの5スポット定義に触るため世界構造の変更にあたる。\n\nなお Factory 側の統合作業（調査→ゲーム設計→Design引き渡しの接続）は完了し、自己テスト 9/9 + 9/9 で検証済み。本タスクが止まっていても他の job は止まらない。",
+          "human_decision": true,
+          "design_needed": false,
+          "status": "HUMAN_DECISION_REQUIRED"
+        },
+        {
+          "at": "2026-09-23T02:27:42.382Z",
+          "event": "blocked",
+          "reason": "給食WORLD『はこぶ』— 2回目の HUMAN_DECISION_REQUIRED。パイプライン v2-lunch-carry の hd-2 が open。\n\n2026-09-23 の Human Decision（スポット再定義・ゲーム化対象の拡張・WORK ACTION MAP 化）を実装し、頭から回し直した。再定義は効いた: ゲート通過行 10→19（DECISION は 10→1）、critic スコア 43→38→51、CA 42→41→57 / GQ 45→36→56。しかし3ラウンド目も採択 NONE で、二軸の床60に未達。\n\n3回とも blocker の形は同じ:『緊張を作っている規則が、確認されていない事実の発明である』。この職業は運用パラメータが公開されておらず（配送計画の別紙・報告項目・センターの対処手順・記録簿の欄名・一人分の適量・別保管の容量上限。8文書7自治体で一つも出ず）、緊張は普通そこから来る。設計者を3人交代させても同じ場所で詰まる。\n\nHuman への問いは4択（保留／実地取材・情報公開請求の承認／時間と閾値を使わない設計に限定した4ラウンド目／日常的な基準について実地観察を根拠として認める研究ルールの変更）。実装側の推奨は保留。詳細は hd-2 の note。\n\n3ラウンドの成果は保存済みで、事実が増えたときに再開できる（行為マップ21行・参照15本・却下3ラウンド分の記録）。Factory 側の統合と WORK ACTION MAP 化は完了し自己テスト 9/9 + 13/13 で検証済み。本タスクが止まっていても他の job は止まらない。",
+          "human_decision": true,
+          "design_needed": false,
+          "status": "HUMAN_DECISION_REQUIRED"
+        }
+      ],
+      "upstream": {
+        "job_id": "v2-lunch-carry",
+        "game_design_version": null,
+        "design_version": null,
+        "recorded_at": "2026-09-23T00:13:02.525Z"
+      }
     }
   }
 }

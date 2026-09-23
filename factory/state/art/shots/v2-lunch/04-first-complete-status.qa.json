@@ -1,0 +1,40 @@
+{
+ "ok": true,
+ "verdict": "FAIL",
+ "critic_verdict": "FAIL",
+ "scores": {
+  "SUBJECT_CROP": 96,
+  "SUBJECT_OCCLUSION": 100,
+  "FOCAL_OBJECT_VISIBILITY": 97,
+  "BADGE_OVERLAP": 100,
+  "CONTAINER_FIT": 62,
+  "BACKGROUND_EDGE_QUALITY": 58,
+  "ASPECT_RATIO_FIT": 92,
+  "VISUAL_INTEGRATION": 68,
+  "MOBILE_CROP": 94,
+  "DESKTOP_CROP": 100,
+  "ASSET_PRESENTATION_QUALITY": 72
+ },
+ "badge_collision": false,
+ "prototype_feel_reasons": [
+  "The bread asset retains a conspicuous white rectangular source background that does not match the rounded candidate card.",
+  "Candidate dishes use inconsistent framing: some appear as clean cutouts, while others retain plates, bowls, or rectangular backgrounds of visibly different sizes.",
+  "The faded completed candidates become extremely washed out, making their cards look unfinished rather than intentionally disabled.",
+  "Card shadows and pale green lower-edge treatments are uneven and sometimes read as accidental clipping or duplicated layers.",
+  "Dish scale and vertical positioning vary substantially across the 3x3 grid, weakening alignment and visual rhythm.",
+  "The tray composition is polished, but the candidate grid below feels provisionally assembled by comparison."
+ ],
+ "issues": [
+  "candidate grid / bread card — raw white rectangular image boundary is plainly visible against the rounded off-white card — remove the source background or mask the image within the card using matching border-radius and overflow:hidden",
+  "candidate grid / completed rice, fried chicken, potato salad, and soup cards — opacity reduction washes out both subject and container until edges and shadows become indistinct — keep the card structure opaque and apply a controlled desaturation/overlay treatment to the dish only",
+  "candidate grid / card framing — dish assets have inconsistent apparent scale, padding, and baseline alignment — define a shared image viewport and normalize object-fit:contain sizing and object-position",
+  "candidate grid / card bottoms — pale green shadow or accent layers appear clipped and inconsistent between cells — standardize the card radius, overflow behavior, and shadow/accent geometry",
+  "candidate grid / dish backgrounds — mixed transparent cutouts, visible plates, and the bread's rectangular field create inconsistent presentation — export all candidates with transparent backgrounds or intentionally frame every candidate using the same plate/card treatment",
+  "overall mobile composition — large vertical gaps around the status marks and grid make the lower section feel loosely assembled — tighten and regularize spacing with a consistent vertical rhythm",
+  "CONTAINER_FIT below threshold: 62",
+  "BACKGROUND_EDGE_QUALITY below threshold: 58",
+  "VISUAL_INTEGRATION below threshold: 68",
+  "ASSET_PRESENTATION_QUALITY below gate (80): 72",
+  "presentation critic verdict: FAIL"
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "asset_id": "v2_lunch_truck",
+ "filename": "truck.png",
+ "world": "lunch-v2",
+ "use": "place",
+ "aspect_ratio": "3:2",
+ "size": "900x600",
+ "transparent_background": true,
+ "composition": "ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.",
+ "forbidden_objects": [
+  "readable text",
+  "letters or numbers",
+  "logos",
+  "attribute marks, icons, badges or symbols",
+  "hands or people",
+  "table, cloth, background, backdrop or drop shadow outside the dish",
+  "chopsticks or cutlery",
+  "steam text or speech bubbles",
+  "photorealistic rendering",
+  "elements touching the image edge"
+ ],
+ "character_constraints": "no characters at all",
+ "background": "fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.",
+ "reference_assets": [
+  "public/assets/kyushoku/classroom_lunch.jpg"
+ ],
+ "used_by": [
+  "src/v2/lunch/play/LunchMenuPlay.tsx"
+ ],
+ "purpose": "EVENT（食材が届かない）でトラックが現れる演出",
+ "scene": "a small friendly delivery truck (light blue cab, white box body with a simple green leaf mark, no text) seen from the side-front at the same 35-degree camera, matte clay toy style, wheels visible, slightly tilted as if it just hit a bump. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.",
+ "required_objects": [
+  "light-blue small delivery truck with white box body, side view, no text",
+  "transparent background"
+ ],
+ "output_path": "public/assets/v2/lunch/truck.png"
+}

@@ -1,0 +1,19 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: one OPEN school lunch box (弁当箱) seen from the same 35-degree above-front camera as the tray: a rounded rectangular box with a warm coral-red lid hinged open and standing up behind it, and a pale warm cream interior that is completely EMPTY, smooth and flat, like a shallow empty clay dish waiting to hold a miniature town. Same matte clay / miniature toy material, same lighting and same warm palette as the cream lunch tray and the dish set. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: 給食 WORLD の WORLD MAP の地面。開いた弁当箱の中に小さな町（畑・調理場・こんだて机）が置かれる土台なので、内側は完全に空で平ら
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the lunch box centered and filling about 75% of the frame with even margins (at least 12% on every side). The open box is the GROUND on which a miniature town will be placed later, so the whole pale cream interior must stay EMPTY, smooth, evenly lit and uncluttered — clear flat space with no food, no dividers, no pattern, no clutter. No table, no cloth, no shadow plate: the lunch box floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the box. Matte clay / miniature toy texture, rounded simplified shapes, bright but not neon.
+Must include: one open lunch box with a coral-red lid hinged open behind it; a completely empty, smooth, evenly lit pale cream interior with clear flat space; transparent background
+Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; food, rice, or anything placed inside the box; compartment dividers, inner trays or patterned lining; hands or people; chopsticks or cutlery; table, cloth, background, backdrop or drop shadow outside the lunch box; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 4:3 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the lunch box.

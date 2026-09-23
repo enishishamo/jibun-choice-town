@@ -41,7 +41,60 @@ export const DOWNSTREAM_STAGES = [
   { id: "RELEASE", artifact: null },
 ];
 
-export const ALL_STAGE_IDS = [...DESIGN_STAGES, ...DOWNSTREAM_STAGES].map((s) => s.id);
+// ------------------------------------------------------------- V2 track
+// 2026-09-23. Ver.2 (PLAY FIRST) inverts the Q1 track's profession-first
+// framing, so it needs its own stage vocabulary — but NOT its own pipeline.
+// Everything else in this module (artifact validation, versioning, the
+// staleness graph, failure routing, budgets) is shared, because the thing
+// worth having exactly once is the RULES, not the stage names.
+//
+// Why the names differ from Q1's: Q1 starts at PROFESSION_RESEARCH and ends
+// at a job the child is told about. Ver.2 starts at what a worker actually
+// DOES and never names the job until after PLAY. The stages below are the
+// pipeline in docs/jibun-choice-v2 + factory/rules/game-production-pipeline.md.
+export const V2_DESIGN_STAGES = [
+  { id: "LEGACY_INVENTORY", artifact: "legacy_inventory" },
+  { id: "WORK_RESEARCH", artifact: "work_research" },
+  { id: "EVIDENCE_REVIEW", artifact: null },
+  { id: "WORK_ACTION_MAP", artifact: "work_action_map" },
+  { id: "FACT_GATE", artifact: null },
+  { id: "GAME_REFERENCE_RESEARCH", artifact: "game_reference_research" },
+  { id: "GAME_CONCEPTS", artifact: "game_concepts" },
+  { id: "GAME_CRITIC", artifact: null },
+  { id: "FINAL_GAME_DESIGN", artifact: "final_game_design" },
+  { id: "DESIGN_HANDOFF", artifact: "design_handoff" },
+];
+
+// Downstream of the handoff. DESIGN_PACKAGE is produced by the Design
+// Factory (GPT / Design Owner), not by this Factory — it is listed so the
+// interface is formal and a build can be refused for not having one, even
+// while the Design Factory is not yet connected.
+export const V2_DOWNSTREAM_STAGES = [
+  { id: "DESIGN_PACKAGE", artifact: "design_package" },
+  { id: "BUILD", artifact: "implementation" },
+  { id: "BUILD_QA", artifact: "implementation_qa" },
+  { id: "INDEPENDENT_IMPL_REVIEW", artifact: null },
+  { id: "RELEASE", artifact: null },
+];
+
+export const TRACKS = {
+  q1: { design: DESIGN_STAGES, downstream: DOWNSTREAM_STAGES },
+  v2: { design: V2_DESIGN_STAGES, downstream: V2_DOWNSTREAM_STAGES },
+};
+export const TRACK_IDS = Object.keys(TRACKS);
+export function designStagesFor(track = "q1") {
+  return (TRACKS[track] ?? TRACKS.q1).design;
+}
+export function downstreamStagesFor(track = "q1") {
+  return (TRACKS[track] ?? TRACKS.q1).downstream;
+}
+export function stageIdsFor(track = "q1") {
+  return [...designStagesFor(track), ...downstreamStagesFor(track)].map((s) => s.id);
+}
+
+export const ALL_STAGE_IDS = [
+  ...DESIGN_STAGES, ...DOWNSTREAM_STAGES, ...V2_DESIGN_STAGES, ...V2_DOWNSTREAM_STAGES,
+].map((s) => s.id).filter((id, i, a) => a.indexOf(id) === i);
 
 // ----------------------------------------------------------- state machine
 export const DESIGN_STATES = [
@@ -51,6 +104,10 @@ export const DESIGN_STATES = [
   // downstream
   "SPEC_READY", "ART_BRIEF_READY", "ART_PRODUCED", "ART_APPROVED", "IMPLEMENTED",
   "IMPL_QA_PASSED", "RELEASE_CANDIDATE", "RELEASED", "REAUDIT_REQUIRED",
+  // V2 track (2026-09-23). Additive: no Q1 state changed meaning.
+  "LEGACY_INVENTORIED", "DECISION_MAPPED", "ACTION_MAPPED", "FACT_GATE_PASSED", "REFERENCES_READY",
+  "CONCEPTS_READY", "HANDOFF_READY", "WAITING_FOR_DESIGN_PACKAGE", "DESIGN_PACKAGE_READY",
+  "GAME_CONCEPT_REJECTED", "FACT_BLOCKED",
 ];
 
 // Which state an artifact submission moves the pipeline into (only if the
@@ -72,6 +129,16 @@ export const STATE_AFTER_ARTIFACT = {
   art_production: "ART_PRODUCED",
   implementation: "IMPLEMENTED",
   implementation_qa: "IMPL_QA_PASSED",
+  // V2 track
+  legacy_inventory: "LEGACY_INVENTORIED",
+  work_research: "RESEARCHED",
+  work_decision_map: "DECISION_MAPPED",
+  work_action_map: "ACTION_MAPPED",
+  game_reference_research: "REFERENCES_READY",
+  game_concepts: "CONCEPTS_READY",
+  final_game_design: "GAME_DESIGN_READY",
+  design_handoff: "HANDOFF_READY",
+  design_package: "DESIGN_PACKAGE_READY",
 };
 
 // ------------------------------------------------------------ budgets
@@ -222,6 +289,125 @@ export const ARTIFACT_SCHEMAS = {
   },
 };
 
+// ------------------------------------------------- V2 track artifacts
+// Field lists are the Artifact Contract of the 2026-09-23 directive. They
+// are deliberately long: every field is something a later stage or a later
+// reader would otherwise have to guess, and guessing is what this pipeline
+// exists to stop.
+const WORK_CLAIM_FIELDS = ["claim", "actor", "source", "source_class", "confidence"];
+// One row of the WORK DECISION MAP. `gameability` is ONLY a note that a
+// child could plausibly perform this; it is not a game idea and must not be
+// written as one. `distortion_risk` is how badly making it playable would
+// misrepresent the real job.
+// 2026-09-23 Human Decision (gate-log entry-2026-09-23-01): the unit of the map
+// is a WORK ACTION, and DECISION is one subtype of it. The list below is a
+// starting vocabulary, not a box to force work into — a job that genuinely
+// does something else may add a type, and the validator accepts any
+// SCREAMING_SNAKE string so the taxonomy can grow from real work.
+export const ACTION_TYPES = [
+  "DECISION", "PERCEPTION", "VERIFICATION", "MANIPULATION", "TIMING",
+  "SEQUENCING", "ANOMALY_DETECTION", "COMMUNICATION", "COORDINATION", "CREATION",
+];
+// What the CHILD does. A gate-passing work action is not enough on its own:
+// the same decision forbids turning mindless repetition into a game, so a
+// concept has to name which of these the child actually performs.
+export const CHILD_ACTIVE_OPERATIONS = [
+  "見る", "比べる", "気づく", "合わせる", "動かす", "止める",
+  "選ぶ", "順番を考える", "タイミングを取る", "伝える",
+];
+const ACTION_ROW_FIELDS = [
+  "work_action", "action_type", "actor", "trigger", "inputs", "constraints",
+  "action_or_judgement", "outcome", "frequency", "variability",
+  "source", "source_class", "confidence", "gameability", "distortion_risk",
+];
+const DECISION_ROW_FIELDS = [
+  "work_action", "actor", "trigger", "inputs", "constraints", "decision",
+  "physical_or_digital_action", "outcome", "frequency", "variability",
+  "source", "source_class", "confidence", "gameability", "distortion_risk",
+];
+const GAME_REFERENCE_FIELDS = [
+  "reference", "core_action", "player_decision", "feedback", "tension", "reward",
+  "replay_hook", "what_to_borrow", "what_not_to_borrow", "why_it_fits_this_job",
+];
+const CONCEPT_FIELDS = [
+  "concept_id", "job_reality", "main_action", "core_loop", "player_decision", "constraint",
+  "feedback", "event", "fail_recovery", "clear", "replay", "replay_reason",
+  "job_reveal_bridge", "interest_seeds", "reference_games", "distortion_risk",
+  "cognitive_load", "decision_row_ids", "child_active_operations",
+];
+
+export const SOURCE_CLASSES = ["primary_law", "government", "municipal", "industry", "practitioner", "secondary"];
+export const CONFIDENCE_LEVELS = ["HIGH", "MEDIUM", "LOW", "UNCONFIRMED"];
+export const LEGACY_DECISIONS = ["KEEP", "UPGRADE", "REPLACE", "DROP"];
+// source classes strong enough to carry a MEDIUM claim through the FACT GATE
+const STRONG_SOURCE_CLASSES = new Set(["primary_law", "government", "municipal"]);
+
+Object.assign(ARTIFACT_SCHEMAS, {
+  legacy_inventory: {
+    stage: "LEGACY_INVENTORY",
+    required: ["job_id", "searched", "items", "gaps"],
+    list: { key: "items", min: 1, itemRequired: ["path", "what", "decision", "reason"] },
+  },
+  work_research: {
+    stage: "WORK_RESEARCH",
+    required: ["job_id", "subject", "claims", "unconfirmed", "researcher_notes"],
+    list: { key: "claims", min: 3, itemRequired: WORK_CLAIM_FIELDS },
+  },
+  work_action_map: {
+    stage: "WORK_ACTION_MAP",
+    required: ["job_id", "rows"],
+    list: { key: "rows", min: 1, itemRequired: ACTION_ROW_FIELDS },
+  },
+  // Kept for compatibility. A legacy decision map is simply an action map in
+  // which every row is a DECISION (see toActionMap). Existing pipelines and
+  // any job already holding one keep working unchanged.
+  work_decision_map: {
+    stage: "WORK_DECISION_MAP",
+    required: ["job_id", "rows"],
+    list: { key: "rows", min: 1, itemRequired: DECISION_ROW_FIELDS },
+  },
+  game_reference_research: {
+    stage: "GAME_REFERENCE_RESEARCH",
+    required: ["job_id", "references", "why_these_references", "grammar_borrowed"],
+    list: { key: "references", min: 2, itemRequired: GAME_REFERENCE_FIELDS },
+  },
+  game_concepts: {
+    stage: "GAME_CONCEPTS",
+    required: ["job_id", "concepts", "comparison", "recommended_concept_id", "recommendation_rationale"],
+    list: { key: "concepts", min: 3, itemRequired: CONCEPT_FIELDS },
+  },
+  final_game_design: {
+    stage: "FINAL_GAME_DESIGN",
+    required: [
+      "job_id", "adopted_concept_id", "job_reality", "player_role", "main_action", "core_loop",
+      "start_state", "player_input", "world_response", "player_decision", "event",
+      "fail_near_miss", "recovery", "clear", "replay_hook", "job_reveal",
+      "know_the_job_requirements", "career_path_requirements", "interest_seeds",
+      "fact_boundaries", "forbidden_simplifications", "reference_game_grammar",
+      "game_fit_confidence", "rejected_concepts",
+    ],
+  },
+  design_handoff: {
+    stage: "DESIGN_HANDOFF",
+    required: [
+      "job_id", "game_design_version", "game_intent", "player_action", "core_loop",
+      "game_states", "what_must_be_visible", "what_must_not_require_text", "feedback_map",
+      "replay_hook", "world_context", "spatial_continuity", "existing_assets",
+      "new_asset_needs", "hard_product_rules", "design_freedom", "fact_boundaries",
+      "forbidden_visual_misrepresentations",
+    ],
+  },
+  // Produced by the Design Factory (Design Owner = GPT), not by this Factory.
+  design_package: {
+    stage: "DESIGN_PACKAGE",
+    required: [
+      "job_id", "game_design_version", "design_version", "screen_flow", "screen_specs",
+      "interaction_visuals", "animation_specs", "copy", "asset_manifest", "generated_assets",
+      "responsive_rules", "accessibility_notes", "visual_review_evidence", "design_status",
+    ],
+  },
+});
+
 export const ARTIFACT_TYPES = Object.keys(ARTIFACT_SCHEMAS);
 
 // Upstream dependency map: submitting a NEW VERSION of a key invalidates
@@ -243,6 +429,19 @@ export const DOWNSTREAM_OF = {
   art_production: ["implementation"],
   implementation: ["implementation_qa"],
   implementation_qa: [],
+  // V2 track. legacy_inventory feeds research (what is already known shapes
+  // what still needs asking), research feeds the decision map, and the map
+  // is upstream of BOTH the reference research and the concepts — so a
+  // corrected fact invalidates the game built on it, mechanically.
+  legacy_inventory: ["work_research"],
+  work_research: ["work_action_map", "work_decision_map"],
+  work_decision_map: ["game_reference_research", "game_concepts"],
+  work_action_map: ["game_reference_research", "game_concepts"],
+  game_reference_research: ["game_concepts"],
+  game_concepts: ["final_game_design"],
+  final_game_design: ["design_handoff"],
+  design_handoff: ["design_package"],
+  design_package: ["implementation"],
 };
 
 export function transitiveDownstream(type) {
@@ -308,7 +507,238 @@ export function validateArtifact(type, payload) {
   if (type === "core_back_check" && payload.pass !== true) problems.push("core_back_check.pass is not true");
   if (type === "core_scope_check" && payload.profession_name_hidden_test_pass !== true) problems.push("profession_name_hidden_test_pass is not true");
   if (type === "implementation_qa" && payload.pass !== true) problems.push("implementation_qa.pass is not true");
+
+  // ---- V2 track semantic invariants (2026-09-23) --------------------------
+  if (type === "legacy_inventory" && Array.isArray(payload.items)) {
+    payload.items.forEach((it, i) => {
+      if (it && !LEGACY_DECISIONS.includes(it.decision)) problems.push(`items[${i}].decision must be one of ${LEGACY_DECISIONS.join("|")}`);
+      // A DROP with no reason is how knowledge disappears in a rebuild.
+      if (it && it.decision === "DROP" && !isNonEmpty(it.reason)) problems.push(`items[${i}] is DROP and must state a reason`);
+    });
+  }
+  if (type === "work_research" && Array.isArray(payload.claims)) {
+    payload.claims.forEach((c, i) => {
+      if (c && !SOURCE_CLASSES.includes(c.source_class)) problems.push(`claims[${i}].source_class must be one of ${SOURCE_CLASSES.join("|")}`);
+      if (c && !CONFIDENCE_LEVELS.includes(c.confidence)) problems.push(`claims[${i}].confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+    });
+  }
+  if (type === "work_action_map" && Array.isArray(payload.rows)) {
+    payload.rows.forEach((r, i) => {
+      if (!r) return;
+      // any SCREAMING_SNAKE type is accepted so the taxonomy can grow from real
+      // work, but a lowercase or free-text value is almost always a typo
+      if (!/^[A-Z][A-Z_]*$/.test(String(r.action_type ?? ""))) problems.push(`rows[${i}].action_type must be SCREAMING_SNAKE (known: ${ACTION_TYPES.join("|")})`);
+      if (!SOURCE_CLASSES.includes(r.source_class)) problems.push(`rows[${i}].source_class must be one of ${SOURCE_CLASSES.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.confidence)) problems.push(`rows[${i}].confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.gameability)) problems.push(`rows[${i}].gameability must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!["LOW", "MEDIUM", "HIGH"].includes(r.distortion_risk)) problems.push(`rows[${i}].distortion_risk must be LOW|MEDIUM|HIGH`);
+    });
+  }
+  if (type === "work_decision_map" && Array.isArray(payload.rows)) {
+    payload.rows.forEach((r, i) => {
+      if (!r) return;
+      if (!SOURCE_CLASSES.includes(r.source_class)) problems.push(`rows[${i}].source_class must be one of ${SOURCE_CLASSES.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.confidence)) problems.push(`rows[${i}].confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.gameability)) problems.push(`rows[${i}].gameability must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!["LOW", "MEDIUM", "HIGH"].includes(r.distortion_risk)) problems.push(`rows[${i}].distortion_risk must be LOW|MEDIUM|HIGH`);
+    });
+  }
+  if (type === "game_concepts" && Array.isArray(payload.concepts)) {
+    const ids = payload.concepts.map((c) => c?.concept_id);
+    if (payload.recommended_concept_id && !ids.includes(payload.recommended_concept_id)) {
+      problems.push(`recommended_concept_id ${payload.recommended_concept_id} is not one of concepts[].concept_id`);
+    }
+    // 2026-09-23 Human Decision: a sourced work action is necessary but not
+    // sufficient. Reproducing mindless repetition is forbidden, so every
+    // concept must name what the CHILD actively does, from a fixed vocabulary.
+    payload.concepts.forEach((c, i) => {
+      const ops = String(c?.child_active_operations ?? "");
+      if (!ops.trim()) { problems.push(`concepts[${i}] (${c?.concept_id}): child_active_operations is required — name what the child actively does (${CHILD_ACTIVE_OPERATIONS.join("/")})`); return; }
+      if (!CHILD_ACTIVE_OPERATIONS.some((op) => ops.includes(op))) {
+        problems.push(`concepts[${i}] (${c?.concept_id}): child_active_operations names none of ${CHILD_ACTIVE_OPERATIONS.join("/")} — a game the child does not actively operate is work reproduction, not a game`);
+      }
+    });
+    // Three concepts that share a main action are one concept in three skins.
+    const actions = payload.concepts.map((c) => String(c?.main_action ?? "").trim().toLowerCase()).filter(Boolean);
+    if (new Set(actions).size < actions.length) problems.push("two or more concepts share the same main_action — they are one concept with different skins");
+  }
+  if (type === "final_game_design") {
+    if (payload.game_fit_confidence && !CONFIDENCE_LEVELS.includes(payload.game_fit_confidence)) {
+      problems.push(`game_fit_confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+    }
+    // §17: rejecting the alternatives is part of the decision, not an afterthought.
+    if (Array.isArray(payload.rejected_concepts) && payload.rejected_concepts.length < 2) {
+      problems.push("rejected_concepts must record why each non-adopted concept was not chosen (at least 2)");
+    }
+  }
   return { ok: problems.length === 0, problems };
+}
+
+// ------------------------------------------------------------- FACT GATE
+// §8 of the 2026-09-23 directive, made mechanical. The gate does not ask
+// whether a game would be fun; it asks whether there is at least ONE real,
+// attributable, sourced work action that a child could perform without the
+// job being misrepresented. If there is not, no game concept may be written
+// — the honest move is more research, not a better-sounding idea.
+//
+// 2026-09-23: the gate does NOT require a DECISION. A verified PERCEPTION,
+// VERIFICATION, TIMING, ANOMALY_DETECTION or COORDINATION row qualifies on
+// exactly the same terms. What it has always required, and still does, is
+// that the action is real, attributed and sourced.
+//
+// A row qualifies when ALL of:
+//   - actor is named (not empty, not UNKNOWN)
+//   - confidence is HIGH, or MEDIUM carried by a strong source class
+//   - gameability is HIGH or MEDIUM (a child could plausibly do this)
+//   - distortion_risk is not HIGH
+/** A legacy work_decision_map read as a work_action_map: every row is a
+ * DECISION, and its `decision` field is the action_or_judgement. This is the
+ * compatibility direction the 2026-09-23 Human Decision asked for — nothing
+ * was renamed, the older shape is simply a special case of the newer one. */
+export function toActionMap(payload) {
+  if (!payload) return null;
+  const rows = Array.isArray(payload.rows) ? payload.rows : [];
+  if (rows.length === 0) return { ...payload, rows: [] };
+  const alreadyActions = rows.some((r) => r && r.action_type);
+  if (alreadyActions) return payload;
+  return {
+    ...payload,
+    rows: rows.map((r) => ({
+      ...r,
+      action_type: "DECISION",
+      action_or_judgement: r.action_or_judgement ?? r.decision ?? r.physical_or_digital_action ?? "",
+    })),
+  };
+}
+
+/** The WORK_DECISION_MAP compatibility view: the DECISION rows of an action map. */
+export function decisionViewOf(payload) {
+  const m = toActionMap(payload);
+  if (!m) return null;
+  return { ...m, rows: (m.rows ?? []).filter((r) => r?.action_type === "DECISION") };
+}
+
+/** Pick whichever map a pipeline holds, preferring the action map. Returns
+ * {payload, type} or null. A STALE artifact is treated as absent. */
+export function resolveWorkMap(pipeline) {
+  for (const type of ["work_action_map", "work_decision_map"]) {
+    const a = pipeline?.artifacts?.[type];
+    if (a && a.status !== "STALE") return { payload: toActionMap(a.payload), type, version: a.version };
+  }
+  return null;
+}
+
+export function factGateRows(workMap) {
+  const rows = Array.isArray(toActionMap(workMap)?.rows) ? toActionMap(workMap).rows : [];
+  return rows.filter((r) => {
+    if (!r) return false;
+    const actor = String(r.actor ?? "").trim();
+    if (!actor || /^unknown$/i.test(actor)) return false;
+    const strongEnough = r.confidence === "HIGH"
+      || (r.confidence === "MEDIUM" && STRONG_SOURCE_CLASSES.has(r.source_class));
+    if (!strongEnough) return false;
+    if (!["HIGH", "MEDIUM"].includes(r.gameability)) return false;
+    if (r.distortion_risk === "HIGH") return false;
+    return true;
+  });
+}
+
+/** Returns [] when the FACT GATE passes, else the reasons it does not. */
+export function factGateReasons(workMap) {
+  if (!workMap) return ["no work_action_map artifact (or it is STALE)"];
+  const m = toActionMap(workMap);
+  const rows = Array.isArray(m.rows) ? m.rows : [];
+  if (rows.length === 0) return ["work_action_map has no rows"];
+  const passing = factGateRows(m);
+  if (passing.length > 0) return [];
+  const why = [];
+  const named = rows.filter((r) => r?.actor && !/^unknown$/i.test(String(r.actor).trim()));
+  if (named.length === 0) why.push("no row names an actor — every row is UNKNOWN");
+  const sourced = named.filter((r) => r.confidence === "HIGH" || (r.confidence === "MEDIUM" && STRONG_SOURCE_CLASSES.has(r.source_class)));
+  if (named.length > 0 && sourced.length === 0) why.push(`no row reaches HIGH confidence, or MEDIUM carried by ${[...STRONG_SOURCE_CLASSES].join("/")}`);
+  const playable = sourced.filter((r) => ["HIGH", "MEDIUM"].includes(r.gameability));
+  if (sourced.length > 0 && playable.length === 0) why.push("no sufficiently-sourced row is translatable into a child's action (gameability LOW/UNCONFIRMED)");
+  const undistorted = playable.filter((r) => r.distortion_risk !== "HIGH");
+  if (playable.length > 0 && undistorted.length === 0) why.push("every translatable row would badly misrepresent the job (distortion_risk HIGH)");
+  return why.length ? why : ["no row satisfies actor + evidence + gameability + distortion together"];
+}
+
+// ------------------------------------------- concept → decision row trace
+// 2026-09-23, found by running the pipeline for real on the first job.
+// The FACT GATE validates the decision map's ROWS. Nothing checked that a
+// game concept actually RESTS on one of those rows — so a concept built on a
+// decision nobody makes reached the critic, who rejected it with
+// "主操作が実務として裏づけられていない". The gap was structural, not careless:
+// the gate and the concepts were validated in separate scopes.
+//
+// Each concept must name the rows it stands on, as `rows[N]` references, and
+// every referenced row must exist AND have passed the FACT GATE. This cannot
+// prove the main_action really is that row's action — a human or a critic
+// still has to judge that — but it makes "I built this on nothing" impossible
+// to submit silently.
+export function conceptRowTraceProblems(conceptsPayload, workMapPayload) {
+  const problems = [];
+  const concepts = Array.isArray(conceptsPayload?.concepts) ? conceptsPayload.concepts : [];
+  const map = toActionMap(workMapPayload);
+  if (!map) return ["no work_action_map to trace concepts against (or it is STALE)"];
+  const rows = Array.isArray(map.rows) ? map.rows : [];
+  const passing = new Set(factGateRows(map).map((r) => rows.indexOf(r)));
+  for (const c of concepts) {
+    const ref = String(c?.decision_row_ids ?? "");
+    const idx = [...ref.matchAll(/rows\[(\d+)\]/g)].map((m) => Number(m[1]));
+    if (idx.length === 0) {
+      problems.push(`concept ${c?.concept_id}: decision_row_ids names no rows[N] — a concept must say which work decision map rows it stands on`);
+      continue;
+    }
+    for (const i of idx) {
+      if (!rows[i]) { problems.push(`concept ${c?.concept_id}: rows[${i}] does not exist in the work decision map`); continue; }
+      if (!passing.has(i)) {
+        problems.push(`concept ${c?.concept_id}: rows[${i}] ("${String(rows[i].work_action).slice(0, 40)}") did NOT pass the FACT GATE (actor=${rows[i].actor}, gameability=${rows[i].gameability}, distortion_risk=${rows[i].distortion_risk}) — a concept may not be built on it`);
+      }
+    }
+  }
+  return problems;
+}
+
+// --------------------------------------------- V2 GAME DESIGN READY checks
+// The V2 equivalent of GAME_DESIGN_READY_CHECKS. Same shape, different
+// pipeline: PLAY FIRST replaces profession-first, so there is no
+// profession_name_hidden_test here — the job name is not in the game at all
+// until after CLEAR, which the build-side QA harness asserts.
+export const V2_DESIGN_READY_CHECKS = [
+  { id: "legacy_inventory_exists", check: (p) => (art(p, "legacy_inventory") ? null : "legacy inventory missing or STALE") },
+  { id: "work_research_exists", check: (p) => (art(p, "work_research") ? null : "work research missing or STALE") },
+  { id: "action_map_exists", check: (p) => (resolveWorkMap(p) ? null : "work action map missing or STALE") },
+  { id: "fact_gate_passes", check: (p) => { const r = factGateReasons(resolveWorkMap(p)?.payload); return r.length ? `FACT GATE: ${r.join("; ")}` : null; } },
+  { id: "fact_confidence_not_low", check: (p) => (["LOW", "UNCONFIRMED"].includes(p.confidence?.fact) ? `fact_confidence is ${p.confidence.fact}` : null) },
+  { id: "reference_research_exists", check: (p) => (art(p, "game_reference_research") ? null : "game reference research missing or STALE") },
+  { id: "concepts_gte_3", check: (p) => { const n = art(p, "game_concepts")?.payload?.concepts?.length ?? 0; return n >= 3 ? null : `game concepts < 3 (have ${n})`; } },
+  { id: "comparison_exists", check: (p) => (art(p, "game_concepts")?.payload?.comparison ? null : "concept comparison matrix missing") },
+  { id: "concepts_trace_to_gate_rows", check: (p) => { const c = art(p, "game_concepts"), m = resolveWorkMap(p); if (!c || !m) return null; const probs = conceptRowTraceProblems(c.payload, m.payload); return probs.length ? probs[0] : null; } },
+  { id: "final_design_exists", check: (p) => (art(p, "final_game_design") ? null : "final game design missing or STALE") },
+  { id: "rejections_recorded", check: (p) => ((art(p, "final_game_design")?.payload?.rejected_concepts?.length ?? 0) >= 2 ? null : "rejected concepts not recorded") },
+  { id: "game_critic_pass", check: (p) => (p.independent_review?.verdict === "PASS" && p.independent_review?.independent === true && p.independent_review?.stale !== true ? null : `game critic is ${JSON.stringify(p.independent_review?.verdict ?? null)} (independent=${p.independent_review?.independent ?? false}, stale=${p.independent_review?.stale ?? false})`) },
+  { id: "unresolved_human_decision_false", check: (p) => ((p.human_decisions ?? []).some((h) => h.status === "open") ? "an open Human Decision exists" : null) },
+  { id: "not_escalated", check: (p) => (p.state === "ESCALATED" ? "pipeline is ESCALATED" : null) },
+  { id: "not_concept_rejected", check: (p) => (p.state === "GAME_CONCEPT_REJECTED" ? "the concept was rejected; return to research or design" : null) },
+];
+
+export function v2DesignReadyReasons(pipeline) {
+  return V2_DESIGN_READY_CHECKS.map((c) => ({ id: c.id, reason: c.check(pipeline) })).filter((r) => r.reason);
+}
+
+// ----------------------------------------------------------- confidence
+// §26: three confidences, each gating a different transition. LOW never
+// blocks unrelated work — it blocks exactly one step forward.
+export const CONFIDENCE_KINDS = ["fact", "game_fit", "design"];
+export function confidenceBlockers(pipeline, transition) {
+  const c = pipeline?.confidence ?? {};
+  const low = (v) => ["LOW", "UNCONFIRMED"].includes(v);
+  const out = [];
+  if (transition === "GAME_DESIGN" && low(c.fact)) out.push(`fact_confidence=${c.fact}: cannot proceed to game design`);
+  if (transition === "BUILD" && low(c.game_fit)) out.push(`game_fit_confidence=${c.game_fit}: cannot proceed to build`);
+  if (transition === "PRODUCTION_READY" && low(c.design)) out.push(`design_confidence=${c.design}: cannot be production ready`);
+  return out;
 }
 
 // ------------------------------------------------- mechanical consistency repair

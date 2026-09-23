@@ -1,0 +1,219 @@
+# Factory Retrospective — 栄養教諭 Job Vertical Slice (2026-09-21)
+
+Two questions: why did the 給食 lane get slow and fragmented before today, and what
+should the next job do differently. Kept short on purpose; only the items that will
+recur are promoted to canonical rules.
+
+## 1. Why the 給食 lane fragmented
+
+**Root cause: `DESIGN_NEEDED` was a full stop, not a queue.** The marker existed only
+as prose in `DESIGN_OWNERSHIP.md` and as a string in `copy.ts`. It had no id, no
+status, no place in the ledger. So every time the build met a gap it had exactly one
+move: stop and ask. The record shows the shape — four independent-review rounds
+(r1..r4), each ending in a Human round-trip, each resuming from a cold context, and a
+task parked `BLOCKED` on a single missing design.
+
+That is now mechanical: `task-state.mjs design-needed <id> --add/--resolve/--list`
+records the gap as an addressable item and **deliberately does not change the task's
+status**, so unrelated work continues; `block --design-needed` is the only route to
+the new `DESIGN_BLOCKED` status; `can-deploy` refuses while any item is unresolved.
+Today's slice carries three open items (rack art, map tiles, job-scene art) and still
+went from audit to finished flow without stopping once.
+
+**Second cause: the Design Owner was asked one question at a time.** Nine separate
+round-trips for what was, in the end, one coherent brief. The correction is in the
+rule now: gaps are accumulated and returned as one batch per job.
+
+**Third cause: the reviewer's findings were re-litigated instead of being turned into
+tests.** The same class of finding ("a placeholder is visible", "the status display is
+not legible") came back in r1, r2, r3 and r4. Nothing turned it into an assertion, so
+nothing prevented it from returning.
+
+## 2. The most expensive lesson: the QA harness was passing wrong implementations
+
+The independent reviewer mutated the board to render the raw model total, to render
+「できた！」/「まだだよ」, and to render an explicit aptitude verdict about the child —
+**all three still passed the harness**, which at the time reported "51/51 checks
+passed" and was the recorded QA evidence. A fourth mutation moved the auto-clear into
+`place()` and also passed, because the check counted occurrences of a string instead
+of driving the state machine.
+
+The checks were greps over source text. They asserted that the code did not *look*
+wrong. They could not see behaviour.
+
+This is the finding most likely to recur, so it is promoted to a canonical rule
+(`factory/rules/qa-rules.md`): **a gate check must observe behaviour, not source
+text.** Concretely, for a game:
+
+- drive the state machine over the whole space and assert the invariant, rather than
+  grepping for the call that would break it;
+- collect what is actually rendered in a real browser and assert against an
+  allow-list built from the copy module, rather than a blocklist of bad words;
+- a source grep may be recorded as a *documentation* check, and must be labelled as
+  one so nobody mistakes it for a gate.
+
+The rebuilt harness now drives 126 trays through place/remove/swap/fireEvent and
+asserts the cleared phase is unreachable, and the screenshot harness asserts the same
+kind of thing in the browser. That last one also closed a second hole: a missing
+picture used to fall back to a CSS shape silently, with no 4xx and no text, so the run
+reported `ok: true` with seven assets missing.
+
+**And then the rebuilt harness was itself found wanting, twice.** A fresh independent
+review mutated the board again and showed that the new checks still passed a game that
+sends itself on a timer, a score that flashes only during the 380ms dish flight, and a
+verdict shown only during the 900ms settle window — because the browser harness
+performed the gesture itself, and because it only looked at 23 quiescent moments. A
+second round then found that the touch-geometry assertion ran *after* the flow had left
+the board, so it inspected an empty page and passed vacuously, that the no-number rule
+never looked at accessible names, and that a job name flashed during play would not be
+caught.
+
+Three further rules come out of that, and they are the ones worth keeping:
+
+- **A check that samples cannot see what happens between the samples.** Accumulate
+  continuously (a `MutationObserver` over the whole run) and assert over everything that
+  was ever rendered, not over screenshots.
+- **A driven test cannot prove that nothing happens on its own.** If the harness
+  performs the gesture, add an explicit idle window and assert that nothing advances.
+- **A check must fail when it had nothing to check.** The vacuous geometry assertion
+  looked identical to a passing one. Every such check now counts its subjects and fails
+  itself if the count is implausible.
+
+All of these were verified by mutation: seven deliberately-wrong implementations were
+written, and each is now caught by a named assertion.
+
+## 3. Why Ver.1 knowledge nearly disappeared
+
+The Ver.2 rebuild replaced the game and, with it, would have replaced the job
+knowledge — Ver.1's 「1日の流れ」, 「どうやってなる？」 and the sourced correction that a
+栄養士 qualification alone is not enough all lived in files the new code did not touch
+and did not read. Nothing in the process required anyone to look.
+
+`legacy-inventory.md` now exists for this job, with a KEEP / UPGRADE / REPLACE / DROP
+decision and a reason per asset. Promoted to a rule: **a Ver.2 job slice starts with a
+legacy inventory of that job, and a DROP needs a written reason.**
+
+## 4. What worked and should be kept
+
+- **Parallel audit lanes before any building.** Five read-only lanes (factory
+  architecture, Ver.1 assets, primary-source facts, current implementation, quality
+  benchmark) ran at once and produced the whole plan. The fact lane alone found that
+  the 栄養教諭's職務 had been redefined by a 2025 通知 that none of the existing
+  research knew about, and that four claims in the existing fact set were wrong.
+- **Independent review in a separate context is worth its cost.** Four reviewers found
+  four different classes of defect; the implementation reviewer's mutation test is the
+  single most valuable thing produced today, and it is exactly the thing a self-review
+  cannot do.
+- **Tuning the game by exhaustive search.** All 126 menus are enumerated on every QA
+  run, so "several genuinely different solutions", "no dead ends" and "the trouble
+  always leaves a way back" are measured, not hoped for.
+
+## 5. What was not needed
+
+- Re-deriving the design from scratch each round. The design contract should be
+  written once per job and referenced, not restated.
+- Regenerating art that already passed. The dish/tray/truck/school assets were reused
+  untouched; only genuinely new objects were queued for generation.
+
+## 6. How many Human interruptions should the next job need?
+
+Today's slice needed **zero** mid-flight, against nine in the previous rounds. The
+remaining Human items are all genuine decisions, batched for one sitting: the three
+art gaps, the Product Identity approval for a core-loop change, and the OPEN items
+(D-08 / D-12 / D-14 / T-03) that this slice implements a working answer to without
+claiming one. The target for the next job is the same: **zero mid-flight, one batch at
+the end.**
+
+## 6b. The r4 round (2026-09-22): "we checked it" is not a check
+
+r4 returned FAIL 80 with no blockers and nothing wrong in the game. Its three
+findings were all in the harness again, and the most useful one was the dullest:
+the harness *claimed* five phone sizes were covered and actually ran one. Earlier
+rounds had opened the other four by hand, looked at them, and written down that they
+fitted. The first time the sweep ran as an assertion it failed — at 320×568 the tray
+recesses were 61×43 and the milk recess 52×40, under the 44×44 minimum that the same
+harness enforced at 375×812.
+
+Nothing had regressed. The defect had been there all along, on the smallest phone the
+slice claims to support, and four independent reviews plus a manual pass had missed it
+because looking at a screenshot does not measure anything.
+
+The rule that follows is narrow and worth keeping: **a viewport, a media setting or a
+locale that the product claims to support is a parameter of the test run, never a
+sentence in a report.** If a round-trip cannot afford to run all of them, the claim
+should be narrowed, not asserted.
+
+Second lesson from the same round, about reviewers rather than about tests. r4's only
+HIGH did not reproduce: two separate mutations that should have exploited it were
+caught by the unfixed harness. The finding was sound as reasoning and wrong as fact.
+It was still worth acting on, because the check had been passing by coincidence
+(React never changes a class here without also mutating nodes, which is what actually
+triggered the re-scan) and a check that passes by coincidence is not a check. What
+mattered was recording *that* — a later reader who re-runs M14 without the fix will see
+it pass and would otherwise conclude the repair was theatre.
+
+**A finding that does not reproduce is not automatically wrong, and a repair applied to
+a non-reproducing finding must say so in the log.** Both halves of that are needed:
+the first stops reviewers being dismissed, the second stops the record becoming fiction.
+
+## 6c. When to stop reviewing (r5, r6 — 2026-09-22)
+
+Six Codex rounds on this slice, scoring 68 → 72 → 78 → 80 → 84 → 86. No blockers
+since r1. No finding in the game's own code since r3. Every round since then has
+found a hole in the QA harness, and the holes have been getting narrower:
+
+| round | the finding | did the app actually do it? |
+|---|---|---|
+| r1–r3 | the harness passed a rendered score, an auto-clear, a tap-stealing overlay | yes — real gaps in a gate guarding real code |
+| r4 | a class-only change would not trigger a re-scan | no — could not be reproduced |
+| r4 | five phone sizes were claimed, one was run | yes — and it found a real 44px defect |
+| r5 | a form control's value is never collected | no such control exists, but cheap and exact to close |
+| r6 | a value assigned through the property; `alt`, `::marker`, canvas text, shadow DOM, `aria-valuetext` | none of these exist anywhere in the slice |
+
+That is a curve worth naming. The reviewer started by finding gates that could not see
+what the app **does**, and has ended by finding gates that cannot see what the app
+**does not do**. Both are legitimate review output — the second kind is how you harden
+a gate against future code — but they are not the same kind of risk, and treating them
+the same is how a slice never ships.
+
+The rule taken from this: **a review round is worth running while its findings still
+change what the child gets. Once a round's findings are only about code that does not
+exist, close them if they are cheap, and then stop and say so in the record.** Stopping
+is a judgement that must be written down with its evidence (the score curve, where the
+findings landed, which are reproducible), not a quiet decision to run out of rounds.
+
+The r6 findings were closed anyway, because each was a few lines and because the
+audit should not depend on the app happening not to use canvas. But r7 was named in
+advance as the last round justifiable on quality grounds; beyond that the loop would be
+enumerating an infinite set of ways hypothetical code could show a string.
+
+**r7 returned PASS, 94, with nothing at any severity** — the first PASS in seven
+rounds, and it landed on the round that had been declared the last one. That is a
+coincidence worth not over-reading: the prediction was about diminishing returns, not
+about when a PASS would arrive. What it does confirm is that the curve was read
+correctly. The reviewer's closing evidence includes the sentence the round was asked
+for: *no findings concern hypothetical canvas, shadow-DOM, form-control, marker,
+alt-text, or other channels absent from this slice.*
+
+Its one recommended action was environmental rather than a defect — the read-only
+review sandbox could not run Chrome or write TypeScript build info, so it asked for
+`build:v2` and `shots:v2-lunch` to be re-run somewhere writable. Both were, at the
+reviewed commit, and both passed. Worth noting for the next job: **the reviewer cannot
+execute the browser harness, so "the harness passes" is always the producer's claim,
+attested by the checked-in run record.** That asymmetry is the strongest remaining
+argument for keeping the mutation log — it is the only thing that makes the producer's
+claim falsifiable by someone else.
+
+## 7. Promoted to canonical rules
+
+| Rule | Where |
+|---|---|
+| A gate check observes behaviour, not source text; a source grep is a documentation check and must say so | `factory/rules/qa-rules.md` |
+| A screenshot run asserts every state (markers, forbidden content, rendered-string allow-list, image load), not just the last one | `factory/rules/qa-rules.md` |
+| `DESIGN_NEEDED` is a queued item that does not stop unrelated work; only an explicit block sets `DESIGN_BLOCKED` | `factory/harness/task-state.mjs` (mechanical) + `CLAUDE.md` §5 |
+| A Ver.2 job slice starts with a legacy inventory; a DROP needs a written reason | `docs/jibun-choice-v2/MIGRATION_PLAN.md` |
+| A supported viewport / media setting is a parameter of the test run, never a sentence in a report | `factory/rules/qa-rules.md` |
+| A reviewer finding that does not reproduce is recorded as such, and any repair made anyway says why | `factory/rules/qa-rules.md` |
+
+Not promoted (one-offs): the specific gauge geometry, the specific dish coefficients,
+the Codex quota collision between image generation and review.

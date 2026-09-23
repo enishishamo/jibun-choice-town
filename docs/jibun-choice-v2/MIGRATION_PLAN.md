@@ -82,6 +82,31 @@ Ver.2 が「1 ゲーム完成 → テスト」の段階に入った時点で決�
 - Ver.2 の公開導線には未改修ゲームを大量に並べない。
 - 既存ゲームは削除せず `archive/ver1` と `src/q1/` に残す。
 
+### 1 職業の完成 = Job Vertical Slice（2026-09-21 追加）
+
+「1 ゲーム完成」ではなく、次が全部通って初めて 1 職業が完成とする。
+
+```
+ENTRY → PLAY → EVENT → CLEAR → JOB REVEAL → KNOW THE JOB
+      → CAREER PATH → 好きの種 → WORLD RETURN
+```
+
+PLAY だけ、あるいは JOB REVEAL を仮画面にしたまま完成扱いにしない。開発者向け表示
+（`TEMP_IMPLEMENTATION_ONLY` / `DESIGN_NEEDED` / `DN-nn`）が子どもの導線に残ってい
+る状態も完成ではない（`task-state.mjs can-deploy` が機械的に拒否する）。
+実例と経緯: `factory/projects/v2-lunch-menu/nutrition-teacher-slice.md`。
+
+### 着手時に必ず行うこと: LEGACY INVENTORY（2026-09-21 追加）
+
+Ver.2 は Ver.1 を捨てて作り直すものではなく、**入口と PLAY を作り直し、その裏の
+職業理解・事実・調査結果は継承する**もの。新しい職業に着手する前に、repo 全体から
+その職業に関わる Ver.1 資産（職業紹介・1日の流れ・なり方・career path・copy・
+ゲームロジック・画像・QA/批評記録・ユーザーテスト記録）を洗い出し、
+**KEEP / UPGRADE / REPLACE / DROP** を 1 件ずつ判断して書き残す。**DROP には必ず
+理由を書く。**「Ver.2 を作ったら昔あったものが消えていた」を仕組みで防ぐ。
+
+雛形: `factory/projects/v2-lunch-menu/legacy-inventory.md`。
+
 ## 5. Factory ルールとの接続
 
 - **Product Identity Gate**: Ver.2 の相棒・ループ・アイテム・ノートは Human Decision 済み
@@ -96,23 +121,35 @@ Ver.2 が「1 ゲーム完成 → テスト」の段階に入った時点で決�
 - **language-style / qa-rules / game-critic-v2**: 引き続き適用。ただし game-critic-v2 の採点軸に
   PLAY FIRST（説明画面なし・最初のタップで反応）が入っていない場合は、Ver.2 用に追記が必要（OPEN）。
 
-## 6. 次に着手できる最小タスク（実装はまだ開始しない）
+## 6. 進捗（2026-09-22 時点）
 
-**Step 0（2026-09-20 完了）**: Ver.1 凍結（`ver1-archive-2026-09-20` / `archive/ver1`）/ `v2/develop` /
-Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-freeze`）/
-Visual Reference 配置（`design/v2/reference/concept-board-2026-09-20.png`、Master ではない）。
-→ **Ver.2 移行準備は完了扱い。** 以降は Step 1 から。
+**Step 0（2026-09-20 完了）**: Ver.1 凍結（`ver1-archive-2026-09-20` / `archive/ver1`）/
+`v2/develop` / Design Bible / Ver.1 AS-IS 監査 / `src/v2/` 開発基盤（案A、`check:ver1-freeze`）/
+Visual Reference 配置（Master ではない）。
 
-**Step 1（次）— 栄養・メニュー Ver.2 の「体験設計」**（コードを書かない。DESIGN_OWNERSHIP §3 の第 1 段）:
-1. NEEDS_VALIDATION V-01〜V-04 の事実確認（`jc-researcher` 相当の一次情報調査）
-2. 事実に基づく「体験」の設計: 何を触る／何が即座に変わる／スコアの意味（見せ方は GPT Screen Design）
-3. Lv1（栄養のみ）の最小仕様を `factory/projects/v2-lunch-menu/design.md` として作成
-4. `jc-critic` 相当の独立レビュー（PLAY FIRST 規約・principles.md BLOCKER）
-5. → **GPT Screen Design / Assets → Human Approval → Master**（Claude Code はここで待つ）
+**Step 1（2026-09-21 完了）— 栄養・メニューの体験設計**:
+一次情報の再調査（`facts/research-2026-09-21.md` F1〜F8。既存 research.md の誤り 4 件を訂正）、
+LEGACY INVENTORY（`legacy-inventory.md`）、仕様の正本
+（`factory/projects/v2-lunch-menu/nutrition-teacher-slice.md`）、独立レビュー。
 
-**Step 2 以降**: Claude Code Implementation（承認済み design のみ、`src/v2/games/lunch-menu/`）→
-Screenshot（375px）→ GPT / Codex Visual QA → 修正 → Human Approval → 子どもテスト → 改善 → 次ゲーム（候補順は OPEN）。
-Human Approval 前に完成 UI を独自設計しない。
+**Step 2（2026-09-22 実装済み・未承認）— 栄養教諭 Job Vertical Slice**:
+`src/v2/lunch/` に ENTRY → PLAY → EVENT → CLEAR → JOB REVEAL → KNOW THE JOB →
+CAREER PATH → 好きの種 → WORLD RETURN が通っている。ブランチ
+`v2/lunch-vertical-slice`。`main` にも公開先にも一切反映していない。
+
+- 機械検証: `npm run qa:v2-lunch`（54）/ `npm run shots:v2-lunch`（24 state ＋ 5 画面サイズ掃引）/
+  `check:ver1-freeze` / tsc / lint —— すべて PASS。変異テスト 25 件が全部落ちることを確認済み
+  （`factory/state/qa/v2-lunch-mutation-log.md`）。
+- 独立レビュー: `codex-review.mjs` を 7 ラウンド。blocker は r1 以降ゼロ、
+  ゲーム側の指摘は r3 以降ゼロ。残る指摘は QA ハーネス側のみ。
+- **残っているのは人間・Design Owner の判断だけ**:
+  (a) Ver.2 は core gameplay loop の変更なので `main` 反映には Human 承認が必要（§5）、
+  (b) 未解決 DESIGN_NEEDED 5 件（KNOW / CAREER / 好きの種 の画面設計、MAP の地面、板の窪み）、
+  (c) `main` が凍結タグから Ver.1 83 ファイル分ずれている件（台帳
+  `ver1-freeze-tag-vs-main-drift`、HUMAN_DECISION_REQUIRED）。
+
+**Step 3（次）**: 上記 (a)(b)(c) の判断のあと、子どもテスト → 改善 → 次の職業。
+次の職業の候補順は OPEN。**1 職業ずつ**は変えない。
 
 ## 7. 今回やらなかったこと（意図的）
 

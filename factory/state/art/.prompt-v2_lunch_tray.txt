@@ -1,0 +1,29 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: an empty pale cream plastic school-lunch tray seen from the same 35-degree camera as the dishes: a rounded rectangle with a raised rim, four shallow compartments in a 2x2 layout on the left/center and one round cup recess on the right (matching the tray in the approved reference), matte plastic-like clay surface. Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: こんだてPLAY のトレー（4 枠＋牛乳枠）。料理 master をこの上に重ねる
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, dish centered, the dish and food filling about 75% of the square with even margins (at least 12% on every side). No table, no cloth, no shadow plate: the dish floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only under the food inside the dish. Matte clay / miniature toy texture, rounded simplified shapes, appetizing colors that are bright but not neon.
+Must include: empty cream lunch tray with four square recesses and one round recess; transparent background
+Must NOT include: readable text; letters or numbers; logos; attribute marks, icons, badges or symbols; hands or people; table, cloth, background, backdrop or drop shadow outside the dish; chopsticks or cutlery; steam text or speech bubbles; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 4:3 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the dish.
+
+PREVIOUS ATTEMPT FAILED QA. Fix these specific problems this time:
+- Fix vs reference set: 参照画像の手作り粘土らしい微細な凹凸に比べ、トレー表面が均一で光沢が強く、成形プラスチック製品に見える
+- Fix vs reference set: 参照画像は背景まで同一のクレイ世界として構成されているが、候補は透明表現ではなく市松模様が画像内に焼き込まれて見え、ゲーム画面へ自然に合成できない
+- Fix vs reference set: 参照画像の柔らかな斜光と立体的な陰影に対し、候補は正面寄りの均一照明で、ミニチュア・ジオラマ感が弱い
+- 市松模様が実際の透明背景ではなく画像内容として表示されているように見える — 料理素材を重ねる用途では背景が露出し、完成画面を壊す
+- 表面が滑らかで艶のある樹脂質に寄っている — 同シリーズのマットで手作り感のある粘土素材と並べると質感差が目立つ
+- トレー外周の余白と中央配置は安全で、4つの料理枠と牛乳用の円形枠も明瞭だが、右側の広い空き領域の用途が視覚的に曖昧
+- vision critic verdict: FAIL (MUST violation or unstated failure)
+- SERIES_STYLE_MATCH below SERIES gate (80): 77

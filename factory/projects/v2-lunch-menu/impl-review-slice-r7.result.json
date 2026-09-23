@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "PASS",
+    "score": 94,
+    "blockers": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "evidence": [
+      "src/v2/lunch/play/lunchMenuLogic.ts:260 — `canSend()` requires a viable complete tray and rejects cleared sessions; exhaustive QA found 16 viable menus and no dead ends.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:284 — `pickEventDish()` considers only dishes currently on the tray and filters targets by `MIN_RECOVERIES`; all viable menus retained at least seven recovery menus in the executed QA.",
+      "src/v2/lunch/play/lunchMenuLogic.ts:313 — `send()` is the sole transition to `cleared`; the first valid send enters rebuild and the second delivers.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:107 — PLAY animation timers are registered in `fxTimers`, removed when fired, and cleared during unmount.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:175 — Superseded flights are sequence-guarded, and landing effects verify that the expected dish still occupies the destination slot.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:245 — Sending is input-driven and guarded against invalid state; no timer calls `send()` or clears the game automatically.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:281 — The school is a genuine focusable button when sendable, providing an accessible equivalent to the upward swipe.",
+      "src/v2/lunch/copy.ts:21 — Reviewed user-visible text is centralized in `COPY`; no pre-CLEAR job name, aptitude verdict, score, grade, developer marker, or numeric nutrition result was found in `src/v2`.",
+      "src/v2/state/progress.ts:27 — Stored progress is reconstructed from validated nested fields, so malformed JSON and malformed entries fall back safely without crashing subsequent updates.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:168 — The pure harness drives every modeled place/remove/swap/event transition and verifies that none reaches `cleared`; all 54 checks passed locally.",
+      "factory/harness/v2-lunch-shots.mjs:348 — The browser harness checks five mobile viewports, vertical and horizontal fit, rack geometry, tap ownership, overlap, minimum target size, and the full reduced-motion journey.",
+      "factory/harness/ver1-freeze-check.mjs:40 — The freeze check passed: Ver.1 files match the archive tag and all 22 files under `src/v2` avoid forbidden Ver.1 imports.",
+      "No findings concern hypothetical canvas, shadow-DOM, form-control, marker, alt-text, or other channels absent from this slice.",
+      "Fresh browser screenshots and compilation could not be rerun in the read-only review sandbox: Chrome/Vite required socket or filesystem writes and TypeScript could not write build-info files. The checked-in latest browser run reports `ok: true`, no violations, no browser errors, and no broken images."
+    ],
+    "recommended_actions": [
+      "Rerun `npm run build:v2` and `npm run shots:v2-lunch` in the normal writable CI environment to refresh the environmental verification at HEAD."
+    ]
+  },
+  "elapsed_sec": 130.481,
+  "review_mechanism": "factory/harness/codex-review.mjs",
+  "reviewer": "codex",
+  "prompt_file": "factory/projects/v2-lunch-menu/impl-review-slice.prompt.md",
+  "prompt_sha256": "68e8a62d60c35f25d4edce8e9e44e10c8aa8787ace3a61e68df944a9141d0989"
+}

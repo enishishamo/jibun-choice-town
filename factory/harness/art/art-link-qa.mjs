@@ -76,6 +76,54 @@ for (const f of srcFiles("src")) {
   }
 }
 
+// 5c. PROVENANCE COVERAGE (2026-09-21, R6c) — every asset that src/ actually
+// references must have a provenance entry in the manifest with a known
+// source_type. Before this, an image could be committed, referenced and
+// shipped with nobody able to say where it came from (generated? paid API?
+// copied from the web?) — factory/rules/art-style.md requires provenance,
+// but nothing checked it, so the rule only held while someone remembered.
+// The join is by content hash first (exact), then by the manifest entry's
+// `filename`, which may be world-relative ("baskets/red.png") — hence the
+// path-suffix match. A file no longer referenced from src/ is NOT required
+// to have an entry (existing-asset protection: orphans are never deleted,
+// and back-filling provenance for dead files is busywork).
+const MANIFEST_V2 = join(ROOT, "factory/state/art/manifest-v2.json");
+const manifest = existsSync(MANIFEST_V2) ? JSON.parse(readFileSync(MANIFEST_V2, "utf8")) : { assets: [] };
+const manifestByHash = new Map();
+for (const e of manifest.assets ?? []) {
+  if (e.file_hash && !manifestByHash.has(e.file_hash)) manifestByHash.set(e.file_hash, e);
+}
+function manifestEntriesFor(asset) {
+  const byHash = manifestByHash.get(asset.hash);
+  if (byHash) return [byHash];
+  const hits = (manifest.assets ?? []).filter(
+    (e) => e.filename && (asset.path === `public/assets/${e.filename}` || asset.path.endsWith(`/${e.filename}`)),
+  );
+  if (hits.length <= 1) return hits;
+  // ambiguous basename (e.g. every world has its own "ba-before.png"):
+  // disambiguate by world folder, then by the most specific filename, and
+  // report whatever is still ambiguous as a warning, not an error.
+  const byWorld = hits.filter((e) => e.world && asset.path.includes(`/${e.world}/`));
+  const pool = byWorld.length > 0 ? byWorld : hits;
+  const longest = Math.max(...pool.map((e) => e.filename.length));
+  return pool.filter((e) => e.filename.length === longest);
+}
+const srcReferenced = inv.assets.filter((a) => (a.referenced_by ?? []).some((r) => r.startsWith("src/")));
+let provenanceMissing = 0;
+for (const a of srcReferenced) {
+  const hits = manifestEntriesFor(a);
+  if (hits.length === 0) {
+    provenanceMissing++;
+    errors.push(`provenance missing: ${a.path} is referenced from src/ (${a.referenced_by.filter((r) => r.startsWith("src/")).slice(0, 2).join(", ")}) but has NO entry in factory/state/art/manifest-v2.json — register it (factory/harness/art/art-loop.mjs register-existing) with a real source_type; never invent one`);
+    continue;
+  }
+  if (hits.every((e) => !e.source_type || e.source_type === "unknown")) {
+    provenanceMissing++;
+    errors.push(`provenance unknown: ${a.path} -> manifest entry ${hits.map((e) => e.asset_id).join("/")} has source_type=${JSON.stringify(hits[0].source_type ?? null)} — a referenced asset must record where it actually came from`);
+  }
+  if (hits.length > 1) warnings.push(`ambiguous manifest join for ${a.path}: ${hits.map((e) => e.asset_id).join(" , ")}`);
+}
+
 // 6. duplicate content
 for (const g of inv.duplicate_groups) warnings.push(`identical content: ${g.join(" , ")}`);
 
@@ -85,5 +133,6 @@ const orphans = inv.assets.filter((a) => a.quality_flags.includes("orphan"));
 for (const e of errors) console.log(`ERROR  ${e}`);
 for (const w of warnings) console.log(`WARN   ${w}`);
 console.log(`orphans (protected, informational): ${orphans.length}`);
+console.log(`provenance: ${srcReferenced.length - provenanceMissing}/${srcReferenced.length} src-referenced assets have a manifest entry with a known source_type`);
 console.log(`${errors.length} errors, ${warnings.length} warnings, ${inv.totals.assets} assets checked`);
 process.exit(errors.length ? 1 : 0);

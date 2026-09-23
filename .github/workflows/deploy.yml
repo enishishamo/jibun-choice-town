@@ -45,6 +45,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # 2026-09-21 (R5b): Ver.1 is frozen at ver1-archive-2026-09-20
+      # (docs/jibun-choice-v2/MIGRATION_PLAN.md). The guard existed but only
+      # ever ran when a session remembered to run it — an unattended push
+      # could publish a Ver.1 drift. fetch-depth:0 above means the tag is
+      # present, so this can run here.
+      - name: Ver.1 freeze guard
+        run: npm run check:ver1-freeze
       - name: Release gate (Product Identity / QA / independent review)
         run: node factory/scripts/release-gate-check.mjs --base "${{ github.event.before }}" --head "${{ github.sha }}"
       - run: npm run lint

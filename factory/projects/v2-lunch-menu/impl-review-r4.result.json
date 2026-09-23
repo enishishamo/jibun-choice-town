@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "status": "OK",
+  "label": "review",
+  "verdict": {
+    "verdict": "FAIL",
+    "score": 64,
+    "blockers": [],
+    "high": [
+      "src/v2/lunch/LunchWorldApp.tsx:54 — Unapproved TEMP world is the actual entry screen — LunchWorldMap is mounted without assets, so its explicitly TEMP_IMPLEMENTATION_ONLY CSS/SVG design and visible TEMP labels are shipped in the vertical slice, contrary to DESIGN_OWNERSHIP §2 requiring temporary visuals to stay non-public — supply approved world assets or keep this route behind a development-only gate.",
+      "src/v2/lunch/screens/JobReveal.tsx:8 — CLEAR proceeds directly into visible temporary screens — JobReveal and SeedPick render TEMP_IMPLEMENTATION_ONLY/DESIGN_NEEDED content as mandatory user-flow screens, so the vertical slice is not design-locked or releaseable — replace DN-08/DN-09 layouts and copy with approved designs, or terminate the reviewed slice before these screens until approval exists."
+    ],
+    "medium": [
+      "src/v2/lunch/play/LunchMenuPlay.tsx:210 — Flight state can be invalidated while its animation still lands — placement mutates the tray before the 380 ms flight completes, leaving the transparent arriving slot enabled; tapping it removes the dish, but the old timer still produces pop and sparks on the empty slot. An already-armed EVENT can similarly remove the flying dish before the timer lands — lock removal for the arriving slot or cancel flight effects whenever that slot/dish leaves the tray.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:218 — Rapid placements share global animation state — each new tap replaces fly and resets flyGo, but prior 20/380 ms timers remain active; an earlier timer can start the newer clone prematurely and generate a phantom landing on its old slot — track and cancel timers per flight sequence, and guard every landing side effect, not only setFly/setArriving, by the sequence token.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:23 — Advertised tmpdir isolation is incomplete — npm run qa:v2-lunch fails before any of its 26 checks because Vite still writes bundled config files under node_modules/.vite-temp; cacheDir only relocates the dependency cache — load Vite with a non-writing config strategy (for example configFile:false plus the required inline plugins) or otherwise redirect config bundling too.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:55 — Rendered-cue proof is synthetic rather than contract-level — the test fabricates an impossible evaluation with duplicate tray IDs and one invented hit per rule, so it only proves StatusLayer echoes supplied rule names; it does not prove evaluate can produce each rule from valid trays or that its real dish/detail data yields a correctly positioned cue — find a valid enumerated witness for every RuleId and render/assert each real evaluation.",
+      "factory/harness/gameplay-qa-v2-lunch-menu.mjs:101 — UI race conditions are wholly outside the QA suite — exhaustive EVENT recovery covers pure functions only, while the new timers, refs, rapid taps, StrictMode behavior, removal in flight, and EVENT-during-flight paths have no automated assertions — add fake-timer/component tests covering these adversarial sequences and assert both session and transient-effect cleanup.",
+      "src/v2/lunch/play/LunchMenuPlay.tsx:262 — Hidden delivery control remains exposed to assistive technology — the school button is always present with an accessible name and merely disabled/opacity-zero before commit, so screen-reader users encounter a destination that sighted users cannot see — conditionally render it when relevant or apply an equivalent hidden state until commitReady."
+    ],
+    "low": [
+      "src/v2/lunch/play/LunchMenuPlay.tsx:467 — Basket fallback lacks the required on-screen TEMP marker — all three basket PNGs are absent from public/assets/v2/lunch, so production execution uses placeholder basket shapes; unlike other placeholders, those shapes contain no visible TEMP_IMPLEMENTATION_ONLY marker — add approved basket assets or visibly mark each fallback and prevent it from release.",
+      "factory/harness/v2-lunch-shots.mjs:51 — Screenshot timing does not match its own label — four sequential taps each wait 220 ms, then the script waits another 700 ms, so 03-first-complete-grains is normally captured after the 1.4-second grain cleanup rather than during flight — capture relative to the final tap without the accumulated waits or assert that .lmp-grain exists before shooting."
+    ],
+    "evidence": [
+      "npm run check:ver1-freeze passed: src/public exclusions are correct and 18 src/v2 files import no Ver.1 screens, q1, state, or App.",
+      "npm run lint over the reviewed source and harness files completed successfully.",
+      "npm run qa:v2-lunch exited 1 before executing checks with EPERM writing node_modules/.vite-temp/vite.config.ts.timestamp-*.mjs.",
+      "Static inspection confirms StatusLayer performs no DOM/window access and is compatible with renderToStaticMarkup.",
+      "lunchMenuLogic.ts enforces the fixed milk slot, first-result plus rearrangement plus full-tray EVENT gate, score-independent commit, VISIBLE_ATTRIBUTES declarations, and a total related-set cap of two.",
+      "No out-of-palette literal colors were found in the reviewed v2 CSS; non-token color construction uses color-mix() with palette tokens.",
+      "The freeze harness excludes public/assets/v2/** as claimed."
+    ],
+    "recommended_actions": [
+      "Replace or development-gate all remaining TEMP_IMPLEMENTATION_ONLY world, reveal, seed, and basket visuals before approval.",
+      "Make flight effects cancellable and sequence-scoped; disable removal for arriving slots and cancel land/pop/spark/grain callbacks when the dish disappears.",
+      "Make qa:v2-lunch genuinely repository-write-free, then rerun all 26 checks.",
+      "Extend QA with valid per-rule rendered witnesses and component-level fake-timer tests for rapid taps, StrictMode, removal during flight, and EVENT firing during flight.",
+      "Hide the delivery control from the accessibility tree until it is visually available, and correct screenshot capture timing."
+    ]
+  },
+  "elapsed_sec": 118.275
+}

@@ -32,7 +32,7 @@ in [`factory/state/product-ideas/gate-log.md`](factory/state/product-ideas/gate-
 | File | Content |
 |---|---|
 | [`PRODUCT_PRINCIPLES.md`](docs/jibun-choice-v2/PRODUCT_PRINCIPLES.md) | Mission (unchanged), what never changes, PLAY FIRST, core loop, UI/TEXT RULE |
-| [`CHARACTER_BIBLE.md`](docs/jibun-choice-v2/CHARACTER_BIBLE.md) | Companion character HARD RULES (right ear = 🔍, left ear = ❤️, mouth = NONE, beak = NONE, small round orange nose). Visual source of truth: `design/v2/master/companion-model-sheet-2026-09-20.png` — always reference the Master image, not only the text |
+| [`CHARACTER_BIBLE.md`](docs/jibun-choice-v2/CHARACTER_BIBLE.md) | Companion character HARD RULES (right ear = 🔍, left ear = ❤️, mouth = NONE, beak = NONE, small round orange nose, **never mirrored in code** — no `scaleX(-1)` / `rotateY(180deg)` / flip). Visual source of truth: `design/v2/master/companion-model-sheet-2026-09-20.png` — always reference the Master image, not only the text |
 | [`WORLD_DESIGN.md`](docs/jibun-choice-v2/WORLD_DESIGN.md) | Overall MAP (giant everyday objects), 「パカッ」, lunch WORLD MAP, progress-as-map |
 | [`GAME_DESIGN_RULES.md`](docs/jibun-choice-v2/GAME_DESIGN_RULES.md) | Ver.2 game rules, items, ぼうけんノート, first benchmark game (栄養・メニュー) |
 | [`ART_PIPELINE.md`](docs/jibun-choice-v2/ART_PIPELINE.md) | `design/v2/{reference,master,generated,rejected}` and Art QA HARD GATES |
@@ -107,6 +107,7 @@ one-line summaries below staying accurate:
 | QA checklist (superseded for game-scoring by `game-critic-v2.md`) | `qa-rules.md` |
 | Art style, art ownership (Claude=UI/CSS/SVG, GPT=illustration) — **Ver.1 only; Ver.2 uses `docs/jibun-choice-v2/DESIGN_OWNERSHIP.md`** | `art-style.md`, `visual-design-system.md` |
 | Research sourcing rules | `research-rules.md` |
+| **Game production pipeline (research → game design → design handoff), FACT GATE, artifact contract** | `game-production-pipeline.md` |
 | **Ver.2 Product / Design Bible (see §0.5)** | `docs/jibun-choice-v2/*.md` |
 
 ### Conflict resolution order
@@ -154,6 +155,26 @@ Technical QA entry points: `npm run build`, `npm run lint`,
 Full checklist: `factory/rules/qa-rules.md` (functional) /
 `factory/rules/game-critic-v2.md` (binding game-quality gate).
 
+## 4.5. Game production pipeline (before any code is written)
+
+A new job/game does **not** start at implementation. It starts at
+[`factory/rules/game-production-pipeline.md`](factory/rules/game-production-pipeline.md):
+LEGACY INVENTORY → WORK RESEARCH → WORK DECISION MAP → **FACT GATE** →
+GAME REFERENCE RESEARCH → GAME CONCEPTS (≥3) → GAME CRITIC →
+FINAL GAME DESIGN → DESIGN HANDOFF, driven by
+`factory/harness/q1-pipeline.mjs --track v2`.
+
+The FACT GATE is mechanical (`fact-gate <job_id>`): it reads the work
+decision map's own rows and refuses unless one names an actor, is sourced
+strongly enough, is translatable into a child's action and would not badly
+misrepresent the job. **No game concept may be written before it passes** —
+"物流だから経路ゲーム" is exactly what it exists to stop. Not passing is a
+`FACT_NEEDED` item that returns to research and does not stop other jobs.
+
+The Factory may also decide **not** to build (`reject-concepts`); that is a
+first-class outcome and spends no repair budget. Proven end-to-end by
+`npm run selftest:pipeline`.
+
 ## 5. Task state (mechanical, not memory)
 
 Task progress — status, repair count, review/QA/deploy status, blocked
@@ -170,6 +191,15 @@ whoever happens to remember. A human can explicitly reset a task for a
 new iteration (`reset-iteration --reason "..."`) when a new spec changes
 things; the reset is logged, never silent.
 
+A missing approved design is recorded as data, not as a stop:
+`design-needed <task_id> --add <DN-id> --where <file:line>` never changes
+the task's status (work continues; it only blocks deploy), while
+`block <task_id> --design-needed --reason "..."` parks a task in
+`DESIGN_BLOCKED` — which is a Design-Owner wait, not a generic `BLOCKED`.
+What the ledger enforces mechanically is proven end-to-end by
+`npm run selftest:factory` (`factory/harness/factory-self-test.mjs`,
+scratch ledger only); run it after changing any gate.
+
 ## 6. Deploy Policy (canonical: `factory/rules/deploy-release-policy.md`)
 
 Within Human-approved product direction, routine changes (bug fixes, UI
@@ -181,8 +211,9 @@ status, required review evidence, and Product Identity impact
 recorded human approval, never just a QA pass). CI
 (`.github/workflows/deploy.yml`) also runs
 `factory/scripts/release-gate-check.mjs` before deploying any commit that
-touches `src/` or `public/`, and fails the workflow (no deploy) if no
-passing gated task references that commit. Product Identity Gate items
+touches `src/` or `public/`, and fails the workflow (no deploy) unless
+**every** such commit in the push has a task whose `release_commit` is
+exactly that sha and which passes `can-deploy`. Product Identity Gate items
 (§1) are categorically excluded from auto-deploy regardless of QA status.
 
 ## 7. Two-track model
@@ -201,4 +232,6 @@ replaced, by `deploy-release-policy.md` — see §2).
 - Never force-push, never rewrite published git history.
 - Read `factory/state/blocked-queue.md` before starting new Continuous
   Product Loop work — don't re-attempt a task parked there without a
-  recorded Human Decision.
+  recorded Human Decision. That file is **generated** from the ledger
+  (`npm run queue:blocked`); never hand-edit it — change the task's state
+  instead.

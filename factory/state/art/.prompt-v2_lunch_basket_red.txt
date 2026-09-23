@@ -1,0 +1,19 @@
+MATCH THE ATTACHED REFERENCE IMAGES EXACTLY — they are existing assets of this series
+(JIBUN CHOICE). Same clay material, same handmade miniature feeling, same character
+proportions and face/eye simplification, same lighting, saturation, depth and diorama
+camera feeling. Do NOT drift toward generic 3D animation / Pixar-like / realistic CG.
+Rounded 3D clay / plasticine miniature diorama style, handcrafted soft texture,
+bright warm colors, soft diagonal lighting, modern and slightly stylish (for Japanese kids
+aged 9-12 — NOT babyish, NOT old-fashioned), consistent claymation material for people,
+buildings, tools and backgrounds. Figures around 2.5-3 heads tall with simplified hands.
+NO readable text, NO numbers, NO letters, NO logos, NO watermark anywhere in the image.
+NO photorealism, NO real-brand or real-person likeness, NO scary or dirty expression.
+Keep every important element inside the central 70% (mobile crop safety).
+Scene: a warm coral-tinted woven basket: a small, wide, low woven basket in the same miniature clay / toy style as the tray and dishes, empty, open top visible, with a small round tag on the front showing a simple fish silhouette (a simple embossed clay pictogram, no text). Series: JIBUN CHOICE 給食 こんだてPLAY, same camera, lighting and clay material as the dish set.
+Role in game: こんだてPLAY の状態 cue: トレーの手前に置かれた 3 つのかごの 1 つ（fish, meat, egg and milk の仲間が集まるかご）。料理から飛んできた粒が中にたまる。三色食品群の言葉は使わず、前面の小さなタグの絵だけで何のかごか伝える
+Camera / composition: ONE fixed camera for the whole series: about 35 degrees above the table, slightly from the front, the basket centered and filling about 70% of the square with even margins (at least 14% on every side). The basket is EMPTY and seen slightly from above so its open top is visible; the game piles small round bits into it at runtime, so the inside must be plain and uncluttered. No table, no cloth, no shadow outside the basket: it floats on a fully transparent background (PNG alpha). Soft warm daylight from the upper-left, soft short shadow only inside the basket. Matte clay / miniature toy texture, rounded simplified shapes, the same material and lighting as the dish set and tray.
+Must include: one empty low woven basket, open top visible; one small round front tag with a simple pictogram; transparent background
+Must NOT include: readable text; letters or numbers; logos; food inside the basket; coloured dots, marks, gauges or icons other than the single front tag; hands or people; table, cloth, background, backdrop or drop shadow outside the basket; photorealistic rendering; elements touching the image edge
+Characters: no characters at all
+Aspect ratio: 1:1 (compose for this frame).
+Background: fully transparent (PNG alpha). If a transparent background is impossible, use a single flat pure white #FFFFFF backdrop with NO gradient and NO shadow outside the basket.
