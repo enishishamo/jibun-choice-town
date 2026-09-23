@@ -5,8 +5,8 @@
   "trigger": "NEW_Q1_REQUEST",
   "legacy_game_type": null,
   "creator": "claude-code-orchestrator",
-  "state": "CONCEPTS_READY",
-  "current_stage": "GAME_CONCEPTS",
+  "state": "GAME_CONCEPT_REJECTED",
+  "current_stage": "WORK_RESEARCH",
   "confidence": {
     "fact": "HIGH",
     "game_fit": "LOW",
@@ -865,8 +865,8 @@
       "artifact_id": "v2-lunch-carry:game_concepts:v3",
       "artifact_type": "game_concepts",
       "version": 3,
-      "status": "CURRENT",
-      "stale_because": null,
+      "status": "STALE",
+      "stale_because": "concepts rejected: 独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。",
       "file": "factory/projects/v2-lunch-carry/design/game_concepts_v3.json",
       "payload": {
         "job_id": "v2-lunch-carry",
@@ -1546,19 +1546,19 @@
   "independent_review": {
     "kind": "design",
     "verdict": "FAIL",
-    "score": 38,
-    "blockers": 5,
-    "high": 5,
-    "evidence": "factory/projects/v2-lunch-carry/game-critic-r2.result.json",
-    "input": "factory/projects/v2-lunch-carry/game-critic-r2.prompt-as-run.md",
+    "score": 51,
+    "blockers": 3,
+    "high": 3,
+    "evidence": "factory/projects/v2-lunch-carry/game-critic-r3.result.json",
+    "input": "factory/projects/v2-lunch-carry/game-critic-r3.prompt-as-run.md",
     "reviewer": "codex-review",
-    "creator": "claude-code-game-designer-2",
+    "creator": "claude-code-game-designer-3",
     "independent": true,
     "review_mechanism": "factory/harness/codex-review.mjs",
     "iteration": 1,
     "repair_count_at_review": 0,
     "stale": true,
-    "recorded_at": "2026-09-23T00:01:59.700Z"
+    "recorded_at": "2026-09-23T02:26:20.342Z"
   },
   "impl_review": null,
   "art_review": null,
@@ -1575,6 +1575,16 @@
       "opened_at": "2026-09-23T00:12:29.679Z",
       "resolution": "Human Decision 2026-09-23（gate-log entry-2026-09-23-01）。(A)〜(D) のうち (D) に近い形で決着: 「はこぶ」は保留・削除しない。スポットを『給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程』と再定義し、複数 actor の確認済み仕事行為を扱ってよい。あわせてゲーム化対象を裁量的 decision に限定しないことが決まり、WORK DECISION MAP は WORK ACTION MAP へ上位化された。引き続き禁止: 配送員が自由にルートを決める／独断で代替方法を決める／未確認の時間制約やコストを勝敗条件にする。",
       "resolved_at": "2026-09-23T01:53:05.508Z"
+    },
+    {
+      "id": "hd-2",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
+      ],
+      "note": "「はこぶ」スポットの継続可否を再上申する（2回目）。\n\n【再定義は効いた。ただし十分ではなかった】\n2026-09-23 の Human Decision（スポット再定義＋ゲーム化対象の拡張＋WORK ACTION MAP 化）を実装し、パイプラインを頭から回し直した。効果は数字に出ている。\n\nゲート通過行 10 → 19（うち DECISION は 10 → 1）。つまり18行は旧定義では見えていなかった。\n独立 critic のスコア 43 → 38 → 51、二軸 CA 42→41→57 / GQ 45→36→56。\n\nしかし3ラウンド目も採択 NONE。両軸とも60の床に届いていない。\n\n【なぜ止まるのか — 3回とも同じ根】\nblocker の形は毎回同じである。『緊張を作っている規則が、確認されていない事実の発明である』。\n\nr1: 配送員が出発の可否を決める（そんな判断は無い）\nr2: 確認に一律t時間／センターは最初の連絡だけで不可逆投入（どちらも不在）\nr3: 直送便の到着順と各学級の開始間隔／一人分の適量の閾値（どちらも不在）\n\nこの職業は、運用パラメータが公開されていない。配送計画の別紙、報告項目、センターの対処手順、記録簿の欄名、適量の基準、別保管の容量上限——8文書・7自治体を当たって一つも出てこなかった。そして緊張は普通そこから来る。だから設計者が3人交代しても同じ場所で詰まる。\n\n【それでも分かったこと】\n(a) rows[16] 教室での配食は actor が給食当番の児童生徒＋教職員で、遊ぶ子自身が告示の名指しする当事者である。この製品で他に例がない。ただし『正しい一人分』の基準が無い。\n(b) rows[20] 残食の学級別・品目別計量は、学級×品目・計量・記録表がすべて明文で、実測値を交点へ転記するだけなら発明が要らない。RECORDING として成立しうるが、我々はこれをゲーム性不足で見送った。事実不足ではない（critic の指摘どおり、この点は我々の記録が不正確だった）。\n(c) 逆に、時間・順序・閾値を使う設計は、この職業では全て発明になる。\n\n【問い】次のどれを選ぶか。\n(A) 「はこぶ」を一旦保留し、別のスポット（そだてる／つくる／とどける）へ移る。この3ラウンドの成果（行為マップ21行・参照15本）は保存され、事実が増えたときに再開できる。\n(B) 実地取材または情報公開請求を承認する。埋めるべきは『配送計画の別紙』『報告項目』『センターの対処手順』『一人分の適量の基準』の4つ。うち最後のものが最も小さく、(a) を開く。\n(C) 時間・順序・閾値を使わない設計に限定して4ラウンド目を許可する。現実的な候補は rows[20] の RECORDING 一本で、我々はこれをゲームとして弱いと判断している。\n(D) 『正しい一人分』のような日常的な基準については、一次資料ではなく実地の観察（学校の給食当番の実際）を根拠として認める、という事実運用の変更。これは研究ルールの変更にあたる。\n\n実装側の推奨は (A) である。3ラウンド・設計者3人・独立レビュー3回を費やして両軸60に届いておらず、残る道はいずれも事実の追加か基準の変更を要する。ただし (A)(B)(C)(D) はいずれも Product / 世界構造 / 研究ルールの判断であり、設計者が決めてよい範囲を超える。",
+      "status": "open",
+      "opened_at": "2026-09-23T02:27:09.358Z"
     }
   ],
   "limited_exceptions": [],
@@ -1582,7 +1592,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-22T23:23:23.910Z",
-  "updated_at": "2026-09-23T02:21:56.793Z",
+  "updated_at": "2026-09-23T02:27:09.359Z",
   "history": [
     {
       "at": "2026-09-22T23:23:23.933Z",
@@ -1892,6 +1902,36 @@
       "sources": [
         "v2-lunch-carry:work_action_map:v1",
         "v2-lunch-carry:game_reference_research:v2"
+      ]
+    },
+    {
+      "at": "2026-09-23T02:26:20.343Z",
+      "event": "independent_review_recorded",
+      "kind": "design",
+      "verdict": "FAIL",
+      "independent": true,
+      "evidence": "factory/projects/v2-lunch-carry/game-critic-r3.result.json"
+    },
+    {
+      "at": "2026-09-23T02:27:09.313Z",
+      "event": "state_change",
+      "from": "CONCEPTS_READY",
+      "to": "GAME_CONCEPT_REJECTED",
+      "note": "独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。"
+    },
+    {
+      "at": "2026-09-23T02:27:09.314Z",
+      "event": "game_concept_rejected",
+      "reason": "独立 GAME CRITIC r3 = FAIL 51（CA 57 / GQ 56）、採択 NONE、blocker 3件。スコアは 43 → 38 → 51 と上がり、両軸とも50台まで来たが、二軸の床である60には届いていない。\n\nblocker の中身:\n(1) A は未確認の到着時系列（直送便の到着順・各学級の開始間隔・取り戻し時間）が勝敗を支えており、r2 と同型の『未確認の時間制約を勝敗条件にする』が新しい服を着て再発した。\n(2) B は検収責任者の『異常を上へ上げる』を『返品を決める』へすり替えており、設計者自身が書いた二段構造（点検・記録は検収責任者、返品等の決裁は校長等＝rows[3]）と矛盾する。actor drift の再発。\n(3) C は『正しい一人分』の判定基準が一次資料に無い。隠した閾値を置けば未確認ルールになり、置かなければ always-small で全員に少量を配って clear できる。\n\n加えて critic の HIGH 1件を機械的に検算したところ critic が正しかった。設計者の推奨理由『3行とも同一 actor・同一仕様書』は事実と違う。rows[12] は伊予市の配送業務従事者＋学校職員、rows[14]/[15] は岩倉市の指定業者／配膳従事者である。r1 blocker への完全回答という主張は過大だった。\n\nMEDIUM 1件も我々の側の不正確さを突いている。RECORDING 見送りの説明で rows[13]（欄名未確認）と rows[20]（学級×品目・計量・記録表がいずれも明文）を一括して『事実が足りない』としたが、rows[20] は実測値を正しい交点へ転記するだけなら発明は要らない。見送りの正しい理由は事実不足ではなくゲーム性不足であり、記録を訂正する必要がある。\n\nHuman Decision 2026-09-23 の指示に従い、4案目・5案目は作らない。スポットの保留可否を Human へ再上申する。",
+      "return_to": "WORK_RESEARCH"
+    },
+    {
+      "at": "2026-09-23T02:27:09.359Z",
+      "event": "human_decision_opened",
+      "id": "hd-2",
+      "kind": "product_identity",
+      "domains": [
+        "world_unlock"
       ]
     }
   ]
