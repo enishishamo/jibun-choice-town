@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-09-22T23:49:59.324Z",
+  "ran_at": "2026-09-23T01:52:07.074Z",
   "passed": 32,
   "failed": 9,
   "total": 41,
@@ -238,7 +238,7 @@
       "ok": true,
       "mode": "mechanical",
       "detail": {
-        "wip_refusal": "WIP full (9/2)",
+        "wip_refusal": "WIP full (10/2)",
         "backfilled": [
           "fact_sheet:true",
           "scope_core:true",
@@ -340,10 +340,14 @@
           "priority": 1
         },
         "wip": {
-          "active": 11,
+          "active": 12,
           "limit": 2,
           "available": 0,
           "active_pipelines": [
+            {
+              "game_id": "v2-lunch-carry",
+              "state": "RESEARCHED"
+            },
             {
               "game_id": "selftest-a",
               "state": "RESEARCHING"

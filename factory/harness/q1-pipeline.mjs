@@ -54,6 +54,7 @@ import {
   gameDesignReadyReasons, CLASSIFICATION_ENTRY_STAGE, checkConsistencyRepairEligible,
   validateFactCorrectionEvidence, checkFactCorrectionEligible, FACT_CORRECTION_NARROWING_TYPES,
   TRACK_IDS, designStagesFor, downstreamStagesFor, v2DesignReadyReasons, factGateReasons, conceptRowTraceProblems,
+  resolveWorkMap, decisionViewOf,
   confidenceBlockers, CONFIDENCE_KINDS, CONFIDENCE_LEVELS,
 } from "./q1-factory-schema.mjs";
 
@@ -249,8 +250,8 @@ switch (cmd) {
     if (!v.ok) refuse({ accepted: false, artifact_type: type, problems: v.problems });
     // A concept must stand on rows the FACT GATE actually passed (2026-09-23).
     if (type === "game_concepts") {
-      const map = p.artifacts?.work_decision_map;
-      const probs = conceptRowTraceProblems(payload, map && map.status !== "STALE" ? map.payload : null);
+      const map = resolveWorkMap(p);
+      const probs = conceptRowTraceProblems(payload, map?.payload ?? null);
       if (probs.length) refuse({ accepted: false, artifact_type: type, problems: probs, note: "every concept must name rows[N] of the work decision map, and those rows must have passed the FACT GATE" });
     }
     // Human Decision domain declared inside an artifact => open a decision and refuse autonomous progress.
@@ -643,26 +644,28 @@ switch (cmd) {
   }
 
   // ------------------------------------------------------------ FACT GATE
-  // §8. Mechanical: it reads the work_decision_map's own rows. It cannot be
+  // §8. Mechanical: it reads the work ACTION map's own rows (falling back to a
+  // legacy decision map, which is the same thing with every row a DECISION).
+  // It cannot be
   // satisfied by asserting that the facts are good — only by a row that names
   // an actor, is sourced strongly enough, is translatable into a child's
   // action, and would not badly misrepresent the job.
   case "fact-gate": {
     const p = loadPipeline(rest[0] ?? fail("usage: fact-gate <game_id>"));
-    const map = p.artifacts?.work_decision_map;
-    const usable = map && map.status !== "STALE" ? map.payload : null;
+    const map = resolveWorkMap(p);
+    const usable = map?.payload ?? null;
     const reasons = factGateReasons(usable);
     const allowed = reasons.length === 0;
     if (allowed) {
       if (p.state !== "FACT_GATE_PASSED") setState(p, "FACT_GATE_PASSED", "FACT GATE satisfied");
-      log(p, "fact_gate_passed", { rows: usable.rows.length });
+      log(p, "fact_gate_passed", { rows: usable.rows.length, map_type: map.type, map_version: map.version });
     } else {
       // A failed FACT GATE is not a dead end and not a licence to invent: it
       // is a FACT_NEEDED item, and other jobs keep moving (§25).
       log(p, "fact_gate_refused", { reasons });
     }
     savePipeline(p);
-    console.log(JSON.stringify({ allowed, gate: "FACT_GATE", game_id: p.game_id, state: p.state, reasons,
+    console.log(JSON.stringify({ allowed, gate: "FACT_GATE", game_id: p.game_id, state: p.state, map: map ? `${map.type}@v${map.version}` : null, reasons,
       note: allowed ? null : "record the gap as FACT_NEEDED and return to WORK_RESEARCH; do NOT write game concepts" }, null, 2));
     process.exit(allowed ? 0 : 1);
   }
@@ -693,8 +696,7 @@ switch (cmd) {
     if (!["GAME_DESIGN", "BUILD", "PRODUCTION_READY"].includes(transition)) fail("usage: can-advance <game_id> <GAME_DESIGN|BUILD|PRODUCTION_READY>");
     const reasons = [...confidenceBlockers(p, transition)];
     if (transition === "GAME_DESIGN") {
-      const map = p.artifacts?.work_decision_map;
-      reasons.push(...factGateReasons(map && map.status !== "STALE" ? map.payload : null).map((r) => `FACT GATE: ${r}`));
+      reasons.push(...factGateReasons(resolveWorkMap(p)?.payload ?? null).map((r) => `FACT GATE: ${r}`));
     }
     if (transition === "BUILD" || transition === "PRODUCTION_READY") {
       const fin = p.artifacts?.final_game_design;

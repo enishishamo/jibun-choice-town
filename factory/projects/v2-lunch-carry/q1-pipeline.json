@@ -950,7 +950,7 @@
   "version": null,
   "depends_on": [],
   "created_at": "2026-09-22T23:23:23.910Z",
-  "updated_at": "2026-09-23T00:12:29.680Z",
+  "updated_at": "2026-09-23T01:50:29.680Z",
   "history": [
     {
       "at": "2026-09-22T23:23:23.933Z",
@@ -1184,6 +1184,13 @@
       "kind": "product_identity",
       "domains": [
         "world_unlock"
+      ]
+    },
+    {
+      "at": "2026-09-23T01:50:29.679Z",
+      "event": "fact_gate_refused",
+      "reasons": [
+        "no work_action_map artifact (or it is STALE)"
       ]
     }
   ]

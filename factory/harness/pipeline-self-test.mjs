@@ -18,6 +18,12 @@
 //   H  a QA finding routes to its owner (a design-owner gap never becomes a build task's to fix)
 //   I  a concept built on a FACT-GATE-rejected row (or on nothing) is refused at submit
 //
+// WORK ACTION MAP migration (2026-09-23 Human Decision, gate-log entry-2026-09-23-01):
+//   J  a map with NO DECISION at all passes the gate on verified PERCEPTION / VERIFICATION
+//   K  an unsourced ACTION does not pass, whatever its action_type
+//   L  a concept must trace to a row that passed, and must name what the CHILD does
+//   M  a legacy DECISION-only job still passes exactly as before (no regression)
+//
 // Usage: node factory/harness/pipeline-self-test.mjs
 // Exit 0 = all passed.
 
@@ -71,13 +77,22 @@ const row = (over = {}) => ({
   source: "s", source_class: "municipal", confidence: "HIGH", gameability: "HIGH", distortion_risk: "LOW", ...over,
 });
 const decisionMap = (id, rows) => ({ job_id: id, rows });
+// WORK ACTION MAP row. action_type defaults to a NON-decision on purpose, so the
+// default fixture proves the gate no longer needs a DECISION.
+const arow = (over = {}) => ({
+  work_action: "a", action_type: "VERIFICATION", actor: "配膳員", trigger: "t", inputs: "i",
+  constraints: "c", action_or_judgement: "記録簿に時刻と数を書く", outcome: "o", frequency: "f",
+  variability: "v", source: "s", source_class: "municipal", confidence: "HIGH",
+  gameability: "HIGH", distortion_risk: "LOW", ...over,
+});
+const actionMap = (id, rows) => ({ job_id: id, rows });
 const reference = (n) => ({ reference: `g${n}`, core_action: "a", player_decision: "d", feedback: "f", tension: "t", reward: "r", replay_hook: "h", what_to_borrow: "b", what_not_to_borrow: "nb", why_it_fits_this_job: "w" });
 const refResearch = (id) => ({ job_id: id, why_these_references: "w", grammar_borrowed: "g", references: [reference(1), reference(2)] });
 const concept = (cid, action, trace = "rows[0]") => ({
   concept_id: cid, job_reality: "jr", main_action: action, core_loop: "cl", player_decision: "pd", constraint: "c",
   feedback: "f", event: "e", fail_recovery: "fr", clear: "cr", replay: "rp", replay_reason: "rr",
   job_reveal_bridge: "jb", interest_seeds: "is", reference_games: "rg", distortion_risk: "LOW",
-  cognitive_load: "low", decision_row_ids: trace,
+  cognitive_load: "low", decision_row_ids: trace, child_active_operations: "比べる／気づく",
 });
 const concepts = (id) => ({ job_id: id, comparison: "matrix", recommended_concept_id: "c1", recommendation_rationale: "r", concepts: [concept("c1", "かぞえる"), concept("c2", "つたえる"), concept("c3", "たもつ")] });
 const finalDesign = (id) => ({
@@ -247,6 +262,88 @@ function seed(id, upTo) {
   check("I", "a concept standing on a FACT-GATE-rejected row, or on nothing, is refused at submit",
     bad.status === 1 && namedRejected && bad2.status === 1 && namedUntraced && good.status === 0,
     `rejected_row_exit=${bad.status} named=${namedRejected} untraced_exit=${bad2.status} named=${namedUntraced} good_exit=${good.status}`);
+}
+
+// --- J: no DECISION anywhere -> the gate still passes -----------------------
+// The 2026-09-23 decision: DECISION is one subtype of WORK ACTION, not the
+// price of entry. A verified PERCEPTION or VERIFICATION qualifies identically.
+{
+  const id = "selftest-j";
+  pipe(["init", id, "--profession", "p", "--track", "v2", "--creator", "producer"]);
+  pipe(["submit", id, "legacy_inventory", "--file", artifact(legacyInventory(id)), "--creator", "producer"]);
+  pipe(["submit", id, "work_research", "--file", artifact(workResearch(id)), "--creator", "producer", "--source", "legacy_inventory@1"]);
+  const noDecision = actionMap(id, [
+    arow({ work_action: "数と現物を照合する", action_type: "VERIFICATION" }),
+    arow({ work_action: "汚損に気づく", action_type: "PERCEPTION", action_or_judgement: "コンテナに汚損がないか見る" }),
+  ]);
+  const sub = pipe(["submit", id, "work_action_map", "--file", artifact(noDecision), "--creator", "producer", "--source", "work_research@1"]);
+  const fg = pipe(["fact-gate", id]);
+  const hasDecision = /"action_type": ?"DECISION"/.test(JSON.stringify(noDecision));
+  check("J", "a work action map with NO DECISION passes the FACT GATE on verified PERCEPTION / VERIFICATION",
+    sub.status === 0 && fg.status === 0 && !hasDecision,
+    `submit=${sub.status} fact-gate=${fg.status} contains_DECISION=${hasDecision}`);
+}
+
+// --- K: an unsourced ACTION does not pass, whatever its type ---------------
+{
+  const id = "selftest-k";
+  pipe(["init", id, "--profession", "p", "--track", "v2", "--creator", "producer"]);
+  pipe(["submit", id, "legacy_inventory", "--file", artifact(legacyInventory(id)), "--creator", "producer"]);
+  pipe(["submit", id, "work_research", "--file", artifact(workResearch(id)), "--creator", "producer", "--source", "legacy_inventory@1"]);
+  const weak = actionMap(id, [
+    arow({ action_type: "TIMING", confidence: "LOW", source_class: "secondary" }),
+    arow({ action_type: "COORDINATION", actor: "UNKNOWN" }),
+    arow({ action_type: "MANIPULATION", distortion_risk: "HIGH" }),
+  ]);
+  pipe(["submit", id, "work_action_map", "--file", artifact(weak), "--creator", "producer", "--source", "work_research@1"]);
+  const fg = pipe(["fact-gate", id]);
+  check("K", "an unsourced / unattributed / job-distorting ACTION does not pass, whatever its action_type",
+    fg.status === 1, `fact-gate=${fg.status} out=${fg.out.slice(0, 160)}`);
+}
+
+// --- L: a concept must trace to a passing row AND name what the child does --
+{
+  const id = "selftest-l";
+  pipe(["init", id, "--profession", "p", "--track", "v2", "--creator", "producer"]);
+  pipe(["submit", id, "legacy_inventory", "--file", artifact(legacyInventory(id)), "--creator", "producer"]);
+  pipe(["submit", id, "work_research", "--file", artifact(workResearch(id)), "--creator", "producer", "--source", "legacy_inventory@1"]);
+  pipe(["submit", id, "work_action_map", "--file", artifact(actionMap(id, [arow(), arow({ action_type: "TIMING", gameability: "LOW" })])), "--creator", "producer", "--source", "work_research@1"]);
+  pipe(["submit", id, "game_reference_research", "--file", artifact(refResearch(id)), "--creator", "producer", "--source", "work_action_map@1"]);
+
+  // (a) passive: the child does nothing from the vocabulary
+  const passive = { ...concepts(id), concepts: [
+    { ...concept("c1", "かぞえる"), child_active_operations: "手順どおりに作業を再現する" },
+    concept("c2", "つたえる"), concept("c3", "たもつ")] };
+  const bad1 = pipe(["submit", id, "game_concepts", "--file", artifact(passive), "--creator", "producer", "--source", "work_action_map@1"]);
+  const namedPassive = /child_active_operations names none of/.test(bad1.out);
+
+  // (b) built on the row that did NOT pass the gate
+  const onRejected = { ...concepts(id), concepts: [concept("c1", "かぞえる", "rows[1]"), concept("c2", "つたえる"), concept("c3", "たもつ")] };
+  const bad2 = pipe(["submit", id, "game_concepts", "--file", artifact(onRejected), "--creator", "producer", "--source", "work_action_map@1"]);
+  const namedRejected = /did NOT pass the FACT GATE/.test(bad2.out);
+
+  const good = pipe(["submit", id, "game_concepts", "--file", artifact(concepts(id)), "--creator", "producer", "--source", "work_action_map@1"]);
+  check("L", "a concept must stand on a gate-passing ACTION row and name what the CHILD actively does",
+    bad1.status === 1 && namedPassive && bad2.status === 1 && namedRejected && good.status === 0,
+    `passive=${bad1.status}/${namedPassive} rejected_row=${bad2.status}/${namedRejected} good=${good.status}`);
+}
+
+// --- M: a legacy DECISION-only job is unaffected ---------------------------
+// The migration must not be a rename. A pipeline holding the older
+// work_decision_map keeps passing exactly as it did before.
+{
+  const id = "selftest-m";
+  pipe(["init", id, "--profession", "p", "--track", "v2", "--creator", "producer"]);
+  pipe(["submit", id, "legacy_inventory", "--file", artifact(legacyInventory(id)), "--creator", "producer"]);
+  pipe(["submit", id, "work_research", "--file", artifact(workResearch(id)), "--creator", "producer", "--source", "legacy_inventory@1"]);
+  const legacy = pipe(["submit", id, "work_decision_map", "--file", artifact(decisionMap(id, [row()])), "--creator", "producer", "--source", "work_research@1"]);
+  const fg = pipe(["fact-gate", id]);
+  const usedLegacy = /work_decision_map@v1/.test(fg.out);
+  pipe(["submit", id, "game_reference_research", "--file", artifact(refResearch(id)), "--creator", "producer", "--source", "work_decision_map@1"]);
+  const con = pipe(["submit", id, "game_concepts", "--file", artifact(concepts(id)), "--creator", "producer", "--source", "work_decision_map@1"]);
+  check("M", "a legacy DECISION-only job still passes the gate and still accepts concepts (no regression)",
+    legacy.status === 0 && fg.status === 0 && usedLegacy && con.status === 0,
+    `submit=${legacy.status} fact-gate=${fg.status} used_legacy_map=${usedLegacy} concepts=${con.status}`);
 }
 
 // --- evidence + summary -----------------------------------------------------

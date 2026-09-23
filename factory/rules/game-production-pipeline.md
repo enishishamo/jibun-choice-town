@@ -33,7 +33,7 @@ Ver.2 がこれを使わず素の markdown に戻していただけだった。
 LEGACY_INVENTORY
   → WORK_RESEARCH
   → EVIDENCE_REVIEW（独立レビュー）
-  → WORK_DECISION_MAP
+  → WORK_ACTION_MAP
   → FACT_GATE（機械判定）
   → GAME_REFERENCE_RESEARCH
   → GAME_CONCEPTS（3案以上）
@@ -58,9 +58,10 @@ LEGACY_INVENTORY
 |---|---|
 | `legacy_inventory` | KEEP/UPGRADE/REPLACE/DROP。**DROP には理由必須**（機械チェック） |
 | `work_research` | claim ごとに actor / source / source_class / confidence |
-| `work_decision_map` | 行ごとに 15 項目。FACT GATE が実際に読む唯一の表 |
+| `work_action_map` | 行ごとに 15 項目。**FACT GATE が実際に読む表**。`action_type` で DECISION 以外も扱う |
+| `work_decision_map` | 互換 view。`action_type == DECISION` の特殊形。既存 job はこのままでよい |
 | `game_reference_research` | 参照ゲーム2件以上。借りるのは**抽象文法のみ** |
-| `game_concepts` | 3案以上。**main_action が重複したら拒否**（＝見た目違いの同一案の禁止） |
+| `game_concepts` | 3案以上。**main_action が重複したら拒否**（見た目違いの同一案の禁止）。各案は根拠行を `rows[N]` で名指しし、`child_active_operations` を宣言する |
 | `final_game_design` | 採択1案。**却下した案の記録が2件以上ないと拒否** |
 | `design_handoff` | Design Factory への入力 |
 | `design_package` | Design Factory からの返却（Claude は作らない） |
@@ -69,13 +70,25 @@ LEGACY_INVENTORY
 
 `node factory/harness/q1-pipeline.mjs fact-gate <job_id>`
 
-`work_decision_map` の行を読み、次を**すべて**満たす行が1つ以上あるときだけ通る。
+`work_action_map` の行を読み（無ければ `work_decision_map` に fallback）、
+次を**すべて**満たす行が1つ以上あるときだけ通る。
 
 - `actor` が名指しされている（空でも UNKNOWN でもない）
 - `confidence` が HIGH、または MEDIUM かつ `source_class` が
   primary_law / government / municipal
 - `gameability` が HIGH か MEDIUM
 - `distortion_risk` が HIGH ではない
+
+**`action_type` は問わない。** 2026-09-23 の Human Decision により、
+DECISION の存在は条件ではなくなった。裏づけのある PERCEPTION / VERIFICATION /
+TIMING / ANOMALY_DETECTION / COORDINATION 等も、まったく同じ条件で通る。
+変わっていないのは「その行為が実在し、誰の行為か分かり、出典がある」ことだけ。
+
+ただし、ゲート通過は必要条件であって十分条件ではない。無思考の反復作業を
+そのままゲームにすることは禁止なので、各案は `child_active_operations` に
+**子どもが能動的に何をするか**（見る／比べる／気づく／合わせる／動かす／
+止める／選ぶ／順番を考える／タイミングを取る／伝える）を名指しする必要があり、
+これも submit 時点で機械検査される。
 
 **「事実は十分です」と書いても通らない。** 通らないときは
 `FACT_NEEDED` として記録し、WORK_RESEARCH へ戻る。
@@ -151,7 +164,7 @@ confidence と成果物の有無・STALE を合わせて判定する。
 ## 10. 自己テスト
 
 ```bash
-npm run selftest:factory     # 既存9件 + 本パイプライン9件
+npm run selftest:factory     # 既存9件 + 本パイプライン13件
 npm run selftest:pipeline    # 本パイプラインのみ
 ```
 
@@ -183,6 +196,38 @@ npm run selftest:pipeline    # 本パイプラインのみ
    r2 の HIGH 1件は誤読だった（ゲートが落とした行数を取り違えていた）。
    ただしその下敷きにあった懸念——`gameability` は事実ではなく私が付けた
    判断である——は正しい。**主観値を事実と同じ棚に置かない。**
+
+## 10.6. WORK ACTION MAP への上位化（2026-09-23 Human Decision）
+
+正本の Human Decision: `factory/state/product-ideas/gate-log.md`
+entry-2026-09-23-01。
+
+**DECISION は WORK ACTION の1 subtype である。** 仕事の核を「意思決定」だけに
+限定するのは狭すぎた、というのがパイロットから得られた判断。確認・照合・
+異常への気づき・正確な手順・タイミング・受け渡し・記録・連絡・複数人の連携も、
+実仕事として裏づけがあればゲーム化候補として扱う。
+
+`action_type` の初期語彙: DECISION / PERCEPTION / VERIFICATION / MANIPULATION /
+TIMING / SEQUENCING / ANOMALY_DETECTION / COMMUNICATION / COORDINATION / CREATION。
+SCREAMING_SNAKE なら未知の型も受理する——**分類に仕事を押し込めないため**。
+
+行の必須 field は15項目（`work_action` / `action_type` / `actor` / `trigger` /
+`inputs` / `constraints` / `action_or_judgement` / `outcome` / `frequency` /
+`variability` / `source` / `source_class` / `confidence` / `gameability` /
+`distortion_risk`）。任意で `sensory_channel` / `time_pressure` /
+`precision_requirement` / `coordination_target` / `error_consequence` /
+`repeatability` を足してよい。
+
+**rename ではない。** `work_decision_map` は今も有効な artifact 型で、
+`toActionMap()` が「全行が DECISION の action map」として正規化する。
+既存 job はそのまま通り、`decisionViewOf()` が逆向きの互換 view を返す。
+`resolveWorkMap()` が action map を優先し、無ければ decision map に落ちる。
+
+機械検証は self-test J/K/L/M:
+- **J** DECISION が1つも無くても、裏づけのある PERCEPTION / VERIFICATION で通る
+- **K** 裏づけの無い ACTION は、type が何であれ通らない
+- **L** 案は通過行に紐づき、かつ子どもの能動操作を名指しする必要がある
+- **M** 既存の DECISION 中心 job は従来どおり通る（回帰なし）
 
 ## 11. まだ無いもの（正直な記録）
 

@@ -225,3 +225,62 @@ Human Reviewを待つ。
 - **更新ファイル**: CHARACTER_BIBLE §2/§3/§4/§6/§6.5、ART_PIPELINE §5、CLAUDE.md §0.5、
   master/README、OPEN_DECISIONS D-02
 - **HUMAN_PRODUCT_DECISION_REQUIRED**: false（決定済み）。表情セット・装着スロット・名前・セリフは引き続き OPEN
+
+---
+
+## entry-2026-09-23-01: 「はこぶ」スポットの再定義 ＋ ゲーム化対象の拡張 — Human Decision 記録
+
+- **決定者**: Human（Product Owner）、2026-09-23
+- **経緯**: 統合Factory の初パイロットとして 給食WORLD「はこぶ」を通したところ、
+  独立 GAME CRITIC が2ラウンド連続で採択 NONE（FAIL 43 → FAIL 38）。blocker は
+  いずれも「勝敗を支える中核ルールが未確認事実の発明である」の形だった。
+  狙いを絞った追加調査（自治体仕様書5本ほか新規8文書）でも、遅延時に何を報告するか・
+  センターが何を根拠に対処を選ぶか・誤報をどう訂正するかは一次資料から出てこず、
+  7自治体すべてで「直ちに連絡し、指示に従う」という判断の外注の記述しかなかった。
+  Factory は「はこぶスポット自体を保留するか」を4択で Human へ上げた（hd-1）。
+
+### 決定 1: 「はこぶ」は保留・削除しない。スポットの意味を再定義する（LOCKED）
+
+> **「はこぶ」= 給食を、必要な場所へ、安全に・間違えず受け渡していく社会の工程。**
+
+- 単一の配送ドライバーの高度な意思決定を無理に作る必要はない。
+- 実際に確認された**複数 actor の仕事行為**を扱ってよい。
+
+### 決定 2: ゲーム化対象を「裁量的 decision」に限定しない（LOCKED）
+
+実仕事として十分に根拠がある場合、次も**ゲーム化候補として扱う**:
+確認 / 照合 / 異常への気づき / 正確な手順 / タイミング / 受け渡し / 記録 /
+連絡 / 複数人の連携。
+
+ただし**単なる作業再現や教材にしてはいけない**。子ども自身の
+見る・比べる・気づく・合わせる・止める・選ぶ・タイミングを取る
+などの能動操作があり、ゲームとしてもう一度遊びたくなる構造が必要。
+
+### 決定 3: WORK DECISION MAP を WORK ACTION MAP へ上位化する（LOCKED）
+
+「DECISION」は WORK ACTION の 1 subtype である。
+action_type: DECISION / PERCEPTION / VERIFICATION / MANIPULATION / TIMING /
+SEQUENCING / ANOMALY_DETECTION / COMMUNICATION / COORDINATION / CREATION
+（実仕事から新しい型が必要なら追加してよい。**分類に仕事を押し込めない**）。
+
+GAME DESIGN GATE は「**HIGH confidence の仕事固有 ACTION が最低1つ**」を条件とし、
+**DECISION の存在自体は必須にしない**。ただし無思考の反復作業をそのまま
+ゲーム化することも禁止。
+
+既存機構を壊す単純 rename はしない。`WORK_DECISION_MAP` は
+`action_type == DECISION` の compatibility view として残す。
+既存11本および Ver.2 track に回帰を起こさないこと。
+
+### 引き続き禁止（変更なし）
+
+- 配送員が自由にルートを決める
+- 配送員が代替方法を独断で決定する
+- **未確認の時間制約・コストを勝敗条件にする**
+
+### 実装
+
+- canonical rule: `factory/rules/game-production-pipeline.md`（§2/§3/§4 を改訂）
+- 機械実装: `factory/harness/q1-factory-schema.mjs`（`work_action_map` 追加、
+  `ACTION_TYPES`、互換 view、FACT GATE の再定義）
+- 自己検証: `factory/harness/pipeline-self-test.mjs` の J/K/L/M
+- **HUMAN_PRODUCT_DECISION_REQUIRED**: false（決定済み）

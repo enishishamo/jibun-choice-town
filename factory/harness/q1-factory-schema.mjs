@@ -56,7 +56,7 @@ export const V2_DESIGN_STAGES = [
   { id: "LEGACY_INVENTORY", artifact: "legacy_inventory" },
   { id: "WORK_RESEARCH", artifact: "work_research" },
   { id: "EVIDENCE_REVIEW", artifact: null },
-  { id: "WORK_DECISION_MAP", artifact: "work_decision_map" },
+  { id: "WORK_ACTION_MAP", artifact: "work_action_map" },
   { id: "FACT_GATE", artifact: null },
   { id: "GAME_REFERENCE_RESEARCH", artifact: "game_reference_research" },
   { id: "GAME_CONCEPTS", artifact: "game_concepts" },
@@ -105,7 +105,7 @@ export const DESIGN_STATES = [
   "SPEC_READY", "ART_BRIEF_READY", "ART_PRODUCED", "ART_APPROVED", "IMPLEMENTED",
   "IMPL_QA_PASSED", "RELEASE_CANDIDATE", "RELEASED", "REAUDIT_REQUIRED",
   // V2 track (2026-09-23). Additive: no Q1 state changed meaning.
-  "LEGACY_INVENTORIED", "DECISION_MAPPED", "FACT_GATE_PASSED", "REFERENCES_READY",
+  "LEGACY_INVENTORIED", "DECISION_MAPPED", "ACTION_MAPPED", "FACT_GATE_PASSED", "REFERENCES_READY",
   "CONCEPTS_READY", "HANDOFF_READY", "WAITING_FOR_DESIGN_PACKAGE", "DESIGN_PACKAGE_READY",
   "GAME_CONCEPT_REJECTED", "FACT_BLOCKED",
 ];
@@ -133,6 +133,7 @@ export const STATE_AFTER_ARTIFACT = {
   legacy_inventory: "LEGACY_INVENTORIED",
   work_research: "RESEARCHED",
   work_decision_map: "DECISION_MAPPED",
+  work_action_map: "ACTION_MAPPED",
   game_reference_research: "REFERENCES_READY",
   game_concepts: "CONCEPTS_READY",
   final_game_design: "GAME_DESIGN_READY",
@@ -298,6 +299,27 @@ const WORK_CLAIM_FIELDS = ["claim", "actor", "source", "source_class", "confiden
 // child could plausibly perform this; it is not a game idea and must not be
 // written as one. `distortion_risk` is how badly making it playable would
 // misrepresent the real job.
+// 2026-09-23 Human Decision (gate-log entry-2026-09-23-01): the unit of the map
+// is a WORK ACTION, and DECISION is one subtype of it. The list below is a
+// starting vocabulary, not a box to force work into — a job that genuinely
+// does something else may add a type, and the validator accepts any
+// SCREAMING_SNAKE string so the taxonomy can grow from real work.
+export const ACTION_TYPES = [
+  "DECISION", "PERCEPTION", "VERIFICATION", "MANIPULATION", "TIMING",
+  "SEQUENCING", "ANOMALY_DETECTION", "COMMUNICATION", "COORDINATION", "CREATION",
+];
+// What the CHILD does. A gate-passing work action is not enough on its own:
+// the same decision forbids turning mindless repetition into a game, so a
+// concept has to name which of these the child actually performs.
+export const CHILD_ACTIVE_OPERATIONS = [
+  "見る", "比べる", "気づく", "合わせる", "動かす", "止める",
+  "選ぶ", "順番を考える", "タイミングを取る", "伝える",
+];
+const ACTION_ROW_FIELDS = [
+  "work_action", "action_type", "actor", "trigger", "inputs", "constraints",
+  "action_or_judgement", "outcome", "frequency", "variability",
+  "source", "source_class", "confidence", "gameability", "distortion_risk",
+];
 const DECISION_ROW_FIELDS = [
   "work_action", "actor", "trigger", "inputs", "constraints", "decision",
   "physical_or_digital_action", "outcome", "frequency", "variability",
@@ -311,7 +333,7 @@ const CONCEPT_FIELDS = [
   "concept_id", "job_reality", "main_action", "core_loop", "player_decision", "constraint",
   "feedback", "event", "fail_recovery", "clear", "replay", "replay_reason",
   "job_reveal_bridge", "interest_seeds", "reference_games", "distortion_risk",
-  "cognitive_load", "decision_row_ids",
+  "cognitive_load", "decision_row_ids", "child_active_operations",
 ];
 
 export const SOURCE_CLASSES = ["primary_law", "government", "municipal", "industry", "practitioner", "secondary"];
@@ -331,6 +353,14 @@ Object.assign(ARTIFACT_SCHEMAS, {
     required: ["job_id", "subject", "claims", "unconfirmed", "researcher_notes"],
     list: { key: "claims", min: 3, itemRequired: WORK_CLAIM_FIELDS },
   },
+  work_action_map: {
+    stage: "WORK_ACTION_MAP",
+    required: ["job_id", "rows"],
+    list: { key: "rows", min: 1, itemRequired: ACTION_ROW_FIELDS },
+  },
+  // Kept for compatibility. A legacy decision map is simply an action map in
+  // which every row is a DECISION (see toActionMap). Existing pipelines and
+  // any job already holding one keep working unchanged.
   work_decision_map: {
     stage: "WORK_DECISION_MAP",
     required: ["job_id", "rows"],
@@ -404,8 +434,9 @@ export const DOWNSTREAM_OF = {
   // is upstream of BOTH the reference research and the concepts — so a
   // corrected fact invalidates the game built on it, mechanically.
   legacy_inventory: ["work_research"],
-  work_research: ["work_decision_map"],
+  work_research: ["work_action_map", "work_decision_map"],
   work_decision_map: ["game_reference_research", "game_concepts"],
+  work_action_map: ["game_reference_research", "game_concepts"],
   game_reference_research: ["game_concepts"],
   game_concepts: ["final_game_design"],
   final_game_design: ["design_handoff"],
@@ -491,6 +522,18 @@ export function validateArtifact(type, payload) {
       if (c && !CONFIDENCE_LEVELS.includes(c.confidence)) problems.push(`claims[${i}].confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
     });
   }
+  if (type === "work_action_map" && Array.isArray(payload.rows)) {
+    payload.rows.forEach((r, i) => {
+      if (!r) return;
+      // any SCREAMING_SNAKE type is accepted so the taxonomy can grow from real
+      // work, but a lowercase or free-text value is almost always a typo
+      if (!/^[A-Z][A-Z_]*$/.test(String(r.action_type ?? ""))) problems.push(`rows[${i}].action_type must be SCREAMING_SNAKE (known: ${ACTION_TYPES.join("|")})`);
+      if (!SOURCE_CLASSES.includes(r.source_class)) problems.push(`rows[${i}].source_class must be one of ${SOURCE_CLASSES.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.confidence)) problems.push(`rows[${i}].confidence must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!CONFIDENCE_LEVELS.includes(r.gameability)) problems.push(`rows[${i}].gameability must be one of ${CONFIDENCE_LEVELS.join("|")}`);
+      if (!["LOW", "MEDIUM", "HIGH"].includes(r.distortion_risk)) problems.push(`rows[${i}].distortion_risk must be LOW|MEDIUM|HIGH`);
+    });
+  }
   if (type === "work_decision_map" && Array.isArray(payload.rows)) {
     payload.rows.forEach((r, i) => {
       if (!r) return;
@@ -505,6 +548,16 @@ export function validateArtifact(type, payload) {
     if (payload.recommended_concept_id && !ids.includes(payload.recommended_concept_id)) {
       problems.push(`recommended_concept_id ${payload.recommended_concept_id} is not one of concepts[].concept_id`);
     }
+    // 2026-09-23 Human Decision: a sourced work action is necessary but not
+    // sufficient. Reproducing mindless repetition is forbidden, so every
+    // concept must name what the CHILD actively does, from a fixed vocabulary.
+    payload.concepts.forEach((c, i) => {
+      const ops = String(c?.child_active_operations ?? "");
+      if (!ops.trim()) { problems.push(`concepts[${i}] (${c?.concept_id}): child_active_operations is required — name what the child actively does (${CHILD_ACTIVE_OPERATIONS.join("/")})`); return; }
+      if (!CHILD_ACTIVE_OPERATIONS.some((op) => ops.includes(op))) {
+        problems.push(`concepts[${i}] (${c?.concept_id}): child_active_operations names none of ${CHILD_ACTIVE_OPERATIONS.join("/")} — a game the child does not actively operate is work reproduction, not a game`);
+      }
+    });
     // Three concepts that share a main action are one concept in three skins.
     const actions = payload.concepts.map((c) => String(c?.main_action ?? "").trim().toLowerCase()).filter(Boolean);
     if (new Set(actions).size < actions.length) problems.push("two or more concepts share the same main_action — they are one concept with different skins");
@@ -528,13 +581,55 @@ export function validateArtifact(type, payload) {
 // job being misrepresented. If there is not, no game concept may be written
 // — the honest move is more research, not a better-sounding idea.
 //
+// 2026-09-23: the gate does NOT require a DECISION. A verified PERCEPTION,
+// VERIFICATION, TIMING, ANOMALY_DETECTION or COORDINATION row qualifies on
+// exactly the same terms. What it has always required, and still does, is
+// that the action is real, attributed and sourced.
+//
 // A row qualifies when ALL of:
 //   - actor is named (not empty, not UNKNOWN)
 //   - confidence is HIGH, or MEDIUM carried by a strong source class
 //   - gameability is HIGH or MEDIUM (a child could plausibly do this)
 //   - distortion_risk is not HIGH
-export function factGateRows(workDecisionMap) {
-  const rows = Array.isArray(workDecisionMap?.rows) ? workDecisionMap.rows : [];
+/** A legacy work_decision_map read as a work_action_map: every row is a
+ * DECISION, and its `decision` field is the action_or_judgement. This is the
+ * compatibility direction the 2026-09-23 Human Decision asked for — nothing
+ * was renamed, the older shape is simply a special case of the newer one. */
+export function toActionMap(payload) {
+  if (!payload) return null;
+  const rows = Array.isArray(payload.rows) ? payload.rows : [];
+  if (rows.length === 0) return { ...payload, rows: [] };
+  const alreadyActions = rows.some((r) => r && r.action_type);
+  if (alreadyActions) return payload;
+  return {
+    ...payload,
+    rows: rows.map((r) => ({
+      ...r,
+      action_type: "DECISION",
+      action_or_judgement: r.action_or_judgement ?? r.decision ?? r.physical_or_digital_action ?? "",
+    })),
+  };
+}
+
+/** The WORK_DECISION_MAP compatibility view: the DECISION rows of an action map. */
+export function decisionViewOf(payload) {
+  const m = toActionMap(payload);
+  if (!m) return null;
+  return { ...m, rows: (m.rows ?? []).filter((r) => r?.action_type === "DECISION") };
+}
+
+/** Pick whichever map a pipeline holds, preferring the action map. Returns
+ * {payload, type} or null. A STALE artifact is treated as absent. */
+export function resolveWorkMap(pipeline) {
+  for (const type of ["work_action_map", "work_decision_map"]) {
+    const a = pipeline?.artifacts?.[type];
+    if (a && a.status !== "STALE") return { payload: toActionMap(a.payload), type, version: a.version };
+  }
+  return null;
+}
+
+export function factGateRows(workMap) {
+  const rows = Array.isArray(toActionMap(workMap)?.rows) ? toActionMap(workMap).rows : [];
   return rows.filter((r) => {
     if (!r) return false;
     const actor = String(r.actor ?? "").trim();
@@ -549,11 +644,12 @@ export function factGateRows(workDecisionMap) {
 }
 
 /** Returns [] when the FACT GATE passes, else the reasons it does not. */
-export function factGateReasons(workDecisionMap) {
-  if (!workDecisionMap) return ["no work_decision_map artifact (or it is STALE)"];
-  const rows = Array.isArray(workDecisionMap.rows) ? workDecisionMap.rows : [];
-  if (rows.length === 0) return ["work_decision_map has no rows"];
-  const passing = factGateRows(workDecisionMap);
+export function factGateReasons(workMap) {
+  if (!workMap) return ["no work_action_map artifact (or it is STALE)"];
+  const m = toActionMap(workMap);
+  const rows = Array.isArray(m.rows) ? m.rows : [];
+  if (rows.length === 0) return ["work_action_map has no rows"];
+  const passing = factGateRows(m);
   if (passing.length > 0) return [];
   const why = [];
   const named = rows.filter((r) => r?.actor && !/^unknown$/i.test(String(r.actor).trim()));
@@ -580,12 +676,13 @@ export function factGateReasons(workDecisionMap) {
 // prove the main_action really is that row's action — a human or a critic
 // still has to judge that — but it makes "I built this on nothing" impossible
 // to submit silently.
-export function conceptRowTraceProblems(conceptsPayload, decisionMapPayload) {
+export function conceptRowTraceProblems(conceptsPayload, workMapPayload) {
   const problems = [];
   const concepts = Array.isArray(conceptsPayload?.concepts) ? conceptsPayload.concepts : [];
-  if (!decisionMapPayload) return ["no work_decision_map to trace concepts against (or it is STALE)"];
-  const rows = Array.isArray(decisionMapPayload.rows) ? decisionMapPayload.rows : [];
-  const passing = new Set(factGateRows(decisionMapPayload).map((r) => rows.indexOf(r)));
+  const map = toActionMap(workMapPayload);
+  if (!map) return ["no work_action_map to trace concepts against (or it is STALE)"];
+  const rows = Array.isArray(map.rows) ? map.rows : [];
+  const passing = new Set(factGateRows(map).map((r) => rows.indexOf(r)));
   for (const c of concepts) {
     const ref = String(c?.decision_row_ids ?? "");
     const idx = [...ref.matchAll(/rows\[(\d+)\]/g)].map((m) => Number(m[1]));
@@ -611,13 +708,13 @@ export function conceptRowTraceProblems(conceptsPayload, decisionMapPayload) {
 export const V2_DESIGN_READY_CHECKS = [
   { id: "legacy_inventory_exists", check: (p) => (art(p, "legacy_inventory") ? null : "legacy inventory missing or STALE") },
   { id: "work_research_exists", check: (p) => (art(p, "work_research") ? null : "work research missing or STALE") },
-  { id: "decision_map_exists", check: (p) => (art(p, "work_decision_map") ? null : "work decision map missing or STALE") },
-  { id: "fact_gate_passes", check: (p) => { const r = factGateReasons(art(p, "work_decision_map")?.payload); return r.length ? `FACT GATE: ${r.join("; ")}` : null; } },
+  { id: "action_map_exists", check: (p) => (resolveWorkMap(p) ? null : "work action map missing or STALE") },
+  { id: "fact_gate_passes", check: (p) => { const r = factGateReasons(resolveWorkMap(p)?.payload); return r.length ? `FACT GATE: ${r.join("; ")}` : null; } },
   { id: "fact_confidence_not_low", check: (p) => (["LOW", "UNCONFIRMED"].includes(p.confidence?.fact) ? `fact_confidence is ${p.confidence.fact}` : null) },
   { id: "reference_research_exists", check: (p) => (art(p, "game_reference_research") ? null : "game reference research missing or STALE") },
   { id: "concepts_gte_3", check: (p) => { const n = art(p, "game_concepts")?.payload?.concepts?.length ?? 0; return n >= 3 ? null : `game concepts < 3 (have ${n})`; } },
   { id: "comparison_exists", check: (p) => (art(p, "game_concepts")?.payload?.comparison ? null : "concept comparison matrix missing") },
-  { id: "concepts_trace_to_gate_rows", check: (p) => { const c = art(p, "game_concepts"), m = art(p, "work_decision_map"); if (!c || !m) return null; const probs = conceptRowTraceProblems(c.payload, m.payload); return probs.length ? probs[0] : null; } },
+  { id: "concepts_trace_to_gate_rows", check: (p) => { const c = art(p, "game_concepts"), m = resolveWorkMap(p); if (!c || !m) return null; const probs = conceptRowTraceProblems(c.payload, m.payload); return probs.length ? probs[0] : null; } },
   { id: "final_design_exists", check: (p) => (art(p, "final_game_design") ? null : "final game design missing or STALE") },
   { id: "rejections_recorded", check: (p) => ((art(p, "final_game_design")?.payload?.rejected_concepts?.length ?? 0) >= 2 ? null : "rejected concepts not recorded") },
   { id: "game_critic_pass", check: (p) => (p.independent_review?.verdict === "PASS" && p.independent_review?.independent === true && p.independent_review?.stale !== true ? null : `game critic is ${JSON.stringify(p.independent_review?.verdict ?? null)} (independent=${p.independent_review?.independent ?? false}, stale=${p.independent_review?.stale ?? false})`) },
