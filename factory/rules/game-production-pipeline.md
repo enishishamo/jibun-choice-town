@@ -151,7 +151,7 @@ confidence と成果物の有無・STALE を合わせて判定する。
 ## 10. 自己テスト
 
 ```bash
-npm run selftest:factory     # 既存9件 + 本パイプライン8件
+npm run selftest:factory     # 既存9件 + 本パイプライン9件
 npm run selftest:pipeline    # 本パイプラインのみ
 ```
 
@@ -186,9 +186,12 @@ npm run selftest:pipeline    # 本パイプラインのみ
 
 ## 11. まだ無いもの（正直な記録）
 
-- **子どもが今遊んでいるゲームの分析が repo に存在しない。** 既存の
-  参照研究15本はすべて大人向けPC/コンソールの名作で、認知負荷・
-  セッション長・最初の30秒の設計が別物。
+- ~~子どもが今遊んでいるゲームの分析が repo に存在しない~~ → **2026-09-23 に解消。**
+  `factory/lab/research/games.json` に batch 2 として6本を追加した
+  （Minecraft / あつ森 / Roblox obby / Block Blast / おみせっち / ビビッター、
+  `first_30_seconds` つき）。人気は ゲムトレ2025（小学生324名）で実証。
+  ただし**この層は Switch 優位でスマホ中心ではない**ので、Switch の文法を
+  指1本へ翻訳する作業が別途要る。
 - **身体的主操作（止める・合わせる・置く…）とリプレイ類型の分類が無い。**
   あるのは「攻略の意味」の16分類（`mechanics-taxonomy.md`）。
 - **`game-critic-v2.md` の採点軸に PLAY FIRST が入っていない。**
