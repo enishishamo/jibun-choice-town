@@ -2589,6 +2589,65 @@
           "status": "BLOCKED"
         }
       ]
+    },
+    "v2-lunch-carry-spot": {
+      "task_id": "v2-lunch-carry-spot",
+      "task_type": "game-content",
+      "status": "HUMAN_DECISION_REQUIRED",
+      "producer": "claude-code-orchestrator",
+      "repair_count": 0,
+      "review_status": null,
+      "review_evidence": null,
+      "review_required": true,
+      "review_required_waiver_reason": null,
+      "reviewer": null,
+      "review_independent": null,
+      "qa_status": null,
+      "qa_evidence": null,
+      "qa_evidence_kind": null,
+      "design_needed": [],
+      "deploy_status": null,
+      "release_commit": null,
+      "blocked_reason": "給食WORLD『はこぶ』のゲーム設計が HUMAN_DECISION_REQUIRED。パイプライン factory/projects/v2-lunch-carry（track=v2）の hd-1 が open。\n\n到達点: LEGACY_INVENTORY → WORK_RESEARCH(v2) → WORK_DECISION_MAP → FACT_GATE通過 → GAME_REFERENCE_RESEARCH → GAME_CONCEPTS を2ラウンド。独立 GAME CRITIC は r1=FAIL 43、r2=FAIL 38、いずれも採択 NONE。\n\n停止理由は設計の失敗ではなく事実の不足。critic の blocker 5件はすべて『勝敗を支える中核ルールが未確認事実の発明』の形で、狙いを絞った追加調査（自治体仕様書5本ほか新規8文書）でも、遅延時に何を報告するか・センターが何を根拠に対処を選ぶか・誤報をどう訂正するかは一次資料から出てこなかった。7自治体すべてで『直ちに連絡し指示に従う』という判断の外注の記述しかなく、その先は現場とセンターの電話に委ねられている。つまりこの職業の専門性は意図的に非決定的である。\n\nHuman への問いは4択（保留／実地取材・情報公開請求の承認／物と手順の上に組むことの許容／スポットの意味の再定義）。詳細は hd-1 の note。(D) は給食WORLDの5スポット定義に触るため世界構造の変更にあたる。\n\nなお Factory 側の統合作業（調査→ゲーム設計→Design引き渡しの接続）は完了し、自己テスト 9/9 + 9/9 で検証済み。本タスクが止まっていても他の job は止まらない。",
+      "human_decision_required": true,
+      "product_identity_impact": "YES",
+      "identity_impact_approved": false,
+      "identity_impact_approval_note": null,
+      "created_at": "2026-09-23T00:13:02.486Z",
+      "updated_at": "2026-09-23T00:13:02.566Z",
+      "history": [
+        {
+          "at": "2026-09-23T00:13:02.487Z",
+          "event": "created",
+          "type": "game-content",
+          "identityImpact": "YES",
+          "producer": "claude-code-orchestrator",
+          "review_required": true,
+          "no_review_reason": null
+        },
+        {
+          "at": "2026-09-23T00:13:02.526Z",
+          "event": "upstream_recorded",
+          "job_id": "v2-lunch-carry",
+          "game_design_version": null,
+          "design_version": null,
+          "recorded_at": "2026-09-23T00:13:02.525Z"
+        },
+        {
+          "at": "2026-09-23T00:13:02.567Z",
+          "event": "blocked",
+          "reason": "給食WORLD『はこぶ』のゲーム設計が HUMAN_DECISION_REQUIRED。パイプライン factory/projects/v2-lunch-carry（track=v2）の hd-1 が open。\n\n到達点: LEGACY_INVENTORY → WORK_RESEARCH(v2) → WORK_DECISION_MAP → FACT_GATE通過 → GAME_REFERENCE_RESEARCH → GAME_CONCEPTS を2ラウンド。独立 GAME CRITIC は r1=FAIL 43、r2=FAIL 38、いずれも採択 NONE。\n\n停止理由は設計の失敗ではなく事実の不足。critic の blocker 5件はすべて『勝敗を支える中核ルールが未確認事実の発明』の形で、狙いを絞った追加調査（自治体仕様書5本ほか新規8文書）でも、遅延時に何を報告するか・センターが何を根拠に対処を選ぶか・誤報をどう訂正するかは一次資料から出てこなかった。7自治体すべてで『直ちに連絡し指示に従う』という判断の外注の記述しかなく、その先は現場とセンターの電話に委ねられている。つまりこの職業の専門性は意図的に非決定的である。\n\nHuman への問いは4択（保留／実地取材・情報公開請求の承認／物と手順の上に組むことの許容／スポットの意味の再定義）。詳細は hd-1 の note。(D) は給食WORLDの5スポット定義に触るため世界構造の変更にあたる。\n\nなお Factory 側の統合作業（調査→ゲーム設計→Design引き渡しの接続）は完了し、自己テスト 9/9 + 9/9 で検証済み。本タスクが止まっていても他の job は止まらない。",
+          "human_decision": true,
+          "design_needed": false,
+          "status": "HUMAN_DECISION_REQUIRED"
+        }
+      ],
+      "upstream": {
+        "job_id": "v2-lunch-carry",
+        "game_design_version": null,
+        "design_version": null,
+        "recorded_at": "2026-09-23T00:13:02.525Z"
+      }
     }
   }
 }
